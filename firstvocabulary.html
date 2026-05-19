@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Word Vault — Part II | profgermandario</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9952A;
+    --gold-light: #E8B84B;
+    --gold-dim: #8A6420;
+    --violet: #6B3FA0;
+    --violet-light: #A07FD8;
+    --bg-deep: #080706;
+    --bg-dark: #100D08;
+    --bg-card: #181410;
+    --bg-card2: #1E1812;
+    --text-primary: #F2EAD8;
+    --text-secondary: #BEA882;
+    --text-dim: #7A6850;
+    --border: #2A2018;
+    --border-gold: #382A14;
+    --red-word: #E06060;
+    --green-word: #52C47A;
+  }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── AMBIENT GLOW ── */
+  .ambient {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(120px);
+  }
+  .ambient-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,149,42,0.07) 0%, transparent 70%); top: -150px; left: -150px; }
+  .ambient-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(107,63,160,0.06) 0%, transparent 70%); bottom: -100px; right: -100px; }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    text-align: center;
+    padding: 5rem 0 3rem;
+    border-bottom: 0.5px solid var(--border-gold);
+  }
+
+  .part-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  .main-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 45%, #A07030 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: 2rem;
+  }
+
+  .author-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+  .author-line::before, .author-line::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold-dim);
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 1.8rem 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .dot-red { background: var(--red-word); }
+  .dot-green { background: var(--green-word); }
+  .dot-neutral { background: var(--text-dim); }
+
+  /* ── INTRO BLOCK ── */
+  .intro {
+    padding: 2.5rem 0 1.5rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .intro p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.9;
+    color: var(--text-secondary);
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 1.5rem;
+  }
+  .section-heading h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border-gold);
+  }
+
+  /* ── WORD GRID ── */
+  .word-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding: 0.5rem 0 2rem;
+  }
+
+  .word-token {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    border: 0.5px solid transparent;
+    letter-spacing: 0.03em;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    cursor: default;
+    position: relative;
+  }
+  .word-token:hover { transform: translateY(-2px); filter: brightness(1.2); }
+
+  .w-adj {
+    color: #F08080;
+    background: rgba(224,85,85,0.1);
+    border-color: rgba(224,85,85,0.25);
+  }
+  .w-verb {
+    color: #62D88A;
+    background: rgba(77,184,122,0.1);
+    border-color: rgba(77,184,122,0.25);
+  }
+  .w-neutral {
+    color: var(--text-secondary);
+    background: rgba(168,144,112,0.07);
+    border-color: var(--border);
+  }
+
+  /* ── TOOLTIP ── */
+  .word-token .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #1E1812;
+    border: 0.5px solid var(--border-gold);
+    border-radius: 5px;
+    padding: 0.55rem 0.85rem;
+    min-width: 150px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    white-space: nowrap;
+  }
+  .word-token .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--border-gold);
+  }
+  .word-token:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .tooltip-ipa {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--violet-light);
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+  .tooltip-es {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CATEGORY TABLES ── */
+  .cat-block {
+    margin: 2.5rem 0;
+    border: 0.5px solid var(--border-gold);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cat-header {
+    background: linear-gradient(90deg, rgba(201,149,42,0.12), rgba(201,149,42,0.04));
+    border-bottom: 0.5px solid var(--border-gold);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .cat-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.08em;
+  }
+  .cat-header span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  .vocab-table thead th {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    padding: 0.75rem 1.2rem;
+    text-align: left;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg-card);
+  }
+  .vocab-table tbody tr {
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.12s;
+  }
+  .vocab-table tbody tr:last-child { border-bottom: none; }
+  .vocab-table tbody tr:hover { background: rgba(201,149,42,0.05); }
+  .vocab-table td {
+    padding: 0.7rem 1.2rem;
+    vertical-align: top;
+  }
+
+  .t-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .t-pron {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--violet-light);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .t-def {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .t-es {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--gold);
+  }
+  .t-closing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  .badge-adj {
+    display: inline-block; font-size: 0.58rem; font-family: 'Cinzel', serif;
+    letter-spacing: 0.12em; padding: 1px 6px; border-radius: 2px;
+    color: #F08080; border: 0.5px solid rgba(224,85,85,0.35);
+    background: rgba(224,85,85,0.08); vertical-align: middle; margin-left: 6px;
+  }
+  .badge-verb {
+    display: inline-block; font-size: 0.58rem; font-family: 'Cinzel', serif;
+    letter-spacing: 0.12em; padding: 1px 6px; border-radius: 2px;
+    color: #62D88A; border: 0.5px solid rgba(77,184,122,0.35);
+    background: rgba(77,184,122,0.08); vertical-align: middle; margin-left: 6px;
+  }
+
+  /* ── ABILITIES CATEGORY ── */
+  .ability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+  .ability-card {
+    background: var(--bg-card);
+    padding: 1rem 1.2rem;
+    transition: background 0.15s;
+  }
+  .ability-card:hover { background: var(--bg-card2); }
+  .ability-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .ability-pron {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--violet-light);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+  .ability-def {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    line-height: 1.45;
+  }
+  .ability-es {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  /* ── LIMITATIONS CATEGORY ── */
+  .limit-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.4fr;
+    gap: 0;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.12s;
+  }
+  .limit-row:hover { background: rgba(201,149,42,0.04); }
+  .limit-row:last-child { border-bottom: none; }
+  .limit-cell { padding: 0.7rem 1.2rem; }
+
+  .cannot-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 2px;
+    background: rgba(224,85,85,0.08); border: 0.5px solid rgba(224,85,85,0.25);
+    color: #F08080; font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem; font-style: italic;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    margin: 3rem 0 0;
+    border-top: 0.5px solid var(--border-gold);
+    border-bottom: 0.5px solid var(--border-gold);
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 0 1rem;
+    border-top: 0.5px solid var(--border);
+  }
+  .footer-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .footer-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  /* ── TOOLTIP HINT ── */
+  .tooltip-hint {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  .tooltip-hint span {
+    display: inline-block;
+    border: 0.5px solid var(--border-gold);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  @media (max-width: 680px) {
+    .vocab-table thead { display: none; }
+    .vocab-table td { display: block; padding: 0.3rem 1rem; }
+    .vocab-table td::before { content: attr(data-label); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-dim); display: block; text-transform: uppercase; margin-bottom: 1px; }
+    .limit-row { grid-template-columns: 1fr 1fr; }
+    .stats-bar { gap: 1.5rem; }
+    .word-token .tooltip { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <p class="part-label">The English Word Vault &nbsp;·&nbsp; Volume II</p>
+    <h1 class="main-title">See It. Know It. Own It.</h1>
+    <p class="sub-title">A red-pen vocabulary audit for the fearless language learner</p>
+    <div class="author-line">profgermandario</div>
+  </header>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><span class="dot dot-red"></span> Adjective — describes</div>
+    <div class="legend-item"><span class="dot dot-green"></span> Verb — acts</div>
+    <div class="legend-item"><span class="dot dot-neutral"></span> Other — connects</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>Below you will find the most-used words in the English language, tagged by function. Adjectives are marked in red. Verbs in green. Everything else holds the space between them. Scan each word in under a second — that moment of recognition is fluency beginning to speak.</p>
+  </div>
+
+  <!-- KEYWORD AUDIT -->
+  <div class="section-heading"><h2>Keyword Audit — The High-Frequency 500</h2></div>
+
+  <div class="tooltip-hint"><span>Hover any word for IPA &amp; translation</span></div>
+
+  <div class="word-grid" id="wordGrid">
+    <span class="word-token w-neutral" data-word="the"><span class="tooltip"><span class="tooltip-ipa">/ðə/</span><span class="tooltip-es">el / la / los / las</span></span>the</span>
+    <span class="word-token w-neutral" data-word="name"><span class="tooltip"><span class="tooltip-ipa">/neɪm/</span><span class="tooltip-es">nombre</span></span>name</span>
+    <span class="word-token w-neutral" data-word="of"><span class="tooltip"><span class="tooltip-ipa">/əv/</span><span class="tooltip-es">de</span></span>of</span>
+    <span class="word-token w-adj" data-word="very"><span class="tooltip"><span class="tooltip-ipa">/ˈveri/</span><span class="tooltip-es">muy</span></span>very</span>
+    <span class="word-token w-neutral" data-word="to"><span class="tooltip"><span class="tooltip-ipa">/tuː/</span><span class="tooltip-es">a / para</span></span>to</span>
+    <span class="word-token w-neutral" data-word="through"><span class="tooltip"><span class="tooltip-ipa">/θruː/</span><span class="tooltip-es">a través de</span></span>through</span>
+    <span class="word-token w-neutral" data-word="and"><span class="tooltip"><span class="tooltip-ipa">/ænd/</span><span class="tooltip-es">y</span></span>and</span>
+    <span class="word-token w-neutral" data-word="just"><span class="tooltip"><span class="tooltip-ipa">/dʒʌst/</span><span class="tooltip-es">solo / apenas</span></span>just</span>
+    <span class="word-token w-neutral" data-word="a"><span class="tooltip"><span class="tooltip-ipa">/eɪ/</span><span class="tooltip-es">un / una</span></span>a</span>
+    <span class="word-token w-neutral" data-word="form"><span class="tooltip"><span class="tooltip-ipa">/fɔːrm/</span><span class="tooltip-es">forma / formulario</span></span>form</span>
+    <span class="word-token w-neutral" data-word="in"><span class="tooltip"><span class="tooltip-ipa">/ɪn/</span><span class="tooltip-es">en</span></span>in</span>
+    <span class="word-token w-adj" data-word="much"><span class="tooltip"><span class="tooltip-ipa">/mʌtʃ/</span><span class="tooltip-es">mucho</span></span>much</span>
+    <span class="word-token w-verb" data-word="is"><span class="tooltip"><span class="tooltip-ipa">/ɪz/</span><span class="tooltip-es">es / está</span></span>is</span>
+    <span class="word-token w-adj" data-word="great"><span class="tooltip"><span class="tooltip-ipa">/ɡreɪt/</span><span class="tooltip-es">genial / grande</span></span>great</span>
+    <span class="word-token w-neutral" data-word="it"><span class="tooltip"><span class="tooltip-ipa">/ɪt/</span><span class="tooltip-es">ello / lo</span></span>it</span>
+    <span class="word-token w-verb" data-word="think"><span class="tooltip"><span class="tooltip-ipa">/θɪŋk/</span><span class="tooltip-es">pensar</span></span>think</span>
+    <span class="word-token w-neutral" data-word="you"><span class="tooltip"><span class="tooltip-ipa">/juː/</span><span class="tooltip-es">tú / usted</span></span>you</span>
+    <span class="word-token w-verb" data-word="say"><span class="tooltip"><span class="tooltip-ipa">/seɪ/</span><span class="tooltip-es">decir</span></span>say</span>
+    <span class="word-token w-neutral" data-word="that"><span class="tooltip"><span class="tooltip-ipa">/ðæt/</span><span class="tooltip-es">ese / eso / que</span></span>that</span>
+    <span class="word-token w-verb" data-word="help"><span class="tooltip"><span class="tooltip-ipa">/hɛlp/</span><span class="tooltip-es">ayudar</span></span>help</span>
+    <span class="word-token w-neutral" data-word="he"><span class="tooltip"><span class="tooltip-ipa">/hiː/</span><span class="tooltip-es">él</span></span>he</span>
+    <span class="word-token w-adj" data-word="low"><span class="tooltip"><span class="tooltip-ipa">/loʊ/</span><span class="tooltip-es">bajo</span></span>low</span>
+    <span class="word-token w-verb" data-word="was"><span class="tooltip"><span class="tooltip-ipa">/wɒz/</span><span class="tooltip-es">era / estaba</span></span>was</span>
+    <span class="word-token w-neutral" data-word="line"><span class="tooltip"><span class="tooltip-ipa">/laɪn/</span><span class="tooltip-es">línea</span></span>line</span>
+    <span class="word-token w-neutral" data-word="for"><span class="tooltip"><span class="tooltip-ipa">/fɔːr/</span><span class="tooltip-es">para / por</span></span>for</span>
+    <span class="word-token w-neutral" data-word="before"><span class="tooltip"><span class="tooltip-ipa">/bɪˈfɔːr/</span><span class="tooltip-es">antes</span></span>before</span>
+    <span class="word-token w-neutral" data-word="on"><span class="tooltip"><span class="tooltip-ipa">/ɒn/</span><span class="tooltip-es">en / sobre</span></span>on</span>
+    <span class="word-token w-verb" data-word="turn"><span class="tooltip"><span class="tooltip-ipa">/tɜːrn/</span><span class="tooltip-es">girar / turno</span></span>turn</span>
+    <span class="word-token w-verb" data-word="are"><span class="tooltip"><span class="tooltip-ipa">/ɑːr/</span><span class="tooltip-es">son / están</span></span>are</span>
+    <span class="word-token w-verb" data-word="cause"><span class="tooltip"><span class="tooltip-ipa">/kɔːz/</span><span class="tooltip-es">causar / causa</span></span>cause</span>
+    <span class="word-token w-neutral" data-word="with"><span class="tooltip"><span class="tooltip-ipa">/wɪð/</span><span class="tooltip-es">con</span></span>with</span>
+    <span class="word-token w-adj" data-word="same"><span class="tooltip"><span class="tooltip-ipa">/seɪm/</span><span class="tooltip-es">mismo</span></span>same</span>
+    <span class="word-token w-neutral" data-word="as"><span class="tooltip"><span class="tooltip-ipa">/æz/</span><span class="tooltip-es">como / tan</span></span>as</span>
+    <span class="word-token w-verb" data-word="mean"><span class="tooltip"><span class="tooltip-ipa">/miːn/</span><span class="tooltip-es">significar / significado</span></span>mean</span>
+    <span class="word-token w-neutral" data-word="I"><span class="tooltip"><span class="tooltip-ipa">/aɪ/</span><span class="tooltip-es">yo</span></span>I</span>
+    <span class="word-token w-verb" data-word="differ"><span class="tooltip"><span class="tooltip-ipa">/ˈdɪfər/</span><span class="tooltip-es">diferir</span></span>differ</span>
+    <span class="word-token w-neutral" data-word="his"><span class="tooltip"><span class="tooltip-ipa">/hɪz/</span><span class="tooltip-es">su (de él)</span></span>his</span>
+    <span class="word-token w-verb" data-word="move"><span class="tooltip"><span class="tooltip-ipa">/muːv/</span><span class="tooltip-es">mover / moverse</span></span>move</span>
+    <span class="word-token w-neutral" data-word="they"><span class="tooltip"><span class="tooltip-ipa">/ðeɪ/</span><span class="tooltip-es">ellos / ellas</span></span>they</span>
+    <span class="word-token w-adj" data-word="right"><span class="tooltip"><span class="tooltip-ipa">/raɪt/</span><span class="tooltip-es">correcto / derecho</span></span>right</span>
+    <span class="word-token w-verb" data-word="be"><span class="tooltip"><span class="tooltip-ipa">/biː/</span><span class="tooltip-es">ser / estar</span></span>be</span>
+    <span class="word-token w-neutral" data-word="boy"><span class="tooltip"><span class="tooltip-ipa">/bɔɪ/</span><span class="tooltip-es">niño / chico</span></span>boy</span>
+    <span class="word-token w-neutral" data-word="at"><span class="tooltip"><span class="tooltip-ipa">/æt/</span><span class="tooltip-es">en / a</span></span>at</span>
+    <span class="word-token w-adj" data-word="old"><span class="tooltip"><span class="tooltip-ipa">/oʊld/</span><span class="tooltip-es">viejo / antiguo</span></span>old</span>
+    <span class="word-token w-neutral" data-word="one"><span class="tooltip"><span class="tooltip-ipa">/wʌn/</span><span class="tooltip-es">uno</span></span>one</span>
+    <span class="word-token w-neutral" data-word="too"><span class="tooltip"><span class="tooltip-ipa">/tuː/</span><span class="tooltip-es">también / demasiado</span></span>too</span>
+    <span class="word-token w-verb" data-word="have"><span class="tooltip"><span class="tooltip-ipa">/hæv/</span><span class="tooltip-es">tener</span></span>have</span>
+    <span class="word-token w-verb" data-word="does"><span class="tooltip"><span class="tooltip-ipa">/dʌz/</span><span class="tooltip-es">hace / (auxiliar)</span></span>does</span>
+    <span class="word-token w-neutral" data-word="this"><span class="tooltip"><span class="tooltip-ipa">/ðɪs/</span><span class="tooltip-es">este / esta</span></span>this</span>
+    <span class="word-token w-verb" data-word="tell"><span class="tooltip"><span class="tooltip-ipa">/tɛl/</span><span class="tooltip-es">decir / contar</span></span>tell</span>
+    <span class="word-token w-neutral" data-word="from"><span class="tooltip"><span class="tooltip-ipa">/frɒm/</span><span class="tooltip-es">de / desde</span></span>from</span>
+    <span class="word-token w-neutral" data-word="sentence"><span class="tooltip"><span class="tooltip-ipa">/ˈsentəns/</span><span class="tooltip-es">oración / frase</span></span>sentence</span>
+    <span class="word-token w-neutral" data-word="or"><span class="tooltip"><span class="tooltip-ipa">/ɔːr/</span><span class="tooltip-es">o</span></span>or</span>
+    <span class="word-token w-verb" data-word="set"><span class="tooltip"><span class="tooltip-ipa">/sɛt/</span><span class="tooltip-es">establecer / conjunto</span></span>set</span>
+    <span class="word-token w-verb" data-word="had"><span class="tooltip"><span class="tooltip-ipa">/hæd/</span><span class="tooltip-es">tenía / había</span></span>had</span>
+    <span class="word-token w-neutral" data-word="three"><span class="tooltip"><span class="tooltip-ipa">/θriː/</span><span class="tooltip-es">tres</span></span>three</span>
+    <span class="word-token w-neutral" data-word="by"><span class="tooltip"><span class="tooltip-ipa">/baɪ/</span><span class="tooltip-es">por / cerca de</span></span>by</span>
+    <span class="word-token w-verb" data-word="want"><span class="tooltip"><span class="tooltip-ipa">/wɒnt/</span><span class="tooltip-es">querer</span></span>want</span>
+    <span class="word-token w-adj" data-word="hot"><span class="tooltip"><span class="tooltip-ipa">/hɒt/</span><span class="tooltip-es">caliente</span></span>hot</span>
+    <span class="word-token w-neutral" data-word="air"><span class="tooltip"><span class="tooltip-ipa">/ɛr/</span><span class="tooltip-es">aire</span></span>air</span>
+    <span class="word-token w-neutral" data-word="but"><span class="tooltip"><span class="tooltip-ipa">/bʌt/</span><span class="tooltip-es">pero</span></span>but</span>
+    <span class="word-token w-adj" data-word="well"><span class="tooltip"><span class="tooltip-ipa">/wɛl/</span><span class="tooltip-es">bien</span></span>well</span>
+    <span class="word-token w-neutral" data-word="some"><span class="tooltip"><span class="tooltip-ipa">/sʌm/</span><span class="tooltip-es">algunos / un poco de</span></span>some</span>
+    <span class="word-token w-neutral" data-word="also"><span class="tooltip"><span class="tooltip-ipa">/ˈɔːlsoʊ/</span><span class="tooltip-es">también</span></span>also</span>
+    <span class="word-token w-neutral" data-word="what"><span class="tooltip"><span class="tooltip-ipa">/wʌt/</span><span class="tooltip-es">qué</span></span>what</span>
+    <span class="word-token w-verb" data-word="play"><span class="tooltip"><span class="tooltip-ipa">/pleɪ/</span><span class="tooltip-es">jugar / tocar</span></span>play</span>
+    <span class="word-token w-neutral" data-word="there"><span class="tooltip"><span class="tooltip-ipa">/ðɛr/</span><span class="tooltip-es">allí / hay</span></span>there</span>
+    <span class="word-token w-adj" data-word="small"><span class="tooltip"><span class="tooltip-ipa">/smɔːl/</span><span class="tooltip-es">pequeño</span></span>small</span>
+    <span class="word-token w-neutral" data-word="we"><span class="tooltip"><span class="tooltip-ipa">/wiː/</span><span class="tooltip-es">nosotros</span></span>we</span>
+    <span class="word-token w-neutral" data-word="end"><span class="tooltip"><span class="tooltip-ipa">/ɛnd/</span><span class="tooltip-es">fin / final</span></span>end</span>
+    <span class="word-token w-verb" data-word="can"><span class="tooltip"><span class="tooltip-ipa">/kæn/</span><span class="tooltip-es">poder</span></span>can</span>
+    <span class="word-token w-verb" data-word="put"><span class="tooltip"><span class="tooltip-ipa">/pʊt/</span><span class="tooltip-es">poner</span></span>put</span>
+    <span class="word-token w-neutral" data-word="out"><span class="tooltip"><span class="tooltip-ipa">/aʊt/</span><span class="tooltip-es">fuera / afuera</span></span>out</span>
+    <span class="word-token w-neutral" data-word="home"><span class="tooltip"><span class="tooltip-ipa">/hoʊm/</span><span class="tooltip-es">hogar / casa</span></span>home</span>
+    <span class="word-token w-neutral" data-word="other"><span class="tooltip"><span class="tooltip-ipa">/ˈʌðər/</span><span class="tooltip-es">otro</span></span>other</span>
+    <span class="word-token w-verb" data-word="read"><span class="tooltip"><span class="tooltip-ipa">/riːd/</span><span class="tooltip-es">leer</span></span>read</span>
+    <span class="word-token w-verb" data-word="were"><span class="tooltip"><span class="tooltip-ipa">/wɜːr/</span><span class="tooltip-es">eran / estaban</span></span>were</span>
+    <span class="word-token w-neutral" data-word="hand"><span class="tooltip"><span class="tooltip-ipa">/hænd/</span><span class="tooltip-es">mano</span></span>hand</span>
+    <span class="word-token w-neutral" data-word="all"><span class="tooltip"><span class="tooltip-ipa">/ɔːl/</span><span class="tooltip-es">todo / todos</span></span>all</span>
+    <span class="word-token w-neutral" data-word="port"><span class="tooltip"><span class="tooltip-ipa">/pɔːrt/</span><span class="tooltip-es">puerto</span></span>port</span>
+    <span class="word-token w-neutral" data-word="your"><span class="tooltip"><span class="tooltip-ipa">/jɔːr/</span><span class="tooltip-es">tu / su</span></span>your</span>
+    <span class="word-token w-adj" data-word="large"><span class="tooltip"><span class="tooltip-ipa">/lɑːrdʒ/</span><span class="tooltip-es">grande</span></span>large</span>
+    <span class="word-token w-neutral" data-word="when"><span class="tooltip"><span class="tooltip-ipa">/wɛn/</span><span class="tooltip-es">cuando</span></span>when</span>
+    <span class="word-token w-verb" data-word="spell"><span class="tooltip"><span class="tooltip-ipa">/spɛl/</span><span class="tooltip-es">deletrear</span></span>spell</span>
+    <span class="word-token w-neutral" data-word="up"><span class="tooltip"><span class="tooltip-ipa">/ʌp/</span><span class="tooltip-es">arriba</span></span>up</span>
+    <span class="word-token w-verb" data-word="add"><span class="tooltip"><span class="tooltip-ipa">/æd/</span><span class="tooltip-es">agregar / sumar</span></span>add</span>
+    <span class="word-token w-verb" data-word="use"><span class="tooltip"><span class="tooltip-ipa">/juːz/</span><span class="tooltip-es">usar</span></span>use</span>
+    <span class="word-token w-adj" data-word="even"><span class="tooltip"><span class="tooltip-ipa">/ˈiːvən/</span><span class="tooltip-es">incluso / par</span></span>even</span>
+    <span class="word-token w-neutral" data-word="word"><span class="tooltip"><span class="tooltip-ipa">/wɜːrd/</span><span class="tooltip-es">palabra</span></span>word</span>
+    <span class="word-token w-neutral" data-word="land"><span class="tooltip"><span class="tooltip-ipa">/lænd/</span><span class="tooltip-es">tierra / terreno</span></span>land</span>
+    <span class="word-token w-neutral" data-word="how"><span class="tooltip"><span class="tooltip-ipa">/haʊ/</span><span class="tooltip-es">cómo</span></span>how</span>
+    <span class="word-token w-neutral" data-word="here"><span class="tooltip"><span class="tooltip-ipa">/hɪr/</span><span class="tooltip-es">aquí</span></span>here</span>
+    <span class="word-token w-verb" data-word="said"><span class="tooltip"><span class="tooltip-ipa">/sɛd/</span><span class="tooltip-es">dijo / dije</span></span>said</span>
+    <span class="word-token w-neutral" data-word="must"><span class="tooltip"><span class="tooltip-ipa">/mʌst/</span><span class="tooltip-es">deber / tener que</span></span>must</span>
+    <span class="word-token w-neutral" data-word="an"><span class="tooltip"><span class="tooltip-ipa">/æn/</span><span class="tooltip-es">un / una</span></span>an</span>
+    <span class="word-token w-adj" data-word="big"><span class="tooltip"><span class="tooltip-ipa">/bɪɡ/</span><span class="tooltip-es">grande</span></span>big</span>
+    <span class="word-token w-neutral" data-word="each"><span class="tooltip"><span class="tooltip-ipa">/iːtʃ/</span><span class="tooltip-es">cada</span></span>each</span>
+    <span class="word-token w-adj" data-word="high"><span class="tooltip"><span class="tooltip-ipa">/haɪ/</span><span class="tooltip-es">alto / elevado</span></span>high</span>
+    <span class="word-token w-neutral" data-word="she"><span class="tooltip"><span class="tooltip-ipa">/ʃiː/</span><span class="tooltip-es">ella</span></span>she</span>
+    <span class="word-token w-neutral" data-word="such"><span class="tooltip"><span class="tooltip-ipa">/sʌtʃ/</span><span class="tooltip-es">tal / semejante</span></span>such</span>
+    <span class="word-token w-neutral" data-word="which"><span class="tooltip"><span class="tooltip-ipa">/wɪtʃ/</span><span class="tooltip-es">cuál / que</span></span>which</span>
+    <span class="word-token w-verb" data-word="follow"><span class="tooltip"><span class="tooltip-ipa">/ˈfɒloʊ/</span><span class="tooltip-es">seguir</span></span>follow</span>
+    <span class="word-token w-verb" data-word="do"><span class="tooltip"><span class="tooltip-ipa">/duː/</span><span class="tooltip-es">hacer</span></span>do</span>
+    <span class="word-token w-verb" data-word="act"><span class="tooltip"><span class="tooltip-ipa">/ækt/</span><span class="tooltip-es">actuar / acto</span></span>act</span>
+    <span class="word-token w-neutral" data-word="their"><span class="tooltip"><span class="tooltip-ipa">/ðɛr/</span><span class="tooltip-es">su (de ellos)</span></span>their</span>
+    <span class="word-token w-neutral" data-word="why"><span class="tooltip"><span class="tooltip-ipa">/waɪ/</span><span class="tooltip-es">por qué</span></span>why</span>
+    <span class="word-token w-neutral" data-word="time"><span class="tooltip"><span class="tooltip-ipa">/taɪm/</span><span class="tooltip-es">tiempo / hora</span></span>time</span>
+    <span class="word-token w-verb" data-word="ask"><span class="tooltip"><span class="tooltip-ipa">/æsk/</span><span class="tooltip-es">preguntar / pedir</span></span>ask</span>
+    <span class="word-token w-neutral" data-word="if"><span class="tooltip"><span class="tooltip-ipa">/ɪf/</span><span class="tooltip-es">si</span></span>if</span>
+    <span class="word-token w-neutral" data-word="men"><span class="tooltip"><span class="tooltip-ipa">/mɛn/</span><span class="tooltip-es">hombres</span></span>men</span>
+    <span class="word-token w-neutral" data-word="will"><span class="tooltip"><span class="tooltip-ipa">/wɪl/</span><span class="tooltip-es">voluntad / (futuro)</span></span>will</span>
+    <span class="word-token w-verb" data-word="change"><span class="tooltip"><span class="tooltip-ipa">/tʃeɪndʒ/</span><span class="tooltip-es">cambiar</span></span>change</span>
+    <span class="word-token w-neutral" data-word="way"><span class="tooltip"><span class="tooltip-ipa">/weɪ/</span><span class="tooltip-es">camino / manera</span></span>way</span>
+    <span class="word-token w-verb" data-word="went"><span class="tooltip"><span class="tooltip-ipa">/wɛnt/</span><span class="tooltip-es">fue / fui</span></span>went</span>
+    <span class="word-token w-neutral" data-word="about"><span class="tooltip"><span class="tooltip-ipa">/əˈbaʊt/</span><span class="tooltip-es">sobre / acerca de</span></span>about</span>
+    <span class="word-token w-adj" data-word="light"><span class="tooltip"><span class="tooltip-ipa">/laɪt/</span><span class="tooltip-es">luz / ligero</span></span>light</span>
+    <span class="word-token w-adj" data-word="many"><span class="tooltip"><span class="tooltip-ipa">/ˈmɛni/</span><span class="tooltip-es">muchos</span></span>many</span>
+    <span class="word-token w-adj" data-word="kind"><span class="tooltip"><span class="tooltip-ipa">/kaɪnd/</span><span class="tooltip-es">amable / tipo</span></span>kind</span>
+    <span class="word-token w-neutral" data-word="then"><span class="tooltip"><span class="tooltip-ipa">/ðɛn/</span><span class="tooltip-es">entonces / luego</span></span>then</span>
+    <span class="word-token w-neutral" data-word="off"><span class="tooltip"><span class="tooltip-ipa">/ɒf/</span><span class="tooltip-es">fuera / apagado</span></span>off</span>
+    <span class="word-token w-neutral" data-word="them"><span class="tooltip"><span class="tooltip-ipa">/ðɛm/</span><span class="tooltip-es">los / les / ellos</span></span>them</span>
+    <span class="word-token w-verb" data-word="need"><span class="tooltip"><span class="tooltip-ipa">/niːd/</span><span class="tooltip-es">necesitar</span></span>need</span>
+    <span class="word-token w-neutral" data-word="would"><span class="tooltip"><span class="tooltip-ipa">/wʊd/</span><span class="tooltip-es">condicional / (modal)</span></span>would</span>
+    <span class="word-token w-neutral" data-word="house"><span class="tooltip"><span class="tooltip-ipa">/haʊs/</span><span class="tooltip-es">casa</span></span>house</span>
+    <span class="word-token w-verb" data-word="write"><span class="tooltip"><span class="tooltip-ipa">/raɪt/</span><span class="tooltip-es">escribir</span></span>write</span>
+    <span class="word-token w-neutral" data-word="picture"><span class="tooltip"><span class="tooltip-ipa">/ˈpɪktʃər/</span><span class="tooltip-es">imagen / foto</span></span>picture</span>
+    <span class="word-token w-neutral" data-word="like"><span class="tooltip"><span class="tooltip-ipa">/laɪk/</span><span class="tooltip-es">gustar / como</span></span>like</span>
+    <span class="word-token w-verb" data-word="try"><span class="tooltip"><span class="tooltip-ipa">/traɪ/</span><span class="tooltip-es">intentar</span></span>try</span>
+    <span class="word-token w-neutral" data-word="so"><span class="tooltip"><span class="tooltip-ipa">/soʊ/</span><span class="tooltip-es">así que / tan</span></span>so</span>
+    <span class="word-token w-neutral" data-word="us"><span class="tooltip"><span class="tooltip-ipa">/ʌs/</span><span class="tooltip-es">nos / nosotros</span></span>us</span>
+    <span class="word-token w-neutral" data-word="these"><span class="tooltip"><span class="tooltip-ipa">/ðiːz/</span><span class="tooltip-es">estos / estas</span></span>these</span>
+    <span class="word-token w-neutral" data-word="again"><span class="tooltip"><span class="tooltip-ipa">/əˈɡɛn/</span><span class="tooltip-es">de nuevo / otra vez</span></span>again</span>
+    <span class="word-token w-neutral" data-word="her"><span class="tooltip"><span class="tooltip-ipa">/hɜːr/</span><span class="tooltip-es">su (de ella) / la</span></span>her</span>
+    <span class="word-token w-neutral" data-word="animal"><span class="tooltip"><span class="tooltip-ipa">/ˈænɪməl/</span><span class="tooltip-es">animal</span></span>animal</span>
+    <span class="word-token w-adj" data-word="long"><span class="tooltip"><span class="tooltip-ipa">/lɔːŋ/</span><span class="tooltip-es">largo</span></span>long</span>
+    <span class="word-token w-neutral" data-word="point"><span class="tooltip"><span class="tooltip-ipa">/pɔɪnt/</span><span class="tooltip-es">punto / señalar</span></span>point</span>
+    <span class="word-token w-verb" data-word="make"><span class="tooltip"><span class="tooltip-ipa">/meɪk/</span><span class="tooltip-es">hacer / crear</span></span>make</span>
+    <span class="word-token w-neutral" data-word="mother"><span class="tooltip"><span class="tooltip-ipa">/ˈmʌðər/</span><span class="tooltip-es">madre</span></span>mother</span>
+    <span class="word-token w-neutral" data-word="thing"><span class="tooltip"><span class="tooltip-ipa">/θɪŋ/</span><span class="tooltip-es">cosa</span></span>thing</span>
+    <span class="word-token w-neutral" data-word="world"><span class="tooltip"><span class="tooltip-ipa">/wɜːrld/</span><span class="tooltip-es">mundo</span></span>world</span>
+    <span class="word-token w-verb" data-word="see"><span class="tooltip"><span class="tooltip-ipa">/siː/</span><span class="tooltip-es">ver</span></span>see</span>
+    <span class="word-token w-adj" data-word="near"><span class="tooltip"><span class="tooltip-ipa">/nɪr/</span><span class="tooltip-es">cerca</span></span>near</span>
+    <span class="word-token w-neutral" data-word="him"><span class="tooltip"><span class="tooltip-ipa">/hɪm/</span><span class="tooltip-es">lo / le / él</span></span>him</span>
+    <span class="word-token w-verb" data-word="build"><span class="tooltip"><span class="tooltip-ipa">/bɪld/</span><span class="tooltip-es">construir</span></span>build</span>
+    <span class="word-token w-neutral" data-word="two"><span class="tooltip"><span class="tooltip-ipa">/tuː/</span><span class="tooltip-es">dos</span></span>two</span>
+    <span class="word-token w-neutral" data-word="self"><span class="tooltip"><span class="tooltip-ipa">/sɛlf/</span><span class="tooltip-es">uno mismo</span></span>self</span>
+    <span class="word-token w-verb" data-word="has"><span class="tooltip"><span class="tooltip-ipa">/hæz/</span><span class="tooltip-es">tiene / ha</span></span>has</span>
+    <span class="word-token w-neutral" data-word="earth"><span class="tooltip"><span class="tooltip-ipa">/ɜːrθ/</span><span class="tooltip-es">tierra</span></span>earth</span>
+    <span class="word-token w-verb" data-word="look"><span class="tooltip"><span class="tooltip-ipa">/lʊk/</span><span class="tooltip-es">mirar</span></span>look</span>
+    <span class="word-token w-neutral" data-word="father"><span class="tooltip"><span class="tooltip-ipa">/ˈfɑːðər/</span><span class="tooltip-es">padre</span></span>father</span>
+    <span class="word-token w-neutral" data-word="more"><span class="tooltip"><span class="tooltip-ipa">/mɔːr/</span><span class="tooltip-es">más</span></span>more</span>
+    <span class="word-token w-neutral" data-word="head"><span class="tooltip"><span class="tooltip-ipa">/hɛd/</span><span class="tooltip-es">cabeza</span></span>head</span>
+    <span class="word-token w-neutral" data-word="day"><span class="tooltip"><span class="tooltip-ipa">/deɪ/</span><span class="tooltip-es">día</span></span>day</span>
+    <span class="word-token w-verb" data-word="stand"><span class="tooltip"><span class="tooltip-ipa">/stænd/</span><span class="tooltip-es">pararse / estar de pie</span></span>stand</span>
+    <span class="word-token w-neutral" data-word="could"><span class="tooltip"><span class="tooltip-ipa">/kʊd/</span><span class="tooltip-es">podría / podía</span></span>could</span>
+    <span class="word-token w-adj" data-word="own"><span class="tooltip"><span class="tooltip-ipa">/oʊn/</span><span class="tooltip-es">propio</span></span>own</span>
+    <span class="word-token w-verb" data-word="go"><span class="tooltip"><span class="tooltip-ipa">/ɡoʊ/</span><span class="tooltip-es">ir</span></span>go</span>
+    <span class="word-token w-neutral" data-word="page"><span class="tooltip"><span class="tooltip-ipa">/peɪdʒ/</span><span class="tooltip-es">página</span></span>page</span>
+    <span class="word-token w-verb" data-word="come"><span class="tooltip"><span class="tooltip-ipa">/kʌm/</span><span class="tooltip-es">venir</span></span>come</span>
+    <span class="word-token w-neutral" data-word="should"><span class="tooltip"><span class="tooltip-ipa">/ʃʊd/</span><span class="tooltip-es">debería</span></span>should</span>
+    <span class="word-token w-verb" data-word="did"><span class="tooltip"><span class="tooltip-ipa">/dɪd/</span><span class="tooltip-es">hizo / hice</span></span>did</span>
+    <span class="word-token w-neutral" data-word="country"><span class="tooltip"><span class="tooltip-ipa">/ˈkʌntri/</span><span class="tooltip-es">país</span></span>country</span>
+    <span class="word-token w-neutral" data-word="my"><span class="tooltip"><span class="tooltip-ipa">/maɪ/</span><span class="tooltip-es">mi</span></span>my</span>
+    <span class="word-token w-verb" data-word="found"><span class="tooltip"><span class="tooltip-ipa">/faʊnd/</span><span class="tooltip-es">encontró / encontré</span></span>found</span>
+    <span class="word-token w-neutral" data-word="sound"><span class="tooltip"><span class="tooltip-ipa">/saʊnd/</span><span class="tooltip-es">sonido</span></span>sound</span>
+    <span class="word-token w-verb" data-word="answer"><span class="tooltip"><span class="tooltip-ipa">/ˈænsər/</span><span class="tooltip-es">responder / respuesta</span></span>answer</span>
+    <span class="word-token w-neutral" data-word="no"><span class="tooltip"><span class="tooltip-ipa">/noʊ/</span><span class="tooltip-es">no</span></span>no</span>
+    <span class="word-token w-neutral" data-word="school"><span class="tooltip"><span class="tooltip-ipa">/skuːl/</span><span class="tooltip-es">escuela</span></span>school</span>
+    <span class="word-token w-adj" data-word="most"><span class="tooltip"><span class="tooltip-ipa">/moʊst/</span><span class="tooltip-es">la mayoría / más</span></span>most</span>
+    <span class="word-token w-verb" data-word="grow"><span class="tooltip"><span class="tooltip-ipa">/ɡroʊ/</span><span class="tooltip-es">crecer</span></span>grow</span>
+    <span class="word-token w-neutral" data-word="number"><span class="tooltip"><span class="tooltip-ipa">/ˈnʌmbər/</span><span class="tooltip-es">número</span></span>number</span>
+    <span class="word-token w-verb" data-word="study"><span class="tooltip"><span class="tooltip-ipa">/ˈstʌdi/</span><span class="tooltip-es">estudiar</span></span>study</span>
+    <span class="word-token w-neutral" data-word="who"><span class="tooltip"><span class="tooltip-ipa">/huː/</span><span class="tooltip-es">quién</span></span>who</span>
+    <span class="word-token w-adj" data-word="still"><span class="tooltip"><span class="tooltip-ipa">/stɪl/</span><span class="tooltip-es">todavía / quieto</span></span>still</span>
+    <span class="word-token w-neutral" data-word="over"><span class="tooltip"><span class="tooltip-ipa">/ˈoʊvər/</span><span class="tooltip-es">sobre / encima</span></span>over</span>
+    <span class="word-token w-verb" data-word="learn"><span class="tooltip"><span class="tooltip-ipa">/lɜːrn/</span><span class="tooltip-es">aprender</span></span>learn</span>
+    <span class="word-token w-verb" data-word="know"><span class="tooltip"><span class="tooltip-ipa">/noʊ/</span><span class="tooltip-es">saber / conocer</span></span>know</span>
+    <span class="word-token w-neutral" data-word="plant"><span class="tooltip"><span class="tooltip-ipa">/plænt/</span><span class="tooltip-es">planta</span></span>plant</span>
+    <span class="word-token w-neutral" data-word="water"><span class="tooltip"><span class="tooltip-ipa">/ˈwɔːtər/</span><span class="tooltip-es">agua</span></span>water</span>
+    <span class="word-token w-verb" data-word="cover"><span class="tooltip"><span class="tooltip-ipa">/ˈkʌvər/</span><span class="tooltip-es">cubrir / tapa</span></span>cover</span>
+    <span class="word-token w-neutral" data-word="than"><span class="tooltip"><span class="tooltip-ipa">/ðæn/</span><span class="tooltip-es">que (comparación)</span></span>than</span>
+    <span class="word-token w-neutral" data-word="food"><span class="tooltip"><span class="tooltip-ipa">/fuːd/</span><span class="tooltip-es">comida</span></span>food</span>
+    <span class="word-token w-verb" data-word="call"><span class="tooltip"><span class="tooltip-ipa">/kɔːl/</span><span class="tooltip-es">llamar</span></span>call</span>
+    <span class="word-token w-neutral" data-word="sun"><span class="tooltip"><span class="tooltip-ipa">/sʌn/</span><span class="tooltip-es">sol</span></span>sun</span>
+    <span class="word-token w-adj" data-word="first"><span class="tooltip"><span class="tooltip-ipa">/fɜːrst/</span><span class="tooltip-es">primero</span></span>first</span>
+    <span class="word-token w-neutral" data-word="four"><span class="tooltip"><span class="tooltip-ipa">/fɔːr/</span><span class="tooltip-es">cuatro</span></span>four</span>
+    <span class="word-token w-neutral" data-word="people"><span class="tooltip"><span class="tooltip-ipa">/ˈpiːpəl/</span><span class="tooltip-es">gente / personas</span></span>people</span>
+    <span class="word-token w-neutral" data-word="thought"><span class="tooltip"><span class="tooltip-ipa">/θɔːt/</span><span class="tooltip-es">pensamiento / pensó</span></span>thought</span>
+    <span class="word-token w-neutral" data-word="may"><span class="tooltip"><span class="tooltip-ipa">/meɪ/</span><span class="tooltip-es">mayo / poder (permiso)</span></span>may</span>
+    <span class="word-token w-verb" data-word="let"><span class="tooltip"><span class="tooltip-ipa">/lɛt/</span><span class="tooltip-es">dejar / permitir</span></span>let</span>
+    <span class="word-token w-neutral" data-word="down"><span class="tooltip"><span class="tooltip-ipa">/daʊn/</span><span class="tooltip-es">abajo</span></span>down</span>
+    <span class="word-token w-verb" data-word="keep"><span class="tooltip"><span class="tooltip-ipa">/kiːp/</span><span class="tooltip-es">mantener / guardar</span></span>keep</span>
+    <span class="word-token w-neutral" data-word="side"><span class="tooltip"><span class="tooltip-ipa">/saɪd/</span><span class="tooltip-es">lado</span></span>side</span>
+    <span class="word-token w-neutral" data-word="eye"><span class="tooltip"><span class="tooltip-ipa">/aɪ/</span><span class="tooltip-es">ojo</span></span>eye</span>
+    <span class="word-token w-verb" data-word="been"><span class="tooltip"><span class="tooltip-ipa">/bɪn/</span><span class="tooltip-es">sido / estado</span></span>been</span>
+    <span class="word-token w-adj" data-word="never"><span class="tooltip"><span class="tooltip-ipa">/ˈnɛvər/</span><span class="tooltip-es">nunca</span></span>never</span>
+    <span class="word-token w-neutral" data-word="now"><span class="tooltip"><span class="tooltip-ipa">/naʊ/</span><span class="tooltip-es">ahora</span></span>now</span>
+    <span class="word-token w-adj" data-word="last"><span class="tooltip"><span class="tooltip-ipa">/læst/</span><span class="tooltip-es">último / pasado</span></span>last</span>
+    <span class="word-token w-verb" data-word="find"><span class="tooltip"><span class="tooltip-ipa">/faɪnd/</span><span class="tooltip-es">encontrar</span></span>find</span>
+    <span class="word-token w-neutral" data-word="door"><span class="tooltip"><span class="tooltip-ipa">/dɔːr/</span><span class="tooltip-es">puerta</span></span>door</span>
+    <span class="word-token w-neutral" data-word="any"><span class="tooltip"><span class="tooltip-ipa">/ˈɛni/</span><span class="tooltip-es">cualquier / algún</span></span>any</span>
+    <span class="word-token w-neutral" data-word="between"><span class="tooltip"><span class="tooltip-ipa">/bɪˈtwiːn/</span><span class="tooltip-es">entre</span></span>between</span>
+    <span class="word-token w-adj" data-word="new"><span class="tooltip"><span class="tooltip-ipa">/njuː/</span><span class="tooltip-es">nuevo</span></span>new</span>
+    <span class="word-token w-neutral" data-word="city"><span class="tooltip"><span class="tooltip-ipa">/ˈsɪti/</span><span class="tooltip-es">ciudad</span></span>city</span>
+    <span class="word-token w-verb" data-word="work"><span class="tooltip"><span class="tooltip-ipa">/wɜːrk/</span><span class="tooltip-es">trabajar / trabajo</span></span>work</span>
+    <span class="word-token w-neutral" data-word="tree"><span class="tooltip"><span class="tooltip-ipa">/triː/</span><span class="tooltip-es">árbol</span></span>tree</span>
+    <span class="word-token w-neutral" data-word="part"><span class="tooltip"><span class="tooltip-ipa">/pɑːrt/</span><span class="tooltip-es">parte</span></span>part</span>
+    <span class="word-token w-verb" data-word="cross"><span class="tooltip"><span class="tooltip-ipa">/krɒs/</span><span class="tooltip-es">cruzar</span></span>cross</span>
+    <span class="word-token w-verb" data-word="take"><span class="tooltip"><span class="tooltip-ipa">/teɪk/</span><span class="tooltip-es">tomar / llevar</span></span>take</span>
+    <span class="word-token w-neutral" data-word="since"><span class="tooltip"><span class="tooltip-ipa">/sɪns/</span><span class="tooltip-es">desde / ya que</span></span>since</span>
+    <span class="word-token w-verb" data-word="get"><span class="tooltip"><span class="tooltip-ipa">/ɡɛt/</span><span class="tooltip-es">obtener / conseguir</span></span>get</span>
+    <span class="word-token w-adj" data-word="hard"><span class="tooltip"><span class="tooltip-ipa">/hɑːrd/</span><span class="tooltip-es">duro / difícil</span></span>hard</span>
+    <span class="word-token w-neutral" data-word="place"><span class="tooltip"><span class="tooltip-ipa">/pleɪs/</span><span class="tooltip-es">lugar</span></span>place</span>
+    <span class="word-token w-verb" data-word="start"><span class="tooltip"><span class="tooltip-ipa">/stɑːrt/</span><span class="tooltip-es">empezar</span></span>start</span>
+    <span class="word-token w-verb" data-word="made"><span class="tooltip"><span class="tooltip-ipa">/meɪd/</span><span class="tooltip-es">hizo / hecho</span></span>made</span>
+    <span class="word-token w-neutral" data-word="might"><span class="tooltip"><span class="tooltip-ipa">/maɪt/</span><span class="tooltip-es">podría / poder</span></span>might</span>
+    <span class="word-token w-verb" data-word="live"><span class="tooltip"><span class="tooltip-ipa">/lɪv/</span><span class="tooltip-es">vivir</span></span>live</span>
+    <span class="word-token w-neutral" data-word="story"><span class="tooltip"><span class="tooltip-ipa">/ˈstɔːri/</span><span class="tooltip-es">historia / cuento</span></span>story</span>
+    <span class="word-token w-neutral" data-word="where"><span class="tooltip"><span class="tooltip-ipa">/wɛr/</span><span class="tooltip-es">donde</span></span>where</span>
+    <span class="word-token w-verb" data-word="saw"><span class="tooltip"><span class="tooltip-ipa">/sɔː/</span><span class="tooltip-es">vio / vi</span></span>saw</span>
+    <span class="word-token w-neutral" data-word="after"><span class="tooltip"><span class="tooltip-ipa">/ˈæftər/</span><span class="tooltip-es">después</span></span>after</span>
+    <span class="word-token w-adj" data-word="far"><span class="tooltip"><span class="tooltip-ipa">/fɑːr/</span><span class="tooltip-es">lejos</span></span>far</span>
+    <span class="word-token w-neutral" data-word="back"><span class="tooltip"><span class="tooltip-ipa">/bæk/</span><span class="tooltip-es">atrás / espalda</span></span>back</span>
+    <span class="word-token w-neutral" data-word="sea"><span class="tooltip"><span class="tooltip-ipa">/siː/</span><span class="tooltip-es">mar</span></span>sea</span>
+    <span class="word-token w-adj" data-word="little"><span class="tooltip"><span class="tooltip-ipa">/ˈlɪtəl/</span><span class="tooltip-es">pequeño / poco</span></span>little</span>
+    <span class="word-token w-verb" data-word="draw"><span class="tooltip"><span class="tooltip-ipa">/drɔː/</span><span class="tooltip-es">dibujar</span></span>draw</span>
+    <span class="word-token w-neutral" data-word="only"><span class="tooltip"><span class="tooltip-ipa">/ˈoʊnli/</span><span class="tooltip-es">solo / únicamente</span></span>only</span>
+    <span class="word-token w-adj" data-word="left"><span class="tooltip"><span class="tooltip-ipa">/lɛft/</span><span class="tooltip-es">izquierda / izquierdo</span></span>left</span>
+    <span class="word-token w-adj" data-word="round"><span class="tooltip"><span class="tooltip-ipa">/raʊnd/</span><span class="tooltip-es">redondo</span></span>round</span>
+    <span class="word-token w-adj" data-word="late"><span class="tooltip"><span class="tooltip-ipa">/leɪt/</span><span class="tooltip-es">tarde / tardío</span></span>late</span>
+    <span class="word-token w-neutral" data-word="man"><span class="tooltip"><span class="tooltip-ipa">/mæn/</span><span class="tooltip-es">hombre</span></span>man</span>
+    <span class="word-token w-verb" data-word="run"><span class="tooltip"><span class="tooltip-ipa">/rʌn/</span><span class="tooltip-es">correr</span></span>run</span>
+    <span class="word-token w-neutral" data-word="year"><span class="tooltip"><span class="tooltip-ipa">/jɪr/</span><span class="tooltip-es">año</span></span>year</span>
+    <span class="word-token w-neutral" data-word="don't"><span class="tooltip"><span class="tooltip-ipa">/doʊnt/</span><span class="tooltip-es">no (negación)</span></span>don't</span>
+    <span class="word-token w-verb" data-word="came"><span class="tooltip"><span class="tooltip-ipa">/keɪm/</span><span class="tooltip-es">vino / vine</span></span>came</span>
+    <span class="word-token w-neutral" data-word="while"><span class="tooltip"><span class="tooltip-ipa">/waɪl/</span><span class="tooltip-es">mientras</span></span>while</span>
+    <span class="word-token w-verb" data-word="show"><span class="tooltip"><span class="tooltip-ipa">/ʃoʊ/</span><span class="tooltip-es">mostrar</span></span>show</span>
+    <span class="word-token w-verb" data-word="press"><span class="tooltip"><span class="tooltip-ipa">/prɛs/</span><span class="tooltip-es">presionar / prensa</span></span>press</span>
+    <span class="word-token w-adj" data-word="every"><span class="tooltip"><span class="tooltip-ipa">/ˈɛvri/</span><span class="tooltip-es">cada / todo</span></span>every</span>
+    <span class="word-token w-verb" data-word="close"><span class="tooltip"><span class="tooltip-ipa">/kloʊz/</span><span class="tooltip-es">cerrar</span></span>close</span>
+    <span class="word-token w-adj" data-word="good"><span class="tooltip"><span class="tooltip-ipa">/ɡʊd/</span><span class="tooltip-es">bueno</span></span>good</span>
+    <span class="word-token w-neutral" data-word="night"><span class="tooltip"><span class="tooltip-ipa">/naɪt/</span><span class="tooltip-es">noche</span></span>night</span>
+    <span class="word-token w-neutral" data-word="me"><span class="tooltip"><span class="tooltip-ipa">/miː/</span><span class="tooltip-es">me / mí</span></span>me</span>
+    <span class="word-token w-adj" data-word="real"><span class="tooltip"><span class="tooltip-ipa">/riːl/</span><span class="tooltip-es">real / verdadero</span></span>real</span>
+    <span class="word-token w-verb" data-word="give"><span class="tooltip"><span class="tooltip-ipa">/ɡɪv/</span><span class="tooltip-es">dar</span></span>give</span>
+    <span class="word-token w-neutral" data-word="life"><span class="tooltip"><span class="tooltip-ipa">/laɪf/</span><span class="tooltip-es">vida</span></span>life</span>
+    <span class="word-token w-neutral" data-word="our"><span class="tooltip"><span class="tooltip-ipa">/aʊr/</span><span class="tooltip-es">nuestro</span></span>our</span>
+    <span class="word-token w-adj" data-word="few"><span class="tooltip"><span class="tooltip-ipa">/fjuː/</span><span class="tooltip-es">pocos</span></span>few</span>
+    <span class="word-token w-neutral" data-word="under"><span class="tooltip"><span class="tooltip-ipa">/ˈʌndər/</span><span class="tooltip-es">bajo / debajo</span></span>under</span>
+    <span class="word-token w-verb" data-word="open"><span class="tooltip"><span class="tooltip-ipa">/ˈoʊpən/</span><span class="tooltip-es">abrir</span></span>open</span>
+    <span class="word-token w-neutral" data-word="ten"><span class="tooltip"><span class="tooltip-ipa">/tɛn/</span><span class="tooltip-es">diez</span></span>ten</span>
+    <span class="word-token w-verb" data-word="seem"><span class="tooltip"><span class="tooltip-ipa">/siːm/</span><span class="tooltip-es">parecer</span></span>seem</span>
+    <span class="word-token w-adj" data-word="simple"><span class="tooltip"><span class="tooltip-ipa">/ˈsɪmpəl/</span><span class="tooltip-es">simple / sencillo</span></span>simple</span>
+    <span class="word-token w-neutral" data-word="together"><span class="tooltip"><span class="tooltip-ipa">/təˈɡɛðər/</span><span class="tooltip-es">juntos</span></span>together</span>
+    <span class="word-token w-neutral" data-word="several"><span class="tooltip"><span class="tooltip-ipa">/ˈsɛvərəl/</span><span class="tooltip-es">varios</span></span>several</span>
+    <span class="word-token w-neutral" data-word="next"><span class="tooltip"><span class="tooltip-ipa">/nɛkst/</span><span class="tooltip-es">próximo / siguiente</span></span>next</span>
+    <span class="word-token w-neutral" data-word="vowel"><span class="tooltip"><span class="tooltip-ipa">/ˈvaʊəl/</span><span class="tooltip-es">vocal</span></span>vowel</span>
+    <span class="word-token w-adj" data-word="white"><span class="tooltip"><span class="tooltip-ipa">/waɪt/</span><span class="tooltip-es">blanco</span></span>white</span>
+    <span class="word-token w-neutral" data-word="toward"><span class="tooltip"><span class="tooltip-ipa">/tɔːrd/</span><span class="tooltip-es">hacia</span></span>toward</span>
+    <span class="word-token w-neutral" data-word="children"><span class="tooltip"><span class="tooltip-ipa">/ˈtʃɪldrən/</span><span class="tooltip-es">niños / hijos</span></span>children</span>
+    <span class="word-token w-neutral" data-word="war"><span class="tooltip"><span class="tooltip-ipa">/wɔːr/</span><span class="tooltip-es">guerra</span></span>war</span>
+    <span class="word-token w-verb" data-word="begin"><span class="tooltip"><span class="tooltip-ipa">/bɪˈɡɪn/</span><span class="tooltip-es">comenzar</span></span>begin</span>
+    <span class="word-token w-verb" data-word="lay"><span class="tooltip"><span class="tooltip-ipa">/leɪ/</span><span class="tooltip-es">poner / yacer</span></span>lay</span>
+    <span class="word-token w-verb" data-word="got"><span class="tooltip"><span class="tooltip-ipa">/ɡɒt/</span><span class="tooltip-es">obtuvo / conseguí</span></span>got</span>
+    <span class="word-token w-neutral" data-word="against"><span class="tooltip"><span class="tooltip-ipa">/əˈɡɛnst/</span><span class="tooltip-es">contra</span></span>against</span>
+    <span class="word-token w-verb" data-word="walk"><span class="tooltip"><span class="tooltip-ipa">/wɔːk/</span><span class="tooltip-es">caminar</span></span>walk</span>
+    <span class="word-token w-neutral" data-word="pattern"><span class="tooltip"><span class="tooltip-ipa">/ˈpætərn/</span><span class="tooltip-es">patrón</span></span>pattern</span>
+    <span class="word-token w-neutral" data-word="example"><span class="tooltip"><span class="tooltip-ipa">/ɪɡˈzæmpəl/</span><span class="tooltip-es">ejemplo</span></span>example</span>
+    <span class="word-token w-adj" data-word="slow"><span class="tooltip"><span class="tooltip-ipa">/sloʊ/</span><span class="tooltip-es">lento</span></span>slow</span>
+    <span class="word-token w-neutral" data-word="ease"><span class="tooltip"><span class="tooltip-ipa">/iːz/</span><span class="tooltip-es">facilidad</span></span>ease</span>
+    <span class="word-token w-neutral" data-word="center"><span class="tooltip"><span class="tooltip-ipa">/ˈsɛntər/</span><span class="tooltip-es">centro</span></span>center</span>
+    <span class="word-token w-neutral" data-word="paper"><span class="tooltip"><span class="tooltip-ipa">/ˈpeɪpər/</span><span class="tooltip-es">papel</span></span>paper</span>
+    <span class="word-token w-verb" data-word="love"><span class="tooltip"><span class="tooltip-ipa">/lʌv/</span><span class="tooltip-es">amar / amor</span></span>love</span>
+    <span class="word-token w-adj" data-word="often"><span class="tooltip"><span class="tooltip-ipa">/ˈɔːfən/</span><span class="tooltip-es">a menudo</span></span>often</span>
+    <span class="word-token w-neutral" data-word="person"><span class="tooltip"><span class="tooltip-ipa">/ˈpɜːrsən/</span><span class="tooltip-es">persona</span></span>person</span>
+    <span class="word-token w-neutral" data-word="always"><span class="tooltip"><span class="tooltip-ipa">/ˈɔːlweɪz/</span><span class="tooltip-es">siempre</span></span>always</span>
+    <span class="word-token w-neutral" data-word="money"><span class="tooltip"><span class="tooltip-ipa">/ˈmʌni/</span><span class="tooltip-es">dinero</span></span>money</span>
+    <span class="word-token w-neutral" data-word="music"><span class="tooltip"><span class="tooltip-ipa">/ˈmjuːzɪk/</span><span class="tooltip-es">música</span></span>music</span>
+    <span class="word-token w-verb" data-word="serve"><span class="tooltip"><span class="tooltip-ipa">/sɜːrv/</span><span class="tooltip-es">servir</span></span>serve</span>
+    <span class="word-token w-neutral" data-word="those"><span class="tooltip"><span class="tooltip-ipa">/ðoʊz/</span><span class="tooltip-es">esos / esas</span></span>those</span>
+    <span class="word-token w-verb" data-word="appear"><span class="tooltip"><span class="tooltip-ipa">/əˈpɪr/</span><span class="tooltip-es">aparecer</span></span>appear</span>
+    <span class="word-token w-neutral" data-word="both"><span class="tooltip"><span class="tooltip-ipa">/boʊθ/</span><span class="tooltip-es">ambos</span></span>both</span>
+    <span class="word-token w-neutral" data-word="road"><span class="tooltip"><span class="tooltip-ipa">/roʊd/</span><span class="tooltip-es">camino / carretera</span></span>road</span>
+    <span class="word-token w-neutral" data-word="mark"><span class="tooltip"><span class="tooltip-ipa">/mɑːrk/</span><span class="tooltip-es">marca / marcar</span></span>mark</span>
+    <span class="word-token w-neutral" data-word="map"><span class="tooltip"><span class="tooltip-ipa">/mæp/</span><span class="tooltip-es">mapa</span></span>map</span>
+    <span class="word-token w-neutral" data-word="book"><span class="tooltip"><span class="tooltip-ipa">/bʊk/</span><span class="tooltip-es">libro</span></span>book</span>
+    <span class="word-token w-neutral" data-word="science"><span class="tooltip"><span class="tooltip-ipa">/ˈsaɪəns/</span><span class="tooltip-es">ciencia</span></span>science</span>
+    <span class="word-token w-neutral" data-word="letter"><span class="tooltip"><span class="tooltip-ipa">/ˈlɛtər/</span><span class="tooltip-es">carta / letra</span></span>letter</span>
+    <span class="word-token w-neutral" data-word="rule"><span class="tooltip"><span class="tooltip-ipa">/ruːl/</span><span class="tooltip-es">regla</span></span>rule</span>
+    <span class="word-token w-neutral" data-word="until"><span class="tooltip"><span class="tooltip-ipa">/ənˈtɪl/</span><span class="tooltip-es">hasta</span></span>until</span>
+    <span class="word-token w-verb" data-word="govern"><span class="tooltip"><span class="tooltip-ipa">/ˈɡʌvərn/</span><span class="tooltip-es">gobernar</span></span>govern</span>
+    <span class="word-token w-neutral" data-word="mile"><span class="tooltip"><span class="tooltip-ipa">/maɪl/</span><span class="tooltip-es">milla</span></span>mile</span>
+    <span class="word-token w-verb" data-word="pull"><span class="tooltip"><span class="tooltip-ipa">/pʊl/</span><span class="tooltip-es">jalar / halar</span></span>pull</span>
+    <span class="word-token w-neutral" data-word="river"><span class="tooltip"><span class="tooltip-ipa">/ˈrɪvər/</span><span class="tooltip-es">río</span></span>river</span>
+    <span class="word-token w-adj" data-word="cold"><span class="tooltip"><span class="tooltip-ipa">/koʊld/</span><span class="tooltip-es">frío</span></span>cold</span>
+    <span class="word-token w-neutral" data-word="car"><span class="tooltip"><span class="tooltip-ipa">/kɑːr/</span><span class="tooltip-es">coche / carro</span></span>car</span>
+    <span class="word-token w-verb" data-word="notice"><span class="tooltip"><span class="tooltip-ipa">/ˈnoʊtɪs/</span><span class="tooltip-es">notar / aviso</span></span>notice</span>
+    <span class="word-token w-neutral" data-word="feet"><span class="tooltip"><span class="tooltip-ipa">/fiːt/</span><span class="tooltip-es">pies</span></span>feet</span>
+    <span class="word-token w-neutral" data-word="voice"><span class="tooltip"><span class="tooltip-ipa">/vɔɪs/</span><span class="tooltip-es">voz</span></span>voice</span>
+    <span class="word-token w-verb" data-word="care"><span class="tooltip"><span class="tooltip-ipa">/kɛr/</span><span class="tooltip-es">cuidar / importar</span></span>care</span>
+    <span class="word-token w-verb" data-word="fall"><span class="tooltip"><span class="tooltip-ipa">/fɔːl/</span><span class="tooltip-es">caer</span></span>fall</span>
+    <span class="word-token w-adj" data-word="second"><span class="tooltip"><span class="tooltip-ipa">/ˈsɛkənd/</span><span class="tooltip-es">segundo</span></span>second</span>
+    <span class="word-token w-neutral" data-word="power"><span class="tooltip"><span class="tooltip-ipa">/ˈpaʊər/</span><span class="tooltip-es">poder / fuerza</span></span>power</span>
+    <span class="word-token w-neutral" data-word="group"><span class="tooltip"><span class="tooltip-ipa">/ɡruːp/</span><span class="tooltip-es">grupo</span></span>group</span>
+    <span class="word-token w-neutral" data-word="town"><span class="tooltip"><span class="tooltip-ipa">/taʊn/</span><span class="tooltip-es">pueblo / ciudad</span></span>town</span>
+    <span class="word-token w-verb" data-word="carry"><span class="tooltip"><span class="tooltip-ipa">/ˈkæri/</span><span class="tooltip-es">cargar / llevar</span></span>carry</span>
+    <span class="word-token w-adj" data-word="fine"><span class="tooltip"><span class="tooltip-ipa">/faɪn/</span><span class="tooltip-es">bien / fino</span></span>fine</span>
+    <span class="word-token w-verb" data-word="took"><span class="tooltip"><span class="tooltip-ipa">/tʊk/</span><span class="tooltip-es">tomó / tomé</span></span>took</span>
+    <span class="word-token w-adj" data-word="certain"><span class="tooltip"><span class="tooltip-ipa">/ˈsɜːrtən/</span><span class="tooltip-es">cierto / seguro</span></span>certain</span>
+    <span class="word-token w-neutral" data-word="rain"><span class="tooltip"><span class="tooltip-ipa">/reɪn/</span><span class="tooltip-es">lluvia</span></span>rain</span>
+    <span class="word-token w-verb" data-word="fly"><span class="tooltip"><span class="tooltip-ipa">/flaɪ/</span><span class="tooltip-es">volar</span></span>fly</span>
+    <span class="word-token w-verb" data-word="eat"><span class="tooltip"><span class="tooltip-ipa">/iːt/</span><span class="tooltip-es">comer</span></span>eat</span>
+    <span class="word-token w-neutral" data-word="unit"><span class="tooltip"><span class="tooltip-ipa">/ˈjuːnɪt/</span><span class="tooltip-es">unidad</span></span>unit</span>
+    <span class="word-token w-neutral" data-word="room"><span class="tooltip"><span class="tooltip-ipa">/ruːm/</span><span class="tooltip-es">cuarto / habitación</span></span>room</span>
+    <span class="word-token w-verb" data-word="lead"><span class="tooltip"><span class="tooltip-ipa">/liːd/</span><span class="tooltip-es">liderar / guiar</span></span>lead</span>
+    <span class="word-token w-neutral" data-word="friend"><span class="tooltip"><span class="tooltip-ipa">/frɛnd/</span><span class="tooltip-es">amigo</span></span>friend</span>
+    <span class="word-token w-verb" data-word="cry"><span class="tooltip"><span class="tooltip-ipa">/kraɪ/</span><span class="tooltip-es">llorar / gritar</span></span>cry</span>
+    <span class="word-token w-verb" data-word="began"><span class="tooltip"><span class="tooltip-ipa">/bɪˈɡæn/</span><span class="tooltip-es">comenzó / comencé</span></span>began</span>
+    <span class="word-token w-adj" data-word="dark"><span class="tooltip"><span class="tooltip-ipa">/dɑːrk/</span><span class="tooltip-es">oscuro</span></span>dark</span>
+    <span class="word-token w-neutral" data-word="idea"><span class="tooltip"><span class="tooltip-ipa">/aɪˈdɪə/</span><span class="tooltip-es">idea</span></span>idea</span>
+    <span class="word-token w-neutral" data-word="machine"><span class="tooltip"><span class="tooltip-ipa">/məˈʃiːn/</span><span class="tooltip-es">máquina</span></span>machine</span>
+    <span class="word-token w-neutral" data-word="fish"><span class="tooltip"><span class="tooltip-ipa">/fɪʃ/</span><span class="tooltip-es">pez / pescado</span></span>fish</span>
+    <span class="word-token w-verb" data-word="note"><span class="tooltip"><span class="tooltip-ipa">/noʊt/</span><span class="tooltip-es">anotar / nota</span></span>note</span>
+    <span class="word-token w-neutral" data-word="mountain"><span class="tooltip"><span class="tooltip-ipa">/ˈmaʊntən/</span><span class="tooltip-es">montaña</span></span>mountain</span>
+    <span class="word-token w-verb" data-word="wait"><span class="tooltip"><span class="tooltip-ipa">/weɪt/</span><span class="tooltip-es">esperar</span></span>wait</span>
+    <span class="word-token w-verb" data-word="stop"><span class="tooltip"><span class="tooltip-ipa">/stɒp/</span><span class="tooltip-es">parar / detener</span></span>stop</span>
+    <span class="word-token w-neutral" data-word="north"><span class="tooltip"><span class="tooltip-ipa">/nɔːrθ/</span><span class="tooltip-es">norte</span></span>north</span>
+    <span class="word-token w-neutral" data-word="plan"><span class="tooltip"><span class="tooltip-ipa">/plæn/</span><span class="tooltip-es">plan / planear</span></span>plan</span>
+    <span class="word-token w-neutral" data-word="once"><span class="tooltip"><span class="tooltip-ipa">/wʌns/</span><span class="tooltip-es">una vez</span></span>once</span>
+    <span class="word-token w-neutral" data-word="figure"><span class="tooltip"><span class="tooltip-ipa">/ˈfɪɡjər/</span><span class="tooltip-es">figura / cifra</span></span>figure</span>
+    <span class="word-token w-neutral" data-word="base"><span class="tooltip"><span class="tooltip-ipa">/beɪs/</span><span class="tooltip-es">base</span></span>base</span>
+    <span class="word-token w-neutral" data-word="star"><span class="tooltip"><span class="tooltip-ipa">/stɑːr/</span><span class="tooltip-es">estrella</span></span>star</span>
+    <span class="word-token w-verb" data-word="hear"><span class="tooltip"><span class="tooltip-ipa">/hɪr/</span><span class="tooltip-es">escuchar / oír</span></span>hear</span>
+    <span class="word-token w-neutral" data-word="box"><span class="tooltip"><span class="tooltip-ipa">/bɒks/</span><span class="tooltip-es">caja</span></span>box</span>
+    <span class="word-token w-neutral" data-word="horse"><span class="tooltip"><span class="tooltip-ipa">/hɔːrs/</span><span class="tooltip-es">caballo</span></span>horse</span>
+    <span class="word-token w-neutral" data-word="noun"><span class="tooltip"><span class="tooltip-ipa">/naʊn/</span><span class="tooltip-es">sustantivo</span></span>noun</span>
+    <span class="word-token w-verb" data-word="cut"><span class="tooltip"><span class="tooltip-ipa">/kʌt/</span><span class="tooltip-es">cortar</span></span>cut</span>
+    <span class="word-token w-neutral" data-word="field"><span class="tooltip"><span class="tooltip-ipa">/fiːld/</span><span class="tooltip-es">campo</span></span>field</span>
+    <span class="word-token w-adj" data-word="sure"><span class="tooltip"><span class="tooltip-ipa">/ʃʊr/</span><span class="tooltip-es">seguro</span></span>sure</span>
+    <span class="word-token w-verb" data-word="rest"><span class="tooltip"><span class="tooltip-ipa">/rɛst/</span><span class="tooltip-es">descansar / resto</span></span>rest</span>
+    <span class="word-token w-verb" data-word="watch"><span class="tooltip"><span class="tooltip-ipa">/wɒtʃ/</span><span class="tooltip-es">observar / reloj</span></span>watch</span>
+    <span class="word-token w-adj" data-word="correct"><span class="tooltip"><span class="tooltip-ipa">/kəˈrɛkt/</span><span class="tooltip-es">correcto</span></span>correct</span>
+    <span class="word-token w-neutral" data-word="color"><span class="tooltip"><span class="tooltip-ipa">/ˈkʌlər/</span><span class="tooltip-es">color</span></span>color</span>
+    <span class="word-token w-adj" data-word="able"><span class="tooltip"><span class="tooltip-ipa">/ˈeɪbəl/</span><span class="tooltip-es">capaz</span></span>able</span>
+    <span class="word-token w-neutral" data-word="face"><span class="tooltip"><span class="tooltip-ipa">/feɪs/</span><span class="tooltip-es">cara</span></span>face</span>
+    <span class="word-token w-neutral" data-word="pound"><span class="tooltip"><span class="tooltip-ipa">/paʊnd/</span><span class="tooltip-es">libra</span></span>pound</span>
+    <span class="word-token w-neutral" data-word="wood"><span class="tooltip"><span class="tooltip-ipa">/wʊd/</span><span class="tooltip-es">madera</span></span>wood</span>
+    <span class="word-token w-adj" data-word="done"><span class="tooltip"><span class="tooltip-ipa">/dʌn/</span><span class="tooltip-es">hecho / listo</span></span>done</span>
+    <span class="word-token w-adj" data-word="main"><span class="tooltip"><span class="tooltip-ipa">/meɪn/</span><span class="tooltip-es">principal</span></span>main</span>
+    <span class="word-token w-neutral" data-word="beauty"><span class="tooltip"><span class="tooltip-ipa">/ˈbjuːti/</span><span class="tooltip-es">belleza</span></span>beauty</span>
+    <span class="word-token w-adj" data-word="enough"><span class="tooltip"><span class="tooltip-ipa">/ɪˈnʌf/</span><span class="tooltip-es">suficiente</span></span>enough</span>
+    <span class="word-token w-verb" data-word="drive"><span class="tooltip"><span class="tooltip-ipa">/draɪv/</span><span class="tooltip-es">conducir / manejar</span></span>drive</span>
+    <span class="word-token w-adj" data-word="plain"><span class="tooltip"><span class="tooltip-ipa">/pleɪn/</span><span class="tooltip-es">simple / llanura</span></span>plain</span>
+    <span class="word-token w-verb" data-word="stood"><span class="tooltip"><span class="tooltip-ipa">/stʊd/</span><span class="tooltip-es">estuvo de pie</span></span>stood</span>
+    <span class="word-token w-neutral" data-word="girl"><span class="tooltip"><span class="tooltip-ipa">/ɡɜːrl/</span><span class="tooltip-es">niña / chica</span></span>girl</span>
+    <span class="word-token w-verb" data-word="contain"><span class="tooltip"><span class="tooltip-ipa">/kənˈteɪn/</span><span class="tooltip-es">contener</span></span>contain</span>
+    <span class="word-token w-adj" data-word="usual"><span class="tooltip"><span class="tooltip-ipa">/ˈjuːʒuəl/</span><span class="tooltip-es">usual / habitual</span></span>usual</span>
+    <span class="word-token w-neutral" data-word="front"><span class="tooltip"><span class="tooltip-ipa">/frʌnt/</span><span class="tooltip-es">frente</span></span>front</span>
+    <span class="word-token w-adj" data-word="young"><span class="tooltip"><span class="tooltip-ipa">/jʌŋ/</span><span class="tooltip-es">joven</span></span>young</span>
+    <span class="word-token w-verb" data-word="teach"><span class="tooltip"><span class="tooltip-ipa">/tiːtʃ/</span><span class="tooltip-es">enseñar</span></span>teach</span>
+    <span class="word-token w-adj" data-word="ready"><span class="tooltip"><span class="tooltip-ipa">/ˈrɛdi/</span><span class="tooltip-es">listo</span></span>ready</span>
+    <span class="word-token w-neutral" data-word="week"><span class="tooltip"><span class="tooltip-ipa">/wiːk/</span><span class="tooltip-es">semana</span></span>week</span>
+    <span class="word-token w-neutral" data-word="above"><span class="tooltip"><span class="tooltip-ipa">/əˈbʌv/</span><span class="tooltip-es">arriba / encima</span></span>above</span>
+    <span class="word-token w-adj" data-word="final"><span class="tooltip"><span class="tooltip-ipa">/ˈfaɪnəl/</span><span class="tooltip-es">final</span></span>final</span>
+    <span class="word-token w-neutral" data-word="ever"><span class="tooltip"><span class="tooltip-ipa">/ˈɛvər/</span><span class="tooltip-es">alguna vez / jamás</span></span>ever</span>
+    <span class="word-token w-verb" data-word="gave"><span class="tooltip"><span class="tooltip-ipa">/ɡeɪv/</span><span class="tooltip-es">dio / di</span></span>gave</span>
+    <span class="word-token w-adj" data-word="red"><span class="tooltip"><span class="tooltip-ipa">/rɛd/</span><span class="tooltip-es">rojo</span></span>red</span>
+    <span class="word-token w-adj" data-word="green"><span class="tooltip"><span class="tooltip-ipa">/ɡriːn/</span><span class="tooltip-es">verde</span></span>green</span>
+    <span class="word-token w-neutral" data-word="list"><span class="tooltip"><span class="tooltip-ipa">/lɪst/</span><span class="tooltip-es">lista</span></span>list</span>
+    <span class="word-token w-neutral" data-word="though"><span class="tooltip"><span class="tooltip-ipa">/ðoʊ/</span><span class="tooltip-es">aunque</span></span>though</span>
+    <span class="word-token w-adj" data-word="quick"><span class="tooltip"><span class="tooltip-ipa">/kwɪk/</span><span class="tooltip-es">rápido</span></span>quick</span>
+    <span class="word-token w-verb" data-word="feel"><span class="tooltip"><span class="tooltip-ipa">/fiːl/</span><span class="tooltip-es">sentir</span></span>feel</span>
+    <span class="word-token w-verb" data-word="develop"><span class="tooltip"><span class="tooltip-ipa">/dɪˈvɛləp/</span><span class="tooltip-es">desarrollar</span></span>develop</span>
+    <span class="word-token w-verb" data-word="talk"><span class="tooltip"><span class="tooltip-ipa">/tɔːk/</span><span class="tooltip-es">hablar / conversar</span></span>talk</span>
+    <span class="word-token w-verb" data-word="sleep"><span class="tooltip"><span class="tooltip-ipa">/sliːp/</span><span class="tooltip-es">dormir</span></span>sleep</span>
+    <span class="word-token w-neutral" data-word="bird"><span class="tooltip"><span class="tooltip-ipa">/bɜːrd/</span><span class="tooltip-es">pájaro</span></span>bird</span>
+    <span class="word-token w-adj" data-word="warm"><span class="tooltip"><span class="tooltip-ipa">/wɔːrm/</span><span class="tooltip-es">cálido / tibio</span></span>warm</span>
+    <span class="word-token w-neutral" data-word="soon"><span class="tooltip"><span class="tooltip-ipa">/suːn/</span><span class="tooltip-es">pronto</span></span>soon</span>
+    <span class="word-token w-adj" data-word="free"><span class="tooltip"><span class="tooltip-ipa">/friː/</span><span class="tooltip-es">libre / gratis</span></span>free</span>
+    <span class="word-token w-neutral" data-word="body"><span class="tooltip"><span class="tooltip-ipa">/ˈbɒdi/</span><span class="tooltip-es">cuerpo</span></span>body</span>
+    <span class="word-token w-neutral" data-word="minute"><span class="tooltip"><span class="tooltip-ipa">/ˈmɪnɪt/</span><span class="tooltip-es">minuto</span></span>minute</span>
+    <span class="word-token w-neutral" data-word="dog"><span class="tooltip"><span class="tooltip-ipa">/dɒɡ/</span><span class="tooltip-es">perro</span></span>dog</span>
+    <span class="word-token w-adj" data-word="strong"><span class="tooltip"><span class="tooltip-ipa">/strɒŋ/</span><span class="tooltip-es">fuerte</span></span>strong</span>
+    <span class="word-token w-neutral" data-word="family"><span class="tooltip"><span class="tooltip-ipa">/ˈfæməli/</span><span class="tooltip-es">familia</span></span>family</span>
+    <span class="word-token w-adj" data-word="special"><span class="tooltip"><span class="tooltip-ipa">/ˈspɛʃəl/</span><span class="tooltip-es">especial</span></span>special</span>
+    <span class="word-token w-verb" data-word="direct"><span class="tooltip"><span class="tooltip-ipa">/dɪˈrɛkt/</span><span class="tooltip-es">dirigir / directo</span></span>direct</span>
+    <span class="word-token w-neutral" data-word="mind"><span class="tooltip"><span class="tooltip-ipa">/maɪnd/</span><span class="tooltip-es">mente</span></span>mind</span>
+    <span class="word-token w-verb" data-word="pose"><span class="tooltip"><span class="tooltip-ipa">/poʊz/</span><span class="tooltip-es">posar / plantear</span></span>pose</span>
+    <span class="word-token w-neutral" data-word="behind"><span class="tooltip"><span class="tooltip-ipa">/bɪˈhaɪnd/</span><span class="tooltip-es">detrás</span></span>behind</span>
+    <span class="word-token w-verb" data-word="leave"><span class="tooltip"><span class="tooltip-ipa">/liːv/</span><span class="tooltip-es">dejar / irse</span></span>leave</span>
+    <span class="word-token w-adj" data-word="clear"><span class="tooltip"><span class="tooltip-ipa">/klɪr/</span><span class="tooltip-es">claro</span></span>clear</span>
+    <span class="word-token w-neutral" data-word="song"><span class="tooltip"><span class="tooltip-ipa">/sɒŋ/</span><span class="tooltip-es">canción</span></span>song</span>
+    <span class="word-token w-neutral" data-word="tail"><span class="tooltip"><span class="tooltip-ipa">/teɪl/</span><span class="tooltip-es">cola</span></span>tail</span>
+    <span class="word-token w-verb" data-word="measure"><span class="tooltip"><span class="tooltip-ipa">/ˈmɛʒər/</span><span class="tooltip-es">medir</span></span>measure</span>
+    <span class="word-token w-verb" data-word="produce"><span class="tooltip"><span class="tooltip-ipa">/prəˈdjuːs/</span><span class="tooltip-es">producir</span></span>produce</span>
+    <span class="word-token w-neutral" data-word="state"><span class="tooltip"><span class="tooltip-ipa">/steɪt/</span><span class="tooltip-es">estado</span></span>state</span>
+    <span class="word-token w-neutral" data-word="fact"><span class="tooltip"><span class="tooltip-ipa">/fækt/</span><span class="tooltip-es">hecho</span></span>fact</span>
+    <span class="word-token w-neutral" data-word="product"><span class="tooltip"><span class="tooltip-ipa">/ˈprɒdəkt/</span><span class="tooltip-es">producto</span></span>product</span>
+    <span class="word-token w-neutral" data-word="street"><span class="tooltip"><span class="tooltip-ipa">/striːt/</span><span class="tooltip-es">calle</span></span>street</span>
+    <span class="word-token w-adj" data-word="black"><span class="tooltip"><span class="tooltip-ipa">/blæk/</span><span class="tooltip-es">negro</span></span>black</span>
+    <span class="word-token w-neutral" data-word="inch"><span class="tooltip"><span class="tooltip-ipa">/ɪntʃ/</span><span class="tooltip-es">pulgada</span></span>inch</span>
+    <span class="word-token w-adj" data-word="short"><span class="tooltip"><span class="tooltip-ipa">/ʃɔːrt/</span><span class="tooltip-es">corto / bajo</span></span>short</span>
+    <span class="word-token w-neutral" data-word="lot"><span class="tooltip"><span class="tooltip-ipa">/lɒt/</span><span class="tooltip-es">mucho / lote</span></span>lot</span>
+    <span class="word-token w-neutral" data-word="numeral"><span class="tooltip"><span class="tooltip-ipa">/ˈnjuːmərəl/</span><span class="tooltip-es">numeral</span></span>numeral</span>
+    <span class="word-token w-neutral" data-word="nothing"><span class="tooltip"><span class="tooltip-ipa">/ˈnʌθɪŋ/</span><span class="tooltip-es">nada</span></span>nothing</span>
+    <span class="word-token w-neutral" data-word="class"><span class="tooltip"><span class="tooltip-ipa">/klæs/</span><span class="tooltip-es">clase</span></span>class</span>
+    <span class="word-token w-neutral" data-word="course"><span class="tooltip"><span class="tooltip-ipa">/kɔːrs/</span><span class="tooltip-es">curso / por supuesto</span></span>course</span>
+    <span class="word-token w-neutral" data-word="wind"><span class="tooltip"><span class="tooltip-ipa">/wɪnd/</span><span class="tooltip-es">viento</span></span>wind</span>
+    <span class="word-token w-verb" data-word="stay"><span class="tooltip"><span class="tooltip-ipa">/steɪ/</span><span class="tooltip-es">quedarse</span></span>stay</span>
+    <span class="word-token w-neutral" data-word="question"><span class="tooltip"><span class="tooltip-ipa">/ˈkwɛstʃən/</span><span class="tooltip-es">pregunta</span></span>question</span>
+    <span class="word-token w-neutral" data-word="wheel"><span class="tooltip"><span class="tooltip-ipa">/wiːl/</span><span class="tooltip-es">rueda</span></span>wheel</span>
+    <span class="word-token w-verb" data-word="happen"><span class="tooltip"><span class="tooltip-ipa">/ˈhæpən/</span><span class="tooltip-es">ocurrir / pasar</span></span>happen</span>
+    <span class="word-token w-adj" data-word="full"><span class="tooltip"><span class="tooltip-ipa">/fʊl/</span><span class="tooltip-es">lleno</span></span>full</span>
+    <span class="word-token w-adj" data-word="complete"><span class="tooltip"><span class="tooltip-ipa">/kəmˈpliːt/</span><span class="tooltip-es">completo</span></span>complete</span>
+    <span class="word-token w-neutral" data-word="force"><span class="tooltip"><span class="tooltip-ipa">/fɔːrs/</span><span class="tooltip-es">fuerza</span></span>force</span>
+    <span class="word-token w-neutral" data-word="ship"><span class="tooltip"><span class="tooltip-ipa">/ʃɪp/</span><span class="tooltip-es">barco</span></span>ship</span>
+    <span class="word-token w-adj" data-word="blue"><span class="tooltip"><span class="tooltip-ipa">/bluː/</span><span class="tooltip-es">azul</span></span>blue</span>
+    <span class="word-token w-neutral" data-word="area"><span class="tooltip"><span class="tooltip-ipa">/ˈɛriə/</span><span class="tooltip-es">área / zona</span></span>area</span>
+    <span class="word-token w-neutral" data-word="object"><span class="tooltip"><span class="tooltip-ipa">/ˈɒbdʒɪkt/</span><span class="tooltip-es">objeto</span></span>object</span>
+    <span class="word-token w-adj" data-word="half"><span class="tooltip"><span class="tooltip-ipa">/hæf/</span><span class="tooltip-es">mitad</span></span>half</span>
+    <span class="word-token w-verb" data-word="decide"><span class="tooltip"><span class="tooltip-ipa">/dɪˈsaɪd/</span><span class="tooltip-es">decidir</span></span>decide</span>
+    <span class="word-token w-neutral" data-word="rock"><span class="tooltip"><span class="tooltip-ipa">/rɒk/</span><span class="tooltip-es">roca</span></span>rock</span>
+    <span class="word-token w-neutral" data-word="surface"><span class="tooltip"><span class="tooltip-ipa">/ˈsɜːrfɪs/</span><span class="tooltip-es">superficie</span></span>surface</span>
+    <span class="word-token w-neutral" data-word="order"><span class="tooltip"><span class="tooltip-ipa">/ˈɔːrdər/</span><span class="tooltip-es">orden / pedir</span></span>order</span>
+    <span class="word-token w-adj" data-word="deep"><span class="tooltip"><span class="tooltip-ipa">/diːp/</span><span class="tooltip-es">profundo</span></span>deep</span>
+    <span class="word-token w-neutral" data-word="fire"><span class="tooltip"><span class="tooltip-ipa">/faɪər/</span><span class="tooltip-es">fuego</span></span>fire</span>
+    <span class="word-token w-neutral" data-word="moon"><span class="tooltip"><span class="tooltip-ipa">/muːn/</span><span class="tooltip-es">luna</span></span>moon</span>
+    <span class="word-token w-neutral" data-word="south"><span class="tooltip"><span class="tooltip-ipa">/saʊθ/</span><span class="tooltip-es">sur</span></span>south</span>
+    <span class="word-token w-neutral" data-word="island"><span class="tooltip"><span class="tooltip-ipa">/ˈaɪlənd/</span><span class="tooltip-es">isla</span></span>island</span>
+    <span class="word-token w-neutral" data-word="problem"><span class="tooltip"><span class="tooltip-ipa">/ˈprɒbləm/</span><span class="tooltip-es">problema</span></span>problem</span>
+    <span class="word-token w-neutral" data-word="foot"><span class="tooltip"><span class="tooltip-ipa">/fʊt/</span><span class="tooltip-es">pie</span></span>foot</span>
+    <span class="word-token w-neutral" data-word="piece"><span class="tooltip"><span class="tooltip-ipa">/piːs/</span><span class="tooltip-es">pieza</span></span>piece</span>
+    <span class="word-token w-neutral" data-word="yet"><span class="tooltip"><span class="tooltip-ipa">/jɛt/</span><span class="tooltip-es">todavía / aún</span></span>yet</span>
+    <span class="word-token w-verb" data-word="told"><span class="tooltip"><span class="tooltip-ipa">/toʊld/</span><span class="tooltip-es">dijo / le dije</span></span>told</span>
+    <span class="word-token w-adj" data-word="busy"><span class="tooltip"><span class="tooltip-ipa">/ˈbɪzi/</span><span class="tooltip-es">ocupado</span></span>busy</span>
+    <span class="word-token w-verb" data-word="knew"><span class="tooltip"><span class="tooltip-ipa">/njuː/</span><span class="tooltip-es">sabía / conocía</span></span>knew</span>
+    <span class="word-token w-verb" data-word="test"><span class="tooltip"><span class="tooltip-ipa">/tɛst/</span><span class="tooltip-es">probar / prueba</span></span>test</span>
+    <span class="word-token w-verb" data-word="pass"><span class="tooltip"><span class="tooltip-ipa">/pæs/</span><span class="tooltip-es">pasar / aprobar</span></span>pass</span>
+    <span class="word-token w-verb" data-word="record"><span class="tooltip"><span class="tooltip-ipa">/rɪˈkɔːrd/</span><span class="tooltip-es">grabar / registro</span></span>record</span>
+    <span class="word-token w-neutral" data-word="farm"><span class="tooltip"><span class="tooltip-ipa">/fɑːrm/</span><span class="tooltip-es">granja</span></span>farm</span>
+    <span class="word-token w-neutral" data-word="boat"><span class="tooltip"><span class="tooltip-ipa">/boʊt/</span><span class="tooltip-es">bote / barco</span></span>boat</span>
+    <span class="word-token w-neutral" data-word="top"><span class="tooltip"><span class="tooltip-ipa">/tɒp/</span><span class="tooltip-es">cima / tope</span></span>top</span>
+    <span class="word-token w-adj" data-word="common"><span class="tooltip"><span class="tooltip-ipa">/ˈkɒmən/</span><span class="tooltip-es">común</span></span>common</span>
+    <span class="word-token w-adj" data-word="whole"><span class="tooltip"><span class="tooltip-ipa">/hoʊl/</span><span class="tooltip-es">entero / todo</span></span>whole</span>
+    <span class="word-token w-adj" data-word="gold"><span class="tooltip"><span class="tooltip-ipa">/ɡoʊld/</span><span class="tooltip-es">dorado / oro</span></span>gold</span>
+    <span class="word-token w-neutral" data-word="king"><span class="tooltip"><span class="tooltip-ipa">/kɪŋ/</span><span class="tooltip-es">rey</span></span>king</span>
+    <span class="word-token w-adj" data-word="possible"><span class="tooltip"><span class="tooltip-ipa">/ˈpɒsɪbəl/</span><span class="tooltip-es">posible</span></span>possible</span>
+    <span class="word-token w-neutral" data-word="size"><span class="tooltip"><span class="tooltip-ipa">/saɪz/</span><span class="tooltip-es">tamaño</span></span>size</span>
+    <span class="word-token w-neutral" data-word="plane"><span class="tooltip"><span class="tooltip-ipa">/pleɪn/</span><span class="tooltip-es">avión / plano</span></span>plane</span>
+    <span class="word-token w-verb" data-word="heard"><span class="tooltip"><span class="tooltip-ipa">/hɜːrd/</span><span class="tooltip-es">oyó / escuché</span></span>heard</span>
+    <span class="word-token w-neutral" data-word="age"><span class="tooltip"><span class="tooltip-ipa">/eɪdʒ/</span><span class="tooltip-es">edad</span></span>age</span>
+    <span class="word-token w-adj" data-word="best"><span class="tooltip"><span class="tooltip-ipa">/bɛst/</span><span class="tooltip-es">mejor</span></span>best</span>
+    <span class="word-token w-adj" data-word="dry"><span class="tooltip"><span class="tooltip-ipa">/draɪ/</span><span class="tooltip-es">seco</span></span>dry</span>
+    <span class="word-token w-neutral" data-word="hour"><span class="tooltip"><span class="tooltip-ipa">/aʊər/</span><span class="tooltip-es">hora</span></span>hour</span>
+    <span class="word-token w-verb" data-word="wonder"><span class="tooltip"><span class="tooltip-ipa">/ˈwʌndər/</span><span class="tooltip-es">preguntarse / maravilla</span></span>wonder</span>
+    <span class="word-token w-adj" data-word="better"><span class="tooltip"><span class="tooltip-ipa">/ˈbɛtər/</span><span class="tooltip-es">mejor</span></span>better</span>
+    <span class="word-token w-verb" data-word="laugh"><span class="tooltip"><span class="tooltip-ipa">/læf/</span><span class="tooltip-es">reír</span></span>laugh</span>
+    <span class="word-token w-adj" data-word="true"><span class="tooltip"><span class="tooltip-ipa">/truː/</span><span class="tooltip-es">verdadero</span></span>true</span>
+    <span class="word-token w-neutral" data-word="thousand"><span class="tooltip"><span class="tooltip-ipa">/ˈθaʊzənd/</span><span class="tooltip-es">mil</span></span>thousand</span>
+    <span class="word-token w-neutral" data-word="during"><span class="tooltip"><span class="tooltip-ipa">/ˈdjʊərɪŋ/</span><span class="tooltip-es">durante</span></span>during</span>
+    <span class="word-token w-neutral" data-word="ago"><span class="tooltip"><span class="tooltip-ipa">/əˈɡoʊ/</span><span class="tooltip-es">hace (tiempo)</span></span>ago</span>
+    <span class="word-token w-neutral" data-word="hundred"><span class="tooltip"><span class="tooltip-ipa">/ˈhʌndrəd/</span><span class="tooltip-es">cien</span></span>hundred</span>
+    <span class="word-token w-verb" data-word="ran"><span class="tooltip"><span class="tooltip-ipa">/ræn/</span><span class="tooltip-es">corrió / corrí</span></span>ran</span>
+    <span class="word-token w-verb" data-word="am"><span class="tooltip"><span class="tooltip-ipa">/æm/</span><span class="tooltip-es">soy / estoy</span></span>am</span>
+    <span class="word-token w-verb" data-word="check"><span class="tooltip"><span class="tooltip-ipa">/tʃɛk/</span><span class="tooltip-es">revisar / verificar</span></span>check</span>
+    <span class="word-token w-verb" data-word="remember"><span class="tooltip"><span class="tooltip-ipa">/rɪˈmɛmbər/</span><span class="tooltip-es">recordar</span></span>remember</span>
+    <span class="word-token w-neutral" data-word="game"><span class="tooltip"><span class="tooltip-ipa">/ɡeɪm/</span><span class="tooltip-es">juego</span></span>game</span>
+    <span class="word-token w-neutral" data-word="step"><span class="tooltip"><span class="tooltip-ipa">/stɛp/</span><span class="tooltip-es">paso</span></span>step</span>
+    <span class="word-token w-neutral" data-word="shape"><span class="tooltip"><span class="tooltip-ipa">/ʃeɪp/</span><span class="tooltip-es">forma</span></span>shape</span>
+    <span class="word-token w-adj" data-word="early"><span class="tooltip"><span class="tooltip-ipa">/ˈɜːrli/</span><span class="tooltip-es">temprano</span></span>early</span>
+    <span class="word-token w-neutral" data-word="yes"><span class="tooltip"><span class="tooltip-ipa">/jɛs/</span><span class="tooltip-es">sí</span></span>yes</span>
+    <span class="word-token w-verb" data-word="hold"><span class="tooltip"><span class="tooltip-ipa">/hoʊld/</span><span class="tooltip-es">sostener</span></span>hold</span>
+    <span class="word-token w-adj" data-word="west"><span class="tooltip"><span class="tooltip-ipa">/wɛst/</span><span class="tooltip-es">oeste</span></span>west</span>
+    <span class="word-token w-verb" data-word="miss"><span class="tooltip"><span class="tooltip-ipa">/mɪs/</span><span class="tooltip-es">extrañar / perder</span></span>miss</span>
+    <span class="word-token w-neutral" data-word="ground"><span class="tooltip"><span class="tooltip-ipa">/ɡraʊnd/</span><span class="tooltip-es">suelo</span></span>ground</span>
+    <span class="word-token w-verb" data-word="brought"><span class="tooltip"><span class="tooltip-ipa">/brɔːt/</span><span class="tooltip-es">trajo / traje</span></span>brought</span>
+    <span class="word-token w-neutral" data-word="interest"><span class="tooltip"><span class="tooltip-ipa">/ˈɪntrəst/</span><span class="tooltip-es">interés</span></span>interest</span>
+    <span class="word-token w-neutral" data-word="heat"><span class="tooltip"><span class="tooltip-ipa">/hiːt/</span><span class="tooltip-es">calor</span></span>heat</span>
+    <span class="word-token w-verb" data-word="reach"><span class="tooltip"><span class="tooltip-ipa">/riːtʃ/</span><span class="tooltip-es">alcanzar / llegar</span></span>reach</span>
+    <span class="word-token w-neutral" data-word="snow"><span class="tooltip"><span class="tooltip-ipa">/snoʊ/</span><span class="tooltip-es">nieve</span></span>snow</span>
+    <span class="word-token w-adj" data-word="fast"><span class="tooltip"><span class="tooltip-ipa">/fæst/</span><span class="tooltip-es">rápido</span></span>fast</span>
+    <span class="word-token w-neutral" data-word="bed"><span class="tooltip"><span class="tooltip-ipa">/bɛd/</span><span class="tooltip-es">cama</span></span>bed</span>
+    <span class="word-token w-neutral" data-word="five"><span class="tooltip"><span class="tooltip-ipa">/faɪv/</span><span class="tooltip-es">cinco</span></span>five</span>
+    <span class="word-token w-verb" data-word="bring"><span class="tooltip"><span class="tooltip-ipa">/brɪŋ/</span><span class="tooltip-es">traer</span></span>bring</span>
+    <span class="word-token w-verb" data-word="listen"><span class="tooltip"><span class="tooltip-ipa">/ˈlɪsən/</span><span class="tooltip-es">escuchar</span></span>listen</span>
+    <span class="word-token w-neutral" data-word="perhaps"><span class="tooltip"><span class="tooltip-ipa">/pərˈhæps/</span><span class="tooltip-es">quizás / tal vez</span></span>perhaps</span>
+    <span class="word-token w-neutral" data-word="six"><span class="tooltip"><span class="tooltip-ipa">/sɪks/</span><span class="tooltip-es">seis</span></span>six</span>
+    <span class="word-token w-verb" data-word="fill"><span class="tooltip"><span class="tooltip-ipa">/fɪl/</span><span class="tooltip-es">llenar</span></span>fill</span>
+    <span class="word-token w-neutral" data-word="table"><span class="tooltip"><span class="tooltip-ipa">/ˈteɪbəl/</span><span class="tooltip-es">mesa / tabla</span></span>table</span>
+    <span class="word-token w-neutral" data-word="east"><span class="tooltip"><span class="tooltip-ipa">/iːst/</span><span class="tooltip-es">este (dirección)</span></span>east</span>
+    <span class="word-token w-verb" data-word="travel"><span class="tooltip"><span class="tooltip-ipa">/ˈtrævəl/</span><span class="tooltip-es">viajar</span></span>travel</span>
+    <span class="word-token w-neutral" data-word="weight"><span class="tooltip"><span class="tooltip-ipa">/weɪt/</span><span class="tooltip-es">peso</span></span>weight</span>
+    <span class="word-token w-adj" data-word="less"><span class="tooltip"><span class="tooltip-ipa">/lɛs/</span><span class="tooltip-es">menos</span></span>less</span>
+    <span class="word-token w-neutral" data-word="language"><span class="tooltip"><span class="tooltip-ipa">/ˈlæŋɡwɪdʒ/</span><span class="tooltip-es">idioma / lenguaje</span></span>language</span>
+    <span class="word-token w-neutral" data-word="morning"><span class="tooltip"><span class="tooltip-ipa">/ˈmɔːrnɪŋ/</span><span class="tooltip-es">mañana</span></span>morning</span>
+    <span class="word-token w-neutral" data-word="among"><span class="tooltip"><span class="tooltip-ipa">/əˈmʌŋ/</span><span class="tooltip-es">entre (varios)</span></span>among</span>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Words catalogued</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Color codes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">IPA</div>
+      <div class="stat-label">Pronunciation</div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 1: CHARACTERISTICS -->
+  <div class="section-heading"><h2>Category I — Characteristics</h2></div>
+  <div class="cat-block">
+    <div class="cat-header">
+      <h3>Characteristics</h3>
+      <span>words that describe a person, thing, or place</span>
+    </div>
+    <table class="vocab-table">
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Pronunciation</th>
+          <th>Definition</th>
+          <th>Español</th>
+          <th>Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-word" data-label="Word">tall <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/tɔːl/</td><td class="t-def" data-label="Def">having a large height</td><td class="t-es" data-label="ES">alto</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">short <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/ʃɔːrt/</td><td class="t-def" data-label="Def">not tall</td><td class="t-es" data-label="ES">bajo</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">big <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/bɪɡ/</td><td class="t-def" data-label="Def">large in size</td><td class="t-es" data-label="ES">grande</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">small <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/smɔːl/</td><td class="t-def" data-label="Def">little in size</td><td class="t-es" data-label="ES">pequeño</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">old <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/oʊld/</td><td class="t-def" data-label="Def">having many years</td><td class="t-es" data-label="ES">viejo</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">young <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/jʌŋ/</td><td class="t-def" data-label="Def">not old</td><td class="t-es" data-label="ES">joven</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">strong <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/strɔːŋ/</td><td class="t-def" data-label="Def">having much power</td><td class="t-es" data-label="ES">fuerte</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">weak <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/wiːk/</td><td class="t-def" data-label="Def">not strong</td><td class="t-es" data-label="ES">débil</td><td class="t-def" data-label="Level">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">clean <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/kliːn/</td><td class="t-def" data-label="Def">not dirty</td><td class="t-es" data-label="ES">limpio</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">dirty <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/ˈdɜːrti/</td><td class="t-def" data-label="Def">not clean</td><td class="t-es" data-label="ES">sucio</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">bright <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/braɪt/</td><td class="t-def" data-label="Def">giving a lot of light</td><td class="t-es" data-label="ES">brillante</td><td class="t-def" data-label="Level">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">dark <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/dɑːrk/</td><td class="t-def" data-label="Def">with little light</td><td class="t-es" data-label="ES">oscuro</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">hard <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/hɑːrd/</td><td class="t-def" data-label="Def">not soft</td><td class="t-es" data-label="ES">duro</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">soft <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/sɔːft/</td><td class="t-def" data-label="Def">easy to press or touch</td><td class="t-es" data-label="ES">suave</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">hot <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/hɑːt/</td><td class="t-def" data-label="Def">having a high temperature</td><td class="t-es" data-label="ES">caliente</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">cold <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/koʊld/</td><td class="t-def" data-label="Def">having a low temperature</td><td class="t-es" data-label="ES">frío</td><td class="t-def" data-label="Level">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">friendly <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/ˈfrendli/</td><td class="t-def" data-label="Def">kind and pleasant</td><td class="t-es" data-label="ES">amistoso</td><td class="t-def" data-label="Level">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">shy <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/ʃaɪ/</td><td class="t-def" data-label="Def">nervous around people</td><td class="t-es" data-label="ES">tímido</td><td class="t-def" data-label="Level">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">calm <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/kɑːm/</td><td class="t-def" data-label="Def">relaxed and peaceful</td><td class="t-es" data-label="ES">tranquilo</td><td class="t-def" data-label="Level">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">beautiful <span class="badge-adj">adj</span></td><td class="t-pron" data-label="Pron">/ˈbjuːtɪfəl/</td><td class="t-def" data-label="Def">very nice to look at</td><td class="t-es" data-label="ES">hermoso</td><td class="t-def" data-label="Level">beginner</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 2: QUALITIES -->
+  <div class="section-heading"><h2>Category II — Qualities</h2></div>
+  <div class="cat-block">
+    <div class="cat-header">
+      <h3>Qualities</h3>
+      <span>words that describe good or notable features</span>
+    </div>
+    <table class="vocab-table">
+      <thead>
+        <tr><th>Word</th><th>Pronunciation</th><th>Definition</th><th>Español</th><th>Level</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-word" data-label="Word">kind <span class="badge-adj">adj</span></td><td class="t-pron">/kaɪnd/</td><td class="t-def">caring and nice</td><td class="t-es">amable</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word" data-label="Word">honest <span class="badge-adj">adj</span></td><td class="t-pron">/ˈɑːnɪst/</td><td class="t-def">telling the truth</td><td class="t-es">honesto</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">brave <span class="badge-adj">adj</span></td><td class="t-pron">/breɪv/</td><td class="t-def">not afraid</td><td class="t-es">valiente</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">polite <span class="badge-adj">adj</span></td><td class="t-pron">/pəˈlaɪt/</td><td class="t-def">showing good manners</td><td class="t-es">educado</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">patient <span class="badge-adj">adj</span></td><td class="t-pron">/ˈpeɪʃənt/</td><td class="t-def">able to wait calmly</td><td class="t-es">paciente</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">generous <span class="badge-adj">adj</span></td><td class="t-pron">/ˈdʒenərəs/</td><td class="t-def">willing to give</td><td class="t-es">generoso</td><td class="t-def">simple</td></tr>
+        <tr><td class="t-word" data-label="Word">humble <span class="badge-adj">adj</span></td><td class="t-pron">/ˈhʌmbəl/</td><td class="t-def">not proud</td><td class="t-es">humilde</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">loyal <span class="badge-adj">adj</span></td><td class="t-pron">/ˈlɔɪəl/</td><td class="t-def">always faithful</td><td class="t-es">leal</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word" data-label="Word">creative <span class="badge-adj">adj</span></td><td class="t-pron">/kriˈeɪtɪv/</td><td class="t-def">able to make new ideas</td><td class="t-es">creativo</td><td class="t-def">simple</td></tr>
+        <tr><td class="t-word" data-label="Word">wise <span class="badge-adj">adj</span></td><td class="t-pron">/waɪz/</td><td class="t-def">having good judgment</td><td class="t-es">sabio</td><td class="t-def">simple</td></tr>
+        <tr><td class="t-word" data-label="Word">grateful <span class="badge-adj">adj</span></td><td class="t-pron">/ˈɡreɪtfəl/</td><td class="t-def">feeling thankfulness</td><td class="t-es">agradecido</td><td class="t-def">simple</td></tr>
+        <tr><td class="t-word" data-label="Word">optimistic <span class="badge-adj">adj</span></td><td class="t-pron">/ˌɑːptɪˈmɪstɪk/</td><td class="t-def">expecting good things</td><td class="t-es">optimista</td><td class="t-def">simple</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 3: ABILITIES -->
+  <div class="section-heading"><h2>Category III — Abilities</h2></div>
+  <div class="cat-block">
+    <div class="cat-header">
+      <h3>Abilities</h3>
+      <span>words about what someone can do</span>
+    </div>
+    <div class="ability-grid">
+      <div class="ability-card"><div class="ability-word">speak <span class="badge-verb">verb</span></div><div class="ability-pron">/spiːk/</div><div class="ability-def">to say words aloud</div><div class="ability-es">hablar</div></div>
+      <div class="ability-card"><div class="ability-word">read <span class="badge-verb">verb</span></div><div class="ability-pron">/riːd/</div><div class="ability-def">to look at and understand text</div><div class="ability-es">leer</div></div>
+      <div class="ability-card"><div class="ability-word">write <span class="badge-verb">verb</span></div><div class="ability-pron">/raɪt/</div><div class="ability-def">to put words on paper or screen</div><div class="ability-es">escribir</div></div>
+      <div class="ability-card"><div class="ability-word">listen <span class="badge-verb">verb</span></div><div class="ability-pron">/ˈlɪsən/</div><div class="ability-def">to pay attention to sound</div><div class="ability-es">escuchar</div></div>
+      <div class="ability-card"><div class="ability-word">understand <span class="badge-verb">verb</span></div><div class="ability-pron">/ˌʌndərˈstænd/</div><div class="ability-def">to get the meaning of something</div><div class="ability-es">entender</div></div>
+      <div class="ability-card"><div class="ability-word">think <span class="badge-verb">verb</span></div><div class="ability-pron">/θɪŋk/</div><div class="ability-def">to use the mind</div><div class="ability-es">pensar</div></div>
+      <div class="ability-card"><div class="ability-word">learn <span class="badge-verb">verb</span></div><div class="ability-pron">/lɜːrn/</div><div class="ability-def">to gain knowledge or skill</div><div class="ability-es">aprender</div></div>
+      <div class="ability-card"><div class="ability-word">remember <span class="badge-verb">verb</span></div><div class="ability-pron">/rɪˈmembər/</div><div class="ability-def">to keep in memory</div><div class="ability-es">recordar</div></div>
+      <div class="ability-card"><div class="ability-word">decide <span class="badge-verb">verb</span></div><div class="ability-pron">/dɪˈsaɪd/</div><div class="ability-def">to make a choice</div><div class="ability-es">decidir</div></div>
+      <div class="ability-card"><div class="ability-word">create <span class="badge-verb">verb</span></div><div class="ability-pron">/kriˈeɪt/</div><div class="ability-def">to make something new</div><div class="ability-es">crear</div></div>
+      <div class="ability-card"><div class="ability-word">solve <span class="badge-verb">verb</span></div><div class="ability-pron">/sɑːlv/</div><div class="ability-def">to find an answer to a problem</div><div class="ability-es">resolver</div></div>
+      <div class="ability-card"><div class="ability-word">lead <span class="badge-verb">verb</span></div><div class="ability-pron">/liːd/</div><div class="ability-def">to guide others forward</div><div class="ability-es">liderar</div></div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 4: ADJECTIVES -->
+  <div class="section-heading"><h2>Category IV — Core Adjectives</h2></div>
+  <div class="cat-block">
+    <div class="cat-header">
+      <h3>Adjectives</h3>
+      <span>descriptive words for nouns — the most essential set</span>
+    </div>
+    <table class="vocab-table">
+      <thead>
+        <tr><th>Word</th><th>Pronunciation</th><th>Definition</th><th>Español</th><th>Level</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-word">good <span class="badge-adj">adj</span></td><td class="t-pron">/ɡʊd/</td><td class="t-def">nice, useful, or right</td><td class="t-es">bueno</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">bad <span class="badge-adj">adj</span></td><td class="t-pron">/bæd/</td><td class="t-def">not good</td><td class="t-es">malo</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">new <span class="badge-adj">adj</span></td><td class="t-pron">/nuː/</td><td class="t-def">recently made or not old</td><td class="t-es">nuevo</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">easy <span class="badge-adj">adj</span></td><td class="t-pron">/ˈiːzi/</td><td class="t-def">not difficult</td><td class="t-es">fácil</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">difficult <span class="badge-adj">adj</span></td><td class="t-pron">/ˈdɪfɪkəlt/</td><td class="t-def">not easy</td><td class="t-es">difícil</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word">important <span class="badge-adj">adj</span></td><td class="t-pron">/ɪmˈpɔːrtənt/</td><td class="t-def">having a lot of value or need</td><td class="t-es">importante</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word">loud <span class="badge-adj">adj</span></td><td class="t-pron">/laʊd/</td><td class="t-def">making a lot of sound</td><td class="t-es">ruidoso</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word">quiet <span class="badge-adj">adj</span></td><td class="t-pron">/ˈkwaɪət/</td><td class="t-def">making little sound</td><td class="t-es">silencioso</td><td class="t-def">easy</td></tr>
+        <tr><td class="t-word">pretty <span class="badge-adj">adj</span></td><td class="t-pron">/ˈprɪti/</td><td class="t-def">attractive or nice to look at</td><td class="t-es">bonito</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">happy <span class="badge-adj">adj</span></td><td class="t-pron">/ˈhæpi/</td><td class="t-def">feeling good or pleased</td><td class="t-es">feliz</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">sad <span class="badge-adj">adj</span></td><td class="t-pron">/sæd/</td><td class="t-def">feeling unhappy</td><td class="t-def">triste</td><td class="t-def">beginner</td></tr>
+        <tr><td class="t-word">warm <span class="badge-adj">adj</span></td><td class="t-pron">/wɔːrm/</td><td class="t-def">a little hot</td><td class="t-es">tibio</td><td class="t-def">beginner</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 5: LIMITATIONS -->
+  <div class="section-heading"><h2>Category V — Limitations</h2></div>
+  <div class="cat-block">
+    <div class="cat-header">
+      <h3>Limitations</h3>
+      <span>words about what something or someone cannot do</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1.5fr; background: var(--bg-card); border-bottom: 0.5px solid var(--border);">
+      <div style="padding: 0.65rem 1.2rem; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim);">Word</div>
+      <div style="padding: 0.65rem 1.2rem; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim);">Español</div>
+      <div style="padding: 0.65rem 1.2rem; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim);">Meaning</div>
+      <div style="padding: 0.65rem 1.2rem; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim);">Closing Argument</div>
+    </div>
+    <div class="limit-row"><div class="limit-cell t-word">blind</div><div class="limit-cell t-es">ciego</div><div class="limit-cell t-def">cannot see</div><div class="limit-cell"><span class="cannot-badge">It cannot see.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">deaf</div><div class="limit-cell t-es">sordo</div><div class="limit-cell t-def">cannot hear</div><div class="limit-cell"><span class="cannot-badge">It cannot hear.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">mute</div><div class="limit-cell t-es">mudo</div><div class="limit-cell t-def">cannot speak</div><div class="limit-cell"><span class="cannot-badge">It cannot speak.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">frozen</div><div class="limit-cell t-es">congelado</div><div class="limit-cell t-def">cannot move</div><div class="limit-cell"><span class="cannot-badge">It cannot move.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">broken</div><div class="limit-cell t-es">roto</div><div class="limit-cell t-def">not working</div><div class="limit-cell"><span class="cannot-badge">It cannot work.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">empty</div><div class="limit-cell t-es">vacío</div><div class="limit-cell t-def">nothing inside</div><div class="limit-cell"><span class="cannot-badge">It cannot give what it lacks.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">weak</div><div class="limit-cell t-es">débil</div><div class="limit-cell t-def">not strong</div><div class="limit-cell"><span class="cannot-badge">It cannot carry much.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">lost</div><div class="limit-cell t-es">perdido</div><div class="limit-cell t-def">without direction</div><div class="limit-cell"><span class="cannot-badge">It cannot find its way.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">silent</div><div class="limit-cell t-es">silencioso</div><div class="limit-cell t-def">making no sound</div><div class="limit-cell"><span class="cannot-badge">It cannot make a sound.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">still</div><div class="limit-cell t-es">inmóvil</div><div class="limit-cell t-def">not moving</div><div class="limit-cell"><span class="cannot-badge">It cannot run.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">closed</div><div class="limit-cell t-es">cerrado</div><div class="limit-cell t-def">not open</div><div class="limit-cell"><span class="cannot-badge">It cannot let you in.</span></div></div>
+    <div class="limit-row"><div class="limit-cell t-word">stuck</div><div class="limit-cell t-es">atascado</div><div class="limit-cell t-def">cannot move forward</div><div class="limit-cell"><span class="cannot-badge">It cannot advance.</span></div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">profgermandario</div>
+    <div class="footer-tag">Linguistic Transformation · English as a Strategic Asset</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phrasal Verbs Mastery – Prof. Germandario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --gold-dim: #8a6e2f;
+      --violet: #6B3FA0;
+      --violet-light: #9B6FD0;
+      --violet-dim: #3d2460;
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #1a1a28;
+      --surface: #16161f;
+      --surface2: #1e1e2e;
+      --text: #f0eadb;
+      --text-dim: #8a8070;
+      --red: #e05a5a;
+      --green: #5abf8a;
+      --blue: #5a9be0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const phrasalVerbsData = [
+
+  // ── GET ──
+  { verb: "get", particle: "up", full: "get up", meaning: "to rise from bed or a chair", example: "I get up at 6 every morning.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "along", full: "get along", meaning: "to have a good relationship with someone", example: "Do you get along with your boss?", category: "get", type: "phrasal" },
+  { verb: "get", particle: "over", full: "get over", meaning: "to recover from something difficult", example: "She got over her fear of flying.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "through", full: "get through", meaning: "to survive or manage to finish something hard", example: "We'll get through this challenge together.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "rid of", full: "get rid of", meaning: "to remove or eliminate something", example: "I need to get rid of old habits.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "used to", full: "get used to", meaning: "to become accustomed to something new", example: "You'll get used to speaking English.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "out of", full: "get out of", meaning: "to avoid doing something / to exit", example: "He always gets out of hard tasks.", category: "get", type: "phrasal" },
+  { verb: "get", particle: "to", full: "get [someone] to", meaning: "to persuade or cause someone to do something", example: "I got him to apologize.", category: "get", type: "causative",
+    rule: "GET + person + TO + verb (infinitive): 'I got her to call.' ✅  |  'I got her call.' ❌" },
+
+  // ── LIKE ──
+  { verb: "like", particle: "to", full: "like to", meaning: "to enjoy doing something habitually", example: "She likes to read before bed.", category: "like", type: "pattern" },
+  { verb: "like", particle: "doing", full: "like + -ing", meaning: "to enjoy an activity in general", example: "He likes swimming in the morning.", category: "like", type: "pattern" },
+  { verb: "like", particle: "would like to", full: "would like to", meaning: "a polite way to express a wish or desire", example: "I would like to improve my accent.", category: "like", type: "pattern",
+    rule: "WOULD LIKE + TO + verb: 'I'd like to go.' ✅  |  'I'd like going.' ❌ (different meaning)" },
+
+  // ── HAVE ──
+  { verb: "have", particle: "do (causative)", full: "have [someone] do", meaning: "to cause or arrange for someone to do something", example: "I had her do the report.", category: "have", type: "causative",
+    rule: "HAVE + person + bare infinitive (no TO): 'I had him fix it.' ✅  |  'I had him to fix it.' ❌" },
+  { verb: "have", particle: "done (passive causative)", full: "have [something] done", meaning: "to arrange for a service to be done to you", example: "I had my hair cut yesterday.", category: "have", type: "causative",
+    rule: "HAVE + thing + past participle: 'I had the car repaired.' ✅  |  'I had the car repair.' ❌" },
+  { verb: "have", particle: "to", full: "have to", meaning: "obligation or necessity (like 'must')", example: "You have to practice every day.", category: "have", type: "modal",
+    rule: "HAVE TO + bare infinitive: 'I have to go.' ✅  |  'I have to going.' ❌" },
+  { verb: "have", particle: "a hard time", full: "have a hard time + -ing", meaning: "to find something difficult", example: "I have a hard time remembering names.", category: "have", type: "expression" },
+
+  // ── CAN ──
+  { verb: "can", particle: "—", full: "can + bare verb", meaning: "ability, possibility, or permission", example: "She can speak three languages.", category: "can", type: "modal",
+    rule: "CAN + bare infinitive (NO 'to'): 'I can do it.' ✅  |  'I can to do it.' ❌ NEVER use 'to' after CAN." },
+  { verb: "can't", particle: "—", full: "can't + bare verb", meaning: "impossibility or prohibition", example: "You can't skip practice if you want results.", category: "can", type: "modal",
+    rule: "CAN'T + bare infinitive: 'He can't come.' ✅  |  'He can't to come.' ❌" },
+  { verb: "could", particle: "—", full: "could + bare verb", meaning: "past ability or polite possibility", example: "Could you repeat that, please?", category: "can", type: "modal",
+    rule: "COULD + bare infinitive: 'Could you help?' ✅  |  'Could you to help?' ❌" },
+
+  // ── TAKE ──
+  { verb: "take", particle: "off", full: "take off", meaning: "to remove clothing / a plane leaves the ground", example: "The plane takes off at noon.", category: "take", type: "phrasal" },
+  { verb: "take", particle: "on", full: "take on", meaning: "to accept responsibility or a challenge", example: "Don't take on too much at once.", category: "take", type: "phrasal" },
+  { verb: "take", particle: "over", full: "take over", meaning: "to assume control of something", example: "She took over the company at 30.", category: "take", type: "phrasal" },
+  { verb: "take", particle: "care of", full: "take care of", meaning: "to look after someone or something", example: "He takes care of his pronunciation daily.", category: "take", type: "phrasal" },
+  { verb: "take", particle: "advantage of", full: "take advantage of", meaning: "to use an opportunity or exploit a situation", example: "Take advantage of every conversation.", category: "take", type: "phrasal" },
+  { verb: "take", particle: "place", full: "take place", meaning: "to happen or occur", example: "The presentation takes place next Monday.", category: "take", type: "expression" },
+
+  // ── GIVE ──
+  { verb: "give", particle: "up", full: "give up", meaning: "to stop trying / to quit", example: "Never give up on your English journey.", category: "give", type: "phrasal" },
+  { verb: "give", particle: "away", full: "give away", meaning: "to give something for free / to reveal a secret", example: "She gave away her old notes.", category: "give", type: "phrasal" },
+  { verb: "give", particle: "back", full: "give back", meaning: "to return something to someone", example: "Please give back the book you borrowed.", category: "give", type: "phrasal" },
+  { verb: "give", particle: "in", full: "give in", meaning: "to surrender or stop resisting", example: "Don't give in to fear of making mistakes.", category: "give", type: "phrasal" },
+  { verb: "give", particle: "it a shot", full: "give it a shot", meaning: "to try something even if uncertain", example: "Just give it a shot — speak up!", category: "give", type: "expression" },
+
+  // ── KEEP ──
+  { verb: "keep", particle: "-ing", full: "keep + -ing", meaning: "to continue doing something", example: "Keep practicing and you'll improve.", category: "keep", type: "pattern",
+    rule: "KEEP + verb-ing: 'Keep going.' ✅  |  'Keep to go.' ❌  |  'Keep go.' ❌" },
+  { verb: "keep", particle: "up with", full: "keep up with", meaning: "to stay at the same level or pace as others", example: "It's hard to keep up with native speakers at first.", category: "keep", type: "phrasal" },
+  { verb: "keep", particle: "in touch", full: "keep in touch", meaning: "to maintain regular communication", example: "Let's keep in touch after the course.", category: "keep", type: "expression" },
+  { verb: "keep", particle: "track of", full: "keep track of", meaning: "to monitor or record something over time", example: "Keep track of new words you learn.", category: "keep", type: "expression" },
+  { verb: "keep", particle: "it up", full: "keep it up", meaning: "to continue good work or effort", example: "Your accent is improving — keep it up!", category: "keep", type: "expression" },
+];
+
+const CATEGORIES = [
+  { id: "all", label: "All Verbs", color: "#C9A84C" },
+  { id: "get", label: "GET", color: "#5a9be0" },
+  { id: "like", label: "LIKE", color: "#e05a8a" },
+  { id: "have", label: "HAVE", color: "#9B6FD0" },
+  { id: "can", label: "CAN", color: "#5abf8a" },
+  { id: "take", label: "TAKE", color: "#e09a5a" },
+  { id: "give", label: "GIVE", color: "#e05a5a" },
+  { id: "keep", label: "KEEP", color: "#5abfbf" },
+];
+
+const CATEGORY_COLORS = Object.fromEntries(CATEGORIES.map(c => [c.id, c.color]));
+
+const MODES = [
+  { id: "explore", label: "📖 Explore", desc: "Browse all phrasal verbs with rules" },
+  { id: "flashcard", label: "🃏 Flashcards", desc: "Flip cards to test yourself" },
+  { id: "quiz", label: "🎯 Quiz", desc: "Multiple choice challenge" },
+  { id: "rulesquiz", label: "⚖️ Rules Quiz", desc: "Grammar pattern tests" },
+  { id: "builder", label: "🔨 Sentence Builder", desc: "Construct correct sentences" },
+];
+
+// ─── UTILS ──────────────────────────────────────────────────────────────────
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+function pick(arr, n) { return shuffle(arr).slice(0, n); }
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+// ─── COMPONENTS ─────────────────────────────────────────────────────────────
+
+const styles = {
+  app: {
+    minHeight: "100vh",
+    padding: "0 0 60px",
+    fontFamily: "'Cormorant Garamond', Georgia, serif",
+  },
+  header: {
+    textAlign: "center",
+    padding: "48px 24px 32px",
+    borderBottom: "1px solid rgba(201,168,76,0.15)",
+    background: "linear-gradient(180deg, rgba(107,63,160,0.12) 0%, transparent 100%)",
+    position: "relative",
+    overflow: "hidden",
+  },
+  title: {
+    fontFamily: "'Cinzel', Georgia, serif",
+    fontSize: "clamp(22px, 5vw, 48px)",
+    fontWeight: 900,
+    background: "linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #9B6FD0 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    letterSpacing: "0.04em",
+    lineHeight: 1.1,
+    marginBottom: 8,
+  },
+  subtitle: {
+    color: "#8a8070",
+    fontStyle: "italic",
+    fontSize: "clamp(14px, 2vw, 18px)",
+    letterSpacing: "0.12em",
+  },
+  byline: {
+    marginTop: 12,
+    fontSize: 13,
+    color: "#C9A84C",
+    fontFamily: "'Cinzel', serif",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase",
+  },
+  scoreBar: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 16,
+    padding: "6px 20px",
+    background: "rgba(201,168,76,0.1)",
+    border: "1px solid rgba(201,168,76,0.3)",
+    borderRadius: 40,
+    fontSize: 15,
+    color: "#C9A84C",
+    fontFamily: "'Cinzel', serif",
+    letterSpacing: "0.1em",
+  },
+  modeBar: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 8,
+    padding: "20px 16px 0",
+    maxWidth: 900,
+    margin: "0 auto",
+  },
+  modeBtn: (active) => ({
+    padding: "10px 18px",
+    borderRadius: 8,
+    border: active ? "1.5px solid #C9A84C" : "1.5px solid rgba(201,168,76,0.2)",
+    background: active ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.03)",
+    color: active ? "#E8C96A" : "#8a8070",
+    cursor: "pointer",
+    fontFamily: "'Cinzel', serif",
+    fontSize: 13,
+    letterSpacing: "0.08em",
+    transition: "all 0.2s",
+    fontWeight: active ? 700 : 400,
+  }),
+  catBar: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 6,
+    padding: "16px 16px 0",
+    maxWidth: 900,
+    margin: "0 auto",
+  },
+  catBtn: (active, color) => ({
+    padding: "6px 14px",
+    borderRadius: 20,
+    border: active ? `1.5px solid ${color}` : "1.5px solid rgba(255,255,255,0.08)",
+    background: active ? `${color}22` : "rgba(255,255,255,0.03)",
+    color: active ? color : "#8a8070",
+    cursor: "pointer",
+    fontSize: 13,
+    fontFamily: "'Cinzel', serif",
+    letterSpacing: "0.1em",
+    fontWeight: active ? 700 : 400,
+    transition: "all 0.2s",
+  }),
+  content: {
+    maxWidth: 960,
+    margin: "24px auto 0",
+    padding: "0 16px",
+  },
+  card: {
+    background: "linear-gradient(145deg, #16161f, #1a1a28)",
+    border: "1px solid rgba(201,168,76,0.12)",
+    borderRadius: 14,
+    padding: "20px 24px",
+    marginBottom: 12,
+    position: "relative",
+    transition: "border-color 0.2s, box-shadow 0.2s",
+  },
+  verbBadge: (color) => ({
+    display: "inline-block",
+    padding: "3px 12px",
+    borderRadius: 20,
+    background: `${color}22`,
+    border: `1px solid ${color}44`,
+    color: color,
+    fontSize: 11,
+    fontFamily: "'Cinzel', serif",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase",
+    marginBottom: 10,
+  }),
+  fullVerb: {
+    fontFamily: "'Cinzel', serif",
+    fontSize: "clamp(18px, 3vw, 26px)",
+    fontWeight: 700,
+    color: "#E8C96A",
+    marginBottom: 6,
+  },
+  meaning: {
+    fontSize: 16,
+    color: "#c8bfad",
+    marginBottom: 8,
+    fontStyle: "italic",
+  },
+  example: {
+    fontSize: 15,
+    color: "#f0eadb",
+    borderLeft: "2px solid rgba(201,168,76,0.4)",
+    paddingLeft: 12,
+    marginBottom: 8,
+  },
+  ruleBox: {
+    marginTop: 10,
+    padding: "10px 14px",
+    background: "rgba(107,63,160,0.15)",
+    border: "1px solid rgba(155,111,208,0.3)",
+    borderRadius: 8,
+    fontSize: 14,
+    color: "#c0a8e8",
+    lineHeight: 1.6,
+  },
+  ruleLabel: {
+    fontFamily: "'Cinzel', serif",
+    fontSize: 11,
+    color: "#9B6FD0",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase",
+    marginBottom: 4,
+  },
+};
+
+// ─── EXPLORE MODE ────────────────────────────────────────────────────────────
+
+function ExploreMode({ data }) {
+  return (
+    <div style={styles.content}>
+      {data.map((v, i) => {
+        const color = CATEGORY_COLORS[v.category] || "#C9A84C";
+        return (
+          <div key={i} style={{ ...styles.card, borderColor: `${color}22` }}>
+            <div style={styles.verbBadge(color)}>{v.category}</div>
+            <div style={styles.fullVerb}>{v.full}</div>
+            <div style={styles.meaning}>↳ {v.meaning}</div>
+            <div style={styles.example}>"{v.example}"</div>
+            {v.rule && (
+              <div style={styles.ruleBox}>
+                <div style={styles.ruleLabel}>⚖️ Grammar Rule</div>
+                {v.rule}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── FLASHCARD MODE ──────────────────────────────────────────────────────────
+
+function FlashcardMode({ data }) {
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const cards = data;
+  const card = cards[idx % cards.length];
+  const color = CATEGORY_COLORS[card.category] || "#C9A84C";
+
+  function next() { setFlipped(false); setTimeout(() => setIdx((idx + 1) % cards.length), 150); }
+  function prev() { setFlipped(false); setTimeout(() => setIdx((idx - 1 + cards.length) % cards.length), 150); }
+
+  return (
+    <div style={{ ...styles.content, textAlign: "center" }}>
+      <div style={{ fontSize: 13, color: "#8a8070", fontFamily: "'Cinzel', serif", letterSpacing: "0.1em", marginBottom: 20 }}>
+        CARD {(idx % cards.length) + 1} OF {cards.length}
+      </div>
+
+      {/* Card */}
+      <div
+        onClick={() => setFlipped(!flipped)}
+        style={{
+          cursor: "pointer",
+          background: flipped
+            ? `linear-gradient(145deg, ${color}18, ${color}08)`
+            : "linear-gradient(145deg, #16161f, #1a1a28)",
+          border: `1.5px solid ${flipped ? color + "55" : color + "22"}`,
+          borderRadius: 18,
+          padding: "40px 32px",
+          minHeight: 280,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "all 0.35s",
+          boxShadow: flipped ? `0 0 40px ${color}18` : "none",
+          maxWidth: 560,
+          margin: "0 auto 24px",
+        }}
+      >
+        {!flipped ? (
+          <>
+            <div style={styles.verbBadge(color)}>{card.category}</div>
+            <div style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 900, color: "#E8C96A", marginBottom: 8 }}>
+              {card.full}
+            </div>
+            <div style={{ fontSize: 13, color: "#8a8070", fontFamily: "'Cinzel', serif", letterSpacing: "0.15em" }}>TAP TO REVEAL</div>
+          </>
+        ) : (
+          <>
+            <div style={styles.verbBadge(color)}>{card.type}</div>
+            <div style={{ fontStyle: "italic", fontSize: "clamp(16px, 2.5vw, 22px)", color: "#c8bfad", marginBottom: 16, lineHeight: 1.5 }}>
+              {card.meaning}
+            </div>
+            <div style={{ ...styles.example, textAlign: "left", fontSize: "clamp(15px, 2vw, 18px)" }}>"{card.example}"</div>
+            {card.rule && (
+              <div style={{ ...styles.ruleBox, textAlign: "left", marginTop: 16, fontSize: 13 }}>
+                <div style={styles.ruleLabel}>⚖️ Rule</div>
+                {card.rule}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+        <button onClick={prev} style={btn("#8a8070")}>← Prev</button>
+        <button onClick={() => setFlipped(!flipped)} style={btn(color)}>{flipped ? "Hide" : "Reveal"}</button>
+        <button onClick={next} style={btn("#8a8070")}>Next →</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── QUIZ MODE ───────────────────────────────────────────────────────────────
+
+function QuizMode({ data, onScore }) {
+  const [q, setQ] = useState(null);
+  const [chosen, setChosen] = useState(null);
+  const [showResult, setShowResult] = useState(false);
+
+  function buildQuestion() {
+    const correct = rand(data);
+    const distractors = pick(data.filter(v => v.full !== correct.full), 3).map(v => v.meaning);
+    const options = shuffle([correct.meaning, ...distractors]);
+    setQ({ correct, options });
+    setChosen(null);
+    setShowResult(false);
+  }
+
+  useEffect(() => { buildQuestion(); }, [data]);
+
+  function answer(opt) {
+    if (showResult) return;
+    setChosen(opt);
+    setShowResult(true);
+    if (opt === q.correct.meaning) onScore(10);
+  }
+
+  if (!q) return null;
+  const color = CATEGORY_COLORS[q.correct.category] || "#C9A84C";
+
+  return (
+    <div style={{ ...styles.content, maxWidth: 680 }}>
+      <div style={{ ...styles.card, borderColor: `${color}44`, marginBottom: 20 }}>
+        <div style={styles.verbBadge(color)}>{q.correct.category}</div>
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(22px, 4vw, 38px)", fontWeight: 900, color: "#E8C96A", marginBottom: 4 }}>
+          {q.correct.full}
+        </div>
+        <div style={{ color: "#8a8070", fontSize: 14, fontStyle: "italic" }}>What does this expression mean?</div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+        {q.options.map((opt, i) => {
+          let bg = "rgba(255,255,255,0.03)";
+          let border = "rgba(255,255,255,0.08)";
+          let col = "#c8bfad";
+          if (showResult) {
+            if (opt === q.correct.meaning) { bg = "rgba(90,191,138,0.15)"; border = "#5abf8a"; col = "#5abf8a"; }
+            else if (opt === chosen) { bg = "rgba(224,90,90,0.15)"; border = "#e05a5a"; col = "#e05a5a"; }
+          }
+          if (!showResult && chosen === null) { col = "#f0eadb"; }
+          return (
+            <button key={i} onClick={() => answer(opt)} style={{
+              padding: "14px 18px",
+              background: bg,
+              border: `1.5px solid ${border}`,
+              borderRadius: 10,
+              color: col,
+              fontSize: "clamp(14px, 2vw, 17px)",
+              textAlign: "left",
+              cursor: showResult ? "default" : "pointer",
+              transition: "all 0.2s",
+              fontFamily: "'Cormorant Garamond', serif",
+              lineHeight: 1.4,
+            }}>
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+
+      {showResult && (
+        <div style={{ textAlign: "center" }}>
+          <div style={{
+            marginBottom: 12,
+            fontSize: 18,
+            color: chosen === q.correct.meaning ? "#5abf8a" : "#e05a5a",
+            fontFamily: "'Cinzel', serif",
+          }}>
+            {chosen === q.correct.meaning ? "✅ Correct!" : "❌ Not quite."}
+          </div>
+          {q.correct.rule && (
+            <div style={{ ...styles.ruleBox, textAlign: "left", marginBottom: 16, fontSize: 14 }}>
+              <div style={styles.ruleLabel}>⚖️ Grammar Rule</div>
+              {q.correct.rule}
+            </div>
+          )}
+          <button onClick={buildQuestion} style={btn(color)}>Next Question →</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── RULES QUIZ MODE ─────────────────────────────────────────────────────────
+
+const rulesQuestions = [
+  {
+    q: "Which sentence is CORRECT?",
+    options: ["I can to speak English.", "I can speak English.", "I can speaking English.", "I can spoke English."],
+    correct: 1,
+    explain: "CAN is a modal verb. It is ALWAYS followed by a bare infinitive — never 'to'. ✅ I can speak. ❌ I can to speak.",
+  },
+  {
+    q: "Fill in the blank: 'She ___ him do the presentation.' (causative HAVE)",
+    options: ["had him to do", "had him do", "had him doing", "have him to do"],
+    correct: 1,
+    explain: "HAVE (causative) + person + bare infinitive (no 'to'): 'She had him do it.' ✅  'had him to do' ❌",
+  },
+  {
+    q: "Which is the correct causative with GET?",
+    options: ["I got him do it.", "I got him to do it.", "I got him doing it.", "I got him done it."],
+    correct: 1,
+    explain: "GET (causative) + person + TO + verb: 'I got him to do it.' ✅  Unlike HAVE, GET needs 'to'.",
+  },
+  {
+    q: "Choose the correct sentence about a service you arranged:",
+    options: ["I had cut my hair.", "I had my hair cutting.", "I had my hair cut.", "I had my hair to cut."],
+    correct: 2,
+    explain: "HAVE something DONE: 'I had my hair cut.' ✅  The thing (hair) + past participle (cut).",
+  },
+  {
+    q: "Which is WRONG?",
+    options: ["Keep going.", "Keep it up.", "Keep try.", "Keep working."],
+    correct: 2,
+    explain: "KEEP must be followed by a gerund (-ing), never the base form: 'Keep trying.' ✅  'Keep try.' ❌",
+  },
+  {
+    q: "'Could you ___ that again?' — Choose the correct form.",
+    options: ["to repeat", "repeating", "repeat", "repeated"],
+    correct: 2,
+    explain: "Modal verbs (can, could, will, would, should) always take the bare infinitive. 'Could you repeat?' ✅",
+  },
+  {
+    q: "Which sentence uses LIKE correctly for a polite wish?",
+    options: ["I'd like going.", "I'd like to go.", "I'd like go.", "I like to going."],
+    correct: 1,
+    explain: "WOULD LIKE + TO + infinitive: 'I'd like to go.' ✅  'I'd like going' changes the meaning.",
+  },
+  {
+    q: "How do you say you need to do something (obligation) with HAVE TO?",
+    options: ["I have to going.", "I have go.", "I have to go.", "I have going to."],
+    correct: 2,
+    explain: "HAVE TO + bare infinitive: 'I have to go.' ✅  No -ing, no to-go split.",
+  },
+  {
+    q: "She is continuing her studies. Express this with KEEP:",
+    options: ["She keeps to study.", "She keeps study.", "She keeps studied.", "She keeps studying."],
+    correct: 3,
+    explain: "KEEP + verb-ing: 'She keeps studying.' ✅  Always the gerund form.",
+  },
+  {
+    q: "He ___ her call yesterday. (HAVE causative, past)",
+    options: ["had her to call", "had her call", "had her calling", "got her call"],
+    correct: 1,
+    explain: "HAVE + person + bare infinitive: 'He had her call.' ✅  No 'to' needed.",
+  },
+];
+
+function RulesQuizMode({ onScore }) {
+  const [qs] = useState(() => shuffle(rulesQuestions));
+  const [idx, setIdx] = useState(0);
+  const [chosen, setChosen] = useState(null);
+  const [showResult, setShowResult] = useState(false);
+
+  const q = qs[idx % qs.length];
+
+  function answer(i) {
+    if (showResult) return;
+    setChosen(i);
+    setShowResult(true);
+    if (i === q.correct) onScore(15);
+  }
+
+  function next() {
+    setChosen(null);
+    setShowResult(false);
+    setIdx(idx + 1);
+  }
+
+  return (
+    <div style={{ ...styles.content, maxWidth: 700 }}>
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: "#8a8070", letterSpacing: "0.2em" }}>
+          GRAMMAR PATTERN {(idx % qs.length) + 1} OF {qs.length}
+        </div>
+      </div>
+
+      <div style={{ ...styles.card, marginBottom: 16 }}>
+        <div style={styles.verbBadge("#9B6FD0")}>GRAMMAR RULE</div>
+        <div style={{ fontSize: "clamp(16px, 2.5vw, 22px)", color: "#f0eadb", lineHeight: 1.5 }}>{q.q}</div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+        {q.options.map((opt, i) => {
+          let bg = "rgba(255,255,255,0.03)";
+          let border = "rgba(255,255,255,0.08)";
+          let col = "#c8bfad";
+          let prefix = "◯";
+          if (showResult) {
+            if (i === q.correct) { bg = "rgba(90,191,138,0.15)"; border = "#5abf8a"; col = "#5abf8a"; prefix = "✅"; }
+            else if (i === chosen) { bg = "rgba(224,90,90,0.15)"; border = "#e05a5a"; col = "#e05a5a"; prefix = "❌"; }
+          }
+          return (
+            <button key={i} onClick={() => answer(i)} style={{
+              padding: "14px 18px",
+              background: bg,
+              border: `1.5px solid ${border}`,
+              borderRadius: 10,
+              color: col,
+              fontSize: "clamp(14px, 2vw, 17px)",
+              textAlign: "left",
+              cursor: showResult ? "default" : "pointer",
+              transition: "all 0.2s",
+              fontFamily: "'Cormorant Garamond', serif",
+              display: "flex",
+              gap: 10,
+              alignItems: "center",
+            }}>
+              <span>{prefix}</span><span>{opt}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {showResult && (
+        <div style={{ textAlign: "center" }}>
+          <div style={{ ...styles.ruleBox, textAlign: "left", marginBottom: 16, fontSize: "clamp(13px, 1.8vw, 16px)" }}>
+            <div style={styles.ruleLabel}>📝 Explanation</div>
+            {q.explain}
+          </div>
+          <button onClick={next} style={btn("#9B6FD0")}>Next Rule →</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── SENTENCE BUILDER MODE ───────────────────────────────────────────────────
+
+const builderChallenges = [
+  {
+    prompt: "Build the correct causative with GET:",
+    subject: "I", verb: "get", person: "her",
+    parts: ["got", "to", "her", "present.", "I", "the"],
+    correct: "I got her to present.",
+    rule: "GET + person + TO + verb",
+  },
+  {
+    prompt: "Build the correct causative with HAVE:",
+    subject: "She", verb: "have",
+    parts: ["She", "to", "him", "do", "had", "it."],
+    correct: "She had him do it.",
+    rule: "HAVE + person + bare infinitive (no TO)",
+  },
+  {
+    prompt: "Build a correct sentence with CAN:",
+    parts: ["I", "can", "to", "speak", "English.", "fluently"],
+    correct: "I can speak English fluently.",
+    rule: "CAN + bare infinitive (never + TO)",
+  },
+  {
+    prompt: "Build a sentence with KEEP + -ing:",
+    parts: ["She", "keeps", "try.", "trying.", "keep", "practice."],
+    correct: "She keeps trying.",
+    rule: "KEEP + verb-ing",
+  },
+  {
+    prompt: "Build a correct HAVE SOMETHING DONE sentence:",
+    parts: ["I", "had", "my", "car", "repaired.", "to", "repair."],
+    correct: "I had my car repaired.",
+    rule: "HAVE + thing + past participle",
+  },
+  {
+    prompt: "Build a polite wish with WOULD LIKE:",
+    parts: ["I'd", "like", "to", "going", "improve", "my English."],
+    correct: "I'd like to improve my English.",
+    rule: "WOULD LIKE + TO + bare infinitive",
+  },
+];
+
+function BuilderMode({ onScore }) {
+  const [challenges] = useState(() => shuffle(builderChallenges));
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState([]);
+  const [available, setAvailable] = useState([]);
+  const [result, setResult] = useState(null);
+
+  const ch = challenges[idx % challenges.length];
+
+  useEffect(() => {
+    setSelected([]);
+    setAvailable(shuffle(ch.parts));
+    setResult(null);
+  }, [idx, ch]);
+
+  function pickWord(word, i) {
+    if (result) return;
+    setSelected([...selected, word]);
+    setAvailable(available.filter((_, j) => j !== i));
+  }
+
+  function removeWord(i) {
+    if (result) return;
+    const word = selected[i];
+    setAvailable([...available, word]);
+    setSelected(selected.filter((_, j) => j !== i));
+  }
+
+  function check() {
+    const built = selected.join(" ");
+    if (built === ch.correct) {
+      setResult("correct");
+      onScore(20);
+    } else {
+      setResult("wrong");
+    }
+  }
+
+  function reset() { setSelected([]); setAvailable(shuffle(ch.parts)); setResult(null); }
+  function next() { setIdx(idx + 1); }
+
+  return (
+    <div style={{ ...styles.content, maxWidth: 700 }}>
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: "#8a8070", letterSpacing: "0.2em" }}>
+          CHALLENGE {(idx % challenges.length) + 1} OF {challenges.length}
+        </div>
+      </div>
+
+      <div style={{ ...styles.card, marginBottom: 16 }}>
+        <div style={styles.verbBadge("#C9A84C")}>SENTENCE BUILDER</div>
+        <div style={{ fontSize: "clamp(15px, 2.2vw, 20px)", color: "#f0eadb", marginBottom: 8 }}>{ch.prompt}</div>
+        <div style={{ ...styles.ruleBox, fontSize: 13 }}>
+          <div style={styles.ruleLabel}>Pattern</div>
+          {ch.rule}
+        </div>
+      </div>
+
+      {/* Build area */}
+      <div style={{
+        minHeight: 64,
+        background: "rgba(201,168,76,0.06)",
+        border: "1.5px dashed rgba(201,168,76,0.3)",
+        borderRadius: 10,
+        padding: "12px 16px",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 8,
+        alignItems: "center",
+        marginBottom: 16,
+      }}>
+        {selected.length === 0 && <span style={{ color: "#8a8070", fontStyle: "italic", fontSize: 15 }}>Tap words below to build your sentence…</span>}
+        {selected.map((w, i) => (
+          <button key={i} onClick={() => removeWord(i)} style={{
+            padding: "6px 14px",
+            background: "rgba(201,168,76,0.2)",
+            border: "1.5px solid rgba(201,168,76,0.5)",
+            borderRadius: 8,
+            color: "#E8C96A",
+            fontSize: 16,
+            cursor: "pointer",
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 600,
+          }}>{w}</button>
+        ))}
+      </div>
+
+      {/* Word bank */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
+        {available.map((w, i) => (
+          <button key={i} onClick={() => pickWord(w, i)} style={{
+            padding: "8px 16px",
+            background: "rgba(255,255,255,0.05)",
+            border: "1.5px solid rgba(255,255,255,0.15)",
+            borderRadius: 8,
+            color: "#c8bfad",
+            fontSize: 16,
+            cursor: result ? "default" : "pointer",
+            fontFamily: "'Cormorant Garamond', serif",
+          }}>{w}</button>
+        ))}
+      </div>
+
+      {/* Actions */}
+      {!result ? (
+        <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+          <button onClick={reset} style={btn("#8a8070")}>Reset</button>
+          <button onClick={check} disabled={selected.length === 0} style={btn("#C9A84C")}>Check ✓</button>
+        </div>
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 20, marginBottom: 10, fontFamily: "'Cinzel', serif", color: result === "correct" ? "#5abf8a" : "#e05a5a" }}>
+            {result === "correct" ? "✅ Perfect sentence!" : "❌ Not quite."}
+          </div>
+          {result === "wrong" && (
+            <div style={{ ...styles.ruleBox, textAlign: "left", marginBottom: 12, fontSize: 14 }}>
+              <div style={styles.ruleLabel}>Correct answer</div>
+              {ch.correct}
+            </div>
+          )}
+          <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+            {result === "wrong" && <button onClick={reset} style={btn("#8a8070")}>Try Again</button>}
+            <button onClick={next} style={btn("#C9A84C")}>Next →</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── BUTTON HELPER ───────────────────────────────────────────────────────────
+function btn(color) {
+  return {
+    padding: "10px 24px",
+    background: `${color}22`,
+    border: `1.5px solid ${color}`,
+    borderRadius: 8,
+    color: color,
+    fontSize: 15,
+    cursor: "pointer",
+    fontFamily: "'Cinzel', serif",
+    letterSpacing: "0.08em",
+    transition: "all 0.2s",
+  };
+}
+
+// ─── APP ─────────────────────────────────────────────────────────────────────
+
+function App() {
+  const [mode, setMode] = useState("explore");
+  const [cat, setCat] = useState("all");
+  const [score, setScore] = useState(0);
+
+  const filteredData = cat === "all" ? phrasalVerbsData : phrasalVerbsData.filter(v => v.category === cat);
+
+  function addScore(n) { setScore(s => s + n); }
+
+  const showCatFilter = mode === "explore" || mode === "flashcard" || mode === "quiz";
+
+  return (
+    <div style={styles.app}>
+      {/* HEADER */}
+      <div style={styles.header}>
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse at 50% 0%, rgba(107,63,160,0.18) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div style={styles.title}>PHRASAL VERBS<br/>MASTERY SYSTEM</div>
+        <div style={styles.subtitle}>GET · LIKE · HAVE · CAN · TAKE · GIVE · KEEP</div>
+        <div style={styles.byline}>by Prof. Germandario</div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={styles.scoreBar}>⭐ SCORE: {score}</div>
+        </div>
+      </div>
+
+      {/* MODE BAR */}
+      <div style={styles.modeBar}>
+        {MODES.map(m => (
+          <button key={m.id} onClick={() => setMode(m.id)} style={styles.modeBtn(mode === m.id)}>
+            {m.label}
+          </button>
+        ))}
+      </div>
+
+      {/* CATEGORY FILTER */}
+      {showCatFilter && (
+        <div style={styles.catBar}>
+          {CATEGORIES.map(c => (
+            <button key={c.id} onClick={() => setCat(c.id)} style={styles.catBtn(cat === c.id, c.color)}>
+              {c.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* CONTENT */}
+      {mode === "explore" && <ExploreMode data={filteredData} />}
+      {mode === "flashcard" && <FlashcardMode key={cat} data={filteredData} />}
+      {mode === "quiz" && <QuizMode key={cat} data={filteredData} onScore={addScore} />}
+      {mode === "rulesquiz" && <RulesQuizMode onScore={addScore} />}
+      {mode === "builder" && <BuilderMode onScore={addScore} />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

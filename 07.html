@@ -1,0 +1,467 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@400;600;700;900&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --gold:#D4A017;--fire:#E8650A;--violet:#7B4FD4;--vl:#A87FE8;
+    --bg:#0E0C15;--s1:#1A1628;--s2:#231E35;--bd:#2E2850;
+    --tx:#F0EBF8;--mu:#7A70A0;--ok:#2ECC71;--er:#E74C3C;
+  }
+  body{background:var(--bg);color:var(--tx);font-family:'Barlow Condensed',sans-serif;min-height:100vh;padding:0}
+  #app{max-width:700px;margin:0 auto;padding:16px}
+  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .logo{font-size:22px;font-weight:900;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+  .logo span{color:var(--vl)}
+  .hud{display:flex;gap:10px;align-items:center}
+  .watch{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:6px 14px;font-family:'Space Mono',monospace;font-size:18px;color:var(--gold);letter-spacing:2px;min-width:90px;text-align:center}
+  .watch.on{border-color:var(--gold)}
+  .badge{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;font-size:13px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
+  .badge span{color:var(--tx)}
+  .mode-toggle{display:flex;background:var(--s1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:14px}
+  .mb{flex:1;padding:8px 0;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;background:transparent;color:var(--mu);transition:all .2s}
+  .mb.active{background:var(--violet);color:#fff}
+  .level-tabs{display:flex;gap:8px;margin-bottom:14px}
+  .lt{padding:6px 18px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--bd);cursor:pointer;background:transparent;color:var(--mu);transition:all .2s}
+  .lt.active{background:var(--gold);color:#111;border-color:var(--gold)}
+  .lt.locked{opacity:.4;cursor:not-allowed}
+  .ref-card{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .rl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+  .rs{font-size:19px;font-weight:700;color:var(--gold);letter-spacing:.5px;line-height:1.3}
+  .rsub{font-size:13px;color:var(--mu);margin-top:6px;line-height:1.8}
+  .rsub strong{color:var(--tx)}
+  .pro-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .pc{padding:5px 12px;border-radius:16px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--bd);color:var(--mu);background:var(--s2);transition:all .3s}
+  .pc.active{background:var(--violet);color:#fff;border-color:var(--violet)}
+  .pc.done{background:#1a2e1a;color:var(--ok);border-color:#2ECC7133}
+  .bz{min-height:58px;background:var(--s1);border:1.5px dashed var(--bd);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;transition:border-color .2s;position:relative}
+  .bz.ok{border-color:var(--ok);border-style:solid;background:#0d1f0d}
+  .bz.bad{border-color:var(--er);border-style:solid;background:#1f0d0d}
+  .bz-lbl{position:absolute;top:-9px;left:10px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mu);background:var(--bg);padding:0 6px}
+  .bz-hint::after{content:"TAP BLOCKS BELOW TO BUILD YOUR SENTENCE";font-size:11px;color:var(--mu);letter-spacing:1px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap}
+  .wb{padding:7px 13px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;user-select:none;transition:all .15s;border:1px solid transparent;display:inline-flex;align-items:center}
+  .wb.src{background:var(--s2);border-color:var(--bd);color:var(--tx)}
+  .wb.src:hover{border-color:var(--violet);color:var(--vl);transform:translateY(-1px)}
+  .wb.pl{background:#7B4FD422;border-color:var(--violet);color:var(--vl)}
+  .wb.pl:hover{background:#E74C3C22;border-color:var(--er);color:var(--er)}
+  .wb.conn{background:#E8650A22;border-color:var(--fire);color:#FAA060}
+  .pool{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;min-height:40px}
+  .score-row{display:flex;gap:8px;margin-bottom:14px}
+  .sc{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}
+  .sc .n{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+  .sc .l{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);margin-top:2px}
+  .pb{height:4px;background:var(--s2);border-radius:2px;margin-bottom:14px;overflow:hidden}
+  .pf{height:100%;background:var(--violet);border-radius:2px;transition:width .4s}
+  .fb{text-align:center;padding:8px;border-radius:8px;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;min-height:36px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .fb.ok{background:#0d1f0d;color:var(--ok)}
+  .fb.bad{background:#1f0d0d;color:var(--er)}
+  .fb.nt{background:var(--s2);color:var(--mu)}
+  .actions{display:flex;gap:8px}
+  .btn{padding:10px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .15s}
+  .btn-chk{background:var(--gold);color:#111;flex:1}
+  .btn-chk:hover{background:#E8B520}
+  .btn-chk:disabled{background:var(--s2);color:var(--mu);cursor:not-allowed}
+  .btn-cl{background:var(--s2);color:var(--mu);border:1px solid var(--bd)}
+  .btn-cl:hover{border-color:var(--er);color:var(--er)}
+  .btn-sk{background:transparent;color:var(--mu);border:1px solid var(--bd);font-size:13px;padding:8px 14px}
+  .btn-sk:hover{color:var(--tx)}
+  .end{display:flex;flex-direction:column;align-items:center;padding:40px 20px;text-align:center;gap:14px}
+  .end-t{font-size:36px;font-weight:900;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+  .end-s{font-size:16px;color:var(--mu);max-width:340px;line-height:1.6}
+  .stars{font-size:28px;letter-spacing:8px}
+  .btn-nl{background:var(--violet);color:#fff;padding:14px 32px;font-size:18px}
+  .btn-nl:hover{background:var(--vl)}
+  .conn-hint{background:#E8650A11;border:1px solid #E8650A44;border-radius:8px;padding:8px 12px;font-size:13px;color:#FAA060;margin-bottom:10px}
+  .grammar-note{background:var(--s2);border-left:3px solid var(--violet);border-radius:0 6px 6px 0;padding:8px 12px;font-size:12px;color:var(--mu);margin-top:6px;line-height:1.6}
+  .grammar-note strong{color:var(--vl)}
+</style>
+
+<div id="app">
+  <h2 class="sr-only">Fluency Sprint — English sentence building speed game</h2>
+  <div class="header">
+    <div class="logo">Fluency<span>Sprint</span></div>
+    <div class="hud">
+      <div class="badge">Streak <span id="streak-num">0</span></div>
+      <div class="watch" id="watch">00:00</div>
+    </div>
+  </div>
+  <div class="mode-toggle">
+    <button class="mb active" id="btn-simple" onclick="setMode('simple')">Simple Present</button>
+    <button class="mb" id="btn-progressive" onclick="setMode('progressive')">Present Progressive</button>
+    <button class="mb" id="btn-both" onclick="setMode('both')">Both (Hard)</button>
+  </div>
+  <div class="level-tabs">
+    <button class="lt active" id="tab1" onclick="setLevel(1)">Level 1 — Pronouns</button>
+    <button class="lt locked" id="tab2" onclick="setLevel(2)">Level 2 — Chunks</button>
+  </div>
+  <div id="game-area"></div>
+</div>
+
+<script>
+const PRONOUNS = ['I','You','He','She','We','They','It'];
+const THIRD = new Set(['He','She','It']);
+
+function conjugateSimple(baseVerb, pronoun) {
+  if (!THIRD.has(pronoun)) return baseVerb;
+  if (baseVerb === 'study') return 'studies';
+  if (baseVerb === 'go') return 'goes';
+  if (baseVerb === 'do') return 'does';
+  if (baseVerb === 'have') return 'has';
+  if (baseVerb.endsWith('ch') || baseVerb.endsWith('sh') || baseVerb.endsWith('x') || baseVerb.endsWith('s')) return baseVerb + 'es';
+  if (baseVerb.match(/[^aeiou]y$/)) return baseVerb.slice(0,-1) + 'ies';
+  return baseVerb + 's';
+}
+
+function getAux(pronoun) {
+  if (pronoun === 'I') return 'am';
+  if (pronoun === 'He' || pronoun === 'She' || pronoun === 'It') return 'is';
+  return 'are';
+}
+
+const SENTENCES = [
+  { base:'play', tail:'soccer at school every morning', prog_tail:'playing soccer at school right now' },
+  { base:'eat', tail:'breakfast at home every day', prog_tail:'eating breakfast at home right now' },
+  { base:'study', tail:'English every night', prog_tail:'studying English every night' },
+  { base:'work', tail:'in an office downtown', prog_tail:'working in an office downtown' },
+  { base:'read', tail:'books at the library', prog_tail:'reading books at the library' },
+  { base:'watch', tail:'movies on weekends', prog_tail:'watching movies right now' },
+  { base:'practice', tail:'English every morning', prog_tail:'practicing English right now' }
+];
+
+const L2_PAIRS = [
+  { s1:'She plays soccer every morning', c:'because', s2:'she feels very energetic' },
+  { s1:'He studies English every night', c:'but', s2:'he watches TV before bed' },
+  { s1:'They work hard every day', c:'so', s2:'they rest on weekends' },
+  { s1:'I eat breakfast at home', c:'before', s2:'I go to the office' },
+  { s1:'We read books at the library', c:'although', s2:'we do not have internet' }
+];
+
+function buildCorrect(sentObj, pronoun, mode) {
+  if (mode === 'progressive') {
+    return [pronoun, getAux(pronoun), ...sentObj.prog_tail.split(' ')];
+  } else {
+    const verb = conjugateSimple(sentObj.base, pronoun);
+    return [pronoun, verb, ...sentObj.tail.split(' ')];
+  }
+}
+
+function buildRef(sentObj, pronoun, mode) {
+  if (mode === 'progressive') {
+    return pronoun + ' ' + getAux(pronoun) + ' ' + sentObj.prog_tail;
+  } else {
+    return pronoun + ' ' + conjugateSimple(sentObj.base, pronoun) + ' ' + sentObj.tail;
+  }
+}
+
+function shuffleArr(arr) {
+  let a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    let j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildPool(correct, sentObj, mode) {
+  let decoys = [];
+  if (mode === 'simple') {
+    const wrongVerb = conjugateSimple(sentObj.base, 'He');
+    const baseVerb = sentObj.base;
+    if (!correct.includes(wrongVerb)) decoys.push(wrongVerb);
+    if (!correct.includes(baseVerb)) decoys.push(baseVerb);
+  } else {
+    const wrongAuxOptions = ['am','is','are'].filter(x => !correct.includes(x));
+    if (wrongAuxOptions.length) decoys.push(wrongAuxOptions[0]);
+  }
+  return shuffleArr([...correct, ...decoys.slice(0,1)]);
+}
+
+let G = {
+  level:1, mode:'simple',
+  sentIdx:0, proIdx:0,
+  placed:[], pool:[],
+  streak:0, score:0, errors:0,
+  timerSec:0, running:false, handle:null,
+  proTimes:[], proStart:0,
+  unlocked:false,
+  l2Idx:0,
+  bothPhase:'simple',
+  done:false
+};
+
+function fmt(s){let m=Math.floor(s/60),r=s%60;return(m<10?'0':'')+m+':'+(r<10?'0':'')+r}
+
+function startTimer(){
+  if(G.running)return;
+  G.running=true;
+  G.handle=setInterval(()=>{G.timerSec++;document.getElementById('watch').textContent=fmt(G.timerSec);},1000);
+  document.getElementById('watch').classList.add('on');
+}
+
+function stopTimer(){
+  clearInterval(G.handle);G.running=false;
+  document.getElementById('watch').classList.remove('on');
+}
+
+function setMode(m){
+  G.mode=m;G.bothPhase='simple';
+  ['simple','progressive','both'].forEach(x=>document.getElementById('btn-'+x).classList.toggle('active',x===m));
+  resetRound();
+}
+
+function setLevel(l){
+  if(l===2&&!G.unlocked)return;
+  G.level=l;G.l2Idx=0;resetRound();
+}
+
+function getSent(){return SENTENCES[G.sentIdx%SENTENCES.length]}
+
+function getEffMode(){
+  if(G.mode==='both') return G.bothPhase;
+  return G.mode;
+}
+
+function initLevel1(){
+  const s=getSent();const eMode=getEffMode();
+  const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
+  G.pool=buildPool(correct,s,eMode);
+  G.placed=[];G.proStart=Date.now();
+  render();
+}
+
+function initLevel2(){
+  const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
+  const words=[...pair.s1.split(' '),pair.c,...pair.s2.split(' ')];
+  G.pool=shuffleArr(words);G.placed=[];render();
+}
+
+function resetRound(){
+  stopTimer();G.timerSec=0;G.running=false;
+  document.getElementById('watch').textContent='00:00';
+  G.proIdx=0;G.placed=[];G.errors=0;G.done=false;G.proTimes=[];G.bothPhase='simple';
+  if(G.level===1)initLevel1();else initLevel2();
+}
+
+function render(){
+  const ga=document.getElementById('game-area');
+  if(G.done){ga.innerHTML=renderEnd();return;}
+  if(G.level===1)ga.innerHTML=renderL1();
+  else ga.innerHTML=renderL2();
+}
+
+function renderL1(){
+  const s=getSent();const eMode=getEffMode();
+  const pro=PRONOUNS[G.proIdx];
+  const progress=Math.round((G.proIdx/7)*100);
+  
+  const simpleEx=buildRef(s,pro,'simple');
+  const progEx=buildRef(s,pro,'progressive');
+  
+  const grammarNote = THIRD.has(pro)
+    ? `<span style="color:var(--vl)">${pro}</span> is 3rd person singular — verb gets <strong>-s/-es</strong> in simple present`
+    : `<span style="color:var(--vl)">${pro}</span> is NOT 3rd person singular — use the <strong>base form</strong>`;
+
+  const modeLabel = eMode==='simple'
+    ? `Build: <strong>Simple Present</strong>`
+    : eMode==='progressive'
+    ? `Build: <strong>Present Progressive</strong>`
+    : '';
+
+  let chips=PRONOUNS.map((p,i)=>`<span class="pc${i===G.proIdx?' active':i<G.proIdx?' done':''}">${p}${i<G.proIdx?' ✓':''}</span>`).join('');
+
+  let poolHtml=G.pool.map((w,i)=>`<span class="wb src" onclick="placeWord(${i})">${w}</span>`).join('');
+  let placedHtml=G.placed.map((w,i)=>`<span class="wb pl" onclick="removeWord(${i})">${w}</span>`).join('');
+  const hasPlaced=G.placed.length>0;
+
+  return `
+  <div class="score-row">
+    <div class="sc"><div class="n">${G.score}</div><div class="l">Score</div></div>
+    <div class="sc"><div class="n">${G.proIdx}/7</div><div class="l">Done</div></div>
+    <div class="sc"><div class="n">${G.errors}</div><div class="l">Errors</div></div>
+  </div>
+  <div class="pb"><div class="pf" style="width:${progress}%"></div></div>
+  <div class="ref-card">
+    <div class="rl">Reference · ${modeLabel}</div>
+    <div class="rs">${pro.toUpperCase()} + ${s.base.toUpperCase()} + ${s.tail.toUpperCase()}</div>
+    <div class="rsub">
+      ✦ Simple: <strong>${simpleEx}</strong><br>
+      ✦ Progressive: <strong>${progEx}</strong>
+    </div>
+    <div class="grammar-note">${grammarNote}</div>
+  </div>
+  <div class="pro-bar">${chips}</div>
+  <div class="bz${!hasPlaced?' bz-hint':''}" id="bz">
+    <span class="bz-lbl">Your sentence</span>
+    ${placedHtml}
+  </div>
+  <div class="pool">${poolHtml}</div>
+  <div class="fb nt" id="fb">Tap a block to start building your sentence!</div>
+  <div class="actions">
+    <button class="btn btn-cl" onclick="clearPlaced()">Clear</button>
+    <button class="btn btn-chk" id="btn-chk" onclick="checkAnswer()" ${G.placed.length<2?'disabled':''}>Check ✓</button>
+    <button class="btn btn-sk" onclick="skipPro()">Skip →</button>
+  </div>`;
+}
+
+function renderL2(){
+  const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
+  let poolHtml=G.pool.map((w,i)=>{
+    const cls=w===pair.c?'wb conn src':'wb src';
+    return `<span class="${cls}" onclick="placeWord(${i})">${w}</span>`;
+  }).join('');
+  let placedHtml=G.placed.map((w,i)=>`<span class="wb pl" onclick="removeWord(${i})">${w}</span>`).join('');
+  const hasPlaced=G.placed.length>0;
+  return `
+  <div class="score-row">
+    <div class="sc"><div class="n">${G.score}</div><div class="l">Score</div></div>
+    <div class="sc"><div class="n">${G.l2Idx+1}/${L2_PAIRS.length}</div><div class="l">Chunk</div></div>
+    <div class="sc"><div class="n">${G.errors}</div><div class="l">Errors</div></div>
+  </div>
+  <div class="ref-card">
+    <div class="rl">Level 2 — Build the Chunk</div>
+    <div class="rs" style="color:var(--vl)">Join two sentences using the connector</div>
+    <div class="rsub">Connector: <strong style="color:#FAA060;font-size:18px">${pair.c.toUpperCase()}</strong></div>
+  </div>
+  <div class="conn-hint">The orange block is your connector — it belongs in the middle of the two sentences.</div>
+  <div class="bz${!hasPlaced?' bz-hint':''}" id="bz">
+    <span class="bz-lbl">Your chunk</span>
+    ${placedHtml}
+  </div>
+  <div class="pool">${poolHtml}</div>
+  <div class="fb nt" id="fb">Tap blocks to assemble the compound sentence!</div>
+  <div class="actions">
+    <button class="btn btn-cl" onclick="clearPlaced()">Clear</button>
+    <button class="btn btn-chk" onclick="checkAnswer()" ${G.placed.length<3?'disabled':''}>Check ✓</button>
+  </div>`;
+}
+
+function renderEnd(){
+  const best=G.proTimes.length?Math.min(...G.proTimes):0;
+  const avg=G.proTimes.length?Math.round(G.proTimes.reduce((a,b)=>a+b,0)/G.proTimes.length):0;
+  const stars=G.errors===0?'★★★':G.errors<=2?'★★☆':'★☆☆';
+  const unlockMsg=G.level===1&&!G.unlocked?'<div style="color:var(--vl);font-size:14px">Level 2 — Chunks — is now unlocked!</div>':'';
+  return `
+  <div class="end">
+    <div class="stars">${stars}</div>
+    <div class="end-t">${G.level===1?'Pronoun Run Complete!':'Chunk Master!'}</div>
+    <div class="end-s">Time: <strong>${fmt(G.timerSec)}</strong> &nbsp;·&nbsp; Best: <strong>${fmt(best)}</strong> &nbsp;·&nbsp; Avg: <strong>${fmt(avg)}</strong><br>Score: <strong>${G.score}</strong> &nbsp;·&nbsp; Errors: <strong>${G.errors}</strong></div>
+    ${unlockMsg}
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+      ${G.level===1&&!G.unlocked?`<button class="btn btn-nl" onclick="goL2()">Go to Level 2 →</button>`:''}
+      ${G.level===2?`<button class="btn btn-nl" onclick="sendPrompt('I finished Fluency Sprint Level 2! Give me feedback and a harder challenge.')">Get Feedback ↗</button>`:''}
+      <button class="btn btn-cl btn" onclick="replay()">Play Again</button>
+    </div>
+  </div>`;
+}
+
+function placeWord(idx){
+  if(!G.running)startTimer();
+  G.placed.push(G.pool[idx]);
+  G.pool.splice(idx,1);
+  render();
+}
+
+function removeWord(idx){
+  G.pool.push(G.placed[idx]);
+  G.placed.splice(idx,1);
+  render();
+}
+
+function clearPlaced(){
+  G.pool=[...G.pool,...G.placed];
+  G.placed=[];render();
+}
+
+function checkAnswer(){
+  const fb=document.getElementById('fb');
+  const bz=document.getElementById('bz');
+  if(!fb)return;
+
+  if(G.level===1){
+    const s=getSent();const eMode=getEffMode();
+    const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
+    const ans=G.placed.join(' ').toLowerCase().trim();
+    const exp=correct.join(' ').toLowerCase().trim();
+    if(ans===exp){
+      const el=Math.round((Date.now()-G.proStart)/1000);
+      G.proTimes.push(el);
+      G.streak++;G.score+=G.streak>=2?20:10;
+      document.getElementById('streak-num').textContent=G.streak;
+      fb.className='fb ok';fb.textContent='✓ Correct! '+(G.streak>=2?'+20 streak bonus!':'+10');
+      bz.classList.add('ok');
+      setTimeout(()=>nextPro(),850);
+    } else {
+      G.errors++;G.streak=0;
+      document.getElementById('streak-num').textContent=0;
+      fb.className='fb bad';
+      const correctSentence=correct.join(' ');
+      fb.textContent='✗ Expected: '+correctSentence;
+      bz.classList.add('bad');setTimeout(()=>{if(bz)bz.classList.remove('bad')},600);
+    }
+  } else {
+    const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
+    const full=[...pair.s1.split(' '),pair.c,...pair.s2.split(' ')];
+    const ans=G.placed.join(' ').toLowerCase().trim();
+    const exp=full.join(' ').toLowerCase().trim();
+    if(ans===exp){
+      G.streak++;G.score+=30;
+      document.getElementById('streak-num').textContent=G.streak;
+      fb.className='fb ok';fb.textContent='✓ Chunk complete! +30';
+      bz.classList.add('ok');setTimeout(()=>nextChunk(),850);
+    } else {
+      G.errors++;G.streak=0;
+      document.getElementById('streak-num').textContent=0;
+      fb.className='fb bad';fb.textContent='✗ Check word order and connector position!';
+    }
+  }
+}
+
+function nextPro(){
+  G.proIdx++;
+  if(G.proIdx>=7){
+    if(G.mode==='both'&&G.bothPhase==='simple'){
+      G.bothPhase='progressive';G.proIdx=0;
+      const s=getSent();
+      const correct=buildCorrect(s,PRONOUNS[0],'progressive');
+      G.pool=buildPool(correct,s,'progressive');
+      G.placed=[];G.proStart=Date.now();render();return;
+    }
+    stopTimer();G.done=true;
+    if(G.level===1){G.unlocked=true;document.getElementById('tab2').classList.remove('locked');}
+    render();return;
+  }
+  const s=getSent();const eMode=getEffMode();
+  const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
+  G.pool=buildPool(correct,s,eMode);
+  G.placed=[];G.proStart=Date.now();render();
+}
+
+function nextChunk(){
+  G.l2Idx++;
+  if(G.l2Idx>=L2_PAIRS.length){stopTimer();G.done=true;render();return;}
+  const pair=L2_PAIRS[G.l2Idx];
+  G.pool=shuffleArr([...pair.s1.split(' '),pair.c,...pair.s2.split(' ')]);
+  G.placed=[];render();
+}
+
+function skipPro(){
+  G.errors++;G.streak=0;document.getElementById('streak-num').textContent=0;
+  nextPro();
+}
+
+function goL2(){
+  G.level=2;G.done=false;G.l2Idx=0;G.errors=0;G.score=0;G.timerSec=0;G.streak=0;
+  document.getElementById('watch').textContent='00:00';
+  document.getElementById('tab1').classList.remove('active');
+  document.getElementById('tab2').classList.add('active');
+  initLevel2();
+}
+
+function replay(){
+  G.done=false;G.proIdx=0;G.errors=0;G.score=0;G.timerSec=0;G.streak=0;G.proTimes=[];G.bothPhase='simple';
+  G.sentIdx=(G.sentIdx+1)%SENTENCES.length;
+  document.getElementById('watch').textContent='00:00';
+  if(G.level===1)initLevel1();else initLevel2();
+}
+
+initLevel1();
+</script>

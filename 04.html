@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenamiento de Memoria Visual - ProfGermanDario</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Memoria Visual">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVudHJlbmFtaWVudG8gZGUgTWVtb3JpYSBWaXN1YWwiLAogICJzaG9ydF9uYW1lIjogIk1lbW9yaWEgVmlzdWFsIiwKICAiZGVzY3JpcHRpb24iOiAiSnVlZ28gZGUgZW50cmVuYW1pZW50byBtZW50YWwgcG9yIFByb2ZHZXJNYW5EYXJpbyIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzYzNjZmMSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UVXlJaUJvWldsbmFIUTlJakUxTWlJZ2RtbGxkMEp2ZUQwaU1DQXdJREUxTWlBMU1pSWdabWxzYkQwaUl6WTFOMFJ1TVNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OEwzTjJaejQiLAogICAgICAic2l6ZXMiOiAiMTUyeDE1MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU5UVXlJaUJvWldsbmFIUTlJalUxTWlJZ2RtbGxkMEp2ZUQwaU1DQXdJRFUxTWlBMU5USWlJR1pwYkd3OUlpTTJNelkyWmpFaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BHTG5NamcxekttMUxUVXhNZ0J6YzJJOUlVSTJNelpHTVNJZ1ptbHNiRDBpSTI1RGdCeUxwcUJ6WTRySm5oaDJkMnFwQW1kSTlJMGJJQWVRWHBHd0VDUWQ2cVdBSTFJMjQ0YmpwbmVuWmtnUUI5VGhCaC9UNVFhZjArVUdWdko5Q2hBVDU2TUdSK0ozQWdRQSttamgyZGc0UVpmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJoL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQbEJGL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJoL1Q1UWFmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQbEJGL1Q1UWFmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJGL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQa0I5V2pSa2ZqOXdJRUFmVm8wWkg0L2NDQkFIMWFOR1IrUDNBZ1FCOVdqUmtmajl3SUVBZlZvMFpINGNDQkFIMWFOR1IrUDNBZ1FCOVdqUmtmajlvSUVBZlZvMFpINGNDQkFIMWFOR1IrapYkK8LmYyQWB7c9K1pUaC5mUUNaZ1gzaWhaZVV0ZUVHNVVrWkJsUjNLcnNoOTl3U0hxQXczRDBMTmdtNGJGUXRTVkhHbFNJNlNJWlVJczAxa2YxOEtYbw=", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}">
+    
+    <!-- Icons for different devices -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE1MiIgdmlld0JveD0iMCAwIDE1MiA1MiIgZmlsbD0iIzY1N0RuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48L3N2Zz4=">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE1MiIgdmlld0JveD0iMCAwIDE1MiA1MiIgZmlsbD0iIzY1N0RuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48L3N2Zz4=">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+        .blink-hint {
+            animation: blink 0.6s ease-in-out 3;
+        }
+        .pulse-grow {
+            animation: pulse 0.8s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* PWA Install Button */
+        .install-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        /* Prevent text selection for better mobile experience */
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="no-select">
+    <div id="root"></div>
+    
+    <!-- PWA Install Button -->
+    <button id="installButton" class="install-button bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
+        📱 Instalar App
+    </button>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const SequenceMemoryGame = () => {
+          // All your existing game code remains the same
+          const emojiPools = [
+            ['👽', '🤖', '👻', '🦄', '🐉', '🦋', '🐙', '🦎', '🐸', '🦊', 
+             '🧚', '🧛', '🧞', '🧜', '🦸', '🦹', '🧙', '🦅', '🐺', '🦁',
+             '🐯', '🐨', '🐼', '🦘', '🦝'],
+            ['💄', '👑', '💎', '⌚', '👜', '🎀', '💍', '🕶️', '👠', '🧢', 
+             '🎩', '👒', '🧣', '🧤', '👗', '👔', '💼', '👛', '🎒', '👝',
+             '🧳', '🥾', '👟', '🩴', '👡'],
+            ['🎄', '🌺', '🌙', '⭐', '🌈', '🔥', '❄️', '🌸', '🍀', '🌊', 
+             '🌞', '⛅', '🌩️', '🌪️', '🌋', '🌵', '🌿', '🌱', '🌴', '🌲',
+             '🌻', '🌷', '🌹', '🌼', '🌾'],
+            ['🍊', '🍓', '🍎', '🍌', '🥝', '🍇', '🍑', '🥭', '🍍', '🥥', 
+             '🍒', '🍈', '🍉', '🫐', '🥑', '🍅', '🥒', '🍋', '🍐', '🥔',
+             '🧅', '🧄', '🌽', '🥕', '🫒'],
+            ['🎤', '🎸', '🎹', '🥁', '🎺', '🎻', '🪕', '🎷', '🎲', '🎯', 
+             '🎪', '🎭', '🎨', '🎬', '🎧', '🎼', '🎵', '🎶', '🎳', '🎮',
+             '🕹️', '🎰', '🎪', '🎡', '🎢'],
+            ['🚖', '🚗', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', 
+             '🚚', '🚛', '🚜', '🏍️', '🚲', '🛴', '🚁', '✈️', '🛸', '🚀',
+             '⛵', '🛥️', '🚢', '🚂', '🚃'],
+            ['☎️', '📱', '💻', '⌨️', '🖥️', '📺', '📻', '⏰', '📷', '🎮', 
+             '🖱️', '💾', '💿', '📀', '🔌', '🔋', '💡', '🔦', '📡', '🔭',
+             '🔬', '⚗️', '🧪', '🔍', '📊'],
+            ['🏠', '🏢', '🏰', '🏛️', '⛪', '🏭', '🗼', '🎡', '🎢', '🎠', 
+             '🏟️', '🏗️', '🏘️', '🏙️', '🏚️', '🏜️', '🏞️', '🏖️', '🏝️', '🏔️',
+             '🗻', '🏕️', '🏜️', '🏟️', '🏛️'],
+            ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸',
+             '🥅', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🏵️', '🎗️', '🎫',
+             '🎟️', '🎪', '🎭', '🎨', '🎬'],
+            ['🔨', '⚒️', '🛠️', '🔧', '🔩', '⚙️', '🧰', '🔗', '⛓️', '🧲',
+             '🔫', '💣', '🧨', '🔪', '⚔️', '🛡️', '🚬', '⚰️', '⚱️', '🗿',
+             '🪓', '⛏️', '🔱', '🏹', '🛞'],
+            ['🌌', '🌠', '☄️', '🪐', '🌍', '🌎', '🌏', '🌕', '🌖', '🌗',
+             '🌘', '🌑', '🌒', '🌓', '🌔', '🌛', '🌜', '🌝', '🌞', '⭐',
+             '🌟', '✨', '💫', '🔮', '🧿'],
+            ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔',
+             '❣️', '💕', '💖', '💗', '💘', '💝', '💞', '💟', '☮️', '✝️',
+             '☪️', '🕉️', '☸️', '✡️', '🔯']
+          ];
+
+          const [currentLevel, setCurrentLevel] = useState(1);
+          const [gamePhase, setGamePhase] = useState('start');
+          const [sequence, setSequence] = useState([]);
+          const [userInput, setUserInput] = useState([]);
+          const [availableEmojis, setAvailableEmojis] = useState([]);
+          const [showingIndex, setShowingIndex] = useState(0);
+          const [score, setScore] = useState(0);
+          const [feedback, setFeedback] = useState('');
+          const [showHint, setShowHint] = useState(false);
+          const [usedEmojis, setUsedEmojis] = useState(new Set());
+          const maxLevel = 5;
+
+          // All your existing functions remain the same
+          const getRandomEmoji = (excludeSet) => {
+            const allEmojis = emojiPools.flat();
+            const availableEmojis = allEmojis.filter(emoji => !excludeSet.has(emoji));
+            
+            if (availableEmojis.length === 0) {
+              setUsedEmojis(new Set());
+              return allEmojis[Math.floor(Math.random() * allEmojis.length)];
+            }
+            
+            return availableEmojis[Math.floor(Math.random() * availableEmojis.length)];
+          };
+
+          const generateSequence = (level) => {
+            const sequenceLength = 4 + (level - 1) * 2;
+            const sequenceSet = new Set();
+            const newSequence = [];
+            
+            while (newSequence.length < sequenceLength) {
+              const emoji = getRandomEmoji(new Set([...usedEmojis, ...sequenceSet]));
+              sequenceSet.add(emoji);
+              newSequence.push(emoji);
+            }
+            
+            setUsedEmojis(prev => new Set([...prev, ...sequenceSet]));
+            
+            const allAvailable = [...newSequence];
+            while (allAvailable.length < 16) {
+              const emoji = getRandomEmoji(new Set(allAvailable));
+              if (!allAvailable.includes(emoji)) {
+                allAvailable.push(emoji);
+              }
+            }
+            
+            for (let i = allAvailable.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [allAvailable[i], allAvailable[j]] = [allAvailable[j], allAvailable[i]];
+            }
+            
+            return { sequence: newSequence, available: allAvailable };
+          };
+
+          const startLevel = () => {
+            const { sequence: newSequence, available } = generateSequence(currentLevel);
+            setSequence(newSequence);
+            setAvailableEmojis(available);
+            setUserInput([]);
+            setShowingIndex(0);
+            setGamePhase('showing');
+            setFeedback('');
+            setShowHint(false);
+          };
+
+          const handleEmojiClick = (emoji) => {
+            if (gamePhase !== 'input') return;
+            
+            const newInput = [...userInput, emoji];
+            setUserInput(newInput);
+            
+            if (newInput.length === sequence.length) {
+              checkAnswer(newInput);
+            }
+          };
+
+          const checkAnswer = (input) => {
+            const isCorrect = input.every((emoji, idx) => emoji === sequence[idx]);
+            
+            if (isCorrect) {
+              setScore(score + currentLevel * 10);
+              setFeedback('¡Perfecto! 🎉');
+              setGamePhase('result');
+            } else {
+              setFeedback('Inténtalo de nuevo 💪');
+              setGamePhase('result');
+            }
+          };
+
+          const showHintFunction = () => {
+            setShowHint(true);
+            setTimeout(() => setShowHint(false), 2000);
+          };
+
+          const nextLevel = () => {
+            if (currentLevel < maxLevel) {
+              setCurrentLevel(currentLevel + 1);
+              setGamePhase('start');
+            } else {
+              setFeedback('¡Completaste todos los niveles! 🏆');
+            }
+          };
+
+          const resetGame = () => {
+            setCurrentLevel(1);
+            setScore(0);
+            setGamePhase('start');
+            setFeedback('');
+            setUsedEmojis(new Set());
+          };
+
+          const clearInput = () => {
+            setUserInput([]);
+          };
+
+          const handleTransformationClick = () => {
+            alert('🎉 ¡Bienvenido al Programa de Transformación de 3 Meses de ProfGermanDario!\n\n📧 Contacto: profgermandario@transformation.com\n📱 WhatsApp: +57 300 123 4567\n\n🧠 Entrena tu mente mientras transformas tu vida.\n¡Comienza tu viaje de transformación hoy mismo!');
+          };
+
+          useEffect(() => {
+            if (gamePhase === 'showing' && showingIndex < sequence.length) {
+              const timer = setTimeout(() => {
+                setShowingIndex(showingIndex + 1);
+              }, 1200);
+              return () => clearTimeout(timer);
+            } else if (gamePhase === 'showing' && showingIndex >= sequence.length) {
+              setTimeout(() => {
+                setGamePhase('input');
+              }, 800);
+            }
+          }, [gamePhase, showingIndex, sequence.length]);
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-2 sm:p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-2xl shadow-lg">
+                  <div className="text-center">
+                    <h1 className="text-xl sm:text-2xl font-bold mb-2">
+                      🧠 Entrenamiento de Memoria Visual
+                    </h1>
+                    <p className="text-blue-100 text-sm sm:text-base">
+                      by <span className="font-semibold">ProfGermanDario</span> - Programa de Transformación de 3 Meses
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white shadow-2xl p-4 sm:p-8">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <div className="flex justify-center items-center space-x-3 sm:space-x-6 text-sm sm:text-lg">
+                      <div className="bg-blue-100 px-2 sm:px-4 py-1 sm:py-2 rounded-lg">
+                        <span className="font-semibold text-blue-800">Nivel: {currentLevel}/{maxLevel}</span>
+                      </div>
+                      <div className="bg-green-100 px-2 sm:px-4 py-1 sm:py-2 rounded-lg">
+                        <span className="font-semibold text-green-800">Puntos: {score}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {gamePhase === 'start' && (
+                    <div className="text-center">
+                      <div className="mb-6">
+                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">
+                          Nivel {currentLevel} de {maxLevel}
+                        </h2>
+                        <p className="text-gray-600 text-base sm:text-lg">
+                          Memoriza la secuencia de {4 + (currentLevel - 1) * 2} emojis
+                        </p>
+                        <div className="mt-3 text-sm text-gray-500">
+                          {currentLevel === 1 && "Comenzando con 4 emojis"}
+                          {currentLevel === 2 && "6 emojis - ¡Más desafiante!"}
+                          {currentLevel === 3 && "8 emojis - ¡Excelente progreso!"}
+                          {currentLevel === 4 && "10 emojis - ¡Casi experto!"}
+                          {currentLevel === 5 && "12 emojis - ¡Nivel maestro!"}
+                        </div>
+                      </div>
+                      <button
+                        onClick={startLevel}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl text-lg sm:text-xl transition-colors duration-200"
+                      >
+                        Comenzar Nivel {currentLevel}
+                      </button>
+                    </div>
+                  )}
+
+                  {gamePhase === 'showing' && (
+                    <div className="text-center">
+                      <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 sm:mb-6">
+                        ¡Memoriza esta secuencia!
+                      </h2>
+                      <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                        {sequence.map((emoji, idx) => (
+                          <div
+                            key={idx}
+                            className={`text-5xl sm:text-8xl p-3 sm:p-6 rounded-xl transition-all duration-300 ${
+                              idx < showingIndex
+                                ? 'bg-yellow-200 scale-110'
+                                : idx === showingIndex
+                                ? 'bg-yellow-400 scale-125 pulse-grow'
+                                : 'bg-gray-100 opacity-50'
+                            }`}
+                          >
+                            {idx <= showingIndex ? emoji : '❓'}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-gray-600 text-sm sm:text-base">
+                        Mostrando emoji {Math.min(showingIndex + 1, sequence.length)} de {sequence.length}
+                      </div>
+                    </div>
+                  )}
+
+                  {gamePhase === 'input' && (
+                    <div className="text-center">
+                      <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 sm:mb-6">
+                        ¡Reproduce la secuencia!
+                      </h2>
+                      
+                      <div className="mb-6">
+                        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4">
+                          {sequence.map((_, idx) => (
+                            <div
+                              key={idx}
+                              className="text-4xl sm:text-6xl p-3 sm:p-4 border-2 border-dashed border-gray-300 rounded-lg min-w-[70px] sm:min-w-[100px] min-h-[70px] sm:min-h-[100px] flex items-center justify-center bg-gray-50"
+                            >
+                              {userInput[idx] || '?'}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-xs sm:text-sm text-gray-600 mb-4">
+                          {userInput.length} de {sequence.length} seleccionados
+                        </div>
+                        
+                        <button
+                          onClick={showHintFunction}
+                          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base mb-4"
+                        >
+                          💡 Mostrar Pista
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 max-w-lg sm:max-w-3xl mx-auto">
+                        {availableEmojis.map((emoji, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleEmojiClick(emoji)}
+                            className={`text-3xl sm:text-5xl p-3 sm:p-4 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 hover:scale-110 transform disabled:opacity-50 ${
+                              showHint && sequence.includes(emoji) ? 'blink-hint bg-yellow-200' : ''
+                            }`}
+                            disabled={userInput.includes(emoji)}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={clearInput}
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+                      >
+                        🗑️ Limpiar
+                      </button>
+                    </div>
+                  )}
+
+                  {gamePhase === 'result' && (
+                    <div className="text-center">
+                      <div className="mb-6">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">
+                          {feedback}
+                        </h2>
+                        
+                        <div className="mb-6">
+                          <p className="text-gray-600 mb-2 text-sm sm:text-base">Secuencia correcta:</p>
+                          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4">
+                            {sequence.map((emoji, idx) => (
+                              <div key={idx} className="text-4xl sm:text-6xl p-2 sm:p-3 bg-green-100 rounded-lg">
+                                {emoji}
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-gray-600 mb-2 text-sm sm:text-base">Tu respuesta:</p>
+                          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+                            {userInput.map((emoji, idx) => (
+                              <div 
+                                key={idx} 
+                                className={`text-4xl sm:text-6xl p-2 sm:p-3 rounded-lg ${
+                                  emoji === sequence[idx] ? 'bg-green-100' : 'bg-red-100'
+                                }`}
+                              >
+                                {emoji}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+                        {feedback.includes('Perfecto') && currentLevel < maxLevel && (
+                          <button
+                            onClick={nextLevel}
+                            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
+                          >
+                            Siguiente Nivel
+                          </button>
+                        )}
+                        
+                        <button
+                          onClick={() => setGamePhase('start')}
+                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
+                        >
+                          Intentar de Nuevo
+                        </button>
+                        
+                        <button
+                          onClick={resetGame}
+                          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
+                        >
+                          Reiniciar Juego
+                        </button>
+                      </div>
+
+                      {currentLevel === maxLevel && feedback.includes('Perfecto') && (
+                        <div className="mt-6 p-4 bg-yellow-100 rounded-lg">
+                          <h3 className="text-xl font-bold text-yellow-800 mb-2">🎉 ¡Felicitaciones! 🎉</h3>
+                          <p className="text-yellow-700">¡Has completado todos los niveles! Tu memoria visual es excepcional.</p>
+                          <p className="text-yellow-700 mt-2">Puntuación final: <span className="font-bold">{score} puntos</span></p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-b-2xl shadow-lg">
+                  <div className="text-center">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-3">
+                      🚀 Programa de Transformación de 3 Meses
+                    </h2>
+                    <p className="text-purple-100 mb-4 text-sm sm:text-base">
+                      ¿Te gustó este entrenamiento mental? Únete al programa completo de <strong>ProfGermanDario</strong> 
+                      y transforma tu vida en 90 días.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-2 text-xs sm:text-sm mb-4">
+                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        ✨ Entrenamiento Mental
+                      </div>
+                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        🎯 Estrategias Probadas
+                      </div>
+                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        🏆 Resultados Garantizados
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleTransformationClick}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base transition-all duration-200 transform hover:scale-105"
+                    >
+                      ¡Comienza Tu Transformación Hoy!
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-center mt-4 text-white text-xs sm:text-sm">
+                  <p>© 2025 ProfGermanDario - Entrenamiento Mental & Transformación Personal</p>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        ReactDOM.render(<SequenceMemoryGame />, document.getElementById('root'));
+    </script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        let deferredPrompt;
+        
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('data:text/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdtZW1vcnktZ2FtZS12MSc7CmNvbnN0IHVybHNUb0NhY2hlID0gWwogICcvJywKICAnaHR0cHM6Ly91bnBrZy5jb20vcmVhY3RAMTgvdW1kL3JlYWN0LmRldmVsb3BtZW50LmpzJywKICAnaHR0cHM6Ly91bnBrZy5jb20vcmVhY3QtZG9tQDE4L3VtZC9yZWFjdC1kb20uZGV2ZWxvcG1lbnQuanMnLAogICdodHRwczovL3VucGtnLmNvbS9AYmFiZWwvc3RhbmRhbG9uZS9iYWJlbC5taW4uanMnLAogICdodHRwczovL2Nkbi50YWlsd2luZGNzcy5jb20nCl07CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2luc3RhbGwnLCBmdW5jdGlvbihldmVudCkgewogIGV2ZW50LndhaXRVbnRpbCgKICAgIGNhY2hlcy5vcGVuKENBQ0hFX05BTUUpCiAgICAgIC50aGVuKGZ1bmN0aW9uKGNhY2hlKSB7CiAgICAgICAgcmV0dXJuIGNhY2hlLmFkZEFsbCh1cmxzVG9DYWNoZSk7CiAgICAgIH0pCiAgKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KQogICAgICAudGhlbihmdW5jdGlvbihyZXNwb25zZSkgewogICAgICAgIGlmIChyZXNwb25zZSkgewogICAgICAgICAgcmV0dXJuIHJlc3BvbnNlOwogICAgICAgIH0KICAgICAgICByZXR1cm4gZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICAgIH0pCiAgKTsKfSk7')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registrado exitosamente');
+                    })
+                    .catch(function(error) {
+                        console.log('Error al registrar ServiceWorker:', error);
+                    });
+            });
+        }
+        
+        // PWA Install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installButton').style.display = 'block';
+        });
+        
+        document.getElementById('installButton').addEventListener('click', (e) => {
+            document.getElementById('installButton').style.display = 'none';
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('Usuario aceptó instalar la PWA');
+                } else {
+                    console.log('Usuario rechazó instalar la PWA');
+                }
+                deferredPrompt = null;
+            });
+        });
+        
+        // Hide install button when app is installed
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('PWA instalada exitosamente');
+            document.getElementById('installButton').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

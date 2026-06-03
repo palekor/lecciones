@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essential English Verbs Learning System</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      // Expanded dataset: 30 verbs
+      const verbsData = [
+        { base: "be", past: "was/were", pastParticiple: "been", definition: "to exist or have identity", example: "I am happy", emoji: "🌟" },
+        { base: "have", past: "had", pastParticiple: "had", definition: "to possess or own something", example: "I have a car", emoji: "🤲" },
+        { base: "do", past: "did", pastParticiple: "done", definition: "to perform an action", example: "I do homework", emoji: "⚡" },
+        { base: "say", past: "said", pastParticiple: "said", definition: "to speak words", example: "I say hello", emoji: "💬" },
+        { base: "go", past: "went", pastParticiple: "gone", definition: "to move from one place to another", example: "I go home", emoji: "🚶" },
+        { base: "make", past: "made", pastParticiple: "made", definition: "to create or produce", example: "I make food", emoji: "🔨" },
+        { base: "see", past: "saw", pastParticiple: "seen", definition: "to look at with eyes", example: "I see a bird", emoji: "👁️" },
+        { base: "get", past: "got", pastParticiple: "gotten", definition: "to receive or obtain", example: "I get a gift", emoji: "📦" },
+        { base: "know", past: "knew", pastParticiple: "known", definition: "to have information about", example: "I know the answer", emoji: "🧠" },
+        { base: "think", past: "thought", pastParticiple: "thought", definition: "to use your mind", example: "I think about it", emoji: "💭" },
+        { base: "take", past: "took", pastParticiple: "taken", definition: "to grab or carry", example: "I take the book", emoji: "✋" },
+        { base: "come", past: "came", pastParticiple: "come", definition: "to move towards", example: "I come home", emoji: "➡️" },
+        { base: "want", past: "wanted", pastParticiple: "wanted", definition: "to desire something", example: "I want pizza", emoji: "🎯" },
+        { base: "use", past: "used", pastParticiple: "used", definition: "to employ for a purpose", example: "I use a phone", emoji: "🔧" },
+        { base: "find", past: "found", pastParticiple: "found", definition: "to discover or locate", example: "I find my keys", emoji: "🔍" },
+        { base: "give", past: "gave", pastParticiple: "given", definition: "to provide to someone", example: "I give a gift", emoji: "🎁" },
+        { base: "tell", past: "told", pastParticiple: "told", definition: "to inform someone", example: "I tell a story", emoji: "📢" },
+        { base: "work", past: "worked", pastParticiple: "worked", definition: "to do a job", example: "I work hard", emoji: "💼" },
+        { base: "call", past: "called", pastParticiple: "called", definition: "to telephone or shout", example: "I call my friend", emoji: "📞" },
+        { base: "try", past: "tried", pastParticiple: "tried", definition: "to attempt something", example: "I try my best", emoji: "🎪" },
+        { base: "ask", past: "asked", pastParticiple: "asked", definition: "to request information", example: "I ask a question", emoji: "❓" },
+        { base: "need", past: "needed", pastParticiple: "needed", definition: "to require something", example: "I need help", emoji: "🆘" },
+        { base: "feel", past: "felt", pastParticiple: "felt", definition: "to experience emotion", example: "I feel happy", emoji: "❤️" },
+        { base: "become", past: "became", pastParticiple: "become", definition: "to grow to be", example: "I become stronger", emoji: "🦋" },
+        { base: "leave", past: "left", pastParticiple: "left", definition: "to go away from", example: "I leave school", emoji: "🚪" },
+        { base: "put", past: "put", pastParticiple: "put", definition: "to place something", example: "I put books down", emoji: "📍" },
+        { base: "mean", past: "meant", pastParticiple: "meant", definition: "to intend or signify", example: "I mean it", emoji: "🎯" },
+        { base: "keep", past: "kept", pastParticiple: "kept", definition: "to continue having", example: "I keep trying", emoji: "🔒" },
+        { base: "let", past: "let", pastParticiple: "let", definition: "to allow or permit", example: "I let you go", emoji: "✅" },
+        { base: "begin", past: "began", pastParticiple: "begun", definition: "to start something", example: "I begin work", emoji: "🚀" },
+      ];
+
+      const VerbsLearningSystem = () => {
+        const [gameMode, setGameMode] = useState('importance');
+        const [score, setScore] = useState(0);
+        const [quizQuestion, setQuizQuestion] = useState(null);
+        const [selectedAnswer, setSelectedAnswer] = useState(null);
+        const [showResult, setShowResult] = useState(false);
+        const [matchingPairs, setMatchingPairs] = useState([]);
+        const [selectedCards, setSelectedCards] = useState([]);
+        const [matchedPairs, setMatchedPairs] = useState(new Set());
+
+        const generateQuizQuestion = () => {
+          const randomVerb = verbsData[Math.floor(Math.random() * verbsData.length)];
+          const wrongAnswers = verbsData.filter(v => v.base !== randomVerb.base).slice(0, 3).map(v => ({ text: v.definition, isCorrect: false }));
+          const allAnswers = [{ text: randomVerb.definition, isCorrect: true }, ...wrongAnswers].sort(() => Math.random() - 0.5);
+          setQuizQuestion({ question: `What does \"${randomVerb.base}\" mean?`, options: allAnswers, correct: randomVerb.definition });
+          setSelectedAnswer(null);
+          setShowResult(false);
+        };
+
+        const initializeMatching = () => {
+          const selectedVerbs = verbsData.slice(0, 6);
+          const pairs = [];
+          selectedVerbs.forEach((verb, idx) => {
+            pairs.push({ type: 'verb', content: verb.base, id: idx * 2, matchId: idx });
+            pairs.push({ type: 'definition', content: verb.definition, id: idx * 2 + 1, matchId: idx });
+          });
+          setMatchingPairs(pairs.sort(() => Math.random() - 0.5));
+          setSelectedCards([]);
+          setMatchedPairs(new Set());
+        };
+
+        const handleCardSelect = (card) => {
+          if (selectedCards.length === 2 || matchedPairs.has(card.id)) return;
+          const newSelected = [...selectedCards, card];
+          setSelectedCards(newSelected);
+          if (newSelected.length === 2) {
+            if (newSelected[0].matchId === newSelected[1].matchId) {
+              setMatchedPairs(new Set([...matchedPairs, newSelected[0].id, newSelected[1].id]));
+              setScore(score + 10);
+            }
+            setTimeout(() => setSelectedCards([]), 1000);
+          }
+        };
+
+        useEffect(() => {
+          if (gameMode === 'quiz') generateQuizQuestion();
+          if (gameMode === 'match') initializeMatching();
+        }, [gameMode]);
+
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 p-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">⚡ Essential English Verbs System</h1>
+                  <p className="text-lg text-gray-600 mb-2">Step 2: Master Action Words - The Heart of Every Sentence!</p>
+                  <p className="text-sm text-gray-500 mb-4">Created by <strong>Prof. Germandario</strong></p>
+                  <div className="bg-blue-100 px-4 py-2 rounded-lg inline-block"><span className="font-semibold text-blue-800">Score: {score}</span></div>
+                </div>
+
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                  {['importance','learn','practice','quiz','match'].map(mode => (
+                    <button key={mode} onClick={() => setGameMode(mode)}
+                      className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${gameMode === mode ? 'bg-indigo-500 text-white shadow-lg transform scale-105':'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}>
+                      {mode === 'importance' && '🎯 Why Verbs?'}
+                      {mode === 'learn' && '📚 Study Verbs'}
+                      {mode === 'practice' && '🗣️ Pronunciation'}
+                      {mode === 'quiz' && '🎯 Quiz Test'}
+                      {mode === 'match' && '🎲 Definition Match'}
+                    </button>
+                  ))}
+                </div>
+
+                {gameMode === 'importance' && (
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-700 mb-4">⚡ Why Are Verbs Important?</h2>
+                    <p className="text-gray-600">Verbs are the action words that give life to sentences. Without them, sentences cannot exist!</p>
+                  </div>
+                )}
+
+                {gameMode === 'learn' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">📚 Study Mode</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {verbsData.map((verb, idx) => (
+                        <div key={idx} className="border rounded-xl p-4 bg-gray-50 text-center">
+                          <p className="text-xl font-bold">{verb.emoji} {verb.base}</p>
+                          <p className="text-gray-600">Past: {verb.past}</p>
+                          <p className="text-gray-600">Participle: {verb.pastParticiple}</p>
+                          <p className="text-sm text-gray-500">{verb.definition}</p>
+                          <p className="text-sm italic">Example: {verb.example}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {gameMode === 'practice' && (
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-700 mb-4">🗣️ Pronunciation Mode</h2>
+                    {verbsData.map((verb, idx) => (
+                      <button key={idx} onClick={() => new SpeechSynthesisUtterance(verb.base) && speechSynthesis.speak(new SpeechSynthesisUtterance(verb.base))}
+                        className="m-2 px-4 py-2 rounded-lg bg-yellow-200 hover:bg-yellow-300">
+                        🔊 {verb.base}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {gameMode === 'quiz' && quizQuestion && (
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-700 mb-6">🎯 Quiz Mode</h2>
+                    <p className="mb-4 font-semibold">{quizQuestion.question}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {quizQuestion.options.map((opt, idx) => (
+                        <button key={idx} onClick={() => {setSelectedAnswer(opt); setShowResult(true); if(opt.isCorrect) setScore(score+10)}}
+                          className={`p-3 rounded-lg ${selectedAnswer===opt ? (opt.isCorrect?'bg-green-400':'bg-red-400'):'bg-gray-200 hover:bg-gray-300'}`}>
+                          {opt.text}
+                        </button>
+                      ))}
+                    </div>
+                    {showResult && (
+                      <div className="mt-4 font-bold">{selectedAnswer.isCorrect ? '✅ Correct!' : `❌ Wrong! Correct answer: ${quizQuestion.correct}`}</div>
+                    )}
+                    <button onClick={generateQuizQuestion} className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg">Next Question</button>
+                  </div>
+                )}
+
+                {gameMode === 'match' && (
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-700 mb-6">🎲 Matching Game</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {matchingPairs.map(card => (
+                        <button key={card.id} onClick={() => handleCardSelect(card)}
+                          className={`p-3 rounded-lg ${selectedCards.includes(card)||matchedPairs.has(card.id)?'bg-green-300':'bg-gray-200 hover:bg-gray-300'}`}>
+                          {card.content}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<VerbsLearningSystem />);
+    </script>
+</body>
+</html>

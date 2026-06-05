@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProfGermandario — English Fluency Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8B6B2A;
+    --ink: #0D0D0D;
+    --paper: #F5F0E8;
+    --charcoal: #1A1A1A;
+    --smoke: #2C2C2C;
+    --mist: #E8E0D0;
+    --accent: #C94C4C;
+    --teal: #2A7A7A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, #1E1600 0%, var(--ink) 70%);
+  }
+
+  .hero-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-ring 8s ease-in-out infinite;
+  }
+  .hero-ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .hero-ring:nth-child(2) { width: 600px; height: 600px; animation-delay: 1.5s; }
+  .hero-ring:nth-child(3) { width: 900px; height: 900px; animation-delay: 3s; }
+  .hero-ring:nth-child(4) { width: 1200px; height: 1200px; animation-delay: 4.5s; }
+
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.03); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 860px;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fade-up 0.8s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fade-up 0.8s ease forwards 0.5s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 28px auto 48px;
+    opacity: 0;
+    animation: fade-up 0.8s ease forwards 0.7s;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    border-radius: 2px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fade-up 0.8s ease forwards 0.9s;
+  }
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.3);
+  }
+  .hero-cta svg { transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(4px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fade-up 1s ease forwards 1.4s;
+  }
+  .scroll-hint span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: rgba(201,168,76,0.5);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scroll-drop 2s ease-in-out infinite;
+  }
+  @keyframes scroll-drop {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ── PHILOSOPHY STRIP ── */
+  .strip {
+    background: var(--gold);
+    padding: 20px 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  .strip-inner {
+    display: flex;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  .strip-item {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 0 40px;
+  }
+  .strip-dot {
+    color: var(--ink);
+    opacity: 0.3;
+    font-size: 0.5rem;
+    vertical-align: middle;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION COMMONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    padding: 120px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .manifesto-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--paper);
+    position: relative;
+  }
+  .manifesto-quote::before {
+    content: '"';
+    font-size: 8rem;
+    color: var(--gold);
+    opacity: 0.2;
+    position: absolute;
+    top: -40px;
+    left: -20px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .manifesto-quote strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .manifesto-author {
+    margin-top: 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.4);
+    text-transform: uppercase;
+  }
+
+  /* ── LESSONS GRID ── */
+  .lessons-section {
+    padding: 80px 24px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .lessons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .lessons-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--paper);
+  }
+  .lessons-title span { color: var(--gold); }
+
+  .lessons-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(201,168,76,0.12);
+    line-height: 1;
+  }
+
+  /* Category filters */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .filter-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 2px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: rgba(245,240,232,0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  /* Cards */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+  }
+
+  .lesson-card {
+    background: var(--charcoal);
+    padding: 40px 36px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.03);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .lesson-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .lesson-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .lesson-card:hover {
+    background: #222222;
+    transform: translateY(-2px);
+  }
+  .lesson-card:hover::before { opacity: 1; }
+  .lesson-card:hover::after { transform: scaleX(1); }
+
+  .lesson-card.featured {
+    background: linear-gradient(135deg, #1A1400 0%, #1A1A1A 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .lesson-card.featured::after { background: var(--gold); }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+  }
+
+  .card-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .badge-game { background: rgba(42,122,122,0.2); color: #4ECDC4; border: 1px solid rgba(78,205,196,0.2); }
+  .badge-vocab { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .badge-grammar { background: rgba(201,76,76,0.15); color: #E88; border: 1px solid rgba(201,76,76,0.2); }
+  .badge-resource { background: rgba(130,80,200,0.15); color: #B8A; border: 1px solid rgba(130,80,200,0.2); }
+
+  .card-icon {
+    font-size: 2rem;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.7;
+    font-weight: 300;
+    flex-grow: 1;
+  }
+
+  .card-arrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    transition: gap 0.2s ease;
+    margin-top: 8px;
+  }
+  .lesson-card:hover .card-arrow { gap: 14px; }
+
+  /* PDF card special */
+  .lesson-card.pdf-card {
+    background: linear-gradient(135deg, #0D1A1A 0%, #1A1A1A 100%);
+    border: 1px solid rgba(42,122,122,0.25);
+  }
+
+  /* ── WIDE FEATURE CARD ── */
+  .feature-wide {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: linear-gradient(135deg, #0F0E00 0%, #1A1A0A 100%);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+  @media (max-width: 700px) {
+    .feature-wide { grid-template-columns: 1fr; }
+  }
+  .feature-wide .feature-left {
+    padding: 48px 40px;
+    border-right: 1px solid rgba(201,168,76,0.1);
+  }
+  .feature-wide .feature-right {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  @media (max-width: 700px) {
+    .feature-wide .feature-left { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.1); }
+  }
+  .feature-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .feature-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+  .feature-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.4);
+    text-transform: uppercase;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    padding: 80px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  @media (max-width: 700px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-item {
+    padding: 32px 24px;
+    background: var(--charcoal);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.35);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* ── CLOSING CTA ── */
+  .cta-section {
+    padding: 140px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    color: var(--paper);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-title em { color: var(--gold); font-style: italic; }
+  .cta-sub {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.5);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-btn-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.3);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--paper);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 36px;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(245,240,232,0.2);
+    border-radius: 2px;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.2);
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* stagger children */
+  .stagger-children .lesson-card {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  }
+  .stagger-children.visible .lesson-card:nth-child(1)  { opacity:1; transform:translateY(0); transition-delay:0.05s; }
+  .stagger-children.visible .lesson-card:nth-child(2)  { opacity:1; transform:translateY(0); transition-delay:0.1s; }
+  .stagger-children.visible .lesson-card:nth-child(3)  { opacity:1; transform:translateY(0); transition-delay:0.15s; }
+  .stagger-children.visible .lesson-card:nth-child(4)  { opacity:1; transform:translateY(0); transition-delay:0.2s; }
+  .stagger-children.visible .lesson-card:nth-child(5)  { opacity:1; transform:translateY(0); transition-delay:0.25s; }
+  .stagger-children.visible .lesson-card:nth-child(6)  { opacity:1; transform:translateY(0); transition-delay:0.3s; }
+  .stagger-children.visible .lesson-card:nth-child(7)  { opacity:1; transform:translateY(0); transition-delay:0.35s; }
+  .stagger-children.visible .lesson-card:nth-child(8)  { opacity:1; transform:translateY(0); transition-delay:0.4s; }
+  .stagger-children.visible .lesson-card:nth-child(9)  { opacity:1; transform:translateY(0); transition-delay:0.45s; }
+  .stagger-children.visible .lesson-card:nth-child(10) { opacity:1; transform:translateY(0); transition-delay:0.5s; }
+  .stagger-children.visible .lesson-card:nth-child(11) { opacity:1; transform:translateY(0); transition-delay:0.55s; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-content">
+    <p class="eyebrow">ProfGermandario · English Fluency Lab</p>
+    <h1 class="hero-title">
+      Your brain<br>
+      <em>speaks English</em><br>
+      now.
+    </h1>
+    <p class="hero-subtitle">
+      Interactive learning tools engineered for people who refuse to stay stuck.
+      Not lessons — experiences. Not memorization — fluency conditioning.
+    </p>
+    <a href="#lessons" class="hero-cta">
+      Enter the Lab
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item">Vocabulary <span class="strip-dot">●</span></span>
+    <span class="strip-item">Verb Mastery <span class="strip-dot">●</span></span>
+    <span class="strip-item">Grammar Instinct <span class="strip-dot">●</span></span>
+    <span class="strip-item">Reaction Speed <span class="strip-dot">●</span></span>
+    <span class="strip-item">Memory Games <span class="strip-dot">●</span></span>
+    <span class="strip-item">Pronunciation <span class="strip-dot">●</span></span>
+    <span class="strip-item">Sentence Structure <span class="strip-dot">●</span></span>
+    <span class="strip-item">Context Intelligence <span class="strip-dot">●</span></span>
+    <!-- Repeated for seamless loop -->
+    <span class="strip-item">Vocabulary <span class="strip-dot">●</span></span>
+    <span class="strip-item">Verb Mastery <span class="strip-dot">●</span></span>
+    <span class="strip-item">Grammar Instinct <span class="strip-dot">●</span></span>
+    <span class="strip-item">Reaction Speed <span class="strip-dot">●</span></span>
+    <span class="strip-item">Memory Games <span class="strip-dot">●</span></span>
+    <span class="strip-item">Pronunciation <span class="strip-dot">●</span></span>
+    <span class="strip-item">Sentence Structure <span class="strip-dot">●</span></span>
+    <span class="strip-item">Context Intelligence <span class="strip-dot">●</span></span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section>
+  <div class="manifesto reveal">
+    <div class="section-label" style="justify-content:center;">The Philosophy</div>
+    <p class="manifesto-quote">
+      Language is not information.<br>
+      Language is <strong>reaction, rhythm, memory,</strong><br>
+      confidence, emotion, and identity.
+    </p>
+    <p class="manifesto-author">— ProfGermandario · CBLT + NLP Methodology</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <span class="stat-num">11</span>
+    <span class="stat-label">Interactive Tools</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">40+</span>
+    <span class="stat-label">Verbs Covered</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5</span>
+    <span class="stat-label">Learning Modes</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">0</span>
+    <span class="stat-label">Installs Required</span>
+  </div>
+</div>
+
+<!-- LESSONS GRID -->
+<section class="lessons-section" id="lessons">
+  <div class="lessons-header reveal">
+    <div>
+      <div class="section-label">The Curriculum</div>
+      <h2 class="lessons-title">
+        Every tool built<br>
+        for <span>dreamers</span><br>
+        on a mission.
+      </h2>
+    </div>
+    <div class="lessons-count">11</div>
+  </div>
+
+  <div class="filters reveal">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All Tools</button>
+    <button class="filter-btn" onclick="filterCards('game', this)">Brain Games</button>
+    <button class="filter-btn" onclick="filterCards('vocab', this)">Vocabulary</button>
+    <button class="filter-btn" onclick="filterCards('grammar', this)">Grammar</button>
+    <button class="filter-btn" onclick="filterCards('resource', this)">Resources</button>
+  </div>
+
+  <div class="lessons-grid stagger-children" id="lessonGrid">
+
+    <!-- LESSON 01 -->
+    <a href="https://palekor.github.io/lecciones/01.html" target="_blank"
+       class="lesson-card featured" data-cat="game grammar">
+      <div class="card-meta">
+        <span class="card-number">01 / 11</span>
+        <span class="card-badge badge-grammar">Grammar</span>
+      </div>
+      <span class="card-icon">⚡</span>
+      <div class="card-title">Essential Verb System</div>
+      <p class="card-desc">
+        30 core English verbs — base, past, and participle — with definition matching, 
+        pronunciation mode, quiz battles, and a memory game. The action words that make 
+        every sentence breathe.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 02 -->
+    <a href="https://palekor.github.io/lecciones/02.html" target="_blank"
+       class="lesson-card" data-cat="game grammar">
+      <div class="card-meta">
+        <span class="card-number">02 / 11</span>
+        <span class="card-badge badge-game">Brain Game</span>
+      </div>
+      <span class="card-icon">🧩</span>
+      <div class="card-title">Sentence Builder</div>
+      <p class="card-desc">
+        Train your brain to feel correct English word order — not memorize rules, 
+        but recognize rhythm. Drag-and-drop sentence construction with timed challenges.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 03 -->
+    <a href="https://palekor.github.io/lecciones/03.html" target="_blank"
+       class="lesson-card" data-cat="game">
+      <div class="card-meta">
+        <span class="card-number">03 / 11</span>
+        <span class="card-badge badge-game">Brain Game</span>
+      </div>
+      <span class="card-icon">🎯</span>
+      <div class="card-title">Reaction Speed Trainer</div>
+      <p class="card-desc">
+        Fluency lives in the gap between thought and word. This game compresses that gap — 
+        rapid-fire recognition drills to build the reflexes of a native speaker.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 04 -->
+    <a href="https://palekor.github.io/lecciones/04.html" target="_blank"
+       class="lesson-card" data-cat="vocab game">
+      <div class="card-meta">
+        <span class="card-number">04 / 11</span>
+        <span class="card-badge badge-vocab">Vocabulary</span>
+      </div>
+      <span class="card-icon">🧠</span>
+      <div class="card-title">Memory Reinforcement Lab</div>
+      <p class="card-desc">
+        Active recall meets pattern repetition. Words move from conscious effort to 
+        automatic recall through flashback exercises and progressive review cycles.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 05 -->
+    <a href="https://palekor.github.io/lecciones/05.html" target="_blank"
+       class="lesson-card" data-cat="vocab">
+      <div class="card-meta">
+        <span class="card-number">05 / 11</span>
+        <span class="card-badge badge-vocab">Vocabulary</span>
+      </div>
+      <span class="card-icon">🌍</span>
+      <div class="card-title">Contextual Word Power</div>
+      <p class="card-desc">
+        Words in isolation are useless. This module builds contextual intelligence — 
+        understanding the same word across professional, casual, and written registers.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 06 -->
+    <a href="https://palekor.github.io/lecciones/06.html" target="_blank"
+       class="lesson-card" data-cat="grammar game">
+      <div class="card-meta">
+        <span class="card-number">06 / 11</span>
+        <span class="card-badge badge-grammar">Grammar</span>
+      </div>
+      <span class="card-icon">🔥</span>
+      <div class="card-title">Tense Instinct Training</div>
+      <p class="card-desc">
+        Past, present, future — not as rules to recite, but as a felt sense of time in 
+        language. Gamified exercises that wire tense selection into your instinct, not 
+        your memory.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 07 -->
+    <a href="https://palekor.github.io/lecciones/07.html" target="_blank"
+       class="lesson-card" data-cat="game">
+      <div class="card-meta">
+        <span class="card-number">07 / 11</span>
+        <span class="card-badge badge-game">Brain Game</span>
+      </div>
+      <span class="card-icon">🎙️</span>
+      <div class="card-title">Pronunciation & Phonics</div>
+      <p class="card-desc">
+        Sound patterns, syllable stress, and phonetic awareness — the layer most learners 
+        skip. Interactive listening and speaking drills designed to make you sound clear, 
+        natural, and confident.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- LESSON 08 -->
+    <a href="https://palekor.github.io/lecciones/08.html" target="_blank"
+       class="lesson-card" data-cat="game vocab">
+      <div class="card-meta">
+        <span class="card-number">08 / 11</span>
+        <span class="card-badge badge-game">Brain Game</span>
+      </div>
+      <span class="card-icon">💡</span>
+      <div class="card-title">Fluency Sprint</div>
+      <p class="card-desc">
+        Present tense sentence production under real pressure. Type, conjugate, and submit 
+        before the clock runs out. Grammar correction included — because accuracy and speed 
+        must coexist.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- 40 VERBS FEATURED WIDE -->
+    <a href="https://palekor.github.io/lecciones/40verbs.html" target="_blank"
+       class="lesson-card feature-wide" data-cat="grammar game vocab">
+      <div class="feature-left">
+        <div class="card-meta" style="margin-bottom:20px;">
+          <span class="card-number">09 / 11 — Featured</span>
+          <span class="card-badge badge-grammar">Grammar · Game</span>
+        </div>
+        <span class="card-icon" style="margin-bottom:16px;">📖</span>
+        <div class="card-title" style="font-size:1.7rem; margin-bottom:12px;">
+          The 40 Essential Verbs Vault
+        </div>
+        <p class="card-desc" style="max-width:420px;">
+          All 36 essential verb pairs in one powerhouse tool — Memory Mode, Quiz Mode, 
+          and Flashcard Mode. The foundational verb database every English learner needs 
+          to wire into their long-term memory. This one changes everything.
+        </p>
+        <div class="card-arrow" style="margin-top:24px;">Launch the Vault <span>→</span></div>
+      </div>
+      <div class="feature-right">
+        <div class="feature-stat">
+          <span class="feature-stat-num">36</span>
+          <span class="feature-stat-label">Verb Pairs</span>
+        </div>
+        <div class="feature-stat">
+          <span class="feature-stat-num">3</span>
+          <span class="feature-stat-label">Game Modes</span>
+        </div>
+        <div class="feature-stat">
+          <span class="feature-stat-num">∞</span>
+          <span class="feature-stat-label">Replay Value</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- FIRST VOCABULARY -->
+    <a href="https://palekor.github.io/lecciones/firstvocabulary.html" target="_blank"
+       class="lesson-card" data-cat="vocab game">
+      <div class="card-meta">
+        <span class="card-number">10 / 11</span>
+        <span class="card-badge badge-vocab">Vocabulary</span>
+      </div>
+      <span class="card-icon">🌱</span>
+      <div class="card-title">First Vocabulary — Part I</div>
+      <p class="card-desc">
+        The Word Vault: your first 100 high-frequency English words with IPA pronunciation, 
+        Spanish translations, and hover tooltips. The foundation everything else rests on.
+      </p>
+      <div class="card-arrow">Open lesson <span>→</span></div>
+    </a>
+
+    <!-- PDF RESOURCE -->
+    <a href="https://github.com/palekor/lecciones/blob/main/my_first_vocabulary_part_2.pdf" target="_blank"
+       class="lesson-card pdf-card" data-cat="resource vocab">
+      <div class="card-meta">
+        <span class="card-number">11 / 11</span>
+        <span class="card-badge badge-resource">PDF Resource</span>
+      </div>
+      <span class="card-icon">📄</span>
+      <div class="card-title">First Vocabulary — Part II</div>
+      <p class="card-desc">
+        The companion PDF workbook — downloadable, printable, study-anywhere. 
+        Expanded vocabulary set with exercises, definitions, and real-world usage 
+        examples for offline practice sessions.
+      </p>
+      <div class="card-arrow">Download PDF <span>→</span></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- CLOSING CTA -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <p class="section-label" style="justify-content:center;" class="reveal">Your Next Step</p>
+  <h2 class="cta-title reveal">
+    This is where<br>
+    <em>the shift</em><br>
+    begins.
+  </h2>
+  <p class="cta-sub reveal">
+    Every professional, entrepreneur, and dreamer who needed English to get there — 
+    they started somewhere. Start here. Start now.
+  </p>
+  <div class="cta-btn-group reveal">
+    <a href="#lessons" class="btn-primary">
+      Begin the Curriculum
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="https://github.com/palekor/lecciones" target="_blank" class="btn-secondary">
+      View on GitHub
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8c0 2.87 1.86 5.3 4.44 6.16.32.06.44-.14.44-.3v-1.05c-1.8.39-2.18-.87-2.18-.87-.3-.75-.72-0.95-.72-0.95-.59-.4.04-.39.04-.39.65.05 1 .67 1 .67.58 1 1.52.71 1.89.54.06-.42.23-.71.41-.87-1.44-.16-2.95-.72-2.95-3.2 0-.71.25-1.28.67-1.74-.07-.16-.29-.82.06-1.71 0 0 .55-.18 1.8.67a6.27 6.27 0 0 1 3.28 0c1.25-.85 1.8-.67 1.8-.67.35.89.13 1.55.06 1.71.42.46.67 1.03.67 1.74 0 2.49-1.52 3.04-2.97 3.2.23.2.44.6.44 1.2v1.79c0 .17.11.37.44.3A6.5 6.5 0 0 0 14.5 8C14.5 4.41 11.59 1.5 8 1.5z" fill="currentColor"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">ProfGermandario</div>
+  <div class="footer-copy">© 2026 · Interactive English Fluency Lab · Built for dreamers</div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal, .stagger-children');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Filter logic
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const grid = document.getElementById('lessonGrid');
+    grid.querySelectorAll('.lesson-card').forEach(card => {
+      if (cat === 'all') {
+        card.style.display = 'flex';
+      } else {
+        const cats = (card.dataset.cat || '').split(' ');
+        card.style.display = cats.includes(cat) ? 'flex' : 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

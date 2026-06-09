@@ -1,536 +1,379 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenamiento de Memoria Visual - ProfGermanDario</title>
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#6366f1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Memoria Visual">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVudHJlbmFtaWVudG8gZGUgTWVtb3JpYSBWaXN1YWwiLAogICJzaG9ydF9uYW1lIjogIk1lbW9yaWEgVmlzdWFsIiwKICAiZGVzY3JpcHRpb24iOiAiSnVlZ28gZGUgZW50cmVuYW1pZW50byBtZW50YWwgcG9yIFByb2ZHZXJNYW5EYXJpbyIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzYzNjZmMSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UVXlJaUJvWldsbmFIUTlJakUxTWlJZ2RtbGxkMEp2ZUQwaU1DQXdJREUxTWlBMU1pSWdabWxzYkQwaUl6WTFOMFJ1TVNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OEwzTjJaejQiLAogICAgICAic2l6ZXMiOiAiMTUyeDE1MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU5UVXlJaUJvWldsbmFIUTlJalUxTWlJZ2RtbGxkMEp2ZUQwaU1DQXdJRFUxTWlBMU5USWlJR1pwYkd3OUlpTTJNelkyWmpFaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BHTG5NamcxekttMUxUVXhNZ0J6YzJJOUlVSTJNelpHTVNJZ1ptbHNiRDBpSTI1RGdCeUxwcUJ6WTRySm5oaDJkMnFwQW1kSTlJMGJJQWVRWHBHd0VDUWQ2cVdBSTFJMjQ0YmpwbmVuWmtnUUI5VGhCaC9UNVFhZjArVUdWdko5Q2hBVDU2TUdSK0ozQWdRQSttamgyZGc0UVpmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJoL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQbEJGL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJoL1Q1UWFmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQbEJGL1Q1UWFmMCtVR0hkUFJBNGE4TGdBZUE0WXY4b0VESjlQaEJGL1Q1UWFmMCtVR25kUFJBNGE4TGdBZUE0WXY4b0VESjlQa0I5V2pSa2ZqOXdJRUFmVm8wWkg0L2NDQkFIMWFOR1IrUDNBZ1FCOVdqUmtmajl3SUVBZlZvMFpINGNDQkFIMWFOR1IrUDNBZ1FCOVdqUmtmajlvSUVBZlZvMFpINGNDQkFIMWFOR1IrapYkK8LmYyQWB7c9K1pUaC5mUUNaZ1gzaWhaZVV0ZUVHNVVrWkJsUjNLcnNoOTl3U0hxQXczRDBMTmdtNGJGUXRTVkhHbFNJNlNJWlVJczAxa2YxOEtYbw=", 
-      "sizes": "512x512",
-      "type": "image/png"
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Memoria Visual — Lección 4 · ProfGermandario</title>
+<meta name="theme-color" content="#1A1730">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Memoria Visual">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: {
+      lienzo:'#FCF8F3', nube:'#F2ECE2', tinta:'#1A1730', tintasoft:'#3A3552', bruma:'#76718A',
+      coral:'#FF5A3C', coraldeep:'#E8482C', menta:'#15B79E', mentadeep:'#0E8C79', ambar:'#FFB627',
+      paper:'#F6F1FF', violet:'#7C5CFF'
+    },
+    fontFamily: {
+      display:['Fraunces','Georgia','serif'], sans:['Figtree','system-ui','sans-serif'], mono:['"DM Mono"','monospace']
     }
-  ]
-}">
-    
-    <!-- Icons for different devices -->
-    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE1MiIgdmlld0JveD0iMCAwIDE1MiA1MiIgZmlsbD0iIzY1N0RuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48L3N2Zz4=">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE1MiIgdmlld0JveD0iMCAwIDE1MiA1MiIgZmlsbD0iIzY1N0RuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48L3N2Zz4=">
-    
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            25%, 75% { opacity: 0.3; }
-        }
-        .blink-hint {
-            animation: blink 0.6s ease-in-out 3;
-        }
-        .pulse-grow {
-            animation: pulse 0.8s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* PWA Install Button */
-        .install-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: none;
-        }
-        
-        /* Prevent text selection for better mobile experience */
-        .no-select {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-    </style>
+  }}}
+</script>
+<style>
+  body{ background:#FCF8F3; }
+  .no-select{ -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
+  .wave{ display:flex; align-items:flex-end; gap:4px; height:28px; justify-content:center; }
+  .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+    background:linear-gradient(to top,#15B79E,#FF5A3C 60%,#FFB627); animation:vox 1.3s ease-in-out infinite; }
+  @keyframes vox{0%,100%{transform:scaleY(.25);}50%{transform:scaleY(1);}}
+  @keyframes blink{ 0%,50%{opacity:1;} 25%,75%{opacity:.3;} }
+  .blink-hint{ animation:blink .6s ease-in-out 3; }
+  @keyframes pulse{ 0%{transform:scale(1);} 50%{transform:scale(1.12);} 100%{transform:scale(1);} }
+  .pulse-grow{ animation:pulse .85s ease-in-out infinite; }
+  .wa-fab{ position:fixed; z-index:70; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff;
+    font-family:'Figtree',sans-serif; font-weight:600; text-decoration:none; border-radius:999px;
+    box-shadow:0 10px 30px rgba(37,211,102,.45); padding:13px 18px; transition:transform .2s; }
+  .wa-fab:active{ transform:scale(.95); }
+  @media(max-width:420px){ .wa-label{ display:none; } }
+  :focus-visible{ outline:3px solid #FF5A3C; outline-offset:3px; border-radius:12px; }
+  @media(prefers-reduced-motion:reduce){ .wave i,.pulse-grow,.blink-hint{ animation:none !important; } }
+</style>
 </head>
-<body class="no-select">
-    <div id="root"></div>
-    
-    <!-- PWA Install Button -->
-    <button id="installButton" class="install-button bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
-        📱 Instalar App
-    </button>
-    
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        
-        const SequenceMemoryGame = () => {
-          // All your existing game code remains the same
-          const emojiPools = [
-            ['👽', '🤖', '👻', '🦄', '🐉', '🦋', '🐙', '🦎', '🐸', '🦊', 
-             '🧚', '🧛', '🧞', '🧜', '🦸', '🦹', '🧙', '🦅', '🐺', '🦁',
-             '🐯', '🐨', '🐼', '🦘', '🦝'],
-            ['💄', '👑', '💎', '⌚', '👜', '🎀', '💍', '🕶️', '👠', '🧢', 
-             '🎩', '👒', '🧣', '🧤', '👗', '👔', '💼', '👛', '🎒', '👝',
-             '🧳', '🥾', '👟', '🩴', '👡'],
-            ['🎄', '🌺', '🌙', '⭐', '🌈', '🔥', '❄️', '🌸', '🍀', '🌊', 
-             '🌞', '⛅', '🌩️', '🌪️', '🌋', '🌵', '🌿', '🌱', '🌴', '🌲',
-             '🌻', '🌷', '🌹', '🌼', '🌾'],
-            ['🍊', '🍓', '🍎', '🍌', '🥝', '🍇', '🍑', '🥭', '🍍', '🥥', 
-             '🍒', '🍈', '🍉', '🫐', '🥑', '🍅', '🥒', '🍋', '🍐', '🥔',
-             '🧅', '🧄', '🌽', '🥕', '🫒'],
-            ['🎤', '🎸', '🎹', '🥁', '🎺', '🎻', '🪕', '🎷', '🎲', '🎯', 
-             '🎪', '🎭', '🎨', '🎬', '🎧', '🎼', '🎵', '🎶', '🎳', '🎮',
-             '🕹️', '🎰', '🎪', '🎡', '🎢'],
-            ['🚖', '🚗', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', 
-             '🚚', '🚛', '🚜', '🏍️', '🚲', '🛴', '🚁', '✈️', '🛸', '🚀',
-             '⛵', '🛥️', '🚢', '🚂', '🚃'],
-            ['☎️', '📱', '💻', '⌨️', '🖥️', '📺', '📻', '⏰', '📷', '🎮', 
-             '🖱️', '💾', '💿', '📀', '🔌', '🔋', '💡', '🔦', '📡', '🔭',
-             '🔬', '⚗️', '🧪', '🔍', '📊'],
-            ['🏠', '🏢', '🏰', '🏛️', '⛪', '🏭', '🗼', '🎡', '🎢', '🎠', 
-             '🏟️', '🏗️', '🏘️', '🏙️', '🏚️', '🏜️', '🏞️', '🏖️', '🏝️', '🏔️',
-             '🗻', '🏕️', '🏜️', '🏟️', '🏛️'],
-            ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸',
-             '🥅', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🏵️', '🎗️', '🎫',
-             '🎟️', '🎪', '🎭', '🎨', '🎬'],
-            ['🔨', '⚒️', '🛠️', '🔧', '🔩', '⚙️', '🧰', '🔗', '⛓️', '🧲',
-             '🔫', '💣', '🧨', '🔪', '⚔️', '🛡️', '🚬', '⚰️', '⚱️', '🗿',
-             '🪓', '⛏️', '🔱', '🏹', '🛞'],
-            ['🌌', '🌠', '☄️', '🪐', '🌍', '🌎', '🌏', '🌕', '🌖', '🌗',
-             '🌘', '🌑', '🌒', '🌓', '🌔', '🌛', '🌜', '🌝', '🌞', '⭐',
-             '🌟', '✨', '💫', '🔮', '🧿'],
-            ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔',
-             '❣️', '💕', '💖', '💗', '💘', '💝', '💞', '💟', '☮️', '✝️',
-             '☪️', '🕉️', '☸️', '✡️', '🔯']
-          ];
+<body class="no-select font-sans text-tinta">
+  <div id="root"></div>
 
-          const [currentLevel, setCurrentLevel] = useState(1);
-          const [gamePhase, setGamePhase] = useState('start');
-          const [sequence, setSequence] = useState([]);
-          const [userInput, setUserInput] = useState([]);
-          const [availableEmojis, setAvailableEmojis] = useState([]);
-          const [showingIndex, setShowingIndex] = useState(0);
-          const [score, setScore] = useState(0);
-          const [feedback, setFeedback] = useState('');
-          const [showHint, setShowHint] = useState(false);
-          const [usedEmojis, setUsedEmojis] = useState(new Set());
-          const maxLevel = 5;
+  <a class="wa-fab" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20en%20la%20Lecci%C3%B3n%204%20(memoria%20visual)%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
+     target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+     style="bottom:calc(1.1rem + env(safe-area-inset-bottom)); right:1.1rem;">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
+    <span class="wa-label">WhatsApp</span>
+  </a>
 
-          // All your existing functions remain the same
-          const getRandomEmoji = (excludeSet) => {
-            const allEmojis = emojiPools.flat();
-            const availableEmojis = allEmojis.filter(emoji => !excludeSet.has(emoji));
-            
-            if (availableEmojis.length === 0) {
-              setUsedEmojis(new Set());
-              return allEmojis[Math.floor(Math.random() * allEmojis.length)];
-            }
-            
-            return availableEmojis[Math.floor(Math.random() * availableEmojis.length)];
-          };
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-          const generateSequence = (level) => {
-            const sequenceLength = 4 + (level - 1) * 2;
-            const sequenceSet = new Set();
-            const newSequence = [];
-            
-            while (newSequence.length < sequenceLength) {
-              const emoji = getRandomEmoji(new Set([...usedEmojis, ...sequenceSet]));
-              sequenceSet.add(emoji);
-              newSequence.push(emoji);
-            }
-            
-            setUsedEmojis(prev => new Set([...prev, ...sequenceSet]));
-            
-            const allAvailable = [...newSequence];
-            while (allAvailable.length < 16) {
-              const emoji = getRandomEmoji(new Set(allAvailable));
-              if (!allAvailable.includes(emoji)) {
-                allAvailable.push(emoji);
-              }
-            }
-            
-            for (let i = allAvailable.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [allAvailable[i], allAvailable[j]] = [allAvailable[j], allAvailable[i]];
-            }
-            
-            return { sequence: newSequence, available: allAvailable };
-          };
+    const emojiPools = [
+      ['👽','🤖','👻','🦄','🐉','🦋','🐙','🦎','🐸','🦊','🧚','🧛','🧞','🧜','🦸','🦹','🧙','🦅','🐺','🦁','🐯','🐨','🐼','🦘','🦝'],
+      ['💄','👑','💎','⌚','👜','🎀','💍','🕶️','👠','🧢','🎩','👒','🧣','🧤','👗','👔','💼','👛','🎒','👝','🧳','🥾','👟','🩴','👡'],
+      ['🎄','🌺','🌙','⭐','🌈','🔥','❄️','🌸','🍀','🌊','🌞','⛅','🌩️','🌪️','🌋','🌵','🌿','🌱','🌴','🌲','🌻','🌷','🌹','🌼','🌾'],
+      ['🍊','🍓','🍎','🍌','🥝','🍇','🍑','🥭','🍍','🥥','🍒','🍈','🍉','🫐','🥑','🍅','🥒','🍋','🍐','🥔','🧅','🧄','🌽','🥕','🫒'],
+      ['🎤','🎸','🎹','🥁','🎺','🎻','🪕','🎷','🎲','🎯','🎪','🎭','🎨','🎬','🎧','🎼','🎵','🎶','🎳','🎮','🕹️','🎰','🎡','🎢','🪁'],
+      ['🚖','🚗','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐','🚚','🚛','🚜','🏍️','🚲','🛴','🚁','✈️','🛸','🚀','⛵','🛥️','🚢','🚂','🚃'],
+      ['☎️','📱','💻','⌨️','🖥️','📺','📻','⏰','📷','🔌','🖱️','💾','💿','📀','🔋','💡','🔦','📡','🔭','🔬','⚗️','🧪','🔍','📊','🗜️'],
+      ['🏠','🏢','🏰','🏛️','⛪','🏭','🗼','🎠','🏟️','🏗️','🏘️','🏙️','🏚️','🏜️','🏞️','🏖️','🏝️','🏔️','🗻','🏕️','🌉','🏯','🏬','🏤','🕌'],
+      ['⚽','🏀','🏈','⚾','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🏆','🥇','🥈','🥉','🏅','🎖️','🏵️','🎗️','🎫','🎟️','🥏','🏏','🥍','🛹'],
+      ['🔨','⚒️','🛠️','🔧','🔩','⚙️','🧰','🔗','⛓️','🧲','🪝','🧱','🪚','🪛','🪜','🧯','🪣','🧹','🧺','🗝️','🪓','⛏️','🔱','🏹','🛞'],
+      ['🌌','🌠','☄️','🪐','🌍','🌎','🌏','🌕','🌖','🌗','🌘','🌑','🌒','🌓','🌔','🌛','🌜','🌝','✨','⭐','🌟','💫','🔮','🧿','🛰️'],
+      ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💖','💗','💘','💝','💞','💟','🫶','💌','💋','🌹','😍','🥰','💐']
+    ];
 
-          const startLevel = () => {
-            const { sequence: newSequence, available } = generateSequence(currentLevel);
-            setSequence(newSequence);
-            setAvailableEmojis(available);
-            setUserInput([]);
-            setShowingIndex(0);
-            setGamePhase('showing');
-            setFeedback('');
-            setShowHint(false);
-          };
+    // ── 12 niveles en 3 bloques de 4 ──
+    const LEVELS = [
+      {len:3, show:1200}, {len:4, show:1200}, {len:5, show:1100}, {len:6, show:1100},   // Principiante
+      {len:6, show:900},  {len:7, show:900},  {len:8, show:850},  {len:9, show:800},    // Intermedio
+      {len:9, show:700},  {len:10,show:650},  {len:11,show:600},  {len:12,show:550},    // Experto
+    ];
+    const TIERS = [
+      {name:'Principiante', range:'Niveles 1–4',  color:'coral', from:0, to:4},
+      {name:'Intermedio',   range:'Niveles 5–8',  color:'menta', from:4, to:8},
+      {name:'Experto',      range:'Niveles 9–12', color:'ambar', from:8, to:12},
+    ];
+    const TC = {
+      coral: {dot:'bg-coral',  panel:'bg-coral/5',  ring:'border-coral/40',  text:'text-coraldeep'},
+      menta: {dot:'bg-menta',  panel:'bg-menta/5',  ring:'border-menta/40',  text:'text-mentadeep'},
+      ambar: {dot:'bg-ambar',  panel:'bg-ambar/10', ring:'border-ambar/50',  text:'text-[#A9760A]'},
+    };
+    const tierOf = (lvl) => lvl<=4?0 : lvl<=8?1 : 2;
+    const roundUp4 = (x)=>Math.ceil(x/4)*4;
+    const gridFor = (len)=>Math.min(20, Math.max(12, roundUp4(len+4)));
 
-          const handleEmojiClick = (emoji) => {
-            if (gamePhase !== 'input') return;
-            
-            const newInput = [...userInput, emoji];
-            setUserInput(newInput);
-            
-            if (newInput.length === sequence.length) {
-              checkAnswer(newInput);
-            }
-          };
+    const App = () => {
+      const [phase, setPhase] = useState('menu');     // menu | start | showing | input | result
+      const [level, setLevel] = useState(1);
+      const [sequence, setSequence] = useState([]);
+      const [available, setAvailable] = useState([]);
+      const [userInput, setUserInput] = useState([]);
+      const [showingIndex, setShowingIndex] = useState(0);
+      const [score, setScore] = useState(0);
+      const [completed, setCompleted] = useState(new Set());
+      const [correct, setCorrect] = useState(false);
+      const [showHint, setShowHint] = useState(false);
 
-          const checkAnswer = (input) => {
-            const isCorrect = input.every((emoji, idx) => emoji === sequence[idx]);
-            
-            if (isCorrect) {
-              setScore(score + currentLevel * 10);
-              setFeedback('¡Perfecto! 🎉');
-              setGamePhase('result');
-            } else {
-              setFeedback('Inténtalo de nuevo 💪');
-              setGamePhase('result');
-            }
-          };
+      const generate = (lvl) => {
+        const len = LEVELS[lvl-1].len, gridN = gridFor(len);
+        const all = emojiPools.flat();
+        const seq = [];
+        while(seq.length < len){ const e = all[Math.floor(Math.random()*all.length)]; if(!seq.includes(e)) seq.push(e); }
+        const avail = [...seq];
+        while(avail.length < gridN){ const e = all[Math.floor(Math.random()*all.length)]; if(!avail.includes(e)) avail.push(e); }
+        for(let i=avail.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [avail[i],avail[j]]=[avail[j],avail[i]]; }
+        return {seq, avail};
+      };
 
-          const showHintFunction = () => {
-            setShowHint(true);
-            setTimeout(() => setShowHint(false), 2000);
-          };
+      const pickLevel = (lvl) => { setLevel(lvl); setPhase('start'); };
+      const beginLevel = () => {
+        const {seq, avail} = generate(level);
+        setSequence(seq); setAvailable(avail); setUserInput([]); setShowingIndex(0); setShowHint(false); setPhase('showing');
+      };
 
-          const nextLevel = () => {
-            if (currentLevel < maxLevel) {
-              setCurrentLevel(currentLevel + 1);
-              setGamePhase('start');
-            } else {
-              setFeedback('¡Completaste todos los niveles! 🏆');
-            }
-          };
+      useEffect(() => {
+        if(phase!=='showing') return;
+        if(showingIndex < sequence.length){
+          const t = setTimeout(()=>setShowingIndex(i=>i+1), LEVELS[level-1].show);
+          return ()=>clearTimeout(t);
+        } else {
+          const t = setTimeout(()=>setPhase('input'), 700);
+          return ()=>clearTimeout(t);
+        }
+      }, [phase, showingIndex, sequence.length, level]);
 
-          const resetGame = () => {
-            setCurrentLevel(1);
-            setScore(0);
-            setGamePhase('start');
-            setFeedback('');
-            setUsedEmojis(new Set());
-          };
+      const handleEmoji = (emoji) => {
+        if(phase!=='input' || userInput.includes(emoji)) return;
+        const next = [...userInput, emoji];
+        setUserInput(next);
+        if(next.length === sequence.length){
+          const ok = next.every((e,i)=>e===sequence[i]);
+          setCorrect(ok);
+          if(ok){ setScore(s=>s + level*10); setCompleted(prev=>new Set([...prev, level])); }
+          setTimeout(()=>setPhase('result'), 350);
+        }
+      };
+      const clearInput = () => setUserInput([]);
+      const hint = () => { setShowHint(true); setTimeout(()=>setShowHint(false), 1800); };
+      const nextLevel = () => { if(level<12) pickLevel(level+1); else setPhase('menu'); };
+      const resetProgress = () => { setScore(0); setCompleted(new Set()); setPhase('menu'); };
 
-          const clearInput = () => {
-            setUserInput([]);
-          };
+      // ── UI helpers ──
+      const Header = () => (
+        <header className="text-center pt-7 pb-1">
+          <span className="font-mono text-[0.68rem] tracking-[0.26em] uppercase text-coral inline-flex items-center gap-2.5">
+            <span className="w-6 h-[2px] bg-coral rounded"></span>Lección 4 · Juego mental
+          </span>
+          <h1 className="font-display font-black text-4xl sm:text-5xl mt-3 leading-none"
+              style={{background:'linear-gradient(120deg,#FF5A3C 35%,#7C5CFF)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent'}}>
+            Memoria Visual
+          </h1>
+          <div className="wave my-3.5"><Wave/></div>
+          <p className="text-tintasoft max-w-md mx-auto text-[0.98rem]">Memoriza la secuencia y reprodúcela. Tu memoria es un músculo: entrénalo.</p>
+        </header>
+      );
 
-          const handleTransformationClick = () => {
-            alert('🎉 ¡Bienvenido al Programa de Transformación de 3 Meses de ProfGermanDario!\n\n📧 Contacto: profgermandario@transformation.com\n📱 WhatsApp: +57 300 123 4567\n\n🧠 Entrena tu mente mientras transformas tu vida.\n¡Comienza tu viaje de transformación hoy mismo!');
-          };
+      const StatBar = () => (
+        <div className="flex bg-white border border-tinta/10 rounded-2xl overflow-hidden shadow-[0_8px_24px_rgba(26,23,48,0.06)] mb-5">
+          <div className="flex-1 py-3 text-center border-r border-tinta/5">
+            <div className="font-display font-black text-2xl text-coral leading-none">{score}</div>
+            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma mt-1.5">Puntos</div>
+          </div>
+          <div className="flex-1 py-3 text-center">
+            <div className="font-display font-black text-2xl text-mentadeep leading-none">{completed.size}/12</div>
+            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma mt-1.5">Completados</div>
+          </div>
+        </div>
+      );
 
-          useEffect(() => {
-            if (gamePhase === 'showing' && showingIndex < sequence.length) {
-              const timer = setTimeout(() => {
-                setShowingIndex(showingIndex + 1);
-              }, 1200);
-              return () => clearTimeout(timer);
-            } else if (gamePhase === 'showing' && showingIndex >= sequence.length) {
-              setTimeout(() => {
-                setGamePhase('input');
-              }, 800);
-            }
-          }, [gamePhase, showingIndex, sequence.length]);
+      const tierBadge = (lvl) => {
+        const t = TIERS[tierOf(lvl)];
+        return <span className={`inline-flex items-center gap-2 font-mono text-[0.62rem] tracking-[0.14em] uppercase ${TC[t.color].text}`}>
+          <span className={`w-2 h-2 rounded-full ${TC[t.color].dot}`}></span>{t.name}
+        </span>;
+      };
 
-          return (
-            <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-2 sm:p-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-2xl shadow-lg">
-                  <div className="text-center">
-                    <h1 className="text-xl sm:text-2xl font-bold mb-2">
-                      🧠 Entrenamiento de Memoria Visual
-                    </h1>
-                    <p className="text-blue-100 text-sm sm:text-base">
-                      by <span className="font-semibold">ProfGermanDario</span> - Programa de Transformación de 3 Meses
-                    </p>
-                  </div>
+      // ── PHASES ──
+      let body = null;
+
+      if(phase==='menu'){
+        body = (
+          <div>
+            <p className="text-center text-sm text-bruma mb-5">
+              👀 Observa la secuencia y <span className="text-coral font-semibold">reprodúcela en orden</span>. Cada 4 niveles sube la dificultad.
+            </p>
+            <StatBar/>
+            {TIERS.map((t,ti)=>(
+              <div key={ti} className={`${TC[t.color].panel} rounded-2xl p-4 mb-5`}>
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`inline-flex items-center gap-2 font-display font-bold text-base ${TC[t.color].text}`}>
+                    <span className={`w-2.5 h-2.5 rounded-full ${TC[t.color].dot}`}></span>{t.name}
+                  </span>
+                  <span className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma">{t.range}</span>
                 </div>
-
-                <div className="bg-white shadow-2xl p-4 sm:p-8">
-                  <div className="text-center mb-6 sm:mb-8">
-                    <div className="flex justify-center items-center space-x-3 sm:space-x-6 text-sm sm:text-lg">
-                      <div className="bg-blue-100 px-2 sm:px-4 py-1 sm:py-2 rounded-lg">
-                        <span className="font-semibold text-blue-800">Nivel: {currentLevel}/{maxLevel}</span>
-                      </div>
-                      <div className="bg-green-100 px-2 sm:px-4 py-1 sm:py-2 rounded-lg">
-                        <span className="font-semibold text-green-800">Puntos: {score}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {gamePhase === 'start' && (
-                    <div className="text-center">
-                      <div className="mb-6">
-                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">
-                          Nivel {currentLevel} de {maxLevel}
-                        </h2>
-                        <p className="text-gray-600 text-base sm:text-lg">
-                          Memoriza la secuencia de {4 + (currentLevel - 1) * 2} emojis
-                        </p>
-                        <div className="mt-3 text-sm text-gray-500">
-                          {currentLevel === 1 && "Comenzando con 4 emojis"}
-                          {currentLevel === 2 && "6 emojis - ¡Más desafiante!"}
-                          {currentLevel === 3 && "8 emojis - ¡Excelente progreso!"}
-                          {currentLevel === 4 && "10 emojis - ¡Casi experto!"}
-                          {currentLevel === 5 && "12 emojis - ¡Nivel maestro!"}
-                        </div>
-                      </div>
-                      <button
-                        onClick={startLevel}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl text-lg sm:text-xl transition-colors duration-200"
-                      >
-                        Comenzar Nivel {currentLevel}
+                <div className="grid grid-cols-4 gap-2.5">
+                  {Array.from({length:4}).map((_,k)=>{
+                    const lvl = t.from + k + 1;
+                    const done = completed.has(lvl);
+                    return (
+                      <button key={lvl} onClick={()=>pickLevel(lvl)}
+                        style={{touchAction:'manipulation'}}
+                        className={`aspect-square rounded-2xl border-2 flex flex-col items-center justify-center relative transition hover:-translate-y-0.5 active:scale-95
+                          ${done ? 'bg-menta/15 border-menta' : 'bg-white '+TC[t.color].ring}`}>
+                        <span className="font-display font-black text-2xl text-tinta leading-none">{lvl}</span>
+                        <span className="font-mono text-[0.58rem] text-bruma mt-1">{LEVELS[lvl-1].len} emojis</span>
+                        {done && <span className="absolute top-1.5 right-2 text-menta text-sm">✓</span>}
                       </button>
-                    </div>
-                  )}
-
-                  {gamePhase === 'showing' && (
-                    <div className="text-center">
-                      <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 sm:mb-6">
-                        ¡Memoriza esta secuencia!
-                      </h2>
-                      <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-                        {sequence.map((emoji, idx) => (
-                          <div
-                            key={idx}
-                            className={`text-5xl sm:text-8xl p-3 sm:p-6 rounded-xl transition-all duration-300 ${
-                              idx < showingIndex
-                                ? 'bg-yellow-200 scale-110'
-                                : idx === showingIndex
-                                ? 'bg-yellow-400 scale-125 pulse-grow'
-                                : 'bg-gray-100 opacity-50'
-                            }`}
-                          >
-                            {idx <= showingIndex ? emoji : '❓'}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="text-gray-600 text-sm sm:text-base">
-                        Mostrando emoji {Math.min(showingIndex + 1, sequence.length)} de {sequence.length}
-                      </div>
-                    </div>
-                  )}
-
-                  {gamePhase === 'input' && (
-                    <div className="text-center">
-                      <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 sm:mb-6">
-                        ¡Reproduce la secuencia!
-                      </h2>
-                      
-                      <div className="mb-6">
-                        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4">
-                          {sequence.map((_, idx) => (
-                            <div
-                              key={idx}
-                              className="text-4xl sm:text-6xl p-3 sm:p-4 border-2 border-dashed border-gray-300 rounded-lg min-w-[70px] sm:min-w-[100px] min-h-[70px] sm:min-h-[100px] flex items-center justify-center bg-gray-50"
-                            >
-                              {userInput[idx] || '?'}
-                            </div>
-                          ))}
-                        </div>
-                        <div className="text-xs sm:text-sm text-gray-600 mb-4">
-                          {userInput.length} de {sequence.length} seleccionados
-                        </div>
-                        
-                        <button
-                          onClick={showHintFunction}
-                          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base mb-4"
-                        >
-                          💡 Mostrar Pista
-                        </button>
-                      </div>
-
-                      <div className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 max-w-lg sm:max-w-3xl mx-auto">
-                        {availableEmojis.map((emoji, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleEmojiClick(emoji)}
-                            className={`text-3xl sm:text-5xl p-3 sm:p-4 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 hover:scale-110 transform disabled:opacity-50 ${
-                              showHint && sequence.includes(emoji) ? 'blink-hint bg-yellow-200' : ''
-                            }`}
-                            disabled={userInput.includes(emoji)}
-                          >
-                            {emoji}
-                          </button>
-                        ))}
-                      </div>
-
-                      <button
-                        onClick={clearInput}
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base"
-                      >
-                        🗑️ Limpiar
-                      </button>
-                    </div>
-                  )}
-
-                  {gamePhase === 'result' && (
-                    <div className="text-center">
-                      <div className="mb-6">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">
-                          {feedback}
-                        </h2>
-                        
-                        <div className="mb-6">
-                          <p className="text-gray-600 mb-2 text-sm sm:text-base">Secuencia correcta:</p>
-                          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4">
-                            {sequence.map((emoji, idx) => (
-                              <div key={idx} className="text-4xl sm:text-6xl p-2 sm:p-3 bg-green-100 rounded-lg">
-                                {emoji}
-                              </div>
-                            ))}
-                          </div>
-                          <p className="text-gray-600 mb-2 text-sm sm:text-base">Tu respuesta:</p>
-                          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-                            {userInput.map((emoji, idx) => (
-                              <div 
-                                key={idx} 
-                                className={`text-4xl sm:text-6xl p-2 sm:p-3 rounded-lg ${
-                                  emoji === sequence[idx] ? 'bg-green-100' : 'bg-red-100'
-                                }`}
-                              >
-                                {emoji}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-                        {feedback.includes('Perfecto') && currentLevel < maxLevel && (
-                          <button
-                            onClick={nextLevel}
-                            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
-                          >
-                            Siguiente Nivel
-                          </button>
-                        )}
-                        
-                        <button
-                          onClick={() => setGamePhase('start')}
-                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
-                        >
-                          Intentar de Nuevo
-                        </button>
-                        
-                        <button
-                          onClick={resetGame}
-                          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors duration-200"
-                        >
-                          Reiniciar Juego
-                        </button>
-                      </div>
-
-                      {currentLevel === maxLevel && feedback.includes('Perfecto') && (
-                        <div className="mt-6 p-4 bg-yellow-100 rounded-lg">
-                          <h3 className="text-xl font-bold text-yellow-800 mb-2">🎉 ¡Felicitaciones! 🎉</h3>
-                          <p className="text-yellow-700">¡Has completado todos los niveles! Tu memoria visual es excepcional.</p>
-                          <p className="text-yellow-700 mt-2">Puntuación final: <span className="font-bold">{score} puntos</span></p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-b-2xl shadow-lg">
-                  <div className="text-center">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-3">
-                      🚀 Programa de Transformación de 3 Meses
-                    </h2>
-                    <p className="text-purple-100 mb-4 text-sm sm:text-base">
-                      ¿Te gustó este entrenamiento mental? Únete al programa completo de <strong>ProfGermanDario</strong> 
-                      y transforma tu vida en 90 días.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-2 text-xs sm:text-sm mb-4">
-                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
-                        ✨ Entrenamiento Mental
-                      </div>
-                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
-                        🎯 Estrategias Probadas
-                      </div>
-                      <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
-                        🏆 Resultados Garantizados
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleTransformationClick}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base transition-all duration-200 transform hover:scale-105"
-                    >
-                      ¡Comienza Tu Transformación Hoy!
-                    </button>
-                  </div>
-                </div>
-
-                <div className="text-center mt-4 text-white text-xs sm:text-sm">
-                  <p>© 2025 ProfGermanDario - Entrenamiento Mental & Transformación Personal</p>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
-          );
-        };
+            ))}
+            {completed.size>0 && (
+              <div className="text-center mt-2">
+                <button onClick={resetProgress} className="font-mono text-xs text-bruma hover:text-coral transition">↺ reiniciar progreso</button>
+              </div>
+            )}
+          </div>
+        );
+      }
 
-        ReactDOM.render(<SequenceMemoryGame />, document.getElementById('root'));
-    </script>
-    
-    <!-- PWA Service Worker Registration -->
-    <script>
-        let deferredPrompt;
-        
-        // Service Worker registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('data:text/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdtZW1vcnktZ2FtZS12MSc7CmNvbnN0IHVybHNUb0NhY2hlID0gWwogICcvJywKICAnaHR0cHM6Ly91bnBrZy5jb20vcmVhY3RAMTgvdW1kL3JlYWN0LmRldmVsb3BtZW50LmpzJywKICAnaHR0cHM6Ly91bnBrZy5jb20vcmVhY3QtZG9tQDE4L3VtZC9yZWFjdC1kb20uZGV2ZWxvcG1lbnQuanMnLAogICdodHRwczovL3VucGtnLmNvbS9AYmFiZWwvc3RhbmRhbG9uZS9iYWJlbC5taW4uanMnLAogICdodHRwczovL2Nkbi50YWlsd2luZGNzcy5jb20nCl07CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2luc3RhbGwnLCBmdW5jdGlvbihldmVudCkgewogIGV2ZW50LndhaXRVbnRpbCgKICAgIGNhY2hlcy5vcGVuKENBQ0hFX05BTUUpCiAgICAgIC50aGVuKGZ1bmN0aW9uKGNhY2hlKSB7CiAgICAgICAgcmV0dXJuIGNhY2hlLmFkZEFsbCh1cmxzVG9DYWNoZSk7CiAgICAgIH0pCiAgKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC5yZXNwb25kV2l0aCgKICAgIGNhY2hlcy5tYXRjaChldmVudC5yZXF1ZXN0KQogICAgICAudGhlbihmdW5jdGlvbihyZXNwb25zZSkgewogICAgICAgIGlmIChyZXNwb25zZSkgewogICAgICAgICAgcmV0dXJuIHJlc3BvbnNlOwogICAgICAgIH0KICAgICAgICByZXR1cm4gZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICAgIH0pCiAgKTsKfSk7')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registrado exitosamente');
-                    })
-                    .catch(function(error) {
-                        console.log('Error al registrar ServiceWorker:', error);
-                    });
-            });
-        }
-        
-        // PWA Install prompt
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installButton').style.display = 'block';
-        });
-        
-        document.getElementById('installButton').addEventListener('click', (e) => {
-            document.getElementById('installButton').style.display = 'none';
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('Usuario aceptó instalar la PWA');
-                } else {
-                    console.log('Usuario rechazó instalar la PWA');
-                }
-                deferredPrompt = null;
-            });
-        });
-        
-        // Hide install button when app is installed
-        window.addEventListener('appinstalled', (evt) => {
-            console.log('PWA instalada exitosamente');
-            document.getElementById('installButton').style.display = 'none';
-        });
-    </script>
+      if(phase==='start'){
+        const cfg = LEVELS[level-1];
+        body = (
+          <div className="rounded-[20px] text-paper p-8 text-center"
+               style={{background:'radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%)'}}>
+            <div className="mb-2">{tierBadge(level)}</div>
+            <h2 className="font-display font-black text-3xl text-paper mb-2">Nivel {level}</h2>
+            <p className="text-paper/70">Memoriza una secuencia de <b className="text-ambar">{cfg.len} emojis</b>.</p>
+            <p className="font-mono text-[0.65rem] tracking-wider uppercase text-paper/50 mt-2">
+              Velocidad: {cfg.show<=650?'rápida':cfg.show<=900?'media':'tranquila'}
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 mt-7">
+              <button onClick={beginLevel} className="bg-coral text-white font-semibold rounded-full px-7 py-3.5 shadow-[0_8px_26px_rgba(255,90,60,0.32)] hover:bg-coraldeep transition">Comenzar ▶</button>
+              <button onClick={()=>setPhase('menu')} className="border-[1.5px] border-paper/25 text-paper font-semibold rounded-full px-6 py-3.5 hover:border-paper transition">Volver al mapa</button>
+            </div>
+          </div>
+        );
+      }
+
+      if(phase==='showing'){
+        body = (
+          <div className="text-center py-2">
+            <h2 className="font-display font-bold text-xl sm:text-2xl mb-1">¡Memoriza la secuencia!</h2>
+            <p className="font-mono text-[0.65rem] tracking-widest uppercase text-bruma mb-6">
+              {Math.min(showingIndex+1, sequence.length)} de {sequence.length}
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-2.5 sm:gap-3">
+              {sequence.map((emoji,idx)=>(
+                <div key={idx}
+                  className={`rounded-2xl flex items-center justify-center transition-all duration-300 w-[clamp(54px,16vw,84px)] h-[clamp(54px,16vw,84px)] text-[clamp(1.8rem,8vw,3rem)]
+                    ${idx<showingIndex ? 'bg-menta/20 scale-105'
+                      : idx===showingIndex ? 'bg-ambar scale-110 pulse-grow'
+                      : 'bg-nube opacity-50'}`}>
+                  {idx<=showingIndex ? emoji : '❓'}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      if(phase==='input'){
+        const cols = available.length>12 ? 'grid-cols-4 sm:grid-cols-5' : 'grid-cols-4';
+        body = (
+          <div className="text-center">
+            <h2 className="font-display font-bold text-xl sm:text-2xl mb-1">¡Reprodúcela!</h2>
+            <p className="font-mono text-[0.65rem] tracking-widest uppercase text-bruma mb-5">{userInput.length} de {sequence.length}</p>
+
+            <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
+              {sequence.map((_,idx)=>(
+                <div key={idx}
+                  className="rounded-xl border-2 border-dashed border-tinta/15 bg-nube/40 flex items-center justify-center w-[clamp(46px,13vw,68px)] h-[clamp(46px,13vw,68px)] text-[clamp(1.4rem,6vw,2.2rem)]">
+                  {userInput[idx] || ''}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center gap-2 mb-6">
+              <button onClick={hint} className="bg-ambar/20 text-[#A9760A] font-semibold rounded-full px-4 py-2 text-sm hover:bg-ambar/30 transition">💡 Pista</button>
+              <button onClick={clearInput} className="bg-nube text-tinta font-semibold rounded-full px-4 py-2 text-sm hover:bg-[#E9E2D6] transition">🗑️ Limpiar</button>
+            </div>
+
+            <div className={`grid ${cols} gap-2.5 max-w-md mx-auto`}>
+              {available.map((emoji,idx)=>{
+                const used = userInput.includes(emoji);
+                const hl = showHint && sequence.includes(emoji);
+                return (
+                  <button key={idx} onClick={()=>handleEmoji(emoji)} disabled={used}
+                    style={{touchAction:'manipulation'}}
+                    className={`aspect-square rounded-2xl flex items-center justify-center text-[clamp(1.5rem,7vw,2.2rem)] transition active:scale-95
+                      ${used ? 'opacity-25 bg-nube' : hl ? 'blink-hint bg-ambar/40' : 'bg-nube hover:-translate-y-0.5 hover:bg-[#E9E2D6]'}`}>
+                    {emoji}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }
+
+      if(phase==='result'){
+        body = (
+          <div className="text-center">
+            <h2 className="font-display font-black text-3xl mb-1" style={{color: correct?'#0E8C79':'#C8453F'}}>
+              {correct ? '¡Perfecto! 🎉' : 'Casi… 💪'}
+            </h2>
+            <p className="text-tintasoft mb-6">{correct ? `+${level*10} puntos` : 'Compara y vuelve a intentarlo.'}</p>
+
+            <p className="font-mono text-[0.62rem] tracking-widest uppercase text-bruma mb-2">Secuencia correcta</p>
+            <div className="flex flex-wrap justify-center gap-2 mb-5">
+              {sequence.map((e,idx)=>(
+                <div key={idx} className="rounded-xl bg-menta/15 flex items-center justify-center w-[clamp(42px,11vw,58px)] h-[clamp(42px,11vw,58px)] text-[clamp(1.3rem,5vw,2rem)]">{e}</div>
+              ))}
+            </div>
+            <p className="font-mono text-[0.62rem] tracking-widest uppercase text-bruma mb-2">Tu respuesta</p>
+            <div className="flex flex-wrap justify-center gap-2 mb-7">
+              {userInput.map((e,idx)=>(
+                <div key={idx} className={`rounded-xl flex items-center justify-center w-[clamp(42px,11vw,58px)] h-[clamp(42px,11vw,58px)] text-[clamp(1.3rem,5vw,2rem)] ${e===sequence[idx]?'bg-menta/15':'bg-[#F26D6D]/20'}`}>{e}</div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {correct && level<12 && (
+                <button onClick={nextLevel} className="bg-coral text-white font-semibold rounded-full px-6 py-3 hover:bg-coraldeep transition">Siguiente nivel ▶</button>
+              )}
+              <button onClick={beginLevel} className="border-[1.5px] border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-tinta transition">Reintentar</button>
+              <button onClick={()=>setPhase('menu')} className="border-[1.5px] border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-tinta transition">Mapa de niveles</button>
+            </div>
+
+            {correct && level===12 && (
+              <div className="mt-6 bg-ambar/15 border border-ambar/40 rounded-2xl p-4">
+                <h3 className="font-display font-bold text-lg text-[#A9760A] mb-1">🏆 ¡Completaste los 12 niveles!</h3>
+                <p className="text-tintasoft text-sm">Tu memoria visual es excepcional. Puntuación final: <b>{score} puntos</b>.</p>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen relative pb-24">
+          <div className="fixed inset-0 -z-10" style={{background:'radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,0.06), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,0.07), transparent 60%)'}} />
+          <div className="w-full max-w-2xl mx-auto px-4">
+            <Header/>
+            <div className="bg-white rounded-[20px] border border-tinta/5 shadow-[0_10px_30px_rgba(26,23,48,0.08)] p-4 sm:p-7 mt-3">
+              {body}
+            </div>
+            <p className="text-center mt-5 font-mono text-[0.62rem] tracking-[0.1em] uppercase text-bruma">
+              ProfGermandario · Entrena tu mente
+            </p>
+          </div>
+        </div>
+      );
+    };
+
+    const Wave = () => (
+      <React.Fragment>
+        {Array.from({length:22}).map((_,i)=>(
+          <i key={i} style={{ height:(8+Math.abs(Math.sin(i*0.6))*18)+'px', animationDelay:(i*0.07)+'s', animationDuration:(1.1+(i%5)*0.12)+'s' }} />
+        ))}
+      </React.Fragment>
+    );
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
 </body>
 </html>

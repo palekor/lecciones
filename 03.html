@@ -1,141 +1,508 @@
 <!DOCTYPE html>
-<!-- saved from url=(0062)file:///D:/000%20WEB/Resourses/100%20verbs%20all%20tenses.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Verbs Conjugation Table with Spanish Translation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            position: relative;
-        }
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        td:hover::after {
-            content: attr(data-es);
-            position: absolute;
-            left: 0;
-            top: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            z-index: 1;
-            white-space: nowrap;
-        }
-    </style>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tiempos y Conectores — Lección 3 · ProfGermandario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lienzo:#FCF8F3; --nube:#F2ECE2; --tinta:#1A1730; --tintasoft:#3A3552; --bruma:#76718A;
+  --coral:#FF5A3C; --coraldeep:#E8482C; --menta:#15B79E; --mentadeep:#0E8C79; --ambar:#FFB627;
+  --paper:#F6F1FF; --violet:#7C5CFF; --violetlight:#A78BFA; --ok:#34D399; --err:#F26D6D;
+  --linea:rgba(26,23,48,0.10); --linea-soft:rgba(26,23,48,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--lienzo); color:var(--tinta);
+  font-family:'Figtree',system-ui,sans-serif; min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased; padding-bottom:92px; -webkit-tap-highlight-color:transparent;
+}
+body::before{ content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,0.06), transparent 60%),
+             radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,0.07), transparent 60%); }
+.shell{ width:100%; max-width:680px; padding:0 18px; position:relative; z-index:10; }
+
+/* HEADER */
+header{ text-align:center; padding:30px 0 8px; }
+.eyebrow{ font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.26em; text-transform:uppercase;
+  color:var(--coral); display:inline-flex; align-items:center; gap:10px; }
+.eyebrow::before{ content:''; width:24px; height:2px; background:var(--coral); border-radius:2px; }
+header h1{ font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2.1rem,6.5vw,3rem); line-height:1.02;
+  letter-spacing:-0.02em; margin:14px 0 2px;
+  background:linear-gradient(120deg,var(--coral) 35%, var(--violet)); -webkit-background-clip:text;
+  background-clip:text; -webkit-text-fill-color:transparent; }
+header .sub{ color:var(--tintasoft); font-size:0.98rem; max-width:440px; margin:0 auto; }
+.wave{ display:flex; align-items:flex-end; gap:4px; height:30px; justify-content:center; margin:14px 0; }
+.wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+  background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar)); animation:vox 1.3s ease-in-out infinite; }
+@keyframes vox{0%,100%{transform:scaleY(.25);}50%{transform:scaleY(1);}}
+
+/* CHIPS / ROWS */
+.row{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
+.chip{ padding:9px 18px; border-radius:999px; border:1.5px solid var(--linea); background:transparent; color:var(--tintasoft);
+  font-family:'Figtree',sans-serif; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s; touch-action:manipulation; }
+.chip:hover{ border-color:var(--coral); color:var(--coral); }
+.chip.active{ background:var(--tinta); color:var(--paper); border-color:var(--tinta); }
+.sel-label{ font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--bruma); margin:2px 0 7px; text-align:center; }
+.hint{ text-align:center; font-size:0.86rem; color:var(--bruma); margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; }
+.hint .b{ color:var(--coral); }
+
+/* LEGEND */
+.legend{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; font-size:0.74rem; color:var(--tintasoft); margin-bottom:14px; }
+.legend span{ display:flex; align-items:center; gap:7px; font-weight:600; }
+.dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* SEARCH */
+.search{ width:100%; max-width:340px; margin:0 auto 18px; display:block; padding:12px 18px; border-radius:999px;
+  border:1.5px solid var(--linea); background:#fff; font-family:'Figtree',sans-serif; font-size:0.95rem; color:var(--tinta); outline:none; }
+.search:focus{ border-color:var(--coral); }
+.search::placeholder{ color:var(--bruma); }
+
+/* VERB GRID */
+#verb-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+@media(min-width:520px){ #verb-grid{ grid-template-columns:1fr 1fr; } }
+@media(min-width:760px){ #verb-grid{ grid-template-columns:1fr 1fr 1fr; } }
+.vcard{ background:#fff; border:1px solid var(--linea-soft); border-left:4px solid var(--coral); border-radius:14px;
+  padding:14px 16px; box-shadow:0 6px 18px rgba(26,23,48,0.05); cursor:pointer; transition:transform .15s, box-shadow .2s; }
+.vcard:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(26,23,48,0.10); }
+.vcard.irr{ border-left-color:var(--violet); }
+.vcard .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.vcard .base{ font-family:'Fraunces',serif; font-weight:800; font-size:1.3rem; color:var(--tinta); }
+.vcard .tag{ font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border-radius:6px; }
+.vcard .tag.reg{ background:rgba(255,90,60,0.12); color:var(--coraldeep); }
+.vcard .tag.irreg{ background:rgba(124,92,255,0.14); color:var(--violet); }
+.vcard .forms{ font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--tintasoft); margin-top:6px; }
+.vcard .forms b{ color:var(--tinta); font-weight:500; }
+.vcard .es{ font-size:0.82rem; color:var(--bruma); margin-top:4px; }
+.vcard .spk{ background:transparent; border:none; color:var(--menta); cursor:pointer; font-size:1rem; padding:2px; }
+
+/* DARK FOCAL CARD (prompt / sentence) */
+.focal{ border-radius:20px; color:var(--paper); padding:28px 24px; text-align:center;
+  background:radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%); box-shadow:0 18px 48px rgba(26,23,48,0.18); margin-bottom:16px; }
+
+/* STAT BAR */
+.stat-bar{ display:flex; background:#fff; border:1px solid var(--linea); border-radius:14px; overflow:hidden; margin-bottom:14px; box-shadow:0 8px 24px rgba(26,23,48,0.06); }
+.stat{ flex:1; padding:12px 6px; text-align:center; border-right:1px solid var(--linea-soft); }
+.stat:last-child{ border-right:none; }
+.stat-value{ font-family:'Fraunces',serif; font-weight:900; font-size:1.5rem; color:var(--coral); line-height:1; }
+.stat-value.green{ color:var(--mentadeep); } .stat-value.red{ color:var(--err); }
+.stat-label{ font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--bruma); margin-top:5px; }
+
+/* TENSES PROMPT */
+.prompt-subject{ font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ambar); margin-bottom:10px; }
+.prompt-verb{ font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2rem,7vw,2.8rem); color:var(--paper); line-height:1; }
+.prompt-verb .es{ display:block; font-family:'Figtree',sans-serif; font-weight:400; font-size:0.95rem; color:var(--paper); opacity:0.6; margin-top:6px; }
+.prompt-tense{ display:inline-block; margin-top:18px; background:rgba(246,241,255,0.1); border:1px solid rgba(246,241,255,0.18); border-radius:999px; padding:8px 18px; }
+.prompt-tense .t{ font-family:'Figtree',sans-serif; font-weight:700; font-size:0.95rem; color:var(--coral); }
+.prompt-tense .f{ display:block; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.08em; color:var(--paper); opacity:0.55; margin-top:3px; }
+
+#t-options, #options{ display:grid; grid-template-columns:1fr; gap:10px; }
+@media(min-width:520px){ #t-options{ grid-template-columns:1fr 1fr; } }
+.opt{ display:flex; align-items:center; gap:12px; background:#fff; border:1.5px solid var(--linea); border-radius:14px;
+  padding:15px 16px; min-height:56px; font-family:'Figtree',sans-serif; font-weight:700; font-size:1rem; color:var(--tinta);
+  cursor:pointer; transition:transform .12s, border-color .2s, background .2s, opacity .2s; touch-action:manipulation; text-align:left; }
+.opt:hover{ border-color:var(--coral); } .opt:active{ transform:scale(.98); }
+.opt .idx{ font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--bruma); border:1px solid var(--linea); border-radius:7px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.opt.correct{ background:var(--menta); border-color:var(--menta); color:#fff; }
+.opt.correct .idx{ color:#fff; border-color:rgba(255,255,255,.5); }
+.opt.wrong{ background:var(--err); border-color:var(--err); color:#fff; }
+.opt.wrong .idx{ color:#fff; border-color:rgba(255,255,255,.5); }
+.opt:disabled{ cursor:default; }
+
+.controls{ display:flex; gap:10px; margin-top:12px; }
+.ctrl{ flex:1; padding:12px; border-radius:12px; border:1.5px solid var(--linea); background:#fff; color:var(--tintasoft);
+  font-family:'Figtree',sans-serif; font-weight:600; font-size:0.88rem; cursor:pointer; transition:all .2s; touch-action:manipulation; }
+.ctrl:hover{ border-color:var(--coral); color:var(--coral); }
+.ctrl.primary{ background:var(--coral); color:#fff; border-color:var(--coral); }
+.ctrl.primary:hover{ background:var(--coraldeep); color:#fff; }
+
+/* CONNECTOR BUILDER */
+.slot{ background:#fff; border:1px solid var(--linea-soft); border-radius:14px; padding:12px 10px; margin-bottom:10px; box-shadow:0 6px 18px rgba(26,23,48,0.05); }
+.slot-label{ font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--bruma); text-align:center; margin-bottom:8px; }
+.slot-row{ display:flex; align-items:center; gap:8px; }
+.slot-nav{ width:42px; height:42px; flex-shrink:0; border-radius:12px; border:1.5px solid var(--linea); background:var(--nube); color:var(--tinta); font-size:1rem; cursor:pointer; transition:all .2s; touch-action:manipulation; }
+.slot-nav:hover{ border-color:var(--coral); color:var(--coral); }
+.slot-text{ flex:1; text-align:center; }
+.slot-en{ font-family:'Figtree',sans-serif; font-weight:700; font-size:1.02rem; color:var(--tinta); }
+.slot-en.conn{ color:var(--coral); }
+.slot-es{ font-size:0.78rem; color:var(--bruma); margin-top:2px; }
+.sentence{ font-family:'Fraunces',serif; font-weight:700; font-size:clamp(1.3rem,4.5vw,1.7rem); color:var(--paper); line-height:1.35; }
+.sentence .c{ color:var(--coral); font-style:italic; font-weight:500; }
+.builder-actions{ display:flex; gap:10px; justify-content:center; margin-top:18px; }
+.builder-actions .b{ display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:999px; font-family:'Figtree',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; border:none; transition:transform .15s,background .2s; touch-action:manipulation; }
+.b-listen{ background:var(--ambar); color:var(--tinta); }
+.b-rand{ background:rgba(246,241,255,0.12); color:var(--paper); border:1.5px solid rgba(246,241,255,0.22) !important; }
+.builder-actions .b:active{ transform:scale(.96); }
+
+/* FEEDBACK + WA */
+#feedback{ position:fixed; bottom:98px; left:50%; transform:translateX(-50%) translateY(40px); background:var(--tinta);
+  color:var(--paper); border-radius:999px; padding:9px 22px; font-weight:600; font-size:0.85rem; white-space:nowrap;
+  transition:transform .25s ease, opacity .25s ease; opacity:0; z-index:60; pointer-events:none; box-shadow:0 10px 30px rgba(26,23,48,.25); }
+#feedback.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+#feedback.good{ background:var(--mentadeep); } #feedback.bad{ background:#C8453F; }
+.wa-fab{ position:fixed; z-index:70; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff;
+  font-family:'Figtree',sans-serif; font-weight:600; text-decoration:none; border-radius:999px;
+  box-shadow:0 10px 30px rgba(37,211,102,.45); padding:13px 18px; transition:transform .2s; }
+.wa-fab:hover{ transform:scale(1.05); } .wa-fab:active{ transform:scale(.95); }
+@media(max-width:420px){ .wa-label{ display:none; } }
+
+.foot-note{ text-align:center; margin-top:16px; font-family:'DM Mono',monospace; font-size:0.64rem; letter-spacing:0.06em; color:var(--bruma); }
+.foot-note b{ color:var(--coral); }
+:focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:10px; }
+[hidden]{ display:none !important; }
+@media(prefers-reduced-motion:reduce){ .wave i{ animation:none; transform:scaleY(.6); } }
+</style>
 </head>
 <body>
-    <h1>English Verbs Conjugation Table with Spanish Translation</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Base Form</th>
-                <th>Simple Past</th>
-                <th>Past Participle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td data-es="ser/estar">be</td><td data-es="era/estaba">was/were</td><td data-es="sido/estado">been</td></tr>
-            <tr><td data-es="tener/haber">have</td><td data-es="tenía/había">had</td><td data-es="tenido/habido">had</td></tr>
-            <tr><td data-es="hacer">do</td><td data-es="hizo">did</td><td data-es="hecho">done</td></tr>
-            <tr><td data-es="decir">say</td><td data-es="dijo">said</td><td data-es="dicho">said</td></tr>
-            <tr><td data-es="ir">go</td><td data-es="fue">went</td><td data-es="ido">gone</td></tr>
-            <tr><td data-es="obtener">get</td><td data-es="obtuvo">got</td><td data-es="obtenido">gotten</td></tr>
-            <tr><td data-es="hacer">make</td><td data-es="hizo">made</td><td data-es="hecho">made</td></tr>
-            <tr><td data-es="saber/conocer">know</td><td data-es="supo/conoció">knew</td><td data-es="sabido/conocido">known</td></tr>
-            <tr><td data-es="pensar">think</td><td data-es="pensó">thought</td><td data-es="pensado">thought</td></tr>
-            <tr><td data-es="tomar">take</td><td data-es="tomó">took</td><td data-es="tomado">taken</td></tr>
-            <tr><td data-es="ver">see</td><td data-es="vio">saw</td><td data-es="visto">seen</td></tr>
-            <tr><td data-es="venir">come</td><td data-es="vino">came</td><td data-es="venido">come</td></tr>
-            <tr><td data-es="querer">want</td><td data-es="quiso">wanted</td><td data-es="querido">wanted</td></tr>
-            <tr><td data-es="usar">use</td><td data-es="usó">used</td><td data-es="usado">used</td></tr>
-            <tr><td data-es="encontrar">find</td><td data-es="encontró">found</td><td data-es="encontrado">found</td></tr>
-            <tr><td data-es="dar">give</td><td data-es="dio">gave</td><td data-es="dado">given</td></tr>
-            <tr><td data-es="contar/decir">tell</td><td data-es="contó/dijo">told</td><td data-es="contado/dicho">told</td></tr>
-            <tr><td data-es="trabajar">work</td><td data-es="trabajó">worked</td><td data-es="trabajado">worked</td></tr>
-            <tr><td data-es="llamar">call</td><td data-es="llamó">called</td><td data-es="llamado">called</td></tr>
-            <tr><td data-es="intentar">try</td><td data-es="intentó">tried</td><td data-es="intentado">tried</td></tr>
-            <tr><td data-es="preguntar">ask</td><td data-es="preguntó">asked</td><td data-es="preguntado">asked</td></tr>
-            <tr><td data-es="necesitar">need</td><td data-es="necesitó">needed</td><td data-es="necesitado">needed</td></tr>
-            <tr><td data-es="sentir">feel</td><td data-es="sintió">felt</td><td data-es="sentido">felt</td></tr>
-            <tr><td data-es="volverse/convertirse">become</td><td data-es="se volvió/se convirtió">became</td><td data-es="vuelto/convertido">become</td></tr>
-            <tr><td data-es="dejar/salir">leave</td><td data-es="dejó/salió">left</td><td data-es="dejado/salido">left</td></tr>
-            <tr><td data-es="poner">put</td><td data-es="puso">put</td><td data-es="puesto">put</td></tr>
-            <tr><td data-es="significar">mean</td><td data-es="significó">meant</td><td data-es="significado">meant</td></tr>
-            <tr><td data-es="mantener">keep</td><td data-es="mantuvo">kept</td><td data-es="mantenido">kept</td></tr>
-            <tr><td data-es="dejar/permitir">let</td><td data-es="dejó/permitió">let</td><td data-es="dejado/permitido">let</td></tr>
-            <tr><td data-es="comenzar">begin</td><td data-es="comenzó">began</td><td data-es="comenzado">begun</td></tr>
-            <tr><td data-es="parecer">seem</td><td data-es="pareció">seemed</td><td data-es="parecido">seemed</td></tr>
-            <tr><td data-es="ayudar">help</td><td data-es="ayudó">helped</td><td data-es="ayudado">helped</td></tr>
-            <tr><td data-es="hablar">talk</td><td data-es="habló">talked</td><td data-es="hablado">talked</td></tr>
-            <tr><td data-es="girar/convertir">turn</td><td data-es="giró/convirtió">turned</td><td data-es="girado/convertido">turned</td></tr>
-            <tr><td data-es="empezar">start</td><td data-es="empezó">started</td><td data-es="empezado">started</td></tr>
-            <tr><td data-es="mostrar">show</td><td data-es="mostró">showed</td><td data-es="mostrado">shown</td></tr>
-            <tr><td data-es="oír">hear</td><td data-es="oyó">heard</td><td data-es="oído">heard</td></tr>
-            <tr><td data-es="jugar">play</td><td data-es="jugó">played</td><td data-es="jugado">played</td></tr>
-            <tr><td data-es="correr">run</td><td data-es="corrió">ran</td><td data-es="corrido">run</td></tr>
-            <tr><td data-es="mover">move</td><td data-es="movió">moved</td><td data-es="movido">moved</td></tr>
-            <tr><td data-es="gustar">like</td><td data-es="gustó">liked</td><td data-es="gustado">liked</td></tr>
-            <tr><td data-es="vivir">live</td><td data-es="vivió">lived</td><td data-es="vivido">lived</td></tr>
-            <tr><td data-es="creer">believe</td><td data-es="creyó">believed</td><td data-es="creído">believed</td></tr>
-            <tr><td data-es="sostener">hold</td><td data-es="sostuvo">held</td><td data-es="sostenido">held</td></tr>
-            <tr><td data-es="traer">bring</td><td data-es="trajo">brought</td><td data-es="traído">brought</td></tr>
-            <tr><td data-es="suceder">happen</td><td data-es="sucedió">happened</td><td data-es="sucedido">happened</td></tr>
-            <tr><td data-es="escribir">write</td><td data-es="escribió">wrote</td><td data-es="escrito">written</td></tr>
-            <tr><td data-es="proporcionar">provide</td><td data-es="proporcionó">provided</td><td data-es="proporcionado">provided</td></tr>
-            <tr><td data-es="sentar">sit</td><td data-es="sentó">sat</td><td data-es="sentado">sat</td></tr>
-            <tr><td data-es="estar de pie">stand</td><td data-es="estuvo de pie">stood</td><td data-es="estado de pie">stood</td></tr>
-            <tr><td data-es="perder">lose</td><td data-es="perdió">lost</td><td data-es="perdido">lost</td></tr>
-            <tr><td data-es="pagar">pay</td><td data-es="pagó">paid</td><td data-es="pagado">paid</td></tr>
-            <tr><td data-es="encontrarse/conocer">meet</td><td data-es="se encontró/conoció">met</td><td data-es="encontrado/conocido">met</td></tr>
-            <tr><td data-es="incluir">include</td><td data-es="incluyó">included</td><td data-es="incluido">included</td></tr>
-            <tr><td data-es="continuar">continue</td><td data-es="continuó">continued</td><td data-es="continuado">continued</td></tr>
-            <tr><td data-es="establecer">set</td><td data-es="estableció">set</td><td data-es="establecido">set</td></tr>
-            <tr><td data-es="aprender">learn</td><td data-es="aprendió">learned</td><td data-es="aprendido">learned</td></tr>
-            <tr><td data-es="cambiar">change</td><td data-es="cambió">changed</td><td data-es="cambiado">changed</td></tr>
-            <tr><td data-es="liderar">lead</td><td data-es="lideró">led</td><td data-es="liderado">led</td></tr>
-            <tr><td data-es="entender">understand</td><td data-es="entendió">understood</td><td data-es="entendido">understood</td></tr>
-            <tr><td data-es="mirar/observar">watch</td><td data-es="miró/observó">watched</td><td data-es="mirado/observado">watched</td></tr>
-            <tr><td data-es="seguir">follow</td><td data-es="siguió">followed</td><td data-es="seguido">followed</td></tr>
-            <tr><td data-es="parar/detener">stop</td><td data-es="paró/detuvo">stopped</td><td data-es="parado/detenido">stopped</td></tr>
-            <tr><td data-es="crear">create</td><td data-es="creó">created</td><td data-es="creado">created</td></tr>
-            <tr><td data-es="hablar">speak</td><td data-es="habló">spoke</td><td data-es="hablado">spoken</td></tr>
-            <tr><td data-es="leer">read</td><td data-es="leyó">read</td><td data-es="leído">read</td></tr>
-            <tr><td data-es="permitir">allow</td><td data-es="permitió">allowed</td><td data-es="permitido">allowed</td></tr>
-            <tr><td data-es="añadir">add</td><td data-es="añadió">added</td><td data-es="añadido">added</td></tr>
-            <tr><td data-es="gastar">spend</td><td data-es="gastó">spent</td><td data-es="gastado">spent</td></tr>
-            <tr><td data-es="crecer">grow</td><td data-es="creció">grew</td><td data-es="crecido">grown</td></tr>
-            <tr><td data-es="abrir">open</td><td data-es="abrió">opened</td><td data-es="abierto">opened</td></tr>
-            <tr><td data-es="caminar">walk</td><td data-es="caminó">walked</td><td data-es="caminado">walked</td></tr>
-            <tr><td data-es="ganar">win</td><td data-es="ganó">won</td><td data-es="ganado">won</td></tr>
-            <tr><td data-es="ofrecer">offer</td><td data-es="ofreció">offered</td><td data-es="ofrecido">offered</td></tr>
-            <tr><td data-es="recordar">remember</td><td data-es="recordó">remembered</td><td data-es="recordado">remembered</td></tr>
-            <tr><td data-es="amar">love</td><td data-es="amó">loved</td><td data-es="amado">loved</td></tr>
-            <tr><td data-es="considerar">consider</td><td data-es="consideró">considered</td><td data-es="considerado">considered</td></tr>
-            <tr></tr></tbody></table></body></html>
+
+<div class="shell">
+  <header>
+    <span class="eyebrow">Lección 3 · Tiempos y conectores</span>
+    <h1>Construye en inglés</h1>
+    <div class="wave" id="wave" aria-hidden="true"></div>
+    <p class="sub">Identifica verbos, domina los tiempos y une tus ideas con conectores.</p>
+  </header>
+
+  <div class="row" id="mode-row">
+    <button class="chip active" data-view="table" onclick="setView('table',this)">📋 Tabla</button>
+    <button class="chip" data-view="tenses" onclick="setView('tenses',this)">🎮 Tiempos</button>
+    <button class="chip" data-view="connect" onclick="setView('connect',this)">🔗 Conector</button>
+  </div>
+
+  <!-- ════ TABLA ════ -->
+  <section id="view-table">
+    <p class="hint">Toca un verbo para oírlo. El <span class="b">color</span> indica si es regular o irregular.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--coral)"></span>Regular</span>
+      <span><span class="dot" style="background:var(--violet)"></span>Irregular</span>
+    </div>
+    <div class="row" id="filter-row">
+      <button class="chip active" data-filter="all" onclick="setFilter('all',this)">Todos</button>
+      <button class="chip" data-filter="reg" onclick="setFilter('reg',this)">Regulares</button>
+      <button class="chip" data-filter="irr" onclick="setFilter('irr',this)">Irregulares</button>
+    </div>
+    <input class="search" id="search" type="text" placeholder="🔍 Buscar verbo (inglés o español)…" oninput="renderGrid()">
+    <div id="verb-grid"></div>
+  </section>
+
+  <!-- ════ TIEMPOS ════ -->
+  <section id="view-tenses" hidden>
+    <p class="hint">Elige la forma correcta del verbo según el tiempo que se pide.</p>
+    <div class="stat-bar">
+      <div class="stat"><div class="stat-value" id="t-score">0</div><div class="stat-label">Puntos</div></div>
+      <div class="stat"><div class="stat-value" id="t-streak">0</div><div class="stat-label">Racha</div></div>
+      <div class="stat"><div class="stat-value green" id="t-acc">—</div><div class="stat-label">Precisión</div></div>
+    </div>
+    <p class="sel-label">Practicar</p>
+    <div class="row" id="sub-row">
+      <button class="chip active" data-sub="simple" onclick="setSub('simple',this)">Simple</button>
+      <button class="chip" data-sub="prog" onclick="setSub('prog',this)">Progresivo</button>
+      <button class="chip" data-sub="mix" onclick="setSub('mix',this)">Mixto</button>
+    </div>
+    <div class="focal" id="prompt">
+      <div class="prompt-subject" id="p-subject">SHE · ella</div>
+      <div class="prompt-verb" id="p-verb">go<span class="es" id="p-verb-es">ir</span></div>
+      <div class="prompt-tense"><span class="t" id="p-tense">Presente progresivo</span><span class="f" id="p-formula">am/is/are + verbo-ing</span></div>
+    </div>
+    <div id="t-options"></div>
+    <div class="controls">
+      <button class="ctrl" onclick="resetTenses()">↺ Reiniciar</button>
+      <button class="ctrl primary" onclick="skipTense()">Siguiente ⏭️</button>
+    </div>
+  </section>
+
+  <!-- ════ CONECTOR ════ -->
+  <section id="view-connect" hidden>
+    <p class="hint">Combina <span class="b">dos oraciones</span> con un conector. Toca ◀ ▶ para cambiar cada parte.</p>
+    <div class="slot">
+      <div class="slot-label">Oración 1</div>
+      <div class="slot-row">
+        <button class="slot-nav" onclick="cycle('A',-1)" aria-label="Anterior">◀</button>
+        <div class="slot-text"><div class="slot-en" id="cA-en"></div><div class="slot-es" id="cA-es"></div></div>
+        <button class="slot-nav" onclick="cycle('A',1)" aria-label="Siguiente">▶</button>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-label">Conector</div>
+      <div class="slot-row">
+        <button class="slot-nav" onclick="cycle('C',-1)" aria-label="Anterior">◀</button>
+        <div class="slot-text"><div class="slot-en conn" id="cC-en"></div><div class="slot-es" id="cC-es"></div></div>
+        <button class="slot-nav" onclick="cycle('C',1)" aria-label="Siguiente">▶</button>
+      </div>
+    </div>
+    <div class="slot">
+      <div class="slot-label">Oración 2</div>
+      <div class="slot-row">
+        <button class="slot-nav" onclick="cycle('B',-1)" aria-label="Anterior">◀</button>
+        <div class="slot-text"><div class="slot-en" id="cB-en"></div><div class="slot-es" id="cB-es"></div></div>
+        <button class="slot-nav" onclick="cycle('B',1)" aria-label="Siguiente">▶</button>
+      </div>
+    </div>
+    <div class="focal">
+      <div class="sentence" id="sentence"></div>
+      <div class="builder-actions">
+        <button class="b b-listen" onclick="speakSentence()">🔊 Escuchar</button>
+        <button class="b b-rand" onclick="randomAll()">🔀 Aleatorio</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot-note">En computador: teclas <b>1–4</b> responden en el juego de Tiempos</p>
+</div>
+
+<div id="feedback" role="status"></div>
+
+<a class="wa-fab" id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+   style="bottom:calc(1.1rem + env(safe-area-inset-bottom)); right:1.1rem;">
+  <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
+  <span class="wa-label">WhatsApp</span>
+</a>
+
+<script>
+// ════════ DATOS: [base, pasado, participio, español, irregular] ════════
+const VERBS = [
+  ["be","was/were","been","ser/estar",1],["have","had","had","tener/haber",1],["do","did","done","hacer",1],
+  ["say","said","said","decir",1],["go","went","gone","ir",1],["get","got","gotten","obtener",1],
+  ["make","made","made","hacer/crear",1],["know","knew","known","saber/conocer",1],["think","thought","thought","pensar",1],
+  ["take","took","taken","tomar",1],["see","saw","seen","ver",1],["come","came","come","venir",1],
+  ["want","wanted","wanted","querer",0],["use","used","used","usar",0],["find","found","found","encontrar",1],
+  ["give","gave","given","dar",1],["tell","told","told","contar/decir",1],["work","worked","worked","trabajar",0],
+  ["call","called","called","llamar",0],["try","tried","tried","intentar",0],["ask","asked","asked","preguntar",0],
+  ["need","needed","needed","necesitar",0],["feel","felt","felt","sentir",1],["become","became","become","volverse",1],
+  ["leave","left","left","dejar/salir",1],["put","put","put","poner",1],["mean","meant","meant","significar",1],
+  ["keep","kept","kept","mantener",1],["let","let","let","dejar/permitir",1],["begin","began","begun","comenzar",1],
+  ["seem","seemed","seemed","parecer",0],["help","helped","helped","ayudar",0],["talk","talked","talked","hablar",0],
+  ["turn","turned","turned","girar",0],["start","started","started","empezar",0],["show","showed","shown","mostrar",1],
+  ["hear","heard","heard","oír",1],["play","played","played","jugar",0],["run","ran","run","correr",1],
+  ["move","moved","moved","mover",0],["like","liked","liked","gustar",0],["live","lived","lived","vivir",0],
+  ["believe","believed","believed","creer",0],["hold","held","held","sostener",1],["bring","brought","brought","traer",1],
+  ["happen","happened","happened","suceder",0],["write","wrote","written","escribir",1],["provide","provided","provided","proporcionar",0],
+  ["sit","sat","sat","sentarse",1],["stand","stood","stood","estar de pie",1],["lose","lost","lost","perder",1],
+  ["pay","paid","paid","pagar",1],["meet","met","met","conocer",1],["include","included","included","incluir",0],
+  ["continue","continued","continued","continuar",0],["set","set","set","fijar",1],["learn","learned","learned","aprender",0],
+  ["change","changed","changed","cambiar",0],["lead","led","led","liderar",1],["understand","understood","understood","entender",1],
+  ["watch","watched","watched","observar",0],["follow","followed","followed","seguir",0],["stop","stopped","stopped","detener",0],
+  ["create","created","created","crear",0],["speak","spoke","spoken","hablar (formal)",1],["read","read","read","leer",1],
+  ["allow","allowed","allowed","permitir",0],["add","added","added","añadir",0],["spend","spent","spent","gastar",1],
+  ["grow","grew","grown","crecer",1],["open","opened","opened","abrir",0],["walk","walked","walked","caminar",0],
+  ["win","won","won","ganar",1],["offer","offered","offered","ofrecer",0],["remember","remembered","remembered","recordar",0],
+  ["love","loved","loved","amar",0],["consider","considered","considered","considerar",0]
+];
+
+// ── GERUNDIO (-ing) con reglas de ortografía ──
+function gerund(b){
+  const dbl={get:1,sit:1,put:1,run:1,begin:1,stop:1,win:1,set:1,let:1};
+  if(dbl[b]) return b + b.slice(-1) + "ing";
+  if(b==="be") return "being";
+  if(b.endsWith("ee")) return b+"ing";
+  if(b.endsWith("e")) return b.slice(0,-1)+"ing";
+  return b+"ing";
+}
+
+const VERBS_OBJ = VERBS.map(r=>({ base:r[0], past:r[1], pp:r[2], es:r[3], irr:!!r[4], g:gerund(r[0]) }));
+
+// ════════ WHATSAPP ════════
+const WHATSAPP_NUMBER = "573197894038";
+const WA_LINK = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" +
+  encodeURIComponent("¡Hola Prof. Germandario! Estoy en la Lección 3 (tiempos y conectores) y quiero más info 🙌");
+document.getElementById("wa-fab").href = WA_LINK;
+
+// ════════ HELPERS ════════
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function rand(a){ return a[Math.floor(Math.random()*a.length)]; }
+function capFirst(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function speak(text){ try{ window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=0.9; window.speechSynthesis.speak(u); }catch(e){} }
+function buildWave(){ const el=document.getElementById("wave"); for(let i=0;i<24;i++){ const b=document.createElement("i"); b.style.height=(8+Math.abs(Math.sin(i*0.6))*20)+"px"; b.style.animationDelay=(i*0.07)+"s"; b.style.animationDuration=(1.1+(i%5)*0.12)+"s"; el.appendChild(b); } }
+function showFeedback(msg,type){ const el=document.getElementById("feedback"); el.textContent=msg; el.className="show "+(type||""); clearTimeout(window._fb); window._fb=setTimeout(()=>el.classList.remove("show"),1700); }
+
+// ════════ VISTAS ════════
+function setView(v, btn){
+  document.querySelectorAll("#mode-row .chip").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("view-table").hidden   = v!=="table";
+  document.getElementById("view-tenses").hidden  = v!=="tenses";
+  document.getElementById("view-connect").hidden = v!=="connect";
+  if(v==="tenses" && !tCurrent) newTense();
+}
+
+// ════════ TABLA ════════
+let filter="all";
+function setFilter(f, btn){ filter=f; document.querySelectorAll("#filter-row .chip").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); renderGrid(); }
+function renderGrid(){
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const grid=document.getElementById("verb-grid"); grid.innerHTML="";
+  VERBS_OBJ.forEach(v=>{
+    if(filter==="reg" && v.irr) return;
+    if(filter==="irr" && !v.irr) return;
+    if(q && !(v.base.includes(q) || v.es.toLowerCase().includes(q))) return;
+    const card=document.createElement("div");
+    card.className="vcard"+(v.irr?" irr":"");
+    card.onclick=()=>speak(v.base);
+    card.innerHTML=`
+      <div class="top">
+        <span class="base">${v.base}</span>
+        <span style="display:flex;align-items:center;gap:6px;">
+          <span class="tag ${v.irr?'irreg':'reg'}">${v.irr?'irregular':'regular'}</span>
+          <button class="spk" aria-label="Escuchar">🔊</button>
+        </span>
+      </div>
+      <div class="forms">pasado: <b>${v.past}</b> · participio: <b>${v.pp}</b></div>
+      <div class="es">${v.es}</div>`;
+    grid.appendChild(card);
+  });
+  if(!grid.children.length){ grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--bruma);padding:20px;">Sin resultados.</p>'; }
+}
+
+// ════════ TIEMPOS ════════
+const SUBJECTS=[["I","yo"],["you","tú"],["he","él"],["she","ella"],["it","eso"],["we","nosotros"],["they","ellos"]];
+const TENSES={
+  pres_simple:{label:"Presente simple", formula:"base (+s) · do/does"},
+  pres_prog:{ label:"Presente progresivo", formula:"am/is/are + verbo-ing"},
+  past_simple:{label:"Pasado simple", formula:"verbo en pasado"},
+  past_prog:{ label:"Pasado progresivo", formula:"was/were + verbo-ing"},
+};
+const TPOOL = VERBS_OBJ.filter(v=>v.base!=="be");
+
+let tSub="simple", tScore=0, tStreak=0, tAttempted=0, tCorrect=0, tCurrent=null, tResolved=false;
+
+function thirdS(b){
+  if(b==="have") return "has"; if(b==="do") return "does"; if(b==="go") return "goes";
+  if(/(ch|sh|ss|x|z|s)$/.test(b)) return b+"es";
+  if(/[^aeiou]y$/.test(b)) return b.slice(0,-1)+"ies";
+  return b+"s";
+}
+function phrase(v, subj, tense){
+  const is3=["he","she","it"].includes(subj);
+  const beP = subj==="I"?"am":is3?"is":"are";
+  const bePast = (subj==="I"||is3)?"was":"were";
+  if(tense==="pres_simple") return is3? thirdS(v.base) : v.base;
+  if(tense==="pres_prog")   return beP+" "+v.g;
+  if(tense==="past_simple") return v.past;
+  return bePast+" "+v.g; // past_prog
+}
+function setSub(s, btn){ tSub=s; document.querySelectorAll("#sub-row .chip").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); newTense(); }
+
+function newTense(){
+  tResolved=false;
+  const v=rand(TPOOL);
+  const subj=rand(SUBJECTS);
+  const allowed = tSub==="simple"?["pres_simple","past_simple"] : tSub==="prog"?["pres_prog","past_prog"] : ["pres_simple","pres_prog","past_simple","past_prog"];
+  const tense=rand(allowed);
+  const answer = subj[0]+" "+phrase(v,subj[0],tense);
+
+  let opts=[...new Set(["pres_simple","pres_prog","past_simple","past_prog"].map(t=>subj[0]+" "+phrase(v,subj[0],t)))];
+  const is3=["he","she","it"].includes(subj[0]);
+  const fakes=[ subj[0]+" "+v.g, subj[0]+" "+(is3?thirdS(v.base):v.base)+"ing", subj[0]+" "+v.base ];
+  for(const f of fakes){ if(opts.length>=4) break; if(!opts.includes(f)) opts.push(f); }
+  opts=shuffle(opts);
+
+  tCurrent={v,subj,tense,answer,opts};
+  renderTense();
+}
+function renderTense(){
+  const {v,subj,tense,answer,opts}=tCurrent;
+  document.getElementById("p-subject").textContent = subj[0].toUpperCase()+" · "+subj[1];
+  document.getElementById("p-verb").childNodes[0].nodeValue = v.base;
+  document.getElementById("p-verb-es").textContent = v.es;
+  document.getElementById("p-tense").textContent = TENSES[tense].label;
+  document.getElementById("p-formula").textContent = TENSES[tense].formula;
+  const box=document.getElementById("t-options"); box.innerHTML="";
+  opts.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.dataset.val=o;
+    b.innerHTML=`<span class="idx">${i+1}</span><span>${capFirst(o)}</span>`;
+    b.onclick=()=>pickTense(o,b);
+    box.appendChild(b);
+  });
+}
+function pickTense(val, btn){
+  if(tResolved) return;
+  if(val===tCurrent.answer){
+    tResolved=true; tAttempted++; tCorrect++; tStreak++;
+    const bonus = tStreak>=5?3 : tStreak>=3?2 : 1; tScore += 10*bonus;
+    btn.classList.add("correct");
+    document.querySelectorAll("#t-options .opt").forEach(b=>b.disabled=true);
+    const msgs=["¡Excelente!","¡Perfecto!","¡Eso es!","¡Bien!"];
+    showFeedback(msgs[Math.floor(Math.random()*msgs.length)]+(tStreak>=3?` 🔥 ×${tStreak}`:""),"good");
+    updateTenseStats();
+    setTimeout(newTense, 850);
+  } else {
+    btn.classList.add("wrong"); btn.disabled=true; tStreak=0; tScore=Math.max(0,tScore-1);
+    updateTenseStats(); showFeedback("Casi… revisa el tiempo","bad");
+  }
+}
+function skipTense(){
+  if(tResolved){ newTense(); return; }
+  tResolved=true; tAttempted++; tStreak=0;
+  document.querySelectorAll("#t-options .opt").forEach(b=>{ b.disabled=true; if(b.dataset.val===tCurrent.answer) b.classList.add("correct"); });
+  showFeedback(`Respuesta: "${capFirst(tCurrent.answer)}"`,"bad");
+  updateTenseStats();
+  setTimeout(newTense, 1000);
+}
+function resetTenses(){ tScore=0; tStreak=0; tAttempted=0; tCorrect=0; updateTenseStats(); newTense(); }
+function updateTenseStats(){
+  document.getElementById("t-score").textContent=tScore;
+  document.getElementById("t-streak").textContent=tStreak;
+  const acc=tAttempted>0?Math.round((tCorrect/tAttempted)*100):null;
+  const el=document.getElementById("t-acc");
+  el.textContent= acc===null?"—":acc+"%";
+  el.className="stat-value "+(acc===null?"green":acc>=70?"green":acc>=40?"":"red");
+}
+document.addEventListener("keydown", e=>{
+  if(document.getElementById("view-tenses").hidden) return;
+  if(["1","2","3","4"].includes(e.key)){ const b=document.querySelectorAll("#t-options .opt")[+e.key-1]; if(b && !b.disabled) b.click(); }
+  if(e.key==="Escape") skipTense();
+});
+
+// ════════ CONECTOR ════════
+const CLAUSES=[
+  ["I was studying","yo estaba estudiando"],
+  ["she called me","ella me llamó"],
+  ["it started to rain","empezó a llover"],
+  ["we were watching TV","estábamos viendo televisión"],
+  ["they won the game","ellos ganaron el partido"],
+  ["he opened the door","él abrió la puerta"],
+  ["I felt tired","me sentí cansado"],
+  ["the kids were playing","los niños estaban jugando"],
+  ["you understood the lesson","entendiste la lección"],
+  ["we paid the bill","pagamos la cuenta"],
+  ["I was working","yo estaba trabajando"],
+  ["the movie began","la película empezó"],
+];
+const CONNECTORS=[
+  ["and","y"],["but","pero"],["so","entonces"],["because","porque"],
+  ["when","cuando"],["while","mientras"],["after","después"],["before","antes"],
+];
+let cA=0, cC=2, cB=1;
+function cycle(slot, dir){
+  if(slot==="A") cA=(cA+dir+CLAUSES.length)%CLAUSES.length;
+  if(slot==="B") cB=(cB+dir+CLAUSES.length)%CLAUSES.length;
+  if(slot==="C") cC=(cC+dir+CONNECTORS.length)%CONNECTORS.length;
+  renderSentence();
+}
+function randomAll(){ cA=Math.floor(Math.random()*CLAUSES.length); do{ cB=Math.floor(Math.random()*CLAUSES.length); }while(cB===cA); cC=Math.floor(Math.random()*CONNECTORS.length); renderSentence(); }
+function currentSentence(){ return capFirst(CLAUSES[cA][0])+" "+CONNECTORS[cC][0]+" "+CLAUSES[cB][0]+"."; }
+function renderSentence(){
+  document.getElementById("cA-en").textContent=CLAUSES[cA][0];
+  document.getElementById("cA-es").textContent=CLAUSES[cA][1];
+  document.getElementById("cB-en").textContent=CLAUSES[cB][0];
+  document.getElementById("cB-es").textContent=CLAUSES[cB][1];
+  document.getElementById("cC-en").textContent=CONNECTORS[cC][0];
+  document.getElementById("cC-es").textContent=CONNECTORS[cC][1];
+  document.getElementById("sentence").innerHTML=
+    capFirst(CLAUSES[cA][0])+' <span class="c">'+CONNECTORS[cC][0]+'</span> '+CLAUSES[cB][0]+".";
+}
+function speakSentence(){ speak(currentSentence()); }
+
+// ════════ INIT ════════
+buildWave();
+renderGrid();
+updateTenseStats();
+renderSentence();
+</script>
+</body>
+</html>

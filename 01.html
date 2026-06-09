@@ -1,13 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essential English Verbs Learning System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Verbos Esenciales del Inglés — Lección 1 · ProfGermandario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              lienzo:'#FCF8F3', nube:'#F2ECE2', tinta:'#1A1730', tintasoft:'#3A3552',
+              bruma:'#76718A', coral:'#FF5A3C', coraldeep:'#E8482C', menta:'#15B79E',
+              mentadeep:'#0E8C79', ambar:'#FFB627', paper:'#F6F1FF'
+            },
+            fontFamily: {
+              display:['Fraunces','Georgia','serif'],
+              sans:['Figtree','system-ui','sans-serif'],
+              mono:['"DM Mono"','ui-monospace','monospace']
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root{ --coral:#FF5A3C; --menta:#15B79E; --ambar:#FFB627; }
+      body{ background:#FCF8F3; }
+      /* firma: onda de voz */
+      .wave{ display:flex; align-items:flex-end; gap:4px; height:34px; justify-content:center; }
+      .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+        background:linear-gradient(to top, var(--menta), var(--coral) 60%, var(--ambar));
+        animation:vox 1.3s ease-in-out infinite; }
+      @keyframes vox{ 0%,100%{ transform:scaleY(.25); } 50%{ transform:scaleY(1); } }
+      /* flashcard 3D */
+      .card3d{ perspective:1200px; }
+      .card3d-inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d;
+        transition:transform .6s cubic-bezier(.4,0,.2,1); cursor:pointer; }
+      .card3d.flipped .card3d-inner{ transform:rotateY(180deg); }
+      .card3d-face{ position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        border-radius:20px; padding:24px; text-align:center; }
+      .card3d-back{ transform:rotateY(180deg); }
+      :focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:10px; }
+      @media (prefers-reduced-motion:reduce){
+        .wave i{ animation:none; transform:scaleY(.6); }
+        .card3d-inner{ transition:none; }
+        *{ scroll-behavior:auto !important; }
+      }
+    </style>
 </head>
 <body>
     <div id="root"></div>
@@ -15,189 +61,383 @@
     <script type="text/babel">
       const { useState, useEffect } = React;
 
-      // Expanded dataset: 30 verbs
+      // ── DATOS: 30 verbos con traducción, IPA y ejemplo (EN→ES) ──
       const verbsData = [
-        { base: "be", past: "was/were", pastParticiple: "been", definition: "to exist or have identity", example: "I am happy", emoji: "🌟" },
-        { base: "have", past: "had", pastParticiple: "had", definition: "to possess or own something", example: "I have a car", emoji: "🤲" },
-        { base: "do", past: "did", pastParticiple: "done", definition: "to perform an action", example: "I do homework", emoji: "⚡" },
-        { base: "say", past: "said", pastParticiple: "said", definition: "to speak words", example: "I say hello", emoji: "💬" },
-        { base: "go", past: "went", pastParticiple: "gone", definition: "to move from one place to another", example: "I go home", emoji: "🚶" },
-        { base: "make", past: "made", pastParticiple: "made", definition: "to create or produce", example: "I make food", emoji: "🔨" },
-        { base: "see", past: "saw", pastParticiple: "seen", definition: "to look at with eyes", example: "I see a bird", emoji: "👁️" },
-        { base: "get", past: "got", pastParticiple: "gotten", definition: "to receive or obtain", example: "I get a gift", emoji: "📦" },
-        { base: "know", past: "knew", pastParticiple: "known", definition: "to have information about", example: "I know the answer", emoji: "🧠" },
-        { base: "think", past: "thought", pastParticiple: "thought", definition: "to use your mind", example: "I think about it", emoji: "💭" },
-        { base: "take", past: "took", pastParticiple: "taken", definition: "to grab or carry", example: "I take the book", emoji: "✋" },
-        { base: "come", past: "came", pastParticiple: "come", definition: "to move towards", example: "I come home", emoji: "➡️" },
-        { base: "want", past: "wanted", pastParticiple: "wanted", definition: "to desire something", example: "I want pizza", emoji: "🎯" },
-        { base: "use", past: "used", pastParticiple: "used", definition: "to employ for a purpose", example: "I use a phone", emoji: "🔧" },
-        { base: "find", past: "found", pastParticiple: "found", definition: "to discover or locate", example: "I find my keys", emoji: "🔍" },
-        { base: "give", past: "gave", pastParticiple: "given", definition: "to provide to someone", example: "I give a gift", emoji: "🎁" },
-        { base: "tell", past: "told", pastParticiple: "told", definition: "to inform someone", example: "I tell a story", emoji: "📢" },
-        { base: "work", past: "worked", pastParticiple: "worked", definition: "to do a job", example: "I work hard", emoji: "💼" },
-        { base: "call", past: "called", pastParticiple: "called", definition: "to telephone or shout", example: "I call my friend", emoji: "📞" },
-        { base: "try", past: "tried", pastParticiple: "tried", definition: "to attempt something", example: "I try my best", emoji: "🎪" },
-        { base: "ask", past: "asked", pastParticiple: "asked", definition: "to request information", example: "I ask a question", emoji: "❓" },
-        { base: "need", past: "needed", pastParticiple: "needed", definition: "to require something", example: "I need help", emoji: "🆘" },
-        { base: "feel", past: "felt", pastParticiple: "felt", definition: "to experience emotion", example: "I feel happy", emoji: "❤️" },
-        { base: "become", past: "became", pastParticiple: "become", definition: "to grow to be", example: "I become stronger", emoji: "🦋" },
-        { base: "leave", past: "left", pastParticiple: "left", definition: "to go away from", example: "I leave school", emoji: "🚪" },
-        { base: "put", past: "put", pastParticiple: "put", definition: "to place something", example: "I put books down", emoji: "📍" },
-        { base: "mean", past: "meant", pastParticiple: "meant", definition: "to intend or signify", example: "I mean it", emoji: "🎯" },
-        { base: "keep", past: "kept", pastParticiple: "kept", definition: "to continue having", example: "I keep trying", emoji: "🔒" },
-        { base: "let", past: "let", pastParticiple: "let", definition: "to allow or permit", example: "I let you go", emoji: "✅" },
-        { base: "begin", past: "began", pastParticiple: "begun", definition: "to start something", example: "I begin work", emoji: "🚀" },
+        { base:"be", past:"was/were", pp:"been", es:"ser / estar", exEn:"I am happy", exEs:"Estoy feliz", ipa:"/biː/", emoji:"🌟" },
+        { base:"have", past:"had", pp:"had", es:"tener / haber", exEn:"I have a car", exEs:"Tengo un carro", ipa:"/hæv/", emoji:"🤲" },
+        { base:"do", past:"did", pp:"done", es:"hacer", exEn:"I do homework", exEs:"Hago la tarea", ipa:"/duː/", emoji:"⚡" },
+        { base:"say", past:"said", pp:"said", es:"decir", exEn:"I say hello", exEs:"Digo hola", ipa:"/seɪ/", emoji:"💬" },
+        { base:"go", past:"went", pp:"gone", es:"ir", exEn:"I go home", exEs:"Voy a casa", ipa:"/ɡoʊ/", emoji:"🚶" },
+        { base:"make", past:"made", pp:"made", es:"hacer / fabricar", exEn:"I make food", exEs:"Hago comida", ipa:"/meɪk/", emoji:"🔨" },
+        { base:"see", past:"saw", pp:"seen", es:"ver", exEn:"I see a bird", exEs:"Veo un pájaro", ipa:"/siː/", emoji:"👁️" },
+        { base:"get", past:"got", pp:"gotten", es:"obtener / conseguir", exEn:"I get a gift", exEs:"Recibo un regalo", ipa:"/ɡɛt/", emoji:"📦" },
+        { base:"know", past:"knew", pp:"known", es:"saber / conocer", exEn:"I know the answer", exEs:"Sé la respuesta", ipa:"/noʊ/", emoji:"🧠" },
+        { base:"think", past:"thought", pp:"thought", es:"pensar", exEn:"I think about it", exEs:"Pienso en eso", ipa:"/θɪŋk/", emoji:"💭" },
+        { base:"take", past:"took", pp:"taken", es:"tomar / llevar", exEn:"I take the book", exEs:"Tomo el libro", ipa:"/teɪk/", emoji:"✋" },
+        { base:"come", past:"came", pp:"come", es:"venir", exEn:"I come home", exEs:"Vengo a casa", ipa:"/kʌm/", emoji:"➡️" },
+        { base:"want", past:"wanted", pp:"wanted", es:"querer / desear", exEn:"I want pizza", exEs:"Quiero pizza", ipa:"/wɑːnt/", emoji:"🎯" },
+        { base:"use", past:"used", pp:"used", es:"usar", exEn:"I use a phone", exEs:"Uso un teléfono", ipa:"/juːz/", emoji:"🔧" },
+        { base:"find", past:"found", pp:"found", es:"encontrar", exEn:"I find my keys", exEs:"Encuentro mis llaves", ipa:"/faɪnd/", emoji:"🔍" },
+        { base:"give", past:"gave", pp:"given", es:"dar", exEn:"I give a gift", exEs:"Doy un regalo", ipa:"/ɡɪv/", emoji:"🎁" },
+        { base:"tell", past:"told", pp:"told", es:"contar / decir", exEn:"I tell a story", exEs:"Cuento una historia", ipa:"/tɛl/", emoji:"📢" },
+        { base:"work", past:"worked", pp:"worked", es:"trabajar", exEn:"I work hard", exEs:"Trabajo duro", ipa:"/wɜːrk/", emoji:"💼" },
+        { base:"call", past:"called", pp:"called", es:"llamar", exEn:"I call my friend", exEs:"Llamo a mi amigo", ipa:"/kɔːl/", emoji:"📞" },
+        { base:"try", past:"tried", pp:"tried", es:"intentar / probar", exEn:"I try my best", exEs:"Hago mi mejor intento", ipa:"/traɪ/", emoji:"🎪" },
+        { base:"ask", past:"asked", pp:"asked", es:"preguntar / pedir", exEn:"I ask a question", exEs:"Hago una pregunta", ipa:"/æsk/", emoji:"❓" },
+        { base:"need", past:"needed", pp:"needed", es:"necesitar", exEn:"I need help", exEs:"Necesito ayuda", ipa:"/niːd/", emoji:"🆘" },
+        { base:"feel", past:"felt", pp:"felt", es:"sentir", exEn:"I feel happy", exEs:"Me siento feliz", ipa:"/fiːl/", emoji:"❤️" },
+        { base:"become", past:"became", pp:"become", es:"convertirse / volverse", exEn:"I become stronger", exEs:"Me vuelvo más fuerte", ipa:"/bɪˈkʌm/", emoji:"🦋" },
+        { base:"leave", past:"left", pp:"left", es:"irse / dejar", exEn:"I leave school", exEs:"Salgo de la escuela", ipa:"/liːv/", emoji:"🚪" },
+        { base:"put", past:"put", pp:"put", es:"poner", exEn:"I put books down", exEs:"Pongo los libros", ipa:"/pʊt/", emoji:"📍" },
+        { base:"mean", past:"meant", pp:"meant", es:"significar", exEn:"I mean it", exEs:"Lo digo en serio", ipa:"/miːn/", emoji:"🧭" },
+        { base:"keep", past:"kept", pp:"kept", es:"mantener / guardar", exEn:"I keep trying", exEs:"Sigo intentando", ipa:"/kiːp/", emoji:"🔒" },
+        { base:"let", past:"let", pp:"let", es:"dejar / permitir", exEn:"I let you go", exEs:"Te dejo ir", ipa:"/lɛt/", emoji:"✅" },
+        { base:"begin", past:"began", pp:"begun", es:"empezar / comenzar", exEn:"I begin work", exEs:"Empiezo a trabajar", ipa:"/bɪˈɡɪn/", emoji:"🚀" },
       ];
 
+      // ⬇️⬇️ REEMPLAZA con tu número de WhatsApp: código de país + número, sin +, espacios ni guiones ⬇️⬇️
+      const WHATSAPP_NUMBER = "57XXXXXXXXXX";
+      const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("¡Hola Prof. Germandario! Estoy practicando los verbos esenciales (Lección 1) y quiero más info 🙌")}`;
+
+      const MODES = [
+        { id:"intro", label:"🚀 Empieza aquí" },
+        { id:"study", label:"📚 Flashcards" },
+        { id:"pron",  label:"🗣️ Pronunciación" },
+        { id:"quiz",  label:"🎯 Quiz" },
+        { id:"match", label:"🎲 Parejas" },
+      ];
+
+      const speak = (text) => {
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = "en-US"; u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        } catch (e) {}
+      };
+
+      const WaGlyph = ({ size = 22 }) => (
+        <svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+          <path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/>
+        </svg>
+      );
+
+      const Hint = ({ children }) => (
+        <p className="text-center text-sm text-bruma mb-6 flex items-center justify-center gap-2">
+          <span className="text-coral">●</span>{children}
+        </p>
+      );
+
+      const WaveBars = ({ animated = true }) => (
+        <div className="wave" aria-hidden="true">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <i key={i} style={{
+              height: (10 + Math.abs(Math.sin(i * 0.6)) * 24) + "px",
+              animationDelay: (i * 0.07) + "s",
+              animationDuration: (1.1 + (i % 5) * 0.12) + "s",
+              animationPlayState: animated ? "running" : "paused"
+            }} />
+          ))}
+        </div>
+      );
+
       const VerbsLearningSystem = () => {
-        const [gameMode, setGameMode] = useState('importance');
+        const [mode, setMode] = useState("intro");
         const [score, setScore] = useState(0);
-        const [quizQuestion, setQuizQuestion] = useState(null);
-        const [selectedAnswer, setSelectedAnswer] = useState(null);
-        const [showResult, setShowResult] = useState(false);
-        const [matchingPairs, setMatchingPairs] = useState([]);
-        const [selectedCards, setSelectedCards] = useState([]);
-        const [matchedPairs, setMatchedPairs] = useState(new Set());
 
-        const generateQuizQuestion = () => {
-          const randomVerb = verbsData[Math.floor(Math.random() * verbsData.length)];
-          const wrongAnswers = verbsData.filter(v => v.base !== randomVerb.base).slice(0, 3).map(v => ({ text: v.definition, isCorrect: false }));
-          const allAnswers = [{ text: randomVerb.definition, isCorrect: true }, ...wrongAnswers].sort(() => Math.random() - 0.5);
-          setQuizQuestion({ question: `What does \"${randomVerb.base}\" mean?`, options: allAnswers, correct: randomVerb.definition });
-          setSelectedAnswer(null);
-          setShowResult(false);
+        // Flashcards
+        const [deck, setDeck] = useState(verbsData);
+        const [cardIndex, setCardIndex] = useState(0);
+        const [flipped, setFlipped] = useState(false);
+
+        // Quiz
+        const [quizQ, setQuizQ] = useState(null);
+        const [quizPicked, setQuizPicked] = useState(null);
+        const [quizDone, setQuizDone] = useState(false);
+        const [quizAnswered, setQuizAnswered] = useState(0);
+        const [quizCorrect, setQuizCorrect] = useState(0);
+
+        // Parejas
+        const [matchCards, setMatchCards] = useState([]);
+        const [matchSel, setMatchSel] = useState([]);
+        const [matchDone, setMatchDone] = useState(new Set());
+        const [matchWon, setMatchWon] = useState(false);
+
+        const newQuiz = () => {
+          const v = verbsData[Math.floor(Math.random() * verbsData.length)];
+          const wrong = verbsData.filter(x => x.es !== v.es).sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.es);
+          const options = [v.es, ...wrong].sort(() => Math.random() - 0.5).map(text => ({ text, correct: text === v.es }));
+          setQuizQ({ verb: v.base, correctEs: v.es, options });
+          setQuizPicked(null); setQuizDone(false);
         };
 
-        const initializeMatching = () => {
-          const selectedVerbs = verbsData.slice(0, 6);
-          const pairs = [];
-          selectedVerbs.forEach((verb, idx) => {
-            pairs.push({ type: 'verb', content: verb.base, id: idx * 2, matchId: idx });
-            pairs.push({ type: 'definition', content: verb.definition, id: idx * 2 + 1, matchId: idx });
+        const initMatch = () => {
+          const six = verbsData.slice(0, 6);
+          const cards = [];
+          six.forEach((v, i) => {
+            cards.push({ id: i * 2, kind: "verb", text: v.base, m: i });
+            cards.push({ id: i * 2 + 1, kind: "es", text: v.es, m: i });
           });
-          setMatchingPairs(pairs.sort(() => Math.random() - 0.5));
-          setSelectedCards([]);
-          setMatchedPairs(new Set());
-        };
-
-        const handleCardSelect = (card) => {
-          if (selectedCards.length === 2 || matchedPairs.has(card.id)) return;
-          const newSelected = [...selectedCards, card];
-          setSelectedCards(newSelected);
-          if (newSelected.length === 2) {
-            if (newSelected[0].matchId === newSelected[1].matchId) {
-              setMatchedPairs(new Set([...matchedPairs, newSelected[0].id, newSelected[1].id]));
-              setScore(score + 10);
-            }
-            setTimeout(() => setSelectedCards([]), 1000);
-          }
+          setMatchCards(cards.sort(() => Math.random() - 0.5));
+          setMatchSel([]); setMatchDone(new Set()); setMatchWon(false);
         };
 
         useEffect(() => {
-          if (gameMode === 'quiz') generateQuizQuestion();
-          if (gameMode === 'match') initializeMatching();
-        }, [gameMode]);
+          if (mode === "quiz") newQuiz();
+          if (mode === "match") initMatch();
+          if (mode === "study") { setCardIndex(0); setFlipped(false); }
+        }, [mode]);
 
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 p-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
-                <div className="text-center mb-8">
-                  <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">⚡ Essential English Verbs System</h1>
-                  <p className="text-lg text-gray-600 mb-2">Step 2: Master Action Words - The Heart of Every Sentence!</p>
-                  <p className="text-sm text-gray-500 mb-4">Created by <strong>Prof. Germandario</strong></p>
-                  <div className="bg-blue-100 px-4 py-2 rounded-lg inline-block"><span className="font-semibold text-blue-800">Score: {score}</span></div>
+        const next = () => { setFlipped(false); setCardIndex(i => (i + 1) % deck.length); };
+        const prev = () => { setFlipped(false); setCardIndex(i => (i - 1 + deck.length) % deck.length); };
+        const shuffle = () => { setDeck([...deck].sort(() => Math.random() - 0.5)); setCardIndex(0); setFlipped(false); };
+
+        const handleQuizPick = (o) => {
+          if (quizDone) return;
+          setQuizPicked(o); setQuizDone(true);
+          setQuizAnswered(a => a + 1);
+          if (o.correct) { setQuizCorrect(c => c + 1); setScore(s => s + 10); }
+        };
+
+        const handleMatchPick = (card) => {
+          if (matchSel.length === 2 || matchDone.has(card.id) || matchSel.find(s => s.id === card.id)) return;
+          const sel = [...matchSel, card];
+          setMatchSel(sel);
+          if (sel.length === 2) {
+            if (sel[0].m === sel[1].m) {
+              const nd = new Set([...matchDone, sel[0].id, sel[1].id]);
+              setTimeout(() => {
+                setMatchDone(nd); setMatchSel([]); setScore(s => s + 10);
+                if (nd.size === matchCards.length) setMatchWon(true);
+              }, 450);
+            } else {
+              setTimeout(() => setMatchSel([]), 700);
+            }
+          }
+        };
+
+        // ── Vistas ──
+        const renderIntro = () => (
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-display text-2xl sm:text-3xl text-tinta text-center mb-3">¿Por qué empezar por los verbos?</h2>
+            <p className="text-tintasoft text-center mb-8">Los verbos son las palabras de acción: sin ellos no existe ninguna frase. Si dominas estos 30, entiendes el motor del inglés.</p>
+
+            <h3 className="font-display text-xl text-tinta mb-4">Cómo usar esta herramienta</h3>
+            <ol className="space-y-3 mb-8">
+              {[
+                ["📚","Flashcards","Toca cada tarjeta para girarla y ver el significado, el pasado y un ejemplo. Repite hasta que te salgan solas."],
+                ["🗣️","Pronunciación","Toca cualquier verbo y escúchalo. Repítelo en voz alta."],
+                ["🎯","Quiz","Elige el significado correcto y mide cuánto recuerdas."],
+                ["🎲","Parejas","Une cada verbo con su traducción y suma puntos."],
+              ].map(([emo, t, d], i) => (
+                <li key={i} className="flex gap-4 bg-nube/60 rounded-2xl p-4">
+                  <span className="text-2xl leading-none">{emo}</span>
+                  <span><b className="font-display text-tinta">{t}.</b> <span className="text-tintasoft">{d}</span></span>
+                </li>
+              ))}
+            </ol>
+
+            <div className="bg-[#FFF7E8] border border-ambar/40 rounded-2xl p-4 text-center text-tintasoft mb-8">
+              💡 Practica 5 minutos al día. La constancia le gana al talento.
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-3">
+              <button onClick={() => setMode("study")}
+                className="bg-coral text-white font-semibold rounded-full px-6 py-3 shadow-[0_8px_24px_rgba(255,90,60,0.28)] hover:bg-coraldeep transition">
+                Empezar con Flashcards →
+              </button>
+              <a href={WA_LINK} target="_blank" rel="noopener"
+                className="border border-menta/50 text-mentadeep font-semibold rounded-full px-6 py-3 hover:bg-menta/10 transition inline-flex items-center gap-2">
+                <WaGlyph size={18} /> ¿Tienes dudas? Escríbenos
+              </a>
+            </div>
+          </div>
+        );
+
+        const renderStudy = () => {
+          const v = deck[cardIndex];
+          return (
+            <div className="max-w-md mx-auto">
+              <Hint>Toca la tarjeta para girarla · usa ◀ ▶ para avanzar</Hint>
+              <div className={`card3d h-72 sm:h-80 ${flipped ? "flipped" : ""}`} role="button" tabIndex={0}
+                   onClick={() => setFlipped(f => !f)}
+                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setFlipped(f => !f); } }}>
+                <div className="card3d-inner">
+                  <div className="card3d-face bg-white border border-tinta/10 shadow-[0_10px_30px_rgba(26,23,48,0.08)]">
+                    <span className="text-5xl mb-3">{v.emoji}</span>
+                    <span className="font-display font-black text-4xl sm:text-5xl text-tinta">{v.base}</span>
+                    <span className="font-mono text-bruma mt-2">{v.ipa}</span>
+                    <span className="mt-5 font-mono text-[0.62rem] tracking-[0.2em] uppercase text-coral">toca para ver el significado</span>
+                  </div>
+                  <div className="card3d-face card3d-back text-paper"
+                       style={{ background: "radial-gradient(120% 120% at 0% 0%, #2A2348 0%, #1A1730 70%)" }}>
+                    <span className="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-ambar mb-1">{v.base}</span>
+                    <span className="font-display font-bold text-3xl text-coral mb-4">{v.es}</span>
+                    <div className="font-mono text-xs text-paper/70 space-y-1 mb-3">
+                      <div>Pasado: <b className="text-paper">{v.past}</b></div>
+                      <div>Participio: <b className="text-paper">{v.pp}</b></div>
+                    </div>
+                    <p className="text-paper font-semibold">{v.exEn}</p>
+                    <p className="text-paper/60 italic text-sm">{v.exEs}</p>
+                  </div>
                 </div>
+              </div>
 
-                <div className="flex flex-wrap justify-center gap-3 mb-8">
-                  {['importance','learn','practice','quiz','match'].map(mode => (
-                    <button key={mode} onClick={() => setGameMode(mode)}
-                      className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${gameMode === mode ? 'bg-indigo-500 text-white shadow-lg transform scale-105':'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}>
-                      {mode === 'importance' && '🎯 Why Verbs?'}
-                      {mode === 'learn' && '📚 Study Verbs'}
-                      {mode === 'practice' && '🗣️ Pronunciation'}
-                      {mode === 'quiz' && '🎯 Quiz Test'}
-                      {mode === 'match' && '🎲 Definition Match'}
-                    </button>
-                  ))}
-                </div>
-
-                {gameMode === 'importance' && (
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-700 mb-4">⚡ Why Are Verbs Important?</h2>
-                    <p className="text-gray-600">Verbs are the action words that give life to sentences. Without them, sentences cannot exist!</p>
-                  </div>
-                )}
-
-                {gameMode === 'learn' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">📚 Study Mode</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {verbsData.map((verb, idx) => (
-                        <div key={idx} className="border rounded-xl p-4 bg-gray-50 text-center">
-                          <p className="text-xl font-bold">{verb.emoji} {verb.base}</p>
-                          <p className="text-gray-600">Past: {verb.past}</p>
-                          <p className="text-gray-600">Participle: {verb.pastParticiple}</p>
-                          <p className="text-sm text-gray-500">{verb.definition}</p>
-                          <p className="text-sm italic">Example: {verb.example}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {gameMode === 'practice' && (
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-700 mb-4">🗣️ Pronunciation Mode</h2>
-                    {verbsData.map((verb, idx) => (
-                      <button key={idx} onClick={() => new SpeechSynthesisUtterance(verb.base) && speechSynthesis.speak(new SpeechSynthesisUtterance(verb.base))}
-                        className="m-2 px-4 py-2 rounded-lg bg-yellow-200 hover:bg-yellow-300">
-                        🔊 {verb.base}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {gameMode === 'quiz' && quizQuestion && (
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-700 mb-6">🎯 Quiz Mode</h2>
-                    <p className="mb-4 font-semibold">{quizQuestion.question}</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {quizQuestion.options.map((opt, idx) => (
-                        <button key={idx} onClick={() => {setSelectedAnswer(opt); setShowResult(true); if(opt.isCorrect) setScore(score+10)}}
-                          className={`p-3 rounded-lg ${selectedAnswer===opt ? (opt.isCorrect?'bg-green-400':'bg-red-400'):'bg-gray-200 hover:bg-gray-300'}`}>
-                          {opt.text}
-                        </button>
-                      ))}
-                    </div>
-                    {showResult && (
-                      <div className="mt-4 font-bold">{selectedAnswer.isCorrect ? '✅ Correct!' : `❌ Wrong! Correct answer: ${quizQuestion.correct}`}</div>
-                    )}
-                    <button onClick={generateQuizQuestion} className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg">Next Question</button>
-                  </div>
-                )}
-
-                {gameMode === 'match' && (
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-700 mb-6">🎲 Matching Game</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {matchingPairs.map(card => (
-                        <button key={card.id} onClick={() => handleCardSelect(card)}
-                          className={`p-3 rounded-lg ${selectedCards.includes(card)||matchedPairs.has(card.id)?'bg-green-300':'bg-gray-200 hover:bg-gray-300'}`}>
-                          {card.content}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
+              <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+                <button onClick={() => speak(v.base)}
+                  className="bg-ambar/20 text-[#A9760A] font-semibold rounded-full px-4 py-2 hover:bg-ambar/30 transition">🔊 Escuchar</button>
+                <button onClick={prev} aria-label="Verbo anterior"
+                  className="bg-nube rounded-full w-11 h-11 text-tinta hover:bg-[#E9E2D6] transition">◀</button>
+                <span className="font-mono text-sm text-bruma w-16 text-center">{cardIndex + 1} / {deck.length}</span>
+                <button onClick={next} aria-label="Verbo siguiente"
+                  className="bg-nube rounded-full w-11 h-11 text-tinta hover:bg-[#E9E2D6] transition">▶</button>
+                <button onClick={shuffle}
+                  className="bg-nube rounded-full px-4 py-2 text-tinta hover:bg-[#E9E2D6] transition">🔀 Mezclar</button>
               </div>
             </div>
+          );
+        };
+
+        const renderPron = () => (
+          <div>
+            <Hint>Toca un verbo para escucharlo. Repite en voz alta.</Hint>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {verbsData.map((v, i) => (
+                <button key={i} onClick={() => speak(v.base)}
+                  className="bg-nube rounded-2xl p-4 text-left hover:bg-[#E9E2D6] hover:-translate-y-0.5 transition">
+                  <div className="flex items-center justify-between">
+                    <span className="font-display font-bold text-lg text-tinta">{v.emoji} {v.base}</span>
+                    <span className="text-coral">🔊</span>
+                  </div>
+                  <div className="font-mono text-xs text-bruma mt-1">{v.ipa}</div>
+                  <div className="text-sm text-tintasoft">{v.es}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+
+        const renderQuiz = () => (
+          !quizQ ? null : (
+            <div className="max-w-2xl mx-auto text-center">
+              <Hint>Elige el significado correcto del verbo.</Hint>
+              <div className="font-mono text-xs text-bruma mb-3">Respondidas: {quizAnswered} · Correctas: {quizCorrect}</div>
+              <h3 className="font-display text-2xl sm:text-3xl text-tinta mb-1">¿Qué significa <span className="text-coral">"{quizQ.verb}"</span>?</h3>
+              <button onClick={() => speak(quizQ.verb)} className="font-mono text-xs text-mentadeep mb-6 hover:underline">🔊 escuchar</button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {quizQ.options.map((o, i) => {
+                  let cls = "bg-nube text-tinta hover:bg-[#E9E2D6]";
+                  if (quizDone) {
+                    if (o.correct) cls = "bg-menta text-white";
+                    else if (o === quizPicked) cls = "bg-[#D64545] text-white";
+                    else cls = "bg-nube text-tinta opacity-60";
+                  }
+                  return (
+                    <button key={i} disabled={quizDone} onClick={() => handleQuizPick(o)}
+                      className={`rounded-2xl p-4 font-semibold transition ${cls}`}>{o.text}</button>
+                  );
+                })}
+              </div>
+              {quizDone && (
+                <p className="mt-5 font-display text-lg text-tinta">
+                  {quizPicked.correct ? "✅ ¡Correcto!" : <span>❌ La respuesta correcta es <b className="text-mentadeep">{quizQ.correctEs}</b></span>}
+                </p>
+              )}
+              <button onClick={newQuiz}
+                className="mt-6 bg-coral text-white font-semibold rounded-full px-6 py-3 hover:bg-coraldeep transition">Siguiente verbo →</button>
+            </div>
+          )
+        );
+
+        const renderMatch = () => (
+          <div className="max-w-2xl mx-auto text-center">
+            <Hint>Une cada verbo en inglés con su significado en español.</Hint>
+            {matchWon && (
+              <div className="bg-menta/15 border border-menta/40 text-mentadeep rounded-2xl p-4 mb-5 font-display text-lg">
+                🎉 ¡Completaste todas las parejas!
+              </div>
+            )}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {matchCards.map(c => {
+                const matched = matchDone.has(c.id);
+                const sel = matchSel.find(s => s.id === c.id);
+                let cls = "bg-nube text-tinta hover:bg-[#E9E2D6]";
+                if (matched) cls = "bg-menta/20 text-mentadeep border border-menta/50";
+                else if (sel) cls = "bg-ambar/30 text-[#A9760A] border border-ambar";
+                return (
+                  <button key={c.id} disabled={matched} onClick={() => handleMatchPick(c)}
+                    className={`rounded-2xl p-3 min-h-[64px] text-sm font-semibold transition ${cls} ${c.kind === "verb" ? "font-display text-base" : ""}`}>
+                    {c.text}
+                  </button>
+                );
+              })}
+            </div>
+            <button onClick={initMatch}
+              className="mt-6 border border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-tinta transition">↺ Jugar otra vez</button>
+          </div>
+        );
+
+        return (
+          <div className="font-sans text-tinta min-h-screen relative">
+            {/* fondo cálido */}
+            <div className="fixed inset-0 -z-10" style={{
+              background: "radial-gradient(60% 50% at 12% 0%, rgba(255,90,60,0.06), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(21,183,158,0.08), transparent 60%)"
+            }} />
+
+            <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
+              {/* HEADER */}
+              <header className="text-center mb-7">
+                <p className="font-mono text-[0.7rem] tracking-[0.28em] uppercase text-coral mb-3">Lección 1 · Verbos esenciales</p>
+                <h1 className="font-display font-black text-4xl sm:text-5xl text-tinta leading-none">
+                  Que los verbos<br /><span className="italic font-medium text-coral">te salgan solos.</span>
+                </h1>
+                <div className="my-5"><WaveBars /></div>
+                <p className="text-tintasoft max-w-xl mx-auto">
+                  Los 30 verbos más usados del inglés — la base de todas las frases. Estúdialos, escúchalos y juega hasta dominarlos.
+                </p>
+                <div className="mt-4 flex items-center justify-center gap-3">
+                  <span className="font-mono text-sm bg-nube rounded-full px-4 py-2 text-tinta">Puntos: <b className="text-coral">{score}</b></span>
+                  <button onClick={() => setScore(0)} className="font-mono text-xs text-bruma hover:text-coral transition">↺ reiniciar</button>
+                </div>
+                <p className="mt-2 font-mono text-[0.62rem] tracking-[0.18em] uppercase text-bruma">Creado por Prof. Germandario</p>
+              </header>
+
+              {/* NAV DE MODOS */}
+              <nav className="flex flex-wrap justify-center gap-2 mb-8">
+                {MODES.map(m => (
+                  <button key={m.id} onClick={() => setMode(m.id)}
+                    className={`rounded-full px-4 py-2.5 text-sm font-semibold transition ${mode === m.id ? "bg-tinta text-paper shadow-md" : "bg-transparent text-tintasoft border border-tinta/10 hover:border-coral hover:text-coral"}`}>
+                    {m.label}
+                  </button>
+                ))}
+              </nav>
+
+              {/* CONTENIDO */}
+              <div className="bg-white rounded-[20px] border border-tinta/5 shadow-[0_10px_30px_rgba(26,23,48,0.08)] p-5 sm:p-8">
+                {mode === "intro" && renderIntro()}
+                {mode === "study" && renderStudy()}
+                {mode === "pron" && renderPron()}
+                {mode === "quiz" && renderQuiz()}
+                {mode === "match" && renderMatch()}
+              </div>
+
+              <footer className="text-center mt-8 font-mono text-[0.62rem] tracking-[0.15em] uppercase text-bruma">
+                ProfGermandario · Laboratorio de Fluidez en Inglés
+              </footer>
+            </div>
+
+            {/* BOTÓN FLOTANTE WHATSAPP (mobile-ready) */}
+            <a href={WA_LINK} target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+               className="fixed z-50 flex items-center gap-2 bg-[#25D366] text-white font-semibold rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.45)] pl-4 pr-5 py-3 hover:scale-105 active:scale-95 transition"
+               style={{ bottom: "calc(1.25rem + env(safe-area-inset-bottom))", right: "1.25rem" }}>
+              <WaGlyph />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
           </div>
         );
       };
 
-      ReactDOM.createRoot(document.getElementById('root')).render(<VerbsLearningSystem />);
+      ReactDOM.createRoot(document.getElementById("root")).render(<VerbsLearningSystem />);
     </script>
 </body>
 </html>

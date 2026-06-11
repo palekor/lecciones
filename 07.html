@@ -1,516 +1,366 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<title>FluencySprint — profGermandario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Presente: Simple vs Progresivo — Lección 7 · ProfGermandario</title>
+<meta name="theme-color" content="#1A1730">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lienzo:#FCF8F3; --nube:#F2ECE2; --tinta:#1A1730; --tintasoft:#3A3552; --bruma:#76718A;
+    --coral:#FF5A3C; --coraldeep:#E8482C; --menta:#15B79E; --mentadeep:#0E8C79; --ambar:#FFB627;
+    --paper:#F6F1FF; --violet:#7C5CFF; --ok:#15B79E; --err:#D64545;
+    --linea:rgba(26,23,48,0.10); --linea-soft:rgba(26,23,48,0.06);
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--lienzo); color:var(--tinta); font-family:'Figtree',system-ui,sans-serif; min-height:100vh;
+    overflow-x:hidden; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; padding-bottom:92px; }
+  body::before{ content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,0.06), transparent 60%),
+               radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,0.07), transparent 60%); }
+  .shell{ width:100%; max-width:680px; margin:0 auto; padding:0 18px; position:relative; z-index:10; }
+
+  header{ text-align:center; padding:30px 0 6px; }
+  .eyebrow{ font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.26em; text-transform:uppercase;
+    color:var(--coral); display:inline-flex; align-items:center; gap:10px; }
+  .eyebrow::before{ content:''; width:24px; height:2px; background:var(--coral); border-radius:2px; }
+  header h1{ font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2rem,6vw,2.9rem); line-height:1.02;
+    letter-spacing:-0.02em; margin:14px 0 2px;
+    background:linear-gradient(120deg,var(--coral) 38%, var(--violet)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  header .sub{ color:var(--tintasoft); font-size:0.96rem; max-width:440px; margin:0 auto; }
+  .wave{ display:flex; align-items:flex-end; gap:4px; height:28px; justify-content:center; margin:13px 0; }
+  .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+    background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar)); animation:vox 1.3s ease-in-out infinite; }
+  @keyframes vox{0%,100%{transform:scaleY(.25);}50%{transform:scaleY(1);}}
+
+  /* EXPLAINER */
+  .rule-toggle{ display:block; margin:18px auto 0; background:#fff; border:1.5px solid var(--linea); border-radius:999px;
+    padding:9px 18px; font-family:'Figtree',sans-serif; font-weight:600; font-size:0.85rem; color:var(--tintasoft); cursor:pointer; transition:all .2s; touch-action:manipulation; }
+  .rule-toggle:hover{ border-color:var(--coral); color:var(--coral); }
+  .rule-card{ background:#fff; border:1px solid var(--linea-soft); border-radius:16px; padding:18px; margin-top:12px; box-shadow:0 6px 18px rgba(26,23,48,0.05); }
+  .rule-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+  @media(min-width:520px){ .rule-grid{ grid-template-columns:1fr 1fr; } }
+  .rule-col{ border-radius:12px; padding:14px; }
+  .rc-simple{ background:rgba(255,90,60,0.07); border:1px solid rgba(255,90,60,0.2); }
+  .rc-prog{ background:rgba(124,92,255,0.07); border:1px solid rgba(124,92,255,0.22); }
+  .rule-col h3{ font-family:'Fraunces',serif; font-size:1.1rem; margin-bottom:4px; }
+  .rc-simple h3{ color:var(--coraldeep); } .rc-prog h3{ color:var(--violet); }
+  .rule-col .form{ font-family:'DM Mono',monospace; font-size:0.78rem; color:var(--tinta); background:#fff; border-radius:8px; padding:6px 9px; margin:6px 0; display:inline-block; }
+  .rule-col p{ font-size:0.85rem; color:var(--tintasoft); line-height:1.5; }
+  .rule-col .mk{ font-weight:700; }
+  .rc-simple .mk{ color:var(--coraldeep); } .rc-prog .mk{ color:var(--violet); }
+  .rule-ex{ margin-top:12px; text-align:center; font-size:0.9rem; color:var(--tintasoft); line-height:1.7; }
+  .rule-ex b{ color:var(--tinta); }
+
+  .row{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .modebar{ margin:18px 0 0; }
+  .chip{ padding:9px 16px; border-radius:999px; border:1.5px solid var(--linea); background:transparent; color:var(--tintasoft);
+    font-family:'Figtree',sans-serif; font-size:0.84rem; font-weight:600; cursor:pointer; transition:all .2s; touch-action:manipulation; }
+  .chip:hover{ border-color:var(--coral); color:var(--coral); }
+  .chip.active{ background:var(--tinta); color:var(--paper); border-color:var(--tinta); }
+
+  .stat-bar{ display:flex; background:#fff; border:1px solid var(--linea); border-radius:14px; overflow:hidden; margin:14px 0 12px; box-shadow:0 8px 24px rgba(26,23,48,0.06); }
+  .stat{ flex:1; padding:11px 6px; text-align:center; border-right:1px solid var(--linea-soft); }
+  .stat:last-child{ border-right:none; }
+  .stat-value{ font-family:'Fraunces',serif; font-weight:900; font-size:1.4rem; color:var(--coral); line-height:1; }
+  .stat-label{ font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--bruma); margin-top:5px; }
+  .pb{ height:6px; background:var(--nube); border-radius:999px; overflow:hidden; margin-bottom:14px; }
+  .pf{ height:100%; background:linear-gradient(90deg,var(--coral),var(--violet)); border-radius:999px; transition:width .4s; }
+
+  /* CONTEXT CARD */
+  .ctx-card{ border-radius:20px; color:var(--paper); padding:22px 20px; text-align:center;
+    background:radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%); box-shadow:0 18px 48px rgba(26,23,48,0.18); margin-bottom:14px; }
+  .ctx-dir{ font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ambar); margin-bottom:14px; line-height:1.5; }
+  .ctx-items{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:14px; }
+  .ci{ background:rgba(246,241,255,0.08); border:1px solid rgba(246,241,255,0.14); border-radius:10px; padding:8px 12px; text-align:center; }
+  .ci .v{ font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem; color:var(--paper); }
+  .ci .t{ font-size:0.7rem; color:var(--paper); opacity:0.55; margin-top:1px; }
+  .ci.mark{ background:rgba(255,182,39,0.16); border-color:rgba(255,182,39,0.4); }
+  .ci.mark .v{ color:var(--ambar); }
+  .ctx-struct{ font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--paper); opacity:0.7; line-height:1.7; }
+  .ctx-struct .a{ color:var(--coral); } .ctx-struct .b{ color:var(--violet); }
+
+  /* BUILD ZONE */
+  .bz-label{ font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--bruma); margin-bottom:7px; }
+  .bz{ min-height:60px; background:#fff; border:1.5px dashed rgba(255,90,60,0.35); border-radius:14px; padding:12px 14px;
+    display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:14px; transition:border-color .2s, background .2s; }
+  .bz.ok{ border-style:solid; border-color:var(--menta); background:rgba(21,183,158,0.07); }
+  .bz.bad{ border-style:solid; border-color:var(--err); background:rgba(214,69,69,0.06); }
+  .bz .ph{ color:var(--bruma); font-style:italic; font-size:0.9rem; }
+  .pool{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; min-height:40px; }
+  .blk{ padding:9px 14px; border-radius:10px; font-family:'Figtree',sans-serif; font-weight:600; font-size:0.98rem; cursor:pointer; border:1.5px solid; transition:transform .12s; touch-action:manipulation; }
+  .blk:active{ transform:scale(.95); }
+  .blk-src{ background:#fff; border-color:var(--linea); color:var(--tinta); }
+  .blk-src:hover{ border-color:var(--violet); color:var(--violet); }
+  .blk-sel{ background:rgba(255,90,60,0.14); border-color:rgba(255,90,60,0.45); color:var(--coraldeep); }
+
+  .fb{ text-align:center; padding:10px 12px; border-radius:12px; font-weight:600; font-size:0.9rem; margin-bottom:12px; min-height:42px; display:flex; align-items:center; justify-content:center; line-height:1.45; }
+  .fb.nt{ background:var(--nube); color:var(--bruma); }
+  .fb.ok{ background:rgba(21,183,158,0.14); color:var(--mentadeep); }
+  .fb.bad{ background:rgba(214,69,69,0.1); color:var(--err); }
+
+  .actions{ display:flex; gap:8px; }
+  .btn{ padding:12px 18px; border-radius:12px; font-family:'Figtree',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; border:none; transition:transform .15s, background .2s, border-color .2s; touch-action:manipulation; }
+  .btn:active{ transform:scale(.97); }
+  .btn-chk{ background:var(--coral); color:#fff; flex:1; box-shadow:0 8px 22px rgba(255,90,60,0.28); }
+  .btn-chk:hover{ background:var(--coraldeep); } .btn-chk:disabled{ background:var(--nube); color:var(--bruma); box-shadow:none; cursor:not-allowed; }
+  .btn-cl{ background:#fff; color:var(--tintasoft); border:1.5px solid var(--linea); }
+  .btn-cl:hover{ border-color:var(--err); color:var(--err); }
+  .btn-sk{ background:transparent; color:var(--bruma); border:1.5px solid var(--linea); font-size:0.85rem; }
+  .btn-sk:hover{ color:var(--tinta); }
+
+  /* END */
+  .end{ border-radius:20px; color:var(--paper); padding:34px 22px; text-align:center;
+    background:radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%); box-shadow:0 18px 48px rgba(26,23,48,0.18); }
+  .stars{ font-size:2rem; letter-spacing:8px; margin-bottom:8px; }
+  .end-t{ font-family:'Fraunces',serif; font-weight:900; font-size:clamp(1.6rem,5vw,2.2rem); color:var(--paper); margin-bottom:6px; }
+  .end-t em{ color:var(--coral); font-style:italic; font-weight:500; }
+  .end-s{ color:var(--paper); opacity:0.75; max-width:340px; margin:0 auto 6px; font-size:0.92rem; line-height:1.5; }
+  .end-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:360px; margin:14px auto; }
+  .end-stat{ background:rgba(246,241,255,0.07); border:1px solid rgba(246,241,255,0.12); border-radius:12px; padding:12px 6px; }
+  .end-stat-v{ font-family:'Fraunces',serif; font-weight:900; font-size:1.6rem; color:var(--ambar); }
+  .end-stat-l{ font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--paper); opacity:0.6; margin-top:4px; }
+  .btn-primary{ background:var(--coral); color:#fff; padding:13px 26px; border-radius:999px; box-shadow:0 8px 24px rgba(255,90,60,0.3); }
+  .btn-primary:hover{ background:var(--coraldeep); }
+  .btn-wa{ background:#25D366; color:#fff; padding:13px 26px; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 24px rgba(37,211,102,.35); }
+
+  .wa-fab{ position:fixed; z-index:70; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff;
+    font-family:'Figtree',sans-serif; font-weight:600; text-decoration:none; border-radius:999px;
+    box-shadow:0 10px 30px rgba(37,211,102,.45); padding:13px 18px; transition:transform .2s; }
+  .wa-fab:active{ transform:scale(.95); }
+  @media(max-width:420px){ .wa-label{ display:none; } }
+  .foot{ text-align:center; margin-top:18px; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--bruma); }
+  [hidden]{ display:none !important; }
+  :focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:10px; }
+  @media(prefers-reduced-motion:reduce){ .wave i{ animation:none; transform:scaleY(.6); } }
+</style>
 </head>
 <body>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@400;600;700;900&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  :root{
-    --gold:#D4A017;--fire:#E8650A;--violet:#7B4FD4;--vl:#A87FE8;
-    --bg:#0E0C15;--s1:#1A1628;--s2:#231E35;--bd:#2E2850;
-    --tx:#F0EBF8;--mu:#7A70A0;--ok:#2ECC71;--er:#E74C3C;
-    --wa:#25D366;
-  }
-  html,body{height:100%;overflow-x:hidden}
-  body{background:var(--bg);color:var(--tx);font-family:'Barlow Condensed',sans-serif;min-height:100vh;padding:0;-webkit-font-smoothing:antialiased}
-  #app{max-width:700px;margin:0 auto;padding:12px 14px 100px}
-  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .logo{font-size:20px;font-weight:900;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
-  .logo span{color:var(--vl)}
-  .hud{display:flex;gap:8px;align-items:center}
-  .watch{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:5px 11px;font-family:'Space Mono',monospace;font-size:16px;color:var(--gold);letter-spacing:2px;min-width:80px;text-align:center}
-  .watch.on{border-color:var(--gold)}
-  .badge{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:4px 9px;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
-  .badge span{color:var(--tx)}
-  .mode-toggle{display:flex;background:var(--s1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:12px}
-  .mb{flex:1;padding:9px 4px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border:none;cursor:pointer;background:transparent;color:var(--mu);transition:all .2s;touch-action:manipulation;line-height:1.2}
-  .mb.active{background:var(--violet);color:#fff}
-  .level-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-  .lt{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--bd);cursor:pointer;background:transparent;color:var(--mu);transition:all .2s;touch-action:manipulation}
-  .lt.active{background:var(--gold);color:#111;border-color:var(--gold)}
-  .lt.locked{opacity:.4;cursor:not-allowed}
-  .ref-card{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:12px}
-  .rl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
-  .rs{font-size:17px;font-weight:700;color:var(--gold);letter-spacing:.5px;line-height:1.3}
-  .rsub{font-size:13px;color:var(--mu);margin-top:6px;line-height:1.8}
-  .rsub strong{color:var(--tx)}
-  .pro-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-  .pc{padding:5px 11px;border-radius:16px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--bd);color:var(--mu);background:var(--s2);transition:all .3s}
-  .pc.active{background:var(--violet);color:#fff;border-color:var(--violet)}
-  .pc.done{background:#1a2e1a;color:var(--ok);border-color:#2ECC7133}
-  .bz{min-height:64px;background:var(--s1);border:1.5px dashed var(--bd);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;transition:border-color .2s;position:relative}
-  .bz.ok{border-color:var(--ok);border-style:solid;background:#0d1f0d}
-  .bz.bad{border-color:var(--er);border-style:solid;background:#1f0d0d}
-  .bz-lbl{position:absolute;top:-9px;left:10px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mu);background:var(--bg);padding:0 6px}
-  .bz-hint::after{content:"TAP BLOCKS BELOW";font-size:11px;color:var(--mu);letter-spacing:1px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap}
-  .wb{padding:9px 14px;border-radius:8px;font-size:16px;font-weight:700;letter-spacing:.5px;cursor:pointer;user-select:none;transition:all .1s;border:1px solid transparent;display:inline-flex;align-items:center;touch-action:manipulation;min-height:42px}
-  .wb.src{background:var(--s2);border-color:var(--bd);color:var(--tx)}
-  .wb.src:active{border-color:var(--violet);color:var(--vl);transform:scale(.96)}
-  .wb.pl{background:#7B4FD422;border-color:var(--violet);color:var(--vl)}
-  .wb.pl:active{background:#E74C3C22;border-color:var(--er);color:var(--er)}
-  .wb.conn{background:#E8650A22;border-color:var(--fire);color:#FAA060}
-  .pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;min-height:48px}
-  .score-row{display:flex;gap:8px;margin-bottom:12px}
-  .sc{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:10px 6px;text-align:center}
-  .sc .n{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--gold)}
-  .sc .l{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);margin-top:2px}
-  .pb{height:5px;background:var(--s2);border-radius:3px;margin-bottom:12px;overflow:hidden}
-  .pf{height:100%;background:var(--violet);border-radius:3px;transition:width .4s}
-  .fb{text-align:center;padding:10px 8px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;min-height:40px;display:flex;align-items:center;justify-content:center;gap:8px;line-height:1.3}
-  .fb.ok{background:#0d1f0d;color:var(--ok)}
-  .fb.bad{background:#1f0d0d;color:var(--er)}
-  .fb.nt{background:var(--s2);color:var(--mu)}
-  .actions{display:flex;gap:8px}
-  .btn{padding:12px 18px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .15s;touch-action:manipulation;min-height:48px}
-  .btn-chk{background:var(--gold);color:#111;flex:1}
-  .btn-chk:active{background:#E8B520;transform:scale(.97)}
-  .btn-chk:disabled{background:var(--s2);color:var(--mu);cursor:not-allowed}
-  .btn-cl{background:var(--s2);color:var(--mu);border:1px solid var(--bd)}
-  .btn-cl:active{border-color:var(--er);color:var(--er)}
-  .btn-sk{background:transparent;color:var(--mu);border:1px solid var(--bd);font-size:13px;padding:10px 14px}
-  .btn-sk:active{color:var(--tx)}
-  .end{display:flex;flex-direction:column;align-items:center;padding:32px 16px;text-align:center;gap:14px}
-  .end-t{font-size:30px;font-weight:900;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
-  .end-s{font-size:15px;color:var(--mu);max-width:340px;line-height:1.6}
-  .stars{font-size:28px;letter-spacing:8px}
-  .btn-nl{background:var(--violet);color:#fff;padding:14px 28px;font-size:17px}
-  .btn-nl:active{background:var(--vl)}
-  .conn-hint{background:#E8650A11;border:1px solid #E8650A44;border-radius:8px;padding:8px 12px;font-size:13px;color:#FAA060;margin-bottom:10px;line-height:1.4}
-  .grammar-note{background:var(--s2);border-left:3px solid var(--violet);border-radius:0 6px 6px 0;padding:8px 12px;font-size:12px;color:var(--mu);margin-top:6px;line-height:1.6}
-  .grammar-note strong{color:var(--vl)}
+<div class="shell">
+  <header>
+    <span class="eyebrow">Lección 7 · El presente</span>
+    <h1>Simple vs Progresivo</h1>
+    <div class="wave" id="wave" aria-hidden="true"></div>
+    <p class="sub">Arma oraciones completas en presente y aprende cuándo usar cada forma. (El pasado y el futuro vienen después.)</p>
+  </header>
 
-  /* ── WhatsApp floating button ── */
-  .wa-btn{
-    position:fixed;bottom:18px;right:18px;
-    background:var(--wa);color:#fff;
-    border-radius:50px;
-    padding:12px 18px;
-    display:flex;align-items:center;gap:9px;
-    font-family:'Barlow Condensed',sans-serif;
-    font-size:15px;font-weight:700;letter-spacing:.5px;
-    text-decoration:none;
-    box-shadow:0 4px 18px #25D36655;
-    z-index:999;
-    touch-action:manipulation;
-    transition:transform .15s,box-shadow .15s;
-  }
-  .wa-btn:active{transform:scale(.95);box-shadow:0 2px 8px #25D36633}
-  .wa-btn svg{flex-shrink:0}
-
-  /* ── Responsive tweaks ── */
-  @media(max-width:420px){
-    #app{padding:10px 10px 100px}
-    .logo{font-size:18px}
-    .mode-toggle{flex-direction:row}
-    .mb{font-size:11px;padding:8px 2px}
-    .wb{padding:8px 11px;font-size:15px}
-    .rs{font-size:15px}
-    .end-t{font-size:26px}
-    .wa-btn span{display:none}
-    .wa-btn{padding:14px;border-radius:50%}
-  }
-</style>
-
-<a class="wa-btn" href="https://wa.me/573197894038?text=Hola%20profGermandario%2C%20quiero%20mejorar%20mi%20ingl%C3%A9s%20%F0%9F%9A%80" target="_blank" rel="noopener">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  <span>Chat con profGermandario</span>
-</a>
-
-<div id="app">
-  <h2 class="sr-only">Fluency Sprint — English sentence building speed game</h2>
-  <div class="header">
-    <div class="logo">Fluency<span>Sprint</span></div>
-    <div class="hud">
-      <div class="badge">Streak <span id="streak-num">0</span></div>
-      <div class="watch" id="watch">00:00</div>
+  <button class="rule-toggle" id="rule-btn" onclick="toggleRule()">📖 Ocultar la regla</button>
+  <div class="rule-card" id="rule-card">
+    <div class="rule-grid">
+      <div class="rule-col rc-simple">
+        <h3>Presente Simple</h3>
+        <span class="form">sujeto + verbo (+s con he/she)</span>
+        <p>Rutinas y hechos. Señales: <span class="mk">every day, usually, always, on weekends</span>.</p>
+      </div>
+      <div class="rule-col rc-prog">
+        <h3>Presente Progresivo</h3>
+        <span class="form">sujeto + am/is/are + verbo-ing</span>
+        <p>Algo que pasa <b>ahora</b>. Señales: <span class="mk">now, right now, at the moment</span>.</p>
+      </div>
+    </div>
+    <div class="rule-ex">
+      ✦ <b>She plays soccer every morning.</b> &nbsp;(rutina)<br>
+      ✦ <b>She is playing soccer right now.</b> &nbsp;(ahora mismo)
     </div>
   </div>
-  <div class="mode-toggle">
-    <button class="mb active" id="btn-simple" onclick="setMode('simple')">Simple Present</button>
-    <button class="mb" id="btn-progressive" onclick="setMode('progressive')">Present Progressive</button>
-    <button class="mb" id="btn-both" onclick="setMode('both')">Both (Hard)</button>
+
+  <div class="row modebar" id="mode-row">
+    <button class="chip active" data-mode="simple" onclick="setMode('simple',this)">Simple</button>
+    <button class="chip" data-mode="prog" onclick="setMode('prog',this)">Progresivo</button>
+    <button class="chip" data-mode="mixed" onclick="setMode('mixed',this)">¿Cuál va?</button>
   </div>
-  <div class="level-tabs">
-    <button class="lt active" id="tab1" onclick="setLevel(1)">Level 1 — Pronouns</button>
-    <button class="lt locked" id="tab2" onclick="setLevel(2)">Level 2 — Chunks</button>
-  </div>
-  <div id="game-area"></div>
+
+  <div id="game"></div>
+
+  <p class="foot">ProfGermandario · Domina el presente</p>
 </div>
 
+<a class="wa-fab" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20en%20la%20Lecci%C3%B3n%207%20(presente%20simple%20y%20progresivo)%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
+   target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+   style="bottom:calc(1.1rem + env(safe-area-inset-bottom)); right:1.1rem;">
+  <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
+  <span class="wa-label">WhatsApp</span>
+</a>
+
 <script>
-const PRONOUNS = ['I','You','He','She','We','They','It'];
-const THIRD = new Set(['He','She','It']);
-
-function conjugateSimple(baseVerb, pronoun) {
-  if (!THIRD.has(pronoun)) return baseVerb;
-  if (baseVerb === 'study') return 'studies';
-  if (baseVerb === 'go') return 'goes';
-  if (baseVerb === 'do') return 'does';
-  if (baseVerb === 'have') return 'has';
-  if (baseVerb.endsWith('ch') || baseVerb.endsWith('sh') || baseVerb.endsWith('x') || baseVerb.endsWith('s')) return baseVerb + 'es';
-  if (baseVerb.match(/[^aeiou]y$/)) return baseVerb.slice(0,-1) + 'ies';
-  return baseVerb + 's';
-}
-
-function getAux(pronoun) {
-  if (pronoun === 'I') return 'am';
-  if (pronoun === 'He' || pronoun === 'She' || pronoun === 'It') return 'is';
-  return 'are';
-}
-
+// ── DATOS: verbo, español, complemento, señal simple (rutina), señal progresiva (ahora) ──
 const SENTENCES = [
-  { base:'play', tail:'soccer at school every morning', prog_tail:'playing soccer at school right now' },
-  { base:'eat', tail:'breakfast at home every day', prog_tail:'eating breakfast at home right now' },
-  { base:'study', tail:'English every night', prog_tail:'studying English every night' },
-  { base:'work', tail:'in an office downtown', prog_tail:'working in an office downtown' },
-  { base:'read', tail:'books at the library', prog_tail:'reading books at the library' },
-  { base:'watch', tail:'movies on weekends', prog_tail:'watching movies right now' },
-  { base:'practice', tail:'English every morning', prog_tail:'practicing English right now' }
+  {base:"play", es:"jugar", comp:"soccer", simpleMk:"every morning", progMk:"right now"},
+  {base:"eat", es:"comer", comp:"breakfast", simpleMk:"every day", progMk:"right now"},
+  {base:"study", es:"estudiar", comp:"English", simpleMk:"every night", progMk:"at the moment"},
+  {base:"work", es:"trabajar", comp:"downtown", simpleMk:"on weekdays", progMk:"today"},
+  {base:"read", es:"leer", comp:"a book", simpleMk:"every evening", progMk:"right now"},
+  {base:"watch", es:"ver", comp:"a movie", simpleMk:"on weekends", progMk:"now"},
+  {base:"write", es:"escribir", comp:"emails", simpleMk:"every day", progMk:"at the moment"},
+  {base:"run", es:"correr", comp:"in the park", simpleMk:"every morning", progMk:"right now"},
+  {base:"cook", es:"cocinar", comp:"dinner", simpleMk:"every night", progMk:"now"},
+  {base:"drink", es:"beber", comp:"coffee", simpleMk:"every morning", progMk:"right now"},
 ];
+const SUBJECTS = [["I","yo"],["You","tú"],["He","él"],["She","ella"],["We","nosotros"],["They","ellos"]];
+const THIRD = new Set(["He","She"]);
+const ROUNDS_TOTAL = 8;
 
-const L2_PAIRS = [
-  { s1:'She plays soccer every morning', c:'because', s2:'she feels very energetic' },
-  { s1:'He studies English every night', c:'but', s2:'he watches TV before bed' },
-  { s1:'They work hard every day', c:'so', s2:'they rest on weekends' },
-  { s1:'I eat breakfast at home', c:'before', s2:'I go to the office' },
-  { s1:'We read books at the library', c:'although', s2:'we do not have internet' }
-];
+// ── conjugación ──
+function gerund(b){ const dbl={get:1,sit:1,put:1,run:1,begin:1,stop:1,win:1,set:1,let:1};
+  if(dbl[b]) return b+b.slice(-1)+"ing"; if(b==="be") return "being"; if(b.endsWith("ee")) return b+"ing";
+  if(b.endsWith("e")) return b.slice(0,-1)+"ing"; return b+"ing"; }
+function thirdS(b){ if(b==="have")return"has"; if(b==="do")return"does"; if(b==="go")return"goes";
+  if(/(ch|sh|ss|x|z|s)$/.test(b)) return b+"es"; if(/[^aeiou]y$/.test(b)) return b.slice(0,-1)+"ies"; return b+"s"; }
+function auxFor(s){ if(s==="I")return"am"; if(s==="He"||s==="She")return"is"; return"are"; }
+function simpleForm(b,s){ return THIRD.has(s)? thirdS(b) : b; }
 
-function buildCorrect(sentObj, pronoun, mode) {
-  if (mode === 'progressive') {
-    return [pronoun, getAux(pronoun), ...sentObj.prog_tail.split(' ')];
-  } else {
-    const verb = conjugateSimple(sentObj.base, pronoun);
-    return [pronoun, verb, ...sentObj.tail.split(' ')];
-  }
+const $ = (id)=>document.getElementById(id);
+const shuffle=(a)=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const rand=(a)=>a[Math.floor(Math.random()*a.length)];
+function buildWave(){ const el=$("wave"); for(let i=0;i<22;i++){const b=document.createElement("i"); b.style.height=(8+Math.abs(Math.sin(i*0.6))*18)+"px"; b.style.animationDelay=(i*0.07)+"s"; b.style.animationDuration=(1.1+(i%5)*0.12)+"s"; el.appendChild(b);} }
+
+function tokensFor(sent, subj, tense){
+  const comp=sent.comp.split(" ");
+  if(tense==="simple") return [subj, simpleForm(sent.base,subj), ...comp, ...sent.simpleMk.split(" ")];
+  return [subj, auxFor(subj), gerund(sent.base), ...comp, ...sent.progMk.split(" ")];
+}
+function decoysFor(sent, subj, tense, correct){
+  const seen=new Set(correct); const out=[];
+  const cand = tense==="simple"
+    ? [gerund(sent.base), (THIRD.has(subj)? sent.base : thirdS(sent.base)), auxFor(subj)]
+    : [simpleForm(sent.base,subj), ["am","is","are"].find(a=>a!==auxFor(subj))];
+  for(const d of cand){ if(d && !seen.has(d) && !out.includes(d)){ out.push(d); } }
+  return out;
 }
 
-function buildRef(sentObj, pronoun, mode) {
-  if (mode === 'progressive') {
-    return pronoun + ' ' + getAux(pronoun) + ' ' + sentObj.prog_tail;
-  } else {
-    return pronoun + ' ' + conjugateSimple(sentObj.base, pronoun) + ' ' + sentObj.tail;
-  }
+// ── ESTADO ──
+let mode="simple", round=1, solved=0, errors=0, score=0, streak=0;
+let cur=null, placed=[], answered=false;
+
+function toggleRule(){
+  const c=$("rule-card"), b=$("rule-btn");
+  const hidden=c.hasAttribute("hidden");
+  if(hidden){ c.removeAttribute("hidden"); b.textContent="📖 Ocultar la regla"; }
+  else { c.setAttribute("hidden",""); b.textContent="📖 Ver la regla"; }
 }
-
-function shuffleArr(arr) {
-  let a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    let j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
+function setMode(m, btn){
+  mode=m; document.querySelectorAll("#mode-row .chip").forEach(x=>x.classList.remove("active")); btn.classList.add("active");
+  round=1; solved=0; errors=0; score=0; streak=0; newRound();
 }
-
-function buildPool(correct, sentObj, mode) {
-  let decoys = [];
-  if (mode === 'simple') {
-    const wrongVerb = conjugateSimple(sentObj.base, 'He');
-    const baseVerb = sentObj.base;
-    if (!correct.includes(wrongVerb)) decoys.push(wrongVerb);
-    if (!correct.includes(baseVerb)) decoys.push(baseVerb);
-  } else {
-    const wrongAuxOptions = ['am','is','are'].filter(x => !correct.includes(x));
-    if (wrongAuxOptions.length) decoys.push(wrongAuxOptions[0]);
-  }
-  return shuffleArr([...correct, ...decoys.slice(0,1)]);
+function newRound(){
+  answered=false; placed=[];
+  const sent=rand(SENTENCES); const subj=rand(SUBJECTS);
+  const tense = mode==="mixed" ? (Math.random()<0.5?"simple":"prog") : (mode==="simple"?"simple":"prog");
+  const correct=tokensFor(sent, subj[0], tense);
+  const pool=shuffle([...correct, ...decoysFor(sent, subj[0], tense, correct)]);
+  cur={sent, subj, tense, correct, pool};
+  renderRound();
 }
+function renderRound(){
+  const sent=cur.sent, subj=cur.subj, tense=cur.tense;
+  let dir, struct;
+  if(mode==="simple"){ dir="Presente Simple"; struct='<span class="a">sujeto + verbo (+s con he/she)</span>'; }
+  else if(mode==="prog"){ dir="Presente Progresivo"; struct='<span class="b">sujeto + am/is/are + verbo-ing</span>'; }
+  else { dir="¿Simple o progresivo? — fíjate en la señal de tiempo ⏱️";
+    struct='<span class="a">simple: sujeto + verbo(+s)</span> &nbsp;·&nbsp; <span class="b">progresivo: am/is/are + -ing</span>'; }
+  const mk = tense==="simple"? sent.simpleMk : sent.progMk;
+  const progress=Math.round(((round-1)/ROUNDS_TOTAL)*100);
 
-let G = {
-  level:1, mode:'simple',
-  sentIdx:0, proIdx:0,
-  placed:[], pool:[],
-  streak:0, score:0, errors:0,
-  timerSec:0, running:false, handle:null,
-  proTimes:[], proStart:0,
-  unlocked:false,
-  l2Idx:0,
-  bothPhase:'simple',
-  done:false
-};
-
-function fmt(s){let m=Math.floor(s/60),r=s%60;return(m<10?'0':'')+m+':'+(r<10?'0':'')+r}
-
-function startTimer(){
-  if(G.running)return;
-  G.running=true;
-  G.handle=setInterval(()=>{G.timerSec++;document.getElementById('watch').textContent=fmt(G.timerSec);},1000);
-  document.getElementById('watch').classList.add('on');
-}
-
-function stopTimer(){
-  clearInterval(G.handle);G.running=false;
-  document.getElementById('watch').classList.remove('on');
-}
-
-function setMode(m){
-  G.mode=m;G.bothPhase='simple';
-  ['simple','progressive','both'].forEach(x=>document.getElementById('btn-'+x).classList.toggle('active',x===m));
-  resetRound();
-}
-
-function setLevel(l){
-  if(l===2&&!G.unlocked)return;
-  G.level=l;G.l2Idx=0;resetRound();
-}
-
-function getSent(){return SENTENCES[G.sentIdx%SENTENCES.length]}
-
-function getEffMode(){
-  if(G.mode==='both') return G.bothPhase;
-  return G.mode;
-}
-
-function initLevel1(){
-  const s=getSent();const eMode=getEffMode();
-  const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
-  G.pool=buildPool(correct,s,eMode);
-  G.placed=[];G.proStart=Date.now();
-  render();
-}
-
-function initLevel2(){
-  const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
-  const words=[...pair.s1.split(' '),pair.c,...pair.s2.split(' ')];
-  G.pool=shuffleArr(words);G.placed=[];render();
-}
-
-function resetRound(){
-  stopTimer();G.timerSec=0;G.running=false;
-  document.getElementById('watch').textContent='00:00';
-  G.proIdx=0;G.placed=[];G.errors=0;G.done=false;G.proTimes=[];G.bothPhase='simple';
-  if(G.level===1)initLevel1();else initLevel2();
-}
-
-function render(){
-  const ga=document.getElementById('game-area');
-  if(G.done){ga.innerHTML=renderEnd();return;}
-  if(G.level===1)ga.innerHTML=renderL1();
-  else ga.innerHTML=renderL2();
-}
-
-function renderL1(){
-  const s=getSent();const eMode=getEffMode();
-  const pro=PRONOUNS[G.proIdx];
-  const progress=Math.round((G.proIdx/7)*100);
-  
-  const simpleEx=buildRef(s,pro,'simple');
-  const progEx=buildRef(s,pro,'progressive');
-  
-  const grammarNote = THIRD.has(pro)
-    ? `<span style="color:var(--vl)">${pro}</span> is 3rd person singular — verb gets <strong>-s/-es</strong> in simple present`
-    : `<span style="color:var(--vl)">${pro}</span> is NOT 3rd person singular — use the <strong>base form</strong>`;
-
-  const modeLabel = eMode==='simple'
-    ? `Build: <strong>Simple Present</strong>`
-    : eMode==='progressive'
-    ? `Build: <strong>Present Progressive</strong>`
-    : '';
-
-  let chips=PRONOUNS.map((p,i)=>`<span class="pc${i===G.proIdx?' active':i<G.proIdx?' done':''}">${p}${i<G.proIdx?' ✓':''}</span>`).join('');
-
-  let poolHtml=G.pool.map((w,i)=>`<span class="wb src" onclick="placeWord(${i})">${w}</span>`).join('');
-  let placedHtml=G.placed.map((w,i)=>`<span class="wb pl" onclick="removeWord(${i})">${w}</span>`).join('');
-  const hasPlaced=G.placed.length>0;
-
-  return `
-  <div class="score-row">
-    <div class="sc"><div class="n">${G.score}</div><div class="l">Score</div></div>
-    <div class="sc"><div class="n">${G.proIdx}/7</div><div class="l">Done</div></div>
-    <div class="sc"><div class="n">${G.errors}</div><div class="l">Errors</div></div>
-  </div>
-  <div class="pb"><div class="pf" style="width:${progress}%"></div></div>
-  <div class="ref-card">
-    <div class="rl">Reference · ${modeLabel}</div>
-    <div class="rs">${pro.toUpperCase()} + ${s.base.toUpperCase()} + ${s.tail.toUpperCase()}</div>
-    <div class="rsub">
-      ✦ Simple: <strong>${simpleEx}</strong><br>
-      ✦ Progressive: <strong>${progEx}</strong>
+  $("game").innerHTML = `
+    <div class="stat-bar">
+      <div class="stat"><div class="stat-value">${score}</div><div class="stat-label">Puntos</div></div>
+      <div class="stat"><div class="stat-value">${round}/${ROUNDS_TOTAL}</div><div class="stat-label">Ronda</div></div>
+      <div class="stat"><div class="stat-value">${streak}</div><div class="stat-label">Racha</div></div>
     </div>
-    <div class="grammar-note">${grammarNote}</div>
-  </div>
-  <div class="pro-bar">${chips}</div>
-  <div class="bz${!hasPlaced?' bz-hint':''}" id="bz">
-    <span class="bz-lbl">Your sentence</span>
-    ${placedHtml}
-  </div>
-  <div class="pool">${poolHtml}</div>
-  <div class="fb nt" id="fb">Tap a block to start building your sentence!</div>
-  <div class="actions">
-    <button class="btn btn-cl" onclick="clearPlaced()">Clear</button>
-    <button class="btn btn-chk" id="btn-chk" onclick="checkAnswer()" ${G.placed.length<2?'disabled':''}>Check ✓</button>
-    <button class="btn btn-sk" onclick="skipPro()">Skip →</button>
-  </div>`;
+    <div class="pb"><div class="pf" style="width:${progress}%"></div></div>
+    <div class="ctx-card">
+      <div class="ctx-dir">${dir}</div>
+      <div class="ctx-items">
+        <div class="ci"><div class="v">${subj[0]}</div><div class="t">${subj[1]}</div></div>
+        <div class="ci"><div class="v">${sent.base}</div><div class="t">${sent.es}</div></div>
+        <div class="ci"><div class="v">${sent.comp}</div><div class="t">complemento</div></div>
+        <div class="ci mark"><div class="v">${mk}</div><div class="t">señal de tiempo</div></div>
+      </div>
+      <div class="ctx-struct">${struct}</div>
+    </div>
+    <div class="bz-label">Tu oración</div>
+    <div class="bz" id="bz"></div>
+    <div class="pool" id="pool"></div>
+    <div class="fb nt" id="fb">Toca las palabras para armar la oración.</div>
+    <div class="actions">
+      <button class="btn btn-cl" onclick="clearPlaced()">Limpiar</button>
+      <button class="btn btn-chk" id="btn-chk" onclick="check()" disabled>Revisar ✓</button>
+      <button class="btn btn-sk" onclick="skip()">Saltar →</button>
+    </div>`;
+  updateBuild();
 }
-
-function renderL2(){
-  const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
-  let poolHtml=G.pool.map((w,i)=>{
-    const cls=w===pair.c?'wb conn src':'wb src';
-    return `<span class="${cls}" onclick="placeWord(${i})">${w}</span>`;
-  }).join('');
-  let placedHtml=G.placed.map((w,i)=>`<span class="wb pl" onclick="removeWord(${i})">${w}</span>`).join('');
-  const hasPlaced=G.placed.length>0;
-  return `
-  <div class="score-row">
-    <div class="sc"><div class="n">${G.score}</div><div class="l">Score</div></div>
-    <div class="sc"><div class="n">${G.l2Idx+1}/${L2_PAIRS.length}</div><div class="l">Chunk</div></div>
-    <div class="sc"><div class="n">${G.errors}</div><div class="l">Errors</div></div>
-  </div>
-  <div class="ref-card">
-    <div class="rl">Level 2 — Build the Chunk</div>
-    <div class="rs" style="color:var(--vl)">Join two sentences using the connector</div>
-    <div class="rsub">Connector: <strong style="color:#FAA060;font-size:18px">${pair.c.toUpperCase()}</strong></div>
-  </div>
-  <div class="conn-hint">The orange block is your connector — it belongs in the middle of the two sentences.</div>
-  <div class="bz${!hasPlaced?' bz-hint':''}" id="bz">
-    <span class="bz-lbl">Your chunk</span>
-    ${placedHtml}
-  </div>
-  <div class="pool">${poolHtml}</div>
-  <div class="fb nt" id="fb">Tap blocks to assemble the compound sentence!</div>
-  <div class="actions">
-    <button class="btn btn-cl" onclick="clearPlaced()">Clear</button>
-    <button class="btn btn-chk" onclick="checkAnswer()" ${G.placed.length<3?'disabled':''}>Check ✓</button>
-  </div>`;
+function updateBuild(){
+  const bz=$("bz"), pool=$("pool");
+  bz.innerHTML = placed.length ? placed.map((w,i)=>`<span class="blk blk-sel" onclick="removeBlk(${i})">${w}</span>`).join("")
+                               : `<span class="ph">Toca una palabra para empezar…</span>`;
+  pool.innerHTML = cur.pool.map((w,i)=>`<span class="blk blk-src" onclick="placeBlk(${i})">${w}</span>`).join("");
+  const chk=$("btn-chk"); if(chk) chk.disabled = placed.length<3 || answered;
 }
+function placeBlk(i){ if(answered) return; placed.push(cur.pool[i]); cur.pool.splice(i,1); updateBuild(); }
+function removeBlk(i){ if(answered) return; cur.pool.push(placed[i]); placed.splice(i,1); updateBuild(); }
+function clearPlaced(){ if(answered) return; cur.pool=[...cur.pool,...placed]; placed=[]; updateBuild(); }
 
+function check(){
+  if(answered) return;
+  const fb=$("fb"), bz=$("bz");
+  const ans=placed.join(" "), exp=cur.correct.join(" ");
+  if(ans===exp){
+    answered=true; solved++; streak++;
+    score += streak>=3?20:streak>=2?15:10;
+    bz.className="bz ok"; fb.className="fb ok"; fb.textContent="✓ ¡Perfecto!"+(streak>=2?` +racha ×${streak}`:"");
+    setTimeout(advance, 850);
+  } else {
+    errors++; streak=0;
+    bz.className="bz bad"; fb.className="fb bad"; fb.innerHTML = hintFor();
+    setTimeout(()=>{ const b=$("bz"); if(b) b.className="bz"; }, 700);
+    updateBuild();
+  }
+}
+function hintFor(){
+  const subj=cur.subj[0], sent=cur.sent;
+  if(cur.tense==="simple"){
+    const extra = THIRD.has(subj) ? ` Con <b>${subj}</b> el verbo lleva <b>-s</b>.` : "";
+    return `✗ «${cur.sent.simpleMk}» pide <b>presente simple</b>.${extra}<br>→ ${cur.correct.join(" ")}`;
+  }
+  return `✗ «${cur.sent.progMk}» pide <b>presente progresivo</b>: <b>${auxFor(subj)} + ${gerund(sent.base)}</b>.<br>→ ${cur.correct.join(" ")}`;
+}
+function skip(){ if(answered) return; answered=true; errors++; streak=0;
+  const fb=$("fb"); fb.className="fb bad"; fb.innerHTML=`Respuesta: <b>${cur.correct.join(" ")}</b>`;
+  setTimeout(advance, 1100); updateBuild(); }
+
+function advance(){
+  if(round>=ROUNDS_TOTAL){ renderEnd(); return; }
+  round++; newRound();
+}
 function renderEnd(){
-  const best=G.proTimes.length?Math.min(...G.proTimes):0;
-  const avg=G.proTimes.length?Math.round(G.proTimes.reduce((a,b)=>a+b,0)/G.proTimes.length):0;
-  const stars=G.errors===0?'★★★':G.errors<=2?'★★☆':'★☆☆';
-  const unlockMsg=G.level===1&&!G.unlocked?'<div style="color:var(--vl);font-size:14px">Level 2 — Chunks — is now unlocked!</div>':'';
-  return `
-  <div class="end">
-    <div class="stars">${stars}</div>
-    <div class="end-t">${G.level===1?'Pronoun Run Complete!':'Chunk Master!'}</div>
-    <div class="end-s">Time: <strong>${fmt(G.timerSec)}</strong> &nbsp;·&nbsp; Best: <strong>${fmt(best)}</strong> &nbsp;·&nbsp; Avg: <strong>${fmt(avg)}</strong><br>Score: <strong>${G.score}</strong> &nbsp;·&nbsp; Errors: <strong>${G.errors}</strong></div>
-    ${unlockMsg}
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px">
-      ${G.level===1&&!G.unlocked?`<button class="btn btn-nl" onclick="goL2()">Go to Level 2 →</button>`:''}
-      ${G.level===2?`<button class="btn btn-nl" onclick="sendPrompt('I finished Fluency Sprint Level 2! Give me feedback and a harder challenge.')">Get Feedback ↗</button>`:''}
-      <button class="btn btn-cl btn" onclick="replay()">Play Again</button>
-    </div>
-  </div>`;
+  const stars = errors===0?"★★★":errors<=2?"★★☆":"★☆☆";
+  let title, sub;
+  if(errors===0){ title="¡Dominio total!"; sub="Armaste las 8 oraciones sin errores. Tu presente está sólido."; }
+  else if(errors<=2){ title="¡Muy bien!"; sub="Pocos errores. Sigue practicando la diferencia simple/progresivo."; }
+  else { title="¡Buen esfuerzo!"; sub="Repasa la regla: la señal de tiempo te dice qué forma usar."; }
+  $("game").innerHTML = `
+    <div class="end">
+      <div class="stars">${stars}</div>
+      <div class="end-t">${title}</div>
+      <div class="end-s">${sub}</div>
+      <div class="end-stats">
+        <div class="end-stat"><div class="end-stat-v">${solved}/${ROUNDS_TOTAL}</div><div class="end-stat-l">Resueltas</div></div>
+        <div class="end-stat"><div class="end-stat-v">${score}</div><div class="end-stat-l">Puntos</div></div>
+        <div class="end-stat"><div class="end-stat-v">${errors}</div><div class="end-stat-l">Errores</div></div>
+      </div>
+      <div class="row" style="justify-content:center; margin-top:6px;">
+        <button class="btn btn-primary" onclick="(function(){round=1;solved=0;errors=0;score=0;streak=0;newRound();})()">Jugar otra vez ▶</button>
+        <a class="btn-wa" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20practicando%20el%20presente%20y%20quiero%20clases%20%F0%9F%99%8C" target="_blank" rel="noopener">Quiero clases</a>
+      </div>
+    </div>`;
 }
 
-function placeWord(idx){
-  if(!G.running)startTimer();
-  G.placed.push(G.pool[idx]);
-  G.pool.splice(idx,1);
-  render();
-}
-
-function removeWord(idx){
-  G.pool.push(G.placed[idx]);
-  G.placed.splice(idx,1);
-  render();
-}
-
-function clearPlaced(){
-  G.pool=[...G.pool,...G.placed];
-  G.placed=[];render();
-}
-
-function checkAnswer(){
-  const fb=document.getElementById('fb');
-  const bz=document.getElementById('bz');
-  if(!fb)return;
-
-  if(G.level===1){
-    const s=getSent();const eMode=getEffMode();
-    const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
-    const ans=G.placed.join(' ').toLowerCase().trim();
-    const exp=correct.join(' ').toLowerCase().trim();
-    if(ans===exp){
-      const el=Math.round((Date.now()-G.proStart)/1000);
-      G.proTimes.push(el);
-      G.streak++;G.score+=G.streak>=2?20:10;
-      document.getElementById('streak-num').textContent=G.streak;
-      fb.className='fb ok';fb.textContent='✓ Correct! '+(G.streak>=2?'+20 streak bonus!':'+10');
-      bz.classList.add('ok');
-      setTimeout(()=>nextPro(),850);
-    } else {
-      G.errors++;G.streak=0;
-      document.getElementById('streak-num').textContent=0;
-      fb.className='fb bad';
-      const correctSentence=correct.join(' ');
-      fb.textContent='✗ Expected: '+correctSentence;
-      bz.classList.add('bad');setTimeout(()=>{if(bz)bz.classList.remove('bad')},600);
-    }
-  } else {
-    const pair=L2_PAIRS[G.l2Idx%L2_PAIRS.length];
-    const full=[...pair.s1.split(' '),pair.c,...pair.s2.split(' ')];
-    const ans=G.placed.join(' ').toLowerCase().trim();
-    const exp=full.join(' ').toLowerCase().trim();
-    if(ans===exp){
-      G.streak++;G.score+=30;
-      document.getElementById('streak-num').textContent=G.streak;
-      fb.className='fb ok';fb.textContent='✓ Chunk complete! +30';
-      bz.classList.add('ok');setTimeout(()=>nextChunk(),850);
-    } else {
-      G.errors++;G.streak=0;
-      document.getElementById('streak-num').textContent=0;
-      fb.className='fb bad';fb.textContent='✗ Check word order and connector position!';
-    }
-  }
-}
-
-function nextPro(){
-  G.proIdx++;
-  if(G.proIdx>=7){
-    if(G.mode==='both'&&G.bothPhase==='simple'){
-      G.bothPhase='progressive';G.proIdx=0;
-      const s=getSent();
-      const correct=buildCorrect(s,PRONOUNS[0],'progressive');
-      G.pool=buildPool(correct,s,'progressive');
-      G.placed=[];G.proStart=Date.now();render();return;
-    }
-    stopTimer();G.done=true;
-    if(G.level===1){G.unlocked=true;document.getElementById('tab2').classList.remove('locked');}
-    render();return;
-  }
-  const s=getSent();const eMode=getEffMode();
-  const correct=buildCorrect(s,PRONOUNS[G.proIdx],eMode);
-  G.pool=buildPool(correct,s,eMode);
-  G.placed=[];G.proStart=Date.now();render();
-}
-
-function nextChunk(){
-  G.l2Idx++;
-  if(G.l2Idx>=L2_PAIRS.length){stopTimer();G.done=true;render();return;}
-  const pair=L2_PAIRS[G.l2Idx];
-  G.pool=shuffleArr([...pair.s1.split(' '),pair.c,...pair.s2.split(' ')]);
-  G.placed=[];render();
-}
-
-function skipPro(){
-  G.errors++;G.streak=0;document.getElementById('streak-num').textContent=0;
-  nextPro();
-}
-
-function goL2(){
-  G.level=2;G.done=false;G.l2Idx=0;G.errors=0;G.score=0;G.timerSec=0;G.streak=0;
-  document.getElementById('watch').textContent='00:00';
-  document.getElementById('tab1').classList.remove('active');
-  document.getElementById('tab2').classList.add('active');
-  initLevel2();
-}
-
-function replay(){
-  G.done=false;G.proIdx=0;G.errors=0;G.score=0;G.timerSec=0;G.streak=0;G.proTimes=[];G.bothPhase='simple';
-  G.sentIdx=(G.sentIdx+1)%SENTENCES.length;
-  document.getElementById('watch').textContent='00:00';
-  if(G.level===1)initLevel1();else initLevel2();
-}
-
-initLevel1();
+// ── INIT ──
+buildWave();
+newRound();
 </script>
 </body>
 </html>

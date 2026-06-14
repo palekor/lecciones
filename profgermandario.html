@@ -200,6 +200,25 @@
   }
   .card::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--coral);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
   .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:transparent;}
+
+
+  /* ── THUMBNAILS DE LECCIONES ── */
+  .card-thumb{
+    width:calc(100% + 56px);
+    margin:-30px -28px 12px;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:var(--nube);
+    border-bottom:1px solid var(--linea-soft);
+  }
+  .card-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .35s ease, filter .35s ease;
+  }
+  .card:hover .card-thumb img{transform:scale(1.045);filter:saturate(1.08) contrast(1.03);}
+  .card-feature .card-thumb{display:none;}
   .card:hover::after{transform:scaleX(1);}
   .card-meta{display:flex;align-items:center;justify-content:space-between;}
   .card-num{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:var(--bruma);}
@@ -365,7 +384,7 @@
   <div class="statbar reveal">
     <div class="stat"><span class="stat-num">11</span><span class="stat-lbl">Herramientas</span></div>
     <div class="stat"><span class="stat-num">40+</span><span class="stat-lbl">Verbos clave</span></div>
-    <div class="stat"><span class="stat-num">100</span><span class="stat-lbl">Palabras base</span></div>
+    <div class="stat"><span class="stat-num">500</span><span class="stat-lbl">Palabras base</span></div>
     <div class="stat"><span class="stat-num">0</span><span class="stat-lbl">Instalaciones</span></div>
   </div>
 </section>
@@ -390,69 +409,69 @@
     </div>
 
     <div class="tools-grid stagger reveal" id="grid">
-
-      <a href="https://palekor.github.io/lecciones/01.html" target="_blank" rel="noopener" class="card" data-cat="game grammar">
-        <div class="card-meta"><span class="card-num">01 / 11</span><span class="badge b-grammar">Gramática</span></div>
+      <a href="https://palekor.github.io/lecciones/01.html" target="_blank" rel="noopener" class="card" data-cat="grammar game">
+        <figure class="card-thumb"><img src="assets/img/lesson-01.jpg" alt="Verbos Esenciales — flashcards y quiz" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">01 / 11</span><span class="badge b-grammar">Verbos</span></div>
         <span class="card-ico">⚡</span>
-        <h3>Sistema de Verbos Esenciales</h3>
-        <p>30 verbos núcleo del inglés —base, pasado y participio— con emparejado, modo pronunciación, quiz y juego de memoria. Las palabras que hacen respirar cada frase.</p>
+        <h3>Verbos Esenciales</h3>
+        <p>Los 30 verbos más usados del inglés en 4 modos: flashcards 3D (significado, pasado, participio y ejemplos), pronunciación con audio, quiz de significado y parejas inglés-español.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/02.html" target="_blank" rel="noopener" class="card" data-cat="game grammar">
+      <a href="https://palekor.github.io/lecciones/02.html" target="_blank" rel="noopener" class="card" data-cat="game vocab">
+        <figure class="card-thumb"><img src="assets/img/lesson-02.jpg" alt="WordBlitz — palabras en caída" loading="lazy"></figure>
         <div class="card-meta"><span class="card-num">02 / 11</span><span class="badge b-game">Juego</span></div>
-        <span class="card-ico">🧩</span>
-        <h3>Constructor de Oraciones</h3>
-        <p>Entrena tu cerebro para sentir el orden correcto del inglés, no para memorizar reglas. Armado de frases arrastrando y soltando, contra reloj.</p>
+        <span class="card-ico">🌧️</span>
+        <h3>WordBlitz · Palabras en Caída</h3>
+        <p>Las palabras caen y eliges la traducción correcta antes de que toquen el suelo. Verbos, adjetivos y conectores en 3 modos —Normal, Veloz y Zen— con rachas, pistas y teclado.</p>
+        <span class="card-go">Jugar →</span>
+      </a>
+      <a href="https://palekor.github.io/lecciones/03.html" target="_blank" rel="noopener" class="card" data-cat="grammar game">
+        <figure class="card-thumb"><img src="assets/img/lesson-03.jpg" alt="Tiempos y Conectores" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">03 / 11</span><span class="badge b-grammar">Gramática</span></div>
+        <span class="card-ico">🔗</span>
+        <h3>Tiempos y Conectores</h3>
+        <p>Distingue verbos regulares e irregulares, domina el presente simple vs progresivo en un quiz con rachas y arma oraciones completas unidas por conectores, con audio.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/03.html" target="_blank" rel="noopener" class="card" data-cat="game">
-        <div class="card-meta"><span class="card-num">03 / 11</span><span class="badge b-game">Juego</span></div>
-        <span class="card-ico">🎯</span>
-        <h3>Entrenador de Reacción</h3>
-        <p>La fluidez vive en el espacio entre pensar y hablar. Este juego comprime esa brecha con ejercicios de reconocimiento rápido para ganar reflejos de nativo.</p>
-        <span class="card-go">Abrir lección →</span>
-      </a>
-
-      <a href="https://palekor.github.io/lecciones/04.html" target="_blank" rel="noopener" class="card" data-cat="vocab game">
-        <div class="card-meta"><span class="card-num">04 / 11</span><span class="badge b-vocab">Vocabulario</span></div>
+      <a href="https://palekor.github.io/lecciones/04.html" target="_blank" rel="noopener" class="card" data-cat="game">
+        <figure class="card-thumb"><img src="assets/img/lesson-04.jpg" alt="Memoria Visual — juego de secuencias" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">04 / 11</span><span class="badge b-game">Juego mental</span></div>
         <span class="card-ico">🧠</span>
-        <h3>Laboratorio de Memoria</h3>
-        <p>Recuerdo activo + repetición de patrones. Las palabras pasan del esfuerzo consciente al recuerdo automático con repasos progresivos.</p>
+        <h3>Memoria Visual</h3>
+        <p>Memoriza la secuencia de símbolos y reprodúcela. 12 niveles en 3 bloques —principiante, intermedio y experto— que entrenan tu memoria de trabajo y tu enfoque sostenido.</p>
+        <span class="card-go">Jugar →</span>
+      </a>
+      <a href="https://palekor.github.io/lecciones/05.html" target="_blank" rel="noopener" class="card" data-cat="grammar game vocab">
+        <figure class="card-thumb"><img src="assets/img/lesson-05.jpg" alt="Phrasal Verbs" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">05 / 11</span><span class="badge b-grammar">Gramática</span></div>
+        <span class="card-ico">🔌</span>
+        <h3>Phrasal Verbs</h3>
+        <p>Verbos que cambian de significado y los patrones con (y sin) «to», en 5 modos: explorar, flashcards, quiz, reglas y armar frases. Con significado en español y audio.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/05.html" target="_blank" rel="noopener" class="card" data-cat="vocab">
-        <div class="card-meta"><span class="card-num">05 / 11</span><span class="badge b-vocab">Vocabulario</span></div>
-        <span class="card-ico">🌍</span>
-        <h3>Vocabulario en Contexto</h3>
-        <p>Las palabras sueltas no sirven. Aquí construyes inteligencia contextual: la misma palabra en registro profesional, casual y escrito.</p>
+      <a href="https://palekor.github.io/lecciones/06.html" target="_blank" rel="noopener" class="card" data-cat="vocab game">
+        <figure class="card-thumb"><img src="assets/img/lesson-06.jpg" alt="The Word Vault — juego de vocabulario" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">06 / 11</span><span class="badge b-vocab">Vocabulario</span></div>
+        <span class="card-ico">🗝️</span>
+        <h3>The Word Vault</h3>
+        <p>Las 500 palabras más usadas del inglés: explóralas con audio e IPA, juega el reto contrarreloj (EN↔ES) y empareja en el juego de memoria. Vocabulario de alta frecuencia.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/06.html" target="_blank" rel="noopener" class="card" data-cat="grammar game">
-        <div class="card-meta"><span class="card-num">06 / 11</span><span class="badge b-grammar">Gramática</span></div>
-        <span class="card-ico">🔥</span>
-        <h3>Instinto de Tiempos Verbales</h3>
-        <p>Pasado, presente y futuro no como reglas para recitar, sino como una sensación del tiempo en el idioma. Ejercicios que cablean el tiempo en tu instinto.</p>
+      <a href="https://palekor.github.io/lecciones/07.html" target="_blank" rel="noopener" class="card" data-cat="grammar game">
+        <figure class="card-thumb"><img src="assets/img/lesson-07.jpg" alt="Presente simple vs progresivo" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">07 / 11</span><span class="badge b-grammar">Gramática</span></div>
+        <span class="card-ico">⏱️</span>
+        <h3>Presente: Simple vs Progresivo</h3>
+        <p>Construye oraciones completas en presente simple y progresivo. El modo «¿Cuál va?» te enseña a elegir el tiempo según la señal temporal. Con la regla explicada.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/07.html" target="_blank" rel="noopener" class="card" data-cat="game">
-        <div class="card-meta"><span class="card-num">07 / 11</span><span class="badge b-game">Juego</span></div>
-        <span class="card-ico">🎙️</span>
-        <h3>Pronunciación y Fonética</h3>
-        <p>Patrones de sonido, acentuación y conciencia fonética: la capa que casi todos se saltan. Escucha y habla hasta sonar claro, natural y con confianza.</p>
-        <span class="card-go">Abrir lección →</span>
-      </a>
-
-      <a href="https://palekor.github.io/lecciones/08.html" target="_blank" rel="noopener" class="card" data-cat="game vocab">
-        <div class="card-meta"><span class="card-num">08 / 11</span><span class="badge b-game">Juego</span></div>
-        <span class="card-ico">💡</span>
-        <h3>Sprint de Fluidez</h3>
-        <p>Produce frases en presente bajo presión real. Escribe, conjuga y envía antes de que se acabe el tiempo. Con corrección incluida: precisión y velocidad juntas.</p>
-        <span class="card-go">Abrir lección →</span>
+      <a href="https://palekor.github.io/lecciones/08.html" target="_blank" rel="noopener" class="card" data-cat="resource">
+        <figure class="card-thumb"><img src="assets/img/lesson-08.jpg" alt="Modelador de Hábitos" loading="lazy"></figure>
+        <div class="card-meta"><span class="card-num">08 / 11</span><span class="badge b-resource">Hábitos</span></div>
+        <span class="card-ico">🎯</span>
+        <h3>Modelador de Hábitos</h3>
+        <p>Tu rutina de enfoque: temporizador de 3 minutos por hábito, constructor de hábitos, lista de tareas, reflexión diaria y afirmaciones. Construye carácter, un momento a la vez.</p>
+        <span class="card-go">Abrir herramienta →</span>
       </a>
 
       <!-- DESTACADA: LA BÓVEDA -->
@@ -460,8 +479,8 @@
         <div class="cf-left">
           <div class="card-meta" style="margin-bottom:6px;"><span class="card-num">09 / 11 — Destacada</span><span class="badge b-grammar">Gramática · Juego</span></div>
           <span class="card-ico">📖</span>
-          <h3>La Bóveda de los 40 Verbos</h3>
-          <p>Los 36 pares de verbos esenciales en una sola herramienta potente: modo Memoria, modo Quiz y modo Flashcards. La base que todo estudiante de inglés necesita grabar en su memoria de largo plazo. Esta lo cambia todo.</p>
+          <h3>Taller Verbs I · La Bóveda</h3>
+          <p>Los 36 pares de verbos esenciales en una sola herramienta: Memory Match (12/24/36 cartas), Quiz con dirección invertible y flashcards con autoevaluación de dificultad y bandera de irregulares. La base que todo estudiante necesita grabar en su memoria.</p>
           <span class="card-go">Entrar a la Bóveda →</span>
         </div>
         <div class="cf-right">
@@ -470,12 +489,11 @@
           <div class="cf-stat"><b>∞</b><span>Veces para repetir</span></div>
         </div>
       </a>
-
-      <a href="https://palekor.github.io/lecciones/firstvocabulary.html" target="_blank" rel="noopener" class="card" data-cat="vocab game">
+      <a href="https://palekor.github.io/lecciones/firstvocabulary.html" target="_blank" rel="noopener" class="card" data-cat="vocab">
         <div class="card-meta"><span class="card-num">10 / 11</span><span class="badge b-vocab">Vocabulario</span></div>
-        <span class="card-ico">🌱</span>
-        <h3>Primer Vocabulario — Parte I</h3>
-        <p>La Bóveda de Palabras: tus primeras 100 palabras de alta frecuencia con pronunciación IPA, traducción al español y tooltips. La base sobre la que se apoya todo lo demás.</p>
+        <span class="card-ico">🔍</span>
+        <h3>Auditoría de Vocabulario</h3>
+        <p>Las ~500 palabras de alta frecuencia en un grid visual con tooltips (IPA + traducción) y categorías por color —adjetivos, verbos y neutrales—. Entrena el reconocimiento en menos de un segundo.</p>
         <span class="card-go">Abrir lección →</span>
       </a>
 
@@ -483,7 +501,7 @@
         <div class="card-meta"><span class="card-num">11 / 11</span><span class="badge b-resource">PDF</span></div>
         <span class="card-ico">📄</span>
         <h3>Primer Vocabulario — Parte II</h3>
-        <p>El cuaderno PDF complementario: descargable, imprimible y para estudiar donde sea. Vocabulario ampliado con ejercicios, definiciones y ejemplos de uso real.</p>
+        <p>El cuaderno PDF complementario: descargable e imprimible para practicar sin conexión. Vocabulario ampliado con ejercicios, definiciones y ejemplos de uso real.</p>
         <span class="card-go">Descargar PDF →</span>
       </a>
 

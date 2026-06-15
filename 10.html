@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Gold Words — Billionaire Vocabulary · ProfGermandario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            lienzo:'#FCF8F3', nube:'#F2ECE2', tinta:'#1A1730', tintasoft:'#3A3552',
+            bruma:'#76718A', coral:'#FF5A3C', coraldeep:'#E8482C', menta:'#15B79E',
+            mentadeep:'#0E8C79', ambar:'#FFB627', ambardeep:'#D4930F', paper:'#F6F1FF', vino:'#7B2CBF',
+            gold:'#C9A227', goldlight:'#F5DC7A', golddark:'#8A6B0E', goldglow:'#FFF3C4'
+          },
+          fontFamily: {
+            display:['Fraunces','Georgia','serif'],
+            sans:['Figtree','system-ui','sans-serif'],
+            mono:['"DM Mono"','ui-monospace','monospace']
+          },
+          boxShadow: {
+            soft:'0 10px 30px rgba(26,23,48,0.08)',
+            gold:'0 12px 30px rgba(201,162,39,0.32)',
+            coral:'0 12px 30px rgba(255,90,60,0.28)',
+            menta:'0 12px 30px rgba(21,183,158,0.22)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{ --coral:#FF5A3C; --menta:#15B79E; --ambar:#FFB627; --tinta:#1A1730; --gold:#C9A227; --goldlight:#F5DC7A; }
+    html{ scroll-behavior:smooth; }
+    body{ background:#FCF8F3; overscroll-behavior-y:none; }
+    button, a, input{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+
+    /* Coin rain animation */
+    .coin{ position:fixed; pointer-events:none; font-size:1.4rem; animation:coinfall linear forwards; z-index:999; }
+    @keyframes coinfall{
+      0%{ transform:translateY(-40px) rotate(0deg); opacity:1; }
+      80%{ opacity:1; }
+      100%{ transform:translateY(110vh) rotate(720deg); opacity:0; }
+    }
+
+    /* Gold shimmer on cards */
+    .gold-shimmer{ background:linear-gradient(105deg, #FCF8F3 0%, #FFF3C4 40%, #FCF8F3 60%, #FFF3C4 100%); background-size:300% 100%; animation:shimmer 2.4s ease infinite; }
+    @keyframes shimmer{ 0%{background-position:200% center;} 100%{background-position:-200% center;} }
+
+    /* Wave bars */
+    .wave{ display:flex; align-items:flex-end; gap:4px; height:34px; justify-content:center; }
+    .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+      background:linear-gradient(to top, var(--gold), var(--coral) 60%, var(--ambar));
+      animation:vox 1.3s ease-in-out infinite; }
+    @keyframes vox{ 0%,100%{ transform:scaleY(.25); } 50%{ transform:scaleY(1); } }
+
+    /* Glass */
+    .glass{ background:rgba(255,255,255,.72); backdrop-filter:blur(12px); }
+
+    /* Lift hover */
+    .lift{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    .lift:hover{ transform:translateY(-2px); }
+
+    /* Pop/Shake animations */
+    .pop{ animation:pop .38s ease both; }
+    @keyframes pop{ 0%{ transform:scale(.96); opacity:.55; } 100%{ transform:scale(1); opacity:1; } }
+    .shake{ animation:shake .32s ease both; }
+    @keyframes shake{ 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-6px); } 75%{ transform:translateX(6px); } }
+
+    /* Pulse for active word during show phase */
+    .pulse-gold{ animation:pulseGold 1s ease-in-out infinite; }
+    @keyframes pulseGold{
+      0%{ box-shadow:0 0 0 0 rgba(201,162,39,0.6); }
+      70%{ box-shadow:0 0 0 12px rgba(201,162,39,0); }
+      100%{ box-shadow:0 0 0 0 rgba(201,162,39,0); }
+    }
+
+    /* Progress bar gradient */
+    .meter-gold{ background:linear-gradient(90deg, var(--gold), var(--ambar), var(--coral)); }
+
+    /* Scrollbar hide */
+    .hide-scrollbar::-webkit-scrollbar{ display:none; }
+    .hide-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+
+    :focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:12px; }
+
+    @media (prefers-reduced-motion:reduce){
+      *{ animation:none !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    // ─── 100 BILLIONAIRE "GROW" WORDS ───────────────────────────────────────────
+    const WORDS = [
+      // Mindset & Power
+      { word:"tenacity",     def:"unyielding persistence toward a goal",             cat:"Mindset" },
+      { word:"audacity",     def:"bold confidence to take risks",                    cat:"Mindset" },
+      { word:"resilience",   def:"ability to recover from setbacks fast",            cat:"Mindset" },
+      { word:"conviction",   def:"unshakeable belief in one's vision",              cat:"Mindset" },
+      { word:"fortitude",    def:"mental strength under pressure",                   cat:"Mindset" },
+      { word:"grit",         def:"passion and perseverance for long-term goals",     cat:"Mindset" },
+      { word:"equanimity",   def:"mental calmness in difficult situations",          cat:"Mindset" },
+      { word:"acuity",       def:"sharpness of thought and perception",              cat:"Mindset" },
+      { word:"deliberate",   def:"done with careful, intentional thought",           cat:"Mindset" },
+      { word:"unwavering",   def:"steady and firm in purpose",                       cat:"Mindset" },
+
+      // Wealth & Finance
+      { word:"leverage",     def:"using resources to multiply results",              cat:"Wealth" },
+      { word:"arbitrage",    def:"profiting from price differences across markets",  cat:"Wealth" },
+      { word:"liquidity",    def:"ease of converting assets to cash",                cat:"Wealth" },
+      { word:"compounding",  def:"growth built on previous gains",                   cat:"Wealth" },
+      { word:"equity",       def:"ownership stake in an asset",                      cat:"Wealth" },
+      { word:"diversify",    def:"spread risk across multiple investments",          cat:"Wealth" },
+      { word:"capital",      def:"wealth used to generate more wealth",              cat:"Wealth" },
+      { word:"venture",      def:"risky business investment for high returns",       cat:"Wealth" },
+      { word:"solvency",     def:"ability to meet all financial obligations",        cat:"Wealth" },
+      { word:"yield",        def:"income return from an investment",                 cat:"Wealth" },
+
+      // Leadership
+      { word:"visionary",    def:"able to think about the future creatively",       cat:"Leadership" },
+      { word:"catalyst",     def:"person or thing that triggers change",             cat:"Leadership" },
+      { word:"galvanize",    def:"shock or excite into action",                      cat:"Leadership" },
+      { word:"empower",      def:"give authority and confidence to others",          cat:"Leadership" },
+      { word:"decisive",     def:"able to make firm decisions quickly",              cat:"Leadership" },
+      { word:"stewardship",  def:"responsible management of what is entrusted",     cat:"Leadership" },
+      { word:"pioneering",   def:"developing or using new methods",                  cat:"Leadership" },
+      { word:"astute",       def:"clever and quick to understand advantage",         cat:"Leadership" },
+      { word:"principled",   def:"acting with strong moral rules",                   cat:"Leadership" },
+      { word:"sovereign",    def:"possessing supreme power or authority",            cat:"Leadership" },
+
+      // Strategy
+      { word:"strategic",    def:"carefully designed to achieve a goal",            cat:"Strategy" },
+      { word:"pivotal",      def:"central and crucial to an outcome",               cat:"Strategy" },
+      { word:"optimize",     def:"make as effective or functional as possible",     cat:"Strategy" },
+      { word:"trajectory",   def:"path and direction of development over time",     cat:"Strategy" },
+      { word:"disruptive",   def:"radically changing an existing industry",         cat:"Strategy" },
+      { word:"scalable",     def:"able to grow proportionally with demand",         cat:"Strategy" },
+      { word:"synergy",      def:"combined power greater than the sum of parts",    cat:"Strategy" },
+      { word:"iterate",      def:"improve through repeated cycles",                 cat:"Strategy" },
+      { word:"benchmark",    def:"a standard point for measuring performance",      cat:"Strategy" },
+      { word:"execution",    def:"effective carrying out of a plan",                cat:"Strategy" },
+
+      // Communication
+      { word:"articulate",   def:"express thoughts clearly and effectively",        cat:"Communication" },
+      { word:"eloquent",     def:"fluent and persuasive in speech",                 cat:"Communication" },
+      { word:"succinct",     def:"expressed briefly and clearly",                   cat:"Communication" },
+      { word:"persuasive",   def:"able to convince others to take action",          cat:"Communication" },
+      { word:"compelling",   def:"powerfully evoking interest or admiration",       cat:"Communication" },
+      { word:"negotiate",    def:"reach an agreement through discussion",           cat:"Communication" },
+      { word:"candid",       def:"truthful and straightforward, even if bold",      cat:"Communication" },
+      { word:"discernment",  def:"the ability to judge well",                       cat:"Communication" },
+      { word:"brevity",      def:"concise and exact use of words",                  cat:"Communication" },
+      { word:"credibility",  def:"quality of being trusted and believed",           cat:"Communication" },
+
+      // Innovation
+      { word:"innovate",     def:"introduce new ideas or methods",                  cat:"Innovation" },
+      { word:"prototype",    def:"first model to test a concept",                   cat:"Innovation" },
+      { word:"paradigm",     def:"typical example or pattern of something",         cat:"Innovation" },
+      { word:"nascent",      def:"just beginning to develop",                       cat:"Innovation" },
+      { word:"pioneering",   def:"being the first to develop or use",               cat:"Innovation" },
+      { word:"disrupt",      def:"radically alter or transform an industry",        cat:"Innovation" },
+      { word:"exponential",  def:"increasing at a rate proportional to itself",     cat:"Innovation" },
+      { word:"agile",        def:"able to move quickly and adapt easily",           cat:"Innovation" },
+      { word:"incubate",     def:"develop an idea slowly and carefully",            cat:"Innovation" },
+      { word:"cultivate",    def:"develop a skill or ability over time",            cat:"Innovation" },
+
+      // Mindset 2 / Growth
+      { word:"metamorphose", def:"undergo complete transformation",                 cat:"Growth" },
+      { word:"transcend",    def:"go beyond the limits of something",               cat:"Growth" },
+      { word:"flourish",     def:"grow or develop in a healthy way",                cat:"Growth" },
+      { word:"augment",      def:"make something greater or stronger",              cat:"Growth" },
+      { word:"propel",       def:"drive or push forward with force",                cat:"Growth" },
+      { word:"accelerate",   def:"increase speed or rate of change",                cat:"Growth" },
+      { word:"amplify",      def:"make something larger, greater, or stronger",     cat:"Growth" },
+      { word:"harness",      def:"control and use a resource effectively",          cat:"Growth" },
+      { word:"ascend",       def:"go up or rise to a higher level",                 cat:"Growth" },
+      { word:"evolve",       def:"develop gradually over time",                     cat:"Growth" },
+
+      // Excellence
+      { word:"mastery",      def:"comprehensive knowledge and command of a skill",  cat:"Excellence" },
+      { word:"virtuoso",     def:"person with exceptional skill",                   cat:"Excellence" },
+      { word:"meticulous",   def:"showing great attention to detail",               cat:"Excellence" },
+      { word:"diligent",     def:"careful and persistent in work",                  cat:"Excellence" },
+      { word:"proficient",   def:"competent and skilled in a field",                cat:"Excellence" },
+      { word:"assiduous",    def:"showing constant dedication and effort",          cat:"Excellence" },
+      { word:"consummate",   def:"showing a high degree of skill and talent",       cat:"Excellence" },
+      { word:"exemplary",    def:"representing the best possible quality",          cat:"Excellence" },
+      { word:"impeccable",   def:"in accordance with the highest standards",        cat:"Excellence" },
+      { word:"indefatigable",def:"persisting tirelessly",                           cat:"Excellence" },
+
+      // Network & Influence
+      { word:"influential",  def:"having great power to affect others",             cat:"Influence" },
+      { word:"rapport",      def:"a close and harmonious relationship",              cat:"Influence" },
+      { word:"reciprocal",   def:"given and received in mutual exchange",           cat:"Influence" },
+      { word:"alliance",     def:"union formed for mutual benefit",                 cat:"Influence" },
+      { word:"ecosystem",    def:"network of interconnected entities",              cat:"Influence" },
+      { word:"leverage",     def:"use relationships to achieve results",            cat:"Influence" },
+      { word:"endorse",      def:"declare public support for something",            cat:"Influence" },
+      { word:"reputation",   def:"beliefs held about a person's character",        cat:"Influence" },
+      { word:"magnify",      def:"make greater in significance or effect",          cat:"Influence" },
+      { word:"propagate",    def:"spread and promote an idea widely",              cat:"Influence" },
+
+      // Bonus Power Words
+      { word:"perspicacity", def:"ready insight into things; shrewdness",           cat:"Power" },
+      { word:"acumen",       def:"ability to make good judgments quickly",          cat:"Power" },
+      { word:"intrepid",     def:"fearless and adventurous in action",              cat:"Power" },
+      { word:"formidable",   def:"inspiring fear or respect through strength",      cat:"Power" },
+      { word:"prolific",     def:"producing results in large quantities",           cat:"Power" },
+      { word:"sagacious",    def:"having or showing keen mental discernment",       cat:"Power" },
+      { word:"voracious",    def:"having an insatiable appetite for something",     cat:"Power" },
+      { word:"zenith",       def:"the peak point of success or power",              cat:"Power" },
+      { word:"paramount",    def:"more important than anything else",               cat:"Power" },
+      { word:"sovereign",    def:"possessing supreme or ultimate power",            cat:"Power" },
+    ];
+
+    const CAT_COLORS = {
+      Mindset:     { bg:"bg-vino/10",   border:"border-vino/30",     text:"text-vino",       dot:"bg-vino"      },
+      Wealth:      { bg:"bg-gold/10",   border:"border-gold/30",     text:"text-golddark",   dot:"bg-gold"      },
+      Leadership:  { bg:"bg-coral/10",  border:"border-coral/30",    text:"text-coral",      dot:"bg-coral"     },
+      Strategy:    { bg:"bg-tinta/8",   border:"border-tinta/20",    text:"text-tintasoft",  dot:"bg-tintasoft" },
+      Communication:{ bg:"bg-menta/10",border:"border-menta/30",    text:"text-mentadeep",  dot:"bg-menta"     },
+      Innovation:  { bg:"bg-ambar/10",  border:"border-ambar/30",    text:"text-ambardeep",  dot:"bg-ambar"     },
+      Growth:      { bg:"bg-menta/10",  border:"border-menta/25",    text:"text-mentadeep",  dot:"bg-mentadeep" },
+      Excellence:  { bg:"bg-gold/12",   border:"border-gold/40",     text:"text-golddark",   dot:"bg-goldlight" },
+      Influence:   { bg:"bg-coral/8",   border:"border-coral/25",    text:"text-coraldeep",  dot:"bg-coraldeep" },
+      Power:       { bg:"bg-vino/12",   border:"border-vino/35",     text:"text-vino",       dot:"bg-vino"      },
+    };
+
+    const MODES = [
+      { id:"intro",   label:"🏠 Inicio" },
+      { id:"vault",   label:"⚡ Vault Sprint" },
+      { id:"recall",  label:"🧠 Memory Recall" },
+      { id:"match",   label:"🎯 Gold Match" },
+      { id:"boss",    label:"👑 Billionaire Test" },
+      { id:"library", label:"📚 Word Library" },
+    ];
+
+    // ─── Utilities ───────────────────────────────────────────────────────────────
+    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]; } return a; };
+    const choice = arr => arr[rand(0,arr.length-1)];
+
+    function spawnCoins(n=8){
+      for(let i=0;i<n;i++){
+        setTimeout(()=>{
+          const coin=document.createElement('span');
+          coin.className='coin';
+          coin.textContent='🪙';
+          coin.style.left=rand(5,90)+'vw';
+          coin.style.animationDuration=rand(12,22)*0.1+'s';
+          coin.style.animationDelay='0s';
+          document.body.appendChild(coin);
+          coin.addEventListener('animationend',()=>coin.remove());
+        },i*60);
+      }
+    }
+
+    // ─── Sub-components ──────────────────────────────────────────────────────────
+    const Pill = ({children,className=""})=>(
+      <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-mono ${className}`}>{children}</span>
+    );
+
+    const Hint = ({children})=>(
+      <p className="text-center text-sm text-bruma mb-6 flex items-center justify-center gap-2 leading-relaxed">
+        <span className="text-gold">●</span>{children}
+      </p>
+    );
+
+    const WaveBars = ({animated=true})=>(
+      <div className="wave" aria-hidden="true">
+        {Array.from({length:28}).map((_,i)=>(
+          <i key={i} style={{
+            height:(10+Math.abs(Math.sin(i*0.6))*24)+"px",
+            animationDelay:(i*0.07)+"s",
+            animationDuration:(1.1+(i%5)*0.12)+"s",
+            animationPlayState:animated?"running":"paused"
+          }}/>
+        ))}
+      </div>
+    );
+
+    const Stat = ({label,value,hot=false,gold=false})=>(
+      <div className={`rounded-3xl p-4 border ${gold?"bg-gold/10 border-gold/30":hot?"bg-coral/10 border-coral/30":"bg-lienzo border-tinta/5"}`}>
+        <p className="font-mono text-[0.62rem] tracking-[0.18em] uppercase text-bruma mb-1">{label}</p>
+        <p className={`font-display font-black text-3xl ${gold?"text-golddark":hot?"text-coral":"text-tinta"}`}>{value}</p>
+      </div>
+    );
+
+    const WordCard = ({wordObj,reveal=true,active=false,used=false,onClick,small=false})=>{
+      const c = CAT_COLORS[wordObj.cat] || CAT_COLORS.Power;
+      return (
+        <button
+          onClick={onClick}
+          disabled={!onClick}
+          className={`w-full text-left rounded-[22px] border transition-all duration-200 lift
+            ${active ? "pulse-gold border-gold bg-goldglow shadow-gold" : used ? "opacity-40 scale-95 border-tinta/5 bg-nube" : "bg-lienzo border-tinta/6 hover:border-gold/50 hover:bg-goldglow/40"}
+            ${small ? "p-3" : "p-4 sm:p-5"}
+          `}
+        >
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <span className={`font-display font-black ${small?"text-xl":"text-2xl sm:text-3xl"} text-tinta leading-none`}>
+              {reveal ? wordObj.word : "????????"}
+            </span>
+            <span className={`shrink-0 font-mono text-[0.58rem] tracking-widest uppercase px-2 py-1 rounded-full border ${c.bg} ${c.border} ${c.text}`}>
+              {wordObj.cat}
+            </span>
+          </div>
+          {reveal && (
+            <p className={`text-tintasoft ${small?"text-xs":"text-sm"} leading-snug`}>{wordObj.def}</p>
+          )}
+        </button>
+      );
+    };
+
+    // ─── VAULT SPRINT MODE ───────────────────────────────────────────────────────
+    function VaultSprint({addScore,setStreak,streak}){
+      const [pool] = useState(() => shuffle(WORDS));
+      const [idx, setIdx] = useState(0);
+      const [options, setOptions] = useState([]);
+      const [chosen, setChosen] = useState(null);
+      const [correct, setCorrect] = useState(0);
+      const [wrong, setWrong] = useState(0);
+      const [done, setDone] = useState(false);
+      const total = 20;
+
+      const build = useCallback((i, p) => {
+        const target = p[i];
+        const distractors = shuffle(p.filter(w=>w.word!==target.word)).slice(0,3);
+        setOptions(shuffle([target,...distractors]));
+        setChosen(null);
+      },[]);
+
+      useEffect(() => { if(!done) build(idx, pool); }, [idx]);
+
+      const pick = (w) => {
+        if(chosen) return;
+        setChosen(w);
+        const ok = w.word === pool[idx].word;
+        if(ok){ setCorrect(c=>c+1); addScore(10+Math.min(streak,5)); setStreak(s=>s+1); spawnCoins(3); }
+        else  { setWrong(e=>e+1); addScore(-3); setStreak(0); }
+        setTimeout(()=>{
+          if(idx+1 >= total) setDone(true);
+          else setIdx(i=>i+1);
+        }, 900);
+      };
+
+      if(done){
+        const pct = Math.round((correct/total)*100);
+        if(pct>=90) setTimeout(()=>spawnCoins(18),100);
+        return (
+          <div className="max-w-2xl mx-auto text-center pop">
+            <div className="text-6xl mb-4">{pct>=90?"💰":pct>=70?"💵":"📉"}</div>
+            <h2 className="font-display font-black text-4xl sm:text-5xl text-tinta mb-2">Vault cleared</h2>
+            <p className="text-tintasoft mb-6">{correct}/{total} correct · <b className="text-gold">{pct}% accuracy</b></p>
+            <div className={`rounded-3xl p-5 mb-6 border ${pct>=90?"bg-gold/10 border-gold/30":pct>=70?"bg-menta/10 border-menta/30":"bg-coral/10 border-coral/30"}`}>
+              <p className="font-display text-2xl">{pct>=90?"🏦 Billionaire-grade recall":pct>=70?"⚡ Getting there, keep grinding":"🧠 Vocabulary needs more reps"}</p>
+            </div>
+          </div>
+        );
+      }
+
+      const current = pool[idx];
+      const progress = ((idx)/total)*100;
+      return (
+        <div className="max-w-2xl mx-auto">
+          <Hint>See the definition → pick the right word. Speed matters, but accuracy earns gold.</Hint>
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <Stat label="Word" value={`${idx+1}/${total}`}/>
+            <Stat label="Correct" value={correct} gold/>
+            <Stat label="Wrong" value={wrong} hot={wrong>3}/>
+          </div>
+          <div className="h-2 rounded-full bg-nube overflow-hidden mb-6">
+            <div className="h-full meter-gold transition-all duration-300" style={{width:`${progress}%`}}/>
+          </div>
+
+          {/* Definition card */}
+          <div className="rounded-[28px] bg-lienzo border border-tinta/5 p-6 mb-5 text-center shadow-soft">
+            <p className="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-gold mb-3">Choose the correct word</p>
+            <p className="font-display font-bold text-2xl sm:text-3xl text-tinta leading-tight">{current.def}</p>
+            <span className={`inline-block mt-3 font-mono text-xs px-3 py-1 rounded-full border ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).bg} ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).border} ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).text}`}>{current.cat}</span>
+          </div>
+
+          {/* Options */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {options.map(w=>{
+              let style = "bg-lienzo border-tinta/8 hover:border-gold/60 hover:bg-goldglow/30";
+              if(chosen){
+                if(w.word===current.word) style="bg-gold/15 border-gold/60 text-golddark";
+                else if(w.word===chosen.word) style="bg-coral/15 border-coral/40 text-coral";
+                else style="opacity-40 bg-nube border-tinta/5";
+              }
+              return(
+                <button key={w.word} onClick={()=>pick(w)}
+                  className={`rounded-2xl border p-4 text-left transition-all duration-150 lift ${style}`}>
+                  <span className="font-display font-black text-xl text-tinta">{w.word}</span>
+                </button>
+              );
+            })}
+          </div>
+          {chosen && (
+            <div className={`mt-4 rounded-2xl p-3 text-center font-semibold pop ${chosen.word===current.word?"bg-gold/15 text-golddark":"bg-coral/12 text-coral"}`}>
+              {chosen.word===current.word ? "🪙 Correct!" : `❌ It was: "${current.word}"`}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ─── MEMORY RECALL MODE ──────────────────────────────────────────────────────
+    // Shows N words sequentially, then asks you to identify them from a shuffled pool
+    function MemoryRecall({addScore,setStreak,level}){
+      const seqLen = Math.min(3 + Math.floor(level/2), 8);
+      const [phase, setPhase] = useState("start"); // start|showing|input|result
+      const [sequence, setSequence] = useState([]);
+      const [showIdx, setShowIdx] = useState(0);
+      const [available, setAvailable] = useState([]);
+      const [picked, setPicked] = useState([]);
+      const [success, setSuccess] = useState(false);
+
+      const begin = () => {
+        const seq = shuffle(WORDS).slice(0, seqLen);
+        const others = shuffle(WORDS.filter(w=>!seq.find(s=>s.word===w.word))).slice(0, 12-seqLen);
+        setSequence(seq); setAvailable(shuffle([...seq,...others]));
+        setPicked([]); setShowIdx(0); setPhase("showing");
+      };
+
+      useEffect(()=>{
+        if(phase==="showing" && showIdx<sequence.length){
+          const t=setTimeout(()=>setShowIdx(i=>i+1), 2200);
+          return ()=>clearTimeout(t);
+        }
+        if(phase==="showing" && showIdx>=sequence.length){
+          const t=setTimeout(()=>setPhase("input"),800);
+          return ()=>clearTimeout(t);
+        }
+      },[phase,showIdx,sequence.length]);
+
+      const pickWord = (w) => {
+        if(phase!=="input") return;
+        if(picked.find(p=>p.word===w.word)) return;
+        const next=[...picked,w];
+        setPicked(next);
+        if(next.length===seqLen){
+          const ok=next.every((p,i)=>p.word===sequence[i].word);
+          setSuccess(ok);
+          setPhase("result");
+          if(ok){ addScore(seqLen*20); setStreak(s=>s+1); spawnCoins(seqLen*2); }
+          else { setStreak(0); }
+        }
+      };
+
+      return (
+        <div className="max-w-3xl mx-auto">
+          {phase==="start" && (
+            <div className="text-center">
+              <Hint>Words appear one by one. Memorize the sequence. Then recreate it in order.</Hint>
+              <div className="bg-lienzo border border-tinta/5 rounded-[28px] p-8 mb-6 shadow-soft">
+                <div className="text-5xl mb-4">🧠</div>
+                <h2 className="font-display font-black text-4xl text-tinta mb-3">Memory Recall</h2>
+                <p className="text-tintasoft mb-2">Sequence length: <b className="text-gold">{seqLen} words</b></p>
+                <p className="text-tintasoft text-sm">Study each word and its definition. Then select them <b>in the same order</b>.</p>
+              </div>
+              <button onClick={begin} className="bg-gold text-white font-semibold rounded-full px-10 py-4 shadow-gold hover:bg-golddark transition text-lg">
+                Start Sequence 🪙
+              </button>
+            </div>
+          )}
+
+          {phase==="showing" && (
+            <div>
+              <Hint>Memorize the words in this order. You'll reconstruct the sequence next.</Hint>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {sequence.map((w,i)=>(
+                  <div key={w.word} className={`rounded-[22px] border p-4 transition-all duration-500 ${
+                    i<showIdx?"bg-goldglow border-gold/50 opacity-75":
+                    i===showIdx?"pulse-gold bg-goldglow border-gold shadow-gold":
+                    "bg-nube border-tinta/5 opacity-25"
+                  }`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-mono text-[0.6rem] text-gold">#{i+1}</span>
+                      <span className="font-display font-black text-2xl text-tinta">{i<=showIdx?w.word:"???"}</span>
+                    </div>
+                    {i<=showIdx && <p className="text-xs text-tintasoft leading-snug">{w.def}</p>}
+                  </div>
+                ))}
+              </div>
+              <p className="text-center font-mono text-sm text-bruma">
+                Showing {Math.min(showIdx+1,seqLen)} of {seqLen}
+              </p>
+            </div>
+          )}
+
+          {phase==="input" && (
+            <div>
+              <Hint>Tap the words in the exact order you saw them. Slots fill left to right.</Hint>
+              {/* Slots */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                {sequence.map((_,i)=>(
+                  <div key={i} className={`rounded-2xl border-2 border-dashed p-4 min-h-[72px] flex items-center ${picked[i]?"border-gold/50 bg-goldglow/50":"border-tinta/10 bg-nube/40"}`}>
+                    {picked[i] ? (
+                      <div>
+                        <span className="font-mono text-[0.58rem] text-gold mr-2">#{i+1}</span>
+                        <span className="font-display font-bold text-xl text-tinta">{picked[i].word}</span>
+                      </div>
+                    ) : (
+                      <span className="font-display text-2xl text-tinta/20">#{i+1}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <p className="text-center font-mono text-xs text-bruma mb-4">{picked.length}/{seqLen} selected</p>
+              {/* Word pool */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {available.map(w=>{
+                  const used=!!picked.find(p=>p.word===w.word);
+                  return(
+                    <button key={w.word} onClick={()=>pickWord(w)} disabled={used}
+                      className={`rounded-xl border p-3 text-left transition-all lift ${used?"opacity-30 bg-nube border-tinta/5 cursor-not-allowed":"bg-lienzo border-tinta/8 hover:border-gold/50 hover:bg-goldglow/30"}`}>
+                      <span className="font-display font-bold text-lg text-tinta block">{w.word}</span>
+                      <span className="text-[0.65rem] text-bruma leading-tight block">{w.def.substring(0,42)}…</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {phase==="result" && (
+            <div className="text-center pop">
+              <div className="text-5xl mb-4">{success?"🏆":"🔄"}</div>
+              <h2 className="font-display font-black text-4xl text-tinta mb-3">{success?"Sequence Mastered!":"Not quite"}</h2>
+              <div className={`rounded-3xl p-5 mb-5 border ${success?"bg-gold/10 border-gold/30":"bg-coral/10 border-coral/30"}`}>
+                {success
+                  ? <p className="text-golddark font-semibold">+{seqLen*20} gold earned. Your memory vault is growing.</p>
+                  : <div className="text-left space-y-1">
+                      <p className="text-coral font-semibold mb-2">Correct order was:</p>
+                      {sequence.map((w,i)=>(
+                        <p key={i} className="text-sm text-tintasoft">#{i+1} <b className="text-tinta">{w.word}</b> — {w.def}</p>
+                      ))}
+                    </div>
+                }
+              </div>
+              <button onClick={()=>setPhase("start")} className="bg-gold text-white font-semibold rounded-full px-8 py-4 shadow-gold hover:bg-golddark transition">
+                Try Again
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ─── GOLD MATCH MODE ─────────────────────────────────────────────────────────
+    // Match word ↔ definition cards, 8 pairs per round
+    function GoldMatch({addScore,setStreak}){
+      const PAIRS = 8;
+      const [cards, setCards] = useState([]);
+      const [flipped, setFlipped] = useState([]);
+      const [matched, setMatched] = useState(new Set());
+      const [moves, setMoves] = useState(0);
+      const [done, setDone] = useState(false);
+      const [startTime] = useState(Date.now());
+      const [elapsed, setElapsed] = useState(0);
+
+      useEffect(()=>{
+        if(!done){ const t=setInterval(()=>setElapsed(Math.floor((Date.now()-startTime)/1000)),500); return()=>clearInterval(t); }
+      },[done]);
+
+      const newGame = () => {
+        const pool=shuffle(WORDS).slice(0,PAIRS);
+        const deck=shuffle([
+          ...pool.map((w,i)=>({id:`w${i}`,type:"word",text:w.word,key:w.word,cat:w.cat})),
+          ...pool.map((w,i)=>({id:`d${i}`,type:"def", text:w.def, key:w.word,cat:w.cat})),
+        ]);
+        setCards(deck); setFlipped([]); setMatched(new Set()); setMoves(0); setDone(false);
+      };
+
+      useEffect(()=>newGame(),[]);
+
+      const flip = (card) => {
+        if(flipped.length===2||matched.has(card.key)||flipped.find(c=>c.id===card.id)) return;
+        const next=[...flipped,card];
+        setFlipped(next);
+        if(next.length===2){
+          setMoves(m=>m+1);
+          if(next[0].key===next[1].key){
+            const nm=new Set([...matched,next[0].key]);
+            setMatched(nm);
+            setFlipped([]);
+            addScore(15); setStreak(s=>s+1); spawnCoins(2);
+            if(nm.size===PAIRS){ setDone(true); spawnCoins(12); }
+          } else {
+            setTimeout(()=>setFlipped([]),900);
+          }
+        }
+      };
+
+      const isFlipped = (card)=>!!flipped.find(c=>c.id===card.id)||matched.has(card.key);
+
+      if(done){
+        const bonus=Math.max(0,120-moves)*3;
+        return(
+          <div className="text-center pop">
+            <div className="text-6xl mb-3">💰</div>
+            <h2 className="font-display font-black text-4xl text-tinta mb-2">Board Cleared!</h2>
+            <p className="text-tintasoft mb-5">{moves} moves · {elapsed}s · <b className="text-gold">+{PAIRS*15 + bonus} gold total</b></p>
+            <button onClick={newGame} className="bg-gold text-white font-semibold rounded-full px-8 py-4 shadow-gold hover:bg-golddark transition">
+              New Board 🃏
+            </button>
+          </div>
+        );
+      }
+
+      return(
+        <div className="max-w-3xl mx-auto">
+          <Hint>Match each word to its definition. Fewer moves = more gold.</Hint>
+          <div className="flex gap-2 justify-center mb-5 flex-wrap">
+            <Pill className="bg-nube text-tinta">Pairs <b className="text-gold ml-1">{matched.size}/{PAIRS}</b></Pill>
+            <Pill className="bg-nube text-tinta">Moves <b className="text-tintasoft ml-1">{moves}</b></Pill>
+            <Pill className="bg-nube text-tinta">Time <b className="text-bruma ml-1">{elapsed}s</b></Pill>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {cards.map(card=>{
+              const vis=isFlipped(card);
+              const mat=matched.has(card.key);
+              const c=CAT_COLORS[card.cat]||CAT_COLORS.Power;
+              return(
+                <button key={card.id} onClick={()=>flip(card)}
+                  className={`rounded-2xl border min-h-[90px] p-3 text-left text-sm transition-all duration-200 lift
+                    ${mat?"opacity-50 scale-95 "+c.bg+" "+c.border+" cursor-default":
+                      vis?"bg-goldglow border-gold/60 shadow-gold":
+                      "bg-lienzo border-tinta/8 hover:border-gold/50 hover:bg-goldglow/30"
+                    }`}>
+                  {vis
+                    ? <span className={mat?`font-semibold ${c.text}`:"font-semibold text-tinta"}>{card.text}</span>
+                    : <span className="font-display font-black text-2xl text-tinta/15">$</span>
+                  }
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // ─── BILLIONAIRE BOSS TEST ───────────────────────────────────────────────────
+    function BillionaireTest({addScore,setStreak,level}){
+      const QUESTIONS = 15;
+      const [pool] = useState(()=>shuffle(WORDS).slice(0,QUESTIONS));
+      const [idx, setIdx] = useState(0);
+      const [options, setOptions] = useState([]);
+      const [chosen, setChosen] = useState(null);
+      const [correct, setCorrect] = useState(0);
+      const [results, setResults] = useState([]);
+      const [done, setDone] = useState(false);
+      const [mode, setMode] = useState("word2def"); // alternates: word2def, def2word
+
+      const buildOptions = (i) => {
+        const t = pool[i];
+        const d = shuffle(WORDS.filter(w=>w.word!==t.word)).slice(0,3);
+        const type = i%2===0?"word2def":"def2word";
+        setMode(type); setOptions(shuffle([t,...d])); setChosen(null);
+      };
+
+      useEffect(()=>{ if(!done) buildOptions(idx); },[idx]);
+
+      const pick = (w) => {
+        if(chosen) return;
+        setChosen(w);
+        const ok = w.word===pool[idx].word;
+        const entry={q:pool[idx],yours:w,ok};
+        setResults(r=>[...r,entry]);
+        if(ok){ setCorrect(c=>c+1); addScore(20); setStreak(s=>s+1); spawnCoins(4); }
+        else { addScore(-5); setStreak(0); }
+        setTimeout(()=>{
+          if(idx+1>=QUESTIONS) setDone(true);
+          else setIdx(i=>i+1);
+        },1000);
+      };
+
+      if(done){
+        const pct=Math.round((correct/QUESTIONS)*100);
+        if(pct>=90) setTimeout(()=>spawnCoins(25),100);
+        const rank=pct>=93?"💎 Diamond Billionaire":pct>=80?"🥇 Gold Billionaire":pct>=65?"🥈 Silver Billionaire":"📈 Rising Millionaire";
+        return(
+          <div className="max-w-2xl mx-auto pop">
+            <div className="text-center mb-6">
+              <div className="text-6xl mb-3">🏆</div>
+              <h2 className="font-display font-black text-4xl sm:text-5xl text-tinta mb-2">Test Complete</h2>
+              <p className="text-tintasoft mb-1">{correct}/{QUESTIONS} · {pct}%</p>
+              <div className={`rounded-3xl p-4 inline-block mt-2 border ${pct>=80?"bg-gold/12 border-gold/40":"bg-coral/10 border-coral/30"}`}>
+                <p className={`font-display text-2xl font-bold ${pct>=80?"text-golddark":"text-coral"}`}>{rank}</p>
+              </div>
+            </div>
+            <div className="space-y-2 mb-5">
+              {results.filter(r=>!r.ok).map((r,i)=>(
+                <div key={i} className="bg-white rounded-2xl p-4 border border-coral/20 shadow-soft">
+                  <p className="font-mono text-[0.6rem] text-coral tracking-widest uppercase mb-1">Review</p>
+                  <p className="font-display text-xl text-tinta mb-1">{r.q.word}</p>
+                  <p className="text-sm text-tintasoft">{r.q.def}</p>
+                  <p className="text-xs text-bruma mt-1">You picked: <b className="text-coral">{r.yours.word}</b></p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      const current = pool[idx];
+      return(
+        <div className="max-w-2xl mx-auto">
+          <Hint>No hints. No mercy. Billionaires know their words cold.</Hint>
+          <div className="flex justify-between items-center mb-4 font-mono text-sm text-bruma">
+            <span>Question {idx+1}/{QUESTIONS}</span>
+            <span className="text-gold font-semibold">{correct} correct</span>
+          </div>
+          <div className="h-2 rounded-full bg-nube overflow-hidden mb-6">
+            <div className="h-full meter-gold transition-all" style={{width:`${((idx)/QUESTIONS)*100}%`}}/>
+          </div>
+
+          <div className="rounded-[28px] bg-lienzo border border-tinta/5 p-6 mb-5 text-center shadow-soft">
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-gold mb-3">
+              {mode==="word2def"?"What does this word mean?":"Which word matches this definition?"}
+            </p>
+            <p className="font-display font-black text-3xl sm:text-4xl text-tinta leading-tight">
+              {mode==="word2def"? current.word : current.def}
+            </p>
+            <span className={`inline-block mt-3 font-mono text-xs px-3 py-1 rounded-full border ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).bg} ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).border} ${(CAT_COLORS[current.cat]||CAT_COLORS.Power).text}`}>{current.cat}</span>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3">
+            {options.map(w=>{
+              let s="bg-lienzo border-tinta/8 hover:border-gold/60 hover:bg-goldglow/30";
+              if(chosen){
+                if(w.word===current.word) s="bg-gold/15 border-gold/60";
+                else if(w.word===chosen.word) s="bg-coral/15 border-coral/40";
+                else s="opacity-30 bg-nube border-tinta/5";
+              }
+              return(
+                <button key={w.word} onClick={()=>pick(w)}
+                  className={`rounded-2xl border p-4 text-left transition-all duration-150 lift ${s}`}>
+                  {mode==="word2def"
+                    ? <span className="text-tintasoft text-sm">{w.def}</span>
+                    : <span className="font-display font-black text-2xl text-tinta">{w.word}</span>
+                  }
+                </button>
+              );
+            })}
+          </div>
+          {chosen && (
+            <div className={`mt-4 rounded-2xl p-3 text-center font-semibold pop ${chosen.word===current.word?"bg-gold/15 text-golddark":"bg-coral/12 text-coral"}`}>
+              {chosen.word===current.word ? "🪙 Correct!" : `❌ Answer: "${current.word}" — ${current.def}`}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ─── WORD LIBRARY ────────────────────────────────────────────────────────────
+    function Library(){
+      const cats=[...new Set(WORDS.map(w=>w.cat))];
+      const [filter,setFilter]=useState("All");
+      const filtered=filter==="All"?WORDS:WORDS.filter(w=>w.cat===filter);
+      return(
+        <div className="max-w-4xl mx-auto">
+          <Hint>All 100 gold words. Study the patterns. Own the vocabulary.</Hint>
+          <div className="flex gap-2 overflow-x-auto hide-scrollbar mb-5 pb-1">
+            {["All",...cats].map(c=>(
+              <button key={c} onClick={()=>setFilter(c)}
+                className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition ${filter===c?"bg-tinta text-paper":"bg-nube text-tintasoft hover:text-gold"}`}>
+                {c}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {filtered.map(w=>(
+              <WordCard key={w.word} wordObj={w} reveal={true}/>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ─── INTRO ───────────────────────────────────────────────────────────────────
+    function Intro({setMode}){
+      const modes=[
+        {id:"vault",   icon:"⚡", title:"Vault Sprint",       desc:"See the definition, pick the right word. 20 rounds, beat the clock mentally."},
+        {id:"recall",  icon:"🧠", title:"Memory Recall",      desc:"Words appear in sequence. Memorize them. Rebuild the exact order from memory."},
+        {id:"match",   icon:"🎯", title:"Gold Match",         desc:"Flip cards to pair each word with its definition. Speed and memory combined."},
+        {id:"boss",    icon:"👑", title:"Billionaire Test",   desc:"15-question mixed gauntlet. Word→definition and definition→word, no mercy."},
+      ];
+      return(
+        <div className="max-w-3xl mx-auto">
+          <Hint>Four training modes. One goal: think and speak like a billionaire.</Hint>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {modes.map(m=>(
+              <button key={m.id} onClick={()=>setMode(m.id)}
+                className="text-left bg-lienzo border border-tinta/6 rounded-[28px] p-5 sm:p-6 lift hover:border-gold/50 hover:bg-goldglow/30 shadow-soft transition-all">
+                <div className="text-4xl mb-3">{m.icon}</div>
+                <h3 className="font-display font-bold text-2xl text-tinta mb-2">{m.title}</h3>
+                <p className="text-tintasoft text-sm leading-relaxed">{m.desc}</p>
+              </button>
+            ))}
+          </div>
+          <div className="mt-6 bg-lienzo border border-gold/20 rounded-[28px] p-5">
+            <p className="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-gold mb-2">The 100 Grow Words</p>
+            <p className="text-tintasoft text-sm leading-relaxed">
+              Curated across 10 power categories: Mindset, Wealth, Leadership, Strategy, Communication, Innovation, Growth, Excellence, Influence, and Power. These are the words that separate $1M thinking from $1B thinking.
+            </p>
+            <button onClick={()=>setMode("library")} className="mt-3 font-mono text-xs text-gold hover:text-golddark transition">Browse all 100 words →</button>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── APP ROOT ────────────────────────────────────────────────────────────────
+    function App(){
+      const [mode,setMode]=useState("intro");
+      const [score,setScore]=useState(0);
+      const [best,setBest]=useState(0);
+      const [streak,setStreak]=useState(0);
+      const [level,setLevel]=useState(1);
+
+      const addScore=(pts)=>{
+        setScore(s=>{
+          const n=Math.max(0,s+pts);
+          setBest(b=>Math.max(b,n));
+          return n;
+        });
+      };
+      const updateStreak=(fn)=>{
+        setStreak(s=>{
+          const n=typeof fn==="function"?fn(s):fn;
+          setLevel(Math.max(1,Math.floor(n/5)+1));
+          return n;
+        });
+      };
+
+      useEffect(()=>{ setLevel(Math.max(1,Math.floor(score/200)+1)); },[score]);
+
+      const active=MODES.find(m=>m.id===mode);
+
+      return(
+        <div className="font-sans text-tinta min-h-screen relative pb-24 sm:pb-10">
+          {/* Background radial */}
+          <div className="fixed inset-0 -z-10" style={{
+            background:"radial-gradient(60% 50% at 12% 0%, rgba(201,162,39,0.09), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(21,183,158,0.08), transparent 60%), #FCF8F3"
+          }}/>
+
+          <div className="max-w-6xl mx-auto px-4 py-7 sm:py-12">
+            {/* ── HEADER ── */}
+            <header className="text-center mb-8">
+              <p className="font-mono text-[0.7rem] tracking-[0.28em] uppercase text-gold mb-3">Vocabulary · Billionaire Edition</p>
+              <h1 className="font-display font-black text-4xl sm:text-6xl text-tinta leading-[0.95]">
+                Gold Words<br/>
+                <span className="italic font-medium text-gold">100 words that grow you.</span>
+              </h1>
+              <div className="my-5"><WaveBars/></div>
+              <p className="text-tintasoft max-w-xl mx-auto leading-relaxed text-sm sm:text-base">
+                These are the power words of people who think bigger, communicate sharper, and act faster. Train them until they're automatic.
+              </p>
+
+              {/* Score pills */}
+              <div className="mt-5 flex items-center justify-center gap-2 flex-wrap">
+                <Pill className="bg-nube text-tinta">Level <b className="text-gold ml-1">{level}</b></Pill>
+                <Pill className="bg-nube text-tinta">Gold <b className="text-gold ml-1">🪙{score}</b></Pill>
+                <Pill className="bg-nube text-tinta">Best <b className="text-mentadeep ml-1">{best}</b></Pill>
+                {streak>=3 && <Pill className="bg-gold/15 text-golddark border border-gold/30">🔥 {streak} streak</Pill>}
+              </div>
+            </header>
+
+            {/* ── NAV ── */}
+            <nav className="flex gap-2 overflow-x-auto hide-scrollbar mb-8 pb-1">
+              {MODES.map(m=>(
+                <button key={m.id} onClick={()=>setMode(m.id)}
+                  className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                    mode===m.id?"bg-tinta text-paper":"bg-nube text-tintasoft hover:text-gold"
+                  }`}>
+                  {m.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* ── CONTENT ── */}
+            <main key={mode}>
+              {mode==="intro"    && <Intro setMode={setMode}/>}
+              {mode==="vault"    && <VaultSprint   addScore={addScore} setStreak={updateStreak} streak={streak}/>}
+              {mode==="recall"   && <MemoryRecall  addScore={addScore} setStreak={updateStreak} level={level}/>}
+              {mode==="match"    && <GoldMatch      addScore={addScore} setStreak={updateStreak}/>}
+              {mode==="boss"     && <BillionaireTest addScore={addScore} setStreak={updateStreak} level={level}/>}
+              {mode==="library"  && <Library/>}
+            </main>
+
+            {/* ── FOOTER ── */}
+            <footer className="text-center mt-12 text-bruma text-xs sm:text-sm">
+              <p>© 2025 ProfGermanDario · Gold Words — Billionaire Vocabulary</p>
+              <p className="mt-1 text-gold/70">"Your vocabulary is the ceiling of your thinking."</p>
+            </footer>
+          </div>
+        </div>
+      );
+    }
+
+    const root=ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App/>);
+  </script>
+</body>
+</html>

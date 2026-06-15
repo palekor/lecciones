@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///C:/Users/profg/Downloads/fast_memory_v3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Fast Memory Recover · ProfGermandario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./09_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="./09_files/all.min.css">
+<script src="./09_files/saved_resource"></script>
+<script>
+tailwind.config={theme:{extend:{
+  colors:{
+    lienzo:'#FCF8F3',nube:'#F2ECE2',tinta:'#1A1730',tintasoft:'#3A3552',
+    bruma:'#76718A',coral:'#FF5A3C',coraldeep:'#E8482C',
+    menta:'#15B79E',mentadeep:'#0E8C79',
+    ambar:'#FFB627',ambardeep:'#D4930F',
+    paper:'#F6F1FF',vino:'#7B2CBF',
+    gold:'#C9A227',goldlight:'#F5DC7A',golddark:'#8A6B0E',goldglow:'#FFF3C4'
+  },
+  fontFamily:{
+    display:['Fraunces','Georgia','serif'],
+    sans:['Figtree','system-ui','sans-serif'],
+    mono:['"DM Mono"','ui-monospace','monospace']
+  },
+  boxShadow:{
+    soft:'0 10px 30px rgba(26,23,48,0.08)',
+    coral:'0 12px 30px rgba(255,90,60,0.28)',
+    menta:'0 12px 30px rgba(21,183,158,0.22)',
+    gold:'0 12px 30px rgba(201,162,39,0.30)'
+  }
+}}}
+</script>
+<style>
+/* ── Variables ──────────────────────────────────────────────── */
+:root{
+  --coral:#FF5A3C;--menta:#15B79E;--ambar:#FFB627;
+  --tinta:#1A1730;--gold:#C9A227;--lienzo:#FCF8F3;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Figtree','Segoe UI',system-ui,sans-serif;
+  background:linear-gradient(135deg,#12101f 0%,#0d1824 100%);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* radial glows */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(58% 42% at 5% 0%,rgba(255,90,60,.11),transparent 60%),
+    radial-gradient(48% 48% at 100% 100%,rgba(21,183,158,.09),transparent 60%);
+}
+
+/* ── Wave bars ─────────────────────────────────────────────── */
+.wave{display:flex;align-items:flex-end;gap:4px;height:28px;justify-content:center;}
+.wave span{
+  display:block;width:4px;border-radius:4px;transform-origin:bottom;
+  background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar));
+  animation:vox 1.3s ease-in-out infinite;
+}
+@keyframes vox{0%,100%{transform:scaleY(.22);}50%{transform:scaleY(1);}}
+
+/* ── Cards ─────────────────────────────────────────────────── */
+.g-card{
+  background:white;border-radius:24px;
+  padding:22px;
+  box-shadow:0 8px 30px rgba(26,23,48,.10);
+  border:1px solid rgba(26,23,48,.06);
+}
+
+/* ── Level circle ───────────────────────────────────────────── */
+.lvl-circle{
+  width:56px;height:56px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--coral),var(--ambar));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:white;
+  box-shadow:0 8px 22px rgba(255,90,60,.32);
+}
+
+/* ── Progress bar ───────────────────────────────────────────── */
+.prog-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--menta),var(--ambar),var(--coral));
+  border-radius:999px;transition:width .38s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Word stage ─────────────────────────────────────────────── */
+.word-stage{
+  min-height:110px;border-radius:18px;
+  background:linear-gradient(180deg,var(--lienzo),white);
+  border:1.5px solid rgba(26,23,48,.07);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:7px;padding:14px;text-align:center;
+  position:relative;
+}
+.word-stage .wtext{
+  font-family:'Fraunces',serif;font-weight:900;
+  font-size:clamp(28px,5vw,46px);
+  color:var(--coral);line-height:1;
+  transition:all .2s ease;
+}
+.word-stage.hidden-state .wtext{
+  font-size:28px;color:#DDD8F8;letter-spacing:10px;
+}
+.word-stage .wlabel{
+  font-family:'DM Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.18em;color:#76718A;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn{
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:15px;
+  border:none;border-radius:999px;cursor:pointer;
+  padding:12px 20px;
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  transition:transform .15s ease,box-shadow .15s ease;
+  white-space:nowrap;line-height:1.1;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(1px) scale(.97);}
+.btn:disabled,.btn.off{opacity:.4;pointer-events:none;}
+.btn-coral{background:var(--coral);color:white;box-shadow:0 8px 22px rgba(255,90,60,.32);}
+.btn-coral:hover{box-shadow:0 12px 28px rgba(255,90,60,.44);}
+.btn-menta{background:var(--menta);color:white;box-shadow:0 8px 22px rgba(21,183,158,.28);}
+.btn-menta:hover{box-shadow:0 12px 28px rgba(21,183,158,.40);}
+.btn-ambar{background:var(--ambar);color:#78350f;box-shadow:0 6px 16px rgba(255,182,39,.36);}
+.btn-ghost{
+  background:#F2ECE2;color:#3A3552;
+  border:1.5px solid rgba(26,23,48,.08);box-shadow:none;
+}
+.btn-ghost:hover{border-color:var(--coral);color:var(--coral);}
+.btn-sm{font-size:13px;padding:9px 16px;}
+
+/* ── Emoji buttons ──────────────────────────────────────────── */
+.emoji-btn{
+  border-radius:22px;border:2.5px solid #F2ECE2;
+  padding:8px 4px;font-size:40px;
+  background:white;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;
+  min-height:96px;width:100%;
+  transition:transform .14s ease,border-color .14s ease,background .14s ease,box-shadow .14s ease;
+}
+.emoji-btn:hover{
+  transform:translateY(-4px) scale(1.04);
+  border-color:rgba(255,90,60,.38);
+  box-shadow:0 10px 24px rgba(255,90,60,.14);
+}
+.emoji-btn:active{transform:scale(.95);}
+.emoji-btn:disabled{cursor:default;transform:none!important;}
+.emoji-btn .key-hint{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:#76718A;line-height:1;
+}
+.emoji-btn.correct{
+  border-color:var(--menta);background:rgba(21,183,158,.07);
+  box-shadow:0 0 0 4px rgba(21,183,158,.18);
+}
+.emoji-btn.incorrect{
+  border-color:var(--coral);background:rgba(255,90,60,.07);
+  box-shadow:0 0 0 4px rgba(255,90,60,.15);
+}
+
+/* ── Feedback strip ─────────────────────────────────────────── */
+.fb-ok  {background:rgba(21,183,158,.10);color:#0E8C79;border-radius:12px;padding:11px 14px;font-weight:700;}
+.fb-err {background:rgba(255,90,60,.08);color:#FF5A3C;border-radius:12px;padding:11px 14px;font-weight:700;}
+.fb-skip{background:rgba(26,23,48,.05);color:#76718A;border-radius:12px;padding:11px 14px;font-weight:600;}
+
+/* ── Level complete card ────────────────────────────────────── */
+.lc-card{
+  background:linear-gradient(180deg,rgba(201,162,39,.09),rgba(201,162,39,.03));
+  border:1.5px solid rgba(201,162,39,.32);
+  border-radius:18px;padding:20px;text-align:center;
+}
+
+/* ── Help modal ─────────────────────────────────────────────── */
+.modal-wrap{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(12,10,25,.72);backdrop-filter:blur(5px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;
+  transition:opacity .22s ease;
+}
+.modal-wrap.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--lienzo);border-radius:26px;
+  padding:28px 24px;max-width:480px;width:100%;
+  box-shadow:0 32px 80px rgba(2,6,23,.6);
+  transform:translateY(20px) scale(.97);
+  transition:transform .22s ease;
+}
+.modal-wrap.open .modal-box{transform:translateY(0) scale(1);}
+
+/* ── Coins ──────────────────────────────────────────────────── */
+.spark{
+  position:fixed;pointer-events:none;z-index:9999;
+  font-size:1.35rem;animation:sparkfall .95s ease forwards;
+}
+@keyframes sparkfall{
+  0%{transform:translateY(0) scale(1.1) rotate(0);opacity:1;}
+  100%{transform:translateY(-85px) scale(.4) rotate(360deg);opacity:0;}
+}
+
+/* ── Social footer glass ────────────────────────────────────── */
+.social-link{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.13);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  transition:transform .18s ease,background .18s ease;
+  backdrop-filter:blur(6px);
+  font-size:17px;
+}
+.social-link:hover{transform:scale(1.14);background:rgba(255,255,255,.16);}
+
+/* ── WA float ───────────────────────────────────────────────── */
+.wa-float{
+  position:fixed;right:20px;z-index:9998;
+  bottom:calc(20px + env(safe-area-inset-bottom));
+  display:flex;align-items:center;gap:8px;
+  background:#25D366;color:white;text-decoration:none;
+  padding:13px 18px;border-radius:999px;
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:14px;
+  box-shadow:0 10px 30px rgba(37,211,102,.45);
+  animation:waPulse 2.2s ease infinite;
+  transition:transform .15s ease;
+}
+.wa-float:hover{transform:translateY(-3px);}
+@keyframes waPulse{
+  0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.45);}
+  50%{box-shadow:0 10px 30px rgba(37,211,102,.15);}
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+.pop{animation:pop .36s ease both;}
+@keyframes pop{0%{transform:scale(.94);opacity:.5;}100%{transform:scale(1);opacity:1;}}
+.fade-up{animation:fadeUp .28s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media(max-width:720px){
+  body{padding-bottom:calc(80px + env(safe-area-inset-bottom));}
+  .game-cols{grid-template-columns:1fr!important;}
+  .left-col{order:2;}
+  .emoji-btn{font-size:36px;min-height:90px;}
+  .wa-float .wa-lbl{display:none;}
+  .wa-float{padding:13px;}
+}
+@media(max-width:380px){
+  .emoji-btn{font-size:30px;min-height:80px;}
+}
+</style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Figtree, system-ui, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:"DM Mono", ui-monospace, monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.relative{position:relative}.z-10{z-index:10}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-7{margin-bottom:1.75rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:0.25rem}.ml-auto{margin-left:auto}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.min-h-\[32px\]{min-height:32px}.min-h-screen{min-height:100vh}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-5xl{max-width:64rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;user-select:none}.list-decimal{list-style-type:decimal}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-2\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.625rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-ambar\/30{border-color:rgb(255 182 39 / 0.3)}.border-tinta\/10{border-color:rgb(26 23 48 / 0.1)}.border-tinta\/5{border-color:rgb(26 23 48 / 0.05)}.border-white\/15{border-color:rgb(255 255 255 / 0.15)}.bg-ambar\/10{background-color:rgb(255 182 39 / 0.1)}.bg-lienzo{--tw-bg-opacity:1;background-color:rgb(252 248 243 / var(--tw-bg-opacity, 1))}.bg-nube{--tw-bg-opacity:1;background-color:rgb(242 236 226 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-5{padding-bottom:1.25rem}.pb-6{padding-bottom:1.5rem}.pl-5{padding-left:1.25rem}.pt-8{padding-top:2rem}.text-center{text-align:center}.font-display{font-family:Fraunces, Georgia, serif}.font-mono{font-family:"DM Mono", ui-monospace, monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[\.58rem\]{font-size:.58rem}.text-\[\.62rem\]{font-size:.62rem}.text-\[\.68rem\]{font-size:.68rem}.text-\[\.6rem\]{font-size:.6rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.not-italic{font-style:normal}.leading-\[\.92\]{line-height:.92}.leading-relaxed{line-height:1.625}.tracking-\[\.13em\]{letter-spacing:.13em}.tracking-\[\.15em\]{letter-spacing:.15em}.tracking-\[\.16em\]{letter-spacing:.16em}.tracking-\[\.22em\]{letter-spacing:.22em}.tracking-\[\.28em\]{letter-spacing:.28em}.text-ambar{--tw-text-opacity:1;color:rgb(255 182 39 / var(--tw-text-opacity, 1))}.text-bruma{--tw-text-opacity:1;color:rgb(118 113 138 / var(--tw-text-opacity, 1))}.text-coral{--tw-text-opacity:1;color:rgb(255 90 60 / var(--tw-text-opacity, 1))}.text-gold{--tw-text-opacity:1;color:rgb(201 162 39 / var(--tw-text-opacity, 1))}.text-menta{--tw-text-opacity:1;color:rgb(21 183 158 / var(--tw-text-opacity, 1))}.text-tinta{--tw-text-opacity:1;color:rgb(26 23 48 / var(--tw-text-opacity, 1))}.text-tintasoft{--tw-text-opacity:1;color:rgb(58 53 82 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-white\/90{color:rgb(255 255 255 / 0.9)}.text-mentadeep{--tw-text-opacity:1;color:rgb(14 140 121 / var(--tw-text-opacity, 1))}.outline-none{outline:2px solid transparent;outline-offset:2px}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:text-coral:hover{--tw-text-opacity:1;color:rgb(255 90 60 / var(--tw-text-opacity, 1))}.focus\:border-coral:focus{--tw-border-opacity:1;border-color:rgb(255 90 60 / var(--tw-border-opacity, 1))}</style></head>
+<body>
+
+<div class="relative z-10 min-h-screen flex flex-col">
+
+  <!-- ═══ PAGE CONTENT ══════════════════════════════════════ -->
+  <div class="flex-1">
+    <div class="max-w-5xl mx-auto px-4 pt-8 pb-6">
+
+      <!-- ── HEADER ────────────────────────────────────────── -->
+      <header class="text-center mb-8">
+        <p class="font-mono text-[.68rem] tracking-[.28em] uppercase text-coral mb-3">
+          Memory · Deep Listening · ProfGermandario
+        </p>
+        <h1 class="font-display font-black leading-[.92]" style="color:white;font-size:clamp(2.2rem,5.5vw,4rem);">
+          Fast Memory<br>
+          <em class="not-italic font-medium text-coral">Recover.</em>
+        </h1>
+        <div class="wave mt-5 mb-4" id="waveBars" aria-hidden="true"><span style="height: 10px; animation-delay: 0s; animation-duration: 1.1s;"></span><span style="height: 20.1636px; animation-delay: 0.075s; animation-duration: 1.23s;"></span><span style="height: 26.7767px; animation-delay: 0.15s; animation-duration: 1.36s;"></span><span style="height: 27.5293px; animation-delay: 0.225s; animation-duration: 1.49s;"></span><span style="height: 22.1583px; animation-delay: 0.3s; animation-duration: 1.62s;"></span><span style="height: 12.5402px; animation-delay: 0.375s; animation-duration: 1.1s;"></span><span style="height: 17.9654px; animation-delay: 0.45s; animation-duration: 1.23s;"></span><span style="height: 25.6884px; animation-delay: 0.525s; animation-duration: 1.36s;"></span><span style="height: 27.931px; animation-delay: 0.6s; animation-duration: 1.49s;"></span><span style="height: 23.9098px; animation-delay: 0.675s; animation-duration: 1.62s;"></span><span style="height: 15.0295px; animation-delay: 0.75s; animation-duration: 1.1s;"></span><span style="height: 15.6077px; animation-delay: 0.825s; animation-duration: 1.23s;"></span><span style="height: 24.286px; animation-delay: 0.9s; animation-duration: 1.36s;"></span><span style="height: 27.9738px; animation-delay: 0.975s; animation-duration: 1.49s;"></span><span style="height: 25.3828px; animation-delay: 1.05s; animation-duration: 1.62s;"></span><span style="height: 17.4181px; animation-delay: 1.125s; animation-duration: 1.1s;"></span><span style="height: 13.1379px; animation-delay: 1.2s; animation-duration: 1.23s;"></span><span style="height: 22.5977px; animation-delay: 1.275s; animation-duration: 1.36s;"></span><span style="height: 27.6569px; animation-delay: 1.35s; animation-duration: 1.49s;"></span><span style="height: 26.5479px; animation-delay: 1.425s; animation-duration: 1.62s;"></span><span style="height: 19.6583px; animation-delay: 1.5s; animation-duration: 1.1s;"></span><span style="height: 10.6052px; animation-delay: 1.575s; animation-duration: 1.23s;"></span><span style="height: 20.6573px; animation-delay: 1.65s; animation-duration: 1.36s;"></span><span style="height: 26.9865px; animation-delay: 1.725s; animation-duration: 1.49s;"></span></div>
+        <p class="text-bruma text-sm max-w-sm mx-auto leading-relaxed">
+          Listen to the word sequence. Memorize the order. Match each word to its emoji — exactly as you heard it.
+        </p>
+
+        <!-- Score pills -->
+        <div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
+          <span class="font-mono text-xs px-3 py-1.5 rounded-full border border-white/15 bg-white/10 text-white/90">
+            Level <b class="text-coral ml-1" id="level">3</b>
+          </span>
+          <span class="font-mono text-xs px-3 py-1.5 rounded-full border border-white/15 bg-white/10 text-white/90">
+            Score <b class="text-menta ml-1" id="score">265</b>
+          </span>
+          <span id="streakPill" class="font-mono text-xs px-3 py-1.5 rounded-full border border-ambar/30 bg-ambar/10 text-ambar" style="display: inline-flex;">
+            🔥 Streak <b class="ml-1" id="streakVal">9</b>
+          </span>
+        </div>
+      </header>
+
+      <!-- ── GAME GRID ─────────────────────────────────────── -->
+      <div class="game-cols" style="display:grid;grid-template-columns:286px 1fr;gap:18px;align-items:start;">
+
+        <!-- LEFT ──────────────────────────────────────────── -->
+        <div class="left-col">
+          <div class="g-card">
+
+            <!-- Level badge -->
+            <div class="flex items-center gap-3 mb-4">
+              <div class="lvl-circle" id="levelCircle">3</div>
+              <div>
+                <div class="font-display font-black text-xl text-tinta">
+                  Level <span id="levelLabel">3</span>
+                </div>
+                <div class="font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma mt-1">
+                  Listen · Memorize · Match
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="mb-4">
+              <div class="font-mono text-[.58rem] tracking-[.16em] uppercase text-bruma mb-2">
+                Round progress
+              </div>
+              <div class="bg-nube rounded-full overflow-hidden" style="height:10px;">
+                <div class="prog-fill" id="progress" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Word stage -->
+            <div class="word-stage mb-1" id="wordStage">
+              <span class="wtext" id="wtext">—</span>
+              <span class="wlabel" id="wlabel"></span>
+            </div>
+            <p class="font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma text-center mb-4">
+              Words to remember: <strong class="text-tinta" id="wordCount">7</strong>
+            </p>
+
+            <!-- Controls -->
+            <div class="flex flex-col gap-2">
+              <button class="btn btn-coral" id="startBtn" style="display: none;">🎧 Start Listening</button>
+              <button class="btn btn-ambar" id="tipBtn" style="display: none;">💡 Show Tip</button>
+              <button class="btn btn-ghost btn-sm" id="helpBtn">❓ How to play</button>
+            </div>
+
+          </div><!-- /left card -->
+        </div>
+
+        <!-- RIGHT ─────────────────────────────────────────── -->
+        <div class="flex flex-col gap-3">
+
+          <!-- Game area -->
+          <div class="g-card" id="gameArea">
+            <div id="instruction" class="bg-lienzo rounded-2xl px-4 py-3.5 border border-tinta/5 text-tintasoft text-sm leading-relaxed mb-4"><strong class="text-coral">Word 7</strong> — which emoji matches?</div>
+
+            <div id="optionsBlock" style="display: block;">
+              <div class="flex justify-between items-center font-mono text-[.6rem] uppercase tracking-[.15em] text-bruma mb-3">
+                <span>Choose the emoji for this word</span>
+                <span id="qCounter" class="text-coral font-semibold">7 / 7</span>
+              </div>
+
+              <!-- 2×2 Emoji grid -->
+              <div id="emojiGrid" class="grid gap-3 mb-3" style="grid-template-columns:repeat(2,1fr);" role="list" aria-label="Emoji options"></div>
+
+              <div id="feedback" class="" style="min-height:0;"><div class="lc-card pop">
+    <div class="font-display font-black text-2xl text-tinta mb-2">Level 3 Done! 🏆</div>
+    <div class="font-mono text-xs text-bruma leading-relaxed mb-1">
+      Accuracy: <strong class="text-tinta">100%</strong> &nbsp;·&nbsp; Time: <strong class="text-tinta">79s</strong>
+      
+    </div>
+    <p class="font-mono text-xs text-mentadeep font-semibold mb-4">
+      🔥 Next level: 9 words (+2)
+    </p>
+    <button class="btn btn-coral" id="continueBtn" style="width:100%;">
+      Level 4 →
+    </button></div></div>
+
+              <div class="flex items-center gap-2 flex-wrap mt-2">
+                <button class="btn btn-ghost btn-sm" id="skipBtn" style="display: none;">Skip →</button>
+                <div class="ml-auto font-mono text-[.62rem] text-bruma" id="lvlSummary"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings collapsible -->
+          <div class="g-card" style="padding:0;overflow:hidden;">
+            <details open="">
+              <summary class="flex items-center justify-between cursor-pointer select-none
+                             font-mono text-[.62rem] uppercase tracking-[.16em] text-bruma
+                             px-5 py-4 hover:text-coral transition-colors" style="list-style:none;">
+                <span>⚙️ Audio Settings</span><span>▾</span>
+              </summary>
+              <div class="px-5 pb-5">
+                <label class="font-mono text-[.58rem] uppercase tracking-[.13em] text-bruma block mb-2">
+                  Speech Voice
+                </label>
+                <select id="voiceSelect" class="w-full rounded-xl border border-tinta/10 bg-lienzo text-tinta px-3 py-2 text-sm outline-none focus:border-coral transition"><option value="0">Microsoft David - English (United States) – en-US</option><option value="1">Microsoft Naayf - Arabic (Saudi) – ar-SA</option><option value="2">Microsoft Mark - English (United States) – en-US</option><option value="3">Microsoft Zira - English (United States) – en-US</option><option value="4">Microsoft Helena - Spanish (Spain) – es-ES</option><option value="5">Microsoft Laura - Spanish (Spain) – es-ES</option><option value="6">Microsoft Pablo - Spanish (Spain) – es-ES</option><option value="7">Microsoft Hortense - French (France) – fr-FR</option><option value="8">Microsoft Julie - French (France) – fr-FR</option><option value="9">Microsoft Paul - French (France) – fr-FR</option><option value="10">Microsoft Daniel - Portuguese (Brazil) – pt-BR</option><option value="11">Microsoft Maria - Portuguese (Brazil) – pt-BR</option><option value="12">Microsoft Helia - Portuguese (Portugal) – pt-PT</option><option value="13">Microsoft Tolga - Turkish (Turkey) – tr-TR</option><option value="14">Google Deutsch – de-DE</option><option value="15">Google US English – en-US</option><option value="16">Google UK English Female – en-GB</option><option value="17">Google UK English Male – en-GB</option><option value="18">Google español – es-ES</option><option value="19">Google español de Estados Unidos – es-US</option><option value="20">Google français – fr-FR</option><option value="21">Google हिन्दी – hi-IN</option><option value="22">Google Bahasa Indonesia – id-ID</option><option value="23">Google italiano – it-IT</option><option value="24">Google 日本語 – ja-JP</option><option value="25">Google 한국의 – ko-KR</option><option value="26">Google Nederlands – nl-NL</option><option value="27">Google polski – pl-PL</option><option value="28">Google português do Brasil – pt-BR</option><option value="29">Google русский – ru-RU</option><option value="30">Google&nbsp;普通话（中国大陆） – zh-CN</option><option value="31">Google&nbsp;粤語（香港） – zh-HK</option><option value="32">Google 國語（臺灣） – zh-TW</option></select>
+                <p class="text-bruma text-xs leading-relaxed mt-3">
+                  Press <strong class="text-tinta">1–4</strong> on keyboard to pick an emoji. Words are hidden during the quiz — use Show Tip only if stuck (−5 pts).
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- Spanish instructions -->
+          <div class="g-card" aria-label="Instrucciones en español">
+            <h2 class="font-display font-bold text-xl text-tinta mb-3">Instrucciones</h2>
+            <ol class="list-decimal pl-5 space-y-2 text-sm text-tintasoft leading-relaxed">
+              <li>Presiona <strong class="text-coral">Start Listening</strong> para escuchar la secuencia.</li>
+              <li>Escucha y memoriza las palabras <strong class="text-tinta">en el mismo orden</strong> en que suenan.</li>
+              <li>Después de escuchar todas, tienes unos segundos de retención (3s × nivel).</li>
+              <li>Selecciona el emoji de cada palabra <strong class="text-tinta">en el orden exacto</strong>.</li>
+              <li>Las palabras están ocultas — usa <strong class="text-coral">Show Tip</strong> si las necesitas (resta 5 pts).</li>
+              <li>Precisión 100% a tiempo = <strong class="text-gold">bono de velocidad</strong>.</li>
+            </ol>
+          </div>
+
+        </div><!-- /right col -->
+      </div><!-- /game-cols -->
+    </div><!-- /page wrapper -->
+  </div><!-- /flex-1 -->
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════ -->
+  <footer style="background:linear-gradient(180deg,#1A1730 0%,#0F1020 100%);margin-top:32px;">
+    <div class="max-w-4xl mx-auto px-6 py-12">
+
+      <!-- Brand -->
+      <div class="text-center mb-7">
+        <div class="font-display font-black text-white mb-1" style="font-size:clamp(1.6rem,4vw,2.4rem);">
+          Prof<span class="text-coral">Germandario</span>
+        </div>
+        <p class="font-mono text-[.62rem] tracking-[.22em] uppercase text-bruma">
+          Fast Memory Recover · Memory &amp; Deep Listening
+        </p>
+      </div>
+
+      <!-- Divider -->
+      <div class="mb-7" style="height:1px;background:rgba(255,255,255,.08);"></div>
+
+      <!-- Connect label -->
+      <p class="font-mono text-[.62rem] tracking-[.22em] uppercase text-bruma text-center mb-5">Connect</p>
+
+      <!-- Social links — 8 icons -->
+      <div class="flex justify-center items-center gap-3 flex-wrap mb-8">
+
+        <!-- WhatsApp -->
+        <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="social-link" title="WhatsApp" aria-label="WhatsApp">
+          <i class="fab fa-whatsapp" style="color:#25D366;font-size:19px;"></i>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:info@profgermandario.com" class="social-link" title="Email" aria-label="Email">
+          <i class="fas fa-envelope" style="color:#FFB627;font-size:17px;"></i>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="TikTok" aria-label="TikTok">
+          <i class="fab fa-tiktok" style="color:white;font-size:17px;"></i>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="Facebook" aria-label="Facebook">
+          <i class="fab fa-facebook" style="color:#1877F2;font-size:19px;"></i>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn" aria-label="LinkedIn">
+          <i class="fab fa-linkedin" style="color:#0A66C2;font-size:19px;"></i>
+        </a>
+
+        <!-- X / Twitter -->
+        <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="X (Twitter)" aria-label="X Twitter">
+          <i class="fab fa-x-twitter" style="color:#E7E9EA;font-size:17px;"></i>
+        </a>
+
+        <!-- Reddit -->
+        <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="Reddit" aria-label="Reddit">
+          <i class="fab fa-reddit" style="color:#FF4500;font-size:19px;"></i>
+        </a>
+
+        <!-- YouTube -->
+        <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="YouTube" aria-label="YouTube">
+          <i class="fab fa-youtube" style="color:#FF0000;font-size:19px;"></i>
+        </a>
+
+      </div>
+
+      <!-- Divider -->
+      <div class="mb-5" style="height:1px;background:rgba(255,255,255,.08);"></div>
+
+      <!-- Copyright -->
+      <p class="text-center font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma">
+        © 2025 ProfGermandario · Fast Memory Recover · Memory &amp; Deep Listening
+      </p>
+
+    </div>
+  </footer>
+
+</div><!-- /z-10 -->
+
+<!-- ═══ FLOATING WHATSAPP ═════════════════════════════════════ -->
+<a class="wa-float" href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+  <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+    <path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"></path>
+  </svg>
+  <span class="wa-lbl">WhatsApp</span>
+</a>
+
+<!-- ═══ HELP MODAL ════════════════════════════════════════════ -->
+<div class="modal-wrap" id="helpModal" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="modal-box">
+    <h3 class="font-display font-black text-2xl text-tinta mb-4">🧠 How to Play</h3>
+    <ol class="list-decimal pl-5 space-y-2.5 text-sm text-tintasoft leading-relaxed mb-5">
+      <li>Press <strong class="text-coral">Start Listening</strong> to hear a sequence of English words spoken aloud.</li>
+      <li>Listen carefully — memorize each word <strong class="text-tinta">and its position in the sequence</strong>.</li>
+      <li>After all words play, a memory countdown begins (3 seconds per level).</li>
+      <li>Then pick the emoji that matches word #1, then #2, then #3… <strong class="text-tinta">in the same order</strong>.</li>
+      <li>Words are hidden during the quiz. Use <strong class="text-coral">Show Tip</strong> if stuck — it costs 5 pts.</li>
+      <li>Answer without tips for a <strong class="text-tinta">+5 bonus</strong> per word. 100% accuracy earns a speed bonus.</li>
+      <li>Every level adds more words and shortens the display time. The difficulty scales automatically.</li>
+      <li>Press <strong class="text-tinta">1–4</strong> on keyboard to pick emojis without tapping.</li>
+    </ol>
+    <button class="btn btn-coral w-full" id="closeModal" style="width:100%;">
+      Let's go 🎧
+    </button>
+  </div>
+</div>
+
+<!-- ═══ SCRIPT ════════════════════════════════════════════════ -->
+<script>
+/* ─── Wave bars ──────────────────────────────────────────────── */
+(()=>{
+  const w=document.getElementById('waveBars');
+  for(let i=0;i<24;i++){
+    const s=document.createElement('span');
+    s.style.height=(10+Math.abs(Math.sin(i*.6))*18)+'px';
+    s.style.animationDelay=(i*.075)+'s';
+    s.style.animationDuration=(1.1+(i%5)*.13)+'s';
+    w.appendChild(s);
+  }
+})();
+
+/* ─── Help modal ─────────────────────────────────────────────── */
+const helpModal=document.getElementById('helpModal');
+document.getElementById('helpBtn').addEventListener('click',()=>helpModal.classList.add('open'));
+document.getElementById('closeModal').addEventListener('click',()=>helpModal.classList.remove('open'));
+helpModal.addEventListener('click',e=>{if(e.target===helpModal)helpModal.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')helpModal.classList.remove('open');});
+
+/* ─── Emoji pool ─────────────────────────────────────────────── */
+const emojiPool=[
+  {word:"sun",emoji:"☀️"},{word:"tree",emoji:"🌳"},{word:"cat",emoji:"🐱"},{word:"book",emoji:"📚"},
+  {word:"heart",emoji:"❤️"},{word:"star",emoji:"⭐"},{word:"music",emoji:"🎵"},{word:"flower",emoji:"🌸"},
+  {word:"moon",emoji:"🌙"},{word:"rocket",emoji:"🚀"},{word:"pizza",emoji:"🍕"},{word:"rainbow",emoji:"🌈"},
+  {word:"camera",emoji:"📷"},{word:"butterfly",emoji:"🦋"},{word:"mountain",emoji:"⛰️"},{word:"diamond",emoji:"💎"},
+  {word:"castle",emoji:"🏰"},{word:"globe",emoji:"🌍"},{word:"trophy",emoji:"🏆"},{word:"lightning",emoji:"⚡"},
+  {word:"fire",emoji:"🔥"},{word:"crown",emoji:"👑"},{word:"ocean",emoji:"🌊"},{word:"volcano",emoji:"🌋"},
+  {word:"telescope",emoji:"🔭"},{word:"compass",emoji:"🧭"},{word:"crystal",emoji:"🔮"},{word:"tornado",emoji:"🌪️"},
+  {word:"anchor",emoji:"⚓"},{word:"hourglass",emoji:"⏳"},{word:"apple",emoji:"🍎"},{word:"bike",emoji:"🚲"},
+  {word:"coffee",emoji:"☕"},{word:"dog",emoji:"🐶"},{word:"elephant",emoji:"🐘"},{word:"football",emoji:"⚽"},
+  {word:"guitar",emoji:"🎸"},{word:"house",emoji:"🏠"},{word:"ice cream",emoji:"🍦"},{word:"key",emoji:"🔑"},
+  {word:"lion",emoji:"🦁"},{word:"microphone",emoji:"🎤"},{word:"owl",emoji:"🦉"},{word:"penguin",emoji:"🐧"},
+  {word:"robot",emoji:"🤖"},{word:"snowflake",emoji:"❄️"},{word:"turtle",emoji:"🐢"},{word:"umbrella",emoji:"☂️"},
+  {word:"whale",emoji:"🐋"},{word:"plane",emoji:"✈️"}
+];
+
+/* ─── State ──────────────────────────────────────────────────── */
+let pool=[],currentLevel=0,currentWords=[],currentIdx=0;
+let score=0,streak=0,correct=0,levelStart=0;
+let usedEmojis=[],voices=[],speechOk=('speechSynthesis' in window);
+let wordsPerLevel=4,wordRevealed=false,memTimer=null;
+
+/* ─── DOM refs ───────────────────────────────────────────────── */
+const $=id=>document.getElementById(id);
+const startBtn=$('startBtn'),tipBtn=$('tipBtn');
+const levelCircle=$('levelCircle'),levelLabel=$('levelLabel');
+const levelDisplay=$('level'),scoreDisplay=$('score');
+const streakPill=$('streakPill'),streakVal=$('streakVal');
+const wordCount=$('wordCount');
+const wordStage=$('wordStage'),wtext=$('wtext'),wlabel=$('wlabel');
+const instruction=$('instruction'),emojiGrid=$('emojiGrid');
+const optionsBlock=$('optionsBlock'),feedback=$('feedback');
+const skipBtn=$('skipBtn'),qCounter=$('qCounter'),lvlSummary=$('lvlSummary');
+const progress=$('progress'),voiceSelect=$('voiceSelect');
+
+/* ─── Utilities ──────────────────────────────────────────────── */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function clonePool(){pool=emojiPool.map(x=>({...x}));shuffle(pool);}
+function getWords(n){if(pool.length<n)clonePool();return pool.splice(0,n);}
+
+function setWord(text,label='',hidden=false){
+  wtext.textContent=text;
+  wlabel.textContent=label;
+  wordStage.classList.toggle('hidden-state',hidden);
+}
+
+function setFeedback(text,cls){
+  feedback.textContent=text;
+  feedback.className='text-sm '+cls+' fade-up';
+}
+
+function showStreak(){
+  if(streak>=3){streakPill.style.display='inline-flex';streakVal.textContent=streak;}
+  else streakPill.style.display='none';
+}
+
+function spawnSparks(el,n=6){
+  if(!el)return;
+  const r=el.getBoundingClientRect();
+  const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  ['⭐','🌟','✨','🪙','💫'].forEach((em,i)=>{
+    if(i>=n)return;
+    setTimeout(()=>{
+      const s=document.createElement('span');
+      s.className='spark';
+      s.textContent=em;
+      s.style.left=(cx+(Math.random()*100-50))+'px';
+      s.style.top=cy+'px';
+      s.style.animationDuration=(.7+Math.random()*.4)+'s';
+      document.body.appendChild(s);
+      s.addEventListener('animationend',()=>s.remove());
+    },i*55);
+  });
+}
+
+/* ─── Speech ─────────────────────────────────────────────────── */
+function loadVoices(){
+  if(!speechOk)return;
+  voices=speechSynthesis.getVoices()||[];
+  voiceSelect.innerHTML='';
+  voices.forEach((v,i)=>{
+    const o=document.createElement('option');
+    o.value=i;o.textContent=`${v.name} – ${v.lang}`;
+    voiceSelect.appendChild(o);
+  });
+}
+if(speechOk){
+  loadVoices();
+  if(speechSynthesis.onvoiceschanged!==undefined)
+    speechSynthesis.onvoiceschanged=loadVoices;
+}
+function speak(txt){
+  if(!speechOk)return Promise.resolve();
+  return new Promise(res=>{
+    const u=new SpeechSynthesisUtterance(txt);
+    u.rate=0.88;u.pitch=1.05;
+    const idx=parseInt(voiceSelect.value||0);
+    if(voices[idx])u.voice=voices[idx];
+    u.onend=res;u.onerror=res;
+    try{speechSynthesis.speak(u);}catch(e){res();}
+  });
+}
+
+/* ─── Init ───────────────────────────────────────────────────── */
+function initUI(){
+  levelCircle.textContent=levelLabel.textContent=levelDisplay.textContent=currentLevel+1;
+  wordCount.textContent=wordsPerLevel;
+  scoreDisplay.textContent=score;
+  progress.style.width='0%';
+  optionsBlock.style.display='none';
+  skipBtn.style.display='none';
+  tipBtn.style.display='none';
+  startBtn.style.display='inline-flex';
+  feedback.textContent='';feedback.className='';
+  lvlSummary.textContent='';
+  setWord('—');
+  instruction.innerHTML='Press <strong class="text-coral">Start Listening</strong> to begin. Listen to the words in order, then match each one to its emoji.';
+}
+
+/* ─── Start listening ─────────────────────────────────────────── */
+async function startListening(){
+  currentWords=getWords(wordsPerLevel);
+  correct=0;usedEmojis=[];currentIdx=0;
+  levelStart=Date.now();
+
+  startBtn.style.display='none';
+  tipBtn.style.display='none';
+  optionsBlock.style.display='none';
+  skipBtn.style.display='none';
+  emojiGrid.innerHTML='';
+  feedback.textContent='';feedback.className='';
+  progress.style.width='0%';
+  setWord('…','');
+  instruction.textContent='🎧 Listen carefully…';
+
+  await speak(`Listen carefully to these ${currentWords.length} words`);
+  await delay(350);
+
+  const tpw=Math.max(1100,2000-currentLevel*100);
+  const gap=Math.max(280,600-currentLevel*40);
+
+  for(let i=0;i<currentWords.length;i++){
+    setWord(currentWords[i].word,`Word ${i+1} of ${currentWords.length}`);
+    wordStage.classList.add('pop');
+    setTimeout(()=>wordStage.classList.remove('pop'),400);
+    await speak(currentWords[i].word);
+    await delay(tpw);
+    setWord('','');
+    await delay(gap);
+  }
+
+  // Memory countdown
+  let secs=3*(currentLevel+1);
+  setWord(`${secs}s`,'⏳ Memorize the order…');
+  instruction.textContent=`Remember the words in order! ${secs}s to recall…`;
+
+  await new Promise(res=>{
+    memTimer=setInterval(()=>{
+      secs--;
+      setWord(`${secs}s`,'⏳ Memorize the order…');
+      instruction.textContent=`Remember the words in order! ${secs}s to recall…`;
+      if(secs<=0){clearInterval(memTimer);res();}
+    },1000);
+  });
+
+  await speak("Now match each word with its emoji in the correct order");
+  currentIdx=0;
+  optionsBlock.style.display='block';
+  showQuestion();
+}
+
+/* ─── Show question ──────────────────────────────────────────── */
+function showQuestion(){
+  wordRevealed=false;
+  const word=currentWords[currentIdx];
+
+  // Build 4 options: 1 correct + 3 wrong
+  const wrongs=emojiPool
+    .map(w=>w.emoji)
+    .filter(e=>e!==word.emoji&&!usedEmojis.includes(e));
+  shuffle(wrongs);
+  const opts=shuffle([word.emoji,...wrongs.slice(0,3)]);
+  const keys=['1','2','3','4'];
+
+  emojiGrid.innerHTML='';
+  opts.forEach((em,i)=>{
+    const btn=document.createElement('button');
+    btn.className='emoji-btn pop';
+    btn.style.animationDelay=(i*.05)+'s';
+    btn.setAttribute('role','listitem');
+    btn.setAttribute('aria-label',`Option ${keys[i]}: ${em}`);
+    btn.dataset.emoji=em;
+    btn.innerHTML=`<span>${em}</span><span class="key-hint">[${keys[i]}]</span>`;
+    btn.addEventListener('click',()=>checkAnswer(em,btn));
+    emojiGrid.appendChild(btn);
+  });
+
+  qCounter.textContent=`${currentIdx+1} / ${currentWords.length}`;
+  progress.style.width=`${(currentIdx/currentWords.length)*100}%`;
+  feedback.textContent='';feedback.className='';
+  skipBtn.style.display='inline-flex';
+  tipBtn.style.display='inline-flex';
+  tipBtn.textContent='💡 Show Tip';
+  tipBtn.disabled=false;
+
+  // Hide word — player must recall
+  setWord('◆ ◆ ◆','',true);
+
+  instruction.innerHTML=`<strong class="text-coral">Word ${currentIdx+1}</strong> — which emoji matches?`;
+}
+
+/* ─── Tip ────────────────────────────────────────────────────── */
+tipBtn.addEventListener('click',()=>{
+  if(wordRevealed)return;
+  const w=currentWords[currentIdx];
+  setWord(`"${w.word}"`, 'Tip used');
+  wordStage.classList.remove('hidden-state');
+  tipBtn.textContent='✓ Revealed';
+  tipBtn.disabled=true;
+  wordRevealed=true;
+  score=Math.max(0,score-5);
+  scoreDisplay.textContent=score;
+  streak=0;showStreak();
+});
+
+/* ─── Check answer ───────────────────────────────────────────── */
+async function checkAnswer(sel,btnEl){
+  document.querySelectorAll('.emoji-btn').forEach(b=>b.disabled=true);
+  const word=currentWords[currentIdx];
+  const ok=sel===word.emoji;
+
+  if(!wordRevealed){
+    setWord(`"${word.word}"`, ok?'Correct!':'Wrong');
+    wordStage.classList.remove('hidden-state');
+  }
+
+  if(ok){
+    btnEl.classList.add('correct');
+    let pts=10+currentLevel*5;
+    if(!wordRevealed){pts+=5;}
+    score+=pts;correct++;streak++;
+    usedEmojis.push(sel);
+    scoreDisplay.textContent=score;
+    showStreak();
+    setFeedback(`✅ Correct! +${pts} pts`,'fb-ok');
+    spawnSparks(btnEl,5);
+  } else {
+    btnEl.classList.add('incorrect');
+    streak=0;showStreak();
+    document.querySelectorAll('.emoji-btn').forEach(b=>{
+      if(b.dataset.emoji===word.emoji)b.classList.add('correct');
+    });
+    setFeedback(`❌ It was ${word.emoji}  "${word.word}"`,'fb-err');
+  }
+
+  await delay(1000);
+  currentIdx++;
+  if(currentIdx<currentWords.length){
+    tipBtn.textContent='💡 Show Tip';tipBtn.disabled=false;
+    showQuestion();
+  } else finishLevel();
+}
+
+/* ─── Skip ───────────────────────────────────────────────────── */
+skipBtn.addEventListener('click',()=>{
+  if(currentIdx>=currentWords.length)return;
+  document.querySelectorAll('.emoji-btn').forEach(b=>b.disabled=true);
+  const w=currentWords[currentIdx];
+  setWord(`"${w.word}"`, 'Skipped');
+  wordStage.classList.remove('hidden-state');
+  setFeedback(`↩ Skipped — it was ${w.emoji}  "${w.word}"`,'fb-skip');
+  streak=0;showStreak();
+  setTimeout(()=>{
+    currentIdx++;
+    if(currentIdx<currentWords.length){
+      tipBtn.textContent='💡 Show Tip';tipBtn.disabled=false;
+      showQuestion();
+    } else finishLevel();
+  },800);
+});
+
+/* ─── Finish level ───────────────────────────────────────────── */
+function finishLevel(){
+  const elapsed=Math.round((Date.now()-levelStart)/1000);
+  const acc=Math.round((correct/currentWords.length)*100);
+  let bonus=0;
+  if(elapsed<30)bonus=50;else if(elapsed<45)bonus=30;else if(elapsed<60)bonus=10;
+  if(bonus>0&&acc===100){score+=bonus;scoreDisplay.textContent=score;}
+
+  progress.style.width='100%';
+  optionsBlock.style.display='block';
+  emojiGrid.innerHTML='';
+  skipBtn.style.display='none';
+  tipBtn.style.display='none';
+  setWord('—');
+
+  const add=currentLevel%2===0?2:1;
+  wordsPerLevel+=add;
+
+  const card=document.createElement('div');
+  card.className='lc-card pop';
+  card.innerHTML=`
+    <div class="font-display font-black text-2xl text-tinta mb-2">Level ${currentLevel+1} Done! 🏆</div>
+    <div class="font-mono text-xs text-bruma leading-relaxed mb-1">
+      Accuracy: <strong class="text-tinta">${acc}%</strong> &nbsp;·&nbsp; Time: <strong class="text-tinta">${elapsed}s</strong>
+      ${bonus>0&&acc===100?`<br><span style="color:var(--gold)">⚡ Speed Bonus +${bonus}</span>`:''}
+    </div>
+    <p class="font-mono text-xs text-mentadeep font-semibold mb-4">
+      🔥 Next level: ${wordsPerLevel} words (+${add})
+    </p>
+    <button class="btn btn-coral" id="continueBtn" style="width:100%;">
+      Level ${currentLevel+2} →
+    </button>`;
+  feedback.textContent='';feedback.className='';
+  feedback.appendChild(card);
+
+  $('continueBtn').addEventListener('click',()=>{
+    currentLevel++;
+    levelCircle.textContent=levelLabel.textContent=levelDisplay.textContent=currentLevel+1;
+    wordCount.textContent=wordsPerLevel;
+    instruction.innerHTML=`Ready for Level <strong class="text-coral">${currentLevel+1}</strong>! Press <strong>Start Listening</strong> to hear <strong>${wordsPerLevel}</strong> words.`;
+    optionsBlock.style.display='none';
+    progress.style.width='0%';
+    setWord('—');
+    startBtn.style.display='inline-flex';
+    startBtn.disabled=false;startBtn.classList.remove('off');
+    feedback.textContent='';feedback.className='';
+  });
+
+  if(acc===100)spawnSparks($('continueBtn'),12);
+}
+
+/* ─── Restart ────────────────────────────────────────────────── */
+function restartGame(){
+  currentLevel=0;score=0;streak=0;wordsPerLevel=4;
+  scoreDisplay.textContent=0;
+  showStreak();
+  clonePool();
+  startBtn.textContent='🎧 Start Listening';
+  initUI();
+}
+
+/* ─── Keyboard 1–4 ───────────────────────────────────────────── */
+document.addEventListener('keydown',e=>{
+  if(helpModal.classList.contains('open'))return;
+  if(optionsBlock.style.display!=='block')return;
+  const keys=['1','2','3','4'];
+  const i=keys.indexOf(e.key);
+  if(i!==-1){
+    const btns=[...document.querySelectorAll('.emoji-btn')];
+    if(btns[i]&&!btns[i].disabled)btns[i].click();
+  }
+});
+
+/* ─── Boot ───────────────────────────────────────────────────── */
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+
+function boot(){
+  clonePool();initUI();
+  startBtn.addEventListener('click',async()=>{
+    if(startBtn.textContent.includes('Play Again')){restartGame();return;}
+    startBtn.disabled=true;startBtn.classList.add('off');
+    await startListening();
+    startBtn.disabled=false;startBtn.classList.remove('off');
+  });
+}
+
+if(speechOk&&typeof speechSynthesis!=='undefined'){
+  if(speechSynthesis.getVoices().length===0)setTimeout(loadVoices,400);
+  else loadVoices();
+}
+boot();
+</script>
+
+
+</body></html>

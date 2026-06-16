@@ -1,421 +1,977 @@
 <!DOCTYPE html>
-<!-- saved from url=(0061)file:///C:/Users/profg/Downloads/math_trainer_game%20(1).html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Math Trainer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Math Genius Lab — Velocidad Mental · ProfGermandario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            lienzo:'#FCF8F3', nube:'#F2ECE2', tinta:'#1A1730', tintasoft:'#3A3552',
+            bruma:'#76718A', coral:'#FF5A3C', coraldeep:'#E8482C', menta:'#15B79E',
+            mentadeep:'#0E8C79', ambar:'#FFB627', paper:'#F6F1FF', vino:'#7B2CBF'
+          },
+          fontFamily: {
+            display:['Fraunces','Georgia','serif'],
+            sans:['Figtree','system-ui','sans-serif'],
+            mono:['"DM Mono"','ui-monospace','monospace']
+          },
+          boxShadow: {
+            soft:'0 10px 30px rgba(26,23,48,0.08)',
+            coral:'0 12px 30px rgba(255,90,60,0.28)',
+            menta:'0 12px 30px rgba(21,183,158,0.22)'
+          }
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 600px;
-            width: 100%;
-        }
-        
-        h1 {
-            color: #667eea;
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 0.9em;
-        }
-        
-        .level-badge {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .level-badge span {
-            display: inline-block;
-            padding: 10px 30px;
-            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            color: white;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-        
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .game-area {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .problem {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-            border-radius: 10px;
-        }
-        
-        .hint {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            color: #856404;
-            display: none;
-        }
-        
-        .hint-btn {
-            padding: 10px 20px;
-            background: #ffc107;
-            color: #333;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 15px;
-            transition: all 0.3s;
-        }
-        
-        .hint-btn:hover {
-            background: #ffca28;
-            transform: translateY(-2px);
-        }
-        
-        .answer-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.5em;
-            text-align: center;
-            border: 3px solid #667eea;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            transition: all 0.3s;
-        }
-        
-        .answer-input:focus {
-            outline: none;
-            border-color: #764ba2;
-            transform: scale(1.02);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 10px;
-        }
-        
-        .btn-submit {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102,126,234,0.4);
-        }
-        
-        .btn-skip {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .btn-skip:hover {
-            background: #5a6268;
-        }
-        
-        .feedback {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-        }
-        
-        .feedback.correct {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #28a745;
-        }
-        
-        .feedback.incorrect {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #dc3545;
-        }
-        
-        .level-up {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 2px solid #17a2b8;
-        }
-        
-        .streak {
-            text-align: center;
-            font-size: 1.2em;
-            color: #ff6b6b;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .pulse {
-            animation: pulse 0.5s;
-        }
-        
-        @keyframes levelUp {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2) rotate(5deg); }
-            100% { transform: scale(1); }
-        }
-        
-        .level-up-animation {
-            animation: levelUp 0.6s;
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    :root{ --coral:#FF5A3C; --menta:#15B79E; --ambar:#FFB627; --tinta:#1A1730; }
+    html{ scroll-behavior:smooth; }
+    body{ background:#FCF8F3; overscroll-behavior-y:none; }
+    button,a,input{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+    .wave{ display:flex; align-items:flex-end; gap:4px; height:34px; justify-content:center; }
+    .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
+      background:linear-gradient(to top, var(--menta), var(--coral) 60%, var(--ambar));
+      animation:vox 1.3s ease-in-out infinite; }
+    @keyframes vox{ 0%,100%{transform:scaleY(.25);} 50%{transform:scaleY(1);} }
+    .glass{ background:rgba(255,255,255,.72); backdrop-filter:blur(12px); }
+    .lift{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    .lift:hover{ transform:translateY(-2px); }
+    .pop{ animation:pop .38s ease both; }
+    @keyframes pop{ 0%{transform:scale(.96);opacity:.55;} 100%{transform:scale(1);opacity:1;} }
+    .shake{ animation:shake .32s ease both; }
+    @keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
+    .hide-scrollbar::-webkit-scrollbar{ display:none; }
+    .hide-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+    .meter{ background:linear-gradient(90deg,var(--menta),var(--ambar),var(--coral)); }
+    /* Step-by-step boxes inside strategy cards */
+    .step-line{ display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.7); border-radius:14px; margin-bottom:6px; }
+    .step-num{ flex-shrink:0; width:24px; height:24px; border-radius:50%; background:var(--tinta); color:#FCF8F3; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:0.7rem; margin-top:1px; }
+    .step-eq{ font-family:'DM Mono',monospace; font-size:0.82rem; color:var(--tinta); font-weight:500; line-height:1.5; }
+    .tag-star{ display:inline-flex; align-items:center; gap:4px; background:#FFF3C4; border:1px solid #F5DC7A; border-radius:99px; padding:2px 10px; font-family:'DM Mono',monospace; font-size:0.62rem; color:#8A6B0E; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+    :focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:12px; }
+    @media(prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important;scroll-behavior:auto!important;} }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚡ Mental Math Trainer</h1>
-        <div class="subtitle">Master multiplication &amp; division by 5</div>
-        
-        <div class="level-badge">
-            <span id="level-display">Level 1</span>
-        </div>
-        
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-label">Score</div>
-                <div class="stat-value" id="score">30</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Streak</div>
-                <div class="stat-value" id="streak">2</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Best</div>
-                <div class="stat-value" id="best">2</div>
-            </div>
-        </div>
-        
-        <div class="game-area">
-            <div class="problem" id="problem">96 ÷ 5 = ?</div>
-            
-            <button class="hint-btn" id="hint-btn" onclick="toggleHint()">💡 Show Hint</button>
-            
-            <div class="hint" id="hint" style="display: none;">💡 Tip: Double 96 (= 192) and move decimal left → 19.2</div>
-            
-            <div class="feedback correct" id="feedback" style="display: none;">✅ Correct! 22 × 5 = 110</div>
-            
-            <input type="number" class="answer-input" id="answer" placeholder="Enter your answer" step="any">
-            
-            <button class="btn btn-submit" onclick="checkAnswer()">Submit Answer</button>
-            <button class="btn btn-skip" onclick="nextProblem()">Skip / Next Problem</button>
-        </div>
+<div id="root"></div>
+<script type="text/babel">
+  const { useState, useEffect, useMemo, useRef } = React;
+
+  const WHATSAPP_NUMBER = "573197894038";
+  const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("¡Hola Prof. Germandario! Estoy entrenando con Math Genius Lab y quiero más info 🧠⚡")}`;
+
+  const MODES = [
+    { id:"intro",    label:"🚀 Instrucciones" },
+    { id:"sprint",   label:"⚡ Sprint" },
+    { id:"accuracy", label:"🎯 Precisión" },
+    { id:"patterns", label:"🧩 Estrategias" },
+    { id:"boss",     label:"👑 Boss" },
+    { id:"journal",  label:"🧠 Bitácora" },
+  ];
+
+  /*
+   * ─── STRATEGY ORDER ──────────────────────────────────────────────────────────
+   * Pedagogical priority:
+   *  1. ×5   → foundational: 5 = 50%, halve & scale. Everything else builds on this.
+   *  2. ÷5   → inverse of ×5, same mental image. Must come right after.
+   *  3. %    → percentages ARE the ×5/÷5 skill. 5% = half of 10%, 10% = ÷10, etc.
+   *  4. ×9   → compensation: ×10 then subtract. Clear, calculable, easy to verify.
+   *  5. ×11  → compensation: ×10 then add. Easier than ×9, but placed after it.
+   *  6. Complements → builds on % intuition (what's missing from 100?).
+   *  7. Squares ending in 5 → pattern recognition on top of the ×5 anchor.
+   *  8. Near 100 → most advanced; base-100 compensation.
+   */
+  const STRATEGIES = [
+    // ── 1. ×5 ───────────────────────────────────────────────────────────────────
+    {
+      id:"times5", icon:"✋", title:"×5: la mitad y el cero",
+      short:"n ÷ 2, luego ×10", star:true,
+      tagline:"El truco del 50 %",
+      description:"Multiplicar por 5 es lo mismo que tomar la mitad del número y escalar por 10. Porque 5 = 10 ÷ 2. En la práctica: divide el número entre 2 y añade un cero (o corre el decimal).",
+      whyItWorks:"5 es exactamente la mitad de 10. Multiplicar por 10 es trivial (solo mueves el decimal). Entonces ×5 = ×(10÷2) = (÷2)×10. Dos pasos sencillos en vez de una multiplicación difícil.",
+      steps:[
+        { label:"Problema",   eq:"48 × 5  =  ?" },
+        { label:"Paso 1",     eq:"48 ÷ 2  =  24          (toma la mitad)" },
+        { label:"Paso 2",     eq:"24 × 10 = 240          (mueve el decimal una posición)" },
+        { label:"Resultado",  eq:"48 × 5  = 240  ✓" },
+      ],
+      extraStep:"Número impar: 37 × 5 → 37 ÷ 2 = 18.5 → ×10 = 185  ✓",
+      example:"48 × 5 = 240",
+      mental:"5 es el 50 % de 10. Cada vez que veas ×5, piensa: 'mitad y escala'. Esta imagen mental convierte una multiplicación en un movimiento decimal.",
+      check:"El resultado siempre termina en 0 (número par ×5) o en 5 (número impar ×5). Si no, hay un error.",
+      verify:"Divide tu respuesta entre 5 usando el truco ÷5 — debe volver al número original."
+    },
+
+    // ── 2. ÷5 ───────────────────────────────────────────────────────────────────
+    {
+      id:"divide5", icon:"↔️", title:"÷5: el doble y el decimal",
+      short:"n × 2, luego ÷10", star:true,
+      tagline:"El inverso exacto del ×5",
+      description:"Dividir por 5 es el espejo perfecto del ×5. En lugar de dividir entre 5 (difícil), duplicas el número y mueves el decimal. Porque dividir por 5 = multiplicar por 2/10.",
+      whyItWorks:"Si ×5 = ÷2 × 10, entonces ÷5 = ×2 ÷ 10. El cerebro maneja mejor 'duplicar y correr el decimal' que hacer una división real entre 5.",
+      steps:[
+        { label:"Problema",   eq:"96 ÷ 5  =  ?" },
+        { label:"Paso 1",     eq:"96 × 2  = 192         (duplica)" },
+        { label:"Paso 2",     eq:"192 ÷ 10 = 19.2       (corre el decimal)" },
+        { label:"Resultado",  eq:"96 ÷ 5  = 19.2  ✓" },
+      ],
+      extraStep:"Otro: 340 ÷ 5 → 340×2 = 680 → ÷10 = 68  ✓",
+      example:"96 ÷ 5 = 19.2",
+      mental:"Dividir por 5 nunca es dividir de verdad. Siempre es: doble → punto decimal. Una operación aritmética convertida en una visual.",
+      check:"Multiplica tu resultado por 5 usando el truco ×5 — debe regresar al número original.",
+      verify:"Verifica con ×5: 19.2 × 5 → 19.2 ÷ 2 = 9.6 → ×10 = 96  ✓"
+    },
+
+    // ── 3. Porcentajes rápidos ───────────────────────────────────────────────────
+    {
+      id:"percent", icon:"％", title:"Porcentajes rápidos",
+      short:"10% → 5% → combina", star:true,
+      tagline:"Todo porcentaje se construye con ×5 y ÷5",
+      description:"Los porcentajes mentales se construyen a partir de un solo ancla: el 10%. De ahí calculas 5% (mitad del 10%), 1% (corre un decimal más), y combinas para cualquier porcentaje.",
+      whyItWorks:"10% = ÷10 (trivial). 5% = mitad del 10% (truco ×5/÷5 aplicado). 1% = ÷100. Con estas tres piezas puedes construir 15%, 20%, 25% — todo con sumas sencillas.",
+      steps:[
+        { label:"Problema",   eq:"15 % de 240  =  ?" },
+        { label:"Paso 1",     eq:"10 % de 240  = 24     (÷10, corre el decimal)" },
+        { label:"Paso 2",     eq:" 5 % de 240  = 12     (la mitad de 24 — truco ÷5)" },
+        { label:"Paso 3",     eq:"15 %         = 24 + 12 = 36" },
+        { label:"Resultado",  eq:"15 % de 240  = 36  ✓" },
+      ],
+      extraStep:"20% de 350: 10%=35, doble → 70. | 25% de 480: 480÷4 = 120.",
+      example:"15% de 240 = 36",
+      mental:"Nunca calcules un porcentaje 'de golpe'. Siempre ancla en 10%, toma mitades o dobles, suma bloques. El ×5 y ÷5 son tus herramientas principales aquí.",
+      check:"Estima el rango: 15% de 240 debe estar entre 10% (24) y 20% (48). Resultado = 36. Correcto.",
+      verify:"Verifica que tu resultado esté entre los dos porcentajes ancla más cercanos."
+    },
+
+    // ── 4. ×9 ────────────────────────────────────────────────────────────────────
+    {
+      id:"times9", icon:"🔟", title:"×9: ten menos uno",
+      short:"×10 − n",
+      tagline:"Compensa: sube demasiado, luego baja",
+      description:"Multiplicar por 9 parece difícil, pero 9 = 10 − 1. Eso significa que ×9 = (×10) − (×1). Primero multiplicas por 10 (trivial), luego restas el número una vez. Compensación pura.",
+      whyItWorks:"9 está exactamente a 1 de distancia de 10. En vez de hacer 79 × 9 directamente, subes al número redondo 79 × 10 = 790, y luego bajas 1 vez el número original: 790 − 79 = 711. Dos pasos simples.",
+      steps:[
+        { label:"Problema",   eq:"79 × 9  =  ?" },
+        { label:"Paso 1",     eq:"79 × 10 = 790        (sube a ×10, trivial)" },
+        { label:"Paso 2",     eq:"790 − 79 = 711       (resta el número una vez)" },
+        { label:"Resultado",  eq:"79 × 9  = 711  ✓" },
+      ],
+      extraStep:"Verifica: dígitos de 711 → 7+1+1 = 9 (múltiplo de 9)  ✓",
+      example:"79 × 9 = 711",
+      mental:"Piensa en compensación: subes demasiado con ×10, luego corriges bajando una vez el número. El cerebro maneja mucho mejor '×10 y resta' que calcular ×9 directamente.",
+      check:"Suma los dígitos del resultado. Siempre debe ser múltiplo de 9 (9, 18, 27...). Si no lo es, hay un error.",
+      verify:"711 → 7+1+1 = 9. ✓ La suma de dígitos es la forma más rápida de detectar errores en ×9."
+    },
+
+    // ── 5. ×11 ───────────────────────────────────────────────────────────────────
+    {
+      id:"times11", icon:"🪜", title:"×11: diez más uno",
+      short:"×10 + n",
+      tagline:"Compensa: igual que ×9, pero hacia arriba",
+      description:"Igual que el ×9 pero en sentido opuesto: 11 = 10 + 1. Multiplicas por 10 (trivial) y luego sumas el número una vez. Mismo mecanismo de compensación, resultado más grande.",
+      whyItWorks:"11 está exactamente a 1 por encima de 10. En vez de calcular directamente, vas a ×10 y luego compensas sumando 1 vez el número. El patrón es idéntico al ×9, solo cambia la dirección.",
+      steps:[
+        { label:"Problema",   eq:"79 × 11 =  ?" },
+        { label:"Paso 1",     eq:"79 × 10 = 790        (multiplica por 10)" },
+        { label:"Paso 2",     eq:"790 + 79 = 869       (suma el número una vez)" },
+        { label:"Resultado",  eq:"79 × 11 = 869  ✓" },
+      ],
+      extraStep:"Atajo visual para 2 dígitos: 42×11 → pon la suma de los dígitos en el medio: 4_(4+2)_2 = 462. ¡Instantáneo! (Si la suma > 9, hay acarreo: 87×11 → 8_(15)_7 = 957)",
+      example:"79 × 11 = 869",
+      mental:"Mismo esquema que ×9: usa ×10 como punto de lanzamiento y compensa. Ahora en vez de restar, sumas. La lógica es la misma, la dirección es opuesta.",
+      check:"Resta el número original al resultado: 869 − 79 = 790 = 79 × 10. Si cuadra, está correcto.",
+      verify:"Compara con ×9: 79×9 = 711, 79×11 = 869. La diferencia es 79×2 = 158 ✓"
+    },
+
+    // ── 6. Complemento a 100 ────────────────────────────────────────────────────
+    {
+      id:"complements", icon:"🎯", title:"Complemento a 100",
+      short:"¿Cuánto falta?",
+      tagline:"El ancla de los porcentajes y el cambio",
+      description:"¿Cuánto le falta a un número para llegar a 100? Esta pregunta aparece constantemente: en descuentos, vuelto, porcentajes y estimaciones rápidas. La respuesta siempre debe aparecer en menos de 2 segundos.",
+      whyItWorks:"El cerebro maneja bien los anclas de referencia como 100. En vez de restar directamente (68 de 100), sube hasta la siguiente decena (68 → 70: son 2), luego hasta 100 (70 → 100: son 30). Suma los saltos: 2 + 30 = 32.",
+      steps:[
+        { label:"Problema",   eq:"100 − 68  =  ?" },
+        { label:"Paso 1",     eq:"68 → 70  : faltan 2  (sube a la decena)" },
+        { label:"Paso 2",     eq:"70 → 100 : faltan 30 (sube a 100)" },
+        { label:"Paso 3",     eq:"2 + 30   = 32" },
+        { label:"Resultado",  eq:"100 − 68 = 32  ✓" },
+      ],
+      extraStep:"Uso real: descuento del 32% → el precio final es el 68% del original.",
+      example:"100 − 68 = 32",
+      mental:"No restes: sube en escalones. La mente maneja escaleras mejor que restas directas. Este patrón es la base del vuelto rápido y los descuentos mentales.",
+      check:"Número + complemento = 100. Siempre. 68 + 32 = 100 ✓",
+      verify:"Suma tu respuesta al número original. El total exacto debe ser 100."
+    },
+
+    // ── 7. Cuadrados terminados en 5 ────────────────────────────────────────────
+    {
+      id:"square5", icon:"◻️", title:"Cuadrados terminados en 5",
+      short:"d×(d+1) | 25",
+      tagline:"Patrón: la decena y 25 siempre",
+      description:"Cualquier número terminado en 5 tiene un cuadrado que se calcula así: toma la decena (el dígito de las decenas), multiplícala por la siguiente decena, y añade 25 al final. Siempre.",
+      whyItWorks:"(10d+5)² = 100d(d+1) + 25. El 25 siempre está ahí porque 5² = 25. Solo necesitas calcular d×(d+1) y pegar '25' a la derecha. No hay que memorizar — hay un patrón algebraico exacto.",
+      steps:[
+        { label:"Problema",   eq:"65²  =  ?" },
+        { label:"Paso 1",     eq:"Decena de 65 = 6" },
+        { label:"Paso 2",     eq:"6 × (6+1)  = 6 × 7 = 42" },
+        { label:"Paso 3",     eq:"Añade 25:  42 | 25 = 4225" },
+        { label:"Resultado",  eq:"65²  = 4225  ✓" },
+      ],
+      extraStep:"35² → 3×4=12 → 1225. | 95² → 9×10=90 → 9025.",
+      example:"65² = 4225",
+      mental:"Reconoce el patrón antes de calcular: número termina en 5 → el resultado termina en 25. Solo necesitas la multiplicación de las decenas.",
+      check:"El resultado siempre termina en 25, sin excepción. Si termina en otro número, algo salió mal.",
+      verify:"Estima: 65² debe estar entre 60²=3600 y 70²=4900. 4225 está en ese rango. ✓"
+    },
+
+    // ── 8. Cerca de 100 ─────────────────────────────────────────────────────────
+    {
+      id:"near100", icon:"🧲", title:"Multiplicación cerca de 100",
+      short:"Base 100",
+      tagline:"Compensación con ancla de 100",
+      description:"Cuando dos números están cerca de 100 (entre 90 y 99), usa 100 como base de compensación. Calcula las distancias a 100, opera con ellas, y reconstruye el resultado en dos partes.",
+      whyItWorks:"Si a = 100 − da y b = 100 − db, entonces a×b = 10000 − 100(da+db) + da×db = (a−db)×100 + da×db. La parte izquierda son centenas fáciles, la parte derecha es el producto de dos números pequeños.",
+      steps:[
+        { label:"Problema",   eq:"97 × 94  =  ?" },
+        { label:"Paso 1",     eq:"97 está a 3 de 100  (da = 3)" },
+        { label:"Paso 2",     eq:"94 está a 6 de 100  (db = 6)" },
+        { label:"Paso 3 (izq)",eq:"97 − 6  = 91       (o bien 94 − 3 = 91)" },
+        { label:"Paso 4 (der)",eq:"3 × 6   = 18" },
+        { label:"Resultado",  eq:"97 × 94  = 91 | 18 = 9118  ✓" },
+      ],
+      extraStep:"Si el producto derecho > 99: 98×93 → da=2,db=7 → 91|14 = 9114. | Siempre < 10000.",
+      example:"97 × 94 = 9118",
+      mental:"Usa el 100 como ancla. Los dos números están 'cerca', entonces la diferencia es pequeña y manejable. No calculas 97×94 — calculas 3×6 y una resta fácil.",
+      check:"El resultado debe estar cerca de 10.000 pero menor, porque ambos números son menores que 100.",
+      verify:"Estima: 95² ≈ 9025. 97×94 debe estar alrededor de ese valor. 9118 está bien. ✓"
+    },
+  ];
+
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  const rand  = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const choice = arr => arr[Math.floor(Math.random() * arr.length)];
+  const round1 = n => Math.round(n * 10) / 10;
+  const fmt    = n => Number.isInteger(n) ? String(n) : String(round1(n));
+
+  function makeProblem(pool = "mixed", level = 1) {
+    const available = pool === "mixed" ? STRATEGIES.map(s => s.id) : [pool];
+    const id = choice(available);
+    let n, a, b, answer, q, strategy, check, type = id;
+    const max = 60 + level * 25;
+
+    if(id === "times5"){
+      n = rand(8, max);
+      answer = n * 5;
+      q = `${n} × 5`;
+      strategy = `${n} ÷ 2 = ${fmt(n/2)} → ×10 = ${fmt(answer)}.`;
+      check = `¿Termina en 0 ó 5? ${answer % 10 === 0 || answer % 10 === 5 ? "Sí ✓" : "Revisar"}`;
+    }
+    if(id === "divide5"){
+      n = rand(10, max + 40);
+      answer = round1(n / 5);
+      q = `${n} ÷ 5`;
+      strategy = `${n} × 2 = ${n*2} → ÷10 = ${fmt(answer)}.`;
+      check = `${fmt(answer)} × 5: ${fmt(answer)} ÷ 2 = ${fmt(answer/2)} → ×10 = ${fmt(answer*5)} (debe ser ${n}).`;
+    }
+    if(id === "percent"){
+      const bases = [80, 120, 160, 180, 200, 240, 300, 360, 400, 480, 600, 720];
+      const pct = choice([5, 10, 15, 20, 25]);
+      n = choice(bases.slice(0, clamp(5 + level, 6, bases.length)));
+      answer = round1(n * pct / 100);
+      q = `${pct}% de ${n}`;
+      if(pct === 5)  strategy = `10% de ${n} = ${fmt(n/10)} → mitad (÷5) = ${fmt(answer)}.`;
+      else if(pct === 10) strategy = `Corre el decimal: ${fmt(answer)}.`;
+      else if(pct === 15) strategy = `10% = ${fmt(n/10)}, 5% = ${fmt(n/20)} → suma = ${fmt(answer)}.`;
+      else if(pct === 20) strategy = `10% = ${fmt(n/10)} → doble = ${fmt(answer)}.`;
+      else strategy = `25% = ¼ → ${n} ÷ 4 = ${fmt(answer)}.`;
+      check = `Entre ${fmt(n * (pct-5) / 100)} (${pct-5}%) y ${fmt(n * (pct+5) / 100)} (${pct+5}%). Rango: ✓`;
+    }
+    if(id === "times9"){
+      n = rand(12, max);
+      answer = n * 9;
+      q = `${n} × 9`;
+      strategy = `${n} × 10 = ${n*10} → resta ${n} → ${answer}.`;
+      const digitSum = String(answer).split('').reduce((s,d) => s + Number(d), 0);
+      check = `Suma de dígitos de ${answer}: ${String(answer).split('').join('+')} = ${digitSum}. ¿Múltiplo de 9? ${digitSum % 9 === 0 ? "Sí ✓" : "Revisar"}`;
+    }
+    if(id === "times11"){
+      n = rand(12, Math.min(99, max));
+      answer = n * 11;
+      q = `${n} × 11`;
+      strategy = `${n} × 10 = ${n*10} → suma ${n} → ${answer}.`;
+      check = `${answer} − ${n} = ${n*10} = ${n}×10. ✓`;
+    }
+    if(id === "complements"){
+      n = rand(11, 99);
+      answer = 100 - n;
+      const dec = Math.ceil(n / 10) * 10;
+      const s1 = dec - n, s2 = 100 - dec;
+      q = `100 − ${n}`;
+      strategy = `${n} → ${dec}: son ${s1}. Luego ${dec} → 100: son ${s2}. Total: ${s1}+${s2} = ${answer}.`;
+      check = `${n} + ${answer} = 100. ✓`;
+    }
+    if(id === "square5"){
+      const tens = rand(2, clamp(4 + level, 4, 12));
+      n = tens * 10 + 5;
+      answer = n * n;
+      q = `${n}²`;
+      strategy = `Decena = ${tens}. ${tens} × ${tens+1} = ${tens*(tens+1)} → añade 25 → ${answer}.`;
+      check = `Termina en 25. ✓ Rango: entre ${(tens*10)}² = ${(tens*10)**2} y ${(tens*10+10)}² = ${(tens*10+10)**2}.`;
+    }
+    if(id === "near100"){
+      a = rand(91, 99); b = rand(91, 99);
+      answer = a * b;
+      const da = 100 - a, db = 100 - b;
+      q = `${a} × ${b}`;
+      strategy = `${a} está a ${da} de 100; ${b} a ${db}. Izq: ${a} − ${db} = ${a-db}. Der: ${da}×${db} = ${da*db}. → ${answer}.`;
+      check = `Debe ser < 10.000 y > 8.100. ✓`;
+    }
+
+    const meta = STRATEGIES.find(s => s.id === type);
+    return {
+      id: Math.random().toString(36).slice(2), q, answer, type,
+      title: meta.title, icon: meta.icon, short: meta.short,
+      strategy, check,
+      prompt: "Observa → elige estrategia → estima el rango → resuelve → verifica."
+    };
+  }
+
+  /* ── SMALL COMPONENTS ─────────────────────────────────────────────────────── */
+  const WaveBars = ({ animated = true }) => (
+    <div className="wave" aria-hidden="true">
+      {Array.from({ length: 28 }).map((_, i) => (
+        <i key={i} style={{
+          height:(10 + Math.abs(Math.sin(i * 0.6)) * 24) + "px",
+          animationDelay:(i * 0.07) + "s",
+          animationDuration:(1.1 + (i % 5) * 0.12) + "s",
+          animationPlayState: animated ? "running" : "paused"
+        }} />
+      ))}
     </div>
+  );
 
-    <script>
-        let currentNumber = 0;
-        let currentOperation = '×';
-        let correctAnswer = 0;
-        let score = 0;
-        let streak = 0;
-        let bestStreak = 0;
-        let level = 1;
-        let hintVisible = false;
+  const WaGlyph = ({ size = 22 }) => (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/>
+    </svg>
+  );
 
-        function getLevel() {
-            return Math.floor(score / 100) + 1;
-        }
+  const Pill = ({ children, className="" }) => (
+    <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-mono ${className}`}>{children}</span>
+  );
 
-        function updateLevel() {
-            const newLevel = getLevel();
-            if (newLevel > level) {
-                level = newLevel;
-                const levelDisplay = document.getElementById('level-display');
-                levelDisplay.textContent = `Level ${level}`;
-                levelDisplay.classList.add('level-up-animation');
-                
-                const feedback = document.getElementById('feedback');
-                feedback.textContent = `🎉 LEVEL UP! Now at Level ${level}!`;
-                feedback.className = 'feedback level-up';
-                feedback.style.display = 'block';
-                
-                setTimeout(() => {
-                    levelDisplay.classList.remove('level-up-animation');
-                }, 600);
-                
-                setTimeout(() => {
-                    feedback.style.display = 'none';
-                }, 2000);
-            }
-        }
+  const Hint = ({ children }) => (
+    <p className="text-center text-sm text-bruma mb-6 flex items-center justify-center gap-2 leading-relaxed">
+      <span className="text-coral">●</span>{children}
+    </p>
+  );
 
-        function generateProblem() {
-            hintVisible = false;
-            document.getElementById('hint').style.display = 'none';
-            document.getElementById('hint-btn').textContent = '💡 Show Hint';
-            
-            // Level 1: Even numbers 10-98
-            // Level 2: Even numbers 10-198
-            // Level 3+: Include odd numbers
-            
-            if (level === 1) {
-                currentNumber = (Math.floor(Math.random() * 45) + 5) * 2; // 10-98 even
-            } else if (level === 2) {
-                currentNumber = (Math.floor(Math.random() * 95) + 5) * 2; // 10-198 even
-            } else {
-                // Level 3+: Include odd numbers
-                const maxNumber = 100 + (level - 3) * 50;
-                currentNumber = Math.floor(Math.random() * maxNumber) + 10;
-            }
-            
-            currentOperation = Math.random() > 0.5 ? '×' : '÷';
-            
-            if (currentOperation === '×') {
-                correctAnswer = (currentNumber / 2) * 10;
-                document.getElementById('hint').innerHTML = 
-                    `💡 Tip: Take half of ${currentNumber} (= ${currentNumber / 2}) and add a 0 → ${correctAnswer}`;
-            } else {
-                correctAnswer = (currentNumber * 2) / 10;
-                document.getElementById('hint').innerHTML = 
-                    `💡 Tip: Double ${currentNumber} (= ${currentNumber * 2}) and move decimal left → ${correctAnswer}`;
-            }
-            
-            document.getElementById('problem').textContent = `${currentNumber} ${currentOperation} 5 = ?`;
-            document.getElementById('answer').value = '';
-            document.getElementById('feedback').style.display = 'none';
-            document.getElementById('answer').focus();
-        }
+  function Stat({ label, value, hot=false }){
+    return (
+      <div className={`rounded-3xl p-4 border ${hot ? "bg-coral/10 border-coral/30" : "bg-lienzo border-tinta/5"}`}>
+        <p className="font-mono text-[0.62rem] tracking-[0.18em] uppercase text-bruma mb-1">{label}</p>
+        <p className={`font-display font-black text-3xl ${hot ? "text-coral" : "text-tinta"}`}>{value}</p>
+      </div>
+    );
+  }
 
-        function toggleHint() {
-            hintVisible = !hintVisible;
-            const hint = document.getElementById('hint');
-            const hintBtn = document.getElementById('hint-btn');
-            
-            if (hintVisible) {
-                hint.style.display = 'block';
-                hintBtn.textContent = '🙈 Hide Hint';
-            } else {
-                hint.style.display = 'none';
-                hintBtn.textContent = '💡 Show Hint';
-            }
-        }
+  function InfoCard({ label, text }){
+    return (
+      <div className="bg-white rounded-3xl p-4 border border-tinta/5">
+        <p className="font-mono text-[0.65rem] tracking-[0.18em] uppercase text-bruma mb-2">{label}</p>
+        <p className="font-display text-xl text-tinta leading-tight">{text}</p>
+      </div>
+    );
+  }
 
-        function checkAnswer() {
-            const userAnswer = parseFloat(document.getElementById('answer').value);
-            const feedback = document.getElementById('feedback');
-            
-            if (isNaN(userAnswer)) {
-                feedback.textContent = '⚠️ Please enter a number!';
-                feedback.className = 'feedback incorrect';
-                feedback.style.display = 'block';
-                return;
-            }
-            
-            if (Math.abs(userAnswer - correctAnswer) < 0.01) {
-                score += 10;
-                streak++;
-                if (streak > bestStreak) {
-                    bestStreak = streak;
-                }
-                
-                feedback.textContent = `✅ Correct! ${currentNumber} ${currentOperation} 5 = ${correctAnswer}`;
-                feedback.className = 'feedback correct';
-                feedback.style.display = 'block';
-                
-                document.getElementById('score').textContent = score;
-                document.getElementById('score').classList.add('pulse');
-                setTimeout(() => {
-                    document.getElementById('score').classList.remove('pulse');
-                }, 500);
-                
-                updateLevel();
-                setTimeout(nextProblem, 1500);
-            } else {
-                streak = 0;
-                feedback.textContent = `❌ Not quite. The correct answer is ${correctAnswer}`;
-                feedback.className = 'feedback incorrect';
-                feedback.style.display = 'block';
-                
-                setTimeout(nextProblem, 2500);
-            }
-            
-            updateStats();
-        }
+  function ProblemCard({ problem, boss=false }){
+    return (
+      <div className="rounded-[28px] p-5 sm:p-7 bg-lienzo border border-tinta/5 mb-5 text-center">
+        <div className="flex justify-center gap-2 mb-3 flex-wrap">
+          <Pill className="bg-white text-tintasoft border border-tinta/5">{problem.icon} {problem.title}</Pill>
+          {!boss && <Pill className="bg-white text-bruma border border-tinta/5">{problem.short}</Pill>}
+        </div>
+        <div className="font-display font-black text-5xl sm:text-7xl text-tinta leading-none mb-3">{problem.q}</div>
+        {!boss && <p className="text-sm text-bruma">{problem.prompt}</p>}
+      </div>
+    );
+  }
 
-        function nextProblem() {
-            generateProblem();
-        }
+  function AnswerBox({ value, setValue, onSubmit, disabled=false }){
+    const ref = useRef(null);
+    useEffect(() => { if(ref.current && !disabled) ref.current.focus(); }, [disabled]);
+    return (
+      <form onSubmit={e => { e.preventDefault(); onSubmit(); }} className="space-y-3">
+        <input ref={ref} value={value}
+          onChange={e => setValue(e.target.value.replace(',', '.'))}
+          disabled={disabled}
+          inputMode="decimal" type="number" step="any"
+          placeholder="Escribe tu respuesta"
+          className="w-full rounded-3xl border-2 border-tinta/10 bg-lienzo px-5 py-4 text-center text-3xl font-display font-bold text-tinta focus:border-coral focus:bg-white outline-none transition disabled:opacity-60" />
+        <button disabled={disabled}
+          className="w-full rounded-full bg-tinta text-paper font-semibold py-4 hover:bg-coral transition disabled:opacity-60">
+          Enviar respuesta
+        </button>
+      </form>
+    );
+  }
 
-        function updateStats() {
-            document.getElementById('streak').textContent = streak;
-            document.getElementById('best').textContent = bestStreak;
-        }
 
-        document.getElementById('answer').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
 
-        generateProblem();
-    </script>
+  function Mistake({ m }){
+    return (
+      <div className="bg-white rounded-3xl p-4 border border-coral/20 shadow-soft">
+        <div className="flex items-start justify-between gap-3 mb-2">
+          <div>
+            <p className="font-mono text-[0.65rem] tracking-[0.18em] uppercase text-coral">{m.mode} · {m.at || ""}</p>
+            <h3 className="font-display text-2xl text-tinta">{m.q}</h3>
+          </div>
+          <span className="text-2xl">⚠️</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+          <div className="bg-lienzo rounded-2xl p-3"><b>Tu respuesta:</b><br />{m.yours}</div>
+          <div className="bg-lienzo rounded-2xl p-3"><b>Correcta:</b><br />{fmt(m.answer)}</div>
+          <div className="bg-lienzo rounded-2xl p-3"><b>Confianza:</b><br />{m.confidence}</div>
+        </div>
+        <p className="text-sm text-tintasoft mt-3"><b className="text-tinta">Ruta recomendada:</b> {m.strategy}</p>
+      </div>
+    );
+  }
 
-</body></html>
+  /* ── PATTERNS (rewritten detail card) ─────────────────────────────────────── */
+  function Patterns({ setMode }){
+    const [open, setOpen] = useState(STRATEGIES[0].id);
+    const active = STRATEGIES.find(s => s.id === open);
+    return (
+      <div>
+        <Hint>Estudia la lógica paso a paso. Luego ve a Precisión a practicarla — la ruta aparece sola después de responder.</Hint>
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.35fr] gap-5">
+
+          {/* Strategy list */}
+          <div className="space-y-2">
+            {STRATEGIES.map((s, i) => (
+              <button key={s.id} onClick={() => setOpen(s.id)}
+                className={`w-full text-left rounded-3xl p-4 border transition lift ${open === s.id ? "bg-tinta text-paper border-tinta shadow-soft" : "bg-nube/70 text-tinta border-tinta/5 hover:border-coral"}`}>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{s.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-display text-lg leading-none">{s.title}</h3>
+                      {s.star && <span className="tag-star">⭐ Base</span>}
+                    </div>
+                    <p className={`text-sm mt-0.5 truncate ${open === s.id ? "text-paper/65" : "text-bruma"}`}>{s.tagline}</p>
+                  </div>
+                  <span className={`font-mono text-xs shrink-0 ${open === s.id ? "text-paper/40" : "text-bruma/50"}`}>#{i+1}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Detail card */}
+          <div className="bg-lienzo rounded-[28px] p-5 sm:p-7 border border-tinta/5">
+            {/* Header */}
+            <div className="flex items-start gap-3 mb-1">
+              <span className="text-4xl">{active.icon}</span>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h2 className="font-display text-2xl sm:text-3xl text-tinta">{active.title}</h2>
+                  {active.star && <span className="tag-star">⭐ Estrategia Base</span>}
+                </div>
+                <p className="text-bruma text-sm">{active.tagline}</p>
+              </div>
+            </div>
+
+            {/* Why it works */}
+            <div className="bg-[#FFF7E8] rounded-2xl p-4 border border-ambar/30 mb-4">
+              <p className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-ambar mb-1">¿Por qué funciona?</p>
+              <p className="text-tintasoft text-sm leading-relaxed">{active.whyItWorks}</p>
+            </div>
+
+            {/* Description */}
+            <p className="text-tintasoft leading-relaxed mb-4 text-sm sm:text-base">{active.description}</p>
+
+            {/* Step-by-step */}
+            <div className="mb-4">
+              <p className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-bruma mb-2">Paso a paso</p>
+              {active.steps.map((step, i) => (
+                <div key={i} className="step-line">
+                  <div className="step-num">{i+1}</div>
+                  <div>
+                    <span className="font-mono text-[0.6rem] uppercase tracking-wider text-bruma mr-2">{step.label}:</span>
+                    <span className="step-eq">{step.eq}</span>
+                  </div>
+                </div>
+              ))}
+              {active.extraStep && (
+                <div className="mt-2 rounded-xl bg-menta/8 border border-menta/20 px-4 py-2.5">
+                  <p className="font-mono text-[0.6rem] uppercase tracking-wider text-mentadeep mb-1">Ejemplo extra</p>
+                  <p className="step-eq text-mentadeep">{active.extraStep}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Example + Check side by side */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+              <InfoCard label="Ejemplo rápido" text={active.example} />
+              <InfoCard label="Chequeo" text={active.check} />
+            </div>
+
+            {/* Mental activation */}
+            <div className="bg-white rounded-3xl p-4 border border-tinta/5 mb-5">
+              <p className="font-mono text-[0.65rem] tracking-[0.18em] uppercase text-coral mb-2">Activación mental</p>
+              <p className="text-tintasoft leading-relaxed text-sm">{active.mental}</p>
+            </div>
+
+            {/* Verify */}
+            <div className="bg-white rounded-2xl p-3 border border-tinta/5 mb-5">
+              <p className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-menta mb-1">Verificación</p>
+              <p className="text-tintasoft text-sm">{active.verify}</p>
+            </div>
+
+            <button onClick={() => setMode("accuracy")}
+              className="w-full rounded-full bg-coral text-white font-semibold py-4 shadow-coral hover:bg-coraldeep transition">
+              Practicar esta estrategia en Precisión →
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ── SPRINT ────────────────────────────────────────────────────────────────── */
+  function Sprint({ level, addScore, streak, setStreak, record }){
+    const [running, setRunning] = useState(false);
+    const [time, setTime] = useState(45);
+    const [problem, setProblem] = useState(() => makeProblem("mixed", level));
+    const [answer, setAnswer] = useState("");
+    const [correct, setCorrect] = useState(0);
+    const [miss, setMiss] = useState(0);
+    const [flash, setFlash] = useState(null);
+
+    useEffect(() => {
+      if(!running) return;
+      if(time <= 0){ setRunning(false); return; }
+      const t = setTimeout(() => setTime(x => x - 1), 1000);
+      return () => clearTimeout(t);
+    }, [running, time]);
+
+    const start = () => { setTime(45); setCorrect(0); setMiss(0); setAnswer(""); setProblem(makeProblem("mixed", level)); setRunning(true); setFlash(null); };
+    const submit = () => {
+      if(!running) return;
+      const val = parseFloat(answer);
+      if(Number.isNaN(val)) return;
+      const ok = Math.abs(val - problem.answer) < 0.01;
+      if(ok){
+        setCorrect(c => c + 1); setStreak(s => s + 1);
+        addScore(8 + Math.min(streak, 7));
+        setFlash({ ok:true, text:"Correcto" });
+      } else {
+        setMiss(m => m + 1); setStreak(0); addScore(-2);
+        setFlash({ ok:false, text:`Era ${fmt(problem.answer)}` });
+        record({ mode:"Sprint", q:problem.q, yours:answer, answer:problem.answer, strategy:problem.strategy, confidence:"rápida" });
+      }
+      setAnswer(""); setProblem(makeProblem("mixed", level));
+      setTimeout(() => setFlash(null), 650);
+    };
+
+    return (
+      <div className="max-w-2xl mx-auto text-center">
+        <Hint>Velocidad útil: responde rápido, pero aplica la estrategia correcta.</Hint>
+        <div className="grid grid-cols-3 gap-2 mb-5">
+          <Stat label="Tiempo" value={`${time}s`} hot={time <= 10} />
+          <Stat label="Correctas" value={correct} />
+          <Stat label="Errores" value={miss} />
+        </div>
+        <div className="h-3 rounded-full bg-nube overflow-hidden mb-6">
+          <div className="h-full meter transition-all" style={{ width:`${(time/45)*100}%` }} />
+        </div>
+        {!running ? (
+          <div className="bg-nube/50 rounded-3xl p-6">
+            <h2 className="font-display text-3xl text-tinta mb-2">Sprint de 45 segundos</h2>
+            <p className="text-tintasoft mb-5">Incluye ×5, ÷5, porcentajes, ×9, ×11, complementos, cuadrados en 5 y base 100.</p>
+            <button onClick={start} className="bg-coral text-white font-semibold rounded-full px-8 py-4 shadow-coral hover:bg-coraldeep transition">Iniciar Sprint ⚡</button>
+            {(correct + miss) > 0 && <p className="mt-4 font-mono text-sm text-bruma">Resultado anterior: {correct} correctas · {miss} errores</p>}
+          </div>
+        ) : (
+          <div>
+            <ProblemCard problem={problem} />
+            {flash && <div className={`mb-3 rounded-2xl p-3 font-semibold ${flash.ok ? "bg-menta/15 text-mentadeep" : "bg-coral/15 text-coral"}`}>{flash.ok ? "✅" : "⚠️"} {flash.text}</div>}
+            <AnswerBox value={answer} setValue={setAnswer} onSubmit={submit} />
+            <button onClick={() => { setRunning(false); setStreak(0); }} className="mt-3 font-mono text-xs text-bruma hover:text-coral">detener sprint</button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ── ACCURACY LAB ──────────────────────────────────────────────────────────── */
+  function AccuracyLab({ level, addScore, streak, setStreak, record }){
+    const [pool,    setPool]    = useState("mixed");
+    const [problem, setProblem] = useState(() => makeProblem("mixed", level));
+    const [answer,  setAnswer]  = useState("");
+    const [result,  setResult]  = useState(null);
+
+    const next = (p = pool) => {
+      setProblem(makeProblem(p, level));
+      setAnswer(""); setResult(null);
+    };
+    useEffect(() => next(pool), [pool, level]);
+
+    const submit = () => {
+      const val = parseFloat(answer);
+      if(Number.isNaN(val) || result) return;
+      const ok = Math.abs(val - problem.answer) < 0.01;
+      if(ok){
+        addScore(14 + Math.min(streak, 8));
+        setStreak(s => s + 1);
+      } else {
+        addScore(-4); setStreak(0);
+        record({ mode:"Precisión", q:problem.q, yours:answer, answer:problem.answer, strategy:problem.strategy, confidence:"—" });
+      }
+      setResult({ correct:ok, problem, yours:answer });
+    };
+
+    const strat = STRATEGIES.find(s => s.id === problem.type);
+
+    return (
+      <div className="max-w-2xl mx-auto">
+        <Hint>Practica por tipo o en modo mixto. Después de responder, revisa la ruta paso a paso.</Hint>
+
+        {/* Filter tabs */}
+        <div className="flex gap-1.5 overflow-x-auto hide-scrollbar mb-5 pb-1">
+          {[{id:"mixed", title:"Mixto", icon:"🎲"}, ...STRATEGIES].map(s => (
+            <button key={s.id} onClick={() => setPool(s.id)}
+              className={`shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition
+                ${pool === s.id ? "bg-tinta text-paper" : "bg-nube text-tintasoft hover:text-coral"}`}>
+              {s.icon} {s.title || s.short}
+            </button>
+          ))}
+        </div>
+
+        {/* Problem card */}
+        <ProblemCard problem={problem} />
+
+        {/* Answer */}
+        <AnswerBox value={answer} setValue={setAnswer} onSubmit={submit} disabled={!!result} />
+
+        {/* ── POST-ANSWER: result + full step walkthrough ── */}
+        {result && (
+          <div className={`mt-4 rounded-3xl border pop ${result.correct ? "bg-menta/8 border-menta/25" : "bg-coral/8 border-coral/25"}`}>
+
+            {/* Header */}
+            <div className="px-5 pt-5 pb-3 flex items-center justify-between gap-3">
+              <p className={`font-display text-2xl font-bold ${result.correct ? "text-mentadeep" : "text-coral"}`}>
+                {result.correct ? "✅ Correcto" : "❌ Revisa la ruta"}
+              </p>
+              <p className="font-display text-3xl text-tinta">{fmt(result.problem.answer)}</p>
+            </div>
+
+            <div className="mx-5 h-px bg-tinta/6 mb-4" />
+
+            {/* Step-by-step — always shown after answering */}
+            <div className="px-5 pb-2">
+              <p className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-bruma mb-2">
+                {strat?.icon} Ruta — {strat?.title}
+              </p>
+              {strat?.steps.map((step, i) => (
+                <div key={i} className="step-line mb-1.5">
+                  <div className="step-num">{i + 1}</div>
+                  <div>
+                    <span className="font-mono text-[0.58rem] uppercase tracking-wider text-bruma mr-2">{step.label}:</span>
+                    <span className="step-eq">{step.eq}</span>
+                  </div>
+                </div>
+              ))}
+              {strat?.extraStep && (
+                <div className="rounded-xl bg-menta/8 border border-menta/20 px-4 py-2.5 mt-2">
+                  <p className="font-mono text-[0.58rem] uppercase tracking-wider text-mentadeep mb-0.5">Extra</p>
+                  <p className="step-eq text-mentadeep">{strat.extraStep}</p>
+                </div>
+              )}
+            </div>
+
+            {/* This problem's specific numbers */}
+            <div className="mx-5 mt-3 mb-3 rounded-2xl bg-white/70 p-3">
+              <p className="font-mono text-[0.6rem] uppercase tracking-wider text-bruma mb-1">Este problema</p>
+              <p className="text-sm text-tintasoft leading-relaxed">{result.problem.strategy}</p>
+              <p className="text-xs text-bruma mt-1.5">{result.problem.check}</p>
+            </div>
+
+            <div className="px-5 pb-5">
+              <button onClick={() => next()}
+                className="w-full rounded-full bg-tinta text-paper font-semibold py-3.5 hover:bg-coral transition">
+                Siguiente →
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ── BOSS ──────────────────────────────────────────────────────────────────── */
+  function Boss({ level, addScore, setStreak, record }){
+    const [index, setIndex] = useState(0);
+    const [problems] = useState(() => Array.from({length:10}, () => makeProblem("mixed", level + 1)));
+    const [answer, setAnswer] = useState("");
+    const [hits, setHits] = useState(0);
+    const [mistakes, setMistakes] = useState([]);
+    const [done, setDone] = useState(false);
+    const current = problems[index];
+
+    const submit = () => {
+      const val = parseFloat(answer);
+      if(Number.isNaN(val) || done) return;
+      const ok = Math.abs(val - current.answer) < 0.01;
+      if(ok){ setHits(h => h + 1); }
+      else {
+        const entry = { mode:"Boss", q:current.q, yours:answer, answer:current.answer, strategy:current.strategy, confidence:"boss" };
+        setMistakes(m => [...m, entry]); record(entry);
+      }
+      setAnswer("");
+      if(index >= problems.length - 1){
+        const fh = hits + (ok ? 1 : 0);
+        setDone(true);
+        if(fh >= 9){ addScore(150); setStreak(10); }
+        else if(fh >= 7){ addScore(80); setStreak(4); }
+        else { addScore(25); setStreak(0); }
+      } else setIndex(i => i + 1);
+    };
+
+    if(done){
+      const accuracy = Math.round((hits / problems.length) * 100);
+      return (
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-display text-4xl text-tinta mb-2">Boss terminado</h2>
+          <p className="text-tintasoft mb-6">Resultado: <b className="text-coral">{hits}/10</b> · Precisión {accuracy}%</p>
+          <div className={`rounded-3xl p-6 mb-5 ${hits >= 9 ? "bg-menta/15 text-mentadeep" : hits >= 7 ? "bg-ambar/20 text-[#A9760A]" : "bg-coral/12 text-coral"}`}>
+            <p className="font-display text-2xl">{hits >= 9 ? "👑 Dominio real" : hits >= 7 ? "⚔️ Buen control, falta consistencia" : "🧠 Hay que revisar estrategia, no correr más"}</p>
+          </div>
+          {mistakes.length > 0 && <div className="text-left space-y-2 mb-5">{mistakes.map((m,i) => <Mistake key={i} m={m} />)}</div>}
+          <button onClick={() => window.location.reload()} className="bg-coral text-white font-semibold rounded-full px-8 py-4 shadow-coral hover:bg-coraldeep transition">Reintentar Boss</button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="max-w-2xl mx-auto text-center">
+        <Hint>10 preguntas mixtas. Sin pistas. Usa la estrategia que mejor aplique.</Hint>
+        <div className="flex justify-between items-center mb-4 font-mono text-sm text-bruma">
+          <span>Pregunta {index + 1}/10</span><span>Aciertos: {hits}</span>
+        </div>
+        <div className="h-3 rounded-full bg-nube overflow-hidden mb-6">
+          <div className="h-full bg-coral transition-all" style={{width:`${((index+1)/10)*100}%`}} />
+        </div>
+        <ProblemCard problem={current} boss />
+        <AnswerBox value={answer} setValue={setAnswer} onSubmit={submit} />
+      </div>
+    );
+  }
+
+  /* ── JOURNAL ───────────────────────────────────────────────────────────────── */
+  function Journal({ journal, setJournal }){
+    return (
+      <div className="max-w-3xl mx-auto">
+        <h2 className="font-display text-3xl text-tinta text-center mb-2">Bitácora de precisión</h2>
+        <p className="text-center text-tintasoft mb-6">Tus errores recientes. No los ignores: son el mapa de tus puntos ciegos.</p>
+        {journal.length === 0 ? (
+          <div className="bg-nube/60 rounded-3xl p-6 text-center">
+            <div className="text-4xl mb-2">🧠</div>
+            <p className="text-tintasoft">Sin errores registrados aún. Haz un Sprint o Boss para generar datos.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {journal.map((m,i) => <Mistake key={i} m={m} />)}
+            <button onClick={() => setJournal([])} className="w-full rounded-full border border-tinta/15 text-tinta font-semibold py-3 hover:border-coral hover:text-coral transition">Limpiar bitácora</button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ── INTRO ─────────────────────────────────────────────────────────────────── */
+  function Intro({ setMode }){
+    return (
+      <div className="max-w-4xl mx-auto">
+        <h2 className="font-display text-3xl sm:text-4xl text-tinta text-center mb-3">Entrena velocidad con control.</h2>
+        <p className="text-tintasoft text-center max-w-2xl mx-auto mb-6 leading-relaxed">
+          Aquí no gana el que más rápido pulsa. Gana el que elige la estrategia correcta, estima el rango y verifica antes de enviar.
+        </p>
+
+        {/* Strategy order explanation */}
+        <div className="bg-[#FFF7E8] rounded-3xl p-5 border border-ambar/40 mb-6">
+          <h3 className="font-display text-xl text-tinta mb-3">🎯 Por qué empezamos con ×5 y ÷5</h3>
+          <p className="text-tintasoft text-sm leading-relaxed mb-3">
+            El <b className="text-tinta">5</b> es la mitad del 10. Eso lo convierte en la puerta de entrada a todos los porcentajes mentales.
+            Multiplicar por 5 = dividir entre 2 y escalar ×10. Dividir por 5 = duplicar y escalar ÷10.
+            Una vez que ese truco es automático, el 10%, 5%, 15%, 20% se convierten en movimientos simples.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+            {[
+              ["✋ ×5", "Mitad → ×10", "El ancla de todo"],
+              ["↔️ ÷5", "Doble → ÷10", "El espejo del ×5"],
+              ["％ %", "10% → 5% → suma", "Todo se construye aquí"],
+            ].map(([icon, rule, note]) => (
+              <div key={icon} className="bg-white/70 rounded-2xl p-3">
+                <p className="font-display text-lg text-tinta">{icon}</p>
+                <p className="font-mono text-xs text-bruma">{rule}</p>
+                <p className="text-xs text-tintasoft mt-1">{note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+          <div className="bg-nube/60 rounded-3xl p-5 border border-tinta/5">
+            <h3 className="font-display text-2xl text-tinta mb-4">Protocolo 5 pasos</h3>
+            <ol className="space-y-3 text-tintasoft">
+              {[
+                ["1","Observa","¿Es ×5, ÷5, porcentaje, ×9, ×11, complemento, cuadrado, base 100?"],
+                ["2","Elige","Selecciona la estrategia antes de tocar números."],
+                ["3","Estima","Define el rango: ¿el resultado es grande, pequeño, decimal?"],
+                ["4","Resuelve","Aplica la ruta: mitad, doble, ×10, compensación o base 100."],
+                ["5","Verifica","Usa operación inversa, último dígito o suma de dígitos."],
+              ].map(([n,t,d]) => (
+                <li key={n} className="flex gap-3">
+                  <span className="shrink-0 w-8 h-8 rounded-full bg-tinta text-paper font-mono flex items-center justify-center text-sm">{n}</span>
+                  <span><b className="text-tinta">{t}:</b> {d}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="bg-[#FFF7E8] rounded-3xl p-5 border border-ambar/40">
+            <h3 className="font-display text-2xl text-tinta mb-4">Cómo jugar</h3>
+            <div className="space-y-3">
+              {[
+                ["⚡ Sprint","45 segundos. Bueno para automatizar la velocidad."],
+                ["🎯 Precisión","Sin presión de tiempo. Responde y revisa la solución paso a paso con tus propios números."],
+                ["🧩 Estrategias","Aprende cada atajo con ejemplos paso a paso y verificaciones."],
+                ["👑 Boss","10 preguntas mixtas. Se necesita precisión sostenida."],
+                ["🧠 Bitácora","Revisa tus errores. Aquí es donde mejoras de verdad."],
+              ].map(([icon,text]) => (
+                <div key={icon} className="flex gap-3 bg-white/65 rounded-2xl p-3">
+                  <span className="text-2xl">{icon}</span>
+                  <p className="text-sm text-tintasoft leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          <button onClick={() => setMode("sprint")} className="bg-coral text-white font-semibold rounded-full px-6 py-3 shadow-coral hover:bg-coraldeep transition">Empezar Sprint →</button>
+          <button onClick={() => setMode("accuracy")} className="bg-menta text-white font-semibold rounded-full px-6 py-3 shadow-menta hover:bg-mentadeep transition">Entrenar Precisión 🎯</button>
+          <button onClick={() => setMode("patterns")} className="border border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-coral hover:text-coral transition">Ver Estrategias</button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ── APP ROOT ──────────────────────────────────────────────────────────────── */
+  function App(){
+    const [mode, setMode] = useState("intro");
+    const [score, setScore] = useState(() => { try{ return Number(localStorage.getItem("mg_score")||0); }catch(e){return 0;} });
+    const [best, setBest]   = useState(() => { try{ return Number(localStorage.getItem("mg_best")||0);  }catch(e){return 0;} });
+    const [streak, setStreak] = useState(0);
+    const [level, setLevel]   = useState(1);
+    const [journal, setJournal] = useState(() => { try{ return JSON.parse(localStorage.getItem("mg_journal")||"[]"); }catch(e){return [];} });
+
+    useEffect(() => { try{localStorage.setItem("mg_score", String(score));}catch(e){} }, [score]);
+    useEffect(() => { try{localStorage.setItem("mg_best",  String(best));}catch(e){} }, [best]);
+    useEffect(() => { try{localStorage.setItem("mg_journal", JSON.stringify(journal.slice(0,20)));}catch(e){} }, [journal]);
+    useEffect(() => { setLevel(Math.max(1, Math.floor(score / 180) + 1)); }, [score]);
+
+    const addScore = pts => { const ns = Math.max(0, score + pts); setScore(ns); setBest(b => Math.max(b, ns)); };
+    const record   = entry => setJournal(j => [{...entry, at:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}, ...j].slice(0, 20));
+    const resetAll = () => { setScore(0); setBest(0); setStreak(0); setJournal([]); try{["mg_score","mg_best","mg_journal"].forEach(k=>localStorage.removeItem(k));}catch(e){} };
+
+    return (
+      <div className="font-sans text-tinta min-h-screen relative pb-24 sm:pb-10">
+        <div className="fixed inset-0 -z-10" style={{
+          background:"radial-gradient(60% 50% at 12% 0%, rgba(255,90,60,0.07), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(21,183,158,0.10), transparent 60%), #FCF8F3"
+        }} />
+
+        <div className="max-w-6xl mx-auto px-4 py-7 sm:py-12">
+          <header className="text-center mb-6">
+            <p className="font-mono text-[0.7rem] tracking-[0.28em] uppercase text-coral mb-3">Mental Math · Velocidad + Precisión</p>
+            <h1 className="font-display font-black text-4xl sm:text-6xl text-tinta leading-[0.95]">
+              Math Genius<br /><span className="italic font-medium text-coral">con estrategia.</span>
+            </h1>
+            <div className="my-5"><WaveBars /></div>
+            <p className="text-tintasoft max-w-2xl mx-auto leading-relaxed">
+              Entrena velocidad numérica con una base sólida: ×5 y ÷5 abren los porcentajes, ×9 y ×11 usan compensación, y todo se verifica en segundos.
+            </p>
+            <div className="mt-5 flex items-center justify-center gap-2 flex-wrap">
+              <Pill className="bg-nube text-tinta">Nivel <b className="text-coral ml-1">{level}</b></Pill>
+              <Pill className="bg-nube text-tinta">Puntos <b className="text-coral ml-1">{score}</b></Pill>
+              <Pill className="bg-nube text-tinta">Mejor <b className="text-mentadeep ml-1">{best}</b></Pill>
+              <Pill className="bg-nube text-tinta">Racha <b className="text-ambar ml-1">{streak}</b></Pill>
+              <button onClick={resetAll} className="font-mono text-xs text-bruma hover:text-coral transition px-2 py-1">↺ reiniciar</button>
+            </div>
+            <p className="mt-2 font-mono text-[0.62rem] tracking-[0.18em] uppercase text-bruma">Creado por Prof. Germandario</p>
+          </header>
+
+          <nav className="sticky top-2 z-40 -mx-4 px-4 mb-7">
+            <div className="glass rounded-full border border-white/60 shadow-soft p-1.5 flex gap-1.5 overflow-x-auto hide-scrollbar">
+              {MODES.map(m => (
+                <button key={m.id} onClick={() => setMode(m.id)}
+                  className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition ${mode === m.id ? "bg-tinta text-paper shadow-md" : "text-tintasoft hover:text-coral"}`}>
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          <main className="bg-white rounded-[28px] border border-tinta/5 shadow-soft p-5 sm:p-8 pop">
+            {mode === "intro"    && <Intro    setMode={setMode} />}
+            {mode === "sprint"   && <Sprint   level={level} addScore={addScore} streak={streak} setStreak={setStreak} record={record} />}
+            {mode === "accuracy" && <AccuracyLab level={level} addScore={addScore} streak={streak} setStreak={setStreak} record={record} />}
+            {mode === "patterns" && <Patterns setMode={setMode} />}
+            {mode === "boss"     && <Boss     level={level} addScore={addScore} setStreak={setStreak} record={record} />}
+            {mode === "journal"  && <Journal  journal={journal} setJournal={setJournal} />}
+          </main>
+
+          <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
+            {[
+              ["🧭","Orientación","Identifica primero el patrón. La velocidad real nace de elegir la estrategia correcta."],
+              ["🎚️","Calibración","Marca tu confianza. Alta confianza + error = faltó verificación, no velocidad."],
+              ["🔁","Transferencia","Cada debrief te da una regla reutilizable en compras, descuentos, exámenes y finanzas."],
+            ].map(([icon,title,text]) => (
+              <div key={title} className="bg-white/75 rounded-3xl p-4 border border-tinta/5 shadow-soft">
+                <div className="text-2xl mb-2">{icon}</div>
+                <h3 className="font-display text-lg text-tinta">{title}</h3>
+                <p className="text-sm text-tintasoft leading-relaxed">{text}</p>
+              </div>
+            ))}
+          </section>
+
+          <footer className="text-center mt-8 font-mono text-[0.62rem] tracking-[0.15em] uppercase text-bruma">
+            ProfGermandario · Laboratorio de Agilidad Mental
+          </footer>
+        </div>
+
+        <a href={WA_LINK} target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+          className="fixed z-50 flex items-center gap-2 bg-[#25D366] text-white font-semibold rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.45)] pl-4 pr-5 py-3 hover:scale-105 active:scale-95 transition"
+          style={{ bottom:"calc(1.25rem + env(safe-area-inset-bottom))", right:"1.25rem" }}>
+          <WaGlyph /><span className="hidden sm:inline">WhatsApp</span>
+        </a>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

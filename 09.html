@@ -1,927 +1,745 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///C:/Users/profg/Downloads/fast_memory_v3.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Fast Memory Recover · ProfGermandario</title>
+  <meta name="description" content="Mobile-ready memory recovery app for deep listening, sequencing, recall, and English vocabulary retrieval." />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Fast Memory Recover · ProfGermandario</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./09_files/css2" rel="stylesheet">
-<link rel="stylesheet" href="./09_files/all.min.css">
-<script src="./09_files/saved_resource"></script>
-<script>
-tailwind.config={theme:{extend:{
-  colors:{
-    lienzo:'#FCF8F3',nube:'#F2ECE2',tinta:'#1A1730',tintasoft:'#3A3552',
-    bruma:'#76718A',coral:'#FF5A3C',coraldeep:'#E8482C',
-    menta:'#15B79E',mentadeep:'#0E8C79',
-    ambar:'#FFB627',ambardeep:'#D4930F',
-    paper:'#F6F1FF',vino:'#7B2CBF',
-    gold:'#C9A227',goldlight:'#F5DC7A',golddark:'#8A6B0E',goldglow:'#FFF3C4'
-  },
-  fontFamily:{
-    display:['Fraunces','Georgia','serif'],
-    sans:['Figtree','system-ui','sans-serif'],
-    mono:['"DM Mono"','ui-monospace','monospace']
-  },
-  boxShadow:{
-    soft:'0 10px 30px rgba(26,23,48,0.08)',
-    coral:'0 12px 30px rgba(255,90,60,0.28)',
-    menta:'0 12px 30px rgba(21,183,158,0.22)',
-    gold:'0 12px 30px rgba(201,162,39,0.30)'
-  }
-}}}
-</script>
-<style>
-/* ── Variables ──────────────────────────────────────────────── */
-:root{
-  --coral:#FF5A3C;--menta:#15B79E;--ambar:#FFB627;
-  --tinta:#1A1730;--gold:#C9A227;--lienzo:#FCF8F3;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
 
-/* ── Base ───────────────────────────────────────────────────── */
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Figtree','Segoe UI',system-ui,sans-serif;
-  background:linear-gradient(135deg,#12101f 0%,#0d1824 100%);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-}
+  <style>
+    :root{
+      --lienzo:#FCF8F3; --nube:#F2ECE2; --paper:#F6F1FF;
+      --tinta:#1A1730; --tinta-soft:#3A3552; --bruma:#76718A;
+      --coral:#FF5A3C; --coral-deep:#E8482C;
+      --menta:#15B79E; --menta-deep:#0E8C79;
+      --ambar:#FFB627; --ambar-deep:#D4930F;
+      --vino:#7B2CBF; --gold:#C9A227;
+      --dark:#111020; --dark-2:#0B1220; --line:rgba(26,23,48,.12);
+      --line-soft:rgba(26,23,48,.07); --white-line:rgba(255,255,255,.14);
+      --shadow:0 18px 48px rgba(3,7,18,.24); --shadow-soft:0 14px 35px rgba(26,23,48,.11);
+      --radius:28px; --pill:999px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-height:100vh; color:var(--tinta);
+      font-family:Figtree,system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+      background:
+        radial-gradient(70% 55% at 7% -5%,rgba(255,90,60,.20),transparent 58%),
+        radial-gradient(55% 60% at 105% 8%,rgba(21,183,158,.17),transparent 60%),
+        linear-gradient(135deg,#141020 0%,#0D1724 100%);
+      -webkit-text-size-adjust:100%;
+    }
+    body:before{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:42px 42px; mask-image:linear-gradient(to bottom,black,transparent 76%);
+    }
+    a{color:inherit;text-decoration:none}
+    button,select{font:inherit}
+    button,a,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    button{cursor:pointer}
+    .wrap{width:min(1180px,100%); margin-inline:auto; padding-inline:clamp(14px,3vw,28px)}
+    .display{font-family:Fraunces,Georgia,serif}.mono{font-family:'DM Mono',ui-monospace,monospace}
+    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* radial glows */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(58% 42% at 5% 0%,rgba(255,90,60,.11),transparent 60%),
-    radial-gradient(48% 48% at 100% 100%,rgba(21,183,158,.09),transparent 60%);
-}
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(17,16,32,.70);backdrop-filter:blur(18px);border-bottom:1px solid var(--white-line)}
+    .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+    .brand{display:flex;align-items:center;gap:10px;color:white;font-weight:900;letter-spacing:-.02em}
+    .brand-mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--coral),var(--ambar));display:grid;place-items:center;box-shadow:0 12px 28px rgba(255,90,60,.26)}
+    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .nav-pill{border:1px solid var(--white-line);background:rgba(255,255,255,.07);color:rgba(255,255,255,.88);border-radius:var(--pill);padding:9px 12px;font-weight:800;font-size:.82rem}
+    .nav-pill:hover{background:rgba(255,255,255,.13);color:white}
 
-/* ── Wave bars ─────────────────────────────────────────────── */
-.wave{display:flex;align-items:flex-end;gap:4px;height:28px;justify-content:center;}
-.wave span{
-  display:block;width:4px;border-radius:4px;transform-origin:bottom;
-  background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar));
-  animation:vox 1.3s ease-in-out infinite;
-}
-@keyframes vox{0%,100%{transform:scaleY(.22);}50%{transform:scaleY(1);}}
+    .hero{padding:clamp(24px,5vw,54px) 0 18px;color:white}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:18px;align-items:stretch}
+    .eyebrow{font-family:'DM Mono';font-size:.68rem;text-transform:uppercase;letter-spacing:.24em;color:#ffd8cf;font-weight:500}
+    h1{font-family:Fraunces,Georgia,serif;font-size:clamp(2.55rem,8vw,5.6rem);line-height:.86;letter-spacing:-.055em;margin:12px 0 14px;color:white}
+    h1 em{font-style:normal;color:var(--coral);font-weight:500}
+    .hero-copy{max-width:720px;color:rgba(255,255,255,.74);font-size:clamp(.98rem,2vw,1.14rem);line-height:1.68;margin:0}
+    .hero-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;max-width:620px}
+    .mini-stat{border:1px solid var(--white-line);border-radius:22px;background:rgba(255,255,255,.075);padding:13px 12px}
+    .mini-stat b{display:block;font-family:Fraunces,Georgia,serif;font-size:1.55rem;line-height:1;color:white}
+    .mini-stat span{display:block;margin-top:5px;font-family:'DM Mono';font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.58)}
+    .protocol-card{position:relative;overflow:hidden;border-radius:32px;border:1px solid var(--white-line);background:rgba(255,255,255,.08);box-shadow:var(--shadow);padding:22px;min-height:100%}
+    .protocol-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 0%,rgba(255,182,39,.18),transparent 34%),radial-gradient(circle at 100% 100%,rgba(21,183,158,.18),transparent 42%);pointer-events:none}
+    .protocol-card>*{position:relative}
+    .wave{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:48px;margin:8px 0 16px}
+    .wave i{width:4px;border-radius:8px;background:linear-gradient(to top,var(--menta),var(--coral),var(--ambar));animation:vox 1.3s ease-in-out infinite;opacity:.9}
+    @keyframes vox{0%,100%{transform:scaleY(.23)}50%{transform:scaleY(1)}}
+    .protocol-steps{display:grid;gap:9px;margin-top:14px}
+    .step{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:10px;color:rgba(255,255,255,.84)}
+    .step strong{display:block;color:white}.step small{display:block;color:rgba(255,255,255,.56);font-size:.75rem;line-height:1.3}
+    .step-num{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-family:'DM Mono';font-size:.72rem;font-weight:800;background:rgba(255,90,60,.18);color:#ffd8cf}
 
-/* ── Cards ─────────────────────────────────────────────────── */
-.g-card{
-  background:white;border-radius:24px;
-  padding:22px;
-  box-shadow:0 8px 30px rgba(26,23,48,.10);
-  border:1px solid rgba(26,23,48,.06);
-}
+    .app{padding:16px 0 34px}
+    .training-grid{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr) minmax(280px,350px);gap:16px;align-items:start}
+    .panel{background:rgba(252,248,243,.98);border:1px solid rgba(255,255,255,.52);border-radius:var(--radius);box-shadow:var(--shadow-soft);overflow:hidden}
+    .panel-pad{padding:18px}
+    .panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .panel-title h2{font-family:Fraunces,Georgia,serif;font-size:1.38rem;line-height:1;margin:0;letter-spacing:-.025em}
+    .chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:7px 10px;background:var(--nube);color:var(--tinta-soft);font-family:'DM Mono';font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+    .chip.hot{background:rgba(255,90,60,.10);color:var(--coral)}.chip.green{background:rgba(21,183,158,.10);color:var(--menta-deep)}.chip.gold{background:rgba(255,182,39,.16);color:var(--ambar-deep)}
+    .level-box{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-bottom:15px}
+    .level-mark{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--coral),var(--ambar));display:grid;place-items:center;color:white;font-family:Fraunces,Georgia,serif;font-size:1.75rem;font-weight:900;box-shadow:0 14px 30px rgba(255,90,60,.24)}
+    .muted{color:var(--bruma)}
+    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 14px}
+    .metric{background:white;border:1px solid var(--line-soft);border-radius:18px;padding:12px;min-width:0}
+    .metric span{display:block;font-family:'DM Mono';font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma);font-weight:700}.metric b{display:block;margin-top:4px;font-size:1.15rem;color:var(--tinta)}
+    .progress-wrap{margin:14px 0}.progress-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;font-family:'DM Mono';font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma)}
+    .bar{height:11px;background:var(--nube);border-radius:var(--pill);overflow:hidden}.bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--menta),var(--ambar),var(--coral));border-radius:inherit;transition:width .35s ease}
+    .mode-list{display:grid;gap:8px;margin-top:10px}.mode-btn{width:100%;text-align:left;border:1.5px solid var(--line-soft);background:white;border-radius:18px;padding:11px 12px;transition:.18s ease}.mode-btn:hover{transform:translateY(-1px);border-color:rgba(255,90,60,.34)}.mode-btn.active{border-color:var(--coral);background:rgba(255,90,60,.07);box-shadow:0 0 0 4px rgba(255,90,60,.08)}
+    .mode-btn strong{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.92rem}.mode-btn span{display:block;margin-top:4px;color:var(--bruma);font-size:.78rem;line-height:1.35}
 
-/* ── Level circle ───────────────────────────────────────────── */
-.lvl-circle{
-  width:56px;height:56px;border-radius:14px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--coral),var(--ambar));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:white;
-  box-shadow:0 8px 22px rgba(255,90,60,.32);
-}
+    .stage-panel{min-height:100%;display:flex;flex-direction:column}
+    .phase-track{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:14px;background:rgba(242,236,226,.48);border-bottom:1px solid var(--line-soft)}
+    .phase{border-radius:14px;padding:9px 6px;text-align:center;background:white;border:1px solid var(--line-soft);font-family:'DM Mono';font-size:.56rem;letter-spacing:.10em;text-transform:uppercase;color:var(--bruma);font-weight:800}.phase.active{background:var(--tinta);color:white;border-color:var(--tinta)}.phase.done{background:rgba(21,183,158,.11);color:var(--menta-deep);border-color:rgba(21,183,158,.22)}
+    .memory-stage{margin:18px;min-height:230px;border-radius:26px;border:1.5px solid var(--line-soft);background:radial-gradient(circle at 20% 0%,rgba(255,90,60,.10),transparent 34%),linear-gradient(180deg,#fff,var(--lienzo));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;position:relative;overflow:hidden}
+    .memory-stage:after{content:"";position:absolute;inset:auto -10% -34% -10%;height:44%;background:radial-gradient(50% 70% at 50% 50%,rgba(123,44,191,.12),transparent 70%);pointer-events:none}
+    .stage-label{font-family:'DM Mono';font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bruma);font-weight:700;margin-bottom:10px;position:relative;z-index:1}
+    .stage-word{font-family:Fraunces,Georgia,serif;font-size:clamp(2.4rem,8vw,5rem);line-height:.9;font-weight:900;color:var(--coral);letter-spacing:-.04em;position:relative;z-index:1;word-break:break-word}
+    .stage-word.hidden-word{color:#DDD8F8;letter-spacing:.12em;font-size:clamp(2rem,7vw,4rem)}
+    .stage-sub{margin-top:12px;color:var(--tinta-soft);font-weight:700;position:relative;z-index:1}.stage-sub small{font-family:'DM Mono';font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--bruma);font-weight:700}
+    .countdown{font-family:Fraunces,Georgia,serif;font-size:clamp(4rem,13vw,7rem);font-weight:900;color:var(--menta);line-height:.9}
+    .control-strip{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:9px;padding:0 18px 18px}.btn{border:0;border-radius:var(--pill);min-height:48px;padding:12px 16px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn-coral{background:var(--coral);color:white;box-shadow:0 12px 28px rgba(255,90,60,.25)}.btn-dark{background:var(--tinta);color:white}.btn-mint{background:var(--menta);color:white;box-shadow:0 12px 28px rgba(21,183,158,.22)}.btn-amber{background:var(--ambar);color:#633b00}.btn-ghost{background:var(--nube);color:var(--tinta-soft);border:1.5px solid var(--line-soft);box-shadow:none}.btn-ghost:hover{border-color:rgba(255,90,60,.42);color:var(--coral)}.btn-small{min-height:40px;padding:9px 13px;font-size:.84rem}
 
-/* ── Progress bar ───────────────────────────────────────────── */
-.prog-fill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--menta),var(--ambar),var(--coral));
-  border-radius:999px;transition:width .38s cubic-bezier(.4,0,.2,1);
-}
+    .quiz-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.quiz-title{font-family:'DM Mono';font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bruma);font-weight:800}.counter{color:var(--coral);font-weight:900}
+    .instruction{border:1px solid var(--line-soft);background:white;border-radius:18px;padding:13px 14px;color:var(--tinta-soft);line-height:1.45;margin-bottom:14px;font-size:.94rem}.instruction strong{color:var(--coral)}
+    .option-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.emoji-btn{min-height:104px;border-radius:22px;background:white;border:2px solid var(--line-soft);display:grid;place-items:center;align-content:center;gap:7px;font-size:2.35rem;transition:.16s ease}.emoji-btn:hover{transform:translateY(-3px);border-color:rgba(255,90,60,.38);box-shadow:0 12px 24px rgba(255,90,60,.12)}.emoji-btn:active{transform:scale(.96)}.emoji-btn[disabled]{cursor:default;transform:none}.emoji-btn .key{font-family:'DM Mono';font-size:.62rem;color:var(--bruma);letter-spacing:.13em}.emoji-btn.correct{border-color:var(--menta);background:rgba(21,183,158,.10);box-shadow:0 0 0 4px rgba(21,183,158,.14)}.emoji-btn.wrong{border-color:var(--coral);background:rgba(255,90,60,.09);box-shadow:0 0 0 4px rgba(255,90,60,.12)}
+    .feedback{min-height:48px;margin-top:12px}.fb{border-radius:16px;padding:12px 13px;font-weight:800;line-height:1.35}.fb.ok{background:rgba(21,183,158,.11);color:var(--menta-deep)}.fb.err{background:rgba(255,90,60,.10);color:var(--coral)}.fb.neutral{background:rgba(26,23,48,.06);color:var(--tinta-soft)}
+    .action-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}.action-row .spacer{margin-left:auto}
+    .review{display:none;margin-top:14px;border-top:1px solid var(--line-soft);padding-top:14px}.review.open{display:block}.review-grid{display:grid;gap:8px}.review-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:white;border:1px solid var(--line-soft);border-radius:15px;padding:9px 10px}.review-item .num{font-family:'DM Mono';font-size:.62rem;color:var(--bruma)}.review-item strong{font-size:.9rem}.review-item small{color:var(--bruma)}
 
-/* ── Word stage ─────────────────────────────────────────────── */
-.word-stage{
-  min-height:110px;border-radius:18px;
-  background:linear-gradient(180deg,var(--lienzo),white);
-  border:1.5px solid rgba(26,23,48,.07);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:7px;padding:14px;text-align:center;
-  position:relative;
-}
-.word-stage .wtext{
-  font-family:'Fraunces',serif;font-weight:900;
-  font-size:clamp(28px,5vw,46px);
-  color:var(--coral);line-height:1;
-  transition:all .2s ease;
-}
-.word-stage.hidden-state .wtext{
-  font-size:28px;color:#DDD8F8;letter-spacing:10px;
-}
-.word-stage .wlabel{
-  font-family:'DM Mono',monospace;font-size:10px;
-  text-transform:uppercase;letter-spacing:.18em;color:#76718A;
-}
+    .settings{margin-top:16px}.settings details{background:rgba(252,248,243,.98);border:1px solid rgba(255,255,255,.52);border-radius:22px;box-shadow:var(--shadow-soft);overflow:hidden}.settings summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Mono';font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bruma);font-weight:800}.settings summary::-webkit-details-marker{display:none}.settings-body{padding:0 16px 16px}.field{display:grid;gap:7px;margin-top:12px}.field label{font-family:'DM Mono';font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma);font-weight:800}.field select,.field input{width:100%;border:1.5px solid var(--line);border-radius:14px;background:white;color:var(--tinta);padding:11px 12px;outline:none}.field select:focus,.field input:focus{border-color:var(--coral)}
 
-/* ── Buttons ────────────────────────────────────────────────── */
-.btn{
-  font-family:'Figtree',sans-serif;font-weight:700;font-size:15px;
-  border:none;border-radius:999px;cursor:pointer;
-  padding:12px 20px;
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  transition:transform .15s ease,box-shadow .15s ease;
-  white-space:nowrap;line-height:1.1;
-}
-.btn:hover{transform:translateY(-2px);}
-.btn:active{transform:translateY(1px) scale(.97);}
-.btn:disabled,.btn.off{opacity:.4;pointer-events:none;}
-.btn-coral{background:var(--coral);color:white;box-shadow:0 8px 22px rgba(255,90,60,.32);}
-.btn-coral:hover{box-shadow:0 12px 28px rgba(255,90,60,.44);}
-.btn-menta{background:var(--menta);color:white;box-shadow:0 8px 22px rgba(21,183,158,.28);}
-.btn-menta:hover{box-shadow:0 12px 28px rgba(21,183,158,.40);}
-.btn-ambar{background:var(--ambar);color:#78350f;box-shadow:0 6px 16px rgba(255,182,39,.36);}
-.btn-ghost{
-  background:#F2ECE2;color:#3A3552;
-  border:1.5px solid rgba(26,23,48,.08);box-shadow:none;
-}
-.btn-ghost:hover{border-color:var(--coral);color:var(--coral);}
-.btn-sm{font-size:13px;padding:9px 16px;}
+    .tips{margin-top:16px;display:grid;gap:10px}.tip-card{border-radius:20px;background:rgba(255,255,255,.08);border:1px solid var(--white-line);color:rgba(255,255,255,.74);padding:14px;line-height:1.5}.tip-card strong{color:white}.tip-card .tag{display:inline-flex;margin-bottom:7px;color:#ffd8cf;font-family:'DM Mono';font-size:.58rem;letter-spacing:.14em;text-transform:uppercase}
 
-/* ── Emoji buttons ──────────────────────────────────────────── */
-.emoji-btn{
-  border-radius:22px;border:2.5px solid #F2ECE2;
-  padding:8px 4px;font-size:40px;
-  background:white;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:5px;
-  min-height:96px;width:100%;
-  transition:transform .14s ease,border-color .14s ease,background .14s ease,box-shadow .14s ease;
-}
-.emoji-btn:hover{
-  transform:translateY(-4px) scale(1.04);
-  border-color:rgba(255,90,60,.38);
-  box-shadow:0 10px 24px rgba(255,90,60,.14);
-}
-.emoji-btn:active{transform:scale(.95);}
-.emoji-btn:disabled{cursor:default;transform:none!important;}
-.emoji-btn .key-hint{
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:#76718A;line-height:1;
-}
-.emoji-btn.correct{
-  border-color:var(--menta);background:rgba(21,183,158,.07);
-  box-shadow:0 0 0 4px rgba(21,183,158,.18);
-}
-.emoji-btn.incorrect{
-  border-color:var(--coral);background:rgba(255,90,60,.07);
-  box-shadow:0 0 0 4px rgba(255,90,60,.15);
-}
+    .result-card{border-radius:22px;background:linear-gradient(180deg,rgba(255,182,39,.16),rgba(255,182,39,.05));border:1.5px solid rgba(201,162,39,.36);padding:18px;text-align:center}.result-card h3{font-family:Fraunces,Georgia,serif;font-size:1.65rem;margin:0 0 9px}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0}.result-stats div{background:rgba(255,255,255,.62);border:1px solid var(--line-soft);border-radius:16px;padding:10px}.result-stats b{display:block;font-size:1.08rem}.result-stats span{font-family:'DM Mono';font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--bruma)}
 
-/* ── Feedback strip ─────────────────────────────────────────── */
-.fb-ok  {background:rgba(21,183,158,.10);color:#0E8C79;border-radius:12px;padding:11px 14px;font-weight:700;}
-.fb-err {background:rgba(255,90,60,.08);color:#FF5A3C;border-radius:12px;padding:11px 14px;font-weight:700;}
-.fb-skip{background:rgba(26,23,48,.05);color:#76718A;border-radius:12px;padding:11px 14px;font-weight:600;}
+    footer{background:linear-gradient(180deg,#1A1730 0%,#0F1020 100%);margin-top:34px;color:rgba(255,255,255,.76)}
+    .footer-inner{width:min(980px,100%);margin:auto;padding:42px 20px calc(42px + env(safe-area-inset-bottom));text-align:center}.footer-brand{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:clamp(1.7rem,5vw,2.5rem);color:white}.footer-brand span{color:var(--coral)}.footer-small{font-family:'DM Mono';font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bruma);margin-top:5px}.divider{height:1px;background:rgba(255,255,255,.08);margin:24px 0}.socials{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.social-link{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(8px);font-size:18px;transition:.18s ease}.social-link:hover{transform:scale(1.12);background:rgba(255,255,255,.15)}
+    .wa-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;background:#25D366;color:white;border-radius:var(--pill);padding:13px 17px;display:flex;align-items:center;gap:9px;font-weight:900;box-shadow:0 16px 42px rgba(37,211,102,.34);animation:wa 2.4s ease infinite}.wa-float:hover{transform:translateY(-2px)}@keyframes wa{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.38)}55%{box-shadow:0 0 0 13px rgba(37,211,102,0)}}
 
-/* ── Level complete card ────────────────────────────────────── */
-.lc-card{
-  background:linear-gradient(180deg,rgba(201,162,39,.09),rgba(201,162,39,.03));
-  border:1.5px solid rgba(201,162,39,.32);
-  border-radius:18px;padding:20px;text-align:center;
-}
-
-/* ── Help modal ─────────────────────────────────────────────── */
-.modal-wrap{
-  position:fixed;inset:0;z-index:9000;
-  background:rgba(12,10,25,.72);backdrop-filter:blur(5px);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;opacity:0;pointer-events:none;
-  transition:opacity .22s ease;
-}
-.modal-wrap.open{opacity:1;pointer-events:all;}
-.modal-box{
-  background:var(--lienzo);border-radius:26px;
-  padding:28px 24px;max-width:480px;width:100%;
-  box-shadow:0 32px 80px rgba(2,6,23,.6);
-  transform:translateY(20px) scale(.97);
-  transition:transform .22s ease;
-}
-.modal-wrap.open .modal-box{transform:translateY(0) scale(1);}
-
-/* ── Coins ──────────────────────────────────────────────────── */
-.spark{
-  position:fixed;pointer-events:none;z-index:9999;
-  font-size:1.35rem;animation:sparkfall .95s ease forwards;
-}
-@keyframes sparkfall{
-  0%{transform:translateY(0) scale(1.1) rotate(0);opacity:1;}
-  100%{transform:translateY(-85px) scale(.4) rotate(360deg);opacity:0;}
-}
-
-/* ── Social footer glass ────────────────────────────────────── */
-.social-link{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.13);
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;
-  transition:transform .18s ease,background .18s ease;
-  backdrop-filter:blur(6px);
-  font-size:17px;
-}
-.social-link:hover{transform:scale(1.14);background:rgba(255,255,255,.16);}
-
-/* ── WA float ───────────────────────────────────────────────── */
-.wa-float{
-  position:fixed;right:20px;z-index:9998;
-  bottom:calc(20px + env(safe-area-inset-bottom));
-  display:flex;align-items:center;gap:8px;
-  background:#25D366;color:white;text-decoration:none;
-  padding:13px 18px;border-radius:999px;
-  font-family:'Figtree',sans-serif;font-weight:700;font-size:14px;
-  box-shadow:0 10px 30px rgba(37,211,102,.45);
-  animation:waPulse 2.2s ease infinite;
-  transition:transform .15s ease;
-}
-.wa-float:hover{transform:translateY(-3px);}
-@keyframes waPulse{
-  0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.45);}
-  50%{box-shadow:0 10px 30px rgba(37,211,102,.15);}
-}
-
-/* ── Animations ─────────────────────────────────────────────── */
-.pop{animation:pop .36s ease both;}
-@keyframes pop{0%{transform:scale(.94);opacity:.5;}100%{transform:scale(1);opacity:1;}}
-.fade-up{animation:fadeUp .28s ease both;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media(max-width:720px){
-  body{padding-bottom:calc(80px + env(safe-area-inset-bottom));}
-  .game-cols{grid-template-columns:1fr!important;}
-  .left-col{order:2;}
-  .emoji-btn{font-size:36px;min-height:90px;}
-  .wa-float .wa-lbl{display:none;}
-  .wa-float{padding:13px;}
-}
-@media(max-width:380px){
-  .emoji-btn{font-size:30px;min-height:80px;}
-}
-</style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Figtree, system-ui, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:"DM Mono", ui-monospace, monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.relative{position:relative}.z-10{z-index:10}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-7{margin-bottom:1.75rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:0.25rem}.ml-auto{margin-left:auto}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.min-h-\[32px\]{min-height:32px}.min-h-screen{min-height:100vh}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-5xl{max-width:64rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;user-select:none}.list-decimal{list-style-type:decimal}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-2\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.625rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-ambar\/30{border-color:rgb(255 182 39 / 0.3)}.border-tinta\/10{border-color:rgb(26 23 48 / 0.1)}.border-tinta\/5{border-color:rgb(26 23 48 / 0.05)}.border-white\/15{border-color:rgb(255 255 255 / 0.15)}.bg-ambar\/10{background-color:rgb(255 182 39 / 0.1)}.bg-lienzo{--tw-bg-opacity:1;background-color:rgb(252 248 243 / var(--tw-bg-opacity, 1))}.bg-nube{--tw-bg-opacity:1;background-color:rgb(242 236 226 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-5{padding-bottom:1.25rem}.pb-6{padding-bottom:1.5rem}.pl-5{padding-left:1.25rem}.pt-8{padding-top:2rem}.text-center{text-align:center}.font-display{font-family:Fraunces, Georgia, serif}.font-mono{font-family:"DM Mono", ui-monospace, monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[\.58rem\]{font-size:.58rem}.text-\[\.62rem\]{font-size:.62rem}.text-\[\.68rem\]{font-size:.68rem}.text-\[\.6rem\]{font-size:.6rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.not-italic{font-style:normal}.leading-\[\.92\]{line-height:.92}.leading-relaxed{line-height:1.625}.tracking-\[\.13em\]{letter-spacing:.13em}.tracking-\[\.15em\]{letter-spacing:.15em}.tracking-\[\.16em\]{letter-spacing:.16em}.tracking-\[\.22em\]{letter-spacing:.22em}.tracking-\[\.28em\]{letter-spacing:.28em}.text-ambar{--tw-text-opacity:1;color:rgb(255 182 39 / var(--tw-text-opacity, 1))}.text-bruma{--tw-text-opacity:1;color:rgb(118 113 138 / var(--tw-text-opacity, 1))}.text-coral{--tw-text-opacity:1;color:rgb(255 90 60 / var(--tw-text-opacity, 1))}.text-gold{--tw-text-opacity:1;color:rgb(201 162 39 / var(--tw-text-opacity, 1))}.text-menta{--tw-text-opacity:1;color:rgb(21 183 158 / var(--tw-text-opacity, 1))}.text-tinta{--tw-text-opacity:1;color:rgb(26 23 48 / var(--tw-text-opacity, 1))}.text-tintasoft{--tw-text-opacity:1;color:rgb(58 53 82 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-white\/90{color:rgb(255 255 255 / 0.9)}.text-mentadeep{--tw-text-opacity:1;color:rgb(14 140 121 / var(--tw-text-opacity, 1))}.outline-none{outline:2px solid transparent;outline-offset:2px}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:text-coral:hover{--tw-text-opacity:1;color:rgb(255 90 60 / var(--tw-text-opacity, 1))}.focus\:border-coral:focus{--tw-border-opacity:1;border-color:rgb(255 90 60 / var(--tw-border-opacity, 1))}</style></head>
+    .spark{position:fixed;z-index:90;pointer-events:none;animation:spark .9s ease forwards;font-size:1.4rem}@keyframes spark{from{opacity:1;transform:translateY(0) scale(1) rotate(0)}to{opacity:0;transform:translateY(-90px) scale(.4) rotate(260deg)}}.pop{animation:pop .28s ease both}@keyframes pop{from{transform:scale(.95);opacity:.55}to{transform:scale(1);opacity:1}}
+    @media(max-width:1080px){.training-grid{grid-template-columns:minmax(220px,290px) minmax(0,1fr)}.right-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}.tips{margin-top:0}.hero-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){.topbar .wrap{align-items:flex-start}.top-actions .nav-pill:not(.keep-mobile){display:none}.hero{padding-top:26px}.hero-mini{grid-template-columns:1fr 1fr 1fr}.training-grid{grid-template-columns:1fr}.right-col{display:block}.protocol-card{display:none}.memory-stage{min-height:198px;margin:12px}.phase-track{padding:10px;gap:5px}.phase{font-size:.49rem;padding:8px 3px}.control-strip{grid-template-columns:1fr;gap:8px;padding:0 12px 12px}.panel-pad{padding:14px}.option-grid{gap:8px}.emoji-btn{min-height:92px;font-size:2rem}.action-row .spacer{margin-left:0}.action-row .btn{flex:1 1 calc(50% - 8px)}.wa-float{width:54px;height:54px;justify-content:center;padding:0}.wa-float span{display:none}.footer-inner{padding-bottom:calc(80px + env(safe-area-inset-bottom))}}
+    @media(max-width:520px){.wrap{padding-inline:12px}.hero-copy{font-size:.96rem}.hero-mini{grid-template-columns:1fr}.mini-stat{padding:10px 12px}.metric-grid{grid-template-columns:1fr 1fr}.result-stats{grid-template-columns:1fr}.stage-word{font-size:clamp(2.1rem,12vw,3.5rem)}.stage-word.hidden-word{letter-spacing:.06em}.quiz-head{align-items:flex-start;flex-direction:column}.nav-pill.keep-mobile{font-size:.78rem;padding:8px 10px}.social-link{width:42px;height:42px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
 <body>
+  <a class="wa-float" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20informaci%C3%B3n%20sobre%20Fast%20Memory%20Recover." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ProfGermandario"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
 
-<div class="relative z-10 min-h-screen flex flex-col">
-
-  <!-- ═══ PAGE CONTENT ══════════════════════════════════════ -->
-  <div class="flex-1">
-    <div class="max-w-5xl mx-auto px-4 pt-8 pb-6">
-
-      <!-- ── HEADER ────────────────────────────────────────── -->
-      <header class="text-center mb-8">
-        <p class="font-mono text-[.68rem] tracking-[.28em] uppercase text-coral mb-3">
-          Memory · Deep Listening · ProfGermandario
-        </p>
-        <h1 class="font-display font-black leading-[.92]" style="color:white;font-size:clamp(2.2rem,5.5vw,4rem);">
-          Fast Memory<br>
-          <em class="not-italic font-medium text-coral">Recover.</em>
-        </h1>
-        <div class="wave mt-5 mb-4" id="waveBars" aria-hidden="true"><span style="height: 10px; animation-delay: 0s; animation-duration: 1.1s;"></span><span style="height: 20.1636px; animation-delay: 0.075s; animation-duration: 1.23s;"></span><span style="height: 26.7767px; animation-delay: 0.15s; animation-duration: 1.36s;"></span><span style="height: 27.5293px; animation-delay: 0.225s; animation-duration: 1.49s;"></span><span style="height: 22.1583px; animation-delay: 0.3s; animation-duration: 1.62s;"></span><span style="height: 12.5402px; animation-delay: 0.375s; animation-duration: 1.1s;"></span><span style="height: 17.9654px; animation-delay: 0.45s; animation-duration: 1.23s;"></span><span style="height: 25.6884px; animation-delay: 0.525s; animation-duration: 1.36s;"></span><span style="height: 27.931px; animation-delay: 0.6s; animation-duration: 1.49s;"></span><span style="height: 23.9098px; animation-delay: 0.675s; animation-duration: 1.62s;"></span><span style="height: 15.0295px; animation-delay: 0.75s; animation-duration: 1.1s;"></span><span style="height: 15.6077px; animation-delay: 0.825s; animation-duration: 1.23s;"></span><span style="height: 24.286px; animation-delay: 0.9s; animation-duration: 1.36s;"></span><span style="height: 27.9738px; animation-delay: 0.975s; animation-duration: 1.49s;"></span><span style="height: 25.3828px; animation-delay: 1.05s; animation-duration: 1.62s;"></span><span style="height: 17.4181px; animation-delay: 1.125s; animation-duration: 1.1s;"></span><span style="height: 13.1379px; animation-delay: 1.2s; animation-duration: 1.23s;"></span><span style="height: 22.5977px; animation-delay: 1.275s; animation-duration: 1.36s;"></span><span style="height: 27.6569px; animation-delay: 1.35s; animation-duration: 1.49s;"></span><span style="height: 26.5479px; animation-delay: 1.425s; animation-duration: 1.62s;"></span><span style="height: 19.6583px; animation-delay: 1.5s; animation-duration: 1.1s;"></span><span style="height: 10.6052px; animation-delay: 1.575s; animation-duration: 1.23s;"></span><span style="height: 20.6573px; animation-delay: 1.65s; animation-duration: 1.36s;"></span><span style="height: 26.9865px; animation-delay: 1.725s; animation-duration: 1.49s;"></span></div>
-        <p class="text-bruma text-sm max-w-sm mx-auto leading-relaxed">
-          Listen to the word sequence. Memorize the order. Match each word to its emoji — exactly as you heard it.
-        </p>
-
-        <!-- Score pills -->
-        <div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
-          <span class="font-mono text-xs px-3 py-1.5 rounded-full border border-white/15 bg-white/10 text-white/90">
-            Level <b class="text-coral ml-1" id="level">3</b>
-          </span>
-          <span class="font-mono text-xs px-3 py-1.5 rounded-full border border-white/15 bg-white/10 text-white/90">
-            Score <b class="text-menta ml-1" id="score">265</b>
-          </span>
-          <span id="streakPill" class="font-mono text-xs px-3 py-1.5 rounded-full border border-ambar/30 bg-ambar/10 text-ambar" style="display: inline-flex;">
-            🔥 Streak <b class="ml-1" id="streakVal">9</b>
-          </span>
-        </div>
-      </header>
-
-      <!-- ── GAME GRID ─────────────────────────────────────── -->
-      <div class="game-cols" style="display:grid;grid-template-columns:286px 1fr;gap:18px;align-items:start;">
-
-        <!-- LEFT ──────────────────────────────────────────── -->
-        <div class="left-col">
-          <div class="g-card">
-
-            <!-- Level badge -->
-            <div class="flex items-center gap-3 mb-4">
-              <div class="lvl-circle" id="levelCircle">3</div>
-              <div>
-                <div class="font-display font-black text-xl text-tinta">
-                  Level <span id="levelLabel">3</span>
-                </div>
-                <div class="font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma mt-1">
-                  Listen · Memorize · Match
-                </div>
-              </div>
-            </div>
-
-            <!-- Progress -->
-            <div class="mb-4">
-              <div class="font-mono text-[.58rem] tracking-[.16em] uppercase text-bruma mb-2">
-                Round progress
-              </div>
-              <div class="bg-nube rounded-full overflow-hidden" style="height:10px;">
-                <div class="prog-fill" id="progress" style="width: 100%;"></div>
-              </div>
-            </div>
-
-            <!-- Word stage -->
-            <div class="word-stage mb-1" id="wordStage">
-              <span class="wtext" id="wtext">—</span>
-              <span class="wlabel" id="wlabel"></span>
-            </div>
-            <p class="font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma text-center mb-4">
-              Words to remember: <strong class="text-tinta" id="wordCount">7</strong>
-            </p>
-
-            <!-- Controls -->
-            <div class="flex flex-col gap-2">
-              <button class="btn btn-coral" id="startBtn" style="display: none;">🎧 Start Listening</button>
-              <button class="btn btn-ambar" id="tipBtn" style="display: none;">💡 Show Tip</button>
-              <button class="btn btn-ghost btn-sm" id="helpBtn">❓ How to play</button>
-            </div>
-
-          </div><!-- /left card -->
-        </div>
-
-        <!-- RIGHT ─────────────────────────────────────────── -->
-        <div class="flex flex-col gap-3">
-
-          <!-- Game area -->
-          <div class="g-card" id="gameArea">
-            <div id="instruction" class="bg-lienzo rounded-2xl px-4 py-3.5 border border-tinta/5 text-tintasoft text-sm leading-relaxed mb-4"><strong class="text-coral">Word 7</strong> — which emoji matches?</div>
-
-            <div id="optionsBlock" style="display: block;">
-              <div class="flex justify-between items-center font-mono text-[.6rem] uppercase tracking-[.15em] text-bruma mb-3">
-                <span>Choose the emoji for this word</span>
-                <span id="qCounter" class="text-coral font-semibold">7 / 7</span>
-              </div>
-
-              <!-- 2×2 Emoji grid -->
-              <div id="emojiGrid" class="grid gap-3 mb-3" style="grid-template-columns:repeat(2,1fr);" role="list" aria-label="Emoji options"></div>
-
-              <div id="feedback" class="" style="min-height:0;"><div class="lc-card pop">
-    <div class="font-display font-black text-2xl text-tinta mb-2">Level 3 Done! 🏆</div>
-    <div class="font-mono text-xs text-bruma leading-relaxed mb-1">
-      Accuracy: <strong class="text-tinta">100%</strong> &nbsp;·&nbsp; Time: <strong class="text-tinta">79s</strong>
-      
+  <nav class="topbar" aria-label="Main navigation">
+    <div class="wrap">
+      <a class="brand" href="profgermandario.html" aria-label="Back to ProfGermandario index">
+        <span class="brand-mark">🧠</span><span>Prof<span style="color:var(--coral)">Germandario</span></span>
+      </a>
+      <div class="top-actions">
+        <a class="nav-pill" href="profgermandario.html">Inicio</a>
+        <button class="nav-pill keep-mobile" type="button" id="helpBtnTop">How to play</button>
+      </div>
     </div>
-    <p class="font-mono text-xs text-mentadeep font-semibold mb-4">
-      🔥 Next level: 9 words (+2)
-    </p>
-    <button class="btn btn-coral" id="continueBtn" style="width:100%;">
-      Level 4 →
-    </button></div></div>
+  </nav>
 
-              <div class="flex items-center gap-2 flex-wrap mt-2">
-                <button class="btn btn-ghost btn-sm" id="skipBtn" style="display: none;">Skip →</button>
-                <div class="ml-auto font-mono text-[.62rem] text-bruma" id="lvlSummary"></div>
-              </div>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <section>
+        <p class="eyebrow">Memory · Deep Listening · English Retrieval</p>
+        <h1>Fast Memory<br><em>Recover.</em></h1>
+        <p class="hero-copy">A focused memory-recovery trainer: hear an English sequence, hold it under pressure, then recover each item by matching the correct emoji in the exact order.</p>
+        <div class="hero-mini" aria-label="Training stats">
+          <div class="mini-stat"><b id="heroBest">0</b><span>Best Score</span></div>
+          <div class="mini-stat"><b>4</b><span>Training Phases</span></div>
+          <div class="mini-stat"><b>1–4</b><span>Keyboard</span></div>
+        </div>
+      </section>
+      <aside class="protocol-card" aria-label="Memory protocol">
+        <p class="eyebrow">The protocol</p>
+        <div class="wave" id="waveBars" aria-hidden="true"></div>
+        <div class="protocol-steps">
+          <div class="step"><span class="step-num">01</span><span><strong>Encode</strong><small>Listen carefully and attach sound to meaning.</small></span></div>
+          <div class="step"><span class="step-num">02</span><span><strong>Hold</strong><small>Short retention gap forces working memory.</small></span></div>
+          <div class="step"><span class="step-num">03</span><span><strong>Recover</strong><small>Recall the correct item without seeing the word.</small></span></div>
+          <div class="step"><span class="step-num">04</span><span><strong>Review</strong><small>Use mistakes as feedback, not failure.</small></span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main class="app" id="app">
+    <div class="wrap training-grid">
+      <aside class="panel left-col">
+        <div class="panel-pad">
+          <div class="panel-title">
+            <h2>Session</h2>
+            <span class="chip hot">Live</span>
+          </div>
+          <div class="level-box">
+            <div class="level-mark" id="levelMark">1</div>
+            <div>
+              <div class="display" style="font-size:1.5rem;font-weight:900;line-height:1">Level <span id="levelText">1</span></div>
+              <div class="mono muted" style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">Listen · Hold · Recover</div>
             </div>
           </div>
 
-          <!-- Settings collapsible -->
-          <div class="g-card" style="padding:0;overflow:hidden;">
-            <details open="">
-              <summary class="flex items-center justify-between cursor-pointer select-none
-                             font-mono text-[.62rem] uppercase tracking-[.16em] text-bruma
-                             px-5 py-4 hover:text-coral transition-colors" style="list-style:none;">
-                <span>⚙️ Audio Settings</span><span>▾</span>
-              </summary>
-              <div class="px-5 pb-5">
-                <label class="font-mono text-[.58rem] uppercase tracking-[.13em] text-bruma block mb-2">
-                  Speech Voice
-                </label>
-                <select id="voiceSelect" class="w-full rounded-xl border border-tinta/10 bg-lienzo text-tinta px-3 py-2 text-sm outline-none focus:border-coral transition"><option value="0">Microsoft David - English (United States) – en-US</option><option value="1">Microsoft Naayf - Arabic (Saudi) – ar-SA</option><option value="2">Microsoft Mark - English (United States) – en-US</option><option value="3">Microsoft Zira - English (United States) – en-US</option><option value="4">Microsoft Helena - Spanish (Spain) – es-ES</option><option value="5">Microsoft Laura - Spanish (Spain) – es-ES</option><option value="6">Microsoft Pablo - Spanish (Spain) – es-ES</option><option value="7">Microsoft Hortense - French (France) – fr-FR</option><option value="8">Microsoft Julie - French (France) – fr-FR</option><option value="9">Microsoft Paul - French (France) – fr-FR</option><option value="10">Microsoft Daniel - Portuguese (Brazil) – pt-BR</option><option value="11">Microsoft Maria - Portuguese (Brazil) – pt-BR</option><option value="12">Microsoft Helia - Portuguese (Portugal) – pt-PT</option><option value="13">Microsoft Tolga - Turkish (Turkey) – tr-TR</option><option value="14">Google Deutsch – de-DE</option><option value="15">Google US English – en-US</option><option value="16">Google UK English Female – en-GB</option><option value="17">Google UK English Male – en-GB</option><option value="18">Google español – es-ES</option><option value="19">Google español de Estados Unidos – es-US</option><option value="20">Google français – fr-FR</option><option value="21">Google हिन्दी – hi-IN</option><option value="22">Google Bahasa Indonesia – id-ID</option><option value="23">Google italiano – it-IT</option><option value="24">Google 日本語 – ja-JP</option><option value="25">Google 한국의 – ko-KR</option><option value="26">Google Nederlands – nl-NL</option><option value="27">Google polski – pl-PL</option><option value="28">Google português do Brasil – pt-BR</option><option value="29">Google русский – ru-RU</option><option value="30">Google&nbsp;普通话（中国大陆） – zh-CN</option><option value="31">Google&nbsp;粤語（香港） – zh-HK</option><option value="32">Google 國語（臺灣） – zh-TW</option></select>
-                <p class="text-bruma text-xs leading-relaxed mt-3">
-                  Press <strong class="text-tinta">1–4</strong> on keyboard to pick an emoji. Words are hidden during the quiz — use Show Tip only if stuck (−5 pts).
-                </p>
-              </div>
-            </details>
+          <div class="metric-grid">
+            <div class="metric"><span>Score</span><b id="scoreText">0</b></div>
+            <div class="metric"><span>Streak</span><b id="streakText">0</b></div>
+            <div class="metric"><span>Words</span><b id="wordCountText">4</b></div>
+            <div class="metric"><span>Best</span><b id="bestText">0</b></div>
           </div>
 
-          <!-- Spanish instructions -->
-          <div class="g-card" aria-label="Instrucciones en español">
-            <h2 class="font-display font-bold text-xl text-tinta mb-3">Instrucciones</h2>
-            <ol class="list-decimal pl-5 space-y-2 text-sm text-tintasoft leading-relaxed">
-              <li>Presiona <strong class="text-coral">Start Listening</strong> para escuchar la secuencia.</li>
-              <li>Escucha y memoriza las palabras <strong class="text-tinta">en el mismo orden</strong> en que suenan.</li>
-              <li>Después de escuchar todas, tienes unos segundos de retención (3s × nivel).</li>
-              <li>Selecciona el emoji de cada palabra <strong class="text-tinta">en el orden exacto</strong>.</li>
-              <li>Las palabras están ocultas — usa <strong class="text-coral">Show Tip</strong> si las necesitas (resta 5 pts).</li>
-              <li>Precisión 100% a tiempo = <strong class="text-gold">bono de velocidad</strong>.</li>
-            </ol>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Round Progress</span><span id="progressText">0%</span></div>
+            <div class="bar"><span id="progressBar"></span></div>
           </div>
 
-        </div><!-- /right col -->
-      </div><!-- /game-cols -->
-    </div><!-- /page wrapper -->
-  </div><!-- /flex-1 -->
-
-  <!-- ═══ FOOTER ════════════════════════════════════════════ -->
-  <footer style="background:linear-gradient(180deg,#1A1730 0%,#0F1020 100%);margin-top:32px;">
-    <div class="max-w-4xl mx-auto px-6 py-12">
-
-      <!-- Brand -->
-      <div class="text-center mb-7">
-        <div class="font-display font-black text-white mb-1" style="font-size:clamp(1.6rem,4vw,2.4rem);">
-          Prof<span class="text-coral">Germandario</span>
+          <div class="panel-title" style="margin-top:18px;margin-bottom:8px">
+            <h2 style="font-size:1.2rem">Mode</h2>
+            <span class="chip green" id="modeChip">Warm-up</span>
+          </div>
+          <div class="mode-list" id="modeList" aria-label="Training modes"></div>
         </div>
-        <p class="font-mono text-[.62rem] tracking-[.22em] uppercase text-bruma">
-          Fast Memory Recover · Memory &amp; Deep Listening
-        </p>
+      </aside>
+
+      <section class="panel stage-panel" aria-label="Fast Memory Recover game">
+        <div class="phase-track" aria-label="Training phases">
+          <div class="phase active" data-phase="prepare">Prepare</div>
+          <div class="phase" data-phase="listen">Listen</div>
+          <div class="phase" data-phase="hold">Hold</div>
+          <div class="phase" data-phase="recover">Recover</div>
+        </div>
+
+        <div class="memory-stage" id="memoryStage">
+          <div class="stage-label" id="stageLabel">Ready</div>
+          <div class="stage-word" id="stageWord">—</div>
+          <div class="stage-sub" id="stageSub">Press Start Listening to begin.</div>
+        </div>
+
+        <div class="control-strip">
+          <button class="btn btn-coral" id="startBtn">🎧 Start Listening</button>
+          <button class="btn btn-amber" id="replayBtn" disabled>↻ Replay −10</button>
+          <button class="btn btn-ghost" id="resetBtn">New Session</button>
+        </div>
+
+        <div class="panel-pad" style="padding-top:0">
+          <div class="quiz-head">
+            <span class="quiz-title">Recall Console</span>
+            <span class="counter" id="counterText">0 / 0</span>
+          </div>
+          <div class="instruction" id="instruction"><strong>Prepare:</strong> choose a mode, then start. Use headphones if possible.</div>
+          <div class="option-grid" id="optionGrid" role="list" aria-label="Emoji options"></div>
+          <div class="feedback" id="feedback"></div>
+          <div class="action-row">
+            <button class="btn btn-small btn-ghost" id="tipBtn" disabled>💡 Tip −5</button>
+            <button class="btn btn-small btn-ghost" id="skipBtn" disabled>Skip →</button>
+            <button class="btn btn-small btn-dark spacer" id="nextBtn" style="display:none">Next Level →</button>
+          </div>
+          <div class="review" id="reviewBlock">
+            <div class="quiz-head"><span class="quiz-title">Memory Trace</span><button class="btn btn-small btn-ghost" id="toggleReviewBtn">Hide</button></div>
+            <div class="review-grid" id="reviewGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <section class="settings">
+          <details open>
+            <summary><span>⚙️ Audio & Control</span><span>▾</span></summary>
+            <div class="settings-body">
+              <div class="field">
+                <label for="voiceSelect">Speech Voice</label>
+                <select id="voiceSelect"><option>Loading voices…</option></select>
+              </div>
+              <div class="field">
+                <label for="rateRange">Speech Speed <span id="rateLabel">0.88×</span></label>
+                <input id="rateRange" type="range" min="0.7" max="1.15" step="0.01" value="0.88" />
+              </div>
+              <div class="field">
+                <label for="gapRange">Word Gap <span id="gapLabel">650ms</span></label>
+                <input id="gapRange" type="range" min="300" max="1100" step="50" value="650" />
+              </div>
+              <p class="muted" style="font-size:.82rem;line-height:1.5;margin:12px 0 0">Mobile note: audio starts only after tapping Start because browsers block autoplay. Keyboard shortcuts: 1–4.</p>
+            </div>
+          </details>
+        </section>
+
+        <div class="tips">
+          <div class="tip-card"><span class="tag">Strategy</span><strong>Chunk the sequence.</strong> Group words into pairs: sun-tree / cat-book. Your brain recalls clusters faster than isolated items.</div>
+          <div class="tip-card"><span class="tag">Recovery</span><strong>Do not panic after a blank.</strong> Recreate the sound, then the image. Recovery improves when you stay in the sequence instead of guessing randomly.</div>
+          <div class="tip-card"><span class="tag">Scoring</span><strong>Clean recall wins.</strong> Tips and replays are allowed, but they reduce score. Use them to train, not to fake performance.</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">Prof<span>Germandario</span></div>
+      <div class="footer-small">Fast Memory Recover · Memory & Deep Listening</div>
+      <div class="divider"></div>
+      <p class="footer-small" style="margin-bottom:18px">Connect</p>
+      <div class="socials" aria-label="ProfGermandario social media and contact links">
+        <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
+        <a href="mailto:info@profgermandario.com" class="social-link" aria-label="Email"><i class="fas fa-envelope" style="color:#FFB627"></i></a>
+        <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok" style="color:white"></i></a>
+        <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook"><i class="fab fa-facebook" style="color:#1877F2"></i></a>
+        <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin" style="color:#0A66C2"></i></a>
+        <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X Twitter"><i class="fab fa-x-twitter" style="color:#E7E9EA"></i></a>
+        <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Reddit"><i class="fab fa-reddit" style="color:#FF4500"></i></a>
+        <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube"><i class="fab fa-youtube" style="color:#FF0000"></i></a>
       </div>
-
-      <!-- Divider -->
-      <div class="mb-7" style="height:1px;background:rgba(255,255,255,.08);"></div>
-
-      <!-- Connect label -->
-      <p class="font-mono text-[.62rem] tracking-[.22em] uppercase text-bruma text-center mb-5">Connect</p>
-
-      <!-- Social links — 8 icons -->
-      <div class="flex justify-center items-center gap-3 flex-wrap mb-8">
-
-        <!-- WhatsApp -->
-        <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="social-link" title="WhatsApp" aria-label="WhatsApp">
-          <i class="fab fa-whatsapp" style="color:#25D366;font-size:19px;"></i>
-        </a>
-
-        <!-- Email -->
-        <a href="mailto:info@profgermandario.com" class="social-link" title="Email" aria-label="Email">
-          <i class="fas fa-envelope" style="color:#FFB627;font-size:17px;"></i>
-        </a>
-
-        <!-- TikTok -->
-        <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="TikTok" aria-label="TikTok">
-          <i class="fab fa-tiktok" style="color:white;font-size:17px;"></i>
-        </a>
-
-        <!-- Facebook -->
-        <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="Facebook" aria-label="Facebook">
-          <i class="fab fa-facebook" style="color:#1877F2;font-size:19px;"></i>
-        </a>
-
-        <!-- LinkedIn -->
-        <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn" aria-label="LinkedIn">
-          <i class="fab fa-linkedin" style="color:#0A66C2;font-size:19px;"></i>
-        </a>
-
-        <!-- X / Twitter -->
-        <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="X (Twitter)" aria-label="X Twitter">
-          <i class="fab fa-x-twitter" style="color:#E7E9EA;font-size:17px;"></i>
-        </a>
-
-        <!-- Reddit -->
-        <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="Reddit" aria-label="Reddit">
-          <i class="fab fa-reddit" style="color:#FF4500;font-size:19px;"></i>
-        </a>
-
-        <!-- YouTube -->
-        <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" title="YouTube" aria-label="YouTube">
-          <i class="fab fa-youtube" style="color:#FF0000;font-size:19px;"></i>
-        </a>
-
-      </div>
-
-      <!-- Divider -->
-      <div class="mb-5" style="height:1px;background:rgba(255,255,255,.08);"></div>
-
-      <!-- Copyright -->
-      <p class="text-center font-mono text-[.6rem] tracking-[.16em] uppercase text-bruma">
-        © 2025 ProfGermandario · Fast Memory Recover · Memory &amp; Deep Listening
-      </p>
-
+      <div class="divider"></div>
+      <p class="footer-small">© 2026 ProfGermandario · Built for students who train recall, not excuses.</p>
     </div>
   </footer>
 
-</div><!-- /z-10 -->
-
-<!-- ═══ FLOATING WHATSAPP ═════════════════════════════════════ -->
-<a class="wa-float" href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-  <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-    <path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"></path>
-  </svg>
-  <span class="wa-lbl">WhatsApp</span>
-</a>
-
-<!-- ═══ HELP MODAL ════════════════════════════════════════════ -->
-<div class="modal-wrap" id="helpModal" role="dialog" aria-modal="true" aria-label="How to play">
-  <div class="modal-box">
-    <h3 class="font-display font-black text-2xl text-tinta mb-4">🧠 How to Play</h3>
-    <ol class="list-decimal pl-5 space-y-2.5 text-sm text-tintasoft leading-relaxed mb-5">
-      <li>Press <strong class="text-coral">Start Listening</strong> to hear a sequence of English words spoken aloud.</li>
-      <li>Listen carefully — memorize each word <strong class="text-tinta">and its position in the sequence</strong>.</li>
-      <li>After all words play, a memory countdown begins (3 seconds per level).</li>
-      <li>Then pick the emoji that matches word #1, then #2, then #3… <strong class="text-tinta">in the same order</strong>.</li>
-      <li>Words are hidden during the quiz. Use <strong class="text-coral">Show Tip</strong> if stuck — it costs 5 pts.</li>
-      <li>Answer without tips for a <strong class="text-tinta">+5 bonus</strong> per word. 100% accuracy earns a speed bonus.</li>
-      <li>Every level adds more words and shortens the display time. The difficulty scales automatically.</li>
-      <li>Press <strong class="text-tinta">1–4</strong> on keyboard to pick emojis without tapping.</li>
-    </ol>
-    <button class="btn btn-coral w-full" id="closeModal" style="width:100%;">
-      Let's go 🎧
-    </button>
-  </div>
-</div>
-
-<!-- ═══ SCRIPT ════════════════════════════════════════════════ -->
-<script>
-/* ─── Wave bars ──────────────────────────────────────────────── */
-(()=>{
-  const w=document.getElementById('waveBars');
-  for(let i=0;i<24;i++){
-    const s=document.createElement('span');
-    s.style.height=(10+Math.abs(Math.sin(i*.6))*18)+'px';
-    s.style.animationDelay=(i*.075)+'s';
-    s.style.animationDuration=(1.1+(i%5)*.13)+'s';
-    w.appendChild(s);
-  }
-})();
-
-/* ─── Help modal ─────────────────────────────────────────────── */
-const helpModal=document.getElementById('helpModal');
-document.getElementById('helpBtn').addEventListener('click',()=>helpModal.classList.add('open'));
-document.getElementById('closeModal').addEventListener('click',()=>helpModal.classList.remove('open'));
-helpModal.addEventListener('click',e=>{if(e.target===helpModal)helpModal.classList.remove('open');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')helpModal.classList.remove('open');});
-
-/* ─── Emoji pool ─────────────────────────────────────────────── */
-const emojiPool=[
-  {word:"sun",emoji:"☀️"},{word:"tree",emoji:"🌳"},{word:"cat",emoji:"🐱"},{word:"book",emoji:"📚"},
-  {word:"heart",emoji:"❤️"},{word:"star",emoji:"⭐"},{word:"music",emoji:"🎵"},{word:"flower",emoji:"🌸"},
-  {word:"moon",emoji:"🌙"},{word:"rocket",emoji:"🚀"},{word:"pizza",emoji:"🍕"},{word:"rainbow",emoji:"🌈"},
-  {word:"camera",emoji:"📷"},{word:"butterfly",emoji:"🦋"},{word:"mountain",emoji:"⛰️"},{word:"diamond",emoji:"💎"},
-  {word:"castle",emoji:"🏰"},{word:"globe",emoji:"🌍"},{word:"trophy",emoji:"🏆"},{word:"lightning",emoji:"⚡"},
-  {word:"fire",emoji:"🔥"},{word:"crown",emoji:"👑"},{word:"ocean",emoji:"🌊"},{word:"volcano",emoji:"🌋"},
-  {word:"telescope",emoji:"🔭"},{word:"compass",emoji:"🧭"},{word:"crystal",emoji:"🔮"},{word:"tornado",emoji:"🌪️"},
-  {word:"anchor",emoji:"⚓"},{word:"hourglass",emoji:"⏳"},{word:"apple",emoji:"🍎"},{word:"bike",emoji:"🚲"},
-  {word:"coffee",emoji:"☕"},{word:"dog",emoji:"🐶"},{word:"elephant",emoji:"🐘"},{word:"football",emoji:"⚽"},
-  {word:"guitar",emoji:"🎸"},{word:"house",emoji:"🏠"},{word:"ice cream",emoji:"🍦"},{word:"key",emoji:"🔑"},
-  {word:"lion",emoji:"🦁"},{word:"microphone",emoji:"🎤"},{word:"owl",emoji:"🦉"},{word:"penguin",emoji:"🐧"},
-  {word:"robot",emoji:"🤖"},{word:"snowflake",emoji:"❄️"},{word:"turtle",emoji:"🐢"},{word:"umbrella",emoji:"☂️"},
-  {word:"whale",emoji:"🐋"},{word:"plane",emoji:"✈️"}
-];
-
-/* ─── State ──────────────────────────────────────────────────── */
-let pool=[],currentLevel=0,currentWords=[],currentIdx=0;
-let score=0,streak=0,correct=0,levelStart=0;
-let usedEmojis=[],voices=[],speechOk=('speechSynthesis' in window);
-let wordsPerLevel=4,wordRevealed=false,memTimer=null;
-
-/* ─── DOM refs ───────────────────────────────────────────────── */
-const $=id=>document.getElementById(id);
-const startBtn=$('startBtn'),tipBtn=$('tipBtn');
-const levelCircle=$('levelCircle'),levelLabel=$('levelLabel');
-const levelDisplay=$('level'),scoreDisplay=$('score');
-const streakPill=$('streakPill'),streakVal=$('streakVal');
-const wordCount=$('wordCount');
-const wordStage=$('wordStage'),wtext=$('wtext'),wlabel=$('wlabel');
-const instruction=$('instruction'),emojiGrid=$('emojiGrid');
-const optionsBlock=$('optionsBlock'),feedback=$('feedback');
-const skipBtn=$('skipBtn'),qCounter=$('qCounter'),lvlSummary=$('lvlSummary');
-const progress=$('progress'),voiceSelect=$('voiceSelect');
-
-/* ─── Utilities ──────────────────────────────────────────────── */
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
-function clonePool(){pool=emojiPool.map(x=>({...x}));shuffle(pool);}
-function getWords(n){if(pool.length<n)clonePool();return pool.splice(0,n);}
-
-function setWord(text,label='',hidden=false){
-  wtext.textContent=text;
-  wlabel.textContent=label;
-  wordStage.classList.toggle('hidden-state',hidden);
-}
-
-function setFeedback(text,cls){
-  feedback.textContent=text;
-  feedback.className='text-sm '+cls+' fade-up';
-}
-
-function showStreak(){
-  if(streak>=3){streakPill.style.display='inline-flex';streakVal.textContent=streak;}
-  else streakPill.style.display='none';
-}
-
-function spawnSparks(el,n=6){
-  if(!el)return;
-  const r=el.getBoundingClientRect();
-  const cx=r.left+r.width/2,cy=r.top+r.height/2;
-  ['⭐','🌟','✨','🪙','💫'].forEach((em,i)=>{
-    if(i>=n)return;
-    setTimeout(()=>{
-      const s=document.createElement('span');
-      s.className='spark';
-      s.textContent=em;
-      s.style.left=(cx+(Math.random()*100-50))+'px';
-      s.style.top=cy+'px';
-      s.style.animationDuration=(.7+Math.random()*.4)+'s';
-      document.body.appendChild(s);
-      s.addEventListener('animationend',()=>s.remove());
-    },i*55);
-  });
-}
-
-/* ─── Speech ─────────────────────────────────────────────────── */
-function loadVoices(){
-  if(!speechOk)return;
-  voices=speechSynthesis.getVoices()||[];
-  voiceSelect.innerHTML='';
-  voices.forEach((v,i)=>{
-    const o=document.createElement('option');
-    o.value=i;o.textContent=`${v.name} – ${v.lang}`;
-    voiceSelect.appendChild(o);
-  });
-}
-if(speechOk){
-  loadVoices();
-  if(speechSynthesis.onvoiceschanged!==undefined)
-    speechSynthesis.onvoiceschanged=loadVoices;
-}
-function speak(txt){
-  if(!speechOk)return Promise.resolve();
-  return new Promise(res=>{
-    const u=new SpeechSynthesisUtterance(txt);
-    u.rate=0.88;u.pitch=1.05;
-    const idx=parseInt(voiceSelect.value||0);
-    if(voices[idx])u.voice=voices[idx];
-    u.onend=res;u.onerror=res;
-    try{speechSynthesis.speak(u);}catch(e){res();}
-  });
-}
-
-/* ─── Init ───────────────────────────────────────────────────── */
-function initUI(){
-  levelCircle.textContent=levelLabel.textContent=levelDisplay.textContent=currentLevel+1;
-  wordCount.textContent=wordsPerLevel;
-  scoreDisplay.textContent=score;
-  progress.style.width='0%';
-  optionsBlock.style.display='none';
-  skipBtn.style.display='none';
-  tipBtn.style.display='none';
-  startBtn.style.display='inline-flex';
-  feedback.textContent='';feedback.className='';
-  lvlSummary.textContent='';
-  setWord('—');
-  instruction.innerHTML='Press <strong class="text-coral">Start Listening</strong> to begin. Listen to the words in order, then match each one to its emoji.';
-}
-
-/* ─── Start listening ─────────────────────────────────────────── */
-async function startListening(){
-  currentWords=getWords(wordsPerLevel);
-  correct=0;usedEmojis=[];currentIdx=0;
-  levelStart=Date.now();
-
-  startBtn.style.display='none';
-  tipBtn.style.display='none';
-  optionsBlock.style.display='none';
-  skipBtn.style.display='none';
-  emojiGrid.innerHTML='';
-  feedback.textContent='';feedback.className='';
-  progress.style.width='0%';
-  setWord('…','');
-  instruction.textContent='🎧 Listen carefully…';
-
-  await speak(`Listen carefully to these ${currentWords.length} words`);
-  await delay(350);
-
-  const tpw=Math.max(1100,2000-currentLevel*100);
-  const gap=Math.max(280,600-currentLevel*40);
-
-  for(let i=0;i<currentWords.length;i++){
-    setWord(currentWords[i].word,`Word ${i+1} of ${currentWords.length}`);
-    wordStage.classList.add('pop');
-    setTimeout(()=>wordStage.classList.remove('pop'),400);
-    await speak(currentWords[i].word);
-    await delay(tpw);
-    setWord('','');
-    await delay(gap);
-  }
-
-  // Memory countdown
-  let secs=3*(currentLevel+1);
-  setWord(`${secs}s`,'⏳ Memorize the order…');
-  instruction.textContent=`Remember the words in order! ${secs}s to recall…`;
-
-  await new Promise(res=>{
-    memTimer=setInterval(()=>{
-      secs--;
-      setWord(`${secs}s`,'⏳ Memorize the order…');
-      instruction.textContent=`Remember the words in order! ${secs}s to recall…`;
-      if(secs<=0){clearInterval(memTimer);res();}
-    },1000);
-  });
-
-  await speak("Now match each word with its emoji in the correct order");
-  currentIdx=0;
-  optionsBlock.style.display='block';
-  showQuestion();
-}
-
-/* ─── Show question ──────────────────────────────────────────── */
-function showQuestion(){
-  wordRevealed=false;
-  const word=currentWords[currentIdx];
-
-  // Build 4 options: 1 correct + 3 wrong
-  const wrongs=emojiPool
-    .map(w=>w.emoji)
-    .filter(e=>e!==word.emoji&&!usedEmojis.includes(e));
-  shuffle(wrongs);
-  const opts=shuffle([word.emoji,...wrongs.slice(0,3)]);
-  const keys=['1','2','3','4'];
-
-  emojiGrid.innerHTML='';
-  opts.forEach((em,i)=>{
-    const btn=document.createElement('button');
-    btn.className='emoji-btn pop';
-    btn.style.animationDelay=(i*.05)+'s';
-    btn.setAttribute('role','listitem');
-    btn.setAttribute('aria-label',`Option ${keys[i]}: ${em}`);
-    btn.dataset.emoji=em;
-    btn.innerHTML=`<span>${em}</span><span class="key-hint">[${keys[i]}]</span>`;
-    btn.addEventListener('click',()=>checkAnswer(em,btn));
-    emojiGrid.appendChild(btn);
-  });
-
-  qCounter.textContent=`${currentIdx+1} / ${currentWords.length}`;
-  progress.style.width=`${(currentIdx/currentWords.length)*100}%`;
-  feedback.textContent='';feedback.className='';
-  skipBtn.style.display='inline-flex';
-  tipBtn.style.display='inline-flex';
-  tipBtn.textContent='💡 Show Tip';
-  tipBtn.disabled=false;
-
-  // Hide word — player must recall
-  setWord('◆ ◆ ◆','',true);
-
-  instruction.innerHTML=`<strong class="text-coral">Word ${currentIdx+1}</strong> — which emoji matches?`;
-}
-
-/* ─── Tip ────────────────────────────────────────────────────── */
-tipBtn.addEventListener('click',()=>{
-  if(wordRevealed)return;
-  const w=currentWords[currentIdx];
-  setWord(`"${w.word}"`, 'Tip used');
-  wordStage.classList.remove('hidden-state');
-  tipBtn.textContent='✓ Revealed';
-  tipBtn.disabled=true;
-  wordRevealed=true;
-  score=Math.max(0,score-5);
-  scoreDisplay.textContent=score;
-  streak=0;showStreak();
-});
-
-/* ─── Check answer ───────────────────────────────────────────── */
-async function checkAnswer(sel,btnEl){
-  document.querySelectorAll('.emoji-btn').forEach(b=>b.disabled=true);
-  const word=currentWords[currentIdx];
-  const ok=sel===word.emoji;
-
-  if(!wordRevealed){
-    setWord(`"${word.word}"`, ok?'Correct!':'Wrong');
-    wordStage.classList.remove('hidden-state');
-  }
-
-  if(ok){
-    btnEl.classList.add('correct');
-    let pts=10+currentLevel*5;
-    if(!wordRevealed){pts+=5;}
-    score+=pts;correct++;streak++;
-    usedEmojis.push(sel);
-    scoreDisplay.textContent=score;
-    showStreak();
-    setFeedback(`✅ Correct! +${pts} pts`,'fb-ok');
-    spawnSparks(btnEl,5);
-  } else {
-    btnEl.classList.add('incorrect');
-    streak=0;showStreak();
-    document.querySelectorAll('.emoji-btn').forEach(b=>{
-      if(b.dataset.emoji===word.emoji)b.classList.add('correct');
-    });
-    setFeedback(`❌ It was ${word.emoji}  "${word.word}"`,'fb-err');
-  }
-
-  await delay(1000);
-  currentIdx++;
-  if(currentIdx<currentWords.length){
-    tipBtn.textContent='💡 Show Tip';tipBtn.disabled=false;
-    showQuestion();
-  } else finishLevel();
-}
-
-/* ─── Skip ───────────────────────────────────────────────────── */
-skipBtn.addEventListener('click',()=>{
-  if(currentIdx>=currentWords.length)return;
-  document.querySelectorAll('.emoji-btn').forEach(b=>b.disabled=true);
-  const w=currentWords[currentIdx];
-  setWord(`"${w.word}"`, 'Skipped');
-  wordStage.classList.remove('hidden-state');
-  setFeedback(`↩ Skipped — it was ${w.emoji}  "${w.word}"`,'fb-skip');
-  streak=0;showStreak();
-  setTimeout(()=>{
-    currentIdx++;
-    if(currentIdx<currentWords.length){
-      tipBtn.textContent='💡 Show Tip';tipBtn.disabled=false;
-      showQuestion();
-    } else finishLevel();
-  },800);
-});
-
-/* ─── Finish level ───────────────────────────────────────────── */
-function finishLevel(){
-  const elapsed=Math.round((Date.now()-levelStart)/1000);
-  const acc=Math.round((correct/currentWords.length)*100);
-  let bonus=0;
-  if(elapsed<30)bonus=50;else if(elapsed<45)bonus=30;else if(elapsed<60)bonus=10;
-  if(bonus>0&&acc===100){score+=bonus;scoreDisplay.textContent=score;}
-
-  progress.style.width='100%';
-  optionsBlock.style.display='block';
-  emojiGrid.innerHTML='';
-  skipBtn.style.display='none';
-  tipBtn.style.display='none';
-  setWord('—');
-
-  const add=currentLevel%2===0?2:1;
-  wordsPerLevel+=add;
-
-  const card=document.createElement('div');
-  card.className='lc-card pop';
-  card.innerHTML=`
-    <div class="font-display font-black text-2xl text-tinta mb-2">Level ${currentLevel+1} Done! 🏆</div>
-    <div class="font-mono text-xs text-bruma leading-relaxed mb-1">
-      Accuracy: <strong class="text-tinta">${acc}%</strong> &nbsp;·&nbsp; Time: <strong class="text-tinta">${elapsed}s</strong>
-      ${bonus>0&&acc===100?`<br><span style="color:var(--gold)">⚡ Speed Bonus +${bonus}</span>`:''}
+  <dialog id="helpDialog" style="border:0;border-radius:28px;padding:0;max-width:min(520px,calc(100% - 28px));background:var(--lienzo);box-shadow:0 40px 90px rgba(0,0,0,.55)">
+    <div style="padding:24px">
+      <h2 class="display" style="font-size:2rem;margin:0 0 10px;line-height:1">How to Play</h2>
+      <ol style="padding-left:20px;color:var(--tinta-soft);line-height:1.6;margin:0 0 18px">
+        <li>Tap <strong style="color:var(--coral)">Start Listening</strong>.</li>
+        <li>Listen to the English words in exact order.</li>
+        <li>Hold the sequence during the countdown.</li>
+        <li>Choose the emoji for word #1, then #2, then #3.</li>
+        <li>Use <strong>Tip</strong> if stuck, or <strong>Replay</strong> to rehear the full sequence. Both cost points.</li>
+        <li>Finish the level and review your memory trace.</li>
+      </ol>
+      <button class="btn btn-coral" id="closeHelpBtn" style="width:100%">Start Training</button>
     </div>
-    <p class="font-mono text-xs text-mentadeep font-semibold mb-4">
-      🔥 Next level: ${wordsPerLevel} words (+${add})
-    </p>
-    <button class="btn btn-coral" id="continueBtn" style="width:100%;">
-      Level ${currentLevel+2} →
-    </button>`;
-  feedback.textContent='';feedback.className='';
-  feedback.appendChild(card);
+  </dialog>
 
-  $('continueBtn').addEventListener('click',()=>{
-    currentLevel++;
-    levelCircle.textContent=levelLabel.textContent=levelDisplay.textContent=currentLevel+1;
-    wordCount.textContent=wordsPerLevel;
-    instruction.innerHTML=`Ready for Level <strong class="text-coral">${currentLevel+1}</strong>! Press <strong>Start Listening</strong> to hear <strong>${wordsPerLevel}</strong> words.`;
-    optionsBlock.style.display='none';
-    progress.style.width='0%';
-    setWord('—');
-    startBtn.style.display='inline-flex';
-    startBtn.disabled=false;startBtn.classList.remove('off');
-    feedback.textContent='';feedback.className='';
-  });
+  <script>
+    const SOCIAL_WHATSAPP = '573197894038';
+    const MODES = {
+      warm: {label:'Warm-up', icon:'🌱', base:4, step:1, hold:4, display:1050, bonus:5, desc:'Balanced. Best for daily practice.'},
+      deep: {label:'Deep Recovery', icon:'🧘', base:5, step:1, hold:6, display:1250, bonus:8, desc:'Slower listening, stronger retention.'},
+      pressure: {label:'Pressure Recall', icon:'⚡', base:6, step:2, hold:3, display:760, bonus:12, desc:'Hard mode for fast recall.'}
+    };
+    const WORD_BANK = [
+      {word:'sun',emoji:'☀️',cat:'nature'},{word:'tree',emoji:'🌳',cat:'nature'},{word:'cat',emoji:'🐱',cat:'animal'},{word:'book',emoji:'📚',cat:'object'},
+      {word:'heart',emoji:'❤️',cat:'symbol'},{word:'star',emoji:'⭐',cat:'sky'},{word:'music',emoji:'🎵',cat:'sound'},{word:'flower',emoji:'🌸',cat:'nature'},
+      {word:'moon',emoji:'🌙',cat:'sky'},{word:'rocket',emoji:'🚀',cat:'object'},{word:'pizza',emoji:'🍕',cat:'food'},{word:'rainbow',emoji:'🌈',cat:'nature'},
+      {word:'camera',emoji:'📷',cat:'object'},{word:'butterfly',emoji:'🦋',cat:'animal'},{word:'mountain',emoji:'⛰️',cat:'nature'},{word:'diamond',emoji:'💎',cat:'object'},
+      {word:'castle',emoji:'🏰',cat:'place'},{word:'globe',emoji:'🌍',cat:'place'},{word:'trophy',emoji:'🏆',cat:'object'},{word:'lightning',emoji:'⚡',cat:'nature'},
+      {word:'fire',emoji:'🔥',cat:'nature'},{word:'crown',emoji:'👑',cat:'object'},{word:'ocean',emoji:'🌊',cat:'nature'},{word:'volcano',emoji:'🌋',cat:'nature'},
+      {word:'telescope',emoji:'🔭',cat:'object'},{word:'compass',emoji:'🧭',cat:'object'},{word:'crystal',emoji:'🔮',cat:'object'},{word:'tornado',emoji:'🌪️',cat:'nature'},
+      {word:'anchor',emoji:'⚓',cat:'object'},{word:'hourglass',emoji:'⏳',cat:'object'},{word:'apple',emoji:'🍎',cat:'food'},{word:'bike',emoji:'🚲',cat:'transport'},
+      {word:'coffee',emoji:'☕',cat:'food'},{word:'dog',emoji:'🐶',cat:'animal'},{word:'elephant',emoji:'🐘',cat:'animal'},{word:'football',emoji:'⚽',cat:'sport'},
+      {word:'guitar',emoji:'🎸',cat:'music'},{word:'house',emoji:'🏠',cat:'place'},{word:'ice cream',emoji:'🍦',cat:'food'},{word:'key',emoji:'🔑',cat:'object'},
+      {word:'lion',emoji:'🦁',cat:'animal'},{word:'microphone',emoji:'🎤',cat:'music'},{word:'owl',emoji:'🦉',cat:'animal'},{word:'penguin',emoji:'🐧',cat:'animal'},
+      {word:'robot',emoji:'🤖',cat:'object'},{word:'snowflake',emoji:'❄️',cat:'nature'},{word:'turtle',emoji:'🐢',cat:'animal'},{word:'umbrella',emoji:'☂️',cat:'object'},
+      {word:'whale',emoji:'🐋',cat:'animal'},{word:'plane',emoji:'✈️',cat:'transport'},{word:'bridge',emoji:'🌉',cat:'place'},{word:'train',emoji:'🚆',cat:'transport'},
+      {word:'ship',emoji:'🚢',cat:'transport'},{word:'map',emoji:'🗺️',cat:'object'},{word:'bell',emoji:'🔔',cat:'object'},{word:'magnet',emoji:'🧲',cat:'object'},
+      {word:'battery',emoji:'🔋',cat:'object'},{word:'hammer',emoji:'🔨',cat:'object'},{word:'shield',emoji:'🛡️',cat:'object'},{word:'ladder',emoji:'🪜',cat:'object'},
+      {word:'bread',emoji:'🍞',cat:'food'},{word:'carrot',emoji:'🥕',cat:'food'},{word:'cookie',emoji:'🍪',cat:'food'},{word:'grapes',emoji:'🍇',cat:'food'},
+      {word:'dragon',emoji:'🐉',cat:'animal'},{word:'eagle',emoji:'🦅',cat:'animal'},{word:'frog',emoji:'🐸',cat:'animal'},{word:'spider',emoji:'🕷️',cat:'animal'},
+      {word:'clock',emoji:'🕒',cat:'object'},{word:'door',emoji:'🚪',cat:'object'},{word:'chair',emoji:'🪑',cat:'object'},{word:'bed',emoji:'🛏️',cat:'object'}
+    ];
 
-  if(acc===100)spawnSparks($('continueBtn'),12);
-}
+    const $ = id => document.getElementById(id);
+    const els = {
+      waveBars:$('waveBars'), modeList:$('modeList'), modeChip:$('modeChip'), levelMark:$('levelMark'), levelText:$('levelText'), scoreText:$('scoreText'), streakText:$('streakText'), wordCountText:$('wordCountText'), bestText:$('bestText'), heroBest:$('heroBest'), progressBar:$('progressBar'), progressText:$('progressText'), stageLabel:$('stageLabel'), stageWord:$('stageWord'), stageSub:$('stageSub'), memoryStage:$('memoryStage'), startBtn:$('startBtn'), replayBtn:$('replayBtn'), resetBtn:$('resetBtn'), counterText:$('counterText'), instruction:$('instruction'), optionGrid:$('optionGrid'), feedback:$('feedback'), tipBtn:$('tipBtn'), skipBtn:$('skipBtn'), nextBtn:$('nextBtn'), reviewBlock:$('reviewBlock'), reviewGrid:$('reviewGrid'), toggleReviewBtn:$('toggleReviewBtn'), voiceSelect:$('voiceSelect'), rateRange:$('rateRange'), rateLabel:$('rateLabel'), gapRange:$('gapRange'), gapLabel:$('gapLabel'), helpDialog:$('helpDialog'), helpBtnTop:$('helpBtnTop'), closeHelpBtn:$('closeHelpBtn')
+    };
 
-/* ─── Restart ────────────────────────────────────────────────── */
-function restartGame(){
-  currentLevel=0;score=0;streak=0;wordsPerLevel=4;
-  scoreDisplay.textContent=0;
-  showStreak();
-  clonePool();
-  startBtn.textContent='🎧 Start Listening';
-  initUI();
-}
+    let state = {
+      mode:'warm', phase:'prepare', level:1, score:0, streak:0,
+      best:Number(localStorage.getItem('fmr_best_score') || 0), pool:[], words:[], index:0,
+      correct:0, mistakes:0, tips:0, replays:0, review:[], levelStart:0,
+      voices:[], selectedVoice:null, audioReady:'speechSynthesis' in window, busy:false
+    };
 
-/* ─── Keyboard 1–4 ───────────────────────────────────────────── */
-document.addEventListener('keydown',e=>{
-  if(helpModal.classList.contains('open'))return;
-  if(optionsBlock.style.display!=='block')return;
-  const keys=['1','2','3','4'];
-  const i=keys.indexOf(e.key);
-  if(i!==-1){
-    const btns=[...document.querySelectorAll('.emoji-btn')];
-    if(btns[i]&&!btns[i].disabled)btns[i].click();
-  }
-});
+    function shuffle(arr){
+      const a=[...arr];
+      for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+      return a;
+    }
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    function currentMode(){return MODES[state.mode];}
+    function wordsForLevel(){return Math.min(16, currentMode().base + Math.max(0,state.level-1)*currentMode().step);}
+    function refillPool(){state.pool = shuffle(WORD_BANK);}
+    function getRoundWords(n){if(state.pool.length<n) refillPool(); return state.pool.splice(0,n);}
 
-/* ─── Boot ───────────────────────────────────────────────────── */
-const delay=ms=>new Promise(r=>setTimeout(r,ms));
+    function drawWave(){
+      els.waveBars.innerHTML='';
+      for(let i=0;i<24;i++){
+        const bar=document.createElement('i');
+        bar.style.height=(11+Math.abs(Math.sin(i*.62))*30)+'px';
+        bar.style.animationDelay=(i*.07)+'s';
+        bar.style.animationDuration=(1.05+(i%5)*.12)+'s';
+        els.waveBars.appendChild(bar);
+      }
+    }
 
-function boot(){
-  clonePool();initUI();
-  startBtn.addEventListener('click',async()=>{
-    if(startBtn.textContent.includes('Play Again')){restartGame();return;}
-    startBtn.disabled=true;startBtn.classList.add('off');
-    await startListening();
-    startBtn.disabled=false;startBtn.classList.remove('off');
-  });
-}
+    function setPhase(phase){
+      state.phase=phase;
+      document.querySelectorAll('.phase').forEach(node=>{
+        const p=node.dataset.phase;
+        node.classList.toggle('active',p===phase);
+        const order=['prepare','listen','hold','recover'];
+        node.classList.toggle('done',order.indexOf(p)<order.indexOf(phase));
+      });
+    }
 
-if(speechOk&&typeof speechSynthesis!=='undefined'){
-  if(speechSynthesis.getVoices().length===0)setTimeout(loadVoices,400);
-  else loadVoices();
-}
-boot();
-</script>
+    function updateStats(){
+      els.levelMark.textContent = state.level;
+      els.levelText.textContent = state.level;
+      els.scoreText.textContent = state.score;
+      els.streakText.textContent = state.streak;
+      els.wordCountText.textContent = wordsForLevel();
+      els.bestText.textContent = state.best;
+      els.heroBest.textContent = state.best;
+      els.modeChip.textContent = currentMode().label;
+      const pct = state.words.length ? Math.round((state.index/state.words.length)*100) : 0;
+      els.progressBar.style.width = pct + '%';
+      els.progressText.textContent = pct + '%';
+      els.counterText.textContent = state.words.length ? `${Math.min(state.index+1,state.words.length)} / ${state.words.length}` : '0 / 0';
+    }
 
+    function setStage(word,label='Ready',sub=''){
+      els.stageWord.classList.remove('hidden-word');
+      els.stageWord.textContent=word;
+      els.stageLabel.textContent=label;
+      els.stageSub.innerHTML=sub;
+    }
+    function setHiddenStage(){
+      els.stageLabel.textContent='Recover';
+      els.stageWord.textContent='◆ ◆ ◆';
+      els.stageWord.classList.add('hidden-word');
+      els.stageSub.innerHTML='<small>Recall the word from memory, then pick its emoji.</small>';
+    }
+    function setFeedback(html,type='neutral'){
+      els.feedback.innerHTML = html ? `<div class="fb ${type} pop">${html}</div>` : '';
+    }
+    function lockModes(locked){document.querySelectorAll('.mode-btn').forEach(btn=>btn.disabled=locked);}
+    function setControls({start=false,replay=false,tip=false,skip=false,next=false}={}){
+      els.startBtn.disabled=!start;
+      els.replayBtn.disabled=!replay;
+      els.tipBtn.disabled=!tip;
+      els.skipBtn.disabled=!skip;
+      els.nextBtn.style.display=next?'inline-flex':'none';
+    }
 
-</body></html>
+    function renderModes(){
+      els.modeList.innerHTML='';
+      Object.entries(MODES).forEach(([key,mode])=>{
+        const btn=document.createElement('button');
+        btn.type='button';
+        btn.className='mode-btn'+(state.mode===key?' active':'');
+        btn.innerHTML=`<strong><span>${mode.icon} ${mode.label}</span><span class="chip">${mode.base}+ words</span></strong><span>${mode.desc}</span>`;
+        btn.addEventListener('click',()=>{
+          if(state.busy) return;
+          state.mode=key;
+          renderModes();
+          resetRoundOnly();
+        });
+        els.modeList.appendChild(btn);
+      });
+    }
+
+    function renderOptions(){
+      els.optionGrid.innerHTML='';
+      const current = state.words[state.index];
+      if(!current) return;
+      const wrongs = shuffle(WORD_BANK.filter(item => item.emoji !== current.emoji && !state.review.some(r => r.selected===item.emoji)).map(item => item.emoji)).slice(0,3);
+      const options = shuffle([current.emoji, ...wrongs]);
+      options.forEach((emoji,i)=>{
+        const btn=document.createElement('button');
+        btn.type='button';
+        btn.className='emoji-btn pop';
+        btn.style.animationDelay=(i*.04)+'s';
+        btn.dataset.emoji=emoji;
+        btn.setAttribute('role','listitem');
+        btn.setAttribute('aria-label',`Option ${i+1}: ${emoji}`);
+        btn.innerHTML=`<span>${emoji}</span><span class="key">[${i+1}]</span>`;
+        btn.addEventListener('click',()=>checkAnswer(emoji,btn));
+        els.optionGrid.appendChild(btn);
+      });
+    }
+
+    function speak(text){
+      if(!state.audioReady) return Promise.resolve();
+      return new Promise(resolve=>{
+        try{
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = Number(els.rateRange.value || .88);
+          utterance.pitch = 1.03;
+          utterance.lang = 'en-US';
+          const idx = Number(els.voiceSelect.value);
+          if(state.voices[idx]) utterance.voice = state.voices[idx];
+          let done=false;
+          const finish=()=>{if(done)return;done=true;resolve();};
+          utterance.onend=finish; utterance.onerror=finish;
+          window.speechSynthesis.speak(utterance);
+          setTimeout(finish, Math.max(1600, text.length*95));
+        }catch(err){resolve();}
+      });
+    }
+
+    function loadVoices(){
+      if(!state.audioReady) return;
+      const voices = window.speechSynthesis.getVoices() || [];
+      state.voices = voices;
+      els.voiceSelect.innerHTML='';
+      if(!voices.length){
+        els.voiceSelect.innerHTML='<option value="">Default browser voice</option>';
+        return;
+      }
+      const sorted = voices.map((voice,index)=>({voice,index,score:voice.lang.startsWith('en-US')?0:voice.lang.startsWith('en')?1:2})).sort((a,b)=>a.score-b.score || a.voice.name.localeCompare(b.voice.name));
+      sorted.forEach(({voice,index})=>{
+        const option=document.createElement('option');
+        option.value=index;
+        option.textContent=`${voice.name} – ${voice.lang}`;
+        els.voiceSelect.appendChild(option);
+      });
+    }
+
+    async function playSequence({penalty=false}={}){
+      if(!state.words.length || state.busy) return;
+      const resumeIndex = penalty ? state.index : 0;
+      if(penalty){
+        state.replays++;
+        state.score=Math.max(0,state.score-10);
+        updateStats();
+      }
+      state.busy=true;
+      lockModes(true);
+      setControls({});
+      setPhase('listen');
+      els.optionGrid.innerHTML='';
+      setFeedback('', 'neutral');
+      els.instruction.innerHTML = '<strong>Listen:</strong> hear each word and keep the order. Do not rush.';
+      await speak(`Level ${state.level}. Listen carefully to ${state.words.length} words.`);
+      await delay(250);
+      for(let i=0;i<state.words.length;i++){
+        state.index=i;
+        updateStats();
+        const item=state.words[i];
+        setStage(item.word,`Word ${i+1} of ${state.words.length}`,`<small>Category: ${item.cat}</small>`);
+        els.memoryStage.classList.remove('pop'); void els.memoryStage.offsetWidth; els.memoryStage.classList.add('pop');
+        await speak(item.word);
+        await delay(currentMode().display);
+        setStage('—','Encoding','Hold the sound and image.');
+        await delay(Number(els.gapRange.value || 650));
+      }
+      await holdCountdown();
+      state.index=resumeIndex;
+      state.busy=false;
+      showQuestion();
+    }
+
+    async function holdCountdown(){
+      setPhase('hold');
+      const seconds = currentMode().hold + Math.min(5, Math.floor(state.level/2));
+      for(let s=seconds;s>0;s--){
+        els.stageWord.classList.remove('hidden-word');
+        els.stageLabel.textContent='Hold';
+        els.stageWord.innerHTML=`<span class="countdown">${s}</span>`;
+        els.stageSub.innerHTML='<small>Replay the sequence silently in your mind.</small>';
+        els.instruction.innerHTML = `<strong>Hold:</strong> ${s}s retention gap. Recover the order before options appear.`;
+        await delay(1000);
+      }
+      await speak('Recover the sequence now.');
+    }
+
+    function startRound(){
+      if(state.busy) return;
+      state.words = getRoundWords(wordsForLevel());
+      state.index = 0; state.correct=0; state.mistakes=0; state.tips=0; state.replays=0; state.review=[]; state.levelStart=Date.now();
+      els.reviewBlock.classList.remove('open');
+      els.reviewGrid.innerHTML=''; els.reviewGrid.hidden=false;
+      playSequence();
+    }
+
+    function showQuestion(){
+      const current = state.words[state.index];
+      if(!current){finishLevel();return;}
+      setPhase('recover');
+      setHiddenStage();
+      els.instruction.innerHTML = `<strong>Word ${state.index+1}:</strong> Which emoji matches the word you heard in this position?`;
+      setFeedback('', 'neutral');
+      renderOptions();
+      updateStats();
+      setControls({replay:true,tip:true,skip:true});
+    }
+
+    async function checkAnswer(selected,button){
+      if(state.busy) return;
+      state.busy=true;
+      document.querySelectorAll('.emoji-btn').forEach(btn=>btn.disabled=true);
+      const item = state.words[state.index];
+      const ok = selected === item.emoji;
+      const tipUsed = button.dataset.tip === 'true';
+      const base = 10 + state.level*2 + currentMode().bonus;
+      let points = 0;
+      if(ok){
+        points = base + Math.min(12,state.streak*2) - (tipUsed ? 5 : 0);
+        state.score += Math.max(1,points);
+        state.correct++; state.streak++;
+        button.classList.add('correct');
+        setFeedback(`✅ Correct: ${item.emoji} <strong>${item.word}</strong> · +${Math.max(1,points)} pts`,'ok');
+        spawnSparks(button,5);
+      }else{
+        state.mistakes++; state.streak=0;
+        button.classList.add('wrong');
+        document.querySelectorAll('.emoji-btn').forEach(btn=>{if(btn.dataset.emoji===item.emoji)btn.classList.add('correct')});
+        setFeedback(`❌ Not this one. Correct answer: ${item.emoji} <strong>${item.word}</strong>`,'err');
+      }
+      state.review.push({index:state.index+1, word:item.word, emoji:item.emoji, selected, ok, tip:tipUsed, skipped:false});
+      setStage(item.word, ok?'Recovered':'Correction',`${item.emoji} · <small>${item.cat}</small>`);
+      updateStats();
+      await delay(850);
+      state.index++;
+      state.busy=false;
+      state.index < state.words.length ? showQuestion() : finishLevel();
+    }
+
+    function useTip(){
+      const item=state.words[state.index];
+      if(!item) return;
+      state.tips++; state.score=Math.max(0,state.score-5); state.streak=0;
+      setStage(item.word,'Tip Used',`${item.emoji} · <small>−5 pts</small>`);
+      document.querySelectorAll('.emoji-btn').forEach(btn=>btn.dataset.tip='true');
+      els.tipBtn.disabled=true;
+      updateStats();
+    }
+
+    async function skipQuestion(){
+      if(state.busy) return;
+      state.busy=true;
+      const item=state.words[state.index];
+      state.streak=0;
+      state.review.push({index:state.index+1, word:item.word, emoji:item.emoji, selected:'—', ok:false, tip:false, skipped:true});
+      document.querySelectorAll('.emoji-btn').forEach(btn=>{btn.disabled=true;if(btn.dataset.emoji===item.emoji)btn.classList.add('correct')});
+      setStage(item.word,'Skipped',`${item.emoji} · <small>${item.cat}</small>`);
+      setFeedback(`↩ Skipped. Correct answer: ${item.emoji} <strong>${item.word}</strong>`,'neutral');
+      updateStats();
+      await delay(750);
+      state.index++;
+      state.busy=false;
+      state.index < state.words.length ? showQuestion() : finishLevel();
+    }
+
+    function finishLevel(){
+      setPhase('prepare');
+      const elapsed=Math.max(1,Math.round((Date.now()-state.levelStart)/1000));
+      const accuracy=Math.round((state.correct/state.words.length)*100);
+      let bonus=0;
+      if(accuracy===100 && state.tips===0 && state.replays===0){bonus=50 + state.level*10;}
+      else if(accuracy>=90){bonus=20;}
+      if(bonus){state.score += bonus;}
+      state.best=Math.max(state.best,state.score);
+      localStorage.setItem('fmr_best_score',String(state.best));
+      els.progressBar.style.width='100%'; els.progressText.textContent='100%';
+      els.optionGrid.innerHTML='';
+      els.instruction.innerHTML = `<strong>Level complete:</strong> review the trace, then move to the next level.`;
+      els.feedback.innerHTML = `
+        <div class="result-card pop">
+          <h3>Level ${state.level} Complete 🏆</h3>
+          <p class="muted" style="margin:0">${accuracy >= 85 ? 'Strong recovery.' : 'Recovery needs slower encoding.'} ${bonus ? `Bonus +${bonus}.` : ''}</p>
+          <div class="result-stats">
+            <div><b>${accuracy}%</b><span>Accuracy</span></div>
+            <div><b>${elapsed}s</b><span>Time</span></div>
+            <div><b>${state.replays}</b><span>Replays</span></div>
+          </div>
+          <button class="btn btn-coral" id="nextLevelInside" style="width:100%">Level ${state.level+1} →</button>
+        </div>`;
+      renderReview();
+      els.reviewBlock.classList.add('open');
+      setStage('—','Review','Check your memory trace before continuing.');
+      updateStats();
+      setControls({start:false,replay:false,tip:false,skip:false,next:true});
+      lockModes(false);
+      $('nextLevelInside').addEventListener('click',nextLevel);
+      if(accuracy===100) spawnSparks(els.feedback,10);
+    }
+
+    function renderReview(){
+      els.reviewGrid.hidden=false;
+      els.toggleReviewBtn.textContent='Hide';
+      els.reviewGrid.innerHTML='';
+      state.review.forEach(item=>{
+        const row=document.createElement('div');
+        row.className='review-item';
+        row.innerHTML=`<span class="num">${String(item.index).padStart(2,'0')}</span><span><strong>${item.word}</strong><br><small>${item.skipped?'Skipped':item.ok?'Recovered':'Missed'}${item.tip?' · tip used':''}</small></span><span style="font-size:1.5rem">${item.emoji}</span>`;
+        els.reviewGrid.appendChild(row);
+      });
+    }
+
+    function nextLevel(){
+      state.level++;
+      state.words=[]; state.index=0;
+      resetRoundOnly(`Ready for Level <strong>${state.level}</strong>. This level has <strong>${wordsForLevel()}</strong> words.`);
+    }
+
+    function resetRoundOnly(message='Press <strong>Start Listening</strong> when you are ready.'){
+      state.phase='prepare'; state.busy=false; state.words=[]; state.index=0; state.correct=0; state.mistakes=0; state.tips=0; state.replays=0; state.review=[];
+      setPhase('prepare'); setStage('—','Ready','Press Start Listening to begin.');
+      els.optionGrid.innerHTML=''; els.feedback.innerHTML=''; els.reviewGrid.hidden=false; els.reviewBlock.classList.remove('open');
+      els.instruction.innerHTML = `<strong>Prepare:</strong> ${message}`;
+      els.progressBar.style.width='0%'; els.progressText.textContent='0%'; els.counterText.textContent='0 / 0';
+      setControls({start:true}); updateStats(); lockModes(false);
+    }
+
+    function resetSession(){
+      window.speechSynthesis?.cancel?.();
+      state.level=1; state.score=0; state.streak=0; refillPool(); renderModes(); resetRoundOnly('New session ready. Choose your mode or begin.');
+    }
+
+    function spawnSparks(target,n=6){
+      const rect=target.getBoundingClientRect();
+      const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+      const symbols=['✨','⭐','🌟','💫','🪙','🔥'];
+      for(let i=0;i<n;i++){
+        setTimeout(()=>{
+          const s=document.createElement('span');
+          s.className='spark'; s.textContent=symbols[i%symbols.length];
+          s.style.left=(cx + Math.random()*110 - 55)+'px'; s.style.top=(cy + Math.random()*30 - 15)+'px';
+          document.body.appendChild(s); s.addEventListener('animationend',()=>s.remove());
+        },i*45);
+      }
+    }
+
+    document.addEventListener('keydown',event=>{
+      if(els.helpDialog.open) return;
+      const keys=['1','2','3','4'];
+      const idx=keys.indexOf(event.key);
+      if(idx>-1){
+        const btn=[...document.querySelectorAll('.emoji-btn')][idx];
+        if(btn && !btn.disabled) btn.click();
+      }
+    });
+
+    els.startBtn.addEventListener('click',startRound);
+    els.replayBtn.addEventListener('click',()=>playSequence({penalty:true}));
+    els.resetBtn.addEventListener('click',resetSession);
+    els.tipBtn.addEventListener('click',useTip);
+    els.skipBtn.addEventListener('click',skipQuestion);
+    els.nextBtn.addEventListener('click',nextLevel);
+    els.toggleReviewBtn.addEventListener('click',()=>{
+      els.reviewGrid.hidden = !els.reviewGrid.hidden;
+      els.toggleReviewBtn.textContent = els.reviewGrid.hidden ? 'Show' : 'Hide';
+    });
+    els.rateRange.addEventListener('input',()=>els.rateLabel.textContent=Number(els.rateRange.value).toFixed(2)+'×');
+    els.gapRange.addEventListener('input',()=>els.gapLabel.textContent=els.gapRange.value+'ms');
+    els.helpBtnTop.addEventListener('click',()=>els.helpDialog.showModal());
+    els.closeHelpBtn.addEventListener('click',()=>els.helpDialog.close());
+    els.helpDialog.addEventListener('click',event=>{if(event.target===els.helpDialog)els.helpDialog.close();});
+
+    if(state.audioReady){
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged=loadVoices;
+    }
+    drawWave(); refillPool(); renderModes(); resetRoundOnly('Choose a mode, then start. Use headphones for better encoding.');
+  </script>
+</body>
+</html>

@@ -7,9 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -37,8 +37,19 @@
   <style>
     :root{ --coral:#FF5A3C; --menta:#15B79E; --ambar:#FFB627; --tinta:#1A1730; }
     html{ scroll-behavior:smooth; }
-    body{ background:#FCF8F3; overscroll-behavior-y:none; }
+    body{ background:#FCF8F3; overscroll-behavior-y:none; -webkit-text-size-adjust:100%; }
     button,a,input{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+
+    /* Mobile: ensure all buttons have at least 44px tap target */
+    button{ min-height:44px; }
+
+    /* Prevent iOS input zoom (font-size < 16px triggers zoom) */
+    input, select, textarea{ font-size:16px !important; }
+
+    /* Patterns strategy list on mobile: full width, detail below */
+    @media(max-width:1023px){
+      .patterns-detail-card{ order:-1; }
+    }
     .wave{ display:flex; align-items:flex-end; gap:4px; height:34px; justify-content:center; }
     .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
       background:linear-gradient(to top, var(--menta), var(--coral) 60%, var(--ambar));
@@ -65,7 +76,7 @@
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
+<script type="text/babel" data-presets="react" data-type="module">
   const { useState, useEffect, useMemo, useRef } = React;
 
   const WHATSAPP_NUMBER = "573197894038";
@@ -411,17 +422,33 @@
 
   function AnswerBox({ value, setValue, onSubmit, disabled=false }){
     const ref = useRef(null);
-    useEffect(() => { if(ref.current && !disabled) ref.current.focus(); }, [disabled]);
+    useEffect(() => {
+      // Only auto-focus on desktop — on mobile the keyboard opening
+      // unexpectedly breaks layout and UX
+      if(ref.current && !disabled && window.matchMedia('(hover:hover)').matches){
+        ref.current.focus();
+      }
+    }, [disabled]);
     return (
       <form onSubmit={e => { e.preventDefault(); onSubmit(); }} className="space-y-3">
         <input ref={ref} value={value}
-          onChange={e => setValue(e.target.value.replace(',', '.'))}
+          onChange={e => {
+            // Normalize comma → dot for decimal inputs on mobile locales
+            setValue(e.target.value.replace(',', '.').replace(/[^0-9.\-]/g, ''));
+          }}
           disabled={disabled}
-          inputMode="decimal" type="number" step="any"
-          placeholder="Escribe tu respuesta"
+          inputMode="decimal"
+          type="text"
+          pattern="[0-9]*[.,]?[0-9]*"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+          placeholder="Tu respuesta"
+          style={{ fontSize:"16px" }}
           className="w-full rounded-3xl border-2 border-tinta/10 bg-lienzo px-5 py-4 text-center text-3xl font-display font-bold text-tinta focus:border-coral focus:bg-white outline-none transition disabled:opacity-60" />
-        <button disabled={disabled}
-          className="w-full rounded-full bg-tinta text-paper font-semibold py-4 hover:bg-coral transition disabled:opacity-60">
+        <button disabled={disabled} type="submit"
+          className="w-full rounded-full bg-tinta text-paper font-semibold py-4 hover:bg-coral transition disabled:opacity-60 min-h-[52px]">
           Enviar respuesta
         </button>
       </form>
@@ -480,7 +507,7 @@
           </div>
 
           {/* Detail card */}
-          <div className="bg-lienzo rounded-[28px] p-5 sm:p-7 border border-tinta/5">
+          <div className="patterns-detail-card bg-lienzo rounded-[28px] p-5 sm:p-7 border border-tinta/5">
             {/* Header */}
             <div className="flex items-start gap-3 mb-1">
               <span className="text-4xl">{active.icon}</span>
@@ -571,7 +598,7 @@
     const submit = () => {
       if(!running) return;
       const val = parseFloat(answer);
-      if(Number.isNaN(val)) return;
+      if(!isFinite(val)) return;
       const ok = Math.abs(val - problem.answer) < 0.01;
       if(ok){
         setCorrect(c => c + 1); setStreak(s => s + 1);
@@ -631,7 +658,7 @@
 
     const submit = () => {
       const val = parseFloat(answer);
-      if(Number.isNaN(val) || result) return;
+      if(!isFinite(val) || result) return;
       const ok = Math.abs(val - problem.answer) < 0.01;
       if(ok){
         addScore(14 + Math.min(streak, 8));
@@ -733,7 +760,7 @@
 
     const submit = () => {
       const val = parseFloat(answer);
-      if(Number.isNaN(val) || done) return;
+      if(!isFinite(val) || done) return;
       const ok = Math.abs(val - current.answer) < 0.01;
       if(ok){ setHits(h => h + 1); }
       else {
@@ -898,7 +925,7 @@
     const resetAll = () => { setScore(0); setBest(0); setStreak(0); setJournal([]); try{["mg_score","mg_best","mg_journal"].forEach(k=>localStorage.removeItem(k));}catch(e){} };
 
     return (
-      <div className="font-sans text-tinta min-h-screen relative pb-24 sm:pb-10">
+      <div className="font-sans text-tinta min-h-screen relative pb-28 sm:pb-10">
         <div className="fixed inset-0 -z-10" style={{
           background:"radial-gradient(60% 50% at 12% 0%, rgba(255,90,60,0.07), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(21,183,158,0.10), transparent 60%), #FCF8F3"
         }} />
@@ -927,7 +954,7 @@
             <div className="glass rounded-full border border-white/60 shadow-soft p-1.5 flex gap-1.5 overflow-x-auto hide-scrollbar">
               {MODES.map(m => (
                 <button key={m.id} onClick={() => setMode(m.id)}
-                  className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition ${mode === m.id ? "bg-tinta text-paper shadow-md" : "text-tintasoft hover:text-coral"}`}>
+                  className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition min-h-[44px] ${mode === m.id ? "bg-tinta text-paper shadow-md" : "text-tintasoft hover:text-coral"}`}>
                   {m.label}
                 </button>
               ))}

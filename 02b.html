@@ -1,15 +1,16 @@
+
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Complete Sentences — Present/Past Simple & Progressive · Connectors · ProfGermandario</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com/">
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Complete Sentences — Verb Tenses · ProfGermandario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -37,11 +38,10 @@
       }
     }
   </script>
-
   <style>
     :root{ --coral:#FF5A3C; --menta:#15B79E; --ambar:#FFB627; --tinta:#1A1730; --vino:#7B2CBF; }
     html{ scroll-behavior:smooth; }
-    body{ background:#FCF8F3; overscroll-behavior-y:none; -webkit-text-size-adjust:100%; overflow-x:hidden; }
+    body{ background:#FCF8F3; overscroll-behavior-y:none; -webkit-text-size-adjust:100%; }
     button,a,input{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
     .wave{ display:flex; align-items:flex-end; gap:3px; height:26px; justify-content:center; }
     .wave i{ display:block; width:3px; border-radius:3px; transform-origin:bottom;
@@ -63,198 +63,136 @@
     @keyframes waPulse{ 0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.5);} 60%{box-shadow:0 0 0 10px rgba(37,211,102,0);} }
     .wa-pulse{ animation:waPulse 2.2s ease infinite; }
     :focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:12px; }
-    .glass-mind{ background:rgba(255,255,255,.72); border:1px solid rgba(26,23,48,.10); box-shadow:0 8px 24px rgba(26,23,48,.08); backdrop-filter:blur(10px); }
-    .social-footer-grid{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
-    .social-link{ width:2.5rem; height:2.5rem; display:flex; align-items:center; justify-content:center; border-radius:9999px; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-    .social-link:hover{ transform:scale(1.1); border-color:rgba(255,90,60,.35); }
-    .social-link i{ font-size:1.08rem; line-height:1; }
-    .social-link .fa-whatsapp{ color:#34D399; }
-    .social-link .fa-envelope{ color:#FACC15; }
-    .social-link .fa-tiktok{ color:#111827; }
-    .social-link .fa-facebook{ color:#2563EB; }
-    .social-link .fa-linkedin{ color:#3B82F6; }
-    .social-link .fa-twitter, .social-link .fa-x-twitter{ color:#4B5563; }
-    .social-link .fa-reddit{ color:#F97316; }
-    .social-link .fa-youtube{ color:#DC2626; }
-    .bg-menta\/8{ background-color:rgb(21 183 158 / .08); }
-    .bg-coral\/8{ background-color:rgb(255 90 60 / .08); }
-    .bg-menta\/12{ background-color:rgb(21 183 158 / .12); }
-    .bg-tinta\/8{ background-color:rgb(26 23 48 / .08); }
-    .border-tinta\/8{ border-color:rgb(26 23 48 / .08); }
-    .border-tinta\/12{ border-color:rgb(26 23 48 / .12); }
-
-    .audio-btn{ display:inline-flex; align-items:center; justify-content:center; gap:.45rem; border-radius:9999px; border:1px solid rgba(26,23,48,.12); background:rgba(255,255,255,.82); color:#1A1730; font-weight:700; font-size:.78rem; padding:.58rem .85rem; transition:transform .18s ease,border-color .18s ease,background-color .18s ease; }
-    .audio-btn:hover{ transform:translateY(-1px); border-color:rgba(21,183,158,.45); background:rgba(21,183,158,.08); }
-    .audio-btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
-    .tense-lens-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.5rem; }
-    .tense-lens-box{ border-radius:16px; background:rgba(255,255,255,.62); border:1px solid rgba(26,23,48,.08); padding:.65rem .75rem; }
-    .tense-lens-label{ display:block; font-family:"DM Mono",ui-monospace,monospace; font-size:.55rem; letter-spacing:.16em; text-transform:uppercase; color:#76718A; margin-bottom:.15rem; }
-    .tense-lens-value{ display:block; font-weight:800; color:#1A1730; font-size:.88rem; }
-    @media(max-width:640px){
-      .game-shell{ min-height:100dvh; padding-bottom:calc(7.5rem + env(safe-area-inset-bottom)); }
-      .game-container{ width:100%; max-width:100%; padding-left:clamp(14px,4vw,18px); padding-right:clamp(14px,4vw,18px); }
-      button,.social-link{ min-height:44px; }
-      .mobile-actions{ display:grid; grid-template-columns:1fr; }
-      .mobile-actions > button{ width:100%; }
-      .sentence-token{ padding:.65rem .85rem; font-size:.95rem; }
-      .wa-float{ right:1rem; bottom:calc(1rem + env(safe-area-inset-bottom)); padding:.72rem .9rem; }
-      .social-footer-grid{ gap:.75rem; }
-      .tense-lens-grid{ grid-template-columns:1fr; }
-      .audio-btn{ width:100%; min-height:44px; }
-    }
-    @media(max-width:380px){
-      .connector-grid{ grid-template-columns:1fr!important; }
-      .filter-chip{ width:100%; justify-content:center; }
-    }
     @media(prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important;} }
   </style>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
+<script type="text/babel" data-presets="react">
 const { useState, useEffect, useMemo } = React;
 
-const WA_NUMBER = "573197894038";
-const WA_MSG    = encodeURIComponent("Hola Prof. Germandario! Estoy practicando Complete Sentences y quiero más info!");
+const WA_NUMBER = "573001234567";
+const WA_MSG    = encodeURIComponent("Hola Prof. Germandario! Estoy practicando Complete Sentences y quiero mas info!");
 const WA_LINK   = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 
 /* ── SENTENCE DATA ───────────────────────────────────────────────────────────── */
 const SENTENCES = [
   // Present Simple
-  {id:1, tense:"present", type:"regular",
+  {id:1,  tense:"present",     type:"regular",
    parts:["I","walk","to","school","every","day"],
-   tip:"Present Simple describes routines, habits, and facts.",
-   rule:"Present Simple: Subject + base verb. He/She/It adds -s or -es."},
-  {id:2, tense:"present", type:"regular",
-   parts:["She","works","at","the","hospital","because","she","likes","helping","people"],
-   tip:"She works / she likes: third person singular uses -s.",
-   rule:"Present Simple can connect two present facts with because."},
-  {id:3, tense:"present", type:"regular",
-   parts:["They","play","soccer","after","school"],
-   tip:"They → base verb: play, not plays.",
-   rule:"Plural subjects use the base verb in Present Simple."},
-  {id:4, tense:"present", type:"irregular",
-   parts:["He","goes","to","the","gym","before","work"],
-   tip:"go becomes goes with he/she/it.",
-   rule:"Present Simple: He/She/It + verb-s/-es + complement."},
-  {id:5, tense:"present", type:"regular",
-   parts:["We","study","English","and","practice","pronunciation"],
-   tip:"And connects two actions with the same subject: study and practice.",
-   rule:"Present Simple: Subject + base verb + connector + base verb."},
-  {id:6, tense:"present", type:"irregular",
-   parts:["The","dog","eats","its","food","when","it","is","hungry"],
-   tip:"The dog = it, so eat becomes eats.",
-   rule:"When connects a routine to a regular condition."},
-  {id:7, tense:"present", type:"regular",
-   parts:["You","always","talk","very","fast","but","you","speak","clearly"],
-   tip:"Always goes before the main verb: always talk.",
-   rule:"But connects two contrasting ideas in the same tense."},
-  {id:8, tense:"present", type:"regular",
-   parts:["My","brother","plays","soccer","and","my","sister","studies","music"],
-   tip:"Brother plays; sister studies. Both are third person singular.",
-   rule:"Present Simple can join two complete clauses with and."},
-
+   tip:"Subject + base verb + complement. No -ed, no will.",
+   rule:"Present Simple: I/You/We/They + base verb. He/She/It + verb-s."},
+  {id:2,  tense:"present",     type:"regular",
+   parts:["She","works","at","the","hospital"],
+   tip:"3rd person singular: work + s = works.",
+   rule:"He/She/It always gets -s or -es on the main verb."},
+  {id:3,  tense:"present",     type:"regular",
+   parts:["They","like","pizza","on","Fridays"],
+   tip:"They → base form, no -s needed.",
+   rule:"Plural subjects (they, we, you) use the base verb."},
+  {id:4,  tense:"present",     type:"irregular",
+   parts:["He","goes","to","the","gym","daily"],
+   tip:"go → goes (not gos) for He/She/It.",
+   rule:"Irregular 3rd person: go → goes, do → does."},
+  {id:5,  tense:"present",     type:"irregular",
+   parts:["We","have","a","big","family"],
+   tip:"have stays 'have' for We/I/You/They.",
+   rule:"I/We/You/They → have. He/She/It → has."},
+  {id:6,  tense:"present",     type:"regular",
+   parts:["My","brother","plays","soccer","after","school"],
+   tip:"play + s = plays. Possessive + subject + verb.",
+   rule:"3rd person: add -s (plays, talks, runs)."},
+  {id:7,  tense:"present",     type:"irregular",
+   parts:["The","dog","eats","its","food","quickly"],
+   tip:"eat → eats for He/She/It/The dog.",
+   rule:"Animals follow 3rd person singular rules."},
+  {id:8,  tense:"present",     type:"regular",
+   parts:["You","always","talk","very","fast"],
+   tip:"Frequency adverb goes BEFORE the main verb.",
+   rule:"always/usually/often/never → Subject + adverb + verb."},
   // Past Simple
-  {id:9, tense:"past", type:"regular",
-   parts:["I","walked","to","school","yesterday","because","the","bus","was","late"],
-   tip:"Yesterday marks a finished past action.",
-   rule:"Past Simple: Subject + past verb. Regular verbs add -ed."},
-  {id:10, tense:"past", type:"regular",
-   parts:["She","worked","here","last","year","but","she","moved","away"],
-   tip:"Worked and moved are finished past actions.",
-   rule:"Past Simple uses the same past form for all subjects."},
-  {id:11, tense:"past", type:"regular",
-   parts:["They","liked","the","movie","and","talked","about","it"],
-   tip:"Like ends in -e, so add only -d: liked.",
-   rule:"Past Simple: regular verb + -ed/-d."},
-  {id:12, tense:"past", type:"irregular",
-   parts:["He","went","home","after","he","finished","work"],
-   tip:"Go becomes went. Never say goed.",
-   rule:"After connects two finished past actions."},
-  {id:13, tense:"past", type:"irregular",
-   parts:["We","ate","breakfast","before","we","left"],
-   tip:"Eat becomes ate; leave becomes left.",
-   rule:"Past Simple irregular verbs must be memorized."},
-  {id:14, tense:"past", type:"regular",
-   parts:["Maria","studied","hard","so","she","passed","the","test"],
-   tip:"So shows the result of the first action.",
-   rule:"Past Simple can show cause and result with so."},
-  {id:15, tense:"past", type:"regular",
-   parts:["My","mom","cooked","rice","and","beans","for","dinner"],
-   tip:"Cooked is regular past: cook + ed.",
-   rule:"Past Simple describes a completed event."},
-  {id:16, tense:"past", type:"irregular",
-   parts:["The","students","listened","carefully","when","the","teacher","spoke"],
-   tip:"Speak becomes spoke in the past.",
-   rule:"When can connect two completed past actions."},
-
+  {id:9,  tense:"past",        type:"regular",
+   parts:["I","walked","to","school","yesterday"],
+   tip:"Past regular: verb + ed. 'yesterday' = past clue.",
+   rule:"Regular past: walk + ed = walked. Same for ALL subjects!"},
+  {id:10, tense:"past",        type:"regular",
+   parts:["She","worked","here","last","year"],
+   tip:"work + ed = worked. Last year = past time.",
+   rule:"Regular past: worked, talked, played — same form for everyone."},
+  {id:11, tense:"past",        type:"regular",
+   parts:["They","liked","the","movie","a","lot"],
+   tip:"like ends in -e, so just add -d: liked.",
+   rule:"Verbs ending in -e: add -d only (liked, loved, used)."},
+  {id:12, tense:"past",        type:"irregular",
+   parts:["She","went","home","very","late"],
+   tip:"go → went. Irregular! NOT goed.",
+   rule:"Irregular past must be memorized: go→went."},
+  {id:13, tense:"past",        type:"irregular",
+   parts:["We","ate","breakfast","at","seven"],
+   tip:"eat → ate. Never 'eated'.",
+   rule:"eat→ate, get→got, see→saw — no -ed ever!"},
+  {id:14, tense:"past",        type:"irregular",
+   parts:["He","made","a","delicious","cake"],
+   tip:"make → made. Common irregular.",
+   rule:"make→made, take→took, break→broke."},
+  {id:15, tense:"past",        type:"irregular",
+   parts:["They","had","a","great","time"],
+   tip:"have → had. Same for all subjects in past.",
+   rule:"have→had is one of the most frequent irregular verbs."},
+  {id:16, tense:"past",        type:"regular",
+   parts:["My","mom","cooked","rice","and","beans"],
+   tip:"cook + ed = cooked. And joins two objects.",
+   rule:"And connects two nouns: rice and beans."},
+  // Future Simple
+  {id:17, tense:"future",      type:"regular",
+   parts:["I","will","walk","to","school","tomorrow"],
+   tip:"Future: will + BASE verb. 'tomorrow' = future clue.",
+   rule:"will + base verb — no changes! will walk, will eat, will go."},
+  {id:18, tense:"future",      type:"regular",
+   parts:["She","will","work","here","next","month"],
+   tip:"Same structure for all subjects: will + verb.",
+   rule:"Future is simple: will is ALWAYS the same for everyone."},
+  {id:19, tense:"future",      type:"irregular",
+   parts:["We","will","eat","sushi","tonight"],
+   tip:"will + eat (base). Never will + ate!",
+   rule:"Future always uses the base verb, even for irregulars."},
+  {id:20, tense:"future",      type:"irregular",
+   parts:["He","will","go","to","the","party"],
+   tip:"will + go. NOT will went!",
+   rule:"Past form (went) is NEVER used with will."},
+  {id:21, tense:"future",      type:"irregular",
+   parts:["They","will","have","a","new","car"],
+   tip:"have stays 'have' after will. Not will has.",
+   rule:"will have, will go, will eat — always base form!"},
+  {id:22, tense:"future",      type:"regular",
+   parts:["My","sister","will","study","medicine","next","year"],
+   tip:"Possessive subject + will + base verb.",
+   rule:"Structure: Subject + will + base verb + complement."},
   // Present Progressive
-  {id:17, tense:"presentProgressive", type:"regular",
+  {id:23, tense:"progressive", type:"regular",
    parts:["I","am","walking","to","school","now"],
-   tip:"Now marks an action in progress at this moment.",
-   rule:"Present Progressive: am/is/are + verb-ing."},
-  {id:18, tense:"presentProgressive", type:"regular",
-   parts:["She","is","working","at","the","office","because","the","manager","needs","help"],
-   tip:"She is working = action happening now.",
-   rule:"Present Progressive uses is with he/she/it."},
-  {id:19, tense:"presentProgressive", type:"regular",
+   tip:"Progressive: am/is/are + verb-ing. Now = clue.",
+   rule:"I → am. You/We/They → are. He/She/It → is. + verb+ing."},
+  {id:24, tense:"progressive", type:"regular",
+   parts:["She","is","working","at","the","office"],
+   tip:"She → is + verb-ing. Right now, ongoing.",
+   rule:"is working = she is doing it at this exact moment."},
+  {id:25, tense:"progressive", type:"regular",
    parts:["They","are","playing","soccer","right","now"],
-   tip:"They are + verb-ing.",
-   rule:"Use are with you/we/they in Present Progressive."},
-  {id:20, tense:"presentProgressive", type:"irregular",
-   parts:["He","is","having","lunch","while","Maria","is","studying"],
-   tip:"Have becomes having: drop -e and add -ing.",
-   rule:"While connects simultaneous actions in progress."},
-  {id:21, tense:"presentProgressive", type:"regular",
-   parts:["We","are","studying","English","and","practicing","pronunciation"],
-   tip:"Both actions are happening now: studying and practicing.",
-   rule:"Present Progressive can join two -ing actions with and."},
-  {id:22, tense:"presentProgressive", type:"regular",
-   parts:["The","students","are","listening","to","music","while","they","are","writing"],
-   tip:"The students = they, so use are.",
-   rule:"Use while for two actions happening at the same time."},
-  {id:23, tense:"presentProgressive", type:"regular",
-   parts:["My","brother","is","playing","soccer","but","my","sister","is","reading"],
-   tip:"Brother is; sister is. Both are singular.",
-   rule:"But can contrast two actions in progress."},
-  {id:24, tense:"presentProgressive", type:"regular",
-   parts:["You","are","speaking","slowly","so","I","can","understand","better"],
-   tip:"You are speaking = action happening now.",
-   rule:"So shows the result of the current action."},
-
-  // Past Progressive
-  {id:25, tense:"pastProgressive", type:"regular",
-   parts:["I","was","walking","to","school","when","it","started","raining"],
-   tip:"Was walking = action in progress in the past.",
-   rule:"Past Progressive: was/were + verb-ing."},
-  {id:26, tense:"pastProgressive", type:"regular",
-   parts:["She","was","working","at","the","office","while","he","was","studying"],
-   tip:"She was; he was. Both are singular.",
-   rule:"Use while for simultaneous past actions in progress."},
-  {id:27, tense:"pastProgressive", type:"regular",
-   parts:["They","were","playing","soccer","when","the","bell","rang"],
-   tip:"They were + verb-ing.",
-   rule:"Use Past Progressive for the longer background action."},
-  {id:28, tense:"pastProgressive", type:"irregular",
-   parts:["He","was","having","lunch","when","Maria","called"],
-   tip:"Have becomes having; the auxiliary was marks past progressive.",
-   rule:"Past Progressive often combines with Past Simple using when."},
-  {id:29, tense:"pastProgressive", type:"regular",
-   parts:["We","were","studying","English","while","the","teacher","was","explaining","grammar"],
-   tip:"We were; teacher was.",
-   rule:"Was/were depends on the subject; the -ing verb does not change."},
-  {id:30, tense:"pastProgressive", type:"regular",
-   parts:["The","students","were","listening","to","music","when","the","principal","entered"],
-   tip:"Were listening is the ongoing past action.",
-   rule:"When often introduces the shorter interrupting action."},
-  {id:31, tense:"pastProgressive", type:"regular",
-   parts:["My","brother","was","playing","soccer","but","my","sister","was","reading"],
-   tip:"Was + verb-ing for singular subjects.",
-   rule:"But contrasts two past actions in progress."},
-  {id:32, tense:"pastProgressive", type:"regular",
-   parts:["You","were","speaking","fast","so","I","was","taking","notes"],
-   tip:"You were + verb-ing.",
-   rule:"So connects a past situation to its result."},
+   tip:"They → are + verb-ing.",
+   rule:"Progressive = action happening NOW, not a habit."},
+  {id:26, tense:"progressive", type:"irregular",
+   parts:["He","is","having","lunch","with","Maria"],
+   tip:"have → having (drop the -e, add -ing).",
+   rule:"Drop -e before -ing: have→having, make→making."},
+  {id:27, tense:"progressive", type:"regular",
+   parts:["We","are","studying","English","together"],
+   tip:"study → studying. Keep the y, add -ing.",
+   rule:"study→studying (just add -ing, keep the y)."},
+  {id:28, tense:"progressive", type:"regular",
+   parts:["The","students","are","listening","to","music"],
+   tip:"Plural subject → are + verb-ing.",
+   rule:"am/is/are + verb+ing. The -ing form never changes."},
 ];
 
 /* ── CONNECTOR DATA ──────────────────────────────────────────────────────────── */
@@ -344,25 +282,11 @@ const shuffle = arr => {
 };
 
 const TENSE_META = {
-  present: {
-    label:"Present Simple", emoji:"☀️", bg:"bg-menta/10", border:"border-menta/35", text:"text-mentadeep",
-    time:"Present", aspect:"Simple", pattern:"Subject + base verb / verb-s", use:"Routines, habits, facts, repeated actions"
-  },
-  past: {
-    label:"Past Simple", emoji:"📅", bg:"bg-coral/10", border:"border-coral/35", text:"text-coral",
-    time:"Past", aspect:"Simple", pattern:"Subject + past verb", use:"Finished actions at a finished time"
-  },
-  presentProgressive: {
-    label:"Present Progressive", emoji:"⚡", bg:"bg-vino/10", border:"border-vino/30", text:"text-vino",
-    time:"Present", aspect:"Progressive", pattern:"am/is/are + verb-ing", use:"Actions happening now or around now"
-  },
-  pastProgressive: {
-    label:"Past Progressive", emoji:"🎬", bg:"bg-ambar/10", border:"border-ambar/35", text:"text-ambardeep",
-    time:"Past", aspect:"Progressive", pattern:"was/were + verb-ing", use:"Actions in progress at a past moment"
-  },
+  present:     {label:"Present Simple",     emoji:"☀️", bg:"bg-menta/10",  border:"border-menta/35", text:"text-mentadeep"},
+  past:        {label:"Past Simple",        emoji:"📅", bg:"bg-coral/10",  border:"border-coral/35", text:"text-coral"},
+  future:      {label:"Future Simple",      emoji:"🚀", bg:"bg-ambar/10",  border:"border-ambar/35", text:"text-ambardeep"},
+  progressive: {label:"Pres. Progressive",  emoji:"⚡", bg:"bg-vino/10",   border:"border-vino/30",  text:"text-vino"},
 };
-
-const TENSE_FILTERS = ["all","present","past","presentProgressive","pastProgressive"];
 
 const CONN_C = {
   menta:{bg:"bg-menta/10",border:"border-menta/35",text:"text-mentadeep"},
@@ -394,39 +318,9 @@ const WaveBars = () => (
   </div>
 );
 
-
-const sentenceText = sentence => sentence.parts.join(" ").replace(/\s+([,.!?;:])/g,"$1");
-
-const canSpeak = () => typeof window !== "undefined" && "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
-
-function speakEnglish(text, setSpeaking){
-  if(!canSpeak()) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US";
-  utterance.rate = 0.86;
-  utterance.pitch = 1;
-  utterance.onend = () => setSpeaking && setSpeaking(false);
-  utterance.onerror = () => setSpeaking && setSpeaking(false);
-  setSpeaking && setSpeaking(true);
-  window.speechSynthesis.speak(utterance);
-}
-
-function AudioButton({text,label="Listen"}){
-  const [speaking,setSpeaking] = useState(false);
-  const supported = canSpeak();
-  return (
-    <button type="button" disabled={!supported} onClick={()=>speakEnglish(text,setSpeaking)}
-      className="audio-btn lift" aria-label={`Listen: ${text}`} title={supported ? text : "Audio is not supported in this browser"}>
-      <span aria-hidden="true">🔊</span>
-      <span>{speaking ? "Playing..." : label}</span>
-    </button>
-  );
-}
-
 const WhatsAppBtn = () => (
   <a href={WA_LINK} target="_blank" rel="noopener noreferrer" aria-label="Contact Prof. on WhatsApp"
-    className="wa-pulse wa-float fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-white font-semibold text-sm shadow-lg"
+    className="wa-pulse fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-white font-semibold text-sm shadow-lg"
     style={{background:"#25D366"}}>
     <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
       <path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/>
@@ -434,36 +328,6 @@ const WhatsAppBtn = () => (
     <span className="hidden sm:inline">Ask Prof.</span>
     <span className="sm:hidden">Profe</span>
   </a>
-);
-
-
-const SOCIAL_LINKS = [
-  {label:"WhatsApp", href:"https://wa.me/573197894038", icon:"fab fa-whatsapp"},
-  {label:"Email",    href:"mailto:info@profgermandario.com", icon:"fas fa-envelope"},
-  {label:"TikTok",   href:"https://www.tiktok.com/@profgermandario", icon:"fab fa-tiktok"},
-  {label:"Facebook", href:"https://www.facebook.com/profgermandario", icon:"fab fa-facebook"},
-  {label:"LinkedIn", href:"https://www.linkedin.com/in/profgermandario", icon:"fab fa-linkedin"},
-  {label:"X",        href:"https://twitter.com/profgermandario", icon:"fab fa-twitter"},
-  {label:"Reddit",   href:"https://www.reddit.com/user/profgermandario", icon:"fab fa-reddit"},
-  {label:"YouTube",  href:"https://www.youtube.com/@profgermandario", icon:"fab fa-youtube"},
-];
-
-const SocialFooter = () => (
-  <footer className="mt-10 rounded-[28px] border border-tinta/10 bg-white/70 p-5 text-center shadow-soft">
-    <p className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-coral mb-3">ProfGermandario</p>
-    <div className="social-footer-grid mb-4" aria-label="ProfGermandario contact links">
-      {SOCIAL_LINKS.map(item=>(
-        <a key={item.label} href={item.href} target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-          rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-          aria-label={item.label}
-          className="social-link glass-mind">
-          <i className={item.icon} aria-hidden="true"></i>
-        </a>
-      ))}
-    </div>
-    <p className="text-bruma text-xs">© 2025 ProfGermandario · Complete Sentences · Present/Past Simple & Progressive</p>
-    <p className="mt-1 text-bruma text-xs opacity-60">"Structure first. Connections after. Fluency always."</p>
-  </footer>
 );
 
 /* ── SENTENCE BUILDER ────────────────────────────────────────────────────────── */
@@ -479,7 +343,6 @@ function SentenceBuilder({sentences, onComplete}) {
 
   const current = sentences[qIdx];
   const meta    = TENSE_META[current.tense];
-  const currentSentence = sentenceText(current);
 
   useEffect(() => {
     setBank(shuffle(current.parts.map((w,i) => ({w, uid:`${i}-${Math.random()}` }))));
@@ -536,30 +399,16 @@ function SentenceBuilder({sentences, onComplete}) {
       {/* Header chips */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <Pill className={`${meta.bg} border ${meta.border} ${meta.text}`}>{meta.emoji} {meta.label}</Pill>
-        <div className="flex gap-2 flex-wrap">
-          <Pill className="bg-white border border-tinta/10 text-tinta">{meta.aspect}</Pill>
-          <Pill className="bg-white border border-tinta/10 text-tinta">{meta.time}</Pill>
+        <div className="flex gap-2">
           {streak>=2 && <Pill className="bg-coral/10 border border-coral/30 text-coral">🔥 {streak}</Pill>}
           <Pill className="bg-nube text-tinta">⭐ {score}</Pill>
         </div>
       </div>
 
-      {/* Tense differentiation */}
-      <div className={`rounded-2xl border p-3 mb-3 ${meta.bg} ${meta.border}`}>
-        <p className="font-mono text-[0.58rem] tracking-[0.18em] uppercase text-bruma mb-2">Tense Differentiation</p>
-        <div className="tense-lens-grid">
-          <div className="tense-lens-box"><span className="tense-lens-label">Time</span><span className="tense-lens-value">{meta.time}</span></div>
-          <div className="tense-lens-box"><span className="tense-lens-label">Aspect</span><span className="tense-lens-value">{meta.aspect}</span></div>
-          <div className="tense-lens-box"><span className="tense-lens-label">Pattern</span><span className="tense-lens-value">{meta.pattern}</span></div>
-          <div className="tense-lens-box"><span className="tense-lens-label">Use</span><span className="tense-lens-value">{meta.use}</span></div>
-        </div>
-      </div>
-
-      {/* Rule + audio */}
+      {/* Rule */}
       <div className={`rounded-2xl border p-3 mb-4 ${meta.bg} ${meta.border}`}>
         <p className="font-mono text-[0.58rem] tracking-[0.18em] uppercase text-bruma mb-1">Grammar Rule</p>
-        <p className="text-sm text-tintasoft leading-relaxed mb-3">{current.rule}</p>
-        <AudioButton text={currentSentence} label="Listen to sentence" />
+        <p className="text-sm text-tintasoft leading-relaxed">{current.rule}</p>
       </div>
 
       {/* Slot zone */}
@@ -574,7 +423,7 @@ function SentenceBuilder({sentences, onComplete}) {
           )}
           {built.map(tok=>(
             <button key={tok.uid} onClick={()=>removeWord(tok)}
-              className="sentence-token rounded-xl px-3 py-1.5 font-semibold text-sm bg-tinta text-lienzo lift bounce-in">
+              className="rounded-xl px-3 py-1.5 font-semibold text-sm bg-tinta text-lienzo lift bounce-in">
               {tok.w}
             </button>
           ))}
@@ -584,7 +433,7 @@ function SentenceBuilder({sentences, onComplete}) {
       {/* Feedback */}
       {status==="correct" && (
         <div className="rounded-xl bg-menta/12 border border-menta/30 p-3 mb-3 pop text-sm text-mentadeep font-semibold text-center">
-          ✅ Perfect! <span className="font-normal text-tintasoft ml-1">{currentSentence}</span>
+          ✅ Perfect! <span className="font-normal text-tintasoft ml-1">{current.parts.join(" ")}</span>
         </div>
       )}
       {status==="wrong" && (
@@ -599,7 +448,7 @@ function SentenceBuilder({sentences, onComplete}) {
         <div className="flex flex-wrap gap-2">
           {bank.map(tok=>(
             <button key={tok.uid} onClick={()=>addWord(tok)}
-              className="sentence-token rounded-xl px-3 py-2 font-semibold text-sm border bg-white border-tinta/12 text-tinta hover:border-coral/50 hover:bg-coral/5 lift">
+              className="rounded-xl px-3 py-2 font-semibold text-sm border bg-white border-tinta/12 text-tinta hover:border-coral/50 hover:bg-coral/5 lift">
               {tok.w}
             </button>
           ))}
@@ -617,7 +466,7 @@ function SentenceBuilder({sentences, onComplete}) {
       )}
 
       {/* Actions */}
-      <div className="flex gap-2 flex-wrap mobile-actions">
+      <div className="flex gap-2 flex-wrap">
         {status==="idle" && (
           <>
             <button onClick={check} disabled={built.length===0}
@@ -713,10 +562,7 @@ function ConnectorTrainer({onComplete}) {
               <p className="text-tintasoft text-sm mb-2">{cn.rule}</p>
               <div className="space-y-1">
                 {cn.examples.map((ex,i)=>(
-                  <div key={i} className="text-xs text-tintasoft bg-white/70 rounded-xl px-3 py-2 flex items-center justify-between gap-2 flex-wrap">
-                    <span>📝 {ex}</span>
-                    <AudioButton text={ex} label="Audio" />
-                  </div>
+                  <p key={i} className="text-xs text-tintasoft bg-white/70 rounded-xl px-3 py-1.5">📝 {ex}</p>
                 ))}
               </div>
             </div>
@@ -755,7 +601,7 @@ function ConnectorTrainer({onComplete}) {
 
       {/* Answer options */}
       {!checked && (
-        <div className="grid grid-cols-2 gap-2 mb-4 connector-grid">
+        <div className="grid grid-cols-2 gap-2 mb-4">
           {choices.map(w=>(
             <button key={w} onClick={()=>setChosen(w)}
               className={`rounded-xl border py-3 font-semibold text-sm transition lift
@@ -768,7 +614,7 @@ function ConnectorTrainer({onComplete}) {
 
       {/* Result */}
       {checked && (
-        <div className={`rounded-xl p-4 mb-3 pop text-sm border
+        <div className={`rounded-xl p-4 mb-4 pop text-sm border
           ${chosen.toLowerCase()===conn.blankWord.toLowerCase()
             ?"bg-menta/12 border-menta/30 text-mentadeep"
             :"bg-coral/10 border-coral/30 text-coral"}`}>
@@ -778,7 +624,6 @@ function ConnectorTrainer({onComplete}) {
           }
         </div>
       )}
-      {checked && <div className="mb-4"><AudioButton text={conn.correct} label="Listen to complete sentence" /></div>}
 
       <div className="flex gap-2">
         {!checked && (
@@ -800,72 +645,61 @@ function ConnectorTrainer({onComplete}) {
 
 /* ── REFERENCE ───────────────────────────────────────────────────────────────── */
 function Reference() {
+  const REG  = [{b:"walk",p:"walked",f:"will walk"},{b:"work",p:"worked",f:"will work"},{b:"like",p:"liked",f:"will like"},{b:"love",p:"loved",f:"will love"},{b:"play",p:"played",f:"will play"}];
+  const IRR  = [{b:"eat",p:"ate",f:"will eat"},{b:"get",p:"got",f:"will get"},{b:"have",p:"had",f:"will have"},{b:"go",p:"went",f:"will go"},{b:"make",p:"made",f:"will make"}];
   const RULES= [
-    {e:"☀️",t:"Present Simple",       r:"Subject + base verb / verb-s. Use it for routines, habits, facts, and repeated actions.",c:"menta", example:"She works every day."},
-    {e:"📅",t:"Past Simple",          r:"Subject + past verb. Use it for finished actions at a finished time.",c:"coral", example:"She worked yesterday."},
-    {e:"⚡",t:"Present Progressive",  r:"am/is/are + verb-ing. Use it for actions happening now or around now.",c:"vino", example:"She is working now."},
-    {e:"🎬",t:"Past Progressive",     r:"was/were + verb-ing. Use it for actions in progress at a past moment.",c:"ambar", example:"She was working at 8 p.m."},
-    {e:"🔗",t:"Connectors / Conjunctions", r:"and, but, because, so, when, while, after, and before connect clauses and ideas.",c:"menta", example:"She was studying while he was working."},
+    {e:"☀️",t:"Present Simple — He/She/It",r:"Add -s (walks) or -es (goes, does).",c:"menta"},
+    {e:"📅",t:"Past Simple — Regular",     r:"Add -ed to the base verb. Same for ALL subjects!",c:"coral"},
+    {e:"⚠️",t:"Past Simple — Irregular",   r:"Must memorize: go→went, eat→ate, have→had, make→made.",c:"coral"},
+    {e:"🚀",t:"Future Simple",             r:"will + BASE VERB. NEVER will + past form!",c:"ambar"},
+    {e:"⚡",t:"Present Progressive",       r:"am/is/are + verb-ing. I am, She is, They are.",c:"vino"},
   ];
   const MC={menta:"bg-menta/10 border-menta/30 text-mentadeep",coral:"bg-coral/10 border-coral/30 text-coral",ambar:"bg-ambar/10 border-ambar/30 text-ambardeep",vino:"bg-vino/10 border-vino/30 text-vino"};
-  const DIFFERENCE = [
-    ["Present Simple", "I walk to school every day.", "habit / routine now"],
-    ["Past Simple", "I walked to school yesterday.", "finished action in the past"],
-    ["Present Progressive", "I am walking to school now.", "action happening now"],
-    ["Past Progressive", "I was walking to school when it rained.", "action in progress in the past"],
-  ];
-  const FORMS = [
-    {label:"Present Simple", rows:[["I / You / We / They","walk"],["He / She / It","walks"]]},
-    {label:"Past Simple", rows:[["All subjects","walked / went"]]},
-    {label:"Present Progressive", rows:[["I","am walking"],["He / She / It","is walking"],["You / We / They","are walking"]]},
-    {label:"Past Progressive", rows:[["I / He / She / It","was walking"],["You / We / They","were walking"]]},
-  ];
   return (
     <div className="max-w-2xl mx-auto space-y-4">
-      <Hint>Use the distinction below as the decision system: time first, then aspect. Present vs past tells when; simple vs progressive tells whether the action is a complete/general action or an action in progress.</Hint>
+      <Hint>Quick-reference from your Class 2 guide. Study, then go practice!</Hint>
       <div className="space-y-2">
         {RULES.map((r,i)=>(
           <div key={i} className={`rounded-2xl border p-3 ${MC[r.c]}`}>
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div>
-                <p className="font-semibold text-sm">{r.e} {r.t}</p>
-                <p className="text-xs mt-0.5 opacity-80">{r.r}</p>
-                <p className="text-xs mt-1 italic text-tintasoft">{r.example}</p>
-              </div>
-              <AudioButton text={r.example} label="Listen" />
-            </div>
+            <p className="font-semibold text-sm">{r.e} {r.t}</p>
+            <p className="text-xs mt-0.5 opacity-80">{r.r}</p>
           </div>
         ))}
       </div>
-
-      <div className="rounded-[22px] border border-tinta/8 overflow-hidden">
-        <div className="bg-tinta text-paper px-4 py-2.5">
-          <p className="font-mono text-[0.62rem] tracking-widest uppercase">Four-way tense difference</p>
-        </div>
-        <div className="divide-y divide-tinta/5">
-          <div className="grid grid-cols-3 px-4 py-2 bg-nube/50">
-            {["Category","Example","Meaning"].map(h=>(
-              <span key={h} className="font-mono text-[0.55rem] tracking-wider uppercase text-bruma">{h}</span>
+      {/* Tables */}
+      {[[REG,"Regular Verbs","menta"],[IRR,"Irregular Verbs — Memorize","coral"]].map(([rows,title,color])=>(
+        <div key={title} className="rounded-[22px] border border-tinta/8 overflow-hidden">
+          <div className={`${color==="menta"?"bg-menta/12 border-b border-menta/20":"bg-coral/10 border-b border-coral/20"} px-4 py-2.5`}>
+            <p className={`font-mono text-[0.62rem] tracking-widest uppercase ${color==="menta"?"text-mentadeep":"text-coral"}`}>{title}</p>
+          </div>
+          <div className="divide-y divide-tinta/5">
+            <div className="grid grid-cols-3 px-4 py-2 bg-nube/50">
+              {["Base","Past","Future (will)"].map(h=>(
+                <span key={h} className="font-mono text-[0.55rem] tracking-wider uppercase text-bruma">{h}</span>
+              ))}
+            </div>
+            {rows.map(v=>(
+              <div key={v.b} className="grid grid-cols-3 px-4 py-2.5 bg-lienzo">
+                <span className="font-display font-bold text-tinta text-lg">{v.b}</span>
+                <span className="font-sans text-coral font-semibold text-sm self-center">{v.p}</span>
+                <span className="font-sans text-mentadeep font-semibold text-sm self-center">{v.f}</span>
+              </div>
             ))}
           </div>
-          {DIFFERENCE.map(([cat,ex,meaning])=>(
-            <div key={cat} className="grid grid-cols-3 gap-2 px-4 py-3 bg-lienzo items-center">
-              <span className="font-semibold text-tinta text-sm">{cat}</span>
-              <span className="text-coral font-semibold text-sm">{ex}</span>
-              <span className="text-tintasoft text-xs">{meaning}</span>
-            </div>
-          ))}
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 connector-grid">
-        {FORMS.map(g=>(
+      ))}
+      {/* Conjugation grids */}
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          {label:"Simple — go",    color:"coral", rows:[["I","go"],["You","go"],["He/She","goes"],["We","go"],["They","go"]]},
+          {label:"Progressive",    color:"vino",  rows:[["I","am going"],["You","are going"],["He/She","is going"],["We","are going"],["They","are going"]]},
+        ].map(g=>(
           <div key={g.label} className="rounded-2xl border border-tinta/8 bg-lienzo p-4">
             <p className="font-mono text-[0.58rem] tracking-widest uppercase text-bruma mb-3">{g.label}</p>
             {g.rows.map(([p,v])=>(
               <div key={p} className="flex items-center gap-2 py-1 border-b border-tinta/5 last:border-0">
-                <span className="font-semibold text-xs w-28 text-bruma">{p}</span>
-                <span className="text-tinta text-xs font-semibold">{v}</span>
+                <span className={`font-semibold text-xs w-14 ${g.color==="coral"?"text-coral":"text-vino"}`}>{p}</span>
+                <span className="text-tinta text-xs">{v}</span>
               </div>
             ))}
           </div>
@@ -920,16 +754,16 @@ function App() {
   const go = id => { setMode(id); setResult(null); setGameKey(k=>k+1); };
 
   return (
-    <div className="game-shell font-sans text-tinta min-h-screen pb-24">
+    <div className="font-sans text-tinta min-h-screen pb-24">
       <div className="fixed inset-0 -z-10" style={{
         background:"radial-gradient(60% 50% at 10% 0%,rgba(255,90,60,.07),transparent 60%),radial-gradient(55% 55% at 100% 100%,rgba(21,183,158,.09),transparent 60%),#FCF8F3"
       }}/>
-      <div className="game-container max-w-2xl mx-auto px-4 py-6 sm:py-10">
+      <div className="max-w-2xl mx-auto px-4 py-6 sm:py-10">
 
         {/* HEADER */}
         <header className="text-center mb-6">
           <p className="font-mono text-[0.68rem] tracking-[0.26em] uppercase text-coral mb-2">
-            Present/Past Simple & Progressive · Connectors · ProfGermandario
+            Verb Tenses · Class 2 · ProfGermandario
           </p>
           <h1 className="font-display font-black text-4xl sm:text-5xl text-tinta leading-[0.95]">
             Complete<br/>
@@ -937,7 +771,7 @@ function App() {
           </h1>
           <div className="my-4"><WaveBars/></div>
           <p className="text-tintasoft text-sm sm:text-base max-w-sm mx-auto leading-relaxed">
-            Create sentences in Present Simple, Past Simple, Present Progressive, and Past Progressive. Then connect ideas with conjunctions.
+            Build sentences across all tenses — then connect them like a pro.
           </p>
         </header>
 
@@ -955,23 +789,23 @@ function App() {
         {/* INTRO */}
         {mode==="intro" && (
           <div className="space-y-4 pop">
-            <Hint>Two stages. First identify the tense category clearly; then build sentences and connect clauses with connectors and conjunctions.</Hint>
+            <Hint>Two stages. Master sentences first — then link them with connectors.</Hint>
 
             {/* Stage 1 card */}
             <div className="rounded-[28px] border border-tinta/8 bg-lienzo p-5 shadow-soft">
               <div className="text-3xl mb-3">✍️</div>
               <h2 className="font-display font-bold text-2xl text-tinta mb-2">Stage 1 — Build Sentences</h2>
               <p className="text-tintasoft text-sm leading-relaxed mb-4">
-                Scrambled words appear. Tap them in the right order. Covers Present Simple, Past Simple, Present Progressive, and Past Progressive — including connector-based sentences with and, but, because, so, when, while, before, and after.
+                Scrambled words appear. Tap them in the right order. Covers Present Simple, Past Simple, Future Simple, and Present Progressive — with regular and irregular verbs.
               </p>
               {/* Tense filter */}
               <p className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma mb-2">Filter by tense:</p>
               <div className="flex flex-wrap gap-2 mb-4">
-                {TENSE_FILTERS.map(f=>{
+                {["all","present","past","future","progressive"].map(f=>{
                   const m2 = f==="all" ? null : TENSE_META[f];
                   return (
                     <button key={f} onClick={()=>setFilter(f)}
-                      className={`filter-chip rounded-full px-3 py-1.5 text-xs font-semibold border transition
+                      className={`rounded-full px-3 py-1.5 text-xs font-semibold border transition
                         ${filter===f
                           ? (m2?`${m2.bg} ${m2.border} ${m2.text}`:"bg-tinta/8 border-tinta/20 text-tinta")
                           : "bg-nube border-tinta/10 text-bruma hover:text-coral"}`}>
@@ -992,7 +826,7 @@ function App() {
               <div className="text-3xl mb-3">🔗</div>
               <h2 className="font-display font-bold text-2xl text-tinta mb-2">Stage 2 — Connectors</h2>
               <p className="text-tintasoft text-sm leading-relaxed mb-4">
-                Once the tense structure is solid, link clauses. 12 essential connectors/conjunctions across 5 categories: Additive, Contrast, Cause, Result, and Time.
+                Once you dominate the sentences, link them. 12 essential connectors across 5 categories: Additive, Contrast, Cause, Result, and Time.
               </p>
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {["and","but","because","so","when","after","before","however","although","also","too","therefore"].map(w=>(
@@ -1025,7 +859,10 @@ function App() {
           <Results score={result.score} label={result.label} onReplay={()=>go("intro")}/>
         )}
 
-        <SocialFooter/>
+        <footer className="text-center mt-10 text-bruma text-xs">
+          <p>© 2025 ProfGermandario · Complete Sentences · Class 2</p>
+          <p className="mt-1 opacity-60">"Structure first. Connections after. Fluency always."</p>
+        </footer>
       </div>
       <WhatsAppBtn/>
     </div>
@@ -1034,7 +871,5 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
-
-
-</body></html>
-</body></html>
+</body>
+</html>

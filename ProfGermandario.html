@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://palekor.github.io/lecciones/profgermandario.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ProfGermandario — Laboratorio de Fluidez en Inglés</title>
+  <meta name="description" content="Laboratorio de fluidez en inglés con meditaciones, juegos, vocabulario, gramática, memoria y herramientas interactivas de ProfGermandario.">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./ProfGermandario_files/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./ProfGermandario_files/all.min.css" referrerpolicy="no-referrer">
+  <style>
+    :root{
+      --lienzo:#FCF8F3; --nube:#F2ECE2; --paper:#F6F1FF;
+      --tinta:#1A1730; --tinta-soft:#3A3552; --bruma:#76718A;
+      --coral:#FF5A3C; --coral-deep:#E8482C;
+      --menta:#15B79E; --menta-deep:#0E8C79;
+      --ambar:#FFB627; --ambar-deep:#D4930F;
+      --vino:#7B2CBF; --linea:rgba(26,23,48,.13); --linea-soft:rgba(26,23,48,.07);
+      --card:28px; --pill:999px; --shadow:0 18px 45px rgba(26,23,48,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--lienzo);color:var(--tinta);font-family:Figtree,system-ui,sans-serif;-webkit-text-size-adjust:100%;}
+    a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+    button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    .wrap{max-width:1180px;margin:auto;padding:0 22px}.mono{font-family:'DM Mono',ui-monospace,monospace}.display{font-family:Fraunces,Georgia,serif}
+    .eyebrow{font-family:'DM Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.24em;font-size:.68rem;color:var(--coral);font-weight:500}.eyebrow.menta{color:var(--menta)}.eyebrow.on-dark{color:#ffd8cf}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:var(--pill);padding:14px 20px;font-weight:800;border:1.5px solid transparent;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;min-height:48px}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--coral);color:white;box-shadow:0 14px 35px rgba(255,90,60,.26)}.btn-dark{background:var(--tinta);color:var(--paper)}.btn-light{border-color:var(--linea);background:rgba(255,255,255,.72);color:var(--tinta-soft)}
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(252,248,243,.86);backdrop-filter:blur(16px);border-bottom:1px solid var(--linea-soft)}
+    .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:13px;padding-bottom:13px}.brand{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:1.16rem}.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.nav a{font-size:.88rem;font-weight:700;color:var(--tinta-soft);padding:9px 12px;border-radius:var(--pill)}.nav a:hover{background:var(--nube);color:var(--coral)}
+    .hero{position:relative;overflow:hidden;padding:86px 0 74px;background:radial-gradient(70% 70% at 10% 0%,rgba(255,90,60,.14),transparent 60%),radial-gradient(65% 65% at 95% 15%,rgba(21,183,158,.16),transparent 62%),var(--lienzo)}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}.hero h1{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:clamp(3rem,8vw,6.8rem);line-height:.88;margin:14px 0 20px;letter-spacing:-.05em}.hero h1 em{color:var(--coral);font-weight:500}.hero p{font-size:clamp(1rem,2vw,1.18rem);line-height:1.7;color:var(--tinta-soft);max-width:650px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.hero-card{background:white;border:1px solid var(--linea-soft);border-radius:34px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,90,60,.08),transparent 45%,rgba(21,183,158,.08));pointer-events:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.stat{background:rgba(252,248,243,.78);border:1px solid var(--linea-soft);border-radius:22px;padding:17px 14px;text-align:center}.stat b{font-family:Fraunces,Georgia,serif;color:var(--coral);font-size:2rem;line-height:1}.stat span{display:block;margin-top:5px;color:var(--bruma);font-family:'DM Mono';font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+    .wave{height:52px;display:flex;align-items:flex-end;justify-content:center;gap:4px;margin:14px 0}.wave i{width:4px;border-radius:8px;background:linear-gradient(to top,var(--menta),var(--coral),var(--ambar));animation:vox 1.25s ease-in-out infinite;opacity:.86}@keyframes vox{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+    section{padding:74px 0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:30px}.section-head h2{font-family:Fraunces,Georgia,serif;font-size:clamp(2.15rem,4.5vw,4rem);line-height:.98;margin:10px 0 0;letter-spacing:-.035em}.section-head p{color:var(--tinta-soft);max-width:580px;line-height:1.65}.count{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:clamp(3rem,8vw,5rem);color:rgba(26,23,48,.08);line-height:.8}
+    .meditations{background:#101020;color:white;position:relative;overflow:hidden}.meditations:before{content:"";position:absolute;inset:0;background:radial-gradient(65% 70% at 80% 0%,rgba(21,183,158,.24),transparent 60%),radial-gradient(65% 80% at 10% 100%,rgba(123,44,191,.28),transparent 60%);pointer-events:none}.meditations .wrap{position:relative}.meditations .section-head h2,.meditations .section-head p{color:white}.med-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.med-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:28px;overflow:hidden;transition:transform .25s ease,background .25s ease}.med-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.1)}.med-thumb{position:relative;aspect-ratio:16/9;background-size:cover;background-position:center}.med-play{position:absolute;inset:auto 18px 18px auto;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--coral);box-shadow:0 12px 30px rgba(255,90,60,.4);font-weight:900}.med-body{padding:21px}.med-body h3{margin:0 0 8px;font-family:Fraunces,Georgia,serif;font-size:1.45rem}.med-body p{margin:0;color:rgba(255,255,255,.76);line-height:1.55}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}.filter{border:1.5px solid var(--linea);background:transparent;border-radius:var(--pill);padding:9px 15px;color:var(--tinta-soft);font-weight:800;font-size:.82rem;cursor:pointer}.filter.active{background:var(--tinta);border-color:var(--tinta);color:white}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:18px}.card{background:white;border:1px solid var(--linea-soft);border-radius:var(--card);padding:14px;display:flex;flex-direction:column;gap:14px;min-height:100%;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(255,90,60,.34)}.media{height:164px;border-radius:22px;overflow:hidden;background:linear-gradient(135deg,var(--nube),#fff);position:relative;border:1px solid var(--linea-soft)}.media img{width:100%;height:100%;object-fit:cover}.media.missing{display:grid;place-items:center;padding:20px;text-align:center;background:radial-gradient(circle at 20% 20%,rgba(255,90,60,.16),transparent 36%),radial-gradient(circle at 80% 80%,rgba(21,183,158,.18),transparent 42%),var(--nube)}.media.missing:after{content:attr(data-title);font-family:Fraunces,Georgia,serif;font-weight:900;font-size:1.8rem;line-height:.98;color:var(--tinta);letter-spacing:-.03em}.card-body{padding:0 8px 8px;display:flex;flex-direction:column;gap:10px;flex:1}.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.num{font-family:'DM Mono';font-size:.63rem;letter-spacing:.14em;color:var(--bruma);text-transform:uppercase}.badge{font-family:'DM Mono';font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;padding:5px 9px;border-radius:var(--pill);font-weight:700}.b-game{background:rgba(255,90,60,.1);color:var(--coral)}.b-vocab{background:rgba(21,183,158,.11);color:var(--menta-deep)}.b-grammar{background:rgba(123,44,191,.10);color:var(--vino)}.b-resource{background:rgba(255,182,39,.14);color:var(--ambar-deep)}.b-mind{background:rgba(26,23,48,.08);color:var(--tinta-soft)}.card h3{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:1.55rem;line-height:1.03;margin:0;letter-spacing:-.025em}.card p{margin:0;color:var(--tinta-soft);line-height:1.57;font-size:.95rem}.go{margin-top:auto;font-weight:900;color:var(--coral);padding-top:8px}.card[data-cat~="hidden"]{display:none}
+    .note{margin-top:26px;background:rgba(255,255,255,.72);border:1px solid var(--linea-soft);border-radius:24px;padding:18px 20px;color:var(--tinta-soft);line-height:1.6}.note b{color:var(--tinta)}
+    .manifesto{background:var(--nube)}.quote{max-width:900px;margin:auto;text-align:center}.quote blockquote{font-family:Fraunces,Georgia,serif;font-size:clamp(2rem,4vw,3.8rem);line-height:1.05;margin:0}.quote strong{color:var(--coral)}.quote cite{display:block;margin-top:20px;color:var(--bruma);font-style:normal;font-weight:700}
+    .final{background:var(--tinta);color:white;text-align:center;padding:76px 0}.final h2{font-family:Fraunces,Georgia,serif;font-size:clamp(2.5rem,6vw,5rem);line-height:.94;margin:12px 0 18px}.final em{color:var(--ambar);font-weight:500}.final p{max-width:680px;margin:0 auto 24px;color:rgba(255,255,255,.72);line-height:1.65}
+    footer{background:#0f0e19;color:rgba(255,255,255,.78);padding:42px 0 34px}.footer-grid{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}.footer-brand{font-family:Fraunces,Georgia,serif;font-size:1.5rem;font-weight:900;color:white}.footer-small{font-size:.88rem;color:rgba(255,255,255,.55);margin-top:6px}.socials{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}.glass-mind{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px)}.socials a{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:transform .18s ease,background .18s ease}.socials a:hover{transform:scale(1.1);background:rgba(255,255,255,.14)}.float-wa{position:fixed;right:18px;bottom:18px;z-index:40;background:#25D366;color:white;border-radius:var(--pill);padding:13px 17px;display:flex;align-items:center;gap:10px;font-weight:900;box-shadow:0 15px 40px rgba(37,211,102,.28);animation:wa 2.3s ease infinite}@keyframes wa{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.42)}55%{box-shadow:0 0 0 13px rgba(37,211,102,0)}}
+    @media(max-width:880px){.hero-grid{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.med-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.socials{justify-content:flex-start}.hero{padding-top:58px}.stats{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:560px){.wrap{padding:0 16px}.topbar .wrap{align-items:flex-start}.nav{display:none}.hero h1{font-size:3.2rem}.hero-actions .btn{width:100%}.stats{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.media{height:148px}.section-head h2{font-size:2.25rem}.float-wa span{display:none}.float-wa{width:54px;height:54px;justify-content:center;padding:0}.footer-small{font-size:.8rem}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <a class="float-wa" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20lecciones." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ProfGermandario"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+
+  <nav class="topbar">
+    <div class="wrap">
+      <a class="brand" href="https://palekor.github.io/lecciones/profgermandario.html#top">Prof Germandario</a>
+      <div class="nav">
+        <a href="https://palekor.github.io/lecciones/profgermandario.html#meditaciones">Meditaciones</a>
+        <a href="https://palekor.github.io/lecciones/profgermandario.html#herramientas">Juegos</a>
+        <a href="https://palekor.github.io/lecciones/profgermandario.html#diagnostico">Diagnóstico</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Laboratorio de fluidez en inglés</p>
+        <h1>Que el inglés<br><em>te salga solo.</em></h1>
+        <p>Entrena vocabulario, gramática, memoria, preguntas y lectura con herramientas interactivas que convierten el estudio en reacción. Primero calma el sistema; después juega, repite y automatiza.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://forms.gle/ChyEuqGGxFmzfoUNA" target="_blank" rel="noopener">Agenda tu diagnóstico gratuito <i class="fa-solid fa-arrow-right"></i></a>
+          <a class="btn btn-light" href="https://palekor.github.io/lecciones/profgermandario.html#herramientas">Ver juegos y herramientas</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Resumen del laboratorio">
+        <p class="eyebrow menta">Entrenamiento guiado</p>
+        <div class="wave" aria-hidden="true">
+          <i style="height:14px;animation-delay:.0s"></i><i style="height:30px;animation-delay:.1s"></i><i style="height:22px;animation-delay:.2s"></i><i style="height:42px;animation-delay:.3s"></i><i style="height:28px;animation-delay:.4s"></i><i style="height:48px;animation-delay:.5s"></i><i style="height:24px;animation-delay:.6s"></i><i style="height:36px;animation-delay:.7s"></i><i style="height:18px;animation-delay:.8s"></i><i style="height:44px;animation-delay:.9s"></i><i style="height:30px;animation-delay:1s"></i><i style="height:20px;animation-delay:1.1s"></i>
+        </div>
+        <p style="position:relative;color:var(--tinta-soft);line-height:1.7;margin:0">La fluidez no se instala por teoría. Se entrena con atención, repetición, audio, elección rápida y construcción de frases.</p>
+        <div class="stats">
+          <div class="stat"><b>15</b><span>Herramientas</span></div>
+          <div class="stat"><b>3</b><span>Meditaciones</span></div>
+          <div class="stat"><b>0</b><span>Instalaciones</span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <section class="meditations" id="meditaciones">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow menta">Meditaciones para aprender</p>
+          <h2>Primero calma.<br>Después entrena.</h2>
+        </div>
+        <p>Estas meditaciones deben ir al frente porque preparan el estado mental: bajan ansiedad, activan enfoque y hacen que la práctica posterior entre con menos resistencia.</p>
+      </div>
+      <div class="med-grid">
+        <a class="med-card" href="https://youtu.be/lJ3ja0dMyD0?si=3pZLQQ3-Ax7ldyEe" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url(&#39;https://i.ytimg.com/vi/lJ3ja0dMyD0/maxresdefault.jpg&#39;)"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Fluidez y Confianza</h3><p>Relaja el cuerpo y abre la mente para practicar inglés sin bloqueo.</p></div>
+        </a>
+        <a class="med-card" href="https://youtu.be/2RSIZ8oLMrE?si=pLgKHKimF1rr3j04" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url(&#39;https://i.ytimg.com/vi/2RSIZ8oLMrE/maxresdefault.jpg&#39;)"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Hablar con Naturalidad</h3><p>Visualiza conversaciones reales para que la respuesta salga con más ritmo.</p></div>
+        </a>
+        <a class="med-card" href="https://youtu.be/8XFZktYWm88?si=y4d6MgeIzTPOrJvN" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url(&#39;https://i.ytimg.com/vi/8XFZktYWm88/maxresdefault.jpg&#39;)"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Retención y Memoria</h3><p>Fortalece la conexión entre palabra, emoción, imagen y significado.</p></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="herramientas">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Juegos y herramientas</p>
+          <h2>La práctica que convierte<br>conocimiento en reflejo.</h2>
+        </div>
+        <div class="count">15</div>
+      </div>
+      <div class="filters" aria-label="Filtros de herramientas">
+        <button class="filter active" type="button" data-filter="all">Todas</button>
+        <button class="filter" type="button" data-filter="game">Juegos</button>
+        <button class="filter" type="button" data-filter="vocab">Vocabulario</button>
+        <button class="filter" type="button" data-filter="grammar">Gramática</button>
+        <button class="filter" type="button" data-filter="mind">Memoria</button>
+        <button class="filter" type="button" data-filter="resource">Recursos</button>
+      </div>
+
+      <div class="grid" id="toolGrid">
+        <a class="card" data-cat="grammar game vocab" href="https://palekor.github.io/lecciones/01.html">
+          <figure class="media" data-title="Verbos Esenciales"><img src="./ProfGermandario_files/lesson-01.jpg" alt="Verbos Esenciales — flashcards y quiz" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">01 / 15</span><span class="badge b-grammar">Verbos</span></div><h3>Verbos Esenciales</h3><p>Entrena los verbos más útiles del inglés con significado, pasado, participio, pronunciación, ejemplos y práctica de reconocimiento.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="game vocab" href="https://palekor.github.io/lecciones/02.html">
+          <figure class="media" data-title="WordBlitz"><img src="./ProfGermandario_files/lesson-02.jpg" alt="WordBlitz — palabras en caída" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">02 / 15</span><span class="badge b-game">Juego</span></div><h3>WordBlitz · Palabras en Caída</h3><p>Responde antes de que la palabra toque el suelo. Ideal para velocidad de traducción, rachas, atención y vocabulario bajo presión.</p><span class="go">Jugar →</span></div>
+        </a>
+        <a class="card" data-cat="grammar game" href="https://palekor.github.io/lecciones/02b.html">
+          <figure class="media" data-title="Complete Sentences"><img src="./ProfGermandario_files/wh-questions.png" alt="Complete Sentences — Simple  Progressive" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">03 / 15</span><span class="badge b-grammar">Oraciones</span></div><h3>Complete Sentences</h3><p>Construye oraciones en simple y progresivo, escucha el audio y usa conectores para unir ideas con orden lógico.</p><span class="go">Abrir juego →</span></div>
+        </a>
+        <a class="card" data-cat="grammar game" href="https://palekor.github.io/lecciones/03.html">
+          <figure class="media" data-title="Tiempos y Conectores"><img src="./ProfGermandario_files/lesson-03.jpg" alt="Tiempos y Conectores" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">04 / 15</span><span class="badge b-grammar">Gramática</span></div><h3>Tiempos y Conectores</h3><p>Diferencia tiempos, identifica verbos regulares e irregulares y combina ideas con conectores para producir frases más largas.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="game mind" href="https://palekor.github.io/lecciones/04.html">
+          <figure class="media" data-title="Memoria Visual"><img src="./ProfGermandario_files/lesson-04.jpg" alt="Memoria Visual — juego de secuencias" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">05 / 15</span><span class="badge b-mind">Memoria</span></div><h3>Memoria Visual</h3><p>Reproduce secuencias visuales en niveles progresivos. Entrena memoria de trabajo, enfoque sostenido y control de impulsos.</p><span class="go">Jugar →</span></div>
+        </a>
+        <a class="card" data-cat="grammar game vocab" href="https://palekor.github.io/lecciones/05.html">
+          <figure class="media" data-title="Phrasal Verbs"><img src="./ProfGermandario_files/lesson-05.jpg" alt="Phrasal Verbs" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">06 / 15</span><span class="badge b-grammar">Gramática</span></div><h3>Phrasal Verbs</h3><p>Aprende verbos que cambian de significado según la partícula. Explora, escucha, practica reglas y arma frases útiles.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="vocab game" href="https://palekor.github.io/lecciones/06.html">
+          <figure class="media" data-title="The Word Vault"><img src="./ProfGermandario_files/lesson-06.jpg" alt="The Word Vault — juego de vocabulario" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">07 / 15</span><span class="badge b-vocab">Vocabulario</span></div><h3>The Word Vault</h3><p>Domina palabras de alta frecuencia con audio, IPA, reto contrarreloj y memoria de parejas. Vocabulario que aparece en todas partes.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="grammar game" href="https://palekor.github.io/lecciones/07.html">
+          <figure class="media" data-title="Simple vs Progresivo"><img src="./ProfGermandario_files/lesson-07.jpg" alt="Presente simple vs progresivo" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">08 / 15</span><span class="badge b-grammar">Gramática</span></div><h3>Presente: Simple vs Progresivo</h3><p>Contrasta rutina y acción en progreso. Practica señales temporales como every day, usually, now y right now.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="resource mind" href="https://palekor.github.io/lecciones/08.html">
+          <figure class="media" data-title="Modelador de Hábitos"><img src="./ProfGermandario_files/lesson-08.jpg" alt="Modelador de Hábitos" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">09 / 15</span><span class="badge b-resource">Hábitos</span></div><h3>Modelador de Hábitos</h3><p>Organiza sesiones de enfoque, tareas y reflexiones. Útil para sostener la disciplina que hace que el idioma avance.</p><span class="go">Abrir herramienta →</span></div>
+        </a>
+        <a class="card" data-cat="mind resource" href="https://palekor.github.io/lecciones/09.html">
+          <figure class="media" data-title="Fast Memory Recover"><img src="./ProfGermandario_files/fast-memory.png" alt="Fast Memory — Recovery" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">10 / 15</span><span class="badge b-mind">Memoria</span></div><h3>Fast Memory Recover</h3><p>Práctica de memoria y escucha profunda para recuperar información con más rapidez y entrenar atención auditiva.</p><span class="go">Abrir herramienta →</span></div>
+        </a>
+        <a class="card" data-cat="vocab game mind" href="https://palekor.github.io/lecciones/10.html">
+          <figure class="media" data-title="Gold Words"><img src="./ProfGermandario_files/gold-words.png" alt="You are the words — you manage" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">11 / 15</span><span class="badge b-vocab">Vocabulario</span></div><h3>Gold Words</h3><p>100 palabras de poder para pensar y comunicar mejor. Entrena definición, recuerdo, emparejamiento y automatización mental.</p><span class="go">Abrir lección →</span></div>
+        </a>
+        <a class="card" data-cat="grammar resource" href="https://palekor.github.io/lecciones/Paragraph.html">
+          <figure class="media" data-title="Paragraph Builder"><img src="./ProfGermandario_files/paragraph.png" alt="Fast Memory — Recovery" loading="lazy" onerror="this.closest(&#39;.media&#39;).classList.add(&#39;missing&#39;);this.remove();"></figure>
+          <div class="card-body"><div class="meta"><span class="num">12 / 15</span><span class="badge b-grammar">Párrafos</span></div><h3>Paragraph Builder</h3><p>Analiza párrafos por función: sujeto, verbo, objeto, adjetivo, tiempo, lugar y conectores. Ideal para pasar de oración a texto.</p><span class="go">Abrir recurso →</span></div>
+        </a>
+        <a class="card" data-cat="vocab game" href="https://palekor.github.io/lecciones/gold.html">
+          <figure class="media missing" data-title="Gold Words Audio"></figure>
+          <div class="card-body"><div class="meta"><span class="num">13 / 15</span><span class="badge b-vocab">Audio vocab</span></div><h3>Gold Words · Audio</h3><p>Versión auditiva de vocabulario de alto impacto: escucha palabras y frases hasta que suenen familiares y rápidas.</p><span class="go">Abrir laboratorio →</span></div>
+        </a>
+        <a class="card" data-cat="game mind resource" href="https://palekor.github.io/lecciones/speedmath.html">
+          <figure class="media missing" data-title="Mental Math Trainer"></figure>
+          <div class="card-body"><div class="meta"><span class="num">14 / 15</span><span class="badge b-mind">Agilidad</span></div><h3>Mental Math Trainer</h3><p>Entrenamiento rápido de multiplicación y división por 5. No es inglés directo, pero sí velocidad mental y precisión bajo presión.</p><span class="go">Entrenar →</span></div>
+        </a>
+        <a class="card" data-cat="grammar game" href="https://palekor.github.io/lecciones/wh.html">
+          <figure class="media missing" data-title="WH Questions"></figure>
+          <div class="card-body"><div class="meta"><span class="num">15 / 15</span><span class="badge b-grammar">Preguntas</span></div><h3>WH Questions Lab</h3><p>Practica what, where, when, why, who, how, preguntas yes/no, respuestas cortas, negación y orden correcto de pregunta.</p><span class="go">Abrir laboratorio →</span></div>
+        </a>
+      </div></div></section>
+
+  <section class="manifesto">
+    <div class="wrap quote">
+      <p class="eyebrow">La filosofía</p>
+      <blockquote>El idioma no es información.<br>El idioma es <strong>reacción, ritmo, memoria,</strong><br>confianza, emoción e identidad.</blockquote>
+      <cite>— ProfGermandario · Metodología CBLT + PNL</cite>
+    </div>
+  </section>
+
+  <section class="final" id="diagnostico">
+    <div class="wrap">
+      <p class="eyebrow on-dark">Tu primer paso</p>
+      <h2>Agenda tu diagnóstico<br><em>gratuito</em></h2>
+      <p>Descubre exactamente dónde estás y recibe un plan personalizado para avanzar con fluidez. Sin costo y sin compromiso.</p>
+      <a class="btn btn-primary" href="https://forms.gle/ChyEuqGGxFmzfoUNA" target="_blank" rel="noopener">Empezar ahora <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-brand">Prof Germandario</div>
+        <div class="footer-small">© 2026 · Laboratorio de Fluidez en Inglés · Hecho para quienes no se rinden</div>
+      </div>
+      <div class="socials" aria-label="Redes y contacto ProfGermandario">
+        <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="WhatsApp"><i class="fab fa-whatsapp" style="color:#34D399"></i></a>
+        <a href="mailto:profgermandario@gmail.com" class="glass-mind" aria-label="Email"><i class="fas fa-envelope" style="color:#FACC15"></i></a>
+        <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="TikTok"><i class="fab fa-tiktok" style="color:#fff"></i></a>
+        <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="Facebook"><i class="fab fa-facebook" style="color:#1877F2"></i></a>
+        <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="LinkedIn"><i class="fab fa-linkedin" style="color:#0A66C2"></i></a>
+        <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="X Twitter"><i class="fab fa-twitter" style="color:#D1D5DB"></i></a>
+        <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="Reddit"><i class="fab fa-reddit" style="color:#FF4500"></i></a>
+        <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="glass-mind" aria-label="YouTube"><i class="fab fa-youtube" style="color:#FF0000"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('#toolGrid .card');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          const show = filter === 'all' || card.dataset.cat.split(/\s+/).includes(filter);
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  </script>
+
+
+</body></html>

@@ -7,373 +7,928 @@
 <meta name="theme-color" content="#1A1730">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Memoria Visual">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = { theme: { extend: {
-    colors: {
-      lienzo:'#FCF8F3', nube:'#F2ECE2', tinta:'#1A1730', tintasoft:'#3A3552', bruma:'#76718A',
-      coral:'#FF5A3C', coraldeep:'#E8482C', menta:'#15B79E', mentadeep:'#0E8C79', ambar:'#FFB627',
-      paper:'#F6F1FF', violet:'#7C5CFF'
-    },
-    fontFamily: {
-      display:['Fraunces','Georgia','serif'], sans:['Figtree','system-ui','sans-serif'], mono:['"DM Mono"','monospace']
-    }
-  }}}
-</script>
 <style>
-  body{ background:#FCF8F3; }
-  .no-select{ -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
-  .wave{ display:flex; align-items:flex-end; gap:4px; height:28px; justify-content:center; }
-  .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
-    background:linear-gradient(to top,#15B79E,#FF5A3C 60%,#FFB627); animation:vox 1.3s ease-in-out infinite; }
-  @keyframes vox{0%,100%{transform:scaleY(.25);}50%{transform:scaleY(1);}}
-  @keyframes blink{ 0%,50%{opacity:1;} 25%,75%{opacity:.3;} }
-  .blink-hint{ animation:blink .6s ease-in-out 3; }
-  @keyframes pulse{ 0%{transform:scale(1);} 50%{transform:scale(1.12);} 100%{transform:scale(1);} }
-  .pulse-grow{ animation:pulse .85s ease-in-out infinite; }
-  .wa-fab{ position:fixed; z-index:70; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff;
-    font-family:'Figtree',sans-serif; font-weight:600; text-decoration:none; border-radius:999px;
-    box-shadow:0 10px 30px rgba(37,211,102,.45); padding:13px 18px; transition:transform .2s; }
-  .wa-fab:active{ transform:scale(.95); }
-  @media(max-width:420px){ .wa-label{ display:none; } }
-  :focus-visible{ outline:3px solid #FF5A3C; outline-offset:3px; border-radius:12px; }
-  @media(prefers-reduced-motion:reduce){ .wave i,.pulse-grow,.blink-hint{ animation:none !important; } }
+:root{
+  --lienzo:#FCF8F3;
+  --nube:#F2ECE2;
+  --tinta:#1A1730;
+  --tintasoft:#3A3552;
+  --bruma:#76718A;
+  --coral:#FF5A3C;
+  --coraldeep:#E8482C;
+  --menta:#15B79E;
+  --mentadeep:#0E8C79;
+  --ambar:#FFB627;
+  --paper:#F6F1FF;
+  --violet:#7C5CFF;
+  --danger:#C8453F;
+  --shadow:0 10px 30px rgba(26,23,48,.08);
+}
+*{ box-sizing:border-box; }
+html{ min-height:100%; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,.06), transparent 60%),
+    radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,.07), transparent 60%),
+    var(--lienzo);
+  color:var(--tinta);
+  font-family:Figtree, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button{
+  font:inherit;
+  border:0;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+button:disabled{ cursor:not-allowed; }
+.no-select{
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+:focus-visible{
+  outline:3px solid var(--coral);
+  outline-offset:3px;
+  border-radius:12px;
+}
+.app{
+  min-height:100vh;
+  position:relative;
+  padding-bottom:6rem;
+}
+.shell{
+  width:100%;
+  max-width:42rem;
+  margin:0 auto;
+  padding:0 1rem;
+}
+.header{
+  text-align:center;
+  padding-top:1.75rem;
+  padding-bottom:.25rem;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.65rem;
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.68rem;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--coral);
+}
+.eyebrow::before{
+  content:"";
+  display:block;
+  width:1.5rem;
+  height:2px;
+  background:var(--coral);
+  border-radius:999px;
+}
+h1{
+  margin:.75rem 0 0;
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:clamp(2.25rem,8vw,3.1rem);
+  line-height:1;
+  font-weight:900;
+  background:linear-gradient(120deg,var(--coral) 35%,var(--violet));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.header p{
+  max-width:28rem;
+  margin:.2rem auto 0;
+  color:var(--tintasoft);
+  font-size:.98rem;
+  line-height:1.45;
+}
+.wave{
+  display:flex;
+  align-items:flex-end;
+  gap:4px;
+  height:28px;
+  justify-content:center;
+  margin:.875rem 0;
+}
+.wave i{
+  display:block;
+  width:4px;
+  border-radius:4px;
+  transform-origin:bottom;
+  background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar));
+  animation:vox 1.3s ease-in-out infinite;
+}
+@keyframes vox{
+  0%,100%{transform:scaleY(.25);}
+  50%{transform:scaleY(1);}
+}
+@keyframes blink{
+  0%,50%{opacity:1;}
+  25%,75%{opacity:.3;}
+}
+.blink-hint{ animation:blink .6s ease-in-out 3; }
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+.pulse-grow{ animation:pulse .85s ease-in-out infinite; }
+.card{
+  background:#fff;
+  border:1px solid rgba(26,23,48,.05);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:1rem;
+  margin-top:.75rem;
+}
+@media(min-width:640px){
+  .card{ padding:1.75rem; }
+}
+.footer{
+  text-align:center;
+  margin-top:1.25rem;
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.62rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--bruma);
+}
+.intro{
+  text-align:center;
+  font-size:.88rem;
+  color:var(--bruma);
+  margin:0 0 1.25rem;
+  line-height:1.45;
+}
+.intro b{ color:var(--coral); }
+.statbar{
+  display:flex;
+  background:#fff;
+  border:1px solid rgba(26,23,48,.1);
+  border-radius:1rem;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(26,23,48,.06);
+  margin-bottom:1.25rem;
+}
+.stat{
+  flex:1;
+  padding:.9rem .5rem;
+  text-align:center;
+}
+.stat:first-child{ border-right:1px solid rgba(26,23,48,.05); }
+.stat-value{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-weight:900;
+  font-size:1.65rem;
+  line-height:1;
+}
+.stat-value.coral{ color:var(--coral); }
+.stat-value.menta{ color:var(--mentadeep); }
+.stat-label{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--bruma);
+  margin-top:.35rem;
+}
+.tier{
+  border-radius:1rem;
+  padding:1rem;
+  margin-bottom:1.25rem;
+}
+.tier.coral{ background:rgba(255,90,60,.05); }
+.tier.menta{ background:rgba(21,183,158,.05); }
+.tier.ambar{ background:rgba(255,182,39,.10); }
+.tier-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:.75rem;
+}
+.tier-title{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-weight:700;
+  font-size:1rem;
+}
+.tier-title.coral{ color:var(--coraldeep); }
+.tier-title.menta{ color:var(--mentadeep); }
+.tier-title.ambar{ color:#A9760A; }
+.dot{
+  display:inline-block;
+  width:.62rem;
+  height:.62rem;
+  border-radius:999px;
+}
+.dot.coral{ background:var(--coral); }
+.dot.menta{ background:var(--menta); }
+.dot.ambar{ background:var(--ambar); }
+.tier-range{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--bruma);
+  white-space:nowrap;
+}
+.level-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.62rem;
+}
+.level-btn{
+  position:relative;
+  aspect-ratio:1/1;
+  border-radius:1rem;
+  border:2px solid rgba(255,90,60,.4);
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  touch-action:manipulation;
+}
+.tier.menta .level-btn{ border-color:rgba(21,183,158,.4); }
+.tier.ambar .level-btn{ border-color:rgba(255,182,39,.5); }
+.level-btn:hover{ transform:translateY(-2px); }
+.level-btn:active{ transform:scale(.95); }
+.level-btn.done{
+  background:rgba(21,183,158,.15);
+  border-color:var(--menta);
+}
+.level-number{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:1.5rem;
+  font-weight:900;
+  line-height:1;
+  color:var(--tinta);
+}
+.level-meta{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.58rem;
+  color:var(--bruma);
+  margin-top:.25rem;
+}
+.check{
+  position:absolute;
+  top:.35rem;
+  right:.5rem;
+  color:var(--menta);
+  font-size:.95rem;
+}
+.center{ text-align:center; }
+.reset{
+  margin-top:.3rem;
+  background:transparent;
+  color:var(--bruma);
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.75rem;
+  transition:color .15s ease;
+}
+.reset:hover{ color:var(--coral); }
+.start-card{
+  border-radius:20px;
+  color:var(--paper);
+  padding:2rem;
+  text-align:center;
+  background:radial-gradient(120% 130% at 0% 0%, #2A2348 0%, var(--tinta) 70%);
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.62rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.badge.coral{ color:var(--coraldeep); }
+.badge.menta{ color:var(--mentadeep); }
+.badge.ambar{ color:#A9760A; }
+.start-card .badge.coral{ color:#ff9a88; }
+.start-card .badge.menta{ color:#6ff0df; }
+.start-card .badge.ambar{ color:var(--ambar); }
+.start-title{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:2rem;
+  line-height:1.1;
+  font-weight:900;
+  color:var(--paper);
+  margin:.5rem 0;
+}
+.start-card p{
+  color:rgba(246,241,255,.72);
+  margin:.35rem 0;
+}
+.start-card b{ color:var(--ambar); }
+.speed{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.65rem;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:rgba(246,241,255,.5);
+  margin-top:.5rem;
+}
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.75rem;
+  margin-top:1.75rem;
+}
+.btn{
+  border-radius:999px;
+  padding:.83rem 1.5rem;
+  font-weight:700;
+  transition:background .15s ease, border-color .15s ease, transform .15s ease;
+  touch-action:manipulation;
+}
+.btn:active{ transform:scale(.97); }
+.btn-primary{
+  color:#fff;
+  background:var(--coral);
+  box-shadow:0 8px 26px rgba(255,90,60,.32);
+}
+.btn-primary:hover{ background:var(--coraldeep); }
+.btn-light{
+  color:var(--paper);
+  background:transparent;
+  border:1.5px solid rgba(246,241,255,.25);
+}
+.btn-light:hover{ border-color:var(--paper); }
+.btn-outline{
+  color:var(--tinta);
+  background:transparent;
+  border:1.5px solid rgba(26,23,48,.15);
+}
+.btn-outline:hover{ border-color:var(--tinta); }
+.btn-warn{
+  background:rgba(255,182,39,.2);
+  color:#A9760A;
+  padding:.5rem 1rem;
+  font-size:.9rem;
+}
+.btn-warn:hover{ background:rgba(255,182,39,.3); }
+.btn-muted{
+  background:var(--nube);
+  color:var(--tinta);
+  padding:.5rem 1rem;
+  font-size:.9rem;
+}
+.btn-muted:hover{ background:#E9E2D6; }
+.phase-title{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:clamp(1.3rem,5vw,1.6rem);
+  font-weight:700;
+  margin:.25rem 0;
+}
+.phase-meta{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.65rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--bruma);
+  margin:.2rem 0 1.5rem;
+}
+.sequence-row,
+.answer-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:.65rem;
+}
+.seq-card{
+  width:clamp(54px,16vw,84px);
+  height:clamp(54px,16vw,84px);
+  border-radius:1rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1.8rem,8vw,3rem);
+  transition:transform .3s ease, background .3s ease, opacity .3s ease;
+  background:var(--nube);
+  opacity:.5;
+}
+.seq-card.seen{
+  background:rgba(21,183,158,.2);
+  transform:scale(1.05);
+  opacity:1;
+}
+.seq-card.current{
+  background:var(--ambar);
+  transform:scale(1.1);
+  opacity:1;
+}
+.input-slot{
+  width:clamp(46px,13vw,68px);
+  height:clamp(46px,13vw,68px);
+  border-radius:.75rem;
+  border:2px dashed rgba(26,23,48,.15);
+  background:rgba(242,236,226,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1.4rem,6vw,2.2rem);
+}
+.input-actions{
+  display:flex;
+  justify-content:center;
+  gap:.5rem;
+  margin:1rem 0 1.5rem;
+}
+.emoji-grid{
+  display:grid;
+  gap:.65rem;
+  max-width:28rem;
+  margin:0 auto;
+}
+.emoji-grid.cols-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+.emoji-grid.cols-5{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+@media(min-width:640px){
+  .emoji-grid.cols-5{ grid-template-columns:repeat(5,minmax(0,1fr)); }
+}
+.emoji-btn{
+  aspect-ratio:1/1;
+  border-radius:1rem;
+  background:var(--nube);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1.5rem,7vw,2.2rem);
+  transition:transform .15s ease, background .15s ease, opacity .15s ease;
+  touch-action:manipulation;
+}
+.emoji-btn:hover{ background:#E9E2D6; transform:translateY(-2px); }
+.emoji-btn:active{ transform:scale(.95); }
+.emoji-btn.used{
+  opacity:.25;
+  background:var(--nube);
+}
+.emoji-btn.hint{ background:rgba(255,182,39,.4); }
+.result-title{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:2rem;
+  line-height:1.1;
+  font-weight:900;
+  margin:.25rem 0;
+}
+.result-title.ok{ color:var(--mentadeep); }
+.result-title.fail{ color:var(--danger); }
+.result-msg{
+  color:var(--tintasoft);
+  margin:.25rem 0 1.5rem;
+}
+.result-label{
+  font-family:"DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.62rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--bruma);
+  margin:1.25rem 0 .5rem;
+}
+.result-card{
+  width:clamp(42px,11vw,58px);
+  height:clamp(42px,11vw,58px);
+  border-radius:.75rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1.3rem,5vw,2rem);
+}
+.result-card.ok{ background:rgba(21,183,158,.15); }
+.result-card.fail{ background:rgba(242,109,109,.2); }
+.trophy{
+  margin:1.5rem auto 0;
+  background:rgba(255,182,39,.15);
+  border:1px solid rgba(255,182,39,.4);
+  border-radius:1rem;
+  padding:1rem;
+  max-width:30rem;
+}
+.trophy h3{
+  font-family:Fraunces, Georgia, "Times New Roman", serif;
+  font-size:1.15rem;
+  line-height:1.2;
+  color:#A9760A;
+  margin:0 0 .35rem;
+}
+.trophy p{
+  color:var(--tintasoft);
+  font-size:.9rem;
+  margin:0;
+}
+.wa-fab{
+  position:fixed;
+  z-index:70;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#25D366;
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  border-radius:999px;
+  box-shadow:0 10px 30px rgba(37,211,102,.45);
+  padding:13px 18px;
+  transition:transform .2s;
+  bottom:calc(1.1rem + env(safe-area-inset-bottom));
+  right:1.1rem;
+}
+.wa-fab:active{ transform:scale(.95); }
+@media(max-width:420px){
+  .wa-label{ display:none; }
+}
+@media(prefers-reduced-motion:reduce){
+  .wave i,.pulse-grow,.blink-hint{ animation:none !important; }
+  .level-btn:hover,.emoji-btn:hover{ transform:none; }
+}
 </style>
 </head>
-<body class="no-select font-sans text-tinta">
-  <div id="root"></div>
+<body class="no-select">
+<div id="root"></div>
 
-  <a class="wa-fab" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20en%20la%20Lecci%C3%B3n%204%20(memoria%20visual)%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
-     target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
-     style="bottom:calc(1.1rem + env(safe-area-inset-bottom)); right:1.1rem;">
-    <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
-    <span class="wa-label">WhatsApp</span>
-  </a>
+<a class="wa-fab"
+   href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20en%20la%20Lecci%C3%B3n%204%20(memoria%20visual)%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
+   target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
+  <span class="wa-label">WhatsApp</span>
+</a>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+<script>
+(function(){
+  "use strict";
 
-    const emojiPools = [
-      ['👽','🤖','👻','🦄','🐉','🦋','🐙','🦎','🐸','🦊','🧚','🧛','🧞','🧜','🦸','🦹','🧙','🦅','🐺','🦁','🐯','🐨','🐼','🦘','🦝'],
-      ['💄','👑','💎','⌚','👜','🎀','💍','🕶️','👠','🧢','🎩','👒','🧣','🧤','👗','👔','💼','👛','🎒','👝','🧳','🥾','👟','🩴','👡'],
-      ['🎄','🌺','🌙','⭐','🌈','🔥','❄️','🌸','🍀','🌊','🌞','⛅','🌩️','🌪️','🌋','🌵','🌿','🌱','🌴','🌲','🌻','🌷','🌹','🌼','🌾'],
-      ['🍊','🍓','🍎','🍌','🥝','🍇','🍑','🥭','🍍','🥥','🍒','🍈','🍉','🫐','🥑','🍅','🥒','🍋','🍐','🥔','🧅','🧄','🌽','🥕','🫒'],
-      ['🎤','🎸','🎹','🥁','🎺','🎻','🪕','🎷','🎲','🎯','🎪','🎭','🎨','🎬','🎧','🎼','🎵','🎶','🎳','🎮','🕹️','🎰','🎡','🎢','🪁'],
-      ['🚖','🚗','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐','🚚','🚛','🚜','🏍️','🚲','🛴','🚁','✈️','🛸','🚀','⛵','🛥️','🚢','🚂','🚃'],
-      ['☎️','📱','💻','⌨️','🖥️','📺','📻','⏰','📷','🔌','🖱️','💾','💿','📀','🔋','💡','🔦','📡','🔭','🔬','⚗️','🧪','🔍','📊','🗜️'],
-      ['🏠','🏢','🏰','🏛️','⛪','🏭','🗼','🎠','🏟️','🏗️','🏘️','🏙️','🏚️','🏜️','🏞️','🏖️','🏝️','🏔️','🗻','🏕️','🌉','🏯','🏬','🏤','🕌'],
-      ['⚽','🏀','🏈','⚾','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🏆','🥇','🥈','🥉','🏅','🎖️','🏵️','🎗️','🎫','🎟️','🥏','🏏','🥍','🛹'],
-      ['🔨','⚒️','🛠️','🔧','🔩','⚙️','🧰','🔗','⛓️','🧲','🪝','🧱','🪚','🪛','🪜','🧯','🪣','🧹','🧺','🗝️','🪓','⛏️','🔱','🏹','🛞'],
-      ['🌌','🌠','☄️','🪐','🌍','🌎','🌏','🌕','🌖','🌗','🌘','🌑','🌒','🌓','🌔','🌛','🌜','🌝','✨','⭐','🌟','💫','🔮','🧿','🛰️'],
-      ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💖','💗','💘','💝','💞','💟','🫶','💌','💋','🌹','😍','🥰','💐']
-    ];
+  const root = document.getElementById("root");
+  const emojiPools = [
+    ["👽","🤖","👻","🦄","🐉","🦋","🐙","🦎","🐸","🦊","🧚","🧛","🧞","🧜","🦸","🦹","🧙","🦅","🐺","🦁","🐯","🐨","🐼","🦘","🦝"],
+    ["💄","👑","💎","⌚","👜","🎀","💍","🕶️","👠","🧢","🎩","👒","🧣","🧤","👗","👔","💼","👛","🎒","👝","🧳","🥾","👟","🩴","👡"],
+    ["🎄","🌺","🌙","⭐","🌈","🔥","❄️","🌸","🍀","🌊","🌞","⛅","🌩️","🌪️","🌋","🌵","🌿","🌱","🌴","🌲","🌻","🌷","🌹","🌼","🌾"],
+    ["🍊","🍓","🍎","🍌","🥝","🍇","🍑","🥭","🍍","🥥","🍒","🍈","🍉","🫐","🥑","🍅","🥒","🍋","🍐","🥔","🧅","🧄","🌽","🥕","🫒"],
+    ["🎤","🎸","🎹","🥁","🎺","🎻","🪕","🎷","🎲","🎯","🎪","🎭","🎨","🎬","🎧","🎼","🎵","🎶","🎳","🎮","🕹️","🎰","🎡","🎢","🪁"],
+    ["🚖","🚗","🚙","🚌","🚎","🏎️","🚓","🚑","🚒","🚐","🚚","🚛","🚜","🏍️","🚲","🛴","🚁","✈️","🛸","🚀","⛵","🛥️","🚢","🚂","🚃"],
+    ["☎️","📱","💻","⌨️","🖥️","📺","📻","⏰","📷","🔌","🖱️","💾","💿","📀","🔋","💡","🔦","📡","🔭","🔬","⚗️","🧪","🔍","📊","🗜️"],
+    ["🏠","🏢","🏰","🏛️","⛪","🏭","🗼","🎠","🏟️","🏗️","🏘️","🏙️","🏚️","🏜️","🏞️","🏖️","🏝️","🏔️","🗻","🏕️","🌉","🏯","🏬","🏤","🕌"],
+    ["⚽","🏀","🏈","⚾","🎾","🏐","🏉","🎱","🏓","🏸","🥅","🏆","🥇","🥈","🥉","🏅","🎖️","🏵️","🎗️","🎫","🎟️","🥏","🏏","🥍","🛹"],
+    ["🔨","⚒️","🛠️","🔧","🔩","⚙️","🧰","🔗","⛓️","🧲","🪝","🧱","🪚","🪛","🪜","🧯","🪣","🧹","🧺","🗝️","🪓","⛏️","🔱","🏹","🛞"],
+    ["🌌","🌠","☄️","🪐","🌍","🌎","🌏","🌕","🌖","🌗","🌘","🌑","🌒","🌓","🌔","🌛","🌜","🌝","✨","⭐","🌟","💫","🔮","🧿","🛰️"],
+    ["❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔","❣️","💕","💖","💗","💘","💝","💞","💟","🫶","💌","💋","🌹","😍","🥰","💐"]
+  ];
+  const allEmojis = emojiPools.flat();
 
-    // ── 12 niveles en 3 bloques de 4 ──
-    const LEVELS = [
-      {len:3, show:1200}, {len:4, show:1200}, {len:5, show:1100}, {len:6, show:1100},   // Principiante
-      {len:6, show:900},  {len:7, show:900},  {len:8, show:850},  {len:9, show:800},    // Intermedio
-      {len:9, show:700},  {len:10,show:650},  {len:11,show:600},  {len:12,show:550},    // Experto
-    ];
-    const TIERS = [
-      {name:'Principiante', range:'Niveles 1–4',  color:'coral', from:0, to:4},
-      {name:'Intermedio',   range:'Niveles 5–8',  color:'menta', from:4, to:8},
-      {name:'Experto',      range:'Niveles 9–12', color:'ambar', from:8, to:12},
-    ];
-    const TC = {
-      coral: {dot:'bg-coral',  panel:'bg-coral/5',  ring:'border-coral/40',  text:'text-coraldeep'},
-      menta: {dot:'bg-menta',  panel:'bg-menta/5',  ring:'border-menta/40',  text:'text-mentadeep'},
-      ambar: {dot:'bg-ambar',  panel:'bg-ambar/10', ring:'border-ambar/50',  text:'text-[#A9760A]'},
-    };
-    const tierOf = (lvl) => lvl<=4?0 : lvl<=8?1 : 2;
-    const roundUp4 = (x)=>Math.ceil(x/4)*4;
-    const gridFor = (len)=>Math.min(20, Math.max(12, roundUp4(len+4)));
+  const LEVELS = [
+    {len:3, show:1200}, {len:4, show:1200}, {len:5, show:1100}, {len:6, show:1100},
+    {len:6, show:900},  {len:7, show:900},  {len:8, show:850},  {len:9, show:800},
+    {len:9, show:700},  {len:10,show:650},  {len:11,show:600},  {len:12,show:550}
+  ];
+  const TIERS = [
+    {name:"Principiante", range:"Niveles 1–4",  color:"coral", from:0, to:4},
+    {name:"Intermedio",   range:"Niveles 5–8",  color:"menta", from:4, to:8},
+    {name:"Experto",      range:"Niveles 9–12", color:"ambar", from:8, to:12}
+  ];
 
-    const App = () => {
-      const [phase, setPhase] = useState('menu');     // menu | start | showing | input | result
-      const [level, setLevel] = useState(1);
-      const [sequence, setSequence] = useState([]);
-      const [available, setAvailable] = useState([]);
-      const [userInput, setUserInput] = useState([]);
-      const [showingIndex, setShowingIndex] = useState(0);
-      const [score, setScore] = useState(0);
-      const [completed, setCompleted] = useState(new Set());
-      const [correct, setCorrect] = useState(false);
-      const [showHint, setShowHint] = useState(false);
+  let state = {
+    phase:"menu",
+    level:1,
+    sequence:[],
+    available:[],
+    userInput:[],
+    showingIndex:0,
+    score:0,
+    completed:new Set(),
+    correct:false,
+    showHint:false
+  };
 
-      const generate = (lvl) => {
-        const len = LEVELS[lvl-1].len, gridN = gridFor(len);
-        const all = emojiPools.flat();
-        const seq = [];
-        while(seq.length < len){ const e = all[Math.floor(Math.random()*all.length)]; if(!seq.includes(e)) seq.push(e); }
-        const avail = [...seq];
-        while(avail.length < gridN){ const e = all[Math.floor(Math.random()*all.length)]; if(!avail.includes(e)) avail.push(e); }
-        for(let i=avail.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [avail[i],avail[j]]=[avail[j],avail[i]]; }
-        return {seq, avail};
-      };
+  let timer = null;
+  let hintTimer = null;
 
-      const pickLevel = (lvl) => { setLevel(lvl); setPhase('start'); };
-      const beginLevel = () => {
-        const {seq, avail} = generate(level);
-        setSequence(seq); setAvailable(avail); setUserInput([]); setShowingIndex(0); setShowHint(false); setPhase('showing');
-      };
+  function esc(value){
+    return String(value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
 
-      useEffect(() => {
-        if(phase!=='showing') return;
-        if(showingIndex < sequence.length){
-          const t = setTimeout(()=>setShowingIndex(i=>i+1), LEVELS[level-1].show);
-          return ()=>clearTimeout(t);
-        } else {
-          const t = setTimeout(()=>setPhase('input'), 700);
-          return ()=>clearTimeout(t);
-        }
-      }, [phase, showingIndex, sequence.length, level]);
+  function setState(patch){
+    state = Object.assign({}, state, patch);
+    render();
+  }
 
-      const handleEmoji = (emoji) => {
-        if(phase!=='input' || userInput.includes(emoji)) return;
-        const next = [...userInput, emoji];
-        setUserInput(next);
-        if(next.length === sequence.length){
-          const ok = next.every((e,i)=>e===sequence[i]);
-          setCorrect(ok);
-          if(ok){ setScore(s=>s + level*10); setCompleted(prev=>new Set([...prev, level])); }
-          setTimeout(()=>setPhase('result'), 350);
-        }
-      };
-      const clearInput = () => setUserInput([]);
-      const hint = () => { setShowHint(true); setTimeout(()=>setShowHint(false), 1800); };
-      const nextLevel = () => { if(level<12) pickLevel(level+1); else setPhase('menu'); };
-      const resetProgress = () => { setScore(0); setCompleted(new Set()); setPhase('menu'); };
+  function clearTimers(){
+    if(timer){ clearTimeout(timer); timer = null; }
+    if(hintTimer){ clearTimeout(hintTimer); hintTimer = null; }
+  }
 
-      // ── UI helpers ──
-      const Header = () => (
-        <header className="text-center pt-7 pb-1">
-          <span className="font-mono text-[0.68rem] tracking-[0.26em] uppercase text-coral inline-flex items-center gap-2.5">
-            <span className="w-6 h-[2px] bg-coral rounded"></span>Lección 4 · Juego mental
-          </span>
-          <h1 className="font-display font-black text-4xl sm:text-5xl mt-3 leading-none"
-              style={{background:'linear-gradient(120deg,#FF5A3C 35%,#7C5CFF)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent'}}>
-            Memoria Visual
-          </h1>
-          <div className="wave my-3.5"><Wave/></div>
-          <p className="text-tintasoft max-w-md mx-auto text-[0.98rem]">Memoriza la secuencia y reprodúcela. Tu memoria es un músculo: entrénalo.</p>
-        </header>
-      );
+  function tierOf(lvl){ return lvl <= 4 ? 0 : lvl <= 8 ? 1 : 2; }
+  function roundUp4(x){ return Math.ceil(x/4)*4; }
+  function gridFor(len){ return Math.min(20, Math.max(12, roundUp4(len+4))); }
 
-      const StatBar = () => (
-        <div className="flex bg-white border border-tinta/10 rounded-2xl overflow-hidden shadow-[0_8px_24px_rgba(26,23,48,0.06)] mb-5">
-          <div className="flex-1 py-3 text-center border-r border-tinta/5">
-            <div className="font-display font-black text-2xl text-coral leading-none">{score}</div>
-            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma mt-1.5">Puntos</div>
-          </div>
-          <div className="flex-1 py-3 text-center">
-            <div className="font-display font-black text-2xl text-mentadeep leading-none">{completed.size}/12</div>
-            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma mt-1.5">Completados</div>
-          </div>
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      const tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function generate(lvl){
+    const len = LEVELS[lvl-1].len;
+    const gridN = gridFor(len);
+    const seq = [];
+    while(seq.length < len){
+      const e = allEmojis[Math.floor(Math.random()*allEmojis.length)];
+      if(!seq.includes(e)) seq.push(e);
+    }
+    const avail = seq.slice();
+    while(avail.length < gridN){
+      const e = allEmojis[Math.floor(Math.random()*allEmojis.length)];
+      if(!avail.includes(e)) avail.push(e);
+    }
+    return {seq:seq, avail:shuffle(avail)};
+  }
+
+  function pickLevel(lvl){
+    clearTimers();
+    setState({ level:lvl, phase:"start", showHint:false });
+  }
+
+  function beginLevel(){
+    clearTimers();
+    const generated = generate(state.level);
+    setState({
+      sequence:generated.seq,
+      available:generated.avail,
+      userInput:[],
+      showingIndex:0,
+      showHint:false,
+      correct:false,
+      phase:"showing"
+    });
+  }
+
+  function handleEmoji(emoji){
+    if(state.phase !== "input" || state.userInput.includes(emoji)) return;
+    const next = state.userInput.concat(emoji);
+    const patch = { userInput:next };
+    if(next.length === state.sequence.length){
+      const ok = next.every((e,i)=>e === state.sequence[i]);
+      patch.correct = ok;
+      if(ok){
+        patch.score = state.score + state.level * 10;
+        const completed = new Set(state.completed);
+        completed.add(state.level);
+        patch.completed = completed;
+      }
+      clearTimers();
+      timer = setTimeout(()=>setState({phase:"result"}), 350);
+    }
+    setState(patch);
+  }
+
+  function clearInput(){
+    if(state.phase !== "input") return;
+    setState({ userInput:[] });
+  }
+
+  function showHint(){
+    if(state.phase !== "input") return;
+    if(hintTimer){ clearTimeout(hintTimer); hintTimer = null; }
+    setState({ showHint:true });
+    hintTimer = setTimeout(()=>setState({showHint:false}), 1800);
+  }
+
+  function nextLevel(){
+    if(state.level < 12) pickLevel(state.level + 1);
+    else setState({ phase:"menu" });
+  }
+
+  function resetProgress(){
+    clearTimers();
+    setState({ score:0, completed:new Set(), phase:"menu" });
+  }
+
+  function waveHtml(){
+    return Array.from({length:22}).map((_,i)=>{
+      const h = 8 + Math.abs(Math.sin(i*.6))*18;
+      const delay = i*.07;
+      const duration = 1.1 + (i%5)*.12;
+      return `<i style="height:${h.toFixed(2)}px;animation-delay:${delay.toFixed(2)}s;animation-duration:${duration.toFixed(2)}s"></i>`;
+    }).join("");
+  }
+
+  function headerHtml(){
+    return `
+      <header class="header">
+        <span class="eyebrow">Lección 4 · Juego mental</span>
+        <h1>Memoria Visual</h1>
+        <div class="wave" aria-hidden="true">${waveHtml()}</div>
+        <p>Memoriza la secuencia y reprodúcela. Tu memoria es un músculo: entrénalo.</p>
+      </header>`;
+  }
+
+  function statBarHtml(){
+    return `
+      <div class="statbar" aria-label="Progreso">
+        <div class="stat">
+          <div class="stat-value coral">${state.score}</div>
+          <div class="stat-label">Puntos</div>
         </div>
-      );
-
-      const tierBadge = (lvl) => {
-        const t = TIERS[tierOf(lvl)];
-        return <span className={`inline-flex items-center gap-2 font-mono text-[0.62rem] tracking-[0.14em] uppercase ${TC[t.color].text}`}>
-          <span className={`w-2 h-2 rounded-full ${TC[t.color].dot}`}></span>{t.name}
-        </span>;
-      };
-
-      // ── PHASES ──
-      let body = null;
-
-      if(phase==='menu'){
-        body = (
-          <div>
-            <p className="text-center text-sm text-bruma mb-5">
-              👀 Observa la secuencia y <span className="text-coral font-semibold">reprodúcela en orden</span>. Cada 4 niveles sube la dificultad.
-            </p>
-            <StatBar/>
-            {TIERS.map((t,ti)=>(
-              <div key={ti} className={`${TC[t.color].panel} rounded-2xl p-4 mb-5`}>
-                <div className="flex items-center justify-between mb-3">
-                  <span className={`inline-flex items-center gap-2 font-display font-bold text-base ${TC[t.color].text}`}>
-                    <span className={`w-2.5 h-2.5 rounded-full ${TC[t.color].dot}`}></span>{t.name}
-                  </span>
-                  <span className="font-mono text-[0.6rem] tracking-widest uppercase text-bruma">{t.range}</span>
-                </div>
-                <div className="grid grid-cols-4 gap-2.5">
-                  {Array.from({length:4}).map((_,k)=>{
-                    const lvl = t.from + k + 1;
-                    const done = completed.has(lvl);
-                    return (
-                      <button key={lvl} onClick={()=>pickLevel(lvl)}
-                        style={{touchAction:'manipulation'}}
-                        className={`aspect-square rounded-2xl border-2 flex flex-col items-center justify-center relative transition hover:-translate-y-0.5 active:scale-95
-                          ${done ? 'bg-menta/15 border-menta' : 'bg-white '+TC[t.color].ring}`}>
-                        <span className="font-display font-black text-2xl text-tinta leading-none">{lvl}</span>
-                        <span className="font-mono text-[0.58rem] text-bruma mt-1">{LEVELS[lvl-1].len} emojis</span>
-                        {done && <span className="absolute top-1.5 right-2 text-menta text-sm">✓</span>}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-            {completed.size>0 && (
-              <div className="text-center mt-2">
-                <button onClick={resetProgress} className="font-mono text-xs text-bruma hover:text-coral transition">↺ reiniciar progreso</button>
-              </div>
-            )}
-          </div>
-        );
-      }
-
-      if(phase==='start'){
-        const cfg = LEVELS[level-1];
-        body = (
-          <div className="rounded-[20px] text-paper p-8 text-center"
-               style={{background:'radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%)'}}>
-            <div className="mb-2">{tierBadge(level)}</div>
-            <h2 className="font-display font-black text-3xl text-paper mb-2">Nivel {level}</h2>
-            <p className="text-paper/70">Memoriza una secuencia de <b className="text-ambar">{cfg.len} emojis</b>.</p>
-            <p className="font-mono text-[0.65rem] tracking-wider uppercase text-paper/50 mt-2">
-              Velocidad: {cfg.show<=650?'rápida':cfg.show<=900?'media':'tranquila'}
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mt-7">
-              <button onClick={beginLevel} className="bg-coral text-white font-semibold rounded-full px-7 py-3.5 shadow-[0_8px_26px_rgba(255,90,60,0.32)] hover:bg-coraldeep transition">Comenzar ▶</button>
-              <button onClick={()=>setPhase('menu')} className="border-[1.5px] border-paper/25 text-paper font-semibold rounded-full px-6 py-3.5 hover:border-paper transition">Volver al mapa</button>
-            </div>
-          </div>
-        );
-      }
-
-      if(phase==='showing'){
-        body = (
-          <div className="text-center py-2">
-            <h2 className="font-display font-bold text-xl sm:text-2xl mb-1">¡Memoriza la secuencia!</h2>
-            <p className="font-mono text-[0.65rem] tracking-widest uppercase text-bruma mb-6">
-              {Math.min(showingIndex+1, sequence.length)} de {sequence.length}
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-2.5 sm:gap-3">
-              {sequence.map((emoji,idx)=>(
-                <div key={idx}
-                  className={`rounded-2xl flex items-center justify-center transition-all duration-300 w-[clamp(54px,16vw,84px)] h-[clamp(54px,16vw,84px)] text-[clamp(1.8rem,8vw,3rem)]
-                    ${idx<showingIndex ? 'bg-menta/20 scale-105'
-                      : idx===showingIndex ? 'bg-ambar scale-110 pulse-grow'
-                      : 'bg-nube opacity-50'}`}>
-                  {idx<=showingIndex ? emoji : '❓'}
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-
-      if(phase==='input'){
-        const cols = available.length>12 ? 'grid-cols-4 sm:grid-cols-5' : 'grid-cols-4';
-        body = (
-          <div className="text-center">
-            <h2 className="font-display font-bold text-xl sm:text-2xl mb-1">¡Reprodúcela!</h2>
-            <p className="font-mono text-[0.65rem] tracking-widest uppercase text-bruma mb-5">{userInput.length} de {sequence.length}</p>
-
-            <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
-              {sequence.map((_,idx)=>(
-                <div key={idx}
-                  className="rounded-xl border-2 border-dashed border-tinta/15 bg-nube/40 flex items-center justify-center w-[clamp(46px,13vw,68px)] h-[clamp(46px,13vw,68px)] text-[clamp(1.4rem,6vw,2.2rem)]">
-                  {userInput[idx] || ''}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center gap-2 mb-6">
-              <button onClick={hint} className="bg-ambar/20 text-[#A9760A] font-semibold rounded-full px-4 py-2 text-sm hover:bg-ambar/30 transition">💡 Pista</button>
-              <button onClick={clearInput} className="bg-nube text-tinta font-semibold rounded-full px-4 py-2 text-sm hover:bg-[#E9E2D6] transition">🗑️ Limpiar</button>
-            </div>
-
-            <div className={`grid ${cols} gap-2.5 max-w-md mx-auto`}>
-              {available.map((emoji,idx)=>{
-                const used = userInput.includes(emoji);
-                const hl = showHint && sequence.includes(emoji);
-                return (
-                  <button key={idx} onClick={()=>handleEmoji(emoji)} disabled={used}
-                    style={{touchAction:'manipulation'}}
-                    className={`aspect-square rounded-2xl flex items-center justify-center text-[clamp(1.5rem,7vw,2.2rem)] transition active:scale-95
-                      ${used ? 'opacity-25 bg-nube' : hl ? 'blink-hint bg-ambar/40' : 'bg-nube hover:-translate-y-0.5 hover:bg-[#E9E2D6]'}`}>
-                    {emoji}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        );
-      }
-
-      if(phase==='result'){
-        body = (
-          <div className="text-center">
-            <h2 className="font-display font-black text-3xl mb-1" style={{color: correct?'#0E8C79':'#C8453F'}}>
-              {correct ? '¡Perfecto! 🎉' : 'Casi… 💪'}
-            </h2>
-            <p className="text-tintasoft mb-6">{correct ? `+${level*10} puntos` : 'Compara y vuelve a intentarlo.'}</p>
-
-            <p className="font-mono text-[0.62rem] tracking-widest uppercase text-bruma mb-2">Secuencia correcta</p>
-            <div className="flex flex-wrap justify-center gap-2 mb-5">
-              {sequence.map((e,idx)=>(
-                <div key={idx} className="rounded-xl bg-menta/15 flex items-center justify-center w-[clamp(42px,11vw,58px)] h-[clamp(42px,11vw,58px)] text-[clamp(1.3rem,5vw,2rem)]">{e}</div>
-              ))}
-            </div>
-            <p className="font-mono text-[0.62rem] tracking-widest uppercase text-bruma mb-2">Tu respuesta</p>
-            <div className="flex flex-wrap justify-center gap-2 mb-7">
-              {userInput.map((e,idx)=>(
-                <div key={idx} className={`rounded-xl flex items-center justify-center w-[clamp(42px,11vw,58px)] h-[clamp(42px,11vw,58px)] text-[clamp(1.3rem,5vw,2rem)] ${e===sequence[idx]?'bg-menta/15':'bg-[#F26D6D]/20'}`}>{e}</div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-2.5">
-              {correct && level<12 && (
-                <button onClick={nextLevel} className="bg-coral text-white font-semibold rounded-full px-6 py-3 hover:bg-coraldeep transition">Siguiente nivel ▶</button>
-              )}
-              <button onClick={beginLevel} className="border-[1.5px] border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-tinta transition">Reintentar</button>
-              <button onClick={()=>setPhase('menu')} className="border-[1.5px] border-tinta/15 text-tinta font-semibold rounded-full px-6 py-3 hover:border-tinta transition">Mapa de niveles</button>
-            </div>
-
-            {correct && level===12 && (
-              <div className="mt-6 bg-ambar/15 border border-ambar/40 rounded-2xl p-4">
-                <h3 className="font-display font-bold text-lg text-[#A9760A] mb-1">🏆 ¡Completaste los 12 niveles!</h3>
-                <p className="text-tintasoft text-sm">Tu memoria visual es excepcional. Puntuación final: <b>{score} puntos</b>.</p>
-              </div>
-            )}
-          </div>
-        );
-      }
-
-      return (
-        <div className="min-h-screen relative pb-24">
-          <div className="fixed inset-0 -z-10" style={{background:'radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,0.06), transparent 60%), radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,0.07), transparent 60%)'}} />
-          <div className="w-full max-w-2xl mx-auto px-4">
-            <Header/>
-            <div className="bg-white rounded-[20px] border border-tinta/5 shadow-[0_10px_30px_rgba(26,23,48,0.08)] p-4 sm:p-7 mt-3">
-              {body}
-            </div>
-            <p className="text-center mt-5 font-mono text-[0.62rem] tracking-[0.1em] uppercase text-bruma">
-              ProfGermandario · Entrena tu mente
-            </p>
-          </div>
+        <div class="stat">
+          <div class="stat-value menta">${state.completed.size}/12</div>
+          <div class="stat-label">Completados</div>
         </div>
-      );
-    };
+      </div>`;
+  }
 
-    const Wave = () => (
-      <React.Fragment>
-        {Array.from({length:22}).map((_,i)=>(
-          <i key={i} style={{ height:(8+Math.abs(Math.sin(i*0.6))*18)+'px', animationDelay:(i*0.07)+'s', animationDuration:(1.1+(i%5)*0.12)+'s' }} />
-        ))}
-      </React.Fragment>
-    );
+  function tierBadgeHtml(lvl){
+    const t = TIERS[tierOf(lvl)];
+    return `<span class="badge ${t.color}"><span class="dot ${t.color}"></span>${esc(t.name)}</span>`;
+  }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-  </script>
+  function menuHtml(){
+    const tiers = TIERS.map((t)=>{
+      const levels = Array.from({length:4}).map((_,k)=>{
+        const lvl = t.from + k + 1;
+        const done = state.completed.has(lvl);
+        return `
+          <button type="button" class="level-btn ${done ? "done" : ""}" data-action="pick-level" data-level="${lvl}" aria-label="Nivel ${lvl}, ${LEVELS[lvl-1].len} emojis">
+            <span class="level-number">${lvl}</span>
+            <span class="level-meta">${LEVELS[lvl-1].len} emojis</span>
+            ${done ? `<span class="check" aria-hidden="true">✓</span>` : ""}
+          </button>`;
+      }).join("");
+      return `
+        <section class="tier ${t.color}">
+          <div class="tier-head">
+            <span class="tier-title ${t.color}"><span class="dot ${t.color}"></span>${esc(t.name)}</span>
+            <span class="tier-range">${esc(t.range)}</span>
+          </div>
+          <div class="level-grid">${levels}</div>
+        </section>`;
+    }).join("");
+
+    return `
+      <p class="intro">👀 Observa la secuencia y <b>reprodúcela en orden</b>. Cada 4 niveles sube la dificultad.</p>
+      ${statBarHtml()}
+      ${tiers}
+      ${state.completed.size > 0 ? `<div class="center"><button type="button" class="reset" data-action="reset">↺ reiniciar progreso</button></div>` : ""}`;
+  }
+
+  function startHtml(){
+    const cfg = LEVELS[state.level-1];
+    const velocidad = cfg.show <= 650 ? "rápida" : cfg.show <= 900 ? "media" : "tranquila";
+    return `
+      <section class="start-card">
+        <div>${tierBadgeHtml(state.level)}</div>
+        <div class="start-title">Nivel ${state.level}</div>
+        <p>Memoriza una secuencia de <b>${cfg.len} emojis</b>.</p>
+        <div class="speed">Velocidad: ${velocidad}</div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="begin">Comenzar ▶</button>
+          <button type="button" class="btn btn-light" data-action="menu">Volver al mapa</button>
+        </div>
+      </section>`;
+  }
+
+  function showingHtml(){
+    const cards = state.sequence.map((emoji,idx)=>{
+      let cls = "";
+      let text = "❓";
+      if(idx < state.showingIndex){ cls = "seen"; text = emoji; }
+      else if(idx === state.showingIndex){ cls = "current pulse-grow"; text = emoji; }
+      return `<div class="seq-card ${cls}">${esc(text)}</div>`;
+    }).join("");
+    return `
+      <section class="center" aria-live="polite">
+        <h2 class="phase-title">¡Memoriza la secuencia!</h2>
+        <p class="phase-meta">${Math.min(state.showingIndex + 1, state.sequence.length)} de ${state.sequence.length}</p>
+        <div class="sequence-row">${cards}</div>
+      </section>`;
+  }
+
+  function inputHtml(){
+    const slots = state.sequence.map((_,idx)=>{
+      return `<div class="input-slot">${state.userInput[idx] ? esc(state.userInput[idx]) : ""}</div>`;
+    }).join("");
+
+    const cols = state.available.length > 12 ? "cols-5" : "cols-4";
+    const buttons = state.available.map((emoji)=>{
+      const used = state.userInput.includes(emoji);
+      const hl = state.showHint && state.sequence.includes(emoji);
+      return `
+        <button type="button" class="emoji-btn ${used ? "used" : ""} ${hl ? "hint blink-hint" : ""}" data-action="emoji" data-emoji="${esc(emoji)}" ${used ? "disabled" : ""} aria-label="Elegir ${esc(emoji)}">
+          ${esc(emoji)}
+        </button>`;
+    }).join("");
+
+    return `
+      <section class="center">
+        <h2 class="phase-title">¡Reprodúcela!</h2>
+        <p class="phase-meta">${state.userInput.length} de ${state.sequence.length}</p>
+        <div class="answer-row">${slots}</div>
+        <div class="input-actions">
+          <button type="button" class="btn btn-warn" data-action="hint">💡 Pista</button>
+          <button type="button" class="btn btn-muted" data-action="clear">🗑️ Limpiar</button>
+        </div>
+        <div class="emoji-grid ${cols}">${buttons}</div>
+      </section>`;
+  }
+
+  function resultHtml(){
+    const correctCards = state.sequence.map((e)=>`<div class="result-card ok">${esc(e)}</div>`).join("");
+    const answerCards = state.userInput.map((e,idx)=>{
+      const ok = e === state.sequence[idx];
+      return `<div class="result-card ${ok ? "ok" : "fail"}">${esc(e)}</div>`;
+    }).join("");
+
+    return `
+      <section class="center">
+        <h2 class="result-title ${state.correct ? "ok" : "fail"}">${state.correct ? "¡Perfecto! 🎉" : "Casi… 💪"}</h2>
+        <p class="result-msg">${state.correct ? "+" + (state.level * 10) + " puntos" : "Compara y vuelve a intentarlo."}</p>
+
+        <p class="result-label">Secuencia correcta</p>
+        <div class="answer-row">${correctCards}</div>
+
+        <p class="result-label">Tu respuesta</p>
+        <div class="answer-row">${answerCards}</div>
+
+        <div class="actions">
+          ${state.correct && state.level < 12 ? `<button type="button" class="btn btn-primary" data-action="next">Siguiente nivel ▶</button>` : ""}
+          <button type="button" class="btn btn-outline" data-action="begin">Reintentar</button>
+          <button type="button" class="btn btn-outline" data-action="menu">Mapa de niveles</button>
+        </div>
+
+        ${state.correct && state.level === 12 ? `
+          <div class="trophy">
+            <h3>🏆 ¡Completaste los 12 niveles!</h3>
+            <p>Tu memoria visual es excepcional. Puntuación final: <b>${state.score} puntos</b>.</p>
+          </div>` : ""}
+      </section>`;
+  }
+
+  function bodyHtml(){
+    if(state.phase === "menu") return menuHtml();
+    if(state.phase === "start") return startHtml();
+    if(state.phase === "showing") return showingHtml();
+    if(state.phase === "input") return inputHtml();
+    if(state.phase === "result") return resultHtml();
+    return menuHtml();
+  }
+
+  function render(){
+    root.innerHTML = `
+      <main class="app">
+        <div class="shell">
+          ${headerHtml()}
+          <div class="card">${bodyHtml()}</div>
+          <p class="footer">ProfGermandario · Entrena tu mente</p>
+        </div>
+      </main>`;
+
+    if(state.phase === "showing"){
+      if(timer){ clearTimeout(timer); timer = null; }
+      if(state.showingIndex < state.sequence.length){
+        timer = setTimeout(()=>{
+          setState({ showingIndex:state.showingIndex + 1 });
+        }, LEVELS[state.level-1].show);
+      }else{
+        timer = setTimeout(()=>{
+          setState({ phase:"input" });
+        }, 700);
+      }
+    }
+  }
+
+  root.addEventListener("click", function(ev){
+    const btn = ev.target.closest("[data-action]");
+    if(!btn) return;
+
+    const action = btn.getAttribute("data-action");
+    if(action === "pick-level") pickLevel(Number(btn.getAttribute("data-level")));
+    else if(action === "begin") beginLevel();
+    else if(action === "menu"){ clearTimers(); setState({ phase:"menu" }); }
+    else if(action === "reset") resetProgress();
+    else if(action === "emoji") handleEmoji(btn.getAttribute("data-emoji"));
+    else if(action === "hint") showHint();
+    else if(action === "clear") clearInput();
+    else if(action === "next") nextLevel();
+  });
+
+  render();
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Finance Flow Panel · Dr. Germandario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05060a;--bg2:#0b0d13;--card:#121722;--card2:#171d2a;--glass:rgba(18,23,34,.74);
+  --ink:#f8efe2;--muted:#c5bba9;--dim:#827768;--line:rgba(229,186,102,.18);
+  --gold:#d7ad5b;--gold2:#f5d58d;--blue:#83b7ff;--violet:#a994ee;--green:#75d39d;--red:#e26d64;--amber:#e9b764;
+  --shadow:0 24px 80px rgba(0,0,0,.48);--r:22px;--rs:14px;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Inter,system-ui,sans-serif;background:
+  radial-gradient(900px 520px at 10% -10%,rgba(215,173,91,.16),transparent 60%),
+  radial-gradient(780px 480px at 105% 8%,rgba(131,183,255,.12),transparent 58%),
+  radial-gradient(900px 680px at 50% 120%,rgba(169,148,238,.08),transparent 58%),
+  linear-gradient(180deg,var(--bg),var(--bg2));-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit}button{cursor:pointer}h1,h2,h3,p{margin-top:0}a{color:var(--gold2);text-decoration:none}a:hover{text-decoration:underline}
+.app{width:min(1260px,calc(100% - 26px));margin:auto;padding:18px 0 44px}
+.top{position:sticky;top:8px;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px;padding:12px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(10,12,18,.72);backdrop-filter:blur(16px);box-shadow:0 16px 50px rgba(0,0,0,.28)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}.mark{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#21190b;font-family:Cinzel,serif;font-weight:900;box-shadow:0 0 28px rgba(245,213,141,.25);flex:0 0 auto}.brandText{min-width:0}.brandText strong{display:block;font-family:Cinzel,serif;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brandText span{display:block;color:var(--dim);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.nav button{border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--ink);border-radius:999px;padding:8px 11px;font-size:.78rem;font-weight:900}.nav button[aria-pressed="true"]{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#21190b;border-color:var(--gold)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-bottom:14px}.heroCard{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(25,30,43,.82),rgba(11,14,21,.86));box-shadow:var(--shadow);padding:22px}.heroCard:before{content:"";position:absolute;inset:-1px;height:3px;background:linear-gradient(90deg,var(--gold2),var(--violet),var(--blue));opacity:.95}.eyebrow{display:flex;align-items:center;gap:8px;color:var(--gold2);text-transform:uppercase;letter-spacing:.12em;font-weight:900;font-size:.68rem;margin-bottom:10px}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold2);box-shadow:0 0 16px var(--gold2)}
+h1{font-family:Cinzel,serif;font-size:clamp(1.75rem,4vw,3rem);line-height:1.02;letter-spacing:.01em;margin:0 0 10px;color:#fff}.lead{color:var(--muted);font-size:.95rem;line-height:1.55;max-width:68ch}.heroActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.btn{border:1px solid var(--line);background:rgba(255,255,255,.055);color:var(--ink);border-radius:13px;padding:10px 12px;font-weight:950;font-size:.84rem}.btn:hover{background:rgba(255,255,255,.09)}.btn.primary{color:#21190b;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:var(--gold)}.btn.blue{color:#06101f;background:linear-gradient(135deg,#c4ddff,var(--blue));border-color:var(--blue)}.btn.danger{color:#ffaaa1;background:rgba(226,109,100,.09);border-color:rgba(226,109,100,.38)}.btn.ghost{background:transparent}.miniStatus{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;background:#0b0e16;color:var(--muted);font-weight:900;font-size:.72rem}.pill.good{color:var(--green);border-color:rgba(117,211,157,.35)}.pill.bad{color:var(--red);border-color:rgba(226,109,100,.35)}.pill.warn{color:var(--amber);border-color:rgba(233,183,100,.35)}.pill.info{color:#d5caff;border-color:rgba(169,148,238,.35)}
+.panel{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(22,27,39,.86),rgba(12,15,23,.9));box-shadow:var(--shadow);padding:16px}.sectionTitle{display:flex;align-items:center;gap:10px;margin-bottom:4px;font-family:Cinzel,serif;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;font-size:.84rem}.sectionTitle:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--line),transparent)}.sectionSub{color:var(--dim);font-size:.78rem;margin:0 0 12px}.small{color:var(--dim);font-size:.82rem;line-height:1.45}.grid{display:grid;gap:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{min-height:96px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035);padding:12px}.stat span{display:block;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-size:.66rem;font-weight:950}.stat b{display:block;color:#fff;font-family:Cinzel,serif;font-size:1.25rem;margin-top:7px;line-height:1.15}.stat em{display:block;color:var(--muted);font-style:normal;font-size:.76rem;margin-top:5px}.biasMeter{height:12px;border:1px solid var(--line);border-radius:999px;background:#0b0e16;overflow:hidden;margin-top:12px}.biasMeter i{display:block;height:100%;width:50%;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));transition:.25s}.biasWords{display:flex;justify-content:space-between;color:var(--dim);font-size:.66rem;font-weight:950;text-transform:uppercase;margin-top:6px}
+.screen{display:none}.screen.active{display:block;animation:fade .18s ease both}@keyframes fade{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.quoteGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quote{min-height:126px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.022));padding:11px;position:relative;overflow:hidden}.quote header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.symbol{font-family:Cinzel,serif;color:#fff;font-weight:900;letter-spacing:.05em}.last{font-size:1.15rem;font-weight:950;color:#fff;margin-top:7px}.chg{font-weight:950;font-size:.82rem}.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--muted)}.spark{display:block;width:100%;height:30px;margin-top:7px}.quoteFooter{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:5px}.quoteFooter small{color:var(--dim);font-size:.66rem}.xbtn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--dim);width:25px;height:25px;border-radius:999px;font-weight:950}.xbtn:hover{color:#fff;background:rgba(226,109,100,.12);border-color:rgba(226,109,100,.45)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin:12px 0}.field{display:grid;gap:6px;margin-bottom:10px}label{color:var(--dim);font-size:.69rem;text-transform:uppercase;font-weight:950;letter-spacing:.06em}input,textarea{width:100%;background:#0b0e16;border:1px solid var(--line);border-radius:13px;color:var(--ink);padding:11px 12px;outline-color:var(--gold)}textarea{min-height:84px;resize:vertical;line-height:1.5}.toolbar .field{margin:0}.grow{flex:1;min-width:180px}.formGrid{display:grid;grid-template-columns:1fr .75fr .7fr .75fr .75fr;gap:10px;align-items:end}.formGrid .note{grid-column:1/-1}.recordCard{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.035);padding:14px}.recordGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.recordsList{display:grid;gap:10px;margin-top:12px}.record{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));padding:12px}.recordHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.recordTitle{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.recordTitle b{font-family:Cinzel,serif;color:#fff;letter-spacing:.04em}.recordMeta{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px}.mini{border:1px solid var(--line);border-radius:13px;background:#0b0e16;padding:8px}.mini span{display:block;color:var(--dim);font-size:.63rem;text-transform:uppercase;font-weight:950}.mini b{display:block;color:#fff;margin-top:4px;font-size:.88rem}.noteText{white-space:pre-wrap;color:var(--muted);font-size:.83rem;line-height:1.45;margin:10px 0 0}.empty{border:1px dashed var(--line);border-radius:18px;padding:18px;text-align:center;color:var(--dim)}
+.dataGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.drop{border:1px dashed var(--line);border-radius:18px;padding:16px;background:rgba(255,255,255,.03)}.drop input{margin-top:8px}.toast{position:fixed;right:16px;bottom:16px;z-index:90;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#21190b;border-radius:14px;padding:12px 14px;font-weight:950;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);transition:.2s}.toast.show{opacity:1;transform:translateY(0)}.hidden{display:none!important}
+@media(max-width:1050px){.hero{grid-template-columns:1fr}.quoteGrid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.recordMeta{grid-template-columns:repeat(3,1fr)}.formGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.app{width:min(100% - 18px,1260px);padding-top:9px}.top{position:static;border-radius:20px;align-items:flex-start;flex-direction:column}.nav{width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.nav button{padding:9px 6px}.heroCard,.panel{padding:14px;border-radius:20px}.quoteGrid,.stats,.dataGrid,.recordGrid,.recordMeta,.formGrid{grid-template-columns:1fr}.heroActions,.toolbar{display:grid}.quote{min-height:118px}.recordHead{display:grid}.btn{width:100%}}
+@media print{body{background:#fff;color:#111}.top,.heroActions,.toolbar,.btn,.xbtn,.toast{display:none!important}.app{width:100%;padding:0}.panel,.heroCard,.record,.quote,.stat{box-shadow:none;break-inside:avoid}.screen{display:block!important}.screen:not(.active){display:block!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="mark">G</div>
+      <div class="brandText"><strong>Finance Flow Panel</strong><span>Daily overview · minimal records · local portable data</span></div>
+    </div>
+    <nav class="nav" aria-label="Panel navigation">
+      <button type="button" data-screen="today" aria-pressed="true">Today</button>
+      <button type="button" data-screen="record" aria-pressed="false">Record</button>
+      <button type="button" data-screen="positions" aria-pressed="false">Positions</button>
+      <button type="button" data-screen="data" aria-pressed="false">Data</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <article class="heroCard">
+      <div class="eyebrow" id="dateLine">Today</div>
+      <h1>Market control at first glance.</h1>
+      <p class="lead">The first screen shows last price, percentage change and small charts. The trade record is reduced to six fields only: symbol, price, quantity, date, target and note.</p>
+      <div class="heroActions">
+        <button class="btn primary" type="button" id="goRecord">New record</button>
+        <button class="btn blue" type="button" id="refreshQuotes">Refresh quotes</button>
+        <button class="btn" type="button" id="downloadQuick">Save backup</button>
+      </div>
+      <div class="miniStatus">
+        <span class="pill info" id="autosaveStatus">Autosaved locally</span>
+        <span class="pill" id="sourceStatus">Online data optional</span>
+        <span class="pill" id="updatedStatus">Not refreshed yet</span>
+      </div>
+    </article>
+
+    <article class="heroCard">
+      <div class="sectionTitle">Day overview</div>
+      <p class="sectionSub">Condensed account and market context.</p>
+      <div class="stats" id="overviewStats"></div>
+      <div class="biasMeter"><i id="biasBar"></i></div>
+      <div class="biasWords"><span>Defense</span><span id="biasText">Mixed</span><span>Risk on</span></div>
+    </article>
+  </section>
+
+  <section class="screen active" id="screen-today">
+    <div class="panel">
+      <div class="sectionTitle">Daily market board</div>
+      <p class="sectionSub">Small quote cards. Last price and percentage change stay visually dominant.</p>
+      <div class="toolbar">
+        <div class="field grow"><label>Add symbol</label><input id="watchInput" placeholder="TQQQ, SQQQ, QQQ, SPY, NQ=F, BTCUSDT"></div>
+        <button class="btn primary" id="addWatch" type="button">Add</button>
+        <button class="btn" id="resetWatch" type="button">Reset watchlist</button>
+      </div>
+      <div class="quoteGrid" id="quoteGrid"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-record">
+    <div class="panel">
+      <div class="sectionTitle">Minimal record</div>
+      <p class="sectionSub">Only the fields you asked for. No strategy taxonomy, no certainty sliders, no unnecessary classification.</p>
+      <form id="tradeForm" class="recordCard">
+        <input type="hidden" id="editId">
+        <div class="formGrid">
+          <div class="field"><label>Symbol</label><input id="symbol" required placeholder="TQQQ" autocomplete="off"></div>
+          <div class="field"><label>Price</label><input id="price" required type="number" min="0" step="0.000001" placeholder="0.00"></div>
+          <div class="field"><label>Quantity</label><input id="quantity" required type="number" step="0.000001" placeholder="0"></div>
+          <div class="field"><label>Date</label><input id="date" required type="date"></div>
+          <div class="field"><label>Target</label><input id="target" type="number" min="0" step="0.000001" placeholder="0.00"></div>
+          <div class="field note"><label>Note</label><textarea id="note" placeholder="Vision, reason for entry, invalidation, or anything worth remembering."></textarea></div>
+        </div>
+        <div class="heroActions">
+          <button class="btn primary" id="saveTrade" type="submit">Save record</button>
+          <button class="btn" id="fillLast" type="button">Use last quote</button>
+          <button class="btn ghost" id="clearForm" type="button">Clear</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-positions">
+    <div class="panel">
+      <div class="sectionTitle">Records and positions</div>
+      <p class="sectionSub">Every record is saved locally. Current return is calculated when last quote is available.</p>
+      <div class="toolbar">
+        <div class="field grow"><label>Search records</label><input id="searchRecords" placeholder="Filter by symbol or note"></div>
+        <button class="btn" id="sortDate" type="button">Newest first</button>
+        <button class="btn" id="sortSymbol" type="button">Sort symbol</button>
+      </div>
+      <div id="recordsList" class="recordsList"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-data">
+    <div class="dataGrid">
+      <article class="panel">
+        <div class="sectionTitle">Save and travel</div>
+        <p class="sectionSub">Local storage keeps the panel available in this browser. Export JSON to carry it to another computer, then import it there.</p>
+        <div class="heroActions">
+          <button class="btn primary" id="exportJson" type="button">Download JSON backup</button>
+          <button class="btn" id="exportCsv" type="button">Download CSV</button>
+          <button class="btn danger" id="clearAll" type="button">Clear all</button>
+        </div>
+        <p class="small" id="storageInfo" style="margin-top:12px"></p>
+      </article>
+      <article class="panel">
+        <div class="sectionTitle">Upload backup</div>
+        <div class="drop">
+          <p class="small">Select a JSON backup created by this panel. It will replace the local data after confirmation.</p>
+          <input id="importJson" type="file" accept=".json,application/json">
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='finance-flow-panel-v1';
+const DEFAULT_WATCH=['TQQQ','SQQQ','QQQ','SPY','NQ=F','BTCUSDT','ETHUSDT'];
+let state=load();
+let sortMode='date';
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    const parsed=raw?JSON.parse(raw):{};
+    return {watchlist:DEFAULT_WATCH.slice(),quotes:{},trades:[],...parsed,watchlist:Array.isArray(parsed.watchlist)&&parsed.watchlist.length?parsed.watchlist:DEFAULT_WATCH.slice(),quotes:parsed.quotes||{},trades:Array.isArray(parsed.trades)?parsed.trades:[]};
+  }catch(e){return {watchlist:DEFAULT_WATCH.slice(),quotes:{},trades:[]}}
+}
+function persist(msg){localStorage.setItem(KEY,JSON.stringify(state));render();if(msg)toast(msg)}
+function $(id){return document.getElementById(id)}
+function todayIso(){return new Date().toISOString().slice(0,10)}
+function uid(){return 'tr_'+Date.now()+'_'+Math.random().toString(16).slice(2)}
+function money(v){if(!isFinite(v))return '—';return Number(v).toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:Math.abs(v)<10?2:0})}
+function num(v,d=2){if(v===null||v===undefined||v===''||!isFinite(Number(v)))return '—';return Number(v).toLocaleString('en-US',{maximumFractionDigits:d})}
+function pct(v){if(!isFinite(v))return '—';const n=Number(v);return (n>0?'+':'')+n.toFixed(2)+'%'}
+function cls(v){return v>0?'pos':v<0?'neg':'neu'}
+function fmtDate(v){if(!v)return '—';const [y,m,d]=String(v).slice(0,10).split('-').map(Number);if(y&&m&&d)return new Date(y,m-1,d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});return v}
+function cleanSymbol(s){return String(s||'').trim().toUpperCase()}
+function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2100)}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function render(){renderDate();renderStats();renderQuotes();renderRecords();renderStorage()}
+function renderDate(){
+  const d=new Date();
+  $('dateLine').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const latest=Object.values(state.quotes).map(q=>q.updatedAt).filter(Boolean).sort().pop();
+  $('updatedStatus').textContent=latest?'Updated '+new Date(latest).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'Not refreshed yet';
+}
+function tradeValue(t){return Number(t.price||0)*Number(t.quantity||0)}
+function quoteFor(sym){return state.quotes[cleanSymbol(sym)]||null}
+function renderStats(){
+  const loaded=state.watchlist.filter(s=>quoteFor(s)&&isFinite(quoteFor(s).price)).length;
+  const recordsToday=state.trades.filter(t=>String(t.date).slice(0,10)===todayIso()).length;
+  const cost=state.trades.reduce((a,t)=>a+tradeValue(t),0);
+  let live=0,liveKnown=0,pnl=0;
+  state.trades.forEach(t=>{const q=quoteFor(t.symbol);if(q&&isFinite(q.price)){const lv=q.price*Number(t.quantity||0);live+=lv;pnl+=lv-tradeValue(t);liveKnown++;}});
+  const avgTarget=average(state.trades.map(t=>targetPct(t)).filter(isFinite));
+  const tqqq=quoteFor('TQQQ'),sqqq=quoteFor('SQQQ');
+  const spread=(tqqq&&sqqq&&isFinite(tqqq.changePct)&&isFinite(sqqq.changePct))?tqqq.changePct-sqqq.changePct:0;
+  const biasScore=Math.max(0,Math.min(100,50+(spread*12)));
+  $('biasBar').style.width=biasScore+'%';
+  $('biasText').textContent=spread>1?'Risk on':spread<-1?'Defense':'Mixed';
+  const stats=[
+    ['Symbols loaded',loaded+'/'+state.watchlist.length,'Watchlist'],
+    ['Records today',recordsToday,'New entries'],
+    ['Recorded cost','$'+money(cost),state.trades.length+' total records'],
+    ['Open P/L',liveKnown?'$'+money(pnl):'—',liveKnown?pct(cost?pnl/cost*100:0):'Need quotes'],
+    ['Live value',liveKnown?'$'+money(live):'—',liveKnown+' priced records'],
+    ['Avg target',isFinite(avgTarget)?pct(avgTarget):'—','From entry to target'],
+    ['TQQQ/SQQQ spread',isFinite(spread)?pct(spread):'—','Risk pulse'],
+    ['Last save','Local','Browser storage']
+  ];
+  $('overviewStats').innerHTML=stats.map(s=>`<div class="stat"><span>${s[0]}</span><b>${s[1]}</b><em>${s[2]}</em></div>`).join('');
+}
+function average(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:NaN}
+function targetPct(t){const price=Number(t.price),target=Number(t.target);return price&&target?((target-price)/price*100):NaN}
+function renderQuotes(){
+  $('quoteGrid').innerHTML=state.watchlist.map(sym=>{
+    const q=quoteFor(sym)||{}; const price=isFinite(q.price)?q.price:NaN; const cp=isFinite(q.changePct)?q.changePct:NaN;
+    return `<article class="quote">
+      <header><div><div class="symbol">${escapeHtml(sym)}</div><div class="last">${isFinite(price)?'$'+money(price):'—'}</div></div><button class="xbtn" title="Remove" onclick="removeWatch('${escapeHtml(sym)}')">×</button></header>
+      <div class="chg ${cls(cp)}">${isFinite(cp)?pct(cp):'No data'}</div>
+      ${sparkline(q.points||[],cp)}
+      <div class="quoteFooter"><small>${q.source?escapeHtml(q.source):'offline/manual records only'}</small><small>${q.updatedAt?new Date(q.updatedAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):''}</small></div>
+    </article>`;
+  }).join('')||'<div class="empty">No symbols in the watchlist.</div>';
+}
+function sparkline(points,cp){
+  const arr=(points||[]).map(Number).filter(isFinite).slice(-36);
+  if(arr.length<2)return '<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 15 L100 15" stroke="rgba(245,213,141,.35)" stroke-width="2" fill="none"/></svg>';
+  const min=Math.min(...arr),max=Math.max(...arr),range=max-min||1;
+  const coords=arr.map((v,i)=>`${(i/(arr.length-1)*100).toFixed(2)},${(27-((v-min)/range*24)).toFixed(2)}`).join(' ');
+  const color=cp>0?'var(--green)':cp<0?'var(--red)':'var(--gold2)';
+  return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="${coords}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="0" y1="27" x2="100" y2="27" stroke="rgba(255,255,255,.08)"/></svg>`;
+}
+function renderRecords(){
+  const q=cleanSymbol($('searchRecords')?.value||'');
+  let arr=state.trades.filter(t=>!q||cleanSymbol(t.symbol).includes(q)||String(t.note||'').toUpperCase().includes(q));
+  arr.sort((a,b)=>sortMode==='symbol'?cleanSymbol(a.symbol).localeCompare(cleanSymbol(b.symbol)):String(b.date||'').localeCompare(String(a.date||''))||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  $('recordsList').innerHTML=arr.length?arr.map(t=>recordHtml(t)).join(''):'<div class="empty">No records yet. Go to Record and add your first entry.</div>';
+}
+function recordHtml(t){
+  const q=quoteFor(t.symbol);const entry=Number(t.price||0),qty=Number(t.quantity||0),target=Number(t.target||0);
+  const last=q&&isFinite(q.price)?Number(q.price):NaN;const ret=isFinite(last)&&entry?((last-entry)/entry*100):NaN;const trg=entry&&target?((target-entry)/entry*100):NaN;
+  const cost=entry*qty;const live=isFinite(last)?last*qty:NaN;const pnl=isFinite(live)?live-cost:NaN;
+  return `<article class="record">
+    <div class="recordHead">
+      <div><div class="recordTitle"><b>${escapeHtml(cleanSymbol(t.symbol))}</b><span class="pill">${fmtDate(t.date)}</span><span class="pill ${cls(ret)}">${isFinite(ret)?pct(ret):'No last'}</span></div></div>
+      <div class="heroActions" style="margin:0"><button class="btn" onclick="editTrade('${t.id}')" type="button">Edit</button><button class="btn danger" onclick="deleteTrade('${t.id}')" type="button">Delete</button></div>
+    </div>
+    <div class="recordMeta">
+      <div class="mini"><span>Entry</span><b>$${money(entry)}</b></div>
+      <div class="mini"><span>Quantity</span><b>${num(qty,6)}</b></div>
+      <div class="mini"><span>Cost</span><b>$${money(cost)}</b></div>
+      <div class="mini"><span>Last</span><b>${isFinite(last)?'$'+money(last):'—'}</b></div>
+      <div class="mini"><span>Open P/L</span><b class="${cls(pnl)}">${isFinite(pnl)?'$'+money(pnl):'—'}</b></div>
+      <div class="mini"><span>Target</span><b>${target?'$'+money(target)+' · '+pct(trg):'—'}</b></div>
+    </div>
+    ${t.note?`<p class="noteText">${escapeHtml(t.note)}</p>`:''}
+  </article>`
+}
+function renderStorage(){
+  const bytes=new Blob([JSON.stringify(state)]).size;
+  $('storageInfo').textContent=`Saved records: ${state.trades.length}. Watchlist symbols: ${state.watchlist.length}. Approximate local backup size: ${bytes.toLocaleString('en-US')} bytes.`;
+}
+async function refreshAll(){
+  $('sourceStatus').textContent='Refreshing...';
+  let ok=0,fail=0;
+  for(const sym of state.watchlist){
+    try{const q=await fetchQuote(sym);if(q&&isFinite(q.price)){state.quotes[cleanSymbol(sym)]=q;ok++;}else fail++;}
+    catch(e){console.warn('quote failed',sym,e);fail++;}
+    render();
+  }
+  localStorage.setItem(KEY,JSON.stringify(state));
+  $('sourceStatus').textContent=`Quotes loaded ${ok}/${state.watchlist.length}`;
+  toast(fail?`Refresh finished: ${ok} loaded, ${fail} failed.`:`Refresh finished: ${ok} loaded.`);
+  render();
+}
+async function fetchQuote(symbol){
+  const sym=cleanSymbol(symbol);
+  if(/^[A-Z0-9]+USDT$/.test(sym))return fetchBinance(sym);
+  return fetchYahoo(sym);
+}
+async function fetchBinance(sym){
+  const t=await fetchJson(`https://api.binance.com/api/v3/ticker/24hr?symbol=${encodeURIComponent(sym)}`);
+  const k=await fetchJson(`https://api.binance.com/api/v3/klines?symbol=${encodeURIComponent(sym)}&interval=1h&limit=36`).catch(()=>[]);
+  return {symbol:sym,price:Number(t.lastPrice),change:Number(t.priceChange),changePct:Number(t.priceChangePercent),points:Array.isArray(k)?k.map(r=>Number(r[4])).filter(isFinite):[],source:'Binance',updatedAt:new Date().toISOString()};
+}
+async function fetchYahoo(sym){
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1d&interval=5m`;
+  let data;
+  try{data=await fetchJson(url)}catch(e){data=await fetchJson('https://api.allorigins.win/raw?url='+encodeURIComponent(url))}
+  const r=data?.chart?.result?.[0]; if(!r)throw new Error('No chart result');
+  const meta=r.meta||{};const closes=(r.indicators?.quote?.[0]?.close||[]).map(Number).filter(isFinite);
+  const price=Number(meta.regularMarketPrice||closes[closes.length-1]);
+  const prev=Number(meta.chartPreviousClose||meta.previousClose||closes[0]);
+  return {symbol:sym,price,change:price-prev,changePct:prev?((price-prev)/prev*100):NaN,points:closes,source:'Yahoo chart',updatedAt:new Date().toISOString()};
+}
+async function fetchJson(url){const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);return res.json()}
+function switchScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+name));
+  document.querySelectorAll('[data-screen]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.screen===name));
+  if(name==='record')setTimeout(()=>$('symbol').focus(),80);
+}
+function clearForm(){['editId','symbol','price','quantity','target','note'].forEach(id=>$(id).value='');$('date').value=todayIso();$('saveTrade').textContent='Save record'}
+window.removeWatch=function(sym){state.watchlist=state.watchlist.filter(s=>s!==sym);persist('Symbol removed.')}
+window.deleteTrade=function(id){if(confirm('Delete this record?')){state.trades=state.trades.filter(t=>t.id!==id);persist('Record deleted.')}}
+window.editTrade=function(id){const t=state.trades.find(x=>x.id===id);if(!t)return;$('editId').value=t.id;$('symbol').value=t.symbol;$('price').value=t.price;$('quantity').value=t.quantity;$('date').value=t.date;$('target').value=t.target||'';$('note').value=t.note||'';$('saveTrade').textContent='Update record';switchScreen('record')}
+function exportJson(){download('finance-flow-backup-'+todayIso()+'.json',JSON.stringify(state,null,2),'application/json')}
+function exportCsv(){
+  const rows=[['symbol','price','quantity','date','target','note','last','return_pct','target_pct','cost','live_value','open_pnl','created_at']];
+  state.trades.forEach(t=>{const q=quoteFor(t.symbol);const last=q&&isFinite(q.price)?q.price:'';const entry=Number(t.price||0),qty=Number(t.quantity||0),target=Number(t.target||0);const live=last!==''?Number(last)*qty:'';rows.push([t.symbol,t.price,t.quantity,t.date,t.target||'',t.note||'',last,last!==''&&entry?((last-entry)/entry*100).toFixed(4):'',entry&&target?((target-entry)/entry*100).toFixed(4):'',entry*qty,live,live!==''?live-entry*qty:'',t.createdAt||''])});
+  const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  download('finance-flow-records-'+todayIso()+'.csv',csv,'text/csv;charset=utf-8')
+}
+function download(name,text,type){const blob=new Blob([text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url)}
+function init(){
+  $('date').value=todayIso();
+  document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>switchScreen(b.dataset.screen)));
+  $('goRecord').onclick=()=>switchScreen('record');
+  $('refreshQuotes').onclick=refreshAll;
+  $('downloadQuick').onclick=exportJson;
+  $('addWatch').onclick=()=>{const s=cleanSymbol($('watchInput').value);if(!s)return toast('Type a symbol.');if(!state.watchlist.includes(s))state.watchlist.push(s);$('watchInput').value='';persist('Symbol added.');};
+  $('watchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){$('addWatch').click()}});
+  $('resetWatch').onclick=()=>{state.watchlist=DEFAULT_WATCH.slice();persist('Watchlist reset.')};
+  $('tradeForm').onsubmit=e=>{e.preventDefault();const id=$('editId').value||uid();const t={id,symbol:cleanSymbol($('symbol').value),price:Number($('price').value),quantity:Number($('quantity').value),date:$('date').value,target:$('target').value===''?'':Number($('target').value),note:$('note').value.trim(),createdAt:new Date().toISOString()};if(!t.symbol||!isFinite(t.price)||!isFinite(t.quantity)||!t.date)return toast('Complete symbol, price, quantity and date.');const i=state.trades.findIndex(x=>x.id===id);if(i>=0)state.trades[i]={...state.trades[i],...t};else state.trades.unshift(t);clearForm();persist(i>=0?'Record updated.':'Record saved.');switchScreen('positions')};
+  $('fillLast').onclick=()=>{const sym=cleanSymbol($('symbol').value);const q=quoteFor(sym);if(!sym)return toast('Type a symbol first.');if(q&&isFinite(q.price)){$('price').value=q.price;toast('Last quote inserted.')}else toast('No quote available for this symbol.')};
+  $('clearForm').onclick=clearForm;
+  $('searchRecords').addEventListener('input',renderRecords);
+  $('sortDate').onclick=()=>{sortMode='date';renderRecords();toast('Sorted by date.')};
+  $('sortSymbol').onclick=()=>{sortMode='symbol';renderRecords();toast('Sorted by symbol.')};
+  $('exportJson').onclick=exportJson;$('exportCsv').onclick=exportCsv;
+  $('clearAll').onclick=()=>{if(confirm('Clear all local records, quotes and watchlist?')){state={watchlist:DEFAULT_WATCH.slice(),quotes:{},trades:[]};persist('Local data cleared.')}};
+  $('importJson').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!Array.isArray(data.trades))throw new Error('Missing trades array');if(confirm('Replace local data with this backup?')){state={watchlist:Array.isArray(data.watchlist)&&data.watchlist.length?data.watchlist:DEFAULT_WATCH.slice(),quotes:data.quotes||{},trades:data.trades};persist('Backup imported.')}}catch(err){toast('Invalid backup file.')}};r.readAsText(f)};
+  document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='1')switchScreen('today');if(k==='2')switchScreen('record');if(k==='3')switchScreen('positions');if(k==='4')switchScreen('data');if(k==='r')refreshAll();});
+  render();
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pocket · Daily Gadget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020f0c;--bg2:#04211b;--panel:#0a3a30;--panel2:#0e4438;
+  --line:rgba(45,212,191,.22);--line2:rgba(45,212,191,.4);
+  --ink:#eafbf6;--muted:#a9d6cb;--dim:#6f9b90;
+  --turq:#2dd4bf;--turq2:#8ff5e6;--orange:#ff7a45;--orange2:#ffb088;--green:#8bd450;--green2:#c3ef94;
+  --radius:18px;--radius-sm:12px;--shadow:0 24px 60px rgba(0,0,0,.5);--pad:14px;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#eef7f5;--bg2:#dff2ee;--panel:#ffffff;--panel2:#eafbf6;
+    --line:rgba(15,120,105,.18);--line2:rgba(15,120,105,.34);
+    --ink:#07201b;--muted:#3c6b62;--dim:#6f9b90;
+    --turq:#0f9b8e;--turq2:#0b7d72;--orange:#e85f2a;--orange2:#c94e1e;--green:#4f9a1f;--green2:#3c7a17;
+    --shadow:0 20px 50px rgba(15,60,50,.14);
+  }
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;min-height:100vh;padding:0;overflow:hidden;
+  font-family:Inter,system-ui,sans-serif;color:var(--ink);
+  background:
+    radial-gradient(700px 460px at 15% 0%,rgba(45,212,191,.13),transparent 60%),
+    radial-gradient(620px 460px at 100% 100%,rgba(255,122,69,.09),transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+  -webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+button{cursor:pointer;background:none;color:inherit}
+ul{list-style:none;margin:0;padding:0}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.app{width:clamp(300px,90vw,410px);background:linear-gradient(180deg,rgba(255,255,255,.03),transparent),var(--panel);
+  border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:var(--pad);position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;
+  max-height:92vh;overflow-y:auto}
+.app.dragging{transition:none}
+.appHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:grab;
+  padding-bottom:10px;border-bottom:1px solid var(--line)}
+.appHead:active{cursor:grabbing}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.08em;font-size:clamp(.8rem,2vw,.9rem);
+  color:var(--turq2);margin:0;text-transform:uppercase}
+.weekBadge{font-size:.7rem;font-weight:700;letter-spacing:.05em;color:var(--orange2);background:rgba(255,122,69,.1);
+  border:1px solid rgba(255,122,69,.35);border-radius:999px;padding:5px 10px;margin:0}
+.dateCard{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin:0 0 12px}
+.weekday{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin:0}
+.dateBig{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;line-height:1.05;margin:2px 0 10px;
+  background:linear-gradient(115deg,var(--ink),var(--turq2) 60%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.moonRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin:0}
+.moonDisc{width:38px;height:38px;min-width:38px;border-radius:50%;display:inline-block;
+  background:conic-gradient(from 200deg,var(--turq2) calc(var(--illum)*1%),var(--panel) 0);
+  box-shadow:inset 0 0 0 1px var(--line2)}
+.moonInfo{font-size:.72rem;color:var(--dim);line-height:1.3}
+.moonInfo strong{display:block;font-size:.82rem;color:var(--ink)}
+.spxRow{display:flex;align-items:center;gap:6px;margin-left:auto;padding-left:10px;border-left:1px solid var(--line);font-size:.7rem}
+.spxRow .spxLabel{color:var(--dim);font-weight:700}
+.spxLP{font-weight:700;color:var(--ink)}
+.up{color:var(--green2)}
+.down{color:#ff9d8a}
+.tiles ul{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.tile{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);border-radius:var(--radius-sm);padding:9px 4px;color:var(--muted);transition:.15s ease}
+.tile i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.78rem}
+.tile.note i{background:rgba(45,212,191,.14);color:var(--turq2)}
+.tile.timer i{background:rgba(255,122,69,.14);color:var(--orange2)}
+.tile.task i{background:rgba(139,212,80,.14);color:var(--green2)}
+.tile.money i{background:rgba(255,208,92,.16);color:#c98a00}
+.tile span{font-size:.64rem;font-weight:600}
+.tile[aria-pressed="true"]{border-color:var(--line2);background:rgba(45,212,191,.08);color:var(--ink)}
+.quickBox{display:none;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.quickBox.show{display:flex}
+.quickBox input{flex:1;min-width:90px;background:transparent;border:1px solid var(--line);border-radius:var(--radius-sm);
+  color:var(--ink);padding:9px 11px;outline-color:var(--turq)}
+.quickBox button{border:none;border-radius:var(--radius-sm);padding:0 13px;font-weight:700;font-size:.84rem}
+.go{background:linear-gradient(135deg,var(--turq2),var(--turq));color:#04241d}
+.presets{display:none;gap:6px;margin:0 0 10px;flex-wrap:wrap;border:0;padding:0}
+.presets.show{display:flex}
+.preset{border:1px solid var(--line);background:rgba(255,122,69,.08);color:var(--orange2);border-radius:var(--radius-sm);
+  padding:8px 12px;font-weight:700;font-size:.8rem}
+.running{display:none;text-align:center;border:1px solid var(--line2);border-radius:var(--radius);
+  background:radial-gradient(circle at 50% 30%,rgba(255,122,69,.12),transparent 65%);padding:14px;margin-bottom:10px}
+.running.show{display:block}
+.running small{display:block;font-size:.72rem;color:var(--dim);margin-bottom:4px}
+.running strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,7vw,2.6rem);font-weight:700;color:var(--orange2)}
+.runBtns{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.runBtns button{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);border-radius:10px;padding:7px 13px;font-size:.78rem;font-weight:700}
+.sectionHead{display:flex;justify-content:space-between;align-items:center;margin:2px 0 8px}
+.sectionHead span:first-child{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.sectionHead span:last-child{font-size:.7rem;color:var(--dim)}
+.listBody{display:grid;gap:7px;max-height:200px;overflow-y:auto}
+.row{display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:9px 10px}
+.row .dot{width:7px;height:7px;border-radius:50%;margin-top:6px;flex:none;display:inline-block}
+.row.note .dot{background:var(--turq2)}
+.row.task .dot{background:var(--green2)}
+.row.timer .dot{background:var(--orange2)}
+.row .txt{font-size:.84rem;line-height:1.35;overflow-wrap:anywhere;flex:1;min-width:0}
+.row.done .txt{text-decoration:line-through;color:var(--dim)}
+.row time{font-size:.66rem;color:var(--dim);display:block;margin-top:2px}
+.row .del{background:none;border:none;color:var(--dim);font-size:.85rem;padding:2px 4px}
+.row .check{width:16px;height:16px;accent-color:var(--green);margin-top:3px}
+.empty{text-align:center;color:var(--dim);font-size:.8rem;padding:16px 6px;border:1px dashed var(--line);border-radius:var(--radius-sm)}
+.moneySection{margin-top:12px}
+.heatmap{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.heatTile{border-radius:10px;padding:6px 4px;text-align:center}
+.heatTile .sym{display:block;font-size:.64rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.heatTile .pct{display:block;font-size:.62rem;margin-top:2px}
+.moneyList{display:grid;gap:7px;max-height:240px;overflow-y:auto}
+.moneyRow{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 10px}
+.moneyTop{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.moneyTop .sym{font-weight:700;font-size:.86rem}
+.moneyTop .actions{display:flex;align-items:center;gap:4px}
+.moneyTop button{background:none;border:none;color:var(--dim);font-size:.85rem;padding:2px 4px}
+.moneyLast{font-size:.76rem;font-weight:700}
+.moneyStats{display:flex;gap:8px;flex-wrap:wrap;font-size:.66rem;color:var(--dim);margin:5px 0}
+.moneyStats dt{display:inline}
+.moneyStats dd{display:inline;margin:0 0 0 3px;color:var(--ink);font-weight:700}
+.moneyCheck{display:flex;gap:6px;margin:0}
+.moneyCheck input{flex:1;min-width:0;background:transparent;border:1px solid var(--line);border-radius:9px;color:var(--ink);
+  padding:7px 9px;font-size:.76rem;outline-color:var(--turq)}
+.moneyCheck button{border:none;border-radius:9px;padding:0 11px;font-weight:700;font-size:.74rem;
+  background:linear-gradient(135deg,var(--turq2),var(--turq));color:#04241d}
+footer{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.footBtn{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);border-radius:var(--radius-sm);
+  padding:10px;font-size:.8rem;font-weight:700}
+.footBtn.primary{border-color:rgba(45,212,191,.5);background:linear-gradient(135deg,rgba(45,212,191,.18),rgba(45,212,191,.06));color:var(--turq2)}
+.clearLink{text-align:center;margin:8px 0 0}
+.clearLink button{background:none;border:none;color:var(--dim);font-size:.72rem;text-decoration:underline;padding:2px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(14px);background:linear-gradient(135deg,var(--turq2),var(--turq));
+  color:#04241d;font-weight:700;font-size:.8rem;padding:9px 15px;border-radius:12px;opacity:0;transition:.2s;z-index:50;box-shadow:var(--shadow);margin:0}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<main class="app" aria-label="Pocket daily gadget">
+  <header class="appHead">
+    <p class="brand">Pocket</p>
+    <p class="weekBadge" id="weekBadge">Week —</p>
+  </header>
+
+  <section class="dateCard" aria-label="Today's date, moon and markets">
+    <p class="weekday" id="weekday">—</p>
+    <p class="dateBig" id="dateBig">—</p>
+    <p class="moonRow">
+      <span class="moonDisc" id="moonDisc" style="--illum:50" aria-hidden="true"></span>
+      <span class="moonInfo"><strong id="moonName">—</strong><span id="moonIllum">—</span></span>
+      <span class="spxRow" id="spxRow">
+        <span class="spxLabel">S&amp;P</span>
+        <span class="spxLP" id="spxLP">—</span>
+        <span id="spxChg">—</span>
+        <span id="spxPct">—</span>
+      </span>
+    </p>
+  </section>
+
+  <nav class="tiles" aria-label="Quick actions">
+    <ul>
+      <li><button class="tile note" type="button" data-type="note" aria-pressed="false"><i aria-hidden="true">N</i><span>Note</span></button></li>
+      <li><button class="tile timer" type="button" data-type="timer" aria-pressed="false"><i aria-hidden="true">T</i><span>Timer</span></button></li>
+      <li><button class="tile task" type="button" data-type="task" aria-pressed="false"><i aria-hidden="true">✓</i><span>Task</span></button></li>
+      <li><button class="tile money" type="button" data-type="money" aria-pressed="false"><i aria-hidden="true">$</i><span>Money</span></button></li>
+    </ul>
+  </nav>
+
+  <form class="quickBox" id="quickForm">
+    <label class="sr" for="quickInput">Quick entry</label>
+    <input id="quickInput" placeholder="Type your note…" autocomplete="off">
+    <button class="go" type="submit">Save</button>
+  </form>
+
+  <form class="quickBox" id="moneyForm">
+    <label class="sr" for="mSymbol">Symbol</label><input id="mSymbol" placeholder="Symbol" autocomplete="off">
+    <label class="sr" for="mInitial">Initial price</label><input id="mInitial" placeholder="Initial price" inputmode="decimal">
+    <label class="sr" for="mExpect">Expectancy</label><input id="mExpect" placeholder="Expectancy (target)" inputmode="decimal">
+    <button class="go" type="submit">Save</button>
+  </form>
+
+  <fieldset class="presets" id="presets">
+    <legend class="sr">Timer length</legend>
+    <button class="preset" type="button" data-min="5">5 min</button>
+    <button class="preset" type="button" data-min="10">10 min</button>
+    <button class="preset" type="button" data-min="25">25 min</button>
+    <button class="preset" type="button" data-min="45">45 min</button>
+  </fieldset>
+
+  <output class="running" id="running">
+    <small id="runLabel">Focus timer</small>
+    <strong id="runBig">25:00</strong>
+    <span class="runBtns">
+      <button type="button" id="runPause">Pause</button>
+      <button type="button" id="runStop">Stop</button>
+    </span>
+  </output>
+
+  <section aria-label="Today's items">
+    <header class="sectionHead"><span>Today</span><span id="itemCount">0 items</span></header>
+    <ul class="listBody" id="listBody"></ul>
+  </section>
+
+  <section class="moneySection" aria-label="Money">
+    <header class="sectionHead"><span>Money</span><span id="moneyCount">0 positions</span></header>
+    <ul class="heatmap" id="heatmap"></ul>
+    <ul class="moneyList" id="moneyList"></ul>
+  </section>
+
+  <footer>
+    <button class="footBtn primary" id="exportBtn" type="button">Export</button>
+    <button class="footBtn" id="importBtn" type="button">Import</button>
+    <input type="file" id="importFile" accept="application/json" class="sr">
+  </footer>
+  <p class="clearLink"><button id="clearBtn" type="button">Clear all data</button></p>
+</main>
+<p class="toast" id="toast" role="status"></p>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let state={notes:[],tasks:[],timers:[],money:[]};
+let activeType=null, timerInterval=null, timerSeconds=0, timerLabel='';
+
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
+
+function normalize(s){
+  s=s||{};
+  return{notes:s.notes||[],tasks:s.tasks||[],timers:s.timers||[],money:(s.money||[]).map(m=>({...m,history:m.history||[]}))};
+}
+
+async function load(){
+  try{const r=await window.storage.get('pocketgadget:state');if(r&&r.value){state=normalize(JSON.parse(r.value))}}catch(e){}
+  renderAll();
+}
+async function persist(){
+  try{await window.storage.set('pocketgadget:state',JSON.stringify(state))}catch(e){}
+}
+function renderAll(){renderList();renderMoney()}
+
+function pad(n){return String(n).padStart(2,'0')}
+
+function renderDate(){
+  const d=new Date();
+  $('weekday').textContent=d.toLocaleDateString('en-US',{weekday:'long'});
+  $('dateBig').textContent=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const wd=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  wd.setUTCDate(wd.getUTCDate()+4-(wd.getUTCDay()||7));
+  const yStart=new Date(Date.UTC(wd.getUTCFullYear(),0,1));
+  const week=Math.ceil((((wd-yStart)/86400000)+1)/7);
+  $('weekBadge').textContent='Week '+week;
+
+  const synodic=29.530588853;
+  const known=Date.UTC(2000,0,6,18,14)/1000;
+  const age=(((d.getTime()/1000-known)/86400)%synodic+synodic)%synodic;
+  const f=age/synodic;
+  const illum=Math.round((1-Math.cos(2*Math.PI*f))/2*100);
+  let name;
+  if(age<1.85)name='New moon';
+  else if(age<5.54)name='Waxing crescent';
+  else if(age<9.23)name='First quarter';
+  else if(age<12.92)name='Waxing gibbous';
+  else if(age<16.61)name='Full moon';
+  else if(age<20.30)name='Waning gibbous';
+  else if(age<23.99)name='Last quarter';
+  else if(age<27.68)name='Waning crescent';
+  else name='New moon';
+  $('moonDisc').style.setProperty('--illum',illum);
+  $('moonName').textContent=name;
+  $('moonIllum').textContent=illum+'% lit';
+}
+
+function timeAgo(ts){
+  return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+
+function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function todayIso(){return new Date().toISOString().slice(0,10)}
+
+function renderList(){
+  const items=[
+    ...state.notes.map(n=>({type:'note',ts:n.ts,text:n.text,id:n.id})),
+    ...state.tasks.map(t=>({type:'task',ts:t.ts,text:t.text,id:t.id,done:t.done})),
+    ...state.timers.map(t=>({type:'timer',ts:t.ts,text:(t.label?t.label+' · ':'')+t.minutes+' min',id:t.id}))
+  ].sort((a,b)=>b.ts-a.ts);
+  $('itemCount').textContent=items.length+(items.length===1?' item':' items');
+  const body=$('listBody');
+  if(!items.length){body.innerHTML='<li class="empty">Nothing yet today. Tap a tile above to start.</li>';return}
+  body.innerHTML=items.map(it=>{
+    if(it.type==='task'){
+      return `<li class="row task ${it.done?'done':''}"><input type="checkbox" class="check" data-act="toggle-task" data-id="${it.id}" ${it.done?'checked':''}>
+      <span class="txt">${escapeHtml(it.text)}<time>${timeAgo(it.ts)}</time></span>
+      <button class="del" data-act="del-task" data-id="${it.id}" aria-label="Delete">✕</button></li>`;
+    }
+    if(it.type==='timer'){
+      return `<li class="row timer"><span class="dot"></span>
+      <span class="txt">${escapeHtml(it.text)}<time>${timeAgo(it.ts)}</time></span>
+      <button class="del" data-act="del-timer" data-id="${it.id}" aria-label="Delete">✕</button></li>`;
+    }
+    return `<li class="row note"><span class="dot"></span>
+    <span class="txt">${escapeHtml(it.text)}<time>${timeAgo(it.ts)}</time></span>
+    <button class="del" data-act="del-note" data-id="${it.id}" aria-label="Delete">✕</button></li>`;
+  }).join('');
+}
+
+function isSpx(sym){return /^(s ?& ?p ?500|spx|\^gspc)$/i.test((sym||'').trim())}
+
+function heatColor(pct){
+  const t=Math.min(Math.abs(pct)/5,1);
+  if(pct>0)return`rgba(139,212,80,${0.14+t*0.55})`;
+  if(pct<0)return`rgba(255,122,69,${0.14+t*0.55})`;
+  return'rgba(255,255,255,.05)';
+}
+
+function latestOf(entry){return entry.history.length?entry.history[entry.history.length-1]:null}
+
+function renderMoney(){
+  const entries=state.money.map(m=>{
+    const last=latestOf(m);
+    return{...m,last:last?last.actual:m.initial,chg:last?last.chg:0,pct:last?last.pct:0,checkedToday:!!(last&&last.date===todayIso())};
+  });
+  $('moneyCount').textContent=entries.length+(entries.length===1?' position':' positions');
+
+  $('heatmap').innerHTML=entries.length?entries.map(e=>
+    `<li class="heatTile" style="background:${heatColor(e.pct)}">
+      <span class="sym">${escapeHtml(e.symbol)}</span>
+      <span class="pct ${e.pct>0?'up':e.pct<0?'down':''}">${e.pct>=0?'+':''}${e.pct.toFixed(1)}%</span>
+    </li>`).join(''):'';
+
+  $('moneyList').innerHTML=entries.length?entries.map(e=>
+    `<li class="moneyRow">
+      <p class="moneyTop">
+        <span class="sym">${escapeHtml(e.symbol)}</span>
+        <span class="actions">
+          <span class="moneyLast ${e.chg>0?'up':e.chg<0?'down':''}">${fmt(e.last)} · ${e.chg>=0?'+':''}${fmt(e.chg)} (${e.pct>=0?'+':''}${e.pct.toFixed(1)}%)</span>
+          <button data-act="refresh-money" data-id="${e.id}" aria-label="Refresh live price" title="Refresh live price">⟳</button>
+          <button data-act="del-money" data-id="${e.id}" aria-label="Delete">✕</button>
+        </span>
+      </p>
+      <dl class="moneyStats">
+        <dt>Entry</dt><dd>${fmt(e.initial)}</dd>
+        <dt>Target</dt><dd>${fmt(e.expectancy)}</dd>
+        <dt>${e.checkedToday?'Checked':'Not checked'}</dt><dd></dd>
+      </dl>
+      <form class="moneyCheck" data-id="${e.id}">
+        <label class="sr" for="check-${e.id}">Today's actual price for ${escapeHtml(e.symbol)}</label>
+        <input id="check-${e.id}" inputmode="decimal" placeholder="Today's actual price" value="${e.checkedToday?fmt(e.last):''}">
+        <button type="submit">Check</button>
+      </form>
+    </li>`).join(''):'<li class="empty">No positions yet. Tap the Money tile above.</li>';
+
+  const spx=entries.find(e=>isSpx(e.symbol));
+  if(spx){
+    $('spxLP').textContent=fmt(spx.last);
+    $('spxChg').textContent=(spx.chg>=0?'+':'')+fmt(spx.chg);
+    $('spxChg').className=spx.chg>0?'up':spx.chg<0?'down':'';
+    $('spxPct').textContent=(spx.pct>=0?'+':'')+spx.pct.toFixed(1)+'%';
+    $('spxPct').className=spx.pct>0?'up':spx.pct<0?'down':'';
+  }else{
+    $('spxLP').textContent='—';$('spxChg').textContent='add S&P';$('spxChg').className='';$('spxPct').textContent='';
+  }
+}
+
+function resetTilePress(){Array.from(document.querySelectorAll('.tile')).forEach(t=>t.setAttribute('aria-pressed','false'))}
+function closeAllBoxes(){
+  $('quickForm').classList.remove('show');
+  $('moneyForm').classList.remove('show');
+  $('presets').classList.remove('show');
+}
+
+document.querySelector('.tiles').addEventListener('click',e=>{
+  const tile=e.target.closest('.tile');
+  if(!tile)return;
+  const type=tile.dataset.type;
+  $('running').classList.remove('show');
+  if(activeType===type){
+    activeType=null;resetTilePress();closeAllBoxes();
+    return;
+  }
+  activeType=type;
+  resetTilePress();tile.setAttribute('aria-pressed','true');
+  closeAllBoxes();
+  if(type==='note'){
+    $('quickInput').placeholder='Type your note…';
+    $('quickForm').classList.add('show');
+    $('quickInput').focus();
+  }else if(type==='task'){
+    $('quickInput').placeholder='Add a task…';
+    $('quickForm').classList.add('show');
+    $('quickInput').focus();
+  }else if(type==='timer'){
+    $('presets').classList.add('show');
+  }else if(type==='money'){
+    $('moneyForm').classList.add('show');
+    $('mSymbol').focus();
+  }
+});
+
+$('quickForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const val=$('quickInput').value.trim();
+  if(!val){toast('Write something first.');return}
+  if(activeType==='note'){state.notes.push({id:id(),text:val,ts:Date.now()});toast('Note saved.')}
+  if(activeType==='task'){state.tasks.push({id:id(),text:val,done:false,ts:Date.now()});toast('Task added.')}
+  $('quickInput').value='';
+  closeAllBoxes();resetTilePress();activeType=null;
+  persist();renderList();
+});
+
+$('moneyForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const symbol=$('mSymbol').value.trim().toUpperCase();
+  const initial=parseFloat($('mInitial').value),expectancy=parseFloat($('mExpect').value);
+  if(!symbol){toast('Enter a symbol.');return}
+  if(!isFinite(initial)||initial<=0){toast('Enter a valid initial price.');return}
+  state.money.push({id:id(),symbol,initial,expectancy:isFinite(expectancy)?expectancy:initial,history:[]});
+  $('mSymbol').value='';$('mInitial').value='';$('mExpect').value='';
+  closeAllBoxes();resetTilePress();activeType=null;
+  persist();renderMoney();
+  toast(symbol+' added.');
+});
+
+$('presets').addEventListener('click',e=>{
+  const b=e.target.closest('.preset');
+  if(!b)return;
+  startTimer(Number(b.dataset.min));
+});
+
+function startTimer(mins){
+  timerSeconds=mins*60;
+  timerLabel=mins+' min focus';
+  $('presets').classList.remove('show');
+  resetTilePress();activeType=null;
+  $('running').classList.add('show');
+  $('runLabel').textContent=timerLabel;
+  updateTimerDisplay();
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timerSeconds--;
+    updateTimerDisplay();
+    if(timerSeconds<=0){
+      clearInterval(timerInterval);
+      logTimer(mins);
+      toast('Timer done.');
+      $('running').classList.remove('show');
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(Math.max(0,timerSeconds)/60),s=Math.max(0,timerSeconds)%60;
+  $('runBig').textContent=pad(m)+':'+pad(s);
+}
+$('runPause').addEventListener('click',()=>{
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;$('runPause').textContent='Resume';}
+  else{
+    $('runPause').textContent='Pause';
+    timerInterval=setInterval(()=>{
+      timerSeconds--;updateTimerDisplay();
+      if(timerSeconds<=0){clearInterval(timerInterval);logTimer(Math.round((timerLabel.match(/\d+/)||[0])[0]));toast('Timer done.');$('running').classList.remove('show')}
+    },1000);
+  }
+});
+$('runStop').addEventListener('click',()=>{
+  clearInterval(timerInterval);timerInterval=null;
+  const startedMin=Number((timerLabel.match(/\d+/)||[0])[0]);
+  const elapsedMin=Math.max(1,Math.round(startedMin-timerSeconds/60));
+  logTimer(elapsedMin,true);
+  $('running').classList.remove('show');
+  toast('Timer stopped and logged.');
+});
+function logTimer(mins,partial){
+  state.timers.push({id:id(),minutes:mins,label:partial?'Stopped early':'',ts:Date.now()});
+  persist();renderList();
+}
+
+function applyCheck(entryId,actual,live){
+  const e=state.money.find(x=>x.id===entryId);
+  if(!e)return;
+  if(!isFinite(actual)||actual<=0){toast('Enter a valid price.');return}
+  const today=todayIso();
+  const prior=e.history.filter(h=>h.date!==today);
+  const prev=prior.length?prior[prior.length-1].actual:e.initial;
+  const chg=actual-prev;
+  const pct=prev?(chg/prev*100):0;
+  const idx=e.history.findIndex(h=>h.date===today);
+  const rec={date:today,actual,chg,pct,live:!!live};
+  if(idx>=0)e.history[idx]=rec;else e.history.push(rec);
+  persist();renderMoney();
+}
+
+document.addEventListener('submit',e=>{
+  if(e.target.matches('.moneyCheck')){
+    e.preventDefault();
+    const entryId=e.target.dataset.id;
+    const input=e.target.querySelector('input');
+    applyCheck(entryId,parseFloat(input.value),false);
+    toast('Checked for today.');
+  }
+});
+
+async function fetchLive(symbol){
+  const target='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(symbol);
+  const proxied='https://corsproxy.io/?url='+encodeURIComponent(target);
+  const res=await fetch(proxied);
+  if(!res.ok)throw new Error('bad response');
+  const data=await res.json();
+  const result=data.chart&&data.chart.result&&data.chart.result[0];
+  if(!result||!result.meta)throw new Error('no data');
+  const meta=result.meta;
+  const price=meta.regularMarketPrice;
+  const prevClose=meta.chartPreviousClose??meta.previousClose;
+  if(!isFinite(price))throw new Error('no price');
+  return{price,prevClose};
+}
+
+async function refreshMoney(entryId){
+  const e=state.money.find(x=>x.id===entryId);
+  if(!e)return;
+  toast('Fetching '+e.symbol+'…');
+  try{
+    const{price,prevClose}=await fetchLive(e.symbol);
+    const today=todayIso();
+    const prior=e.history.filter(h=>h.date!==today);
+    const prev=isFinite(prevClose)?prevClose:(prior.length?prior[prior.length-1].actual:e.initial);
+    const chg=price-prev;
+    const pct=prev?(chg/prev*100):0;
+    const idx=e.history.findIndex(h=>h.date===today);
+    const rec={date:today,actual:price,chg,pct,live:true};
+    if(idx>=0)e.history[idx]=rec;else e.history.push(rec);
+    persist();renderMoney();
+    toast(e.symbol+' updated live.');
+  }catch(err){
+    toast('Live price unavailable for '+e.symbol+' — enter manually.');
+  }
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]');
+  if(!t)return;
+  const act=t.dataset.act, idv=t.dataset.id;
+  if(act==='del-note'){state.notes=state.notes.filter(n=>n.id!==idv);persist();renderList();return}
+  if(act==='del-task'){state.tasks=state.tasks.filter(n=>n.id!==idv);persist();renderList();return}
+  if(act==='del-timer'){state.timers=state.timers.filter(n=>n.id!==idv);persist();renderList();return}
+  if(act==='toggle-task'){const task=state.tasks.find(n=>n.id===idv);if(task)task.done=t.checked;persist();renderList();return}
+  if(act==='del-money'){state.money=state.money.filter(n=>n.id!==idv);persist();renderMoney();return}
+  if(act==='refresh-money'){refreshMoney(idv);return}
+});
+
+$('exportBtn').addEventListener('click',()=>{
+  const d=new Date();
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='pocket-'+d.toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(url);
+  toast('Data exported.');
+});
+
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      state=normalize(JSON.parse(r.result));
+      persist();renderAll();
+      toast('Data imported.');
+    }catch(err){toast('That file is not a valid backup.')}
+  };
+  r.readAsText(file);
+  e.target.value='';
+});
+
+$('clearBtn').addEventListener('click',()=>{
+  if(confirm('Clear all saved notes, tasks, timer logs and money positions?')){
+    state={notes:[],tasks:[],timers:[],money:[]};
+    persist();renderAll();toast('Cleared.');
+  }
+});
+
+(function enableDrag(){
+  const app=document.querySelector('.app'), handle=document.querySelector('.appHead');
+  let dragging=false,startX=0,startY=0,startLeft=0,startTop=0;
+  handle.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    const rect=app.getBoundingClientRect();
+    app.style.left=rect.left+'px';app.style.top=rect.top+'px';app.style.transform='none';
+    dragging=true;startX=e.clientX;startY=e.clientY;startLeft=rect.left;startTop=rect.top;
+    app.classList.add('dragging');
+    handle.setPointerCapture(e.pointerId);
+  });
+  handle.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    let left=startLeft+dx,top=startTop+dy;
+    const rect=app.getBoundingClientRect();
+    left=Math.max(4,Math.min(window.innerWidth-rect.width-4,left));
+    top=Math.max(4,Math.min(window.innerHeight-rect.height-4,top));
+    app.style.left=left+'px';app.style.top=top+'px';
+  });
+  ['pointerup','pointercancel'].forEach(ev=>handle.addEventListener(ev,()=>{dragging=false;app.classList.remove('dragging')}));
+})();
+
+renderDate();
+load();
+})();
+</script>
+</body>
+</html>

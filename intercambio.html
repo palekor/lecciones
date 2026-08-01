@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intercambio — Habla. Escucha. Aprende.</title>
+<meta name="description" content="Practica inglés y español en vivo, sin registro. Emparejamiento instantáneo por voz o texto.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<!-- Firebase (compat build — simplest for a single static file, no bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+  :root{
+    --void:#0B0912;
+    --panel:#161222;
+    --panel-2:#1D1830;
+    --line: rgba(201,162,75,0.18);
+    --gold:#C9A24B;
+    --gold-bright:#E8C874;
+    --violet:#8B6FD9;
+    --violet-deep:#4A3A80;
+    --coral:#E0654F;
+    --text:#F1E9D8;
+    --muted:#9C93AE;
+    --sans-serif-fallback: Georgia, serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(139,111,217,0.18), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 90% 110%, rgba(201,162,75,0.13), transparent 60%),
+      var(--void);
+    color:var(--text);
+    font-family:'Cormorant Garamond', var(--sans-serif-fallback);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{ font-family:'Cinzel', serif; letter-spacing:0.04em; font-weight:600; }
+  a{ color:var(--gold-bright); }
+  button{ font-family:'Cormorant Garamond', var(--sans-serif-fallback); cursor:pointer; }
+  ::selection{ background:var(--violet-deep); color:var(--text); }
+  :focus-visible{ outline:2px solid var(--gold-bright); outline-offset:2px; }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:36px 20px 80px; }
+  .brandbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; }
+  .brandbar .name{ font-size:0.85rem; letter-spacing:0.18em; color:var(--muted); text-transform:uppercase; }
+  .brandbar .name b{ color:var(--gold-bright); }
+  .safety-link{ font-size:0.85rem; color:var(--muted); text-decoration:none; border-bottom:1px dotted var(--muted); }
+  .safety-link:hover{ color:var(--gold-bright); border-color:var(--gold-bright); }
+
+  /* ---- signature glyph: the exchange mark ---- */
+  .glyph{ width:120px; height:120px; margin:10px auto 6px; position:relative; }
+  .glyph svg{ width:100%; height:100%; }
+  .glyph .ring{ animation: spin 22s linear infinite; transform-origin:60px 60px; }
+  .glyph.pulse .core{ animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  @keyframes pulse{ 0%,100%{ opacity:0.55; transform:scale(1);} 50%{ opacity:1; transform:scale(1.06);} }
+  @media (prefers-reduced-motion: reduce){
+    .glyph .ring{ animation:none; }
+    .glyph.pulse .core{ animation:none; }
+  }
+
+  .hero{ text-align:center; margin-bottom:34px; }
+  .hero h1{ font-size:2.1rem; margin:6px 0 4px; }
+  .hero p.tag{ color:var(--muted); font-size:1.15rem; margin:0; font-style:italic; }
+
+  .card{
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+  .field{ margin-bottom:22px; }
+  .field label{ display:block; font-size:0.8rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright); margin-bottom:10px; }
+
+  .pillrow{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pill{
+    flex:1 1 auto; min-width:120px; text-align:center;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line); color:var(--text);
+    padding:12px 14px; border-radius:999px; font-size:1.05rem;
+    transition: all .15s ease;
+  }
+  .pill:hover{ border-color:var(--gold); }
+  .pill.active{ background:linear-gradient(120deg, var(--violet-deep), var(--violet)); border-color:var(--violet); color:#fff; font-weight:600; }
+  .pill.active.gold{ background:linear-gradient(120deg, #6b5320, var(--gold)); border-color:var(--gold-bright); color:#1a1408; }
+
+  .chip{
+    display:inline-block; padding:8px 14px; margin:4px 6px 0 0; border-radius:999px;
+    border:1px solid var(--line); background:rgba(255,255,255,0.02); font-size:0.95rem; color:var(--muted);
+  }
+  .chip.active{ border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,75,0.1); }
+
+  .swap-arrow{ text-align:center; font-size:1.3rem; color:var(--violet); margin:-8px 0 8px; opacity:0.8; }
+
+  .agree{ display:flex; gap:10px; align-items:flex-start; font-size:0.98rem; color:var(--muted); margin-bottom:22px; }
+  .agree input{ margin-top:5px; width:16px; height:16px; accent-color:var(--gold); }
+  .agree a{ cursor:pointer; }
+
+  .cta{
+    width:100%; padding:16px; border-radius:10px; border:none;
+    background:linear-gradient(120deg, var(--gold), var(--gold-bright));
+    color:#1a1408; font-size:1.15rem; font-weight:700; letter-spacing:0.03em;
+    box-shadow:0 10px 30px rgba(201,162,75,0.25);
+  }
+  .cta:disabled{ opacity:0.4; cursor:not-allowed; box-shadow:none; }
+  .cta:not(:disabled):hover{ filter:brightness(1.08); }
+  .cta.ghost{
+    background:transparent; border:1px solid var(--line); color:var(--text); box-shadow:none; font-weight:500;
+  }
+  .cta.coral{ background:linear-gradient(120deg,#a83a2b,var(--coral)); color:#fff; box-shadow:0 10px 30px rgba(224,101,79,0.25); }
+
+  .center-col{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:16px; }
+  .status-text{ color:var(--muted); font-size:1.05rem; min-height:1.4em; }
+  .quote{ font-style:italic; color:var(--gold-bright); font-size:1.2rem; max-width:480px; }
+
+  /* ---- room screen ---- */
+  .room-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+  .partner-badge{ display:flex; align-items:center; gap:10px; }
+  .dot{ width:9px; height:9px; border-radius:50%; background:#5CD66B; box-shadow:0 0 8px #5CD66B; }
+  .dot.off{ background:var(--coral); box-shadow:0 0 8px var(--coral); }
+  .room-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .icon-btn{
+    background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--muted);
+    padding:8px 12px; border-radius:8px; font-size:0.9rem;
+  }
+  .icon-btn:hover{ color:var(--text); border-color:var(--gold); }
+  .icon-btn.warn:hover{ color:var(--coral); border-color:var(--coral); }
+
+  .chatlog{
+    height:340px; overflow-y:auto; background:rgba(0,0,0,0.25);
+    border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:12px;
+  }
+  .msg{ margin-bottom:12px; max-width:82%; }
+  .msg.me{ margin-left:auto; text-align:right; }
+  .msg .bubble{ display:inline-block; padding:9px 14px; border-radius:14px; font-size:1.08rem; line-height:1.35; }
+  .msg.me .bubble{ background:linear-gradient(120deg, var(--violet-deep), var(--violet)); color:#fff; border-bottom-right-radius:4px; }
+  .msg.them .bubble{ background:rgba(255,255,255,0.06); border:1px solid var(--line); border-bottom-left-radius:4px; }
+  .msg.sys{ text-align:center; color:var(--muted); font-size:0.9rem; font-style:italic; }
+  .msg .translation{ display:block; font-size:0.9rem; color:var(--muted); margin-top:3px; font-style:italic; }
+
+  .composer{ display:flex; gap:8px; margin-bottom:8px; }
+  .composer input[type=text]{
+    flex:1; padding:13px 14px; border-radius:9px; border:1px solid var(--line);
+    background:rgba(255,255,255,0.03); color:var(--text); font-size:1.08rem; font-family:inherit;
+  }
+  .composer input[type=text]:focus{ border-color:var(--gold); }
+  .composer button{
+    padding:0 20px; border-radius:9px; border:none; background:var(--gold); color:#1a1408; font-weight:700;
+  }
+
+  .voice-bar{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+    padding:14px; margin-bottom:12px;
+  }
+  .voice-bar .mic-btn{
+    width:52px; height:52px; border-radius:50%; border:1px solid var(--line);
+    background:rgba(255,255,255,0.04); color:var(--text); font-size:1.3rem;
+  }
+  .voice-bar .mic-btn.muted{ background:var(--coral); color:#fff; border-color:var(--coral); }
+
+  .topics-panel{ margin-top:16px; }
+  .topics-panel .head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .topics-panel .head span{ font-size:0.8rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-bright); }
+  .prompt-box{
+    background:rgba(139,111,217,0.08); border:1px solid var(--violet-deep); border-radius:10px;
+    padding:14px 16px; font-size:1.1rem; color:var(--text); min-height:1.4em;
+  }
+  .small-link{ background:none; border:none; color:var(--muted); font-size:0.9rem; text-decoration:underline; padding:0; }
+  .small-link:hover{ color:var(--gold-bright); }
+
+  /* ---- modal ---- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(5,4,10,0.75); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; padding:20px; z-index:50;
+  }
+  .modal{
+    max-width:560px; width:100%; max-height:85vh; overflow-y:auto;
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:14px; padding:28px;
+  }
+  .modal h2{ margin-top:0; }
+  .modal ul{ padding-left:20px; line-height:1.6; font-size:1.05rem; }
+  .modal .close-row{ text-align:right; margin-top:18px; }
+
+  .footer-note{ text-align:center; color:var(--muted); font-size:0.85rem; margin-top:26px; line-height:1.6; }
+
+  .hidden{ display:none !important; }
+  @media (max-width:480px){
+    .hero h1{ font-size:1.6rem; }
+    .card{ padding:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="brandbar">
+    <div class="name"><b>ProfGermandario</b> · Intercambio</div>
+    <a class="safety-link" id="openSafetyTop" href="javascript:void(0)">Seguridad / Safety</a>
+  </div>
+
+  <!-- ===================== SETUP SCREEN ===================== -->
+  <div id="screen-setup">
+    <div class="hero">
+      <div class="glyph">
+        <svg viewBox="0 0 120 120">
+          <g class="ring">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--gold)" stroke-width="1" opacity="0.5" stroke-dasharray="2 6"/>
+          </g>
+          <circle class="core" cx="60" cy="60" r="34" fill="none" stroke="var(--violet)" stroke-width="1.6"/>
+          <text x="60" y="53" text-anchor="middle" font-family="Cinzel" font-size="15" fill="var(--gold-bright)">ES</text>
+          <text x="60" y="76" text-anchor="middle" font-family="Cinzel" font-size="15" fill="var(--violet)">EN</text>
+          <path d="M42 60 H78" stroke="var(--muted)" stroke-width="1" marker-end="url(#arrow)" opacity="0.6"/>
+        </svg>
+      </div>
+      <h1>Habla. Escucha. Aprende.</h1>
+      <p class="tag">Practica en vivo con un hablante nativo — sin registro, sin fricción.</p>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Yo hablo / I speak</label>
+        <div class="pillrow" id="speakRow">
+          <button class="pill" data-lang="es">Español</button>
+          <button class="pill" data-lang="en">English</button>
+        </div>
+      </div>
+      <div class="swap-arrow">⇅ quiero practicar</div>
+      <div class="field">
+        <label>Quiero practicar / I want to practice</label>
+        <div class="pillrow" id="wantRow">
+          <button class="pill" data-lang="en">English</button>
+          <button class="pill" data-lang="es">Español</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Modo / Mode</label>
+        <div class="pillrow" id="modeRow">
+          <button class="pill" data-mode="text">💬 Texto</button>
+          <button class="pill" data-mode="voice">🎙️ Voz</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tema para empezar (opcional) / Starting topic</label>
+        <div id="topicChips"></div>
+      </div>
+
+      <div class="agree">
+        <input type="checkbox" id="agreeBox">
+        <label for="agreeBox">He leído las <a id="openSafetyInline">pautas de seguridad</a> y confirmo que soy mayor de edad (18+). / I've read the safety guidelines and confirm I'm 18+.</label>
+      </div>
+
+      <button class="cta" id="findBtn" disabled>Buscar compañero de práctica →</button>
+      <div class="status-text" id="setupError"></div>
+    </div>
+
+    <p class="footer-note">Conversaciones entre pares, no moderadas en vivo. Nunca compartas datos personales. · Peer-to-peer, not live-moderated. Never share personal details.</p>
+  </div>
+
+  <!-- ===================== MATCHING SCREEN ===================== -->
+  <div id="screen-matching" class="hidden">
+    <div class="card center-col">
+      <div class="glyph pulse">
+        <svg viewBox="0 0 120 120">
+          <g class="ring"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--violet)" stroke-width="1" opacity="0.5" stroke-dasharray="3 7"/></g>
+          <circle class="core" cx="60" cy="60" r="34" fill="none" stroke="var(--gold)" stroke-width="1.8"/>
+        </svg>
+      </div>
+      <h2>Buscando compañero…</h2>
+      <div class="status-text" id="matchingStatus">Esto suele tardar unos segundos.</div>
+      <div class="quote" id="matchingQuote"></div>
+      <button class="cta ghost" id="cancelMatchBtn">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- ===================== ROOM SCREEN ===================== -->
+  <div id="screen-room" class="hidden">
+    <div class="room-header">
+      <div class="partner-badge">
+        <span class="dot off" id="connDot"></span>
+        <span id="partnerLabel">Conectando…</span>
+      </div>
+      <div class="room-actions">
+        <button class="icon-btn" id="shuffleTopicBtn">🎲 Nuevo tema</button>
+        <button class="icon-btn warn" id="reportBtn">🚩 Reportar</button>
+        <button class="icon-btn warn" id="skipBtn">⏭ Saltar</button>
+        <button class="icon-btn warn" id="endBtn">✕ Salir</button>
+      </div>
+    </div>
+
+    <div id="voiceBar" class="voice-bar hidden">
+      <button class="mic-btn" id="micToggle">🎙️</button>
+      <span class="status-text" id="voiceStatus">Micrófono activo</span>
+      <audio id="remoteAudio" autoplay></audio>
+    </div>
+
+    <div class="chatlog" id="chatlog"></div>
+
+    <div class="composer">
+      <input type="text" id="msgInput" placeholder="Escribe un mensaje… / Type a message…" autocomplete="off">
+      <button id="sendBtn">Enviar</button>
+    </div>
+    <label style="font-size:0.85rem;color:var(--muted);display:flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="translateToggle" style="accent-color:var(--gold);"> Traducir automáticamente / Auto-translate
+    </label>
+
+    <div class="topics-panel">
+      <div class="head"><span>Tema de conversación</span><button class="small-link" id="shuffleTopicBtn2">otro tema →</button></div>
+      <div class="prompt-box" id="promptBox">Elige un tema arriba o pulsa "otro tema".</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SAFETY MODAL ===================== -->
+<div class="modal-backdrop hidden" id="safetyModal">
+  <div class="modal">
+    <h2>Seguridad y comunidad</h2>
+    <ul>
+      <li><b>No moderado en vivo:</b> hablas directamente con otra persona, sin supervisor humano en tiempo real. Usa tu criterio.</li>
+      <li><b>Nunca compartas</b> tu apellido completo, dirección, datos financieros, contraseñas ni información de contacto privada.</li>
+      <li>Esta plataforma es para <b>mayores de 18 años</b>.</li>
+      <li>Si algo se siente incómodo, pulsa <b>Saltar</b> para terminar la conversación al instante — nadie es notificado ni puede impedirlo.</li>
+      <li>Usa <b>Reportar</b> si alguien es abusivo, acosador o comparte contenido inapropiado. Se registra el incidente y te desconecta de inmediato.</li>
+      <li>No se graban ni almacenan las conversaciones de texto o voz — todo ocurre directamente entre los dos navegadores (peer-to-peer).</li>
+      <li>Esto es una herramienta de práctica de idiomas, no un servicio de citas ni consejería.</li>
+    </ul>
+    <h2>Safety &amp; community</h2>
+    <ul>
+      <li><b>Not live-moderated:</b> you're speaking directly with another person, with no real-time human supervisor. Use your judgment.</li>
+      <li><b>Never share</b> your full last name, address, financial details, passwords, or private contact info.</li>
+      <li>This platform is for <b>adults 18+</b>.</li>
+      <li>If anything feels off, hit <b>Skip</b> to end the conversation instantly — no notification, no way for the other person to stop it.</li>
+      <li>Use <b>Report</b> if someone is abusive, harassing, or shares inappropriate content. It logs the incident and disconnects you immediately.</li>
+      <li>Text and voice are not recorded or stored — everything happens directly between the two browsers (peer-to-peer).</li>
+      <li>This is a language-practice tool, not a dating or counseling service.</li>
+    </ul>
+    <div class="close-row"><button class="cta ghost" id="closeSafety">Entendido / Got it</button></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   INTERCAMBIO — serverless bilingual language-exchange chat
+   ------------------------------------------------------------------------
+   Requires a free Firebase project (Firestore + Anonymous Auth) to handle
+   matchmaking + WebRTC signaling, since GitHub Pages can't run a server.
+   See the setup instructions delivered alongside this file.
+   ========================================================================= */
+
+// ---- 1. FIREBASE CONFIG — replace with your own project's config ----
+const firebaseConfig = {
+  apiKey: "AIzaSyD1PaoJ68uVKKJGMW2lj3_sCIVPoP4BN3A",
+  authDomain: "profgermandario-intercambio.firebaseapp.com",
+  projectId: "profgermandario-intercambio",
+  storageBucket: "profgermandario-intercambio.firebasestorage.app",
+  messagingSenderId: "245369861120",
+  appId: "1:245369861120:web:a127a6cd8d97100dc314e5",
+  measurementId: "G-Z0GZ2S7600"
+};
+
+let fbReady = false;
+let db, auth, uid;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  fbReady = true;
+} catch (e) {
+  console.error("Firebase init failed — matchmaking will not work until firebaseConfig is set.", e);
+}
+
+// ---- 2. Topic bank ----
+const TOPICS = {
+  "Rompehielo / Icebreakers": [
+    "¿Cuál fue el mejor viaje de tu vida? / What's the best trip you've ever taken?",
+    "Si pudieras cenar con cualquier persona, ¿quién sería? / If you could have dinner with anyone, who would it be?",
+    "¿Qué te hizo reír esta semana? / What made you laugh this week?"
+  ],
+  "Cultura y comida / Culture & food": [
+    "Describe un plato típico de tu país. / Describe a dish that's typical where you're from.",
+    "¿Qué festividad de tu cultura te gusta más y por qué? / What holiday from your culture do you like most, and why?"
+  ],
+  "Trabajo y metas / Work & goals": [
+    "¿Qué te gustaría lograr este año? / What would you like to achieve this year?",
+    "Describe un día típico en tu trabajo. / Describe a typical day at your job."
+  ],
+  "Preguntas profundas / Deep questions": [
+    "¿Qué consejo le darías a tu yo de hace 10 años? / What advice would you give your self from 10 years ago?",
+    "¿Qué significa el éxito para ti? / What does success mean to you?"
+  ]
+};
+const ALL_PROMPTS = Object.values(TOPICS).flat();
+
+// ---- 3. App state ----
+const state = {
+  speak: 'es', want: 'en', mode: 'text',
+  topicCategory: null,
+  queueDocId: null, roomId: null, isOfferer: false,
+  pc: null, dataChannel: null, localStream: null,
+  unsubscribers: []
+};
+
+// ---- 4. Element refs ----
+const el = id => document.getElementById(id);
+const screens = { setup: el('screen-setup'), matching: el('screen-matching'), room: el('screen-room') };
+function showScreen(name){ Object.entries(screens).forEach(([k,n]) => n.classList.toggle('hidden', k!==name)); }
+
+// ---- 5. Setup screen interactions ----
+function wirePillRow(rowId, key, deriveOpposite){
+  const row = el(rowId);
+  row.querySelectorAll('.pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      row.querySelectorAll('.pill').forEach(b => b.classList.remove('active','gold'));
+      btn.classList.add('active', key==='speak' ? 'gold' : '');
+      state[key] = btn.dataset.lang || btn.dataset.mode;
+      if (deriveOpposite) deriveOpposite();
+      validateSetup();
+    });
+  });
+  row.querySelector('.pill').click();
+}
+wirePillRow('speakRow', 'speak', () => {
+  // default "want" to the opposite language unless user already changed it manually
+  const wantRow = el('wantRow');
+  const opposite = state.speak === 'es' ? 'en' : 'es';
+  wantRow.querySelectorAll('.pill').forEach(b => b.classList.toggle('active', b.dataset.lang === opposite) && b.classList.toggle('gold', false));
+  state.want = opposite;
+});
+wirePillRow('wantRow', 'want');
+wirePillRow('modeRow', 'mode');
+
+function renderTopicChips(){
+  const wrap = el('topicChips');
+  wrap.innerHTML = '';
+  Object.keys(TOPICS).forEach(cat => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'chip'; chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      wrap.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      const already = state.topicCategory === cat;
+      state.topicCategory = already ? null : cat;
+      if (!already) chip.classList.add('active');
+    });
+    wrap.appendChild(chip);
+  });
+}
+renderTopicChips();
+
+el('agreeBox').addEventListener('change', validateSetup);
+function validateSetup(){
+  el('findBtn').disabled = !(el('agreeBox').checked && state.speak !== state.want);
+  el('setupError').textContent = (state.speak === state.want) ? 'Elige dos idiomas distintos / Choose two different languages.' : '';
+}
+
+// ---- 6. Safety modal ----
+function openSafety(){ el('safetyModal').classList.remove('hidden'); }
+function closeSafety(){ el('safetyModal').classList.add('hidden'); }
+el('openSafetyTop').addEventListener('click', openSafety);
+el('openSafetyInline').addEventListener('click', (e) => { e.preventDefault(); openSafety(); });
+el('closeSafety').addEventListener('click', closeSafety);
+
+// ---- 7. Matching quotes rotation ----
+let quoteInterval;
+function startQuoteRotation(){
+  const q = el('matchingQuote');
+  let i = 0;
+  q.textContent = '"' + ALL_PROMPTS[0] + '"';
+  quoteInterval = setInterval(() => {
+    i = (i+1) % ALL_PROMPTS.length;
+    q.textContent = '"' + ALL_PROMPTS[i] + '"';
+  }, 3200);
+}
+function stopQuoteRotation(){ clearInterval(quoteInterval); }
+
+// ---- 8. Matchmaking (Firestore) ----
+async function ensureAuth(){
+  if (!fbReady) throw new Error('no-firebase');
+  if (auth.currentUser) { uid = auth.currentUser.uid; return; }
+  const cred = await auth.signInAnonymously();
+  uid = cred.user.uid;
+}
+
+let matchListener = null;
+async function findPartner(){
+  showScreen('matching');
+  startQuoteRotation();
+  el('matchingStatus').textContent = 'Esto suele tardar unos segundos… / Usually takes a few seconds…';
+
+  if (!fbReady) {
+    el('matchingStatus').textContent = 'Servicio de emparejamiento no configurado todavía (falta configurar Firebase). / Matchmaking backend not configured yet.';
+    return;
+  }
+  try { await ensureAuth(); }
+  catch(e){ el('matchingStatus').textContent = 'No se pudo conectar. / Could not connect.'; return; }
+
+  const queueRef = db.collection('queue');
+
+  // Try to find an existing compatible, unmatched partner.
+  const candidateSnap = await queueRef
+    .where('speaks','==', state.want)
+    .where('wants','==', state.speak)
+    .where('mode','==', state.mode)
+    .where('matched','==', false)
+    .orderBy('createdAt','asc')
+    .limit(5)
+    .get();
+
+  let matchedDoc = null;
+  for (const doc of candidateSnap.docs) {
+    if (doc.data().uid === uid) continue;
+    matchedDoc = doc; break;
+  }
+
+  if (matchedDoc) {
+    // Try to claim it atomically.
+    const roomId = db.collection('rooms').doc().id;
+    try {
+      await db.runTransaction(async (tx) => {
+        const fresh = await tx.get(matchedDoc.ref);
+        if (!fresh.exists || fresh.data().matched) throw new Error('taken');
+        tx.update(matchedDoc.ref, { matched:true, roomId });
+      });
+      state.roomId = roomId;
+      state.isOfferer = true; // we initiate the offer since we found+claimed the room
+      await db.collection('rooms').doc(roomId).set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        peerA: matchedDoc.data().uid, peerB: uid, mode: state.mode
+      });
+      enterRoom();
+      return;
+    } catch(e) {
+      // Someone else claimed it first — fall through to posting our own entry.
+    }
+  }
+
+  // No partner yet — post ourselves to the queue and listen for a match.
+  const myDoc = await queueRef.add({
+    uid, speaks: state.speak, wants: state.want, mode: state.mode,
+    matched:false, roomId:null,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  state.queueDocId = myDoc.id;
+
+  matchListener = myDoc.onSnapshot(snap => {
+    const d = snap.data();
+    if (d && d.matched && d.roomId) {
+      state.roomId = d.roomId;
+      state.isOfferer = false; // the other side claimed the room and will send the offer
+      matchListener();
+      matchListener = null;
+      enterRoom();
+    }
+  });
+}
+
+async function cancelMatch(){
+  stopQuoteRotation();
+  if (matchListener) { matchListener(); matchListener = null; }
+  if (state.queueDocId) {
+    try { await db.collection('queue').doc(state.queueDocId).delete(); } catch(e){}
+    state.queueDocId = null;
+  }
+  showScreen('setup');
+}
+el('cancelMatchBtn').addEventListener('click', cancelMatch);
+
+el('findBtn').addEventListener('click', () => {
+  if (el('findBtn').disabled) return;
+  findPartner();
+});
+
+// ---- 9. WebRTC ----
+const RTC_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302'] }] };
+
+async function enterRoom(){
+  stopQuoteRotation();
+  showScreen('room');
+  el('partnerLabel').textContent = 'Conectando…';
+  addSysMessage('Conectando con tu compañero de práctica… / Connecting to your practice partner…');
+  showRandomPrompt();
+
+  const pc = new RTCPeerConnection(RTC_CONFIG);
+  state.pc = pc;
+
+  pc.onconnectionstatechange = () => {
+    const good = pc.connectionState === 'connected';
+    el('connDot').classList.toggle('off', !good);
+    if (good) el('partnerLabel').textContent = 'Conectado / Connected';
+    if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected') {
+      el('partnerLabel').textContent = 'Conexión perdida / Connection lost';
+    }
+  };
+
+  if (state.mode === 'voice') {
+    el('voiceBar').classList.remove('hidden');
+    try {
+      state.localStream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      state.localStream.getTracks().forEach(t => pc.addTrack(t, state.localStream));
+    } catch(e) {
+      addSysMessage('No se pudo acceder al micrófono — puedes seguir por texto. / Mic access denied — you can still use text.');
+    }
+    pc.ontrack = (ev) => { el('remoteAudio').srcObject = ev.streams[0]; };
+  }
+
+  const roomRef = db.collection('rooms').doc(state.roomId);
+  const candidatesMine = roomRef.collection(state.isOfferer ? 'candidatesOfferer' : 'candidatesAnswerer');
+  const candidatesTheirs = roomRef.collection(state.isOfferer ? 'candidatesAnswerer' : 'candidatesOfferer');
+
+  pc.onicecandidate = (ev) => { if (ev.candidate) candidatesMine.add(ev.candidate.toJSON()); };
+
+  if (state.mode === 'text') {
+    if (state.isOfferer) {
+      const dc = pc.createDataChannel('chat');
+      setupDataChannel(dc);
+    } else {
+      pc.ondatachannel = (ev) => setupDataChannel(ev.channel);
+    }
+  }
+
+  const unsub1 = candidatesTheirs.onSnapshot(snap => {
+    snap.docChanges().forEach(change => {
+      if (change.type === 'added') pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(()=>{});
+    });
+  });
+  state.unsubscribers.push(unsub1);
+
+  if (state.isOfferer) {
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    await roomRef.set({ offer: { type: offer.type, sdp: offer.sdp } }, { merge:true });
+
+    const unsub2 = roomRef.onSnapshot(snap => {
+      const d = snap.data();
+      if (d && d.answer && pc.signalingState !== 'stable') {
+        pc.setRemoteDescription(new RTCSessionDescription(d.answer)).catch(()=>{});
+      }
+    });
+    state.unsubscribers.push(unsub2);
+  } else {
+    const unsub2 = roomRef.onSnapshot(async snap => {
+      const d = snap.data();
+      if (d && d.offer && !pc.currentRemoteDescription) {
+        await pc.setRemoteDescription(new RTCSessionDescription(d.offer));
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+        await roomRef.set({ answer: { type: answer.type, sdp: answer.sdp } }, { merge:true });
+      }
+    });
+    state.unsubscribers.push(unsub2);
+  }
+}
+
+function setupDataChannel(dc){
+  state.dataChannel = dc;
+  dc.onopen = () => addSysMessage('Canal de texto abierto. / Text channel open.');
+  dc.onmessage = (ev) => {
+    let text = ev.data;
+    addMessage(text, 'them');
+    if (el('translateToggle').checked) translateAndAppend(text, 'them');
+  };
+}
+
+// ---- 10. Chat UI ----
+function addMessage(text, who){
+  const log = el('chatlog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who;
+  div.innerHTML = `<span class="bubble">${escapeHtml(text)}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+function addSysMessage(text){
+  const log = el('chatlog');
+  const div = document.createElement('div');
+  div.className = 'msg sys';
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+el('sendBtn').addEventListener('click', sendMsg);
+el('msgInput').addEventListener('keydown', e => { if (e.key==='Enter') sendMsg(); });
+function sendMsg(){
+  const input = el('msgInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (state.dataChannel && state.dataChannel.readyState === 'open') {
+    state.dataChannel.send(text);
+  }
+  const bubble = addMessage(text, 'me');
+  if (el('translateToggle').checked) translateAndAppend(text, 'me', bubble);
+  input.value = '';
+}
+
+// ---- 11. Optional translation assist (LibreTranslate) ----
+// Public demo instances rate-limit heavily / require an API key. Point this
+// at your own LibreTranslate instance (or a paid key) for reliable results.
+const LIBRETRANSLATE_ENDPOINT = "https://libretranslate.com/translate";
+const LIBRETRANSLATE_API_KEY = ""; // optional
+
+async function translateAndAppend(text, who, existingBubbleDiv){
+  try {
+    const target = who === 'me' ? state.want : state.speak;
+    const res = await fetch(LIBRETRANSLATE_ENDPOINT, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ q:text, source:'auto', target, format:'text', api_key: LIBRETRANSLATE_API_KEY })
+    });
+    if (!res.ok) throw new Error('translate failed');
+    const data = await res.json();
+    const container = existingBubbleDiv || el('chatlog').lastElementChild;
+    const small = document.createElement('span');
+    small.className = 'translation';
+    small.textContent = data.translatedText;
+    container.querySelector('.bubble')?.appendChild(small) ?? container.appendChild(small);
+  } catch(e) {
+    // Fail silently — translation is a nice-to-have, never blocks the chat.
+  }
+}
+
+// ---- 12. Voice controls ----
+el('micToggle').addEventListener('click', () => {
+  if (!state.localStream) return;
+  const track = state.localStream.getAudioTracks()[0];
+  track.enabled = !track.enabled;
+  el('micToggle').classList.toggle('muted', !track.enabled);
+  el('voiceStatus').textContent = track.enabled ? 'Micrófono activo' : 'Micrófono silenciado';
+});
+
+// ---- 13. Topics in-room ----
+function showRandomPrompt(){
+  const pool = state.topicCategory ? TOPICS[state.topicCategory] : ALL_PROMPTS;
+  el('promptBox').textContent = pool[Math.floor(Math.random()*pool.length)];
+}
+el('shuffleTopicBtn').addEventListener('click', showRandomPrompt);
+el('shuffleTopicBtn2').addEventListener('click', showRandomPrompt);
+
+// ---- 14. Report / Skip / End ----
+async function teardownConnection(){
+  if (state.pc) { state.pc.close(); state.pc = null; }
+  if (state.localStream) { state.localStream.getTracks().forEach(t=>t.stop()); state.localStream = null; }
+  state.unsubscribers.forEach(u => u());
+  state.unsubscribers = [];
+  el('chatlog').innerHTML = '';
+  el('voiceBar').classList.add('hidden');
+  el('micToggle').classList.remove('muted');
+}
+
+el('reportBtn').addEventListener('click', async () => {
+  if (fbReady && state.roomId) {
+    try {
+      await db.collection('reports').add({
+        roomId: state.roomId, reporterUid: uid,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch(e){}
+  }
+  await teardownConnection();
+  showScreen('setup');
+  alert('Reporte enviado. Gracias por ayudar a mantener la comunidad segura. / Report sent. Thanks for helping keep the community safe.');
+});
+
+el('skipBtn').addEventListener('click', async () => {
+  await teardownConnection();
+  findPartner();
+});
+
+el('endBtn').addEventListener('click', async () => {
+  await teardownConnection();
+  showScreen('setup');
+});
+
+window.addEventListener('beforeunload', () => {
+  if (state.queueDocId && fbReady) db.collection('queue').doc(state.queueDocId).delete().catch(()=>{});
+});
+</script>
+</body>
+</html>

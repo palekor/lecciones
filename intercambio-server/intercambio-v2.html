@@ -93,7 +93,7 @@ const EMBUDO_URL = "https://palekor.github.io/lecciones/embudo.html";
 const MAX_MINUTES = 10;
 
 const $=id=>document.getElementById(id);
-const state={speak:"es",want:"en",mode:"text",topic:"",socket:null,roomId:null,role:null,pc:null,dc:null,localStream:null,sessionId:crypto.randomUUID(),timer:null,seconds:MAX_MINUTES*60,stopping:false};
+const state={speak:"es",want:"en",mode:"text",topic:"",socket:null,roomId:null,role:null,pc:null,dc:null,localStream:null,sessionId:crypto.randomUUID(),timer:null,seconds:MAX_MINUTES*60,stopping:false,pendingSignals:[]};
 
 const topics=[
 ["Icebreaker / Rompehielo","What made you smile this week? / ¿Qué te hizo sonreír esta semana?"],
@@ -186,13 +186,18 @@ async function enterRoom(){
    const offer=await pc.createOffer();await pc.setLocalDescription(offer);
    state.socket.emit("signal",{roomId:state.roomId,data:{type:"offer",sdp:pc.localDescription}});
  }
+ const queued=state.pendingSignals.splice(0);
+ for(const m of queued) await handleSignal(m);
 }
 function setupDC(dc){
  dc.onopen=()=>{updateConn(true,"Conectado / Connected");say("Ya están conectados. ¡Empieza la conversación!","sys")};
  dc.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.type==="chat")say(m.text,"theirs")}catch{}};
 }
-async function onSignal({data}){
- if(!state.pc)return;
+async function onSignal(msg){
+ if(!state.pc){state.pendingSignals.push(msg);return}
+ await handleSignal(msg);
+}
+async function handleSignal({data}){
  const pc=state.pc;
  try{
   if(data.type==="offer"){await pc.setRemoteDescription(data.sdp);const a=await pc.createAnswer();await pc.setLocalDescription(a);state.socket.emit("signal",{roomId:state.roomId,data:{type:"answer",sdp:pc.localDescription}})}

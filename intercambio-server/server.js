@@ -18,6 +18,7 @@ const io = new Server(server, {
 
 const queue = [];
 const rooms = new Map();
+const lobby = new Map(); // socketId -> {speaks,wants,mode,busy}
 
 const TOPICS = [
   "What made you smile this week? / ¿Qué te hizo sonreír esta semana?",
@@ -106,10 +107,20 @@ app.post("/api/report", async (req,res)=>{
 });
 
 function compatible(a,b){
-  return a.speaks === b.wants && a.wants === b.speaks && a.mode === b.mode;
+  return a.speaks === b.wants && a.wants === b.speaks;
+}
+
+function publicList(excludeId){
+  return [...lobby.entries()]
+    .filter(([id,u])=>id!==excludeId && !u.busy)
+    .map(([id,u])=>({id,speaks:u.speaks,wants:u.wants,mode:u.mode}));
+}
+function broadcastPresence(){
+  for (const [id] of lobby) io.to(id).emit("presence", publicList(id));
 }
 
 io.on("connection", socket=>{
+  // Legacy blind-queue matching (kept for compatibility, unused by the lobby UI)
   socket.on("join-queue", data=>{
     const item = {
       socketId:socket.id,
@@ -121,7 +132,7 @@ io.on("connection", socket=>{
     };
     if (item.speaks === item.wants) return socket.emit("queue-error",{message:"Choose two different languages."});
 
-    const idx = queue.findIndex(x=>compatible(x,item) && io.sockets.sockets.has(x.socketId));
+    const idx = queue.findIndex(x=>compatible(x,item) && x.mode===item.mode && io.sockets.sockets.has(x.socketId));
     if (idx === -1) {
       queue.push(item);
       socket.data.queueItem = item;
@@ -130,11 +141,49 @@ io.on("connection", socket=>{
     }
 
     const other = queue.splice(idx,1)[0];
-    const roomId = crypto.randomUUID();
-    rooms.set(roomId,{a:other.socketId,b:socket.id,createdAt:Date.now()});
-    const aSock=io.sockets.sockets.get(other.socketId);
-    if(aSock) aSock.emit("matched",{roomId,role:"offerer"});
-    socket.emit("matched",{roomId,role:"answerer"});
+    openRoom(other.socketId, socket.id, item.mode);
+  });
+
+  // Lobby: see who's online, poke someone, accept/decline an invite
+  socket.on("enter-lobby", data=>{
+    lobby.set(socket.id, {
+      speaks: data?.speaks === "en" ? "en" : "es",
+      wants: data?.wants === "en" ? "en" : "es",
+      mode: data?.mode === "voice" ? "voice" : "text",
+      busy: false
+    });
+    socket.emit("presence", publicList(socket.id));
+    broadcastPresence();
+  });
+
+  socket.on("poke", ({targetId})=>{
+    const me = lobby.get(socket.id);
+    const target = lobby.get(targetId);
+    if (!me || !target || me.busy || target.busy) return;
+    io.to(targetId).emit("poke-received", {fromId: socket.id, speaks: me.speaks, wants: me.wants, mode: me.mode});
+  });
+
+  socket.on("poke-response", ({fromId, accept})=>{
+    const me = lobby.get(socket.id);
+    const other = lobby.get(fromId);
+    if (!accept || !me || !other) { io.to(fromId).emit("poke-declined", {byId: socket.id}); return; }
+    if (me.busy || other.busy) return;
+    const mode = (me.mode === "voice" && other.mode === "voice") ? "voice" : "text";
+    me.busy = true; other.busy = true;
+    openRoom(fromId, socket.id, mode);
+    broadcastPresence();
+  });
+
+  socket.on("leave-lobby", ()=>{
+    lobby.delete(socket.id);
+    broadcastPresence();
+  });
+
+  // Text chat relayed through the server -- works regardless of NAT/firewall
+  socket.on("chat-message", ({roomId, text})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("chat-message", {text: String(text||"").slice(0,2000)});
   });
 
   socket.on("signal", ({roomId,data})=>{
@@ -149,16 +198,30 @@ io.on("connection", socket=>{
 
   socket.on("disconnect", ()=>{
     const q=queue.findIndex(x=>x.socketId===socket.id); if(q>=0)queue.splice(q,1);
+    lobby.delete(socket.id);
+    broadcastPresence();
     for(const [roomId,room] of rooms.entries()){
       if(room.a===socket.id || room.b===socket.id) leaveRoom(socket,roomId);
     }
   });
 });
 
+function openRoom(aSocketId, bSocketId, mode){
+  const roomId = crypto.randomUUID();
+  rooms.set(roomId, {a:aSocketId, b:bSocketId, mode, createdAt:Date.now()});
+  const aSock = io.sockets.sockets.get(aSocketId);
+  if (aSock) aSock.emit("matched", {roomId, role:"offerer", mode});
+  const bSock = io.sockets.sockets.get(bSocketId);
+  if (bSock) bSock.emit("matched", {roomId, role:"answerer", mode});
+}
+
 function leaveRoom(socket,roomId){
   const room=rooms.get(roomId); if(!room)return;
   const peerId=room.a===socket.id?room.b:room.a;
   rooms.delete(roomId);
+  const a=lobby.get(room.a); if(a)a.busy=false;
+  const b=lobby.get(room.b); if(b)b.busy=false;
+  broadcastPresence();
   io.to(peerId).emit("peer-left");
 }
 

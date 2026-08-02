@@ -162,6 +162,12 @@ function connectSocket(){
    s.on("signal",onSignal);
    s.on("presence",renderPeople);
    s.on("poke-received",showPokeBanner);
+   s.on("poke-sent",({targetId})=>console.log("[poke-sent] servidor confirmó el envío a",targetId));
+   s.on("poke-failed",({reason})=>{
+     clearTimeout(state.pokeTimeout);
+     say(reason==="busy"?"Esa persona ya está en otra sesión. Prueba con alguien más.":"Esa persona ya no está en línea. Actualizando la lista…","sys");
+     resetInviteButtons();
+   });
    s.on("chat-message",({text})=>say(text,"theirs"));
    s.on("voice-request",({roomId})=>{if(roomId===state.roomId)$("voiceRequestBanner").classList.remove("hidden")});
    s.on("voice-response",({roomId,accept})=>{
@@ -197,6 +203,9 @@ $("deactivateVoice").onclick=()=>{
 };
 
 function badge(u){return (u.speaks==="es"?"🇪🇸":"🇺🇸")+"→"+(u.wants==="es"?"🇪🇸":"🇺🇸")+" · "+(u.mode==="voice"?"🎙️ Voz":"💬 Texto")}
+function resetInviteButtons(){
+ document.querySelectorAll("#peopleList button").forEach(b=>{b.disabled=false;b.textContent="Invitar →"});
+}
 function renderPeople(list){
  $("lobbyStatus").textContent=list.length?`${list.length} persona${list.length===1?"":"s"} en línea ahora.`:"Nadie más está conectado todavía. Espera un momento o comparte el enlace.";
  $("peopleList").innerHTML="";
@@ -205,7 +214,16 @@ function renderPeople(list){
    row.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px 14px";
    row.innerHTML=`<span>${badge(u)}</span>`;
    const btn=document.createElement("button");btn.className="btn primary";btn.textContent="Invitar →";
-   btn.onclick=()=>{btn.disabled=true;btn.textContent="Esperando…";state.socket.emit("poke",{targetId:u.id})};
+   btn.onclick=()=>{
+     btn.disabled=true;btn.textContent="Esperando…";
+     console.log("[poke] enviando a",u.id);
+     state.socket.emit("poke",{targetId:u.id});
+     clearTimeout(state.pokeTimeout);
+     state.pokeTimeout=setTimeout(()=>{
+       say("La invitación no obtuvo respuesta. Intenta con otra persona o de nuevo.","sys");
+       resetInviteButtons();
+     },20000);
+   };
    row.appendChild(btn);
    $("peopleList").appendChild(row);
  });
@@ -240,6 +258,7 @@ $("cancel").onclick=()=>stopAll(true);
 
 function onMatched(data){
  state.roomId=data.roomId;state.role=data.role;state.roomMode=data.mode||"text";
+ clearTimeout(state.pokeTimeout);
  $("pokeBanner").classList.add("hidden");
  setTimeout(()=>enterRoom(),150);
 }

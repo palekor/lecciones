@@ -186,6 +186,18 @@ io.on("connection", socket=>{
     io.to(peerId).emit("chat-message", {text: String(text||"").slice(0,2000)});
   });
 
+  // Mid-chat voice upgrade: either side can propose, both must accept before WebRTC negotiation starts
+  socket.on("voice-request", ({roomId})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("voice-request", {roomId});
+  });
+  socket.on("voice-response", ({roomId, accept})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("voice-response", {roomId, accept: !!accept});
+  });
+
   socket.on("signal", ({roomId,data})=>{
     const room=rooms.get(roomId); if(!room)return;
     const peerId=room.a===socket.id?room.b:room.a;

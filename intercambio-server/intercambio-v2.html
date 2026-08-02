@@ -159,8 +159,19 @@ function onMatched(data){
 
 async function getIce(){
  try{
-   const r=await fetch(socketURL()+"/api/ice-servers"); if(!r.ok)throw 0; return await r.json();
- }catch{return {iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]}]}}
+   const r=await fetch(socketURL()+"/api/ice-servers"); if(!r.ok)throw 0;
+   const d=await r.json();
+   const hasTurn=Array.isArray(d.iceServers)&&d.iceServers.some(s=>JSON.stringify(s.urls||s.url||"").includes("turn:"));
+   if(hasTurn) return d;
+   throw 0; // no TURN from backend (Twilio not configured) -> use public fallback below
+ }catch{
+   return {iceServers:[
+     {urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]},
+     {urls:"turn:openrelay.metered.ca:80",username:"openrelayproject",credential:"openrelayproject"},
+     {urls:"turn:openrelay.metered.ca:443",username:"openrelayproject",credential:"openrelayproject"},
+     {urls:"turn:openrelay.metered.ca:443?transport=tcp",username:"openrelayproject",credential:"openrelayproject"}
+   ]};
+ }
 }
 
 async function enterRoom(){
@@ -171,7 +182,17 @@ async function enterRoom(){
  const cfg=await getIce();
  state.pc=new RTCPeerConnection(cfg);
  const pc=state.pc;
- pc.onconnectionstatechange=()=>{if(pc.connectionState==="connected"){updateConn(true,"Conectado / Connected");$("partner").textContent="Compañero conectado"}else if(["failed","disconnected","closed"].includes(pc.connectionState))updateConn(false,"Conexión perdida")};
+ pc.onconnectionstatechange=()=>{
+   console.log("connectionState:",pc.connectionState);
+   if(pc.connectionState==="connected"){clearTimeout(state.stallTimer);updateConn(true,"Conectado / Connected");$("partner").textContent="Compañero conectado"}
+   else if(["failed","disconnected","closed"].includes(pc.connectionState))updateConn(false,"Conexión perdida")
+ };
+ pc.oniceconnectionstatechange=()=>console.log("iceConnectionState:",pc.iceConnectionState);
+ pc.onicegatheringstatechange=()=>console.log("iceGatheringState:",pc.iceGatheringState);
+ pc.onicecandidateerror=e=>console.warn("icecandidateerror:",e.errorText||e);
+ state.stallTimer=setTimeout(()=>{
+   if(pc.connectionState!=="connected") say("La conexión está tardando de más. Puede ser un firewall/red restrictiva bloqueando el enlace directo. Intenta salir y buscar de nuevo, o prueba desde otra red.","sys");
+ },15000);
  pc.onicecandidate=e=>{if(e.candidate)state.socket.emit("signal",{roomId:state.roomId,data:{type:"candidate",candidate:e.candidate}})};
  pc.ontrack=e=>{$("remoteAudio").srcObject=e.streams[0]};
  if(state.mode==="voice"){
@@ -216,7 +237,7 @@ $("skip").onclick=()=>{state.socket?.emit("leave-room",{roomId:state.roomId});st
 $("leave").onclick=()=>stopAll(true);
 
 function stopAll(back){
- clearInterval(state.timer);state.stopping=true;
+ clearInterval(state.timer);clearTimeout(state.stallTimer);state.stopping=true;
  try{state.dc?.close();state.pc?.close();state.localStream?.getTracks().forEach(t=>t.stop());state.socket?.disconnect()}catch{}
  state.pc=null;state.dc=null;state.localStream=null;state.roomId=null;state.socket=null;state.stopping=false;
  $("chat").innerHTML="";$("message").value="";

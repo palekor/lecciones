@@ -1,365 +1,252 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#3B0B66">
-<meta name="description" content="ProfGermandario Intercambio: practica español e inglés sin registro, por texto o voz.">
-<title>ProfGermandario · Intercambio V2</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-<style>
-:root{--ink:#16091f;--muted:#655873;--soft:#fff8f4;--card:#fff;--line:rgba(82,39,111,.14);--purple:#3B0B66;--violet:#7A2BD1;--pink:#D72B83;--orange:#FF6A1A;--gold:#FFD277;--shadow:0 28px 90px rgba(59,11,102,.16);--r:30px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:linear-gradient(180deg,#fff,#fff8f2 48%,#fff);min-height:100vh}
-a{text-decoration:none;color:inherit}.bg{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(circle at 8% 4%,rgba(255,106,26,.2),transparent 28%),radial-gradient(circle at 88% 5%,rgba(122,43,209,.2),transparent 27%),radial-gradient(circle at 88% 75%,rgba(215,43,131,.13),transparent 30%)}.mesh{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.28;background-image:linear-gradient(rgba(59,11,102,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(59,11,102,.05) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(#000,transparent 84%)}
-.container{width:min(1120px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.navin{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand img{width:154px;display:block}.navlinks{display:flex;gap:18px;align-items:center;color:var(--muted);font-size:13px;font-weight:800}.navlinks a:hover{color:var(--purple)}
-.btn{border:0;cursor:pointer;min-height:50px;padding:13px 20px;border-radius:999px;font:inherit;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:.18s}.btn:hover{transform:translateY(-2px)}.primary{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink) 58%,var(--orange));box-shadow:0 16px 34px rgba(122,43,209,.2)}.soft{color:var(--purple);background:#fff;border:1px solid var(--line);box-shadow:0 10px 24px rgba(59,11,102,.06)}.dark{color:#fff;background:#16091f}
-.hero{padding:56px 0 26px;text-align:center}.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;color:var(--purple);font-size:12px;font-weight:900;box-shadow:0 8px 24px rgba(59,11,102,.06)}.dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--pink))}.hero h1{font-size:clamp(42px,7vw,76px);line-height:.92;letter-spacing:-.07em;margin:20px auto 16px;max-width:850px}.grad{background:linear-gradient(135deg,var(--purple),var(--pink) 52%,var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{font-size:18px;line-height:1.55;color:var(--muted);max-width:710px;margin:0 auto}.hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:24px}
-.card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--shadow)}.setup{max-width:760px;margin:26px auto 60px}.field{margin-bottom:22px}.label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);font-weight:900;margin-bottom:10px}.pills{display:flex;gap:9px;flex-wrap:wrap}.pill{flex:1;min-width:120px;padding:14px 16px;border-radius:17px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:800;cursor:pointer}.pill.active{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 10px 24px rgba(122,43,209,.17)}.topics{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;color:var(--muted);font:inherit;font-size:12px;font-weight:800;cursor:pointer}.chip.active{background:#f3e9ff;color:var(--purple);border-color:rgba(122,43,209,.25)}.agree{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:13px;line-height:1.45}.agree input{margin-top:3px}.mainbtn{width:100%;font-size:16px}.micro{color:var(--muted);font-size:12px;line-height:1.5;text-align:center;margin-top:12px}.hidden{display:none!important}
-.match{max-width:700px;margin:26px auto 60px;text-align:center}.loader{width:72px;height:72px;border-radius:50%;margin:4px auto 20px;border:5px solid #f0e7f5;border-top-color:var(--pink);border-right-color:var(--orange);animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.status{font-weight:800;color:var(--purple);min-height:25px}.quote{margin:22px auto;padding:18px;border-radius:22px;background:#fff8f4;color:#5b4666;font-style:italic;line-height:1.55}
-.room{max-width:900px;margin:26px auto 70px}.roomhead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.connection{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:900;color:var(--muted)}.connection i{width:9px;height:9px;border-radius:50%;background:#27ae60}.connection.off i{background:#d9534f}.timer{font-weight:900;color:var(--purple);background:#f4ecfa;padding:8px 12px;border-radius:999px}.chat{height:430px;overflow:auto;border:1px solid var(--line);border-radius:26px;background:#fff;padding:18px;margin-top:14px}.msg{max-width:78%;padding:11px 14px;border-radius:18px;margin:8px 0;line-height:1.45;word-break:break-word}.mine{margin-left:auto;background:#f2e8ff}.theirs{background:#fff3ed}.sys{max-width:100%;text-align:center;color:var(--muted);font-size:12px;margin:12px}.composer{display:flex;gap:9px;margin-top:10px}.composer input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:14px 16px;font:inherit;outline:none}.topicbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.topicbox{flex:1;min-width:220px;padding:13px 15px;border-radius:18px;background:#fff8f4;border:1px solid rgba(255,106,26,.14);color:#513e5d;font-size:14px}.voice{margin-top:10px;padding:14px;border-radius:20px;background:#16091f;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px}.voice audio{width:min(100%,360px)}.roomactions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.small{font-size:12px;color:var(--muted);line-height:1.5}
-.cta{margin:0 auto 70px;max-width:1000px;border-radius:40px;padding:38px;background:linear-gradient(135deg,var(--purple),var(--pink) 58%,var(--orange));color:#fff;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr auto;gap:25px;align-items:center}.cta h2{font-size:clamp(30px,4vw,50px);letter-spacing:-.06em;margin:0 0 10px}.cta p{margin:0;color:rgba(255,255,255,.78);line-height:1.55}.cta .btn{background:#fff;color:var(--purple);box-shadow:0 16px 30px rgba(0,0,0,.14)}
-footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-@media(max-width:680px){.navlinks a:not(.btn){display:none}.brand img{width:135px}.hero{padding-top:38px}.card{padding:20px;border-radius:25px}.composer{flex-direction:column}.composer .btn{width:100%}.chat{height:390px}.cta{grid-template-columns:1fr;padding:28px;border-radius:30px}.cta .btn{width:100%}.msg{max-width:88%}}
-</style>
-</head>
-<body>
-<div class="bg"></div><div class="mesh"></div>
-<nav class="nav"><div class="container navin">
-<a class="brand" href="https://palekor.github.io/lecciones/embudo.html"><img src="https://palekor.github.io/lecciones/profgermandario-logo-clean.png" alt="ProfGermandario"></a>
-<div class="navlinks"><a href="#how">Cómo funciona</a><a href="https://palekor.github.io/lecciones/embudo.html">English Mastery</a><a class="btn primary" href="https://palekor.github.io/lecciones/embudo.html#assessment">Diagnóstico gratis</a></div>
-</div></nav>
+import express from "express";
+import http from "http";
+import cors from "cors";
+import { Server } from "socket.io";
+import crypto from "crypto";
 
-<main>
-<section class="hero"><div class="container">
-<span class="badge"><i class="dot"></i> ProfGermandario · Language Exchange V2</span>
-<h1>Habla. <span class="grad">Escucha. Aprende.</span></h1>
-<p>Practica inglés o español con una persona real. Sin registro, sin email y sin fricción. Texto o voz, con sesiones de 10 minutos para que hables más.</p>
-<div class="hero-actions"><a class="btn primary" href="#setup">Empezar intercambio →</a><a class="btn soft" href="#how">Cómo funciona</a></div>
-</div></section>
+const app = express();
+const server = http.createServer(app);
 
-<section id="setup" class="container setup">
-<div class="card">
-<div class="field"><label class="label">Yo hablo / I speak</label><div class="pills" id="speak"><button class="pill active" data-v="es">🇪🇸 Español</button><button class="pill" data-v="en">🇺🇸 English</button></div></div>
-<div class="field"><label class="label">Quiero practicar / I want to practice</label><div class="pills" id="want"><button class="pill" data-v="en">🇺🇸 English</button><button class="pill active" data-v="es">🇪🇸 Español</button></div></div>
-<div class="field"><label class="label">Modo / Mode</label><div class="pills" id="mode"><button class="pill active" data-v="text">💬 Texto</button><button class="pill" data-v="voice">🎙️ Voz</button></div></div>
-<div class="field"><label class="label">Tema para empezar / Starting topic</label><div class="topics" id="topics"></div></div>
-<label class="agree"><input id="adult" type="checkbox"><span>He leído las pautas de seguridad y confirmo que soy mayor de edad (18+). / I've read the safety guidelines and confirm I'm 18+.</span></label>
-<button id="find" class="btn primary mainbtn" style="margin-top:18px" disabled>Encontrar compañero →</button>
-<p id="error" class="micro"></p>
-<p class="micro">Sin registro. No pedimos email. No almacenamos conversaciones. Nunca compartas datos personales.</p>
-</div>
-</section>
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://palekor.github.io";
+app.use(cors({ origin: true }));
+app.use(express.json({ limit: "20kb" }));
 
-<section id="matching" class="container match hidden">
-<div class="card"><div class="loader"></div><h2>Conectando…</h2><div id="matchStatus" class="status">Uniéndote a la sala de espera.</div><button id="cancel" class="btn soft">Cancelar</button></div>
-</section>
+const io = new Server(server, {
+  cors: { origin: true, methods: ["GET","POST"] },
+  transports: ["websocket","polling"]
+});
 
-<section id="lobby" class="container match hidden" style="max-width:760px">
-<div class="card">
-<h2>Personas en línea</h2>
-<p class="micro" id="lobbyStatus">Nadie más está conectado todavía. Espera un momento o comparte el enlace.</p>
-<div id="peopleList" style="display:flex;flex-direction:column;gap:10px;margin:18px 0;text-align:left"></div>
-<button id="lobbyLeave" class="btn soft">Salir</button>
-</div>
-<div id="pokeBanner" class="card hidden" style="margin-top:16px;text-align:left">
-<strong id="pokeText"></strong>
-<div style="display:flex;gap:10px;margin-top:12px">
-<button id="pokeAccept" class="btn primary">Aceptar</button>
-<button id="pokeDecline" class="btn soft">Rechazar</button>
-</div>
-</div>
-</section>
+const queue = [];
+const rooms = new Map();
+const lobby = new Map(); // socketId -> {speaks,wants,mode,busy}
 
-<section id="room" class="container room hidden">
-<div class="card">
-<div class="roomhead"><div><strong id="partner">Preparando conexión…</strong><div class="connection" id="connection"><i></i><span>Conectando</span></div></div><div class="timer" id="timer">10:00</div></div>
-<div id="chat" class="chat" aria-live="polite"></div>
-<div class="topicbar"><div class="topicbox"><strong>🎲 Tema:</strong> <span id="topic"></span></div><button id="newTopic" class="btn soft">Nuevo tema</button></div>
-<div id="voicebar" class="voice hidden"><div><strong>🎙️ Voz activa</strong><div class="small" style="color:#cbbfd3">Tu audio va directo al otro navegador.</div></div><audio id="remoteAudio" autoplay playsinline controls></audio></div>
-<div class="composer" id="composer"><input id="message" placeholder="Escribe un mensaje… / Type a message…" maxlength="1000"><button id="send" class="btn primary">Enviar</button></div>
-<div id="voiceControls" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:10px">
-<button id="activateVoice" class="btn soft">🎙️ Activar voz</button>
-<button id="deactivateVoice" class="btn soft hidden">🔇 Terminar voz</button>
-</div>
-<div id="voiceRequestBanner" class="card hidden" style="margin-top:10px;text-align:left">
-<strong>Tu compañero quiere activar la voz.</strong>
-<div style="display:flex;gap:10px;margin-top:10px">
-<button id="voiceAccept" class="btn primary">Aceptar</button>
-<button id="voiceDecline" class="btn soft">Rechazar</button>
-</div>
-</div>
-<div class="roomactions"><button id="report" class="btn soft">🚩 Reportar</button><button id="skip" class="btn soft">⏭ Saltar</button><button id="leave" class="btn dark">✕ Salir</button></div>
-<p class="small">Sesión suave de 10 minutos. Puedes terminarla cuando quieras. Esta herramienta no es un servicio de citas ni consejería.</p>
-</div>
-</section>
-
-<section id="how" class="container" style="margin-bottom:60px">
-<div class="card" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
-<div><div class="badge">01</div><h3>Elige</h3><p class="small">Tu idioma, el idioma que quieres practicar y texto o voz.</p></div>
-<div><div class="badge">02</div><h3>Conecta</h3><p class="small">El sistema busca una persona compatible sin pedirte una cuenta.</p></div>
-<div><div class="badge">03</div><h3>Habla</h3><p class="small">Practica 10 minutos y cambia de compañero cuando quieras.</p></div>
-</div>
-</section>
-
-<section class="container cta">
-<div><h2>El intercambio te da práctica. El coaching te da dirección.</h2><p>Si quieres descubrir qué está frenando tu speaking —fluidez, estructura, escucha, pronunciación o confianza— haz el diagnóstico gratuito de ProfGermandario.</p></div>
-<a class="btn" href="https://palekor.github.io/lecciones/embudo.html#assessment">Hacer diagnóstico gratis →</a>
-</section>
-</main>
-<footer><div class="container foot"><strong>ProfGermandario · Bilingual Assertive Communication</strong><span>Intercambio gratuito · Sin registro · English Mastery 1:1</span></div></footer>
-
-<script>
-/* ===== CONFIG =====
-   Put your deployed Socket.IO signaling URL here.
-   Example: https://profgermandario-intercambio.onrender.com
-*/
-const SIGNALING_URL = "https://profgermandario-intercambio.onrender.com";
-const EMBUDO_URL = "https://palekor.github.io/lecciones/embudo.html";
-const MAX_MINUTES = 10;
-
-const $=id=>document.getElementById(id);
-const state={speak:"es",want:"en",mode:"text",topic:"",socket:null,roomId:null,role:null,pc:null,dc:null,localStream:null,sessionId:crypto.randomUUID(),timer:null,seconds:MAX_MINUTES*60,stopping:false,pendingSignals:[]};
-
-const topics=[
-["Icebreaker / Rompehielo","What made you smile this week? / ¿Qué te hizo sonreír esta semana?"],
-["Culture & food / Cultura","Describe a typical dish from your region. / Describe un plato típico de tu región."],
-["Travel / Viajes","Where would you go if you could travel tomorrow? / ¿A dónde viajarías mañana?"],
-["Work & goals / Trabajo","What is one goal you want to achieve this year? / ¿Cuál es una meta que quieres lograr este año?"],
-["Daily life / Vida diaria","What does your perfect day look like? / ¿Cómo sería tu día perfecto?"],
-["Opinions / Opiniones","What is something you changed your mind about? / ¿Sobre qué cambiaste de opinión?"]
+const TOPICS = [
+  "What made you smile this week? / ¿Qué te hizo sonreír esta semana?",
+  "Describe a typical dish from your region. / Describe un plato típico de tu región.",
+  "Where would you go if you could travel tomorrow? / ¿A dónde viajarías mañana?",
+  "What is one goal you want to achieve this year? / ¿Cuál es una meta que quieres lograr este año?",
+  "What does your perfect day look like? / ¿Cómo sería tu día perfecto?",
+  "What is something you changed your mind about? / ¿Sobre qué cambiaste de opinión?",
+  "What skill would you like to learn next? / ¿Qué habilidad te gustaría aprender después?",
+  "What is a place in your country everyone should visit? / ¿Qué lugar de tu país debería visitar todo el mundo?"
 ];
 
-function pills(id,key){
-  document.querySelectorAll("#"+id+" .pill").forEach(b=>b.onclick=()=>{
-    document.querySelectorAll("#"+id+" .pill").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active"); state[key]=b.dataset.v;
-    if(key==="speak"){state.want=state.speak==="es"?"en":"es";document.querySelectorAll("#want .pill").forEach(x=>x.classList.toggle("active",x.dataset.v===state.want));}
-    validate();
-  });
-}
-pills("speak","speak");pills("want","want");pills("mode","mode");
+app.get("/health", (_, res) => res.json({ ok: true, service: "ProfGermandario Intercambio V2" }));
 
-topics.forEach((t,i)=>{const b=document.createElement("button");b.className="chip";b.textContent=t[0];b.onclick=()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");state.topic=t[1]};$("topics").appendChild(b)});
-function validate(){$("find").disabled=!($("adult").checked&&state.speak!==state.want)}
-$("adult").onchange=validate;
+app.get("/api/topic", (_, res) => res.json({ topic: TOPICS[Math.floor(Math.random()*TOPICS.length)] }));
 
-function show(id){["setup","matching","lobby","room"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
-function say(text,kind="sys"){const d=document.createElement("div");d.className="msg "+kind;d.textContent=text;$("chat").appendChild(d);$("chat").scrollTop=$("chat").scrollHeight}
-function pickTopic(){if(state.topic)return state.topic;return topics[Math.floor(Math.random()*topics.length)][1]}
-function updateConn(ok,label){$("connection").classList.toggle("off",!ok);$("connection span").textContent=label}
-function socketURL(){if(SIGNALING_URL.includes("YOUR-SIGNALING"))throw new Error("Configura SIGNALING_URL en intercambio-v2.html.");return SIGNALING_URL.replace(/\/$/,"")}
+app.post("/api/topic", async (req, res) => {
+  const fallback = TOPICS[Math.floor(Math.random()*TOPICS.length)];
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return res.json({ topic: fallback, source: "fallback" });
 
-function connectSocket(){
- return new Promise((resolve,reject)=>{
-   let s; try{s=io(socketURL(),{transports:["websocket","polling"],timeout:9000,reconnection:true})}catch(e){reject(e);return}
-   state.socket=s;
-   const fail=setTimeout(()=>{s.disconnect();reject(new Error("timeout"))},10000);
-   s.once("connect",()=>{clearTimeout(fail);resolve(s)});
-   s.once("connect_error",e=>{clearTimeout(fail);reject(e)});
-   s.on("matched",onMatched);
-   s.on("signal",onSignal);
-   s.on("presence",renderPeople);
-   s.on("poke-received",showPokeBanner);
-   s.on("poke-sent",({targetId})=>console.log("[poke-sent] servidor confirmó el envío a",targetId));
-   s.on("poke-failed",({reason})=>{
-     clearTimeout(state.pokeTimeout);
-     say(reason==="busy"?"Esa persona ya está en otra sesión. Prueba con alguien más.":"Esa persona ya no está en línea. Actualizando la lista…","sys");
-     resetInviteButtons();
-   });
-   s.on("chat-message",({text})=>say(text,"theirs"));
-   s.on("voice-request",({roomId})=>{if(roomId===state.roomId)$("voiceRequestBanner").classList.remove("hidden")});
-   s.on("voice-response",({roomId,accept})=>{
-     if(roomId!==state.roomId)return;
-     if(accept){startVoiceCall()}
-     else{say("Tu compañero prefirió seguir solo por texto.","sys");$("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz"}
-   });
-   s.on("peer-left",()=>{updateConn(false,"Compañero desconectado");say("Tu compañero terminó la sesión. Puedes volver a buscar otro.","sys")});
-   s.on("report-ok",()=>say("Reporte recibido. La sesión se cerrará ahora.","sys"));
- });
-}
-$("activateVoice").onclick=()=>{
- $("activateVoice").disabled=true;$("activateVoice").textContent="Esperando respuesta…";
- state.socket.emit("voice-request",{roomId:state.roomId});
-};
-$("voiceAccept").onclick=()=>{
- $("voiceRequestBanner").classList.add("hidden");
- state.socket.emit("voice-response",{roomId:state.roomId,accept:true});
- startVoiceCall();
-};
-$("voiceDecline").onclick=()=>{
- $("voiceRequestBanner").classList.add("hidden");
- state.socket.emit("voice-response",{roomId:state.roomId,accept:false});
-};
-$("deactivateVoice").onclick=()=>{
- try{state.pc?.close();state.localStream?.getTracks().forEach(t=>t.stop())}catch{}
- state.pc=null;state.localStream=null;state.pendingSignals=[];clearTimeout(state.stallTimer);
- $("voicebar").classList.add("hidden");
- $("deactivateVoice").classList.add("hidden");
- $("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz";
- updateConn(true,"Conectado / Connected");
- say("Terminaste el audio. El chat de texto sigue activo.","sys");
-};
-
-function badge(u){return (u.speaks==="es"?"🇪🇸":"🇺🇸")+"→"+(u.wants==="es"?"🇪🇸":"🇺🇸")+" · "+(u.mode==="voice"?"🎙️ Voz":"💬 Texto")}
-function resetInviteButtons(){
- document.querySelectorAll("#peopleList button").forEach(b=>{b.disabled=false;b.textContent="Invitar →"});
-}
-function renderPeople(list){
- $("lobbyStatus").textContent=list.length?`${list.length} persona${list.length===1?"":"s"} en línea ahora.`:"Nadie más está conectado todavía. Espera un momento o comparte el enlace.";
- $("peopleList").innerHTML="";
- list.forEach(u=>{
-   const row=document.createElement("div");
-   row.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px 14px";
-   row.innerHTML=`<span>${badge(u)}</span>`;
-   const btn=document.createElement("button");btn.className="btn primary";btn.textContent="Invitar →";
-   btn.onclick=()=>{
-     btn.disabled=true;btn.textContent="Esperando…";
-     console.log("[poke] enviando a",u.id);
-     state.socket.emit("poke",{targetId:u.id});
-     clearTimeout(state.pokeTimeout);
-     state.pokeTimeout=setTimeout(()=>{
-       say("La invitación no obtuvo respuesta. Intenta con otra persona o de nuevo.","sys");
-       resetInviteButtons();
-     },20000);
-   };
-   row.appendChild(btn);
-   $("peopleList").appendChild(row);
- });
-}
-function showPokeBanner(data){
- state.pendingPokeFrom=data.fromId;
- $("pokeText").textContent=`Alguien quiere practicar contigo (${badge(data)}).`;
- $("pokeBanner").classList.remove("hidden");
-}
-$("pokeAccept").onclick=()=>{
- $("pokeBanner").classList.add("hidden");
- state.socket.emit("poke-response",{fromId:state.pendingPokeFrom,accept:true});
-};
-$("pokeDecline").onclick=()=>{
- $("pokeBanner").classList.add("hidden");
- state.socket.emit("poke-response",{fromId:state.pendingPokeFrom,accept:false});
-};
-$("lobbyLeave").onclick=()=>{state.socket?.emit("leave-lobby");stopAll(true)};
-
-$("find").onclick=async()=>{
-  if($("find").disabled)return;
-  show("matching");$("matchStatus").textContent="Conectando con el servicio de intercambio…";
-  try{
-    const s=await connectSocket();
-    s.emit("enter-lobby",{speaks:state.speak,wants:state.want,mode:state.mode});
-    show("lobby");
-  }catch(e){
-    show("setup");$("error").textContent="No se pudo conectar al servicio de intercambio. Revisa SIGNALING_URL y que el servidor esté activo.";console.error(e);
+  try {
+    const prompt = `Create ONE fresh bilingual conversation topic for an English-Spanish language exchange.
+Return only one short topic in this exact style: English question / Spanish question.
+No politics, sex, dating, medical advice, money scams, or personal identifying information.
+Make it open-ended and easy enough for A2-B2 learners.`;
+    const r = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {"Content-Type":"application/json","Authorization":`Bearer ${key}`},
+      body: JSON.stringify({ model: process.env.OPENAI_MODEL || "gpt-5-mini", input: prompt, max_output_tokens: 100 })
+    });
+    if (!r.ok) throw new Error(`OpenAI ${r.status}`);
+    const d = await r.json();
+    const text = d.output_text?.trim();
+    res.json({ topic: text || fallback, source: text ? "ai" : "fallback" });
+  } catch {
+    res.json({ topic: fallback, source: "fallback" });
   }
-};
-$("cancel").onclick=()=>stopAll(true);
+});
 
-function onMatched(data){
- state.roomId=data.roomId;state.role=data.role;state.roomMode=data.mode||"text";
- clearTimeout(state.pokeTimeout);
- $("pokeBanner").classList.add("hidden");
- setTimeout(()=>enterRoom(),150);
-}
+app.get("/api/ice-servers", async (_, res) => {
+  const sid = process.env.TWILIO_ACCOUNT_SID;
+  const token = process.env.TWILIO_AUTH_TOKEN;
+  if (!sid || !token) return res.json({iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]}]});
+  try {
+    const auth = Buffer.from(`${sid}:${token}`).toString("base64");
+    const r = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Tokens.json`, {
+      method:"POST", headers:{Authorization:`Basic ${auth}`}
+    });
+    if (!r.ok) throw new Error(`Twilio ${r.status}`);
+    const d = await r.json();
+    res.json({iceServers:d.ice_servers});
+  } catch {
+    res.json({iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]}]});
+  }
+});
 
-async function getIce(){
- try{
-   const r=await fetch(socketURL()+"/api/ice-servers"); if(!r.ok)throw 0;
-   const d=await r.json();
-   const hasTurn=Array.isArray(d.iceServers)&&d.iceServers.some(s=>JSON.stringify(s.urls||s.url||"").includes("turn:"));
-   if(hasTurn) return d;
-   throw 0; // no TURN from backend (Twilio not configured) -> use public fallback below
- }catch{
-   return {iceServers:[
-     {urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]},
-     {urls:"turn:openrelay.metered.ca:80",username:"openrelayproject",credential:"openrelayproject"},
-     {urls:"turn:openrelay.metered.ca:443",username:"openrelayproject",credential:"openrelayproject"},
-     {urls:"turn:openrelay.metered.ca:443?transport=tcp",username:"openrelayproject",credential:"openrelayproject"}
-   ]};
- }
-}
-
-async function enterRoom(){
- show("room");$("topic").textContent=pickTopic();
- $("composer").classList.remove("hidden");
- $("voicebar").classList.add("hidden");$("voiceRequestBanner").classList.add("hidden");
- $("deactivateVoice").classList.add("hidden");$("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz";
- startTimer();
- $("partner").textContent="Compañero conectado";
- updateConn(true,"Conectado / Connected");
- say("Ya están conectados. ¡Empieza la conversación!","sys");
- if(state.roomMode==="voice") startVoiceCall();
+async function saveReport(report) {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return false;
+  const key = `profgermandario:reports:${Date.now()}:${crypto.randomUUID()}`;
+  const value = JSON.stringify(report);
+  const r = await fetch(`${url}/set/${encodeURIComponent(key)}/${encodeURIComponent(value)}`, {
+    headers:{Authorization:`Bearer ${token}`}
+  });
+  return r.ok;
 }
 
-async function startVoiceCall(){
- if(state.pc) return; // already active
- $("voicebar").classList.remove("hidden");
- $("activateVoice").classList.add("hidden");
- $("deactivateVoice").classList.remove("hidden");
- updateConn(false,"Negociando audio");
- say("Conectando audio con tu compañero…");
- const cfg=await getIce();
- state.pc=new RTCPeerConnection(cfg);
- const pc=state.pc;
- pc.onconnectionstatechange=()=>{
-   console.log("connectionState:",pc.connectionState);
-   if(pc.connectionState==="connected"){clearTimeout(state.stallTimer);updateConn(true,"Conectado / Connected")}
-   else if(["failed","disconnected","closed"].includes(pc.connectionState))updateConn(false,"Conexión perdida")
- };
- pc.oniceconnectionstatechange=()=>console.log("iceConnectionState:",pc.iceConnectionState);
- pc.onicegatheringstatechange=()=>console.log("iceGatheringState:",pc.iceGatheringState);
- pc.onicecandidateerror=e=>console.warn("icecandidateerror:",e.errorText||e);
- state.stallTimer=setTimeout(()=>{
-   if(pc.connectionState!=="connected") say("El audio está tardando de más (firewall/red restrictiva). Puedes seguir chateando por texto mientras tanto.","sys");
- },15000);
- pc.onicecandidate=e=>{if(e.candidate)state.socket.emit("signal",{roomId:state.roomId,data:{type:"candidate",candidate:e.candidate}})};
- pc.ontrack=e=>{$("remoteAudio").srcObject=e.streams[0]};
- try{state.localStream=await navigator.mediaDevices.getUserMedia({audio:true});state.localStream.getTracks().forEach(t=>pc.addTrack(t,state.localStream))}
- catch{say("No se pudo acceder al micrófono. Puedes seguir por texto.","sys")}
- if(state.role==="offerer"){
-   const offer=await pc.createOffer();await pc.setLocalDescription(offer);
-   state.socket.emit("signal",{roomId:state.roomId,data:{type:"offer",sdp:pc.localDescription}});
- }
- const queued=state.pendingSignals.splice(0);
- for(const m of queued) await handleSignal(m);
-}
-async function onSignal(msg){
- if(!state.pc){state.pendingSignals.push(msg);return}
- await handleSignal(msg);
-}
-async function handleSignal({data}){
- const pc=state.pc;
- try{
-  if(data.type==="offer"){await pc.setRemoteDescription(data.sdp);const a=await pc.createAnswer();await pc.setLocalDescription(a);state.socket.emit("signal",{roomId:state.roomId,data:{type:"answer",sdp:pc.localDescription}})}
-  else if(data.type==="answer"){await pc.setRemoteDescription(data.sdp)}
-  else if(data.type==="candidate"&&data.candidate)await pc.addIceCandidate(data.candidate);
- }catch(e){console.error("WebRTC signal",e)}
-}
-$("send").onclick=sendMessage;$("message").onkeydown=e=>{if(e.key==="Enter")sendMessage()};
-function sendMessage(){
- const text=$("message").value.trim();if(!text||!state.roomId)return;
- state.socket.emit("chat-message",{roomId:state.roomId,text});
- say(text,"mine");$("message").value="";
-}
-$("newTopic").onclick=async()=>{try{const r=await fetch(socketURL()+"/api/topic",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({language:state.want,seed:state.sessionId})});const d=await r.json();$("topic").textContent=d.topic||pickTopic()}catch{$("topic").textContent=pickTopic()}};
-function startTimer(){clearInterval(state.timer);state.seconds=MAX_MINUTES*60;renderTimer();state.timer=setInterval(()=>{state.seconds--;renderTimer();if(state.seconds<=0){clearInterval(state.timer);say("10 minutos. ¡Buen trabajo! Puedes terminar o buscar otro compañero.","sys")}},1000)}
-function renderTimer(){const m=Math.floor(state.seconds/60),s=state.seconds%60;$("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
-async function sessionHash(){const b=new TextEncoder().encode(state.sessionId);const h=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
-$("report").onclick=async()=>{if(!confirm("¿Reportar esta sesión y desconectar?"))return;try{const hash=await sessionHash();await fetch(socketURL()+"/api/report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sessionHash:hash,reason:"user_report",roomId:state.roomId})});state.socket?.emit("leave-room",{roomId:state.roomId});}catch{}stopAll(true)};
-$("skip").onclick=()=>{state.socket?.emit("leave-room",{roomId:state.roomId});stopAll(true)};
-$("leave").onclick=()=>stopAll(true);
+app.post("/api/report", async (req,res)=>{
+  const {sessionHash, reason, roomId} = req.body || {};
+  if (typeof sessionHash !== "string" || !/^[a-f0-9]{64}$/.test(sessionHash))
+    return res.status(400).json({ok:false,error:"invalid_session_hash"});
+  const report = {
+    sessionHash,
+    reason: String(reason || "user_report").slice(0,80),
+    roomId: String(roomId || "").slice(0,120),
+    createdAt: new Date().toISOString()
+  };
+  try {
+    const saved = await saveReport(report);
+    res.json({ok:true,persisted:saved});
+  } catch {
+    res.status(500).json({ok:false});
+  }
+});
 
-function stopAll(back){
- clearInterval(state.timer);clearTimeout(state.stallTimer);state.stopping=true;
- try{state.dc?.close();state.pc?.close();state.localStream?.getTracks().forEach(t=>t.stop());state.socket?.disconnect()}catch{}
- state.pc=null;state.dc=null;state.localStream=null;state.roomId=null;state.socket=null;state.stopping=false;
- $("chat").innerHTML="";$("message").value="";
- if(back)show("setup");
+function compatible(a,b){
+  return a.speaks === b.wants && a.wants === b.speaks;
 }
-window.addEventListener("beforeunload",()=>{try{state.socket?.emit("leave-room",{roomId:state.roomId})}catch{}});
 
-$("topic").textContent=topics[0][1];
-</script>
-</body>
-</html>
+function publicList(excludeId){
+  return [...lobby.entries()]
+    .filter(([id,u])=>id!==excludeId && !u.busy)
+    .map(([id,u])=>({id,speaks:u.speaks,wants:u.wants,mode:u.mode}));
+}
+function broadcastPresence(){
+  for (const [id] of lobby) io.to(id).emit("presence", publicList(id));
+}
+
+io.on("connection", socket=>{
+  // Legacy blind-queue matching (kept for compatibility, unused by the lobby UI)
+  socket.on("join-queue", data=>{
+    const item = {
+      socketId:socket.id,
+      speaks:data?.speaks === "en" ? "en" : "es",
+      wants:data?.wants === "en" ? "en" : "es",
+      mode:data?.mode === "voice" ? "voice" : "text",
+      topic:typeof data?.topic === "string" ? data.topic.slice(0,200) : null,
+      createdAt:Date.now()
+    };
+    if (item.speaks === item.wants) return socket.emit("queue-error",{message:"Choose two different languages."});
+
+    const idx = queue.findIndex(x=>compatible(x,item) && x.mode===item.mode && io.sockets.sockets.has(x.socketId));
+    if (idx === -1) {
+      queue.push(item);
+      socket.data.queueItem = item;
+      socket.emit("queueing");
+      return;
+    }
+
+    const other = queue.splice(idx,1)[0];
+    openRoom(other.socketId, socket.id, item.mode);
+  });
+
+  // Lobby: see who's online, poke someone, accept/decline an invite
+  socket.on("enter-lobby", data=>{
+    lobby.set(socket.id, {
+      speaks: data?.speaks === "en" ? "en" : "es",
+      wants: data?.wants === "en" ? "en" : "es",
+      mode: data?.mode === "voice" ? "voice" : "text",
+      busy: false
+    });
+    console.log(`[enter-lobby] id=${socket.id} lobbySize=${lobby.size}`);
+    socket.emit("presence", publicList(socket.id));
+    broadcastPresence();
+  });
+
+  socket.on("poke", ({targetId})=>{
+    const me = lobby.get(socket.id);
+    const target = lobby.get(targetId);
+    console.log(`[poke] from=${socket.id} to=${targetId} meIn=${!!me} targetIn=${!!target} meBusy=${me?.busy} targetBusy=${target?.busy} lobbySize=${lobby.size}`);
+    if (!me) return;
+    if (!target) { socket.emit("poke-failed", {reason:"offline"}); return; }
+    if (me.busy || target.busy) { socket.emit("poke-failed", {reason:"busy"}); return; }
+    io.to(targetId).emit("poke-received", {fromId: socket.id, speaks: me.speaks, wants: me.wants, mode: me.mode});
+    socket.emit("poke-sent", {targetId});
+  });
+
+  socket.on("poke-response", ({fromId, accept})=>{
+    const me = lobby.get(socket.id);
+    const other = lobby.get(fromId);
+    if (!accept || !me || !other) { io.to(fromId).emit("poke-declined", {byId: socket.id}); return; }
+    if (me.busy || other.busy) return;
+    const mode = (me.mode === "voice" && other.mode === "voice") ? "voice" : "text";
+    me.busy = true; other.busy = true;
+    openRoom(fromId, socket.id, mode);
+    broadcastPresence();
+  });
+
+  socket.on("leave-lobby", ()=>{
+    lobby.delete(socket.id);
+    broadcastPresence();
+  });
+
+  // Text chat relayed through the server -- works regardless of NAT/firewall
+  socket.on("chat-message", ({roomId, text})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("chat-message", {text: String(text||"").slice(0,2000)});
+  });
+
+  // Mid-chat voice upgrade: either side can propose, both must accept before WebRTC negotiation starts
+  socket.on("voice-request", ({roomId})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("voice-request", {roomId});
+  });
+  socket.on("voice-response", ({roomId, accept})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("voice-response", {roomId, accept: !!accept});
+  });
+
+  socket.on("signal", ({roomId,data})=>{
+    const room=rooms.get(roomId); if(!room)return;
+    const peerId=room.a===socket.id?room.b:room.a;
+    io.to(peerId).emit("signal",{roomId,data});
+  });
+
+  socket.on("leave-room", ({roomId})=>{
+    leaveRoom(socket,roomId);
+  });
+
+  socket.on("disconnect", ()=>{
+    const q=queue.findIndex(x=>x.socketId===socket.id); if(q>=0)queue.splice(q,1);
+    lobby.delete(socket.id);
+    broadcastPresence();
+    for(const [roomId,room] of rooms.entries()){
+      if(room.a===socket.id || room.b===socket.id) leaveRoom(socket,roomId);
+    }
+  });
+});
+
+function openRoom(aSocketId, bSocketId, mode){
+  const roomId = crypto.randomUUID();
+  rooms.set(roomId, {a:aSocketId, b:bSocketId, mode, createdAt:Date.now()});
+  const aSock = io.sockets.sockets.get(aSocketId);
+  if (aSock) aSock.emit("matched", {roomId, role:"offerer", mode});
+  const bSock = io.sockets.sockets.get(bSocketId);
+  if (bSock) bSock.emit("matched", {roomId, role:"answerer", mode});
+}
+
+function leaveRoom(socket,roomId){
+  const room=rooms.get(roomId); if(!room)return;
+  const peerId=room.a===socket.id?room.b:room.a;
+  rooms.delete(roomId);
+  const a=lobby.get(room.a); if(a)a.busy=false;
+  const b=lobby.get(room.b); if(b)b.busy=false;
+  broadcastPresence();
+  io.to(peerId).emit("peer-left");
+}
+
+setInterval(()=>{
+  const now=Date.now();
+  for(let i=queue.length-1;i>=0;i--) if(now-queue[i].createdAt>120000) queue.splice(i,1);
+  for(const [id,r] of rooms) if(now-r.createdAt>30*60*1000) rooms.delete(id);
+},30000);
+
+const PORT=process.env.PORT || 3000;
+server.listen(PORT,()=>console.log(`ProfGermandario Intercambio V2 listening on ${PORT}`));

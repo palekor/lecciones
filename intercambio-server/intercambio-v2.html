@@ -53,7 +53,23 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 </section>
 
 <section id="matching" class="container match hidden">
-<div class="card"><div class="loader"></div><h2>Encontrando a tu compañero…</h2><div id="matchStatus" class="status">Buscando una combinación compatible.</div><div id="quote" class="quote"></div><button id="cancel" class="btn soft">Cancelar</button></div>
+<div class="card"><div class="loader"></div><h2>Conectando…</h2><div id="matchStatus" class="status">Uniéndote a la sala de espera.</div><button id="cancel" class="btn soft">Cancelar</button></div>
+</section>
+
+<section id="lobby" class="container match hidden" style="max-width:760px">
+<div class="card">
+<h2>Personas en línea</h2>
+<p class="micro" id="lobbyStatus">Nadie más está conectado todavía. Espera un momento o comparte el enlace.</p>
+<div id="peopleList" style="display:flex;flex-direction:column;gap:10px;margin:18px 0;text-align:left"></div>
+<button id="lobbyLeave" class="btn soft">Salir</button>
+</div>
+<div id="pokeBanner" class="card hidden" style="margin-top:16px;text-align:left">
+<strong id="pokeText"></strong>
+<div style="display:flex;gap:10px;margin-top:12px">
+<button id="pokeAccept" class="btn primary">Aceptar</button>
+<button id="pokeDecline" class="btn soft">Rechazar</button>
+</div>
+</div>
 </section>
 
 <section id="room" class="container room hidden">
@@ -118,7 +134,7 @@ topics.forEach((t,i)=>{const b=document.createElement("button");b.className="chi
 function validate(){$("find").disabled=!($("adult").checked&&state.speak!==state.want)}
 $("adult").onchange=validate;
 
-function show(id){["setup","matching","room"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function show(id){["setup","matching","lobby","room"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
 function say(text,kind="sys"){const d=document.createElement("div");d.className="msg "+kind;d.textContent=text;$("chat").appendChild(d);$("chat").scrollTop=$("chat").scrollHeight}
 function pickTopic(){if(state.topic)return state.topic;return topics[Math.floor(Math.random()*topics.length)][1]}
 function updateConn(ok,label){$("connection").classList.toggle("off",!ok);$("connection span").textContent=label}
@@ -133,18 +149,50 @@ function connectSocket(){
    s.once("connect_error",e=>{clearTimeout(fail);reject(e)});
    s.on("matched",onMatched);
    s.on("signal",onSignal);
+   s.on("presence",renderPeople);
+   s.on("poke-received",showPokeBanner);
+   s.on("chat-message",({text})=>say(text,"theirs"));
    s.on("peer-left",()=>{updateConn(false,"Compañero desconectado");say("Tu compañero terminó la sesión. Puedes volver a buscar otro.","sys")});
    s.on("report-ok",()=>say("Reporte recibido. La sesión se cerrará ahora.","sys"));
  });
 }
+
+function badge(u){return (u.speaks==="es"?"🇪🇸":"🇺🇸")+"→"+(u.wants==="es"?"🇪🇸":"🇺🇸")+" · "+(u.mode==="voice"?"🎙️ Voz":"💬 Texto")}
+function renderPeople(list){
+ $("lobbyStatus").textContent=list.length?`${list.length} persona${list.length===1?"":"s"} en línea ahora.`:"Nadie más está conectado todavía. Espera un momento o comparte el enlace.";
+ $("peopleList").innerHTML="";
+ list.forEach(u=>{
+   const row=document.createElement("div");
+   row.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px 14px";
+   row.innerHTML=`<span>${badge(u)}</span>`;
+   const btn=document.createElement("button");btn.className="btn primary";btn.textContent="Invitar →";
+   btn.onclick=()=>{btn.disabled=true;btn.textContent="Esperando…";state.socket.emit("poke",{targetId:u.id})};
+   row.appendChild(btn);
+   $("peopleList").appendChild(row);
+ });
+}
+function showPokeBanner(data){
+ state.pendingPokeFrom=data.fromId;
+ $("pokeText").textContent=`Alguien quiere practicar contigo (${badge(data)}).`;
+ $("pokeBanner").classList.remove("hidden");
+}
+$("pokeAccept").onclick=()=>{
+ $("pokeBanner").classList.add("hidden");
+ state.socket.emit("poke-response",{fromId:state.pendingPokeFrom,accept:true});
+};
+$("pokeDecline").onclick=()=>{
+ $("pokeBanner").classList.add("hidden");
+ state.socket.emit("poke-response",{fromId:state.pendingPokeFrom,accept:false});
+};
+$("lobbyLeave").onclick=()=>{state.socket?.emit("leave-lobby");stopAll(true)};
 
 $("find").onclick=async()=>{
   if($("find").disabled)return;
   show("matching");$("matchStatus").textContent="Conectando con el servicio de intercambio…";
   try{
     const s=await connectSocket();
-    $("matchStatus").textContent="Buscando a alguien compatible…";
-    s.emit("join-queue",{speaks:state.speak,wants:state.want,mode:state.mode,topic:state.topic||null});
+    s.emit("enter-lobby",{speaks:state.speak,wants:state.want,mode:state.mode});
+    show("lobby");
   }catch(e){
     show("setup");$("error").textContent="No se pudo conectar al servicio de intercambio. Revisa SIGNALING_URL y que el servidor esté activo.";console.error(e);
   }
@@ -152,9 +200,9 @@ $("find").onclick=async()=>{
 $("cancel").onclick=()=>stopAll(true);
 
 function onMatched(data){
- state.roomId=data.roomId;state.role=data.role;
- $("matchStatus").textContent="¡Encontramos a tu compañero!";
- setTimeout(()=>enterRoom(),350);
+ state.roomId=data.roomId;state.role=data.role;state.roomMode=data.mode||"text";
+ $("pokeBanner").classList.add("hidden");
+ setTimeout(()=>enterRoom(),150);
 }
 
 async function getIce(){
@@ -175,10 +223,22 @@ async function getIce(){
 }
 
 async function enterRoom(){
- show("room");$("partner").textContent="Conectando…";updateConn(false,"Negociando conexión");$("topic").textContent=pickTopic();
- $("voicebar").classList.toggle("hidden",state.mode!=="voice");$("composer").classList.toggle("hidden",state.mode!=="text");
- say("Conectando con tu compañero…");
+ show("room");$("topic").textContent=pickTopic();
+ $("composer").classList.remove("hidden");
+ $("voicebar").classList.toggle("hidden",state.roomMode!=="voice");
  startTimer();
+
+ if(state.roomMode!=="voice"){
+   // Text mode: chat is relayed through the server, no WebRTC needed at all.
+   $("partner").textContent="Compañero conectado";
+   updateConn(true,"Conectado / Connected");
+   say("Ya están conectados. ¡Empieza la conversación!","sys");
+   return;
+ }
+
+ // Voice mode: still needs a direct WebRTC audio connection.
+ $("partner").textContent="Preparando conexión…";updateConn(false,"Negociando conexión");
+ say("Conectando audio con tu compañero…");
  const cfg=await getIce();
  state.pc=new RTCPeerConnection(cfg);
  const pc=state.pc;
@@ -191,28 +251,18 @@ async function enterRoom(){
  pc.onicegatheringstatechange=()=>console.log("iceGatheringState:",pc.iceGatheringState);
  pc.onicecandidateerror=e=>console.warn("icecandidateerror:",e.errorText||e);
  state.stallTimer=setTimeout(()=>{
-   if(pc.connectionState!=="connected") say("La conexión está tardando de más. Puede ser un firewall/red restrictiva bloqueando el enlace directo. Intenta salir y buscar de nuevo, o prueba desde otra red.","sys");
+   if(pc.connectionState!=="connected") say("El audio está tardando de más (firewall/red restrictiva). Puedes seguir chateando por texto mientras tanto.","sys");
  },15000);
  pc.onicecandidate=e=>{if(e.candidate)state.socket.emit("signal",{roomId:state.roomId,data:{type:"candidate",candidate:e.candidate}})};
  pc.ontrack=e=>{$("remoteAudio").srcObject=e.streams[0]};
- if(state.mode==="voice"){
-   try{state.localStream=await navigator.mediaDevices.getUserMedia({audio:true});state.localStream.getTracks().forEach(t=>pc.addTrack(t,state.localStream))}
-   catch{say("No se pudo acceder al micrófono. Puedes salir y usar Texto.","sys")}
- }
- if(state.mode==="text"){
-   if(state.role==="offerer"){state.dc=pc.createDataChannel("chat");setupDC(state.dc)}
-   else pc.ondatachannel=e=>{state.dc=e.channel;setupDC(state.dc)}
- }
+ try{state.localStream=await navigator.mediaDevices.getUserMedia({audio:true});state.localStream.getTracks().forEach(t=>pc.addTrack(t,state.localStream))}
+ catch{say("No se pudo acceder al micrófono. Puedes seguir por texto.","sys")}
  if(state.role==="offerer"){
    const offer=await pc.createOffer();await pc.setLocalDescription(offer);
    state.socket.emit("signal",{roomId:state.roomId,data:{type:"offer",sdp:pc.localDescription}});
  }
  const queued=state.pendingSignals.splice(0);
  for(const m of queued) await handleSignal(m);
-}
-function setupDC(dc){
- dc.onopen=()=>{updateConn(true,"Conectado / Connected");say("Ya están conectados. ¡Empieza la conversación!","sys")};
- dc.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.type==="chat")say(m.text,"theirs")}catch{}};
 }
 async function onSignal(msg){
  if(!state.pc){state.pendingSignals.push(msg);return}
@@ -227,7 +277,11 @@ async function handleSignal({data}){
  }catch(e){console.error("WebRTC signal",e)}
 }
 $("send").onclick=sendMessage;$("message").onkeydown=e=>{if(e.key==="Enter")sendMessage()};
-function sendMessage(){const text=$("message").value.trim();if(!text||!state.dc||state.dc.readyState!=="open")return;state.dc.send(JSON.stringify({type:"chat",text}));say(text,"mine");$("message").value=""}
+function sendMessage(){
+ const text=$("message").value.trim();if(!text||!state.roomId)return;
+ state.socket.emit("chat-message",{roomId:state.roomId,text});
+ say(text,"mine");$("message").value="";
+}
 $("newTopic").onclick=async()=>{try{const r=await fetch(socketURL()+"/api/topic",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({language:state.want,seed:state.sessionId})});const d=await r.json();$("topic").textContent=d.topic||pickTopic()}catch{$("topic").textContent=pickTopic()}};
 function startTimer(){clearInterval(state.timer);state.seconds=MAX_MINUTES*60;renderTimer();state.timer=setInterval(()=>{state.seconds--;renderTimer();if(state.seconds<=0){clearInterval(state.timer);say("10 minutos. ¡Buen trabajo! Puedes terminar o buscar otro compañero.","sys")}},1000)}
 function renderTimer(){const m=Math.floor(state.seconds/60),s=state.seconds%60;$("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}

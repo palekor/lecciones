@@ -79,6 +79,17 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <div class="topicbar"><div class="topicbox"><strong>🎲 Tema:</strong> <span id="topic"></span></div><button id="newTopic" class="btn soft">Nuevo tema</button></div>
 <div id="voicebar" class="voice hidden"><div><strong>🎙️ Voz activa</strong><div class="small" style="color:#cbbfd3">Tu audio va directo al otro navegador.</div></div><audio id="remoteAudio" autoplay playsinline controls></audio></div>
 <div class="composer" id="composer"><input id="message" placeholder="Escribe un mensaje… / Type a message…" maxlength="1000"><button id="send" class="btn primary">Enviar</button></div>
+<div id="voiceControls" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:10px">
+<button id="activateVoice" class="btn soft">🎙️ Activar voz</button>
+<button id="deactivateVoice" class="btn soft hidden">🔇 Terminar voz</button>
+</div>
+<div id="voiceRequestBanner" class="card hidden" style="margin-top:10px;text-align:left">
+<strong>Tu compañero quiere activar la voz.</strong>
+<div style="display:flex;gap:10px;margin-top:10px">
+<button id="voiceAccept" class="btn primary">Aceptar</button>
+<button id="voiceDecline" class="btn soft">Rechazar</button>
+</div>
+</div>
 <div class="roomactions"><button id="report" class="btn soft">🚩 Reportar</button><button id="skip" class="btn soft">⏭ Saltar</button><button id="leave" class="btn dark">✕ Salir</button></div>
 <p class="small">Sesión suave de 10 minutos. Puedes terminarla cuando quieras. Esta herramienta no es un servicio de citas ni consejería.</p>
 </div>
@@ -152,10 +163,38 @@ function connectSocket(){
    s.on("presence",renderPeople);
    s.on("poke-received",showPokeBanner);
    s.on("chat-message",({text})=>say(text,"theirs"));
+   s.on("voice-request",({roomId})=>{if(roomId===state.roomId)$("voiceRequestBanner").classList.remove("hidden")});
+   s.on("voice-response",({roomId,accept})=>{
+     if(roomId!==state.roomId)return;
+     if(accept){startVoiceCall()}
+     else{say("Tu compañero prefirió seguir solo por texto.","sys");$("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz"}
+   });
    s.on("peer-left",()=>{updateConn(false,"Compañero desconectado");say("Tu compañero terminó la sesión. Puedes volver a buscar otro.","sys")});
    s.on("report-ok",()=>say("Reporte recibido. La sesión se cerrará ahora.","sys"));
  });
 }
+$("activateVoice").onclick=()=>{
+ $("activateVoice").disabled=true;$("activateVoice").textContent="Esperando respuesta…";
+ state.socket.emit("voice-request",{roomId:state.roomId});
+};
+$("voiceAccept").onclick=()=>{
+ $("voiceRequestBanner").classList.add("hidden");
+ state.socket.emit("voice-response",{roomId:state.roomId,accept:true});
+ startVoiceCall();
+};
+$("voiceDecline").onclick=()=>{
+ $("voiceRequestBanner").classList.add("hidden");
+ state.socket.emit("voice-response",{roomId:state.roomId,accept:false});
+};
+$("deactivateVoice").onclick=()=>{
+ try{state.pc?.close();state.localStream?.getTracks().forEach(t=>t.stop())}catch{}
+ state.pc=null;state.localStream=null;state.pendingSignals=[];clearTimeout(state.stallTimer);
+ $("voicebar").classList.add("hidden");
+ $("deactivateVoice").classList.add("hidden");
+ $("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz";
+ updateConn(true,"Conectado / Connected");
+ say("Terminaste el audio. El chat de texto sigue activo.","sys");
+};
 
 function badge(u){return (u.speaks==="es"?"🇪🇸":"🇺🇸")+"→"+(u.wants==="es"?"🇪🇸":"🇺🇸")+" · "+(u.mode==="voice"?"🎙️ Voz":"💬 Texto")}
 function renderPeople(list){
@@ -225,26 +264,28 @@ async function getIce(){
 async function enterRoom(){
  show("room");$("topic").textContent=pickTopic();
  $("composer").classList.remove("hidden");
- $("voicebar").classList.toggle("hidden",state.roomMode!=="voice");
+ $("voicebar").classList.add("hidden");$("voiceRequestBanner").classList.add("hidden");
+ $("deactivateVoice").classList.add("hidden");$("activateVoice").classList.remove("hidden");$("activateVoice").disabled=false;$("activateVoice").textContent="🎙️ Activar voz";
  startTimer();
+ $("partner").textContent="Compañero conectado";
+ updateConn(true,"Conectado / Connected");
+ say("Ya están conectados. ¡Empieza la conversación!","sys");
+ if(state.roomMode==="voice") startVoiceCall();
+}
 
- if(state.roomMode!=="voice"){
-   // Text mode: chat is relayed through the server, no WebRTC needed at all.
-   $("partner").textContent="Compañero conectado";
-   updateConn(true,"Conectado / Connected");
-   say("Ya están conectados. ¡Empieza la conversación!","sys");
-   return;
- }
-
- // Voice mode: still needs a direct WebRTC audio connection.
- $("partner").textContent="Preparando conexión…";updateConn(false,"Negociando conexión");
+async function startVoiceCall(){
+ if(state.pc) return; // already active
+ $("voicebar").classList.remove("hidden");
+ $("activateVoice").classList.add("hidden");
+ $("deactivateVoice").classList.remove("hidden");
+ updateConn(false,"Negociando audio");
  say("Conectando audio con tu compañero…");
  const cfg=await getIce();
  state.pc=new RTCPeerConnection(cfg);
  const pc=state.pc;
  pc.onconnectionstatechange=()=>{
    console.log("connectionState:",pc.connectionState);
-   if(pc.connectionState==="connected"){clearTimeout(state.stallTimer);updateConn(true,"Conectado / Connected");$("partner").textContent="Compañero conectado"}
+   if(pc.connectionState==="connected"){clearTimeout(state.stallTimer);updateConn(true,"Conectado / Connected")}
    else if(["failed","disconnected","closed"].includes(pc.connectionState))updateConn(false,"Conexión perdida")
  };
  pc.oniceconnectionstatechange=()=>console.log("iceConnectionState:",pc.iceConnectionState);

@@ -13,7 +13,8 @@ app.use(express.json({ limit: "20kb" }));
 
 const io = new Server(server, {
   cors: { origin: true, methods: ["GET","POST"] },
-  transports: ["websocket","polling"]
+  transports: ["websocket","polling"],
+  maxHttpBufferSize: 6 * 1024 * 1024 // allow base64 voice notes (~45s clips)
 });
 
 const queue = [];
@@ -189,6 +190,14 @@ io.on("connection", socket=>{
     const room = rooms.get(roomId); if (!room) return;
     const peerId = room.a === socket.id ? room.b : room.a;
     io.to(peerId).emit("chat-message", {text: String(text||"").slice(0,2000)});
+  });
+
+  // Walkie-talkie style voice notes: record, review, send -- no WebRTC/NAT involved
+  socket.on("voice-note", ({roomId, audio})=>{
+    const room = rooms.get(roomId); if (!room) return;
+    if (typeof audio !== "string" || audio.length > 6 * 1024 * 1024) return;
+    const peerId = room.a === socket.id ? room.b : room.a;
+    io.to(peerId).emit("voice-note", {audio});
   });
 
   // Mid-chat voice upgrade: either side can propose, both must accept before WebRTC negotiation starts

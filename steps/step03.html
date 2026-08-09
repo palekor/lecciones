@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Lightweight WH Questions masterclass for ProfGermandario: WH words, question structure, yes/no questions, negation and practice drills.">
+  <title>WH Masterclass · ProfGermandario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;7..144,700;9..144,900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --canvas:#FCF8F3; --cloud:#F2ECE2; --paper:#F6F1FF;
+      --ink:#1A1730; --soft:#3A3552; --mist:#76718A;
+      --coral:#FF5A3C; --coral-dark:#E8482C;
+      --mint:#15B79E; --mint-dark:#0E8C79;
+      --amber:#FFB627; --amber-dark:#B97700;
+      --wine:#7B2CBF; --blue:#2374AB;
+      --line:rgba(26,23,48,.12); --line-soft:rgba(26,23,48,.07);
+      --shadow:0 18px 45px rgba(26,23,48,.10); --radius:30px; --pill:999px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
+    body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(55% 45% at 7% 0%,rgba(255,90,60,.14),transparent 65%),radial-gradient(58% 50% at 100% 85%,rgba(21,183,158,.13),transparent 65%),var(--canvas)}
+    body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.16;background-image:radial-gradient(rgba(26,23,48,.25) .7px,transparent .7px);background-size:18px 18px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
+    button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(1140px,calc(100% - 32px));margin:auto}.display{font-family:Fraunces,Georgia,serif}.mono{font-family:'DM Mono',ui-monospace,monospace}.eyebrow{font:700 .67rem/1.2 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.23em;color:var(--coral)}
+    .btn{border:0;border-radius:var(--pill);padding:13px 19px;font-weight:900;display:inline-flex;align-items:center;gap:9px;justify-content:center;transition:.2s;text-decoration:none}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 14px 30px rgba(26,23,48,.2)}.btn-coral{background:var(--coral);color:white;box-shadow:0 14px 30px rgba(255,90,60,.26)}.btn-light{background:white;border:1px solid var(--line);color:var(--soft)}
+    .hero{min-height:92svh;display:grid;align-items:center;padding:72px 0 50px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(380px,.98fr);gap:52px;align-items:center}.hero h1{font:900 clamp(3.9rem,8vw,7.5rem)/.84 Fraunces,Georgia,serif;letter-spacing:-.065em;margin:16px 0 22px}.hero h1 em{display:block;color:var(--coral);font-weight:600}.hero-copy{font-size:clamp(1.03rem,1.8vw,1.2rem);color:var(--soft);max-width:650px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.hero-stage{position:relative;min-height:440px;display:grid;place-items:center}.question-core{position:relative;width:min(410px,88%);aspect-ratio:1;border-radius:42px;background:var(--ink);color:white;padding:35px;box-shadow:0 25px 70px rgba(26,23,48,.25);display:grid;place-items:center;text-align:center;overflow:hidden}.question-core:before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 90deg,transparent,rgba(255,182,39,.25),transparent,rgba(21,183,158,.22),transparent);animation:spin 18s linear infinite}.question-core>div{position:relative}.question-core b{font:900 clamp(3.2rem,8vw,5.8rem)/.8 Fraunces,serif;color:var(--amber)}.question-core small{display:block;color:#d8d4e4;margin-top:13px;font:.67rem 'DM Mono';letter-spacing:.14em}.wh-orbit{position:absolute;width:95px;height:95px;border-radius:50%;display:grid;place-items:center;background:white;box-shadow:var(--shadow);border:1px solid var(--line-soft);font:900 1.55rem Fraunces,serif}.wh-orbit small{display:block;font:.52rem 'DM Mono';letter-spacing:.08em;color:var(--mist);text-align:center}.w1{top:6%;left:6%;color:var(--coral)}.w2{top:0;right:18%;color:var(--mint-dark)}.w3{right:2%;top:42%;color:var(--amber-dark)}.w4{left:0;bottom:18%;color:var(--wine)}.w5{right:18%;bottom:0;color:var(--blue)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .sticky{position:sticky;top:9px;z-index:20;margin-bottom:24px}.nav-shell{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);backdrop-filter:blur(16px);box-shadow:var(--shadow);display:flex;gap:5px;padding:6px;border-radius:var(--pill);overflow:auto;scrollbar-width:none}.nav-shell::-webkit-scrollbar{display:none}.nav-shell a{white-space:nowrap;padding:10px 15px;border-radius:var(--pill);font-size:.84rem;font-weight:800;color:var(--soft)}.nav-shell a:hover,.nav-shell a.active{background:var(--ink);color:white}
+    section{padding:74px 0}.section-head{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:end;margin-bottom:34px}.section-head h2{font:900 clamp(2.45rem,5vw,4.6rem)/.95 Fraunces,Georgia,serif;letter-spacing:-.045em;margin:9px 0 0}.section-head p{font-size:1.04rem;color:var(--soft);max-width:600px;margin:0 0 7px}.panel{background:white;border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(22px,4vw,44px)}
+    .model{background:var(--ink);color:white;border-radius:34px;padding:clamp(25px,5vw,54px);box-shadow:0 24px 70px rgba(26,23,48,.2)}.model h3{font:800 clamp(2rem,4vw,3.2rem)/1.05 Fraunces,serif;margin:0;max-width:880px}.model h3 span{color:var(--amber)}.model p{color:#d8d4e4;max-width:780px}.formula-track{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:24px}.formula-card{padding:20px;border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}.formula-card small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:#aaa6bb;text-transform:uppercase}.formula-card b{display:block;font:800 1.35rem Fraunces,serif;margin-top:7px}.formula-card:nth-child(1) b{color:var(--coral)}.formula-card:nth-child(2) b{color:var(--mint)}.formula-card:nth-child(3) b{color:var(--amber)}.formula-card:nth-child(4) b{color:#b692ff}.formula-card:nth-child(5) b{color:#fff}.warning{margin-top:18px;background:#fff;color:var(--ink);border-radius:18px;padding:16px 18px}.warning b{color:var(--coral-dark)}
+    .wh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.wh-card{position:relative;overflow:hidden;background:white;border:1px solid var(--line-soft);border-radius:26px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06);transition:.2s}.wh-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.wh-card .emoji{font-size:2rem}.wh-card h3{font:900 2rem/1 Fraunces,serif;margin:11px 0 4px}.wh-card p{color:var(--soft);font-size:.94rem;margin:0}.wh-card code{display:inline-block;margin-top:13px;background:var(--cloud);border-radius:12px;padding:7px 9px;font:.72rem 'DM Mono';color:var(--soft)}.wh-card.coral{border-top:5px solid var(--coral)}.wh-card.mint{border-top:5px solid var(--mint)}.wh-card.amber{border-top:5px solid var(--amber)}.wh-card.wine{border-top:5px solid var(--wine)}
+    .tabs{display:flex;gap:8px;overflow:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid var(--line);background:#fff;border-radius:var(--pill);padding:10px 16px;font-weight:900;color:var(--soft);white-space:nowrap}.tab.on{background:var(--coral);border-color:var(--coral);color:white}.lab{overflow:hidden}.lab-top{display:grid;grid-template-columns:.75fr 1.25fr}.lab-title{background:var(--ink);color:white;padding:clamp(24px,4vw,40px);display:grid;align-content:center}.lab-title .big{font:900 clamp(4rem,9vw,6.5rem)/.8 Fraunces,serif;color:var(--amber);display:block}.lab-title small{font:.63rem 'DM Mono';letter-spacing:.14em;color:#aaa6bb;text-transform:uppercase}.lab-title p{color:#d8d4e4;margin-top:20px}.lab-body{padding:clamp(24px,4vw,40px)}.fact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.fact{background:var(--cloud);border-radius:18px;padding:14px}.fact small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:var(--mist);text-transform:uppercase}.fact b{display:block;margin-top:5px}.examples{display:grid;gap:10px;margin-top:18px}.bubble{border-radius:18px;padding:14px 16px;border:1px solid var(--line-soft)}.bubble.q{background:#fff7e8}.bubble.a{background:#f3fbf9;margin-left:22px}.bubble small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:var(--mist);text-transform:uppercase}.bubble p{margin:.25rem 0 0;font-weight:750}.play-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.play{border:0;border-radius:var(--pill);padding:9px 13px;background:var(--ink);color:white;font-weight:800}.play.alt{background:white;color:var(--ink);border:1px solid var(--line)}
+    .matrix{display:grid;grid-template-columns:1.1fr repeat(3,1fr);border:1px solid var(--line);border-radius:26px;overflow:hidden;background:white;box-shadow:var(--shadow)}.matrix div{padding:16px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}.matrix div:nth-child(4n){border-right:0}.matrix .head{background:var(--ink);color:white;font-weight:900}.matrix .rowhead{background:#fff7e8;font-weight:900;color:var(--coral-dark)}.matrix small{font:.57rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px}.matrix .head small{color:#aaa6bb}.matrix b{font-family:Fraunces,serif;font-size:1.18rem}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.rule-card{border-radius:26px;padding:24px;background:white;border:1px solid var(--line-soft);box-shadow:var(--shadow)}.rule-card h3{font:800 1.55rem Fraunces,serif;margin:0 0 9px}.rule-card p{color:var(--soft);margin:0}.rule-card code{display:block;margin-top:14px;padding:13px;border-radius:15px;background:var(--cloud);font:.78rem 'DM Mono'}
+    .builder{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px;align-items:start}.builder-side{background:var(--ink);color:white;border-radius:28px;padding:26px}.builder-side h3{font:800 2rem Fraunces,serif;margin:0 0 10px}.builder-side p{color:#d8d4e4}.builder-side select{width:100%;margin-top:14px;border:0;border-radius:15px;padding:12px;background:white;color:var(--ink);font-weight:800}.build-board{background:white;border:1px solid var(--line-soft);border-radius:28px;padding:24px;box-shadow:var(--shadow)}.target{font:800 1.4rem Fraunces,serif;margin-bottom:14px}.drop{min-height:62px;background:var(--cloud);border:1px dashed rgba(26,23,48,.22);border-radius:18px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.chip{border:1px solid var(--line);background:white;border-radius:var(--pill);padding:10px 13px;font-weight:800;color:var(--soft)}.chip.used{opacity:.35;pointer-events:none}.chip.selected{background:var(--ink);color:white}.build-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.feedback{margin-top:14px;min-height:48px;color:var(--soft)}.feedback.good{color:var(--mint-dark);font-weight:800}.feedback.bad{color:var(--coral-dark);font-weight:800}.ghost{border:0;background:var(--cloud);border-radius:var(--pill);padding:10px 14px;font-weight:800}.ghost.dark{background:var(--ink);color:white}.ghost.coral{background:var(--coral);color:white}.ghost.mint{background:var(--mint-dark);color:white}
+    .drills{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.drill{background:white;border:1px solid var(--line-soft);border-radius:24px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.drill span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#ffd5cb;color:var(--coral-dark);font:900 .8rem 'DM Mono'}.drill:nth-child(2) span{background:#b9eee5;color:var(--mint-dark)}.drill:nth-child(3) span{background:#ffe4a0;color:var(--amber-dark)}.drill:nth-child(4) span{background:#e4d5ff;color:var(--wine)}.drill h3{font:800 1.25rem Fraunces,serif;margin:13px 0 7px}.drill p{margin:0;color:var(--soft);font-size:.94rem}
+    .quiz{background:var(--ink);color:white;border-radius:34px;padding:clamp(24px,5vw,48px);box-shadow:0 24px 70px rgba(26,23,48,.22)}.quiz h2{font:900 clamp(2.3rem,5vw,4rem)/.95 Fraunces,serif;margin:0}.quiz p{color:#d8d4e4}.meter{height:8px;background:rgba(255,255,255,.12);border-radius:var(--pill);overflow:hidden;margin:18px 0 25px}.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint));transition:.25s}.question{font:800 clamp(1.3rem,3vw,2rem)/1.2 Fraunces,serif;margin-bottom:18px}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:white;border-radius:18px;padding:15px;text-align:left;font-weight:800}.answer.correct{background:rgba(21,183,158,.25);border-color:var(--mint)}.answer.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}.quiz-feedback{min-height:58px;color:#d8d4e4;margin-top:15px}.next{display:none}.next.show{display:inline-flex}.score{font:900 4rem/1 Fraunces,serif;color:var(--amber)}
+    .script-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.script-card{background:white;border:1px solid var(--line-soft);border-radius:24px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.script-card h3{font:800 1.4rem Fraunces,serif;margin:0 0 8px}.script-card p,.script-card li{color:var(--soft)}.script-card ul{margin:10px 0 0;padding-left:18px}.final{background:var(--ink);color:white;text-align:center;padding:70px 0}.final h2{font:900 clamp(2.5rem,6vw,5rem)/.94 Fraunces,serif;margin:12px 0 18px}.final em{color:var(--amber);font-weight:600}.final p{max-width:680px;margin:0 auto 24px;color:#d8d4e4}.wa{position:fixed;right:18px;bottom:18px;z-index:40;background:#25D366;color:white;border-radius:var(--pill);padding:13px 17px;font-weight:900;box-shadow:0 12px 32px rgba(37,211,102,.35)}footer{padding:38px 0 90px;text-align:center;color:var(--mist);font:.65rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}.reveal.seen{opacity:1;transform:none}
+    @media(max-width:920px){.hero-grid,.section-head,.lab-top,.builder{grid-template-columns:1fr}.hero{min-height:auto;padding-top:70px}.hero-stage{min-height:360px}.formula-track,.wh-grid{grid-template-columns:repeat(2,1fr)}.rules,.drills,.script-grid{grid-template-columns:1fr 1fr}.matrix{font-size:.92rem}.matrix div{padding:13px}}
+    @media(max-width:620px){.wrap{width:min(100% - 22px,1140px)}section{padding:56px 0}.hero h1{font-size:clamp(3.6rem,18vw,5.6rem)}.hero-actions .btn{width:100%}.wh-orbit{width:72px;height:72px;font-size:1.1rem}.formula-track,.wh-grid,.fact-grid,.rules,.drills,.answers,.script-grid{grid-template-columns:1fr}.matrix{display:block}.matrix div{border-right:0}.wa span{display:none}.wa{width:54px;height:54px;display:grid;place-items:center;padding:0}.nav-shell a{font-size:.78rem;padding:9px 12px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%20want%20to%20practice%20WH%20questions." target="_blank" rel="noopener">● <span>WhatsApp</span></a>
+  <header class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">ProfGermandario · Question Lab</div>
+        <h1>WH <em>Masterclass.</em></h1>
+        <p class="hero-copy">A question is not only grammar. It is a searchlight. WH words tell the listener exactly what kind of information you need: thing, place, time, person, reason, method, choice or ownership.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#model">Start the class →</a>
+          <a class="btn btn-light" href="#builder">Build questions</a>
+        </div>
+      </div>
+      <div class="hero-stage" aria-label="WH question words orbiting the question core">
+        <div class="question-core"><div><b>?</b><small>ASK · ANSWER · UNDERSTAND</small></div></div>
+        <div class="wh-orbit w1">What<small>thing</small></div>
+        <div class="wh-orbit w2">Where<small>place</small></div>
+        <div class="wh-orbit w3">Why<small>reason</small></div>
+        <div class="wh-orbit w4">How<small>method</small></div>
+        <div class="wh-orbit w5">Who<small>person</small></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap sticky"><nav class="nav-shell" aria-label="Class navigation">
+    <a href="#home">Home</a><a href="#model">Formula</a><a href="#words">WH Words</a><a href="#lab">Explorer</a><a href="#patterns">Patterns</a><a href="#builder">Builder</a><a href="#quiz">Quiz</a><a href="#script">Teacher Guide</a>
+  </nav></div>
+
+  <main>
+    <section id="model">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">01 · The question engine</div><h2>Questions have a skeleton.</h2></div><p>Most errors happen because students memorize isolated questions instead of understanding the engine. The engine below builds most WH questions in present simple and present progressive.</p></div>
+        <div class="model reveal">
+          <h3><span>WH</span> gives the information target. The <span>auxiliary</span> carries the grammar.</h3>
+          <p>If the student controls this sequence, they can create hundreds of questions without memorizing each one separately.</p>
+          <div class="formula-track">
+            <div class="formula-card"><small>Step 1</small><b>WH</b><p>What / Where / When / Who / Why / How</p></div>
+            <div class="formula-card"><small>Step 2</small><b>Auxiliary</b><p>do / does / am / is / are</p></div>
+            <div class="formula-card"><small>Step 3</small><b>Subject</b><p>I / you / she / they / the class</p></div>
+            <div class="formula-card"><small>Step 4</small><b>Main verb</b><p>base verb or verb-ing</p></div>
+            <div class="formula-card"><small>Step 5</small><b>Complement?</b><p>time, place, object, reason</p></div>
+          </div>
+          <div class="warning"><b>Core rule:</b> in present simple, <em>does</em> steals the -s from the main verb. Correct: <strong>Where does she work?</strong> Incorrect: <strong>Where does she works?</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="words">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">02 · WH map</div><h2>Eight doors of information.</h2></div><p>Do not translate mechanically. First identify the missing information in the answer. Then choose the WH word that asks for exactly that missing piece.</p></div>
+        <div class="wh-grid reveal" id="whGrid"></div>
+      </div>
+    </section>
+
+    <section id="lab">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">03 · Interactive explorer</div><h2>Meaning. Structure. Voice.</h2></div><p>Select a WH word, compare simple/progressive/negative examples, then listen and repeat. This is a class station, not a heavy game.</p></div>
+        <div class="tabs reveal" id="whTabs"></div>
+        <div class="panel lab reveal" id="whLab"></div>
+      </div>
+    </section>
+
+    <section id="patterns">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">04 · Question patterns</div><h2>Same idea, different grammar.</h2></div><p>Students must see how the same meaning changes when the tense, polarity or question type changes. This prevents memorized but fragile English.</p></div>
+        <div class="matrix reveal">
+          <div class="head"><small>Intent</small><b>Ask about routine</b></div><div class="head"><small>WH simple</small><b>What do you study?</b></div><div class="head"><small>WH progressive</small><b>What are you studying?</b></div><div class="head"><small>Yes / No</small><b>Do you study English?</b></div>
+          <div class="rowhead"><small>Place</small><b>Location</b></div><div>Where do you work?</div><div>Where are you working today?</div><div>Do you work at home?</div>
+          <div class="rowhead"><small>Time</small><b>Moment</b></div><div>When do you practice?</div><div>When are you leaving?</div><div>Do you practice at night?</div>
+          <div class="rowhead"><small>Reason</small><b>Cause</b></div><div>Why do you learn English?</div><div>Why are you studying now?</div><div>Are you learning for work?</div>
+          <div class="rowhead"><small>Method</small><b>Process</b></div><div>How do you remember words?</div><div>How are you improving?</div><div>Do you use flashcards?</div>
+        </div>
+        <div class="rules" style="margin-top:18px">
+          <article class="rule-card reveal"><h3>Present Simple</h3><p>Use it for habits, routines, facts and general preferences.</p><code>WH + do/does + subject + base verb?</code></article>
+          <article class="rule-card reveal"><h3>Present Progressive</h3><p>Use it for actions happening now or temporary situations.</p><code>WH + am/is/are + subject + verb-ing?</code></article>
+          <article class="rule-card reveal"><h3>Short Answers</h3><p>Repeat the auxiliary. The answer mirrors the question.</p><code>Do you...? → Yes, I do. / No, I don't.</code></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="drills">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">05 · Class protocol</div><h2>How to train WH questions.</h2></div><p>A good WH exercise is not random guessing. It follows a sequence: identify the answer type, select WH, select auxiliary, build the question, then answer naturally.</p></div>
+        <div class="drills">
+          <article class="drill reveal"><span>01</span><h3>Find the missing information</h3><p>Answer: “I live in Cali.” Missing information: place. Therefore: Where?</p></article>
+          <article class="drill reveal"><span>02</span><h3>Choose the time lens</h3><p>Routine uses do/does. Now uses am/is/are + -ing.</p></article>
+          <article class="drill reveal"><span>03</span><h3>Build the skeleton</h3><p>WH + auxiliary + subject + verb. Do not move the main verb before the subject.</p></article>
+          <article class="drill reveal"><span>04</span><h3>Answer and extend</h3><p>Give a short answer first, then add one detail to make it conversational.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="builder">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">06 · Question builder</div><h2>Put the pieces in order.</h2></div><p>Click the chips in the correct order. This trains structure physically: the student sees that grammar is position, not decoration.</p></div>
+        <div class="builder reveal">
+          <aside class="builder-side">
+            <h3>Build Lab</h3><p>Choose a challenge, assemble the question, check it, then listen. Use Reset if the order breaks.</p>
+            <select id="buildSelect" aria-label="Choose a sentence challenge"></select>
+          </aside>
+          <div class="build-board">
+            <div class="target" id="buildTarget"></div>
+            <div class="drop" id="dropZone"><span style="color:var(--mist)">Your question appears here…</span></div>
+            <div class="chips" id="chips"></div>
+            <div class="build-actions"><button class="ghost dark" id="checkBuild">Check ✓</button><button class="ghost" id="resetBuild">Reset</button><button class="ghost coral" id="speakBuild">Hear it</button></div>
+            <div class="feedback" id="buildFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="wrap">
+        <div class="quiz reveal">
+          <div class="eyebrow" style="color:#ffd8cf">07 · Mastery check</div>
+          <h2>Can you choose the right question?</h2>
+          <p>This quiz checks WH meaning, auxiliary choice, progressive form, negation and short answers.</p>
+          <div class="meter"><span id="quizBar"></span></div>
+          <div id="quizBox"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="script">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">08 · Teacher guide</div><h2>Run it as a live class.</h2></div><p>This section is designed for the teacher. It gives a simple class route that keeps the page pedagogical, not just decorative.</p></div>
+        <div class="script-grid">
+          <article class="script-card reveal"><h3>Opening · 5 min</h3><p>Ask students: “What information do you need when you ask a question?” Write: thing, place, time, person, reason, method.</p></article>
+          <article class="script-card reveal"><h3>Formula · 10 min</h3><p>Use the skeleton: WH + auxiliary + subject + verb. Drill three examples slowly, then naturally.</p></article>
+          <article class="script-card reveal"><h3>WH Stations · 15 min</h3><p>Each student chooses one WH word, explains what it asks for, reads one example and creates one personal question.</p></article>
+          <article class="script-card reveal"><h3>Builder + Quiz · 15 min</h3><p>Use the Build Lab first. Then quiz. Correct errors by naming the broken part: WH, auxiliary, subject, verb or complement.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="finish">
+      <div class="wrap"><div class="eyebrow" style="color:#ffd8cf">ProfGermandario</div><h2>Questions create<br><em>conversation.</em></h2><p>When WH words become automatic, students stop translating and start navigating meaning.</p><a class="btn btn-coral" href="#home">Repeat the route ↑</a></div>
+    </section>
+  </main>
+  <footer class="wrap">ProfGermandario · WH Masterclass · Lightweight Version · No React · No Babel · No Tailwind runtime</footer>
+
+  <script>
+    const WH=[
+      {word:'What',emoji:'❓',color:'coral',asks:'thing / action / idea',meaning:'Asks about a thing, idea or action.',formula:'What + do/does/am/is/are + subject + verb?',simple:['What do you eat for breakfast?','I eat eggs and toast.'],prog:['What are you eating right now?','I am eating a sandwich.'],neg:['What don\'t you like?','I don\'t like spicy food.'],tip:'What can ask about objects or actions: What is that? What are you doing?'},
+      {word:'Where',emoji:'📍',color:'mint',asks:'place / location',meaning:'Asks about a place or location.',formula:'Where + auxiliary + subject + verb?',simple:['Where do you live?','I live in Bogotá.'],prog:['Where are you going right now?','I am going to the market.'],neg:['Where don\'t you like to go?','I don\'t like to go to crowded places.'],tip:'Where replaces a location: in class, at home, in Colombia, near the bank.'},
+      {word:'When',emoji:'🕐',color:'amber',asks:'time / date / moment',meaning:'Asks about time.',formula:'When + auxiliary + subject + verb?',simple:['When do you wake up?','I wake up at 6 a.m.'],prog:['When are you leaving?','I am leaving at noon.'],neg:['When don\'t you study?','I don\'t study on Sundays.'],tip:'When points to time: at 7, on Monday, next week, in June.'},
+      {word:'Who',emoji:'👤',color:'wine',asks:'person / people',meaning:'Asks about a person.',formula:'Who + auxiliary + subject + verb?',simple:['Who do you call every day?','I call my mom every day.'],prog:['Who are you talking to?','I am talking to my teacher.'],neg:['Who don\'t you trust?','I don\'t trust strangers easily.'],tip:'When Who is the subject, no auxiliary is needed: Who teaches this class?'},
+      {word:'Why',emoji:'💡',color:'coral',asks:'reason / cause',meaning:'Asks for a reason.',formula:'Why + auxiliary + subject + verb?',simple:['Why do you study English?','I study English because I want a better job.'],prog:['Why are you laughing?','I am laughing because the movie is funny.'],neg:['Why don\'t you come to class?','I don\'t come because I feel sick.'],tip:'Answers to Why usually begin with because.'},
+      {word:'How',emoji:'⚙️',color:'mint',asks:'method / condition / degree',meaning:'Asks about manner, method or condition.',formula:'How + auxiliary + subject + verb?',simple:['How do you go to work?','I go to work by bus.'],prog:['How are you feeling today?','I am feeling great today.'],neg:['How don\'t you learn well?','I don\'t learn well when I am tired.'],tip:'How combines with many words: how much, how many, how often, how long, how far.'},
+      {word:'Which',emoji:'🔀',color:'amber',asks:'choice between options',meaning:'Asks for a choice from a limited set.',formula:'Which + noun + auxiliary + subject + verb?',simple:['Which color do you prefer?','I prefer blue.'],prog:['Which movie are you watching?','I am watching an action movie.'],neg:['Which food don\'t you eat?','I don\'t eat red meat.'],tip:'Use Which when the options are visible, known or limited.'},
+      {word:'Whose',emoji:'🔑',color:'wine',asks:'owner / possession',meaning:'Asks about ownership.',formula:'Whose + noun + auxiliary + subject + verb?',simple:['Whose book is this?','It is Maria\'s book.'],prog:['Whose car are you driving?','I am driving my friend\'s car.'],neg:['Whose idea wasn\'t that?','That wasn\'t my idea.'],tip:'Do not confuse Whose with Who\'s. Whose = possession. Who\'s = who is.'}
+    ];
+    const colorName={coral:'coral',mint:'mint',amber:'amber',wine:'wine'};
+    function speak(text,rate=.88){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate; const voices=speechSynthesis.getVoices(); const v=voices.find(x=>x.lang==='en-US')||voices.find(x=>x.lang&&x.lang.startsWith('en')); if(v) u.voice=v; speechSynthesis.speak(u); }
+    const whGrid=document.querySelector('#whGrid');
+    whGrid.innerHTML=WH.map(w=>`<article class="wh-card ${colorName[w.color]}"><div class="emoji">${w.emoji}</div><h3>${w.word}</h3><p>${w.meaning}</p><code>${w.asks}</code></article>`).join('');
+    const tabs=document.querySelector('#whTabs'), lab=document.querySelector('#whLab'); let active=0;
+    WH.forEach((w,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=w.word;b.onclick=()=>showWH(i);tabs.appendChild(b)});
+    function showWH(i){active=i; const w=WH[i]; document.querySelectorAll('.tab').forEach((b,n)=>b.classList.toggle('on',n===i)); lab.innerHTML=`
+      <div class="lab-top"><div class="lab-title"><div><span class="big">${w.word}</span><small>${w.emoji} asks about ${w.asks}</small><p>${w.meaning}</p></div></div>
+      <div class="lab-body"><div class="fact-grid"><div class="fact"><small>Formula</small><b>${w.formula}</b></div><div class="fact"><small>Teaching tip</small><b>${w.tip}</b></div></div>
+      <div class="examples"><div class="bubble q"><small>Present Simple Question</small><p>${w.simple[0]}</p></div><div class="bubble a"><small>Answer</small><p>${w.simple[1]}</p></div><div class="bubble q"><small>Present Progressive Question</small><p>${w.prog[0]}</p></div><div class="bubble a"><small>Answer</small><p>${w.prog[1]}</p></div><div class="bubble q"><small>Negative Question</small><p>${w.neg[0]}</p></div><div class="bubble a"><small>Answer</small><p>${w.neg[1]}</p></div></div>
+      <div class="play-row"><button class="play" data-say="${w.simple[0]}">▶ Simple</button><button class="play" data-say="${w.prog[0]}">▶ Progressive</button><button class="play alt" data-say="${w.neg[0]}">▶ Negative</button></div></div></div>`;
+      lab.querySelectorAll('[data-say]').forEach(btn=>btn.onclick=()=>speak(btn.dataset.say));
+    }
+    showWH(0);
+    const builds=[
+      {target:'Ask about the food someone eats.',answer:['What','do','you','eat','for breakfast?'],chips:['eat','What','for breakfast?','you','do']},
+      {target:'Ask about her workplace.',answer:['Where','does','she','work?'],chips:['does','work?','she','Where']},
+      {target:'Ask about an action happening now.',answer:['What','are','you','doing','right now?'],chips:['you','right now?','are','What','doing']},
+      {target:'Ask for a reason.',answer:['Why','do','you','study','English?'],chips:['study','do','English?','Why','you']},
+      {target:'Ask about ownership.',answer:['Whose','phone','is','this?'],chips:['this?','Whose','is','phone']},
+      {target:'Ask about method.',answer:['How','do','you','remember','new words?'],chips:['you','remember','How','new words?','do']}
+    ];
+    const buildSelect=document.querySelector('#buildSelect'), target=document.querySelector('#buildTarget'), drop=document.querySelector('#dropZone'), chips=document.querySelector('#chips'), feedback=document.querySelector('#buildFeedback'); let currentBuild=0,built=[];
+    builds.forEach((b,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${i+1}. ${b.target}`;buildSelect.appendChild(o)}); buildSelect.onchange=()=>loadBuild(+buildSelect.value);
+    function loadBuild(i){currentBuild=i;built=[];target.textContent=builds[i].target;feedback.textContent='';feedback.className='feedback';drawBuild()}
+    function drawBuild(){const b=builds[currentBuild]; drop.innerHTML=built.length?built.map((x,i)=>`<button class="chip selected" data-remove="${i}">${x}</button>`).join(''):'<span style="color:var(--mist)">Your question appears here…</span>'; chips.innerHTML=b.chips.map((x,i)=>`<button class="chip ${built.includes(x)?'used':''}" data-add="${x}">${x}</button>`).join(''); chips.querySelectorAll('[data-add]').forEach(btn=>btn.onclick=()=>{built.push(btn.dataset.add);drawBuild()}); drop.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>{built.splice(+btn.dataset.remove,1);drawBuild()});}
+    document.querySelector('#resetBuild').onclick=()=>loadBuild(currentBuild);
+    document.querySelector('#checkBuild').onclick=()=>{const ans=builds[currentBuild].answer.join(' '), got=built.join(' '); if(got===ans){feedback.textContent='Correct. Structure is clean: '+ans;feedback.className='feedback good'}else{feedback.textContent='Not yet. Check WH + auxiliary + subject + verb. Your sentence: '+(got||'empty');feedback.className='feedback bad'}};
+    document.querySelector('#speakBuild').onclick=()=>{const text=built.length?built.join(' '):builds[currentBuild].answer.join(' '); speak(text)}; loadBuild(0);
+    const quizData=[
+      {q:'Which WH word asks about a place?',a:['When','Where','Who','Why'],c:1,e:'Where asks for location.'},
+      {q:'Which question is correct?',a:['Where she works?','Where does she works?','Where does she work?','Where do she work?'],c:2,e:'Does + subject + base verb.'},
+      {q:'What does WHY ask for?',a:['Time','Reason','Owner','Choice'],c:1,e:'Why asks for cause or reason.'},
+      {q:'Choose the progressive question.',a:['What are you doing?','What do you doing?','What you are doing?','What does you do?'],c:0,e:'Progressive: WH + are + subject + verb-ing.'},
+      {q:'Which word asks about ownership?',a:['Who','Whose','Which','Where'],c:1,e:'Whose means possession.'},
+      {q:'Correct short answer: “Do you like coffee?”',a:['Yes, I like.','Yes, I am.','Yes, I do.','Yes, do.'],c:2,e:'Short answers repeat the auxiliary.'},
+      {q:'Which is correct?',a:['She doesn\'t likes it.','She doesn\'t like it.','She don\'t like it.','She not likes it.'],c:1,e:'Doesn\'t + base verb.'},
+      {q:'How many / How much / How often belong to:',a:['What','How','Where','Who'],c:1,e:'How combines with adjectives and quantifiers.'},
+      {q:'Which question asks about time?',a:['When do you practice?','Where do you practice?','Why do you practice?','Who do you practice with?'],c:0,e:'When asks for time.'},
+      {q:'Choose the correct negative progressive.',a:['She is not working.','She does not working.','She not is working.','She is not work.'],c:0,e:'Progressive negative: subject + is/are/am + not + verb-ing.'}
+    ];
+    let qi=0,score=0,locked=false; const quizBox=document.querySelector('#quizBox'), quizBar=document.querySelector('#quizBar');
+    function drawQuiz(){locked=false; const x=quizData[qi]; quizBar.style.width=(qi/quizData.length*100)+'%'; quizBox.innerHTML=`<div class="question">${qi+1}. ${x.q}</div><div class="answers">${x.a.map((v,i)=>`<button class="answer" data-i="${i}">${v}</button>`).join('')}</div><div class="quiz-feedback" id="qfb">Choose one answer.</div><button class="btn btn-coral next" id="nextQ">${qi===quizData.length-1?'See result':'Next →'}</button>`; quizBox.querySelectorAll('.answer').forEach(btn=>btn.onclick=answerQuiz); quizBox.querySelector('#nextQ').onclick=nextQuiz;}
+    function answerQuiz(e){if(locked)return;locked=true; const n=+e.currentTarget.dataset.i,c=quizData[qi].c; quizBox.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;if(i===c)b.classList.add('correct'); if(i===n&&i!==c)b.classList.add('wrong')}); if(n===c)score++; document.querySelector('#qfb').innerHTML=`<b>${n===c?'Correct.':'Not quite.'}</b> ${quizData[qi].e}`; document.querySelector('#nextQ').classList.add('show')}
+    function nextQuiz(){qi++; if(qi<quizData.length)drawQuiz(); else{quizBar.style.width='100%'; quizBox.innerHTML=`<div class="score">${score}/${quizData.length}</div><div class="question">${score>=8?'WH system calibrated.':'Repeat the formula and build lab.'}</div><p style="color:#d8d4e4">A strong student should explain why each wrong option is wrong, not only choose the right one.</p><button class="btn btn-coral" id="restartQuiz">Try again ↺</button>`; document.querySelector('#restartQuiz').onclick=()=>{qi=0;score=0;drawQuiz()}}}
+    drawQuiz();
+    const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+    const sections=[...document.querySelectorAll('header[id],section[id]')], links=[...document.querySelectorAll('.nav-shell a')]; const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-20% 0px -72%'}); sections.forEach(s=>navObserver.observe(s));
+  </script>
+</body>
+</html>

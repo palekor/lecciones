@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Noun Master Map: a complete ESL masterclass for understanding nouns, common words, countability, articles, plurals, functions, and noun phrases.">
+  <title>Noun Master Map · ProfGermandario ESL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --canvas:#fcf8f3; --cloud:#f2ece2; --paper:#fffaf4; --ink:#1a1730; --soft:#3a3552; --mist:#76718a;
+      --coral:#ff5a3c; --coral-dark:#e8482c; --mint:#15b79e; --mint-dark:#0e8c79; --amber:#ffb627; --amber-dark:#b97700; --wine:#7b2cbf; --blue:#2f80ed;
+      --line:rgba(26,23,48,.11); --line-soft:rgba(26,23,48,.06); --shadow:0 18px 48px rgba(26,23,48,.10); --radius:30px; --pill:999px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth;scroll-padding-top:92px} body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%;overscroll-behavior-y:none} a{color:inherit;text-decoration:none} button,input,select{font:inherit;-webkit-tap-highlight-color:transparent} button{cursor:pointer} ::selection{background:rgba(255,90,60,.22)}
+    .bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(70% 60% at 6% 0%,rgba(255,90,60,.13),transparent 62%),radial-gradient(55% 55% at 96% 10%,rgba(21,183,158,.13),transparent 60%),radial-gradient(60% 55% at 55% 100%,rgba(123,44,191,.10),transparent 66%),var(--canvas)}
+    .bg:after{content:"";position:absolute;inset:0;opacity:.16;background-image:linear-gradient(rgba(26,23,48,.18) 1px,transparent 1px);background-size:100% 28px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
+    .wrap{width:min(1160px,calc(100% - 34px));margin:auto}.display{font-family:Fraunces,Georgia,serif}.mono{font-family:"DM Mono",ui-monospace,monospace}.eyebrow{font:700 .68rem/1 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.24em;color:var(--coral)}
+    .topbar{position:sticky;top:10px;z-index:50;margin:10px auto 0;width:min(1160px,calc(100% - 24px));background:rgba(255,255,255,.78);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.86);border-radius:var(--pill);box-shadow:var(--shadow);padding:7px;display:flex;gap:6px;overflow:auto;scrollbar-width:none}.topbar::-webkit-scrollbar{display:none}.topbar a{white-space:nowrap;border-radius:var(--pill);padding:10px 15px;font-size:.84rem;font-weight:800;color:var(--soft)}.topbar a:hover,.topbar a.active{background:var(--ink);color:white}
+    .hero{padding:76px 0 58px;min-height:82svh;display:grid;align-items:center;overflow:hidden}.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:48px;align-items:center}.hero h1{font:900 clamp(3.7rem,8vw,7.4rem)/.84 Fraunces,serif;letter-spacing:-.065em;margin:14px 0 22px}.hero h1 em{display:block;color:var(--coral);font-style:normal;font-weight:600}.hero-copy{font-size:clamp(1.05rem,2vw,1.22rem);color:var(--soft);max-width:670px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:var(--pill);padding:13px 18px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:900;transition:.18s;min-height:48px}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 14px 32px rgba(26,23,48,.22)}.btn-coral{background:var(--coral);color:white;box-shadow:0 14px 32px rgba(255,90,60,.25)}.btn-light{background:white;border:1px solid var(--line);color:var(--soft)}
+    .master-card{position:relative;min-height:480px;background:var(--ink);color:white;border-radius:38px;overflow:hidden;box-shadow:0 28px 70px rgba(26,23,48,.24);display:grid;place-items:center;padding:28px}.master-card:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 24% 18%,rgba(255,90,60,.38),transparent 28%),radial-gradient(circle at 76% 16%,rgba(21,183,158,.32),transparent 30%),radial-gradient(circle at 80% 80%,rgba(255,182,39,.30),transparent 33%),linear-gradient(135deg,rgba(255,255,255,.04),transparent);pointer-events:none}.noun-core{position:relative;width:min(330px,82%);aspect-ratio:1;border-radius:50%;background:white;color:var(--ink);display:grid;place-items:center;text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.24)}.noun-core b{font:900 clamp(3rem,7vw,5.2rem)/.85 Fraunces,serif;letter-spacing:-.04em}.noun-core span{display:block;color:var(--soft);font-weight:700;margin-top:8px}.orbit-line{position:absolute;inset:8%;border:1.5px dashed rgba(255,255,255,.26);border-radius:50%;animation:spin 34s linear infinite}.node{position:absolute;z-index:3;background:rgba(255,255,255,.92);color:var(--ink);border-radius:18px;padding:11px 13px;font-weight:900;box-shadow:0 12px 32px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.6)}.node small{display:block;font:.55rem "DM Mono";color:var(--mist);letter-spacing:.08em;text-transform:uppercase}.n1{left:24px;top:54px}.n2{right:22px;top:68px}.n3{left:22px;bottom:78px}.n4{right:28px;bottom:70px}.n5{left:50%;transform:translateX(-50%);bottom:22px}.spark{position:absolute;font-size:2rem}.s1{left:18%;top:33%;color:var(--mint)}.s2{right:16%;top:36%;color:var(--amber)}.s3{left:46%;top:9%;color:var(--coral)}@keyframes spin{to{transform:rotate(360deg)}}
+    section{padding:76px 0}.section-head{display:grid;grid-template-columns:1fr minmax(280px,.62fr);gap:32px;align-items:end;margin-bottom:32px}.section-head h2{font:900 clamp(2.3rem,5vw,4.7rem)/.94 Fraunces,serif;letter-spacing:-.05em;margin:9px 0 0}.section-head p{color:var(--soft);font-size:1.04rem;margin:0 0 6px;max-width:620px}.dark{background:var(--ink);color:white;position:relative;overflow:hidden}.dark:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 7% 0%,rgba(255,90,60,.24),transparent 64%),radial-gradient(60% 70% at 95% 20%,rgba(21,183,158,.22),transparent 62%);pointer-events:none}.dark .wrap{position:relative}.dark .section-head p,.dark .section-head h2{color:white}.dark .eyebrow{color:#ffd8cf}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{background:white;border:1px solid var(--line-soft);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card h3{font:900 1.55rem/1.05 Fraunces,serif;letter-spacing:-.02em;margin:8px 0 10px}.card p{color:var(--soft);margin:0}.badge{display:inline-flex;align-items:center;gap:7px;border-radius:var(--pill);padding:6px 10px;font:.62rem "DM Mono";text-transform:uppercase;letter-spacing:.12em;font-weight:700}.b-coral{background:rgba(255,90,60,.11);color:var(--coral)}.b-mint{background:rgba(21,183,158,.12);color:var(--mint-dark)}.b-amber{background:rgba(255,182,39,.14);color:var(--amber-dark)}.b-wine{background:rgba(123,44,191,.10);color:var(--wine)}.icon{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;font-size:1.7rem;background:var(--cloud)}
+    .map-board{background:white;border-radius:38px;padding:clamp(22px,4vw,42px);box-shadow:var(--shadow);border:1px solid var(--line-soft)}.map-center{text-align:center;margin:auto auto 28px;max-width:560px}.map-center .circle{margin:auto;width:210px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:white;box-shadow:0 16px 45px rgba(26,23,48,.2)}.map-center b{font:900 3.1rem/.9 Fraunces,serif}.map-center p{color:var(--soft);margin:15px auto 0}.connector-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.connector{background:var(--paper);border:1px solid var(--line-soft);border-radius:24px;padding:19px}.connector h3{font:900 1.35rem/1.08 Fraunces,serif;margin:0 0 10px}.connector ul{margin:0;padding-left:18px;color:var(--soft)}.connector li{margin:4px 0}.example{margin-top:12px;border-radius:14px;background:white;border:1px solid var(--line-soft);padding:11px 12px;font-weight:800;color:var(--ink)}.example span{color:var(--coral)}
+    .tabs{display:flex;gap:8px;overflow:auto;scrollbar-width:none;margin-bottom:17px}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid var(--line);background:white;color:var(--soft);border-radius:var(--pill);padding:10px 14px;font-weight:900;white-space:nowrap}.tab.on{background:var(--coral);border-color:var(--coral);color:white}.lab{background:white;border:1px solid var(--line-soft);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}.lab-top{display:grid;grid-template-columns:.9fr 1.1fr}.lab-visual{background:var(--ink);color:white;padding:clamp(24px,4vw,42px);display:grid;place-items:center;text-align:center}.lab-visual .big{font:900 clamp(3.2rem,7vw,5.5rem)/.9 Fraunces,serif;color:var(--amber)}.lab-visual p{color:#d9d5e4;max-width:360px}.lab-content{padding:clamp(24px,4vw,42px)}.rule-row{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-soft)}.rule-row b{color:var(--coral-dark)}.rule-row p{margin:0;color:var(--soft)}.practice{padding:clamp(22px,4vw,38px);border-top:1px solid var(--line-soft);background:linear-gradient(180deg,#fff,rgba(242,236,226,.42))}
+    .table-wrap{overflow:auto;border-radius:24px;border:1px solid var(--line-soft);background:white;box-shadow:var(--shadow)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:14px 16px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{background:var(--ink);color:white;font:.72rem "DM Mono";letter-spacing:.12em;text-transform:uppercase}td{color:var(--soft)}td b{color:var(--ink)}tr:last-child td{border-bottom:0}.mini{font:.72rem "DM Mono";color:var(--mist);text-transform:uppercase;letter-spacing:.12em}
+    .number-lab{display:grid;grid-template-columns:1fr 1fr;gap:16px}.plural-tool{background:var(--ink);color:white;border-radius:34px;padding:30px}.plural-tool input{width:100%;border:0;border-radius:18px;padding:15px 17px;color:var(--ink);font-weight:800;background:white}.plural-result{margin-top:16px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:18px}.plural-result b{font:900 2.2rem Fraunces,serif;color:var(--amber)}.rules-stack{display:grid;gap:10px}.tiny-card{background:white;border:1px solid var(--line-soft);border-radius:22px;padding:17px;box-shadow:var(--shadow)}.tiny-card h4{margin:0 0 6px;font:900 1.05rem Fraunces,serif}.tiny-card p{margin:0;color:var(--soft)}
+    .phrase-builder{background:white;border-radius:34px;padding:clamp(24px,4vw,42px);box-shadow:var(--shadow);border:1px solid var(--line-soft)}.builder-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.builder-grid label{font:.62rem "DM Mono";color:var(--mist);letter-spacing:.12em;text-transform:uppercase;font-weight:700}.builder-grid select,.builder-grid input{margin-top:6px;width:100%;border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px 13px;color:var(--ink);font-weight:800}.output{margin-top:18px;background:var(--ink);color:white;border-radius:24px;padding:22px;display:grid;gap:9px}.output .sentence{font:900 clamp(1.5rem,4vw,2.6rem)/1.1 Fraunces,serif;color:var(--amber)}.output .logic{color:#d8d4e4}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border-radius:var(--pill);padding:7px 10px;background:rgba(255,255,255,.08);font:.68rem "DM Mono";color:#ddd8e8}
+    .level-row{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:stretch;margin-bottom:10px}.level-tag{border-radius:18px;display:grid;place-items:center;color:white;font:900 1.4rem Fraunces,serif}.a1{background:#33a853}.a2{background:#67b84a}.b1{background:#ffbd24;color:#382600}.b2{background:#f47b20}.c1{background:#e83e73}.c2{background:#6f35c8}.level-card{background:white;border:1px solid var(--line-soft);border-radius:18px;padding:15px;box-shadow:0 8px 24px rgba(26,23,48,.06)}.level-card b{display:block;color:var(--ink);margin-bottom:3px}.level-card p{margin:0;color:var(--soft)}
+    .sound-board{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.sound{background:white;border:1px solid var(--line-soft);border-radius:20px;padding:16px;box-shadow:var(--shadow);text-align:left}.sound:hover{border-color:var(--mint);transform:translateY(-2px)}.sound b{display:block;font:900 1.15rem Fraunces,serif}.sound small{font:.6rem "DM Mono";color:var(--mist);text-transform:uppercase;letter-spacing:.12em}.sound span{display:block;color:var(--soft);margin-top:4px;font-size:.9rem}
+    .quiz-box{background:white;border-radius:34px;padding:clamp(24px,4vw,42px);box-shadow:var(--shadow);border:1px solid var(--line-soft)}.quiz-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.score{font:.72rem "DM Mono";background:var(--cloud);padding:8px 12px;border-radius:var(--pill)}.bar{height:8px;background:var(--cloud);border-radius:var(--pill);overflow:hidden;margin:18px 0 22px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint));transition:.28s}.challenge{font:900 clamp(1.3rem,3vw,2rem)/1.18 Fraunces,serif;margin-bottom:16px}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid var(--line);background:#fffaf6;border-radius:18px;padding:15px;text-align:left;font-weight:800}.answer.correct{background:#d8f7ef;border-color:var(--mint)}.answer.wrong{background:#ffdcd4;border-color:var(--coral)}.feedback{min-height:48px;margin-top:15px;color:var(--soft)}.next{display:none;margin-top:4px}.next.show{display:inline-flex}.result{text-align:center;padding:18px}.result b{display:block;font:900 5rem/1 Fraunces,serif;color:var(--coral)}
+    .teacher-script{background:var(--cloud);border-radius:34px;padding:clamp(24px,4vw,42px)}.script-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.script{background:white;border:1px solid var(--line-soft);border-radius:22px;padding:18px}.script span{font:.6rem "DM Mono";color:var(--mist);text-transform:uppercase;letter-spacing:.12em}.script h3{font:900 1.25rem/1.05 Fraunces,serif;margin:6px 0}.script p{margin:0;color:var(--soft);font-size:.94rem}
+    footer{padding:44px 0 110px;text-align:center;color:var(--mist);font:.65rem "DM Mono";letter-spacing:.13em;text-transform:uppercase}.wa{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:70;background:#25d366;color:white;border-radius:var(--pill);padding:13px 17px;font-weight:900;box-shadow:0 12px 32px rgba(37,211,102,.34);display:flex;gap:9px;align-items:center}.wa:before{content:"";position:absolute;inset:-4px;border-radius:inherit;border:1px solid rgba(37,211,102,.45);animation:pulse 2.2s infinite}@keyframes pulse{50%{transform:scale(1.12);opacity:0}}.reveal{opacity:0;transform:translateY(18px);transition:.55s ease}.reveal.seen{opacity:1;transform:none}
+    @media(max-width:940px){.hero-grid,.section-head,.lab-top,.number-lab{grid-template-columns:1fr}.master-card{min-height:420px}.grid-4,.script-grid{grid-template-columns:repeat(2,1fr)}.sound-board{grid-template-columns:repeat(3,1fr)}.builder-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.wrap{width:min(100% - 22px,1160px)}.hero{padding-top:50px}.hero h1{font-size:clamp(3.6rem,18vw,5.8rem)}section{padding:56px 0}.grid-4,.grid-3,.grid-2,.connector-grid,.script-grid,.answers,.sound-board,.builder-grid{grid-template-columns:1fr}.node{font-size:.85rem;padding:9px 10px}.n1{left:10px;top:42px}.n2{right:10px;top:54px}.n3{left:10px;bottom:72px}.n4{right:10px;bottom:66px}.n5{bottom:15px}.wa span{display:none}.wa{width:54px;height:54px;justify-content:center;padding:0}.level-row{grid-template-columns:58px 1fr}.topbar{top:6px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <nav class="topbar" aria-label="Noun Master Map navigation">
+    <a href="#home">Home</a><a href="#map">Map</a><a href="#types">Types</a><a href="#number">Number</a><a href="#count">Countability</a><a href="#articles">Articles</a><a href="#functions">Functions</a><a href="#builder">Builder</a><a href="#levels">A1–C2</a><a href="#quiz">Quiz</a>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">ProfGermandario ESL · Masterclass</div>
+        <h1>Noun <em>Master Map.</em></h1>
+        <p class="hero-copy">A noun is not “just a word.” It is the naming engine of English: people, places, things, ideas, groups, materials, experiences, and entire concepts. Master nouns and you master the core of vocabulary, articles, plurals, sentence roles, and noun phrases.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#map">Start the map →</a>
+          <a class="btn btn-light" href="#builder">Build noun phrases</a>
+          <button class="btn btn-coral" data-say="A noun names a person, place, thing, idea, or group.">▶ Hear the definition</button>
+        </div>
+      </div>
+      <aside class="master-card" aria-label="Visual noun master map">
+        <div class="orbit-line"></div>
+        <div class="spark s1">✦</div><div class="spark s2">✧</div><div class="spark s3">✎</div>
+        <div class="node n1">Types<small>common · proper</small></div>
+        <div class="node n2">Number<small>one · many</small></div>
+        <div class="node n3">Function<small>subject · object</small></div>
+        <div class="node n4">Count<small>a · some · much</small></div>
+        <div class="node n5">Phrase<small>det + adj + noun</small></div>
+        <div class="noun-core"><div><b>NOUN</b><span>names meaning</span></div></div>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section id="map">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">01 · The big picture</div><h2>All noun rules connected visually.</h2></div>
+          <p>The weak way is memorizing isolated lists. The strong way is seeing every noun through five lenses: type, number, countability, function, and phrase structure.</p>
+        </div>
+        <div class="map-board reveal">
+          <div class="map-center">
+            <div class="circle"><b>NOUN</b></div>
+            <p><b>A noun names</b> a person, place, thing, animal, group, material, feeling, quality, action-as-a-thing, or idea.</p>
+          </div>
+          <div class="connector-grid">
+            <article class="connector"><span class="badge b-coral">Lens 01</span><h3>Type</h3><ul><li><b>Common:</b> city, teacher, idea</li><li><b>Proper:</b> Bogotá, Maria, ProfGermandario</li><li><b>Concrete:</b> table, water, phone</li><li><b>Abstract:</b> courage, love, freedom</li></ul><div class="example">I visited <span>Bogotá</span> with my <span>teacher</span>.</div></article>
+            <article class="connector"><span class="badge b-mint">Lens 02</span><h3>Number</h3><ul><li><b>Singular:</b> one cat</li><li><b>Plural:</b> two cats</li><li><b>Regular:</b> book → books</li><li><b>Irregular:</b> child → children</li></ul><div class="example">One <span>child</span>, three <span>children</span>.</div></article>
+            <article class="connector"><span class="badge b-amber">Lens 03</span><h3>Countability</h3><ul><li><b>Count:</b> a book, many books</li><li><b>Uncount:</b> water, advice, information</li><li><b>Partitives:</b> a piece of advice</li></ul><div class="example">I need <span>some information</span>.</div></article>
+            <article class="connector"><span class="badge b-wine">Lens 04</span><h3>Function</h3><ul><li><b>Subject:</b> The student speaks.</li><li><b>Object:</b> I see the student.</li><li><b>Complement:</b> She is a teacher.</li><li><b>Object of preposition:</b> on the table</li></ul><div class="example"><span>The student</span> reads <span>a book</span>.</div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark" id="types">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">02 · Noun types</div><h2>Know what kind of name you are using.</h2></div>
+          <p>Every noun names something, but not every noun behaves the same. Type affects capitalization, articles, plural forms, and meaning.</p>
+        </div>
+        <div class="tabs reveal" id="typeTabs"></div>
+        <div class="lab reveal" id="typeLab"></div>
+      </div>
+    </section>
+
+    <section id="number">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">03 · Number</div><h2>One noun. Many nouns. Clear rules.</h2></div>
+          <p>Plural formation is not random. Most words use -s, some need -es, some change spelling, and some are fully irregular.</p>
+        </div>
+        <div class="number-lab reveal">
+          <div class="plural-tool">
+            <div class="eyebrow">Plural engine</div>
+            <h3 class="display" style="font-size:2.3rem;line-height:1;margin:10px 0 14px">Type a singular noun.</h3>
+            <input id="pluralInput" value="box" aria-label="Singular noun input">
+            <div class="plural-result" id="pluralResult"></div>
+            <p style="color:#d8d4e4;margin-top:14px">This tool explains the rule. It covers common cases and key irregular nouns, but English has exceptions.</p>
+          </div>
+          <div class="rules-stack">
+            <article class="tiny-card"><h4>Regular -s</h4><p>book → books · student → students · car → cars</p></article>
+            <article class="tiny-card"><h4>Add -es</h4><p>box → boxes · church → churches · class → classes · dish → dishes</p></article>
+            <article class="tiny-card"><h4>Consonant + y</h4><p>city → cities · baby → babies. But: boy → boys.</p></article>
+            <article class="tiny-card"><h4>Irregular</h4><p>man → men · woman → women · child → children · person → people · tooth → teeth · foot → feet.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="count">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">04 · Countability</div><h2>The ESL rule that changes everything.</h2></div>
+          <p>Many noun errors are not vocabulary errors; they are countability errors. Learn whether a noun behaves like individual units or like a mass/category.</p>
+        </div>
+        <div class="grid-3 reveal">
+          <article class="card"><span class="badge b-mint">Count nouns</span><h3>Individual units</h3><p>You can count them directly. Use <b>a/an</b> for one and plural <b>-s/-es</b> for many.</p><div class="example">a book · two books · many ideas</div></article>
+          <article class="card"><span class="badge b-amber">Uncount nouns</span><h3>Mass or category</h3><p>You do not normally say “one information” or “many advices.” Use <b>some, much, a little</b>.</p><div class="example">some water · much advice · a little rice</div></article>
+          <article class="card"><span class="badge b-coral">Partitives</span><h3>Count the container</h3><p>To count an uncount noun, count a unit: piece, cup, bottle, slice, bowl, item.</p><div class="example">a piece of advice · two cups of coffee</div></article>
+        </div>
+        <div class="table-wrap reveal" style="margin-top:20px">
+          <table>
+            <thead><tr><th>Common ESL trap</th><th>Incorrect</th><th>Correct</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td><b>Information</b></td><td>an information</td><td><b>some information</b> / a piece of information</td><td>Usually uncountable.</td></tr>
+              <tr><td><b>Advice</b></td><td>many advices</td><td><b>much advice</b> / two pieces of advice</td><td>Usually uncountable.</td></tr>
+              <tr><td><b>Furniture</b></td><td>furnitures</td><td><b>furniture</b> / items of furniture</td><td>Collective uncountable category.</td></tr>
+              <tr><td><b>Homework</b></td><td>homeworks</td><td><b>homework</b> / assignments</td><td>Homework is uncountable; assignment is countable.</td></tr>
+              <tr><td><b>News</b></td><td>these news are</td><td><b>this news is</b></td><td>Looks plural, but normally singular uncountable.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark" id="articles">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">05 · Articles and determiners</div><h2>Nouns need a doorway.</h2></div>
+          <p>English often requires a determiner before singular count nouns. This is one of the biggest differences from Spanish and many other languages.</p>
+        </div>
+        <div class="grid-4 reveal">
+          <article class="card"><span class="badge b-coral">A / An</span><h3>One, not specific</h3><p>Use before a singular count noun when the listener does not know exactly which one.</p><div class="example">I need <span>a</span> pencil. She is <span>an</span> engineer.</div></article>
+          <article class="card"><span class="badge b-mint">The</span><h3>Specific or known</h3><p>Use when both speaker and listener know the noun, or when it is unique in context.</p><div class="example">Open <span>the</span> door. Look at <span>the</span> moon.</div></article>
+          <article class="card"><span class="badge b-amber">Zero article</span><h3>General plural/uncount</h3><p>No article for general ideas with plural count nouns or uncount nouns.</p><div class="example"><span>Dogs</span> are loyal. <span>Water</span> is essential.</div></article>
+          <article class="card"><span class="badge b-wine">This / That / My</span><h3>Determiners</h3><p>Words that introduce nouns: this, that, these, those, my, your, some, any, many, much.</p><div class="example"><span>My</span> book · <span>these</span> ideas</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="functions">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">06 · Functions in a sentence</div><h2>A noun can play different jobs.</h2></div>
+          <p>The same noun can be a subject, object, complement, possessive, or object of a preposition. Function is grammar; type is identity.</p>
+        </div>
+        <div class="table-wrap reveal">
+          <table>
+            <thead><tr><th>Function</th><th>Question it answers</th><th>Example</th><th>What the noun does</th></tr></thead>
+            <tbody>
+              <tr><td><b>Subject</b></td><td>Who/what does the action?</td><td><b>The teacher</b> explains nouns.</td><td>The noun performs or controls the verb.</td></tr>
+              <tr><td><b>Direct object</b></td><td>Who/what receives the action?</td><td>I read <b>the book</b>.</td><td>The noun receives the verb action.</td></tr>
+              <tr><td><b>Indirect object</b></td><td>To/for whom?</td><td>She gave <b>the student</b> a pen.</td><td>The noun receives the direct object.</td></tr>
+              <tr><td><b>Subject complement</b></td><td>What is the subject?</td><td>He is <b>a doctor</b>.</td><td>The noun renames or identifies the subject.</td></tr>
+              <tr><td><b>Object of preposition</b></td><td>After preposition</td><td>The phone is on <b>the table</b>.</td><td>The noun completes a prepositional phrase.</td></tr>
+              <tr><td><b>Possessive noun</b></td><td>Whose?</td><td><b>Maria's</b> car is red.</td><td>The noun shows ownership or relationship.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="builder">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">07 · Noun phrase laboratory</div><h2>Build stronger English with noun phrases.</h2></div>
+          <p>A noun rarely travels alone. Advanced English grows from noun phrases: determiner + adjectives + noun + modifiers.</p>
+        </div>
+        <div class="phrase-builder reveal">
+          <div class="builder-grid">
+            <div><label>Determiner</label><select id="det"><option>a</option><option>the</option><option>my</option><option>this</option><option>some</option><option>several</option><option>no</option></select></div>
+            <div><label>Adjective 1</label><select id="adj1"><option>small</option><option>powerful</option><option>clear</option><option>old</option><option>beautiful</option><option>useful</option><option>complex</option></select></div>
+            <div><label>Adjective 2</label><select id="adj2"><option>English</option><option>digital</option><option>wooden</option><option>daily</option><option>academic</option><option>personal</option><option>global</option></select></div>
+            <div><label>Noun</label><select id="noun"><option>class</option><option>idea</option><option>student</option><option>book</option><option>strategy</option><option>conversation</option><option>lesson</option></select></div>
+            <div><label>Modifier</label><select id="mod"><option>for beginners</option><option>about nouns</option><option>with examples</option><option>from ProfGermandario</option><option>in English</option><option>for daily practice</option></select></div>
+            <div><label>Verb</label><select id="verb"><option>helps</option><option>builds</option><option>explains</option><option>connects</option><option>improves</option><option>creates</option></select></div>
+            <div><label>Object</label><select id="obj"><option>clear meaning</option><option>better vocabulary</option><option>stronger grammar</option><option>real fluency</option><option>confidence</option></select></div>
+            <div><label>Level</label><select id="level"><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option></select></div>
+          </div>
+          <div class="output" id="phraseOutput"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark" id="levels">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">08 · Same idea across levels</div><h2>Watch the noun phrase grow.</h2></div>
+          <p>The noun is the seed. As your level rises, you add articles, adjectives, prepositional phrases, clauses, precision, abstraction, and rhetorical control.</p>
+        </div>
+        <div class="reveal">
+          <div class="level-row"><div class="level-tag a1">A1</div><div class="level-card"><b>Basic noun</b><p>This is a book. I have a class.</p></div></div>
+          <div class="level-row"><div class="level-tag a2">A2</div><div class="level-card"><b>Noun + simple details</b><p>I have an English book for my class.</p></div></div>
+          <div class="level-row"><div class="level-tag b1">B1</div><div class="level-card"><b>Noun phrase + purpose</b><p>I use an English grammar book to improve my speaking.</p></div></div>
+          <div class="level-row"><div class="level-tag b2">B2</div><div class="level-card"><b>Noun phrase + explanation</b><p>The grammar book I use in class helps me understand how English sentences are organized.</p></div></div>
+          <div class="level-row"><div class="level-tag c1">C1</div><div class="level-card"><b>Abstract nouns + precision</b><p>A well-designed grammar resource can transform isolated vocabulary into structured communication.</p></div></div>
+          <div class="level-row"><div class="level-tag c2">C2</div><div class="level-card"><b>Dense noun architecture</b><p>The strategic integration of noun phrases, determiners, and modifiers enables learners to express nuance, hierarchy, and conceptual precision.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sound">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">09 · Common noun sound board</div><h2>Hear high-frequency noun language.</h2></div>
+          <p>Tap any card. Listening matters because nouns often travel with articles and plural endings that students skip when reading silently.</p>
+        </div>
+        <div class="sound-board reveal">
+          <button class="sound" data-say="a person"><b>a person</b><small>human</small><span>one individual</span></button>
+          <button class="sound" data-say="two people"><b>two people</b><small>irregular plural</small><span>not persons in daily speech</span></button>
+          <button class="sound" data-say="some information"><b>some information</b><small>uncount</small><span>not an information</span></button>
+          <button class="sound" data-say="a piece of advice"><b>a piece of advice</b><small>partitive</small><span>count the piece</span></button>
+          <button class="sound" data-say="the student's book"><b>the student's book</b><small>possessive</small><span>ownership</span></button>
+          <button class="sound" data-say="a beautiful old city"><b>a beautiful old city</b><small>adjective order</small><span>opinion + age + noun</span></button>
+          <button class="sound" data-say="three boxes"><b>three boxes</b><small>-es</small><span>/ɪz/ ending</span></button>
+          <button class="sound" data-say="the children are playing"><b>the children</b><small>irregular</small><span>child → children</span></button>
+          <button class="sound" data-say="water is essential"><b>water</b><small>zero article</small><span>general uncount</span></button>
+          <button class="sound" data-say="the idea changed everything"><b>the idea</b><small>abstract</small><span>thought as noun</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">10 · Mastery check</div><h2>Can you control the noun system?</h2></div>
+          <p>This quiz checks identity, number, countability, articles, and sentence function. Do not advance if you cannot explain your answer.</p>
+        </div>
+        <div class="quiz-box reveal">
+          <div class="quiz-head"><h3 class="display" style="font-size:2rem;margin:0">Noun Check</h3><span class="score">Score <b id="score">0</b> / 10</span></div>
+          <div class="bar"><span id="quizBar"></span></div>
+          <div id="quizStage"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="teacher-script reveal">
+          <div class="section-head" style="margin-bottom:20px">
+            <div><div class="eyebrow">Live class route</div><h2 style="font-size:clamp(2rem,4vw,3.2rem)">Teach it like a masterclass.</h2></div>
+            <p>Use this path for a 60–90 minute ESL session. It keeps the lesson active instead of turning it into a passive grammar lecture.</p>
+          </div>
+          <div class="script-grid">
+            <article class="script"><span>00–10 min</span><h3>Name hunt</h3><p>Students look around the room and name 20 nouns: objects, people, places, abstract ideas.</p></article>
+            <article class="script"><span>10–25 min</span><h3>Map the noun</h3><p>Classify each noun by type, number, countability, and article requirement.</p></article>
+            <article class="script"><span>25–45 min</span><h3>Phrase expansion</h3><p>Turn a noun into a phrase: book → the useful English grammar book for beginners.</p></article>
+            <article class="script"><span>45–70 min</span><h3>Sentence function</h3><p>Move the same noun through subject, object, complement, and prepositional positions.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">ProfGermandario · Noun Master Map · ESL Program · Common words become clear language</footer>
+  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%27m%20studying%20the%20Noun%20Master%20Map%20and%20want%20more%20information." target="_blank" rel="noopener" aria-label="WhatsApp ProfGermandario">● <span>WhatsApp</span></a>
+
+  <script>
+    const nounTypes = [
+      {title:'Common noun', emoji:'🏷️', color:'coral', definition:'A general name for a person, place, thing, animal, or idea.', rules:{Capitalization:'Do not capitalize unless it begins a sentence.', Article:'Often needs a/an/the/some depending on meaning.', Plural:'Usually can be singular or plural if countable.'}, examples:['teacher','city','book','idea','animal'], sentence:'A teacher explained the idea clearly.'},
+      {title:'Proper noun', emoji:'⭐', color:'mint', definition:'A specific name for one person, place, organization, brand, day, month, or title.', rules:{Capitalization:'Always capitalize the main words.', Article:'Usually no article for names, but there are exceptions.', Plural:'Usually singular, except families/groups.'}, examples:['Maria','Bogotá','Monday','Netflix','ProfGermandario'], sentence:'Maria studies English with ProfGermandario.'},
+      {title:'Concrete noun', emoji:'📦', color:'amber', definition:'A noun you can usually see, touch, hear, taste, or smell.', rules:{Senses:'Physical or sensory reality.', Countability:'Can be countable or uncountable.', Examples:'table is countable; water is uncountable.'}, examples:['phone','chair','water','music','coffee'], sentence:'The phone is on the table.'},
+      {title:'Abstract noun', emoji:'💭', color:'wine', definition:'A noun for ideas, emotions, qualities, systems, or states.', rules:{Meaning:'Names something non-physical.', Countability:'Often uncountable, but not always.', Use:'Important for B2–C2 academic expression.'}, examples:['freedom','love','courage','grammar','knowledge'], sentence:'Courage helps students speak.'},
+      {title:'Collective noun', emoji:'👥', color:'mint', definition:'A noun that names a group as one unit.', rules:{Agreement:'Can be singular or plural depending on dialect/context.', Meaning:'One word, many members.', Examples:'team, family, class, audience.'}, examples:['team','family','class','group','audience'], sentence:'The class is practicing nouns.'},
+      {title:'Compound noun', emoji:'🔗', color:'coral', definition:'A noun made from two or more words that act as one unit.', rules:{Form:'Can be one word, hyphenated, or open.', Stress:'Often the first word is stressed.', Plural:'Usually pluralize the main noun.'}, examples:['notebook','mother-in-law','coffee shop','English teacher','swimming pool'], sentence:'The English teacher entered the coffee shop.'}
+    ];
+    const colorClass = {coral:['#ff5a3c','rgba(255,90,60,.11)'], mint:['#15b79e','rgba(21,183,158,.12)'], amber:['#b97700','rgba(255,182,39,.15)'], wine:['#7b2cbf','rgba(123,44,191,.10)']};
+    const typeTabs = document.getElementById('typeTabs'), typeLab = document.getElementById('typeLab');
+    nounTypes.forEach((t,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=t.title;b.onclick=()=>showType(i);typeTabs.appendChild(b)});
+    function showType(i){const t=nounTypes[i], c=colorClass[t.color];document.querySelectorAll('#typeTabs .tab').forEach((b,n)=>b.classList.toggle('on',n===i));typeLab.innerHTML=`<div class="lab-top"><div class="lab-visual"><div class="big">${t.emoji}</div><h3 class="display" style="font-size:2.6rem;line-height:1;margin:10px 0;color:${c[0]}">${t.title}</h3><p>${t.definition}</p></div><div class="lab-content"><h3 class="display" style="font-size:2rem;margin:0 0 14px">How it works</h3>${Object.entries(t.rules).map(([k,v])=>`<div class="rule-row"><b>${k}</b><p>${v}</p></div>`).join('')}</div></div><div class="practice"><div class="grid-2"><div><div class="mini">Common examples</div><div class="chips" style="margin-top:10px">${t.examples.map(x=>`<button class="chip" data-say="${x}">${x} ▶</button>`).join('')}</div></div><div><div class="mini">Model sentence</div><div class="example" style="margin-top:10px">${t.sentence}</div><button class="btn btn-coral" style="margin-top:12px" data-say="${t.sentence}">▶ Hear sentence</button></div></div></div>`;bindSpeech(typeLab)}
+    showType(0);
+
+    const irregular = {man:'men',woman:'women',child:'children',person:'people',tooth:'teeth',foot:'feet',mouse:'mice',goose:'geese',ox:'oxen'};
+    function pluralize(w){let x=w.trim().toLowerCase(); if(!x)return {plural:'',rule:'Type a noun first.'}; if(irregular[x])return {plural:irregular[x],rule:'Irregular plural: memorize the full change.'}; if(/(s|x|z|ch|sh)$/.test(x))return {plural:x+'es',rule:'Add -es after s, x, z, ch, or sh.'}; if(/[^aeiou]y$/.test(x))return {plural:x.slice(0,-1)+'ies',rule:'Consonant + y changes to -ies.'}; if(/fe$/.test(x))return {plural:x.slice(0,-2)+'ves',rule:'Some -fe nouns change to -ves.'}; if(/f$/.test(x))return {plural:x.slice(0,-1)+'ves',rule:'Some -f nouns change to -ves, but there are exceptions.'}; if(/o$/.test(x))return {plural:x+'s / '+x+'es',rule:'Many -o words take -s, some take -es. Check word by word.'}; return {plural:x+'s',rule:'Regular plural: add -s.'}}
+    const pluralInput=document.getElementById('pluralInput'), pluralResult=document.getElementById('pluralResult');
+    function updatePlural(){const r=pluralize(pluralInput.value);pluralResult.innerHTML=`<div class="mini" style="color:#aaa6bb">Plural form</div><b>${r.plural||'—'}</b><p style="color:#d8d4e4;margin:8px 0 0">${r.rule}</p>`}
+    pluralInput.addEventListener('input',updatePlural);updatePlural();
+
+    const builderIds=['det','adj1','adj2','noun','mod','verb','obj','level']; builderIds.forEach(id=>document.getElementById(id).addEventListener('change',updateBuilder));
+    function updateBuilder(){const get=id=>document.getElementById(id).value;const det=get('det'), adj1=get('adj1'), adj2=get('adj2'), noun=get('noun'), mod=get('mod'), verb=get('verb'), obj=get('obj'), level=get('level');const phrase=`${det} ${adj1} ${adj2} ${noun} ${mod}`;const sentence=`${phrase} ${verb} ${obj}.`;document.getElementById('phraseOutput').innerHTML=`<div class="mini" style="color:#aaa6bb">Your noun phrase</div><div class="sentence">${sentence}</div><div class="logic"><b>Structure:</b> determiner + adjective + adjective + noun + modifier + verb + object</div><div class="chips"><span class="chip">Level target: ${level}</span><span class="chip">Head noun: ${noun}</span><span class="chip">Modifier: ${mod}</span></div><button class="btn btn-coral" data-say="${sentence}">▶ Hear phrase</button>`;bindSpeech(document.getElementById('phraseOutput'))}
+    updateBuilder();
+
+    const quizData=[
+      {q:'Which word is a common noun?',a:['Bogotá','Maria','city','Monday'],c:2,e:'City is a general name, so it is a common noun.'},
+      {q:'Which noun is abstract?',a:['phone','courage','table','coffee'],c:1,e:'Courage names a quality or idea, not a physical object.'},
+      {q:'What is the plural of child?',a:['childs','childes','children','childrens'],c:2,e:'Child has an irregular plural: children.'},
+      {q:'Choose the correct phrase.',a:['an information','some information','many information','a advices'],c:1,e:'Information is normally uncountable, so use some information.'},
+      {q:'Which sentence uses a noun as the subject?',a:['I saw the teacher.','The teacher arrived.','She is a teacher.','I spoke with the teacher.'],c:1,e:'The teacher performs the verb arrived, so it is the subject.'},
+      {q:'Which article fits: “I need ___ umbrella.”',a:['a','an','the always','zero article'],c:1,e:'Umbrella begins with a vowel sound, so use an.'},
+      {q:'Which is a proper noun?',a:['student','country','Colombia','language'],c:2,e:'Colombia is the specific name of a country, so it is a proper noun.'},
+      {q:'Which is the best correction for “many advices”?',a:['many advice','much advice','an advice','advices'],c:1,e:'Advice is normally uncountable: much advice or pieces of advice.'},
+      {q:'In “She is a doctor,” what is “a doctor”?',a:['subject','direct object','subject complement','preposition'],c:2,e:'A doctor identifies the subject she after the linking verb is.'},
+      {q:'Which noun phrase is strongest and most precise?',a:['book','a book','the useful English grammar book for beginners','grammar'],c:2,e:'It uses a determiner, adjectives, a head noun, and a modifier.'}
+    ];
+    let qi=0, score=0, locked=false; const stage=document.getElementById('quizStage');
+    function drawQuiz(){locked=false;document.getElementById('quizBar').style.width=`${qi/quizData.length*100}%`;const x=quizData[qi];stage.innerHTML=`<div class="challenge">${qi+1}. ${x.q}</div><div class="answers">${x.a.map((ans,i)=>`<button class="answer" data-i="${i}">${ans}</button>`).join('')}</div><div class="feedback" id="feedback">Choose the strongest answer, then explain the rule aloud.</div><button class="btn btn-primary next" id="nextBtn">${qi===quizData.length-1?'See result':'Next →'}</button>`;stage.querySelectorAll('.answer').forEach(b=>b.onclick=answerQuiz);document.getElementById('nextBtn').onclick=nextQuiz}
+    function answerQuiz(e){if(locked)return;locked=true;const n=+e.currentTarget.dataset.i, x=quizData[qi];stage.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;if(i===x.c)b.classList.add('correct');if(i===n&&i!==x.c)b.classList.add('wrong')});if(n===x.c)score++;document.getElementById('score').textContent=score;document.getElementById('feedback').innerHTML=`<b>${n===x.c?'Correct.':'Not quite.'}</b> ${x.e}`;document.getElementById('nextBtn').classList.add('show')}
+    function nextQuiz(){qi++;if(qi<quizData.length)drawQuiz();else{document.getElementById('quizBar').style.width='100%';stage.innerHTML=`<div class="result"><b>${score}/10</b><h3 class="display">${score>=9?'Noun system under control.':score>=7?'Strong foundation. Review countability and function.':'Repeat the map before advancing.'}</h3><button class="btn btn-coral" id="restart">Try again ↺</button></div>`;document.getElementById('restart').onclick=()=>{qi=0;score=0;document.getElementById('score').textContent=0;drawQuiz()}}}
+    drawQuiz();
+
+    function speak(text){if(!('speechSynthesis' in window))return alert('Speech synthesis is not available in this browser.');speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.88;u.pitch=1;const voices=speechSynthesis.getVoices();const v=voices.find(x=>x.lang==='en-US')||voices.find(x=>x.lang&&x.lang.startsWith('en'));if(v)u.voice=v;speechSynthesis.speak(u)}
+    function bindSpeech(root=document){root.querySelectorAll('[data-say]').forEach(el=>{el.onclick=()=>speak(el.dataset.say)})}
+    bindSpeech();
+    const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+    const links=[...document.querySelectorAll('.topbar a')], sections=[...document.querySelectorAll('header[id],section[id]')];const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-25% 0px -66%'});sections.forEach(s=>navObserver.observe(s));
+  </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Step 01 masterclass for ProfGermandario: subject pronouns, phonemes, suffixes, and regular/irregular verbs — the foundation engine of English.">
+  <title>Step 01 · The Sentence Engine · ProfGermandario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;7..144,700;9..144,900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --canvas:#FCF8F3; --cloud:#F2ECE2; --paper:#F6F1FF;
+      --ink:#1A1730; --soft:#3A3552; --mist:#76718A;
+      --coral:#FF5A3C; --coral-dark:#E8482C;
+      --mint:#15B79E; --mint-dark:#0E8C79;
+      --amber:#FFB627; --amber-dark:#B97700;
+      --wine:#7B2CBF; --blue:#2374AB;
+      --line:rgba(26,23,48,.12); --line-soft:rgba(26,23,48,.07);
+      --shadow:0 18px 45px rgba(26,23,48,.10); --radius:30px; --pill:999px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
+    body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(55% 45% at 7% 0%,rgba(255,90,60,.14),transparent 65%),radial-gradient(58% 50% at 100% 85%,rgba(21,183,158,.13),transparent 65%),var(--canvas)}
+    body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.16;background-image:radial-gradient(rgba(26,23,48,.25) .7px,transparent .7px);background-size:18px 18px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
+    button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(1140px,calc(100% - 32px));margin:auto}.display{font-family:Fraunces,Georgia,serif}.mono{font-family:'DM Mono',ui-monospace,monospace}.eyebrow{font:700 .67rem/1.2 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.23em;color:var(--coral)}
+    .btn{border:0;border-radius:var(--pill);padding:13px 19px;font-weight:900;display:inline-flex;align-items:center;gap:9px;justify-content:center;transition:.2s;text-decoration:none}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 14px 30px rgba(26,23,48,.2)}.btn-coral{background:var(--coral);color:white;box-shadow:0 14px 30px rgba(255,90,60,.26)}.btn-light{background:white;border:1px solid var(--line);color:var(--soft)}
+    .hero{min-height:92svh;display:grid;align-items:center;padding:72px 0 50px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(380px,.98fr);gap:52px;align-items:center}.hero h1{font:900 clamp(3.6rem,7.6vw,6.8rem)/.86 Fraunces,Georgia,serif;letter-spacing:-.06em;margin:16px 0 22px}.hero h1 em{display:block;color:var(--coral);font-weight:600}.hero-copy{font-size:clamp(1.03rem,1.8vw,1.2rem);color:var(--soft);max-width:650px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.hero-stage{position:relative;min-height:440px;display:grid;place-items:center}.question-core{position:relative;width:min(410px,88%);aspect-ratio:1;border-radius:42px;background:var(--ink);color:white;padding:35px;box-shadow:0 25px 70px rgba(26,23,48,.25);display:grid;place-items:center;text-align:center;overflow:hidden}.question-core:before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 90deg,transparent,rgba(255,182,39,.25),transparent,rgba(21,183,158,.22),transparent);animation:spin 18s linear infinite}.question-core>div{position:relative}.question-core b{font:900 clamp(2.6rem,6.6vw,4.4rem)/.9 Fraunces,serif;color:var(--amber)}.question-core small{display:block;color:#d8d4e4;margin-top:13px;font:.67rem 'DM Mono';letter-spacing:.14em}.wh-orbit{position:absolute;width:95px;height:95px;border-radius:50%;display:grid;place-items:center;background:white;box-shadow:var(--shadow);border:1px solid var(--line-soft);font:900 1.3rem Fraunces,serif;text-align:center}.wh-orbit small{display:block;font:.5rem 'DM Mono';letter-spacing:.07em;color:var(--mist);text-align:center}.w1{top:6%;left:6%;color:var(--coral)}.w2{top:0;right:18%;color:var(--mint-dark)}.w3{right:2%;top:42%;color:var(--amber-dark)}.w4{left:0;bottom:18%;color:var(--wine)}.w5{right:18%;bottom:0;color:var(--blue)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .sticky{position:sticky;top:9px;z-index:20;margin-bottom:24px}.nav-shell{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);backdrop-filter:blur(16px);box-shadow:var(--shadow);display:flex;gap:5px;padding:6px;border-radius:var(--pill);overflow:auto;scrollbar-width:none}.nav-shell::-webkit-scrollbar{display:none}.nav-shell a{white-space:nowrap;padding:10px 15px;border-radius:var(--pill);font-size:.84rem;font-weight:800;color:var(--soft)}.nav-shell a:hover,.nav-shell a.active{background:var(--ink);color:white}
+    section{padding:74px 0}.section-head{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:end;margin-bottom:34px}.section-head h2{font:900 clamp(2.2rem,4.6vw,4rem)/.98 Fraunces,Georgia,serif;letter-spacing:-.04em;margin:9px 0 0}.section-head p{font-size:1.04rem;color:var(--soft);max-width:600px;margin:0 0 7px}.panel{background:white;border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(22px,4vw,44px)}
+    .model{background:var(--ink);color:white;border-radius:34px;padding:clamp(25px,5vw,54px);box-shadow:0 24px 70px rgba(26,23,48,.2)}.model h3{font:800 clamp(1.8rem,3.6vw,2.9rem)/1.08 Fraunces,serif;margin:0;max-width:880px}.model h3 span{color:var(--amber)}.model p{color:#d8d4e4;max-width:780px}.formula-track{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:24px}.formula-card{padding:20px;border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}.formula-card small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:#aaa6bb;text-transform:uppercase}.formula-card b{display:block;font:800 1.3rem Fraunces,serif;margin-top:7px}.formula-card:nth-child(1) b{color:var(--coral)}.formula-card:nth-child(2) b{color:var(--mint)}.formula-card:nth-child(3) b{color:var(--amber)}.formula-card:nth-child(4) b{color:#b692ff}.formula-card:nth-child(5) b{color:#fff}.warning{margin-top:18px;background:#fff;color:var(--ink);border-radius:18px;padding:16px 18px}.warning b{color:var(--coral-dark)}
+    .wh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.wh-card{position:relative;overflow:hidden;background:white;border:1px solid var(--line-soft);border-radius:26px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06);transition:.2s}.wh-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.wh-card .emoji{font-size:1.7rem}.wh-card h3{font:900 1.9rem/1 Fraunces,serif;margin:11px 0 4px}.wh-card p{color:var(--soft);font-size:.9rem;margin:0}.wh-card code{display:inline-block;margin-top:13px;background:var(--cloud);border-radius:12px;padding:7px 9px;font:.7rem 'DM Mono';color:var(--soft)}.wh-card.coral{border-top:5px solid var(--coral)}.wh-card.mint{border-top:5px solid var(--mint)}.wh-card.amber{border-top:5px solid var(--amber)}.wh-card.wine{border-top:5px solid var(--wine)}.wh-card.blue{border-top:5px solid var(--blue)}
+    .tabs{display:flex;gap:8px;overflow:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid var(--line);background:#fff;border-radius:var(--pill);padding:10px 16px;font-weight:900;color:var(--soft);white-space:nowrap}.tab.on{background:var(--coral);border-color:var(--coral);color:white}.lab{overflow:hidden}.lab-top{display:grid;grid-template-columns:.75fr 1.25fr}.lab-title{background:var(--ink);color:white;padding:clamp(24px,4vw,40px);display:grid;align-content:center}.lab-title .big{font:900 clamp(3.2rem,7vw,5rem)/.85 Fraunces,serif;color:var(--amber);display:block}.lab-title small{font:.63rem 'DM Mono';letter-spacing:.14em;color:#aaa6bb;text-transform:uppercase}.lab-title p{color:#d8d4e4;margin-top:20px}.lab-body{padding:clamp(24px,4vw,40px)}.fact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.fact{background:var(--cloud);border-radius:18px;padding:14px}.fact small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:var(--mist);text-transform:uppercase}.fact b{display:block;margin-top:5px}.examples{display:grid;gap:10px;margin-top:18px}.bubble{border-radius:18px;padding:14px 16px;border:1px solid var(--line-soft)}.bubble.q{background:#fff7e8}.bubble.a{background:#f3fbf9;margin-left:22px}.bubble small{display:block;font:.58rem 'DM Mono';letter-spacing:.12em;color:var(--mist);text-transform:uppercase}.bubble p{margin:.25rem 0 0;font-weight:750}.play-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.play{border:0;border-radius:var(--pill);padding:9px 13px;background:var(--ink);color:white;font-weight:800}.play.alt{background:white;color:var(--ink);border:1px solid var(--line)}
+    .matrix{display:grid;grid-template-columns:1.1fr repeat(3,1fr);border:1px solid var(--line);border-radius:26px;overflow:hidden;background:white;box-shadow:var(--shadow)}.matrix div{padding:16px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}.matrix div:nth-child(4n){border-right:0}.matrix .head{background:var(--ink);color:white;font-weight:900}.matrix .rowhead{background:#fff7e8;font-weight:900;color:var(--coral-dark)}.matrix small{font:.57rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase;color:var(--mist);display:block;margin-bottom:5px}.matrix .head small{color:#aaa6bb}.matrix b{font-family:Fraunces,serif;font-size:1.1rem}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.rule-card{border-radius:26px;padding:24px;background:white;border:1px solid var(--line-soft);box-shadow:var(--shadow)}.rule-card h3{font:800 1.45rem Fraunces,serif;margin:0 0 9px}.rule-card p{color:var(--soft);margin:0}.rule-card code{display:block;margin-top:14px;padding:13px;border-radius:15px;background:var(--cloud);font:.76rem 'DM Mono'}
+    .builder{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px;align-items:start}.builder-side{background:var(--ink);color:white;border-radius:28px;padding:26px}.builder-side h3{font:800 1.9rem Fraunces,serif;margin:0 0 10px}.builder-side p{color:#d8d4e4}.builder-side select{width:100%;margin-top:14px;border:0;border-radius:15px;padding:12px;background:white;color:var(--ink);font-weight:800}.build-board{background:white;border:1px solid var(--line-soft);border-radius:28px;padding:24px;box-shadow:var(--shadow)}.target{font:800 1.3rem Fraunces,serif;margin-bottom:14px}.drop{min-height:62px;background:var(--cloud);border:1px dashed rgba(26,23,48,.22);border-radius:18px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.chip{border:1px solid var(--line);background:white;border-radius:var(--pill);padding:10px 13px;font-weight:800;color:var(--soft)}.chip.used{opacity:.35;pointer-events:none}.chip.selected{background:var(--ink);color:white}.build-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.feedback{margin-top:14px;min-height:48px;color:var(--soft)}.feedback.good{color:var(--mint-dark);font-weight:800}.feedback.bad{color:var(--coral-dark);font-weight:800}.ghost{border:0;background:var(--cloud);border-radius:var(--pill);padding:10px 14px;font-weight:800}.ghost.dark{background:var(--ink);color:white}.ghost.coral{background:var(--coral);color:white}.ghost.mint{background:var(--mint-dark);color:white}
+    .drills{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.drill{background:white;border:1px solid var(--line-soft);border-radius:24px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.drill span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#ffd5cb;color:var(--coral-dark);font:900 .8rem 'DM Mono'}.drill:nth-child(2) span{background:#b9eee5;color:var(--mint-dark)}.drill:nth-child(3) span{background:#ffe4a0;color:var(--amber-dark)}.drill:nth-child(4) span{background:#e4d5ff;color:var(--wine)}.drill h3{font:800 1.2rem Fraunces,serif;margin:13px 0 7px}.drill p{margin:0;color:var(--soft);font-size:.92rem}
+    .quiz{background:var(--ink);color:white;border-radius:34px;padding:clamp(24px,5vw,48px);box-shadow:0 24px 70px rgba(26,23,48,.22)}.quiz h2{font:900 clamp(2.1rem,4.6vw,3.6rem)/.98 Fraunces,serif;margin:0}.quiz p{color:#d8d4e4}.meter{height:8px;background:rgba(255,255,255,.12);border-radius:var(--pill);overflow:hidden;margin:18px 0 25px}.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint));transition:.25s}.question{font:800 clamp(1.2rem,2.8vw,1.8rem)/1.25 Fraunces,serif;margin-bottom:18px}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:white;border-radius:18px;padding:15px;text-align:left;font-weight:800}.answer.correct{background:rgba(21,183,158,.25);border-color:var(--mint)}.answer.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}.quiz-feedback{min-height:58px;color:#d8d4e4;margin-top:15px}.next{display:none}.next.show{display:inline-flex}.score{font:900 3.6rem/1 Fraunces,serif;color:var(--amber)}
+    .script-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.script-card{background:white;border:1px solid var(--line-soft);border-radius:24px;padding:22px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.script-card h3{font:800 1.3rem Fraunces,serif;margin:0 0 8px}.script-card p,.script-card li{color:var(--soft)}.script-card ul{margin:10px 0 0;padding-left:18px}.final{background:var(--ink);color:white;text-align:center;padding:70px 0}.final h2{font:900 clamp(2.3rem,5.6vw,4.4rem)/.96 Fraunces,serif;margin:12px 0 18px}.final em{color:var(--amber);font-weight:600}.final p{max-width:680px;margin:0 auto 24px;color:#d8d4e4}.wa{position:fixed;right:18px;bottom:18px;z-index:40;background:#25D366;color:white;border-radius:var(--pill);padding:13px 17px;font-weight:900;box-shadow:0 12px 32px rgba(37,211,102,.35)}footer{padding:38px 0 90px;text-align:center;color:var(--mist);font:.65rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}.reveal.seen{opacity:1;transform:none}
+    .badge-qk{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#f7b8d8,#c9a2ff 55%,#ffd76a);color:var(--ink);font:900 .78rem Fraunces,serif;box-shadow:0 4px 10px rgba(26,23,48,.18)}
+    /* --- Step 01 additions --- */
+    .vb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.vb-card{background:white;border:1px solid var(--line-soft);border-radius:20px;padding:14px 16px;box-shadow:0 8px 20px rgba(26,23,48,.05);display:flex;align-items:center;justify-content:space-between;gap:10px}.vb-card b{font:800 1.05rem Fraunces,serif}.vb-card small{display:block;color:var(--mist);font:.68rem 'DM Mono'}.vb-card.irr{border-left:5px solid var(--coral)}.vb-card.reg{border-left:5px solid var(--mint)}.vb-tag{font:.58rem 'DM Mono';letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:var(--pill)}.vb-card.irr .vb-tag{background:#ffe1d8;color:var(--coral-dark)}.vb-card.reg .vb-tag{background:#d7f4ee;color:var(--mint-dark)}
+    .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;font-weight:800;font-size:.88rem}.legend span{display:inline-flex;align-items:center;gap:7px}.dot{width:11px;height:11px;border-radius:50%;display:inline-block}.dot.irr{background:var(--coral)}.dot.reg{background:var(--mint)}
+    .conj-panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:start}.conj-side{background:var(--ink);color:white;border-radius:28px;padding:26px}.conj-side h3{font:800 1.7rem Fraunces,serif;margin:0 0 10px}.conj-side p{color:#d8d4e4}.conj-side select{width:100%;margin-top:12px;border:0;border-radius:15px;padding:12px;background:white;color:var(--ink);font-weight:800}.conj-table{background:white;border:1px solid var(--line-soft);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}.conj-row{display:grid;grid-template-columns:1fr 1.6fr;border-bottom:1px solid var(--line-soft)}.conj-row:last-child{border-bottom:0}.conj-row div{padding:14px 18px}.conj-row .pp{font:800 .95rem 'DM Mono';color:var(--mist);background:var(--cloud)}.conj-row b{font:800 1.15rem Fraunces,serif}
+    .osascomp{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.osas-chip{background:var(--ink);color:white;border-radius:14px;padding:10px 12px;text-align:center;flex:1;min-width:88px}.osas-chip small{display:block;font:.55rem 'DM Mono';color:var(--amber);letter-spacing:.08em;text-transform:uppercase}.osas-chip b{display:block;font-family:Fraunces,serif}
+    .tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tc-card{background:white;border:1px solid var(--line-soft);border-radius:22px;padding:18px;box-shadow:0 10px 24px rgba(26,23,48,.05)}.tc-card b{display:block;font:800 1.15rem Fraunces,serif;color:var(--wine)}.tc-card p{margin:8px 0 0;color:var(--soft);font-size:.9rem}.tc-card code{display:block;margin-top:10px;background:var(--cloud);border-radius:12px;padding:9px;font:.72rem 'DM Mono'}
+    @media(max-width:920px){.hero-grid,.section-head,.lab-top,.builder,.conj-panel{grid-template-columns:1fr}.hero{min-height:auto;padding-top:70px}.hero-stage{min-height:360px}.formula-track,.wh-grid,.vb-grid,.tc-grid{grid-template-columns:repeat(2,1fr)}.rules,.drills,.script-grid{grid-template-columns:1fr 1fr}.matrix{font-size:.92rem}.matrix div{padding:13px}}
+    @media(max-width:620px){.wrap{width:min(100% - 22px,1140px)}section{padding:56px 0}.hero h1{font-size:clamp(3.2rem,16vw,4.8rem)}.hero-actions .btn{width:100%}.wh-orbit{width:72px;height:72px;font-size:1rem}.formula-track,.wh-grid,.fact-grid,.rules,.drills,.answers,.script-grid,.vb-grid,.tc-grid{grid-template-columns:1fr}.matrix{display:block}.matrix div{border-right:0}.conj-row{grid-template-columns:1fr}.wa span{display:none}.wa{width:54px;height:54px;display:grid;place-items:center;padding:0}.nav-shell a{font-size:.78rem;padding:9px 12px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%20want%20to%20practice%20Step%2001." target="_blank" rel="noopener">● <span>WhatsApp</span></a>
+  <header class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="badge-qk">QK</span>&nbsp; ProfGermandario · Foundations Lab</div>
+        <h1>Step 01. <em>The Sentence Engine.</em></h1>
+        <p class="hero-copy">Before fluency, there is a skeleton. Every English sentence you will ever speak is built from the same five bones: a subject, a verb, a suffix, an auxiliary, and a complement. Master this once, and hundreds of sentences build themselves.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#model">Start the class →</a>
+          <a class="btn btn-light" href="#builder">Build sentences</a>
+        </div>
+      </div>
+      <div class="hero-stage" aria-label="The sentence engine pieces orbiting the core">
+        <div class="question-core"><div><b>S+V</b><small>SUBJECT · VERB · SOUND</small></div></div>
+        <div class="wh-orbit w1">Subject<small>7 pronouns</small></div>
+        <div class="wh-orbit w2">Verb<small>reg / irreg</small></div>
+        <div class="wh-orbit w3">Suffix<small>-s -ing -ed</small></div>
+        <div class="wh-orbit w4">Sound<small>phoneme</small></div>
+        <div class="wh-orbit w5">Extra<small>adj + time</small></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap sticky"><nav class="nav-shell" aria-label="Class navigation">
+    <a href="#home">Home</a><a href="#model">Formula</a><a href="#pronouns">Pronouns</a><a href="#phonemes">Phonemes</a><a href="#verbsys">Verb System</a><a href="#conjlab">Conjugation Lab</a><a href="#verbbank">Verb Bank</a><a href="#builder">Builder</a><a href="#finesse">Finesse</a><a href="#quiz">Quiz</a><a href="#script">Teacher Guide</a>
+  </nav></div>
+
+  <main>
+    <section id="model">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">01 · The engine</div><h2>Every sentence has a skeleton.</h2></div><p>Students who memorize isolated sentences plateau fast. Students who own this five-piece engine can generate any present-tense sentence on demand — and, later, extend it with an adjective or a time clause without breaking the structure.</p></div>
+        <div class="model reveal">
+          <h3><span>Subject</span> chooses the actor. <span>Verb + suffix</span> carries the action. <span>Complement</span> finishes the thought.</h3>
+          <p>This is the exact order used across the whole class: pronoun → verb → the small ending that agrees with it → the auxiliary that turns it into a question or negative → whatever finesse (adjective, time) you add at the end.</p>
+          <div class="formula-track">
+            <div class="formula-card"><small>Step 1</small><b>Subject</b><p>I / you / he / she / it / we / they</p></div>
+            <div class="formula-card"><small>Step 2</small><b>Verb</b><p>regular (walk) or irregular (go)</p></div>
+            <div class="formula-card"><small>Step 3</small><b>Suffix</b><p>-s / -es / -ing / -ed, or an irregular change</p></div>
+            <div class="formula-card"><small>Step 4</small><b>Auxiliary</b><p>do / does / did / am / is / are</p></div>
+            <div class="formula-card"><small>Step 5</small><b>Complement</b><p>adjective, time clause, place, object</p></div>
+          </div>
+          <div class="warning"><b>Core rule:</b> he / she / it always steals a suffix in present simple. Correct: <strong>She works from home.</strong> Incorrect: <strong>She work from home.</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pronouns">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">02 · Subject pronouns</div><h2>Seven words. Every sentence starts here.</h2></div><p>Every pronoun has a Spanish-vowel trap somewhere. Tune the phonetics up before speed. Remember: three of the seven are third person, "it" carries no gender, and "you" never changes between singular and plural.</p></div>
+        <div class="wh-grid reveal" id="pronounGrid"></div>
+        <div class="panel reveal" style="margin-top:18px">
+          <div class="matrix" id="ppMatrix"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="phonemes">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">03 · Sound before speed</div><h2>The phoneme is the smallest unit.</h2></div><p>A phoneme is the smallest piece of sound that still carries meaning. Change one, and the meaning changes with it. This class treats phonetics as a discipline, not decoration — trust the process even when English vowels have no Spanish equivalent.</p></div>
+        <div class="model reveal">
+          <h3>You need <span>two words</span> to build a phrase — but you need <span>clean sound</span> to be understood at all.</h3>
+          <p>Tap each word below to hear it. Notice how one sound swap changes the whole word: sun ≠ son, even though the spelling logic looks similar to a Spanish ear.</p>
+          <div class="play-row" id="phonemeRow"></div>
+          <div class="warning"><b>Try it:</b> can you think of three more phonemes you already know? Say them out loud before moving on.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="verbsys">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">04 · Regular vs. irregular</div><h2>Two families. One logic.</h2></div><p>This step is only about affirmations and present tenses — speed and pattern recognition first, perfect accuracy later. Regular verbs never change their spine. Irregular verbs change shape between present and past, but still follow the same suffix logic in the present.</p></div>
+        <div class="rules" style="margin-bottom:18px">
+          <article class="rule-card reveal"><h3>Regular verbs</h3><p>Present stays the same. Past always adds <b>-ed</b>. Future keeps the base form after "will".</p><code>walk → walked → will walk</code></article>
+          <article class="rule-card reveal"><h3>Irregular verbs</h3><p>Present looks regular. Past changes shape completely and must be memorized one by one.</p><code>go → went → will go</code></article>
+          <article class="rule-card reveal"><h3>Suffixes</h3><p>Regular takes <b>-s, -ing, -er, -ed</b>. Irregular still takes <b>-es, -ing</b> in the present.</p><code>work → works / working</code></article>
+        </div>
+        <div class="matrix reveal" style="margin-bottom:14px">
+          <div class="head"><small>Family</small><b>Regular</b></div><div class="head"><small>Present</small><b>Base form</b></div><div class="head"><small>Past</small><b>+ -ed</b></div><div class="head"><small>Future</small><b>will + base</b></div>
+          <div class="rowhead"><small>01</small><b>Walk</b></div><div>Walk</div><div>Walked</div><div>will Walk</div>
+          <div class="rowhead"><small>02</small><b>Talk</b></div><div>Talk</div><div>Talked</div><div>will Talk</div>
+          <div class="rowhead"><small>03</small><b>Work</b></div><div>Work</div><div>Worked</div><div>will Work</div>
+          <div class="rowhead"><small>04</small><b>Like</b></div><div>Like</div><div>Liked</div><div>will Like</div>
+          <div class="rowhead"><small>05</small><b>Love</b></div><div>Love</div><div>Loved</div><div>will Love</div>
+        </div>
+        <div class="warning reveal" style="margin-bottom:24px"><b>Question / auxiliary (regular):</b> use <b>did</b>. Affirmation: <em>he did love her.</em> Question: <em>did he love her?</em></div>
+        <div class="matrix reveal" style="margin-bottom:14px">
+          <div class="head"><small>Family</small><b>Irregular</b></div><div class="head"><small>Present</small><b>Base form</b></div><div class="head"><small>Past</small><b>Changes shape</b></div><div class="head"><small>Future</small><b>will + base</b></div>
+          <div class="rowhead"><small>01</small><b>Eat</b></div><div>Eat</div><div>Ate</div><div>will Eat</div>
+          <div class="rowhead"><small>02</small><b>Get</b></div><div>Get</div><div>Got</div><div>will Get</div>
+          <div class="rowhead"><small>03</small><b>Have</b></div><div>Have</div><div>Had</div><div>will have</div>
+          <div class="rowhead"><small>04</small><b>Go</b></div><div>Go</div><div>Went</div><div>will go</div>
+          <div class="rowhead"><small>05</small><b>Make</b></div><div>Make</div><div>Made</div><div>will make</div>
+        </div>
+        <div class="warning reveal"><b>Question / auxiliary (irregular):</b> use <b>do</b> / <b>does</b> (3rd person). Affirmation: <em>he does eat meat for breakfast.</em> Question: <em>does he eat meat for breakfast?</em></div>
+      </div>
+    </section>
+
+    <section id="conjlab">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">05 · Conjugation lab</div><h2>Simple mode vs. progressive mode.</h2></div><p>Simple mode is pronoun + verb, nothing else — that's the rule for this step. Progressive mode always needs two parts: am / is / are, plus the verb wearing -ing. Pick any verb from the bank and watch both modes build themselves across all seven pronouns.</p></div>
+        <div class="conj-panel reveal">
+          <aside class="conj-side">
+            <h3>Choose a verb</h3>
+            <p>Select a verb, then switch between Simple and Progressive to see the whole pronoun set conjugate live.</p>
+            <select id="conjVerb" aria-label="Choose a verb to conjugate"></select>
+            <div class="tabs" style="margin-top:16px"><button class="tab on" id="tabSimple">Simple mode</button><button class="tab" id="tabProg">Progressive mode</button></div>
+          </aside>
+          <div class="conj-table" id="conjTable"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="verbbank">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">06 · Verb bank</div><h2>The first list. Non-negotiable.</h2></div><p>These 36 verbs are the working vocabulary for every drill in this course. Learn the meaning first, the irregular ones second — everything else in the class leans on this bank.</p></div>
+        <div class="legend reveal"><span><i class="dot irr"></i>Irregular — memorize the past</span><span><i class="dot reg"></i>Regular — always +ed</span></div>
+        <div class="vb-grid reveal" id="verbBank"></div>
+        <div class="panel reveal" style="margin-top:20px">
+          <h3 class="display" style="margin:0 0 10px;font-size:1.4rem">Practice instructions</h3>
+          <ul style="margin:0;padding-left:20px;color:var(--soft)">
+            <li>Choose one regular verb and conjugate it in simple mode.</li>
+            <li>Choose one irregular verb and conjugate it in progressive mode.</li>
+            <li>Use every personal pronoun — all seven, no skipping.</li>
+            <li>Note: in simple present, write only the pronoun and the verb. Nothing else yet.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="builder">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">07 · Sentence builder</div><h2>Put the pieces in order.</h2></div><p>Click the chips in the correct order. This trains structure physically: grammar is position, not decoration.</p></div>
+        <div class="builder reveal">
+          <aside class="builder-side">
+            <h3>Build Lab</h3><p>Choose a challenge, assemble the sentence, check it, then listen. Use Reset if the order breaks.</p>
+            <select id="buildSelect" aria-label="Choose a sentence challenge"></select>
+          </aside>
+          <div class="build-board">
+            <div class="target" id="buildTarget"></div>
+            <div class="drop" id="dropZone"><span style="color:var(--mist)">Your sentence appears here…</span></div>
+            <div class="chips" id="chips"></div>
+            <div class="build-actions"><button class="ghost dark" id="checkBuild">Check ✓</button><button class="ghost" id="resetBuild">Reset</button><button class="ghost coral" id="speakBuild">Hear it</button></div>
+            <div class="feedback" id="buildFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="finesse">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">08 · Finesse</div><h2>Adjectives and time clauses.</h2></div><p>The engine is solid. Now dress it. Adjectives describe the subject or object; time clauses tell the listener when. Both attach to the same skeleton you already built — nothing new to learn, only new furniture.</p></div>
+        <div class="model reveal" style="margin-bottom:20px">
+          <h3>Adjectives sit in two places: after <span>to be</span>, or before the <span>noun</span>.</h3>
+          <p>After a "be" verb, one adjective is enough: <em>She is tired. I am happy.</em> Before a noun, when you stack more than one adjective, follow this order so it sounds natural instead of translated:</p>
+          <div class="osascomp">
+            <div class="osas-chip"><small>1</small><b>Opinion</b></div>
+            <div class="osas-chip"><small>2</small><b>Size</b></div>
+            <div class="osas-chip"><small>3</small><b>Age</b></div>
+            <div class="osas-chip"><small>4</small><b>Shape</b></div>
+            <div class="osas-chip"><small>5</small><b>Color</b></div>
+            <div class="osas-chip"><small>6</small><b>Origin</b></div>
+            <div class="osas-chip"><small>7</small><b>Material</b></div>
+          </div>
+          <div class="warning"><b>Example:</b> a <em>beautiful (opinion) small (size) old (age) round (shape) brown (color) Colombian (origin) wooden (material)</em> table. Elementary level only needs two or three of these at once.</div>
+        </div>
+        <div class="section-head reveal" style="margin-bottom:18px"><div><h2 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Time clauses connect two actions.</h2></div><p>A time clause tells the listener exactly when the main action happens. It attaches to a sentence you already know how to build — just add the connector.</p></div>
+        <div class="tc-grid reveal">
+          <article class="tc-card"><b>When</b><p>A general or single moment.</p><code>When I finish my homework, I watch TV.</code></article>
+          <article class="tc-card"><b>While</b><p>Two things happening at once — pairs well with progressive.</p><code>She is studying while I am cooking.</code></article>
+          <article class="tc-card"><b>Before / After</b><p>Order of two actions.</p><code>Before you go, close the door.</code></article>
+          <article class="tc-card"><b>As soon as</b><p>Immediate sequence.</p><code>I call her as soon as I arrive.</code></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="wrap">
+        <div class="quiz reveal">
+          <div class="eyebrow" style="color:#ffd8cf">09 · Mastery check</div>
+          <h2>Do you own the engine yet?</h2>
+          <p>This quiz checks pronouns, suffixes, regular vs. irregular, auxiliaries, phonemes, adjective order, and time clauses.</p>
+          <div class="meter"><span id="quizBar"></span></div>
+          <div id="quizBox"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="script">
+      <div class="wrap">
+        <div class="section-head reveal"><div><div class="eyebrow">10 · Teacher guide</div><h2>Run it as a live class.</h2></div><p>A simple class route that keeps the page pedagogical, not just decorative.</p></div>
+        <div class="script-grid">
+          <article class="script-card reveal"><h3>Opening · 5 min</h3><p>Ask: "Which pronoun has no gender?" Land on "it" — place, animal, or thing.</p></article>
+          <article class="script-card reveal"><h3>Phonemes · 5 min</h3><p>Drill sun / son out loud. Confirm the class hears the difference before continuing.</p></article>
+          <article class="script-card reveal"><h3>Verb system + suffixes · 15 min</h3><p>Contrast regular vs. irregular. Drill did vs. do/does until it's automatic.</p></article>
+          <article class="script-card reveal"><h3>Verb Bank + Conjugation Lab · 15 min</h3><p>Every student picks one regular and one irregular verb and conjugates both modes live.</p></article>
+          <article class="script-card reveal"><h3>Builder + Quiz · 15 min</h3><p>Use the Build Lab first, then the quiz. Name the broken part on any error: subject, verb, suffix, auxiliary, or complement.</p></article>
+          <article class="script-card reveal"><h3>Finesse close · 10 min</h3><p>Each student adds one adjective and one time clause to a sentence they built earlier.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="finish">
+      <div class="wrap"><div class="eyebrow" style="color:#ffd8cf">ProfGermandario</div><h2>The skeleton is yours.<br><em>Now build on it.</em></h2><p>Subject, verb, suffix, sound — once this is automatic, every future step (objects, time, voice) is just furniture on a stable frame.</p><a class="btn btn-coral" href="#home">Repeat the route ↑</a></div>
+    </section>
+  </main>
+  <footer class="wrap">ProfGermandario · Step 01 · Foundations Masterclass · QK Rapid Learning System</footer>
+
+  <script>
+    function speak(text,rate=.88){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate; const voices=speechSynthesis.getVoices(); const v=voices.find(x=>x.lang==='en-US')||voices.find(x=>x.lang&&x.lang.startsWith('en')); if(v) u.voice=v; speechSynthesis.speak(u); }
+
+    // ---- Pronouns ----
+    const PRONOUNS=[
+      {word:'I',es:'Yo',emoji:'🙋',color:'coral',note:'1st person singular'},
+      {word:'You',es:'Tú / Usted / Ustedes',emoji:'👉',color:'mint',note:'singular and plural — never changes'},
+      {word:'He',es:'Él',emoji:'👨',color:'amber',note:'3rd person singular, masculine'},
+      {word:'She',es:'Ella',emoji:'👩',color:'wine',note:'3rd person singular, feminine'},
+      {word:'It',es:'Eso',emoji:'📦',color:'blue',note:'place, animal, or thing — no gender'},
+      {word:'We',es:'Nosotros',emoji:'🧑‍🤝‍🧑',color:'coral',note:'1st person plural'},
+      {word:'They',es:'Ellos',emoji:'👥',color:'mint',note:'3rd person plural, any gender'}
+    ];
+    document.querySelector('#pronounGrid').innerHTML=PRONOUNS.map(p=>`<article class="wh-card ${p.color}"><div class="emoji">${p.emoji}</div><h3>${p.word}</h3><p>${p.es}</p><code>${p.note}</code></article>`).join('');
+
+    const PP_TABLE=[
+      ['I / Yo','Me','My','Mine'],
+      ['You','You','Your','Yours'],
+      ['He','Him','His','His'],
+      ['She','Her','Her','Hers'],
+      ['It','It','Its','Its'],
+      ['We','Us','Our','Ours'],
+      ['They','Them','Their','Theirs']
+    ];
+    let ppHTML=`<div class="head"><small>Subject</small><b>P.P Subject</b></div><div class="head"><small>Object</small><b>Object</b></div><div class="head"><small>Adjective</small><b>Possessive Adj.</b></div><div class="head"><small>Pronoun</small><b>Possessive Pron.</b></div>`;
+    PP_TABLE.forEach(r=>{ ppHTML+=`<div class="rowhead"><small>PP</small><b>${r[0]}</b></div><div>${r[1]}</div><div>${r[2]}</div><div>${r[3]}</div>`; });
+    document.querySelector('#ppMatrix').innerHTML=ppHTML;
+
+    // ---- Phonemes ----
+    const PHONEMES=['Sun','Son','Yes','Fly','Eat','It'];
+    document.querySelector('#phonemeRow').innerHTML=PHONEMES.map(w=>`<button class="play" data-say="${w}">▶ ${w}</button>`).join('');
+    document.querySelectorAll('#phonemeRow [data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));
+
+    // ---- Verb bank data (also used in Conjugation Lab) ----
+    const VERBS=[
+      {en:'study',es:'estudiar',irr:false,ing:'studying',s:'studies'},
+      {en:'read',es:'leer',irr:false,ing:'reading',s:'reads'},
+      {en:'look',es:'mirar',irr:false,ing:'looking',s:'looks'},
+      {en:'do',es:'hacer',irr:true,ing:'doing',s:'does'},
+      {en:'have',es:'tener',irr:true,ing:'having',s:'has'},
+      {en:'know',es:'saber',irr:true,ing:'knowing',s:'knows'},
+      {en:'carry',es:'llevar',irr:false,ing:'carrying',s:'carries'},
+      {en:'decide',es:'decidir',irr:false,ing:'deciding',s:'decides'},
+      {en:'wash',es:'lavar',irr:false,ing:'washing',s:'washes'},
+      {en:'eat',es:'comer',irr:true,ing:'eating',s:'eats'},
+      {en:'go',es:'ir',irr:true,ing:'going',s:'goes'},
+      {en:'call',es:'llamar',irr:false,ing:'calling',s:'calls'},
+      {en:'want',es:'querer',irr:false,ing:'wanting',s:'wants'},
+      {en:'can',es:'poder',irr:true,ing:null,s:'can'},
+      {en:'search',es:'buscar',irr:false,ing:'searching',s:'searches'},
+      {en:'cook',es:'cocinar',irr:false,ing:'cooking',s:'cooks'},
+      {en:'work',es:'trabajar',irr:false,ing:'working',s:'works'},
+      {en:'live',es:'vivir',irr:false,ing:'living',s:'lives'},
+      {en:'walk',es:'caminar',irr:false,ing:'walking',s:'walks'},
+      {en:'think',es:'pensar',irr:false,ing:'thinking',s:'thinks'},
+      {en:'listen',es:'escuchar',irr:false,ing:'listening',s:'listens'},
+      {en:'ask',es:'preguntar',irr:false,ing:'asking',s:'asks'},
+      {en:'use',es:'usar',irr:false,ing:'using',s:'uses'},
+      {en:'see',es:'ver',irr:true,ing:'seeing',s:'sees'},
+      {en:'sell',es:'vender',irr:false,ing:'selling',s:'sells'},
+      {en:'run',es:'correr',irr:true,ing:'running',s:'runs'},
+      {en:'sing',es:'cantar',irr:true,ing:'singing',s:'sings'},
+      {en:'paint',es:'pintar',irr:false,ing:'painting',s:'paints'},
+      {en:'dance',es:'bailar',irr:false,ing:'dancing',s:'dances'},
+      {en:'wish',es:'desear',irr:false,ing:'wishing',s:'wishes'},
+      {en:'take',es:'tomar',irr:true,ing:'taking',s:'takes'},
+      {en:'buy',es:'comprar',irr:true,ing:'buying',s:'buys'},
+      {en:'play',es:'jugar',irr:false,ing:'playing',s:'plays'},
+      {en:'build',es:'construir',irr:true,ing:'building',s:'builds'},
+      {en:'love',es:'amar',irr:false,ing:'loving',s:'loves'},
+      {en:'like',es:'gustar',irr:false,ing:'liking',s:'likes'}
+    ];
+    document.querySelector('#verbBank').innerHTML=VERBS.map(v=>`<div class="vb-card ${v.irr?'irr':'reg'}"><div><b>${v.en}</b><small>${v.es}</small></div><span class="vb-tag">${v.irr?'irregular':'regular'}</span></div>`).join('');
+
+    // ---- Conjugation Lab ----
+    const conjSelect=document.querySelector('#conjVerb'), conjTable=document.querySelector('#conjTable'), tabSimple=document.querySelector('#tabSimple'), tabProg=document.querySelector('#tabProg');
+    VERBS.forEach((v,i)=>{ if(v.ing){ const o=document.createElement('option'); o.value=i; o.textContent=`${v.en} (${v.es})`; conjSelect.appendChild(o); } });
+    let conjMode='simple';
+    const PP_LABELS=['I','You','He','She','It','We','They'];
+    function baseSimple(v,pp){ if(pp==='He'||pp==='She'||pp==='It') return v.s; return v.en; }
+    function progressive(v,pp){ if(!v.ing) return `${v.en} <em>(modal — no progressive form)</em>`; const be=(pp==='I')?'am':(pp==='He'||pp==='She'||pp==='It')?'is':'are'; return `${be} ${v.ing}`; }
+    function drawConj(){ const v=VERBS[+conjSelect.value]; let html=''; PP_LABELS.forEach(pp=>{ const form=conjMode==='simple'?baseSimple(v,pp):progressive(v,pp); html+=`<div class="conj-row"><div class="pp">${pp}</div><div><b>${form}</b></div></div>`; }); conjTable.innerHTML=html; }
+    conjSelect.onchange=drawConj; tabSimple.onclick=()=>{conjMode='simple';tabSimple.classList.add('on');tabProg.classList.remove('on');drawConj();}; tabProg.onclick=()=>{conjMode='progressive';tabProg.classList.add('on');tabSimple.classList.remove('on');drawConj();};
+    conjSelect.value=VERBS.findIndex(v=>v.en==='have'); drawConj();
+
+    // ---- Builder ----
+    const builds=[
+      {target:'Build a regular habit sentence (she + work).',answer:['She','works','every day.'],chips:['works','every day.','She','work']},
+      {target:'Build an irregular habit sentence (they + go).',answer:['They','go','to school.'],chips:['go','to school.','goes','They']},
+      {target:'Build a progressive sentence (I + study).',answer:['I','am','studying','English.'],chips:['am','studying','English.','I','is']},
+      {target:'Build a progressive sentence (he + eat).',answer:['He','is','eating','breakfast.'],chips:['is','eating','breakfast.','He','are']},
+      {target:'Add an adjective (she + be + tired).',answer:['She','is','tired.'],chips:['is','tired.','She','are']},
+      {target:'Add a time clause (when + I + finish + homework).',answer:['When','I','finish','my homework,','I','watch','TV.'],chips:['When','I','finish','my homework,','watch','TV.']}
+    ];
+    const buildSelect=document.querySelector('#buildSelect'), target=document.querySelector('#buildTarget'), drop=document.querySelector('#dropZone'), chipsEl=document.querySelector('#chips'), feedback=document.querySelector('#buildFeedback'); let currentBuild=0,built=[];
+    builds.forEach((b,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${i+1}. ${b.target}`;buildSelect.appendChild(o)}); buildSelect.onchange=()=>loadBuild(+buildSelect.value);
+    function loadBuild(i){currentBuild=i;built=[];target.textContent=builds[i].target;feedback.textContent='';feedback.className='feedback';drawBuild()}
+    function drawBuild(){const b=builds[currentBuild]; drop.innerHTML=built.length?built.map((x,i)=>`<button class="chip selected" data-remove="${i}">${x}</button>`).join(''):'<span style="color:var(--mist)">Your sentence appears here…</span>'; chipsEl.innerHTML=b.chips.map((x,i)=>`<button class="chip ${built.includes(x)?'used':''}" data-add="${x}">${x}</button>`).join(''); chipsEl.querySelectorAll('[data-add]').forEach(btn=>btn.onclick=()=>{built.push(btn.dataset.add);drawBuild()}); drop.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>{built.splice(+btn.dataset.remove,1);drawBuild()});}
+    document.querySelector('#resetBuild').onclick=()=>loadBuild(currentBuild);
+    document.querySelector('#checkBuild').onclick=()=>{const ans=builds[currentBuild].answer.join(' '), got=built.join(' '); if(got===ans){feedback.textContent='Correct. Structure is clean: '+ans;feedback.className='feedback good'}else{feedback.textContent='Not yet. Check subject, verb, suffix and order. Your sentence: '+(got||'empty');feedback.className='feedback bad'}};
+    document.querySelector('#speakBuild').onclick=()=>{const text=built.length?built.join(' '):builds[currentBuild].answer.join(' '); speak(text)}; loadBuild(0);
+
+    // ---- Quiz ----
+    const quizData=[
+      {q:'Which pronoun carries no gender?',a:['He','She','It','They'],c:2,e:'"It" refers to a place, animal, or thing — no gender.'},
+      {q:'Which suffix goes with he/she/it in simple present?',a:['-ing','-ed','-s / -es','no suffix'],c:2,e:'Third person singular always takes -s or -es.'},
+      {q:'Choose the correct irregular past of "go".',a:['Goed','Went','Gone','Going'],c:1,e:'Go → went is a full shape change, not +ed.'},
+      {q:'Which auxiliary makes a regular verb into a question?',a:['do','does','did','is'],c:2,e:'Regular past questions use did: did you walk?'},
+      {q:'Which is the correct progressive formula?',a:['subject + verb-ing','subject + am/is/are + verb-ing','subject + do/does + verb-ing','subject + verb + ed'],c:1,e:'Progressive always needs am/is/are plus -ing.'},
+      {q:'A phoneme is best described as:',a:['A full sentence','The smallest sound unit with meaning','A verb tense','A punctuation mark'],c:1,e:'Phonemes are the smallest sound units that carry meaning.'},
+      {q:'Correct adjective order:',a:['old small Colombian table','small old Colombian table','Colombian old small table','table small old Colombian'],c:1,e:'Order runs size before age before origin... here: small (size) → old (age) → Colombian (origin).'},
+      {q:'Which time clause pairs naturally with two actions happening at once?',a:['Before','While','After','Until'],c:1,e:'While signals simultaneous actions, often with progressive.'},
+      {q:'Which verb in the bank is irregular?',a:['Walk','Play','Have','Cook'],c:2,e:'"Have" changes to "has" / "had" irregularly.'},
+      {q:'Simple present of "have" for "she":',a:['haves','have','has','having'],c:2,e:'Have is irregular in third person: has, not haves.'}
+    ];
+    let qi=0,score=0,locked=false; const quizBox=document.querySelector('#quizBox'), quizBar=document.querySelector('#quizBar');
+    function drawQuiz(){locked=false; const x=quizData[qi]; quizBar.style.width=(qi/quizData.length*100)+'%'; quizBox.innerHTML=`<div class="question">${qi+1}. ${x.q}</div><div class="answers">${x.a.map((v,i)=>`<button class="answer" data-i="${i}">${v}</button>`).join('')}</div><div class="quiz-feedback" id="qfb">Choose one answer.</div><button class="btn btn-coral next" id="nextQ">${qi===quizData.length-1?'See result':'Next →'}</button>`; quizBox.querySelectorAll('.answer').forEach(btn=>btn.onclick=answerQuiz); quizBox.querySelector('#nextQ').onclick=nextQuiz;}
+    function answerQuiz(e){if(locked)return;locked=true; const n=+e.currentTarget.dataset.i,c=quizData[qi].c; quizBox.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;if(i===c)b.classList.add('correct'); if(i===n&&i!==c)b.classList.add('wrong')}); if(n===c)score++; document.querySelector('#qfb').innerHTML=`<b>${n===c?'Correct.':'Not quite.'}</b> ${quizData[qi].e}`; document.querySelector('#nextQ').classList.add('show')}
+    function nextQuiz(){qi++; if(qi<quizData.length)drawQuiz(); else{quizBar.style.width='100%'; quizBox.innerHTML=`<div class="score">${score}/${quizData.length}</div><div class="question">${score>=8?'Engine calibrated. Ready for Step 02.':'Repeat the formula and the builder before Step 02.'}</div><p style="color:#d8d4e4">A strong student explains why each wrong option is wrong, not only picks the right one.</p><button class="btn btn-coral" id="restartQuiz">Try again ↺</button>`; document.querySelector('#restartQuiz').onclick=()=>{qi=0;score=0;drawQuiz()}}}
+    drawQuiz();
+
+    const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+    const sections=[...document.querySelectorAll('header[id],section[id]')], links=[...document.querySelectorAll('.nav-shell a')]; const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-20% 0px -72%'}); sections.forEach(s=>navObserver.observe(s));
+  </script>
+</body>
+</html>

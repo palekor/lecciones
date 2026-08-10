@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2A1735">
+<title>QK ESL · Fluency Notebook</title>
+<meta name="description" content="Your personal operating system for learning English — by ProfGermandario">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="data:application/manifest+json,{}">
+<style>
+/* ============================================================
+   QK ESL RAPID LEARNING SYSTEM — DESIGN TOKENS
+   ============================================================ */
+:root{
+  /* Core palette */
+  --royal:        #3B2352;
+  --royal-deep:   #2A1735;
+  --royal-light:  #56336F;
+  --gold:         #C9A227;
+  --gold-bright:  #E4C558;
+  --ivory:        #FAF7F0;
+  --ivory-dim:    #F1ECE0;
+  --warm-gray:    #8A8378;
+  --lavender:     #CFC3E8;
+  --coral:        #E2725B;
+
+  /* Semantic — light mode */
+  --bg: var(--ivory);
+  --bg-elev: #FFFFFF;
+  --bg-sunken: var(--ivory-dim);
+  --text: #241833;
+  --text-soft: #5B5266;
+  --text-faint: #948C9C;
+  --border: rgba(59,35,82,0.12);
+  --card-shadow: 0 1px 2px rgba(42,23,53,0.04), 0 8px 24px rgba(42,23,53,0.06);
+  --accent: var(--royal);
+  --accent-soft: rgba(59,35,82,0.08);
+
+  --radius-s: 10px;
+  --radius-m: 16px;
+  --radius-l: 24px;
+  --radius-xl: 32px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+
+[data-theme="dark"]{
+  --bg: #1A1122;
+  --bg-elev: #241833;
+  --bg-sunken: #150D1C;
+  --text: #F4EFE6;
+  --text-soft: #C4B9D4;
+  --text-faint: #7E7289;
+  --border: rgba(207,195,232,0.12);
+  --card-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 8px 28px rgba(0,0,0,0.35);
+  --accent: var(--lavender);
+  --accent-soft: rgba(207,195,232,0.1);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s var(--ease), color .35s var(--ease);
+  overscroll-behavior-y:none;
+}
+h1,h2,h3,h4{font-family:var(--font-display); margin:0; letter-spacing:-0.01em;}
+p{margin:0;}
+button{font-family:inherit; cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--gold); color:var(--royal-deep);}
+:focus-visible{outline:2px solid var(--gold); outline-offset:2px; border-radius:6px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+/* ---------- App shell ---------- */
+#app{
+  max-width:560px;
+  margin:0 auto;
+  min-height:100vh;
+  min-height:100dvh;
+  position:relative;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom));
+  background:var(--bg);
+}
+@media (min-width:860px){
+  #app{max-width:920px;}
+}
+
+.view{
+  animation:viewIn .38s var(--ease);
+  padding:20px 20px 8px;
+}
+@keyframes viewIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.view[hidden]{display:none;}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px;
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:blur(18px) saturate(1.4);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand-mark{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg, var(--royal), var(--royal-light));
+  display:flex; align-items:center; justify-content:center;
+  color:var(--gold-bright); font-family:var(--font-display); font-weight:700; font-size:16px;
+  box-shadow:0 4px 12px rgba(59,35,82,.3);
+}
+.brand-name{font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:0.01em;}
+.brand-sub{font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-faint); margin-top:-2px;}
+.topbar-actions{display:flex; gap:8px;}
+.icon-btn{
+  width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--border); background:var(--bg-elev);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--text-soft); transition:transform .2s var(--ease), background .2s var(--ease);
+  font-size:16px;
+}
+.icon-btn:hover{transform:translateY(-1px); background:var(--accent-soft);}
+.icon-btn:active{transform:scale(.94);}
+
+/* ---------- Bottom nav ---------- */
+.bottomnav{
+  position:fixed; left:0; right:0; bottom:0; z-index:50;
+  display:flex; justify-content:center;
+}
+.bottomnav-inner{
+  width:100%; max-width:560px;
+  margin:0 16px;
+  display:flex; justify-content:space-between;
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border:1px solid var(--border);
+  border-radius:24px;
+  margin-bottom:14px;
+  box-shadow:0 10px 34px rgba(42,23,53,0.14);
+}
+@media (min-width:860px){ .bottomnav-inner{max-width:920px;} }
+.navbtn{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:none; border:none; padding:8px 2px;
+  color:var(--text-faint); border-radius:16px; position:relative;
+  transition:color .2s var(--ease), transform .2s var(--ease-spring);
+}
+.navbtn .navicon{font-size:19px; line-height:1;}
+.navbtn .navlabel{font-size:10px; font-weight:600; letter-spacing:.01em;}
+.navbtn.active{color:var(--royal);}
+[data-theme="dark"] .navbtn.active{color:var(--lavender);}
+.navbtn.active .navicon{transform:translateY(-1px);}
+.navbtn:active{transform:scale(.92);}
+.navbtn.active::before{
+  content:''; position:absolute; top:2px; width:26px; height:26px; border-radius:10px;
+  background:var(--accent-soft); z-index:-1;
+}
+
+/* ---------- Cards & primitives ---------- */
+.card{
+  background:var(--bg-elev);
+  border:1px solid var(--border);
+  border-radius:var(--radius-l);
+  box-shadow:var(--card-shadow);
+}
+.eyebrow{
+  font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--gold); opacity:.9;
+}
+.section-title{font-size:22px; font-weight:600; margin-bottom:4px;}
+.section-sub{color:var(--text-soft); font-size:14px; margin-top:6px; line-height:1.5;}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border-radius:16px; border:none; padding:15px 22px;
+  font-weight:700; font-size:15px; letter-spacing:0.01em;
+  transition:transform .18s var(--ease-spring), box-shadow .2s var(--ease), opacity .2s;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{
+  background:linear-gradient(135deg, var(--royal), var(--royal-light));
+  color:var(--ivory);
+  box-shadow:0 10px 26px rgba(59,35,82,.34);
+}
+.btn-primary:hover{box-shadow:0 14px 32px rgba(59,35,82,.42);}
+.btn-gold{
+  background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color:var(--royal-deep);
+  box-shadow:0 10px 24px rgba(201,162,39,.3);
+}
+.btn-ghost{background:var(--accent-soft); color:var(--accent);}
+.btn-outline{background:transparent; border:1.5px solid var(--border); color:var(--text);}
+.btn-block{width:100%;}
+.btn-sm{padding:10px 16px; font-size:13px; border-radius:12px;}
+.btn[disabled]{opacity:.45; pointer-events:none;}
+
+.chip{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 12px; border-radius:100px; font-size:12px; font-weight:600;
+  background:var(--accent-soft); color:var(--accent);
+}
+
+.progress-track{height:8px; border-radius:100px; background:var(--bg-sunken); overflow:hidden;}
+.progress-fill{height:100%; border-radius:100px; background:linear-gradient(90deg, var(--gold), var(--royal)); transition:width .6s var(--ease-spring);}
+
+/* ---------- HOME ---------- */
+.home-hero{
+  text-align:left; padding:6px 2px 18px;
+}
+.home-greeting{font-size:13px; color:var(--text-soft); font-weight:600;}
+.home-name{font-size:30px; margin-top:4px;}
+.stat-row{display:flex; gap:10px; margin-top:18px;}
+.stat-card{flex:1; padding:14px 12px; text-align:center;}
+.stat-num{font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--royal);}
+[data-theme="dark"] .stat-num{color:var(--lavender);}
+.stat-label{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em; margin-top:2px;}
+
+.mission-banner{
+  margin-top:18px; padding:22px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg, var(--royal-deep), var(--royal));
+  color:var(--ivory); border-radius:var(--radius-xl);
+}
+.mission-banner::after{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 85% 10%, rgba(228,197,88,.22), transparent 55%);
+}
+.mission-banner .eyebrow{color:var(--gold-bright);}
+.mission-banner h3{font-size:24px; margin-top:6px; color:#fff;}
+.mission-banner p{color:rgba(250,247,240,.78); font-size:13.5px; margin-top:8px; line-height:1.5;}
+.mission-meta{display:flex; gap:14px; margin-top:14px; font-size:12px; color:rgba(250,247,240,.85);}
+.mission-meta span{display:flex; align-items:center; gap:5px;}
+
+.cta-giant{margin-top:16px; padding:20px; font-size:17px;}
+
+.streak-strip{
+  margin-top:16px; padding:16px 18px; display:flex; align-items:center; gap:12px;
+}
+.streak-flame{font-size:24px;}
+.streak-text b{font-family:var(--font-display); font-size:16px;}
+.streak-text{font-size:12.5px; color:var(--text-soft);}
+
+/* ---------- ROADMAP PHASE BAR ---------- */
+.phase-bar{display:flex; align-items:center; gap:4px; margin-top:16px;}
+.phase-step{flex:1; text-align:center;}
+.phase-step .dot{width:10px; height:10px; border-radius:50%; margin:0 auto 6px; background:var(--bg-sunken); border:1.5px solid var(--border);}
+.phase-step.active .dot{background:var(--gold); border-color:var(--gold);}
+.phase-step.done .dot{background:var(--royal); border-color:var(--royal);}
+[data-theme="dark"] .phase-step.done .dot{background:var(--lavender); border-color:var(--lavender);}
+.phase-step .lbl{font-size:9.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--text-faint);}
+.phase-step.active .lbl{color:var(--gold);}
+.phase-step.done .lbl{color:var(--text-soft);}
+.phase-track{position:relative;}
+.phase-track::before{content:''; position:absolute; top:5px; left:10%; right:10%; height:2px; background:var(--border); z-index:0;}
+
+/* ---------- PACE CARD ---------- */
+.pace-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;}
+.pace-cell{padding:12px 8px; text-align:center;}
+.pace-num{font-family:var(--font-display); font-size:18px; color:var(--royal);}
+[data-theme="dark"] .pace-num{color:var(--lavender);}
+.pace-lbl{font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.06em; margin-top:2px;}
+
+/* ---------- EVOLUTION CTA ---------- */
+.evo-cta{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 18px; margin-top:14px;}
+.evo-cta .evo-txt{font-size:13.5px; font-weight:700;}
+.evo-cta .evo-sub{font-size:11.5px; color:var(--text-faint); margin-top:2px;}
+
+/* ---------- TOOL DOCK ---------- */
+.tool-fab{
+  position:fixed; right:calc(50% - 260px + 18px); bottom:calc(96px + env(safe-area-inset-bottom)); z-index:60;
+  width:52px; height:52px; border-radius:50%; border:none;
+  background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color:var(--royal-deep); font-size:20px; box-shadow:0 10px 28px rgba(201,162,39,.4);
+  display:flex; align-items:center; justify-content:center;
+}
+@media (max-width:600px){ .tool-fab{ right:18px; } }
+@media (min-width:860px){ .tool-fab{ right:calc(50% - 460px + 18px); } }
+.tool-fab:active{transform:scale(.93);}
+.tool-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;}
+.tool-item{padding:16px 12px; text-align:left; border:1px solid var(--border); background:var(--bg-elev);}
+.tool-item .t-icon{font-size:20px;}
+.tool-item .t-name{font-size:13px; font-weight:700; margin-top:8px;}
+.tool-item .t-desc{font-size:11px; color:var(--text-faint); margin-top:2px; line-height:1.4;}
+
+/* ---------- WEEKLY MIRROR ---------- */
+.mirror-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;}
+.mirror-cell{padding:12px; text-align:center;}
+.mirror-num{font-family:var(--font-display); font-size:20px; color:var(--royal);}
+[data-theme="dark"] .mirror-num{color:var(--lavender);}
+.mirror-lbl{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px;}
+.mirror-note{font-size:12.5px; color:var(--text-soft); margin-top:12px; line-height:1.5;}
+
+/* ---------- EVOLUTION VIEW ---------- */
+.sample-item{padding:16px; margin-top:10px;}
+.sample-head{display:flex; justify-content:space-between; align-items:center;}
+.sample-week{font-size:11px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:.06em;}
+.sample-date{font-size:11px; color:var(--text-faint);}
+.sample-body{font-size:13.5px; margin-top:8px; line-height:1.55; color:var(--text); white-space:pre-wrap;}
+.sample-meta{font-size:11px; color:var(--text-faint); margin-top:8px;}
+.compare-row{display:flex; gap:8px; margin-top:14px;}
+.compare-row select{flex:1; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--bg-sunken); color:var(--text); font-size:13px; font-family:inherit;}
+.compare-pane{margin-top:14px;}
+
+/* ---------- STUCK PICKER ---------- */
+.stuck-toggle{margin-top:12px; font-size:12.5px; color:var(--text-faint); background:none; border:none; text-decoration:underline; padding:4px 0;}
+.stuck-options{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+.stuck-opt{padding:12px 14px; text-align:left; border:1.5px solid var(--border); background:var(--bg-elev); border-radius:14px; font-size:13px;}
+.stuck-opt:active{transform:scale(.98);}
+
+/* ---------- CONFIDENCE STARS ---------- */
+.confidence-row{display:flex; gap:6px; margin-top:10px;}
+.star-btn{width:34px; height:34px; border-radius:10px; border:1px solid var(--border); background:var(--bg-elev); font-size:16px; color:var(--text-faint);}
+.star-btn.on{color:var(--gold); border-color:var(--gold); background:var(--accent-soft);}
+
+/* ---------- MISSION STATUS PILL ---------- */
+.status-pill{display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:100px; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
+.status-pill.not-started{background:var(--bg-sunken); color:var(--text-faint);}
+.status-pill.discovered{background:rgba(201,162,39,.15); color:var(--gold);}
+.status-pill.practicing{background:var(--accent-soft); color:var(--accent);}
+.status-pill.revisit{background:rgba(226,114,91,.15); color:var(--coral);}
+.status-pill.integrated{background:rgba(59,35,82,.15); color:var(--royal);}
+[data-theme="dark"] .status-pill.integrated{background:rgba(207,195,232,.18); color:var(--lavender);}
+
+/* ---------- WORD COUNTER ---------- */
+.word-counter{text-align:right; font-size:11px; color:var(--text-faint); margin-top:6px; font-weight:600;}
+.word-counter.ok{color:var(--royal);}
+[data-theme="dark"] .word-counter.ok{color:var(--lavender);}
+
+/* ---------- FLUENCY LAB ---------- */
+.topic-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+.topic-card{border:1.5px solid var(--border); border-radius:16px; padding:14px; text-align:left; background:var(--bg-elev);}
+.topic-card.active{border-color:var(--gold); background:var(--accent-soft);}
+.topic-card .tc-title{font-weight:700; font-size:13.5px; color:var(--text);}
+.topic-card .tc-desc{font-size:11.5px; color:var(--text-faint); margin-top:3px; line-height:1.4;}
+.lab-prompt{font-family:var(--font-display); font-size:20px; color:var(--royal); line-height:1.3; margin-top:4px;}
+[data-theme="dark"] .lab-prompt{color:var(--lavender);}
+.lab-chips{display:flex; gap:7px; flex-wrap:wrap; margin:12px 0;}
+.lab-chip{padding:6px 10px; border-radius:100px; background:var(--accent-soft); color:var(--royal); font-size:11.5px; font-weight:700;}
+[data-theme="dark"] .lab-chip{color:var(--lavender);}
+.lab-timer{text-align:center; padding:20px; border-radius:20px; background:var(--bg-sunken);}
+.lab-ring{width:170px; height:170px; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; background:conic-gradient(var(--gold) var(--pct,0%), var(--border) 0); position:relative;}
+.lab-ring::before{content:''; position:absolute; inset:10px; border-radius:50%; background:var(--bg-elev);}
+.lab-clock{position:relative; font-family:var(--font-display); font-size:34px; color:var(--royal); font-variant-numeric:tabular-nums;}
+[data-theme="dark"] .lab-clock{color:var(--lavender);}
+.lab-timer-msg{font-size:12px; color:var(--text-faint); margin-top:10px;}
+.lab-attempt{border-left:3px solid var(--gold); border-radius:0 14px 14px 0; padding:12px 16px; background:var(--bg-sunken); margin-top:10px;}
+
+/* ---------- MIND MAP ---------- */
+.mindmap-wrap{margin-top:14px; padding:14px;}
+.mindmap-wrap svg{width:100%; height:auto; display:block;}
+
+/* ---------- TODAY'S SESSION ---------- */
+.session-progress-dots{display:flex; gap:6px; margin:14px 0 2px;}
+.session-progress-dots span{flex:1; height:4px; border-radius:100px; background:var(--bg-sunken);}
+.session-progress-dots span.done{background:var(--gold);}
+.session-progress-dots span.current{background:var(--royal);}
+[data-theme="dark"] .session-progress-dots span.current{background:var(--lavender);}
+
+.session-block{padding:20px; margin-top:14px;}
+.session-block h4{font-size:15px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+.session-block h4 .num{
+  width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+}
+.vocab-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+.vocab-pill{padding:10px 12px; background:var(--bg-sunken); border-radius:12px; font-size:13px;}
+.vocab-pill b{display:block; font-size:13.5px; color:var(--royal);}
+[data-theme="dark"] .vocab-pill b{color:var(--lavender);}
+.vocab-pill span{color:var(--text-soft); font-size:11.5px;}
+textarea.reflect{
+  width:100%; border:1px solid var(--border); border-radius:14px; padding:14px;
+  background:var(--bg-sunken); color:var(--text); font-family:var(--font-body); font-size:14px;
+  resize:vertical; min-height:90px;
+}
+.session-empty{text-align:center; padding:60px 20px;}
+.session-empty .big-emoji{font-size:44px;}
+
+/* ---------- LEARNING PATH ---------- */
+.path-line{position:relative; padding-left:34px; margin-top:22px;}
+.path-line::before{
+  content:''; position:absolute; left:14px; top:6px; bottom:6px; width:2px;
+  background:linear-gradient(var(--gold), var(--border));
+}
+.mission-node{position:relative; padding-bottom:26px; cursor:pointer;}
+.mission-node:last-child{padding-bottom:4px;}
+.node-dot{
+  position:absolute; left:-34px; top:2px; width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;
+  border:2px solid var(--border); background:var(--bg-elev); color:var(--text-faint);
+  transition:all .3s var(--ease-spring);
+}
+.mission-node.completed .node-dot{background:var(--gold); border-color:var(--gold); color:var(--royal-deep);}
+.mission-node.current .node-dot{background:var(--royal); border-color:var(--royal); color:#fff; box-shadow:0 0 0 6px var(--accent-soft);}
+.node-card{padding:14px 16px; transition:transform .2s var(--ease);}
+.mission-node:hover .node-card{transform:translateX(2px);}
+.mission-node.locked .node-card{opacity:.55;}
+.node-title{font-size:15px; font-weight:600;}
+.node-tag{font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em;}
+.node-desc{font-size:12.5px; color:var(--text-soft); margin-top:4px;}
+
+/* ---------- JOURNAL ---------- */
+.mood-row{display:flex; gap:8px; margin-top:12px;}
+.mood-btn{
+  flex:1; padding:12px 4px; border-radius:14px; border:1.5px solid var(--border); background:var(--bg-elev);
+  font-size:22px; text-align:center; transition:all .18s var(--ease-spring);
+}
+.mood-btn.selected{border-color:var(--gold); background:var(--accent-soft); transform:translateY(-2px);}
+.journal-field{margin-top:16px;}
+.journal-field label{font-size:12.5px; font-weight:700; color:var(--text-soft); display:block; margin-bottom:8px;}
+.journal-field textarea{
+  width:100%; border:1px solid var(--border); border-radius:14px; padding:14px;
+  background:var(--bg-sunken); color:var(--text); font-family:var(--font-body); font-size:14px; min-height:80px; resize:vertical;
+}
+.wordcount{font-size:11px; color:var(--text-faint); text-align:right; margin-top:4px;}
+.entry-item{padding:14px 16px; margin-top:10px;}
+.entry-head{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-faint);}
+.entry-body{font-size:13.5px; margin-top:6px; color:var(--text); line-height:1.5; white-space:pre-wrap;}
+
+/* ---------- MEDITATION ---------- */
+.med-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;}
+.med-card{padding:20px 16px; text-align:left; position:relative; overflow:hidden; border:none;}
+.med-card .med-min{font-family:var(--font-display); font-size:28px; color:var(--royal);}
+[data-theme="dark"] .med-card .med-min{color:var(--lavender);}
+.med-card .med-unit{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em;}
+.med-card .med-name{font-size:14px; font-weight:600; margin-top:8px;}
+.med-card .med-icon{position:absolute; right:14px; top:14px; font-size:20px; opacity:.5;}
+
+/* ---------- RESOURCES ---------- */
+.res-item{padding:16px; display:flex; align-items:center; gap:14px; margin-top:10px;}
+.res-icon{width:44px; height:44px; border-radius:12px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0;}
+.res-body{flex:1;}
+.res-title{font-size:14.5px; font-weight:600;}
+.res-desc{font-size:12px; color:var(--text-faint); margin-top:2px;}
+
+/* ---------- PROFILE ---------- */
+.profile-head{display:flex; flex-direction:column; align-items:center; text-align:center; padding:24px 0 6px;}
+.avatar{
+  width:84px; height:84px; border-radius:50%;
+  background:linear-gradient(135deg, var(--royal), var(--royal-light));
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-size:30px; color:var(--gold-bright);
+  box-shadow:0 10px 26px rgba(59,35,82,.3);
+}
+.profile-uuid{font-size:11px; color:var(--text-faint); margin-top:10px; font-family:monospace;}
+.stats-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px;}
+.badge-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px;}
+.badge{padding:14px 4px; text-align:center; opacity:.3;}
+.badge.earned{opacity:1;}
+.badge .b-icon{font-size:22px;}
+.badge .b-name{font-size:9px; margin-top:4px; color:var(--text-faint); font-weight:600;}
+
+/* ---------- SETTINGS ---------- */
+.settings-row{display:flex; align-items:center; justify-content:space-between; padding:16px; margin-top:10px;}
+.settings-row-title{font-size:14px; font-weight:600;}
+.settings-row-sub{font-size:11.5px; color:var(--text-faint); margin-top:2px;}
+.switch{width:46px; height:26px; border-radius:100px; background:var(--bg-sunken); border:1px solid var(--border); position:relative; flex-shrink:0;}
+.switch::after{content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:var(--text-faint); transition:all .25s var(--ease-spring);}
+.switch.on{background:var(--royal);}
+.switch.on::after{transform:translateX(20px); background:var(--gold-bright);}
+input[type=text].input{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border);
+  background:var(--bg-sunken); color:var(--text); font-size:14px; font-family:inherit;
+}
+
+/* ---------- Modal ---------- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(20,10,28,.5); backdrop-filter:blur(4px);
+  z-index:100; display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .25s var(--ease);
+}
+.modal-backdrop.open{opacity:1; pointer-events:all;}
+@media (min-width:640px){ .modal-backdrop{align-items:center;} }
+.modal{
+  background:var(--bg-elev); width:100%; max-width:520px; max-height:88vh; overflow-y:auto;
+  border-radius:28px 28px 0 0; padding:26px 22px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(30px); transition:transform .3s var(--ease-spring);
+  box-shadow:0 -10px 40px rgba(0,0,0,.2);
+}
+@media (min-width:640px){ .modal{border-radius:28px; transform:translateY(10px) scale(.98);} }
+.modal-backdrop.open .modal{transform:translateY(0) scale(1);}
+.modal-handle{width:40px; height:4px; border-radius:100px; background:var(--border); margin:0 auto 18px;}
+.modal-close{position:absolute; top:18px; right:18px;}
+
+/* Toast */
+#toast{
+  position:fixed; bottom:110px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--royal-deep); color:var(--ivory); padding:12px 20px; border-radius:14px;
+  font-size:13px; font-weight:600; z-index:200; opacity:0; pointer-events:none;
+  transition:all .3s var(--ease-spring); box-shadow:0 10px 30px rgba(0,0,0,.3);
+  max-width:90vw; text-align:center;
+}
+#toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+/* Confetti canvas */
+#confetti-canvas{position:fixed; inset:0; pointer-events:none; z-index:300;}
+
+/* Command palette */
+.cmdk{
+  position:fixed; top:80px; left:50%; transform:translateX(-50%); width:min(90vw,480px);
+  background:var(--bg-elev); border:1px solid var(--border); border-radius:20px; z-index:110;
+  box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden;
+  opacity:0; pointer-events:none; transition:opacity .2s var(--ease);
+}
+.cmdk.open{opacity:1; pointer-events:all;}
+.cmdk input{width:100%; border:none; padding:16px 18px; font-size:15px; background:transparent; color:var(--text); font-family:inherit;}
+.cmdk-list{max-height:280px; overflow-y:auto; border-top:1px solid var(--border);}
+.cmdk-item{padding:12px 18px; font-size:13.5px; display:flex; align-items:center; gap:10px; color:var(--text-soft);}
+.cmdk-item:hover, .cmdk-item.hi{background:var(--accent-soft); color:var(--text); cursor:pointer;}
+
+/* Skeleton / empty */
+.empty-state{text-align:center; padding:50px 20px; color:var(--text-faint);}
+.empty-state .e-icon{font-size:38px; margin-bottom:10px;}
+
+/* Onboarding */
+.onboard-logo{
+  width:64px; height:64px; border-radius:18px; margin:6px auto 18px;
+  background:linear-gradient(135deg, var(--royal), var(--royal-light));
+  display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:26px; color:var(--gold-bright);
+}
+
+.mt-2{margin-top:8px;} .mt-3{margin-top:14px;} .mt-4{margin-top:20px;}
+
+/* Scrollbar (desktop niceties) */
+::-webkit-scrollbar{width:8px; height:8px;}
+::-webkit-scrollbar-thumb{background:var(--border); border-radius:8px;}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">Q</div>
+      <div>
+        <div class="brand-name">QK ESL</div>
+        <div class="brand-sub">Rapid Learning System</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="btnSearch" aria-label="Search (Cmd+K)" title="Search">⌘K</button>
+      <button class="icon-btn" id="btnTheme" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
+      <button class="icon-btn" id="btnGoSettings" aria-label="Settings" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <!-- ===================== HOME ===================== -->
+  <main class="view" id="view-home">
+    <section class="home-hero">
+      <div class="home-greeting" id="homeGreeting">Good day</div>
+      <h1 class="home-name" id="homeName">Welcome</h1>
+
+      <div class="stat-row">
+        <div class="card stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day streak</div></div>
+        <div class="card stat-card"><div class="stat-num" id="statHours">0</div><div class="stat-label">Hours</div></div>
+        <div class="card stat-card"><div class="stat-num" id="statMission">1/17</div><div class="stat-label">Mission</div></div>
+      </div>
+    </section>
+
+    <div class="card" style="padding:16px 18px;">
+      <div class="eyebrow">Your Fluency Roadmap</div>
+      <div class="phase-bar phase-track" id="phaseBar"></div>
+    </div>
+
+    <div class="mission-banner card mt-3" id="homeBanner" style="border:none;">
+      <div class="eyebrow" id="bannerEyebrow">Current mission</div>
+      <h3 id="bannerTitle">Arrival</h3>
+      <p id="bannerObjective">Settle in, meet the system, and set your intention for the journey ahead.</p>
+      <div class="mission-meta">
+        <span id="bannerDuration">⏱ 15 min</span>
+        <span id="bannerStep">Step 1 of 17</span>
+      </div>
+    </div>
+
+    <button class="btn btn-gold btn-block cta-giant" id="btnStartSession">Start Today's Session →</button>
+
+    <div class="card streak-strip">
+      <div class="streak-flame">🔥</div>
+      <div class="streak-text"><b id="streakBig">0-day streak</b><br>Keep showing up — consistency compounds.</div>
+    </div>
+
+    <div class="card mt-3" style="padding:16px 18px;">
+      <div class="eyebrow">Your pace</div>
+      <div class="pace-grid" id="paceGrid"></div>
+      <p class="section-sub" style="margin-top:10px;">Every student moves at their own speed. Week number and mission number don't have to match.</p>
+    </div>
+
+    <button class="card evo-cta btn-block mt-2" id="btnLabCta" style="width:100%; text-align:left; border:none;">
+      <div><div class="evo-txt">🎙️ Fluency Lab</div><div class="evo-sub">Speak on a topic, then reflect</div></div>
+      <div>›</div>
+    </button>
+
+    <button class="card evo-cta btn-block" id="btnEvoCta" style="width:100%; text-align:left; border:none;">
+      <div><div class="evo-txt">📊 Your Evolution</div><div class="evo-sub">Compare my writing across weeks</div></div>
+      <div>›</div>
+    </button>
+
+    <div class="card mt-3" style="padding:16px 18px;">
+      <div class="eyebrow">Your week</div>
+      <div class="mirror-grid" id="mirrorGrid"></div>
+      <p class="mirror-note" id="mirrorNote"></p>
+    </div>
+  </main>
+
+  <!-- ===================== TODAY'S SESSION ===================== -->
+  <main class="view" id="view-session" hidden>
+    <div class="eyebrow">Today's session</div>
+    <div class="session-progress-dots" id="sessionDots"></div>
+
+    <div id="sessionContent"></div>
+
+    <div class="session-empty" id="sessionDoneState" hidden>
+      <div class="big-emoji">🌿</div>
+      <h3 class="mt-3">You're complete for today</h3>
+      <p class="section-sub">Rest well. Your next mission unlocks tomorrow, or whenever you're ready to return.</p>
+    </div>
+  </main>
+
+  <!-- ===================== FLUENCY LAB ===================== -->
+  <main class="view" id="view-lab" hidden>
+    <h2 class="section-title">Fluency Lab</h2>
+    <p class="section-sub">Have something to say. Choose a topic, prepare your ideas, speak out loud for 30–60 seconds, then reflect. Every attempt becomes part of your Evolution.</p>
+
+    <div class="topic-grid" id="labTopics"></div>
+
+    <div class="card mt-4" style="padding:18px;">
+      <div class="eyebrow">Your challenge</div>
+      <div class="lab-prompt" id="labPrompt"></div>
+      <div class="lab-chips" id="labChips"></div>
+      <p class="section-sub"><b>Minimum:</b> 30 seconds · <b>Target:</b> 60 seconds</p>
+      <div class="lab-timer">
+        <div class="lab-ring" id="labRing"><div class="lab-clock" id="labClock">00:00</div></div>
+        <div style="display:flex; gap:10px; justify-content:center;">
+          <button class="btn btn-primary" id="labStartBtn">Start speaking</button>
+          <button class="btn btn-outline" id="labFinishBtn">Finish</button>
+        </div>
+        <p class="lab-timer-msg" id="labTimerMsg">Don't chase perfection. Keep your thought alive.</p>
+      </div>
+    </div>
+
+    <div class="card mt-3" style="padding:18px;">
+      <div class="eyebrow">Prepare → Speak → Reflect</div>
+      <p class="section-sub" style="margin-top:2px;">Before speaking: jot ideas or useful chunks, not a script.</p>
+      <textarea class="reflect" id="labPrep" placeholder="Jot down a few ideas or useful chunks…" style="min-height:70px;"></textarea>
+
+      <p class="section-sub" style="margin-top:14px;"><b>After speaking:</b> What did you manage to say?</p>
+      <textarea class="reflect" id="labReflection" placeholder="What did I say, discover, or notice?"></textarea>
+      <div class="word-counter" id="labReflectionCount"></div>
+
+      <p class="section-sub" style="margin-top:14px;">What was difficult?</p>
+      <textarea class="reflect" id="labDifficulty" placeholder="I got stuck when… / I wanted to say…" style="min-height:70px;"></textarea>
+
+      <button class="btn btn-gold btn-block mt-3" id="btnSaveLabAttempt">Save my speaking moment</button>
+      <p class="section-sub mt-2" style="text-align:center;">Your attempt becomes part of your personal English Evolution.</p>
+    </div>
+  </main>
+
+  <!-- ===================== LEARNING PATH ===================== -->
+  <main class="view" id="view-path" hidden>
+    <h2 class="section-title">Learning Path</h2>
+    <p class="section-sub">Seventeen missions from arrival to executive mastery.</p>
+    <div class="progress-track mt-3"><div class="progress-fill" id="pathProgressFill" style="width:0%"></div></div>
+
+    <div class="card mindmap-wrap" id="mindMapCard"></div>
+
+    <div class="path-line" id="pathList"></div>
+  </main>
+
+  <!-- ===================== JOURNAL ===================== -->
+  <main class="view" id="view-journal" hidden>
+    <h2 class="section-title">Journal</h2>
+    <p class="section-sub" id="journalDate">—</p>
+
+    <div class="mood-row" id="moodRow">
+      <button class="mood-btn" data-mood="😔">😔</button>
+      <button class="mood-btn" data-mood="😐">😐</button>
+      <button class="mood-btn" data-mood="🙂">🙂</button>
+      <button class="mood-btn" data-mood="😄">😄</button>
+      <button class="mood-btn" data-mood="🚀">🚀</button>
+    </div>
+
+    <div class="journal-field">
+      <label>Today I learned</label>
+      <textarea id="jLearned" placeholder="What clicked for you today?"></textarea>
+      <div class="wordcount"><span id="wcLearned">0</span> words</div>
+    </div>
+    <div class="journal-field">
+      <label>Questions</label>
+      <textarea id="jQuestions" placeholder="What are you still unsure about?"></textarea>
+      <div class="wordcount"><span id="wcQuestions">0</span> words</div>
+    </div>
+    <div class="journal-field">
+      <label>Homework</label>
+      <textarea id="jHomework" placeholder="What will you practice before next session?"></textarea>
+      <div class="wordcount"><span id="wcHomework">0</span> words</div>
+    </div>
+    <div class="journal-field">
+      <label>Personal notes</label>
+      <textarea id="jNotes" placeholder="Anything else worth remembering."></textarea>
+      <div class="wordcount"><span id="wcNotes">0</span> words</div>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:16px;">
+      <button class="btn btn-primary btn-block" id="btnSaveEntry">Save entry</button>
+      <button class="btn btn-outline" id="btnExportJournal">Export</button>
+    </div>
+
+    <h3 class="section-title mt-4" style="font-size:17px;">Past entries</h3>
+    <div id="journalEntries"></div>
+  </main>
+
+  <!-- ===================== MEDITATION ===================== -->
+  <main class="view" id="view-meditation" hidden>
+    <h2 class="section-title">Meditation Center</h2>
+    <p class="section-sub">No clocks to watch. Choose the reset that fits your moment.</p>
+    <div class="med-grid">
+      <button class="card med-card" data-med="8 Minute Focus"><div class="med-icon">✦</div><div class="med-min">8</div><div class="med-unit">Minutes</div><div class="med-name">Focus</div></button>
+      <button class="card med-card" data-med="13 Minute Reset"><div class="med-icon">◐</div><div class="med-min">13</div><div class="med-unit">Minutes</div><div class="med-name">Reset</div></button>
+      <button class="card med-card" data-med="15 Minute Super Yo"><div class="med-icon">✺</div><div class="med-min">15</div><div class="med-unit">Minutes</div><div class="med-name">Super Yo</div></button>
+      <button class="card med-card" data-med="30 Minute Psalm Meditation"><div class="med-icon">✝</div><div class="med-min">30</div><div class="med-unit">Minutes</div><div class="med-name">Psalm Meditation</div></button>
+    </div>
+    <p class="section-sub mt-4">Completed meditations: <b id="medCount">0</b></p>
+  </main>
+
+  <!-- ===================== RESOURCES ===================== -->
+  <main class="view" id="view-resources" hidden>
+    <h2 class="section-title">Resources</h2>
+    <p class="section-sub">Everything else you need, in one place.</p>
+
+    <div class="card res-item" data-modal="doc" data-url="https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview" data-title="Student Manual">
+      <div class="res-icon">📘</div>
+      <div class="res-body"><div class="res-title">Student Manual</div><div class="res-desc">Your complete program reference</div></div>
+      <div>›</div>
+    </div>
+    <div class="card res-item" data-modal="doc" data-url="https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview" data-title="About ProfGermandario">
+      <div class="res-icon">👤</div>
+      <div class="res-body"><div class="res-title">About ProfGermandario</div><div class="res-desc">The methodology behind the system</div></div>
+      <div>›</div>
+    </div>
+    <a class="card res-item" href="https://www.profgermandario.com" target="_blank" rel="noopener">
+      <div class="res-icon">🌐</div>
+      <div class="res-body"><div class="res-title">Website</div><div class="res-desc">profgermandario.com</div></div>
+      <div>↗</div>
+    </a>
+    <a class="card res-item" href="https://palekor.github.io/lecciones/" target="_blank" rel="noopener">
+      <div class="res-icon">📚</div>
+      <div class="res-body"><div class="res-title">GitHub Lessons</div><div class="res-desc">Interactive lesson library</div></div>
+      <div>↗</div>
+    </a>
+
+    <h3 class="section-title mt-4" style="font-size:16px;">Learning Tools</h3>
+    <p class="section-sub" style="margin-top:2px;">Quick access to the practice tools used across your missions.</p>
+    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+      <div class="res-icon">🖼️</div>
+      <div class="res-body"><div class="res-title">Aid Images — uno · dos · tres + verbs</div><div class="res-desc">Visual verb association set</div></div>
+      <div>↗</div>
+    </a>
+    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+      <div class="res-icon">📖</div>
+      <div class="res-body"><div class="res-title">Cognate Dictionary</div><div class="res-desc">-ción → -tion, -ir → -e patterns</div></div>
+      <div>↗</div>
+    </a>
+    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+      <div class="res-icon">🎧</div>
+      <div class="res-body"><div class="res-title">44 Verbs Audio Game</div><div class="res-desc">Interactive HTML verb drill</div></div>
+      <div>↗</div>
+    </a>
+
+    <h3 class="section-title mt-4" style="font-size:16px;">Step Library</h3>
+    <p class="section-sub" style="margin-top:2px;">Every lesson page at a glance — open any step directly.</p>
+    <div id="stepLibrary"></div>
+  </main>
+
+  <!-- ===================== EVOLUTION ===================== -->
+  <main class="view" id="view-evolution" hidden>
+    <h2 class="section-title">My English Evolution</h2>
+    <p class="section-sub">Your authentic writing, saved over time. This is the proof of change — nothing here is rewritten or corrected.</p>
+
+    <div class="card mt-3" style="padding:16px 18px;">
+      <div class="eyebrow">Add a new sample</div>
+      <p class="section-sub" style="margin-top:4px;">Write about anything you want, for about five minutes. Don't use a translator. Don't worry about mistakes — just express yourself.</p>
+      <textarea class="reflect mt-3" id="evoNewSample" placeholder="Start writing…" style="min-height:120px;"></textarea>
+      <button class="btn btn-primary btn-block mt-3" id="btnSaveSample">Save this sample</button>
+    </div>
+
+    <div class="compare-row" id="compareRow" hidden>
+      <select id="compareA"></select>
+      <select id="compareB"></select>
+    </div>
+    <div class="compare-pane" id="comparePane"></div>
+
+    <h3 class="section-title mt-4" style="font-size:16px;">Your writing history</h3>
+    <div id="sampleList"></div>
+
+    <h3 class="section-title mt-4" style="font-size:16px;">Practice records</h3>
+    <p class="section-sub">Every mission reflection and Fluency Lab attempt, saved automatically as evidence.</p>
+    <div class="stats-grid mt-2">
+      <div class="card stat-card"><div class="stat-num" id="prCount">0</div><div class="stat-label">Records</div></div>
+      <div class="card stat-card"><div class="stat-num" id="prLongest">0s</div><div class="stat-label">Longest speak</div></div>
+      <div class="card stat-card"><div class="stat-num" id="prTopics">0</div><div class="stat-label">Topics explored</div></div>
+    </div>
+    <div id="practiceRecordList"></div>
+  </main>
+
+  <!-- ===================== PROFILE ===================== -->
+  <main class="view" id="view-profile" hidden>
+    <div class="profile-head">
+      <div class="avatar" id="avatarInitial">S</div>
+      <h2 style="font-size:20px; margin-top:14px;" id="profileName">Student</h2>
+      <div class="chip mt-2" id="profileLevel">Level 1</div>
+      <div class="profile-uuid" id="profileUuid">—</div>
+      <div class="section-sub" id="profileMember">Member since —</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="card stat-card"><div class="stat-num" id="pfHours">0</div><div class="stat-label">Hours studied</div></div>
+      <div class="card stat-card"><div class="stat-num" id="pfVocab">0</div><div class="stat-label">Vocabulary</div></div>
+      <div class="card stat-card"><div class="stat-num" id="pfMed">0</div><div class="stat-label">Meditations</div></div>
+      <div class="card stat-card"><div class="stat-num" id="pfStreak">0</div><div class="stat-label">Streak</div></div>
+    </div>
+
+    <div class="card mt-3" style="padding:16px 18px;">
+      <div class="eyebrow">My fluency profile</div>
+      <div class="pace-grid" id="pfPaceGrid" style="grid-template-columns:1fr 1fr;"></div>
+    </div>
+
+    <h3 class="section-title mt-4" style="font-size:16px;">Achievements</h3>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </main>
+
+  <!-- ===================== SETTINGS ===================== -->
+  <main class="view" id="view-settings" hidden>
+    <h2 class="section-title">Settings</h2>
+
+    <div class="card mt-3" style="padding:16px;">
+      <label class="settings-row-title">Student name</label>
+      <input type="text" class="input mt-2" id="settingsName" placeholder="Your name">
+      <button class="btn btn-ghost btn-sm mt-2" id="btnSaveName">Save name</button>
+    </div>
+
+    <div class="card settings-row">
+      <div><div class="settings-row-title">Dark mode</div><div class="settings-row-sub">Easier on the eyes at night</div></div>
+      <button class="switch" id="switchDark"></button>
+    </div>
+
+    <div class="card settings-row" style="cursor:pointer;" id="btnExportData">
+      <div><div class="settings-row-title">Export progress</div><div class="settings-row-sub">Download your .qkesl file</div></div>
+      <div>⬇</div>
+    </div>
+
+    <div class="card settings-row" style="cursor:pointer;" id="btnImportData">
+      <div><div class="settings-row-title">Import progress</div><div class="settings-row-sub">Restore from a .qkesl file</div></div>
+      <div>⬆</div>
+    </div>
+    <input type="file" id="fileImport" accept=".qkesl,application/json" hidden>
+
+    <div class="card settings-row" style="cursor:pointer; border-color:rgba(226,114,91,.4);" id="btnResetProgress">
+      <div><div class="settings-row-title" style="color:var(--coral);">Reset current progress</div><div class="settings-row-sub">Missions, streak &amp; XP reset. Journal and writing samples are kept.</div></div>
+      <div>↺</div>
+    </div>
+
+    <div class="card settings-row" style="cursor:pointer; border-color:rgba(226,114,91,.4);" id="btnResetData">
+      <div><div class="settings-row-title" style="color:var(--coral);">Delete everything</div><div class="settings-row-sub">Erases all data, including your Starting Point. Cannot be undone.</div></div>
+      <div>⚠</div>
+    </div>
+
+    <p class="section-sub mt-4" style="text-align:center;">QK ESL Fluency Notebook · v5.0<br>by ProfGermandario · stored only on this device</p>
+  </main>
+
+</div><!-- /#app -->
+
+<!-- ===================== TOOL DOCK FAB ===================== -->
+<button class="tool-fab" id="btnToolDock" aria-label="Tools" title="Tools">🧰</button>
+
+<!-- ===================== BOTTOM NAV ===================== -->
+<nav class="bottomnav">
+  <div class="bottomnav-inner">
+    <button class="navbtn active" data-view="home"><span class="navicon">🏠</span><span class="navlabel">Home</span></button>
+    <button class="navbtn" data-view="path"><span class="navicon">🎯</span><span class="navlabel">Path</span></button>
+    <button class="navbtn" data-view="journal"><span class="navicon">📝</span><span class="navlabel">Journal</span></button>
+    <button class="navbtn" data-view="meditation"><span class="navicon">🧘</span><span class="navlabel">Meditate</span></button>
+    <button class="navbtn" data-view="profile"><span class="navicon">👤</span><span class="navlabel">Profile</span></button>
+  </div>
+</nav>
+
+<!-- ===================== ONBOARDING MODAL ===================== -->
+<div class="modal-backdrop" id="onboardModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="onboardStep1">
+      <div class="onboard-logo">Q</div>
+      <h2 style="text-align:center; font-size:22px;">Welcome to your Fluency Notebook</h2>
+      <p class="section-sub" style="text-align:center;">Your personal companion for rapid, confident English mastery. Let's set up your journey.</p>
+      <div class="journal-field">
+        <label>What should we call you?</label>
+        <input type="text" class="input" id="onboardName" placeholder="Your first name">
+      </div>
+      <button class="btn btn-primary btn-block mt-4" id="btnOnboardStart">Continue →</button>
+    </div>
+    <div id="onboardStep2" hidden>
+      <h2 style="text-align:center; font-size:20px;">My Starting Point</h2>
+      <p class="section-sub" style="text-align:center;">Write about anything you want, for about five minutes. Don't use a translator. Don't worry about mistakes — just express yourself. This becomes your baseline, so you can see how far you've come.</p>
+      <textarea class="reflect mt-3" id="onboardStarting" placeholder="Start writing…" style="min-height:130px;"></textarea>
+      <button class="btn btn-primary btn-block mt-4" id="btnOnboardSaveStart">Save & begin my journey →</button>
+      <button class="btn btn-outline btn-block mt-2" id="btnOnboardSkipStart">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TOOL DOCK MODAL ===================== -->
+<div class="modal-backdrop" id="toolModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3 style="font-size:16px;">Your tools</h3>
+    <p class="section-sub" style="margin-top:2px;">The essentials, one tap away.</p>
+    <div class="tool-grid" id="toolGrid"></div>
+  </div>
+</div>
+
+<!-- ===================== GENERIC DETAIL MODAL ===================== -->
+<div class="modal-backdrop" id="detailModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="detailModalBody"></div>
+  </div>
+</div>
+
+<!-- ===================== DOC PREVIEW MODAL ===================== -->
+<div class="modal-backdrop" id="docModal">
+  <div class="modal" style="height:80vh; display:flex; flex-direction:column; padding-bottom:16px;">
+    <div class="modal-handle"></div>
+    <h3 id="docModalTitle" style="font-size:16px; margin-bottom:10px;">Document</h3>
+    <iframe id="docModalFrame" src="" style="flex:1; width:100%; border:1px solid var(--border); border-radius:14px;"></iframe>
+  </div>
+</div>
+
+<!-- Command palette -->
+<div class="cmdk" id="cmdk">
+  <input id="cmdkInput" placeholder="Jump to a section…" autocomplete="off">
+  <div class="cmdk-list" id="cmdkList"></div>
+</div>
+
+<div id="toast"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   DATA — MISSIONS
+   ============================================================ */
+const MISSIONS = [
+  {t:"Personal Pronouns", tag:"Logic — Written & Spoken", step:"step00a", file:"https://palekor.github.io/lecciones/steps/step00a.html", desc:"Meet the 1st, 2nd, and 3rd person pronouns that anchor every English sentence.", duration:15,
+    vocab:[["I / you / he, she, it","1st, 2nd & 3rd person — singular"],["We / you / they","1st, 2nd & 3rd person — plural"]],
+    practice:"Say 10 sentences out loud, one per pronoun, as fast as you can — don't stop to fix mistakes.",
+    reflection:"Which pronoun did you hesitate on the most?",
+    resources:[
+      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
+    ]},
+  {t:"Verbs — Regular & Irregular", tag:"Logic — Written & Spoken", step:"step00b", file:"https://palekor.github.io/lecciones/steps/step00b.html", desc:"Tell the two verb families apart and how each one changes for the past.", duration:18,
+    vocab:[["Regular verb","adds -ed for the past (walk → walked)"],["Irregular verb","changes form unpredictably (go → went)"]],
+    practice:"List 5 regular and 5 irregular verbs from memory, then check them against a dictionary.",
+    reflection:"Which irregular verbs keep tripping you up?",
+    resources:[
+      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
+    ]},
+  {t:"Complement Sentence", tag:"Logic — Written & Spoken", step:"step01", file:"https://palekor.github.io/lecciones/steps/step01.html", desc:"Build complete sentences: subject + verb + complement.", duration:18,
+    vocab:[["Complement","the part of a sentence that completes its meaning"],["Subject","who or what the sentence is about"]],
+    practice:"Write 5 Subject + Verb + Complement sentences using the aid images and verb list.",
+    reflection:"Which sentence felt the most natural to say out loud?",
+    resources:[
+      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
+      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
+    ]},
+  {t:"Chunk Logic", tag:"Logic — Written & Spoken", step:"step02", file:"https://palekor.github.io/lecciones/steps/step02.html", desc:"Group words into chunks so speech flows instead of stalling word by word.", duration:18,
+    vocab:[["Chunk","a small group of words used together as one unit"],["Fluency chunk","a memorized phrase used as a single block, e.g. \"I'd like to…\""]],
+    practice:"Pick 3 chunks and use each one twice today in real sentences.",
+    reflection:"Where did chunking make you sound faster?"},
+  {t:"WH Questions", tag:"Logic — Written & Spoken", step:"step03", file:"https://palekor.github.io/lecciones/steps/step03.html", desc:"Master who, what, where, when, why, and how to fetch information fast.", duration:20,
+    vocab:[["WH-word","a question word: who, what, where, when, why, how"],["Fetching","asking a direct question to retrieve information"]],
+    practice:"Ask 6 questions, one for each WH-word, about something in your day.",
+    reflection:"Which WH-word do you use least, and why?"},
+  {t:"The 44 Sounds", tag:"Logic — Written & Spoken", step:"step04", file:"https://palekor.github.io/lecciones/steps/step04.html", desc:"Meet the 44 phonemes that make up spoken English.", duration:20,
+    vocab:[["Phoneme","the smallest unit of sound that changes meaning"],["Minimal pair","two words that differ by one sound, e.g. ship / sheep"]],
+    practice:"Practice 5 minimal pairs out loud, exaggerating the sound difference.",
+    reflection:"Which sound is hardest for your mouth to produce?"},
+  {t:"Prepositions", tag:"Logic — Written & Spoken", step:"step05", file:"https://palekor.github.io/lecciones/steps/step05.html", desc:"Place people, things, and time correctly with prepositions.", duration:18,
+    vocab:[["Preposition","a word that shows place, time, or direction — in, on, at"],["Preposition of time","in / on / at used with dates, days, and times"]],
+    practice:"Describe your room using 5 different prepositions of place.",
+    reflection:"Which preposition do you still mix up?"},
+  {t:"Deictics", tag:"Logic — Written & Spoken", step:"step06", file:"https://palekor.github.io/lecciones/steps/step06.html", desc:"Use the words that point — this, that, here, there, now, then.", duration:18,
+    vocab:[["Deictic","a word whose meaning depends on who, where, or when it's spoken"],["Reference point","the moment or place a deictic word points from"]],
+    practice:"Point at 5 objects around you and name each with this / that / these / those.",
+    reflection:"Did any deictic word feel confusing out of context?"},
+  {t:"Vocabulary & Cognates", tag:"Logic — Written & Spoken", step:"step07", file:"https://palekor.github.io/lecciones/steps/step07.html", desc:"Use Spanish–English cognates to expand vocabulary fast.", duration:20,
+    vocab:[["Cognate","a word that looks and means almost the same in two languages"],["-ción → -tion","a reliable Spanish-to-English cognate pattern"]],
+    practice:"Find 5 -ción words in Spanish and convert each to its -tion cognate in English.",
+    reflection:"Which cognate pattern will save you the most guessing time?"},
+  {t:"Storytelling", tag:"Speaking", desc:"Structure ideas so people want to keep listening.", duration:22,
+    vocab:[["Narrative","noun · a spoken or written account of events"],["Arc","noun · the shape a story takes from start to end"]],
+    practice:"Tell a 90-second story with a clear beginning, middle, and end.",
+    reflection:"Where did your story lose momentum, if anywhere?"},
+  {t:"Business English", tag:"Professional", desc:"Communicate with clarity in professional settings.", duration:22,
+    vocab:[["Stakeholder","noun · a person invested in an outcome"],["Deliverable","noun · a concrete output of work"]],
+    practice:"Write a two-line professional email requesting a meeting.",
+    reflection:"What tone did you aim for, and did you land it?"},
+  {t:"Presentations", tag:"Professional", desc:"Speak to a room with structure and presence.", duration:25,
+    vocab:[["Framing","noun · how information is positioned for the audience"],["Cadence","noun · the pace and flow of speech"]],
+    practice:"Outline a three-point structure for a two-minute talk.",
+    reflection:"What's your strongest presentation habit so far?"},
+  {t:"Negotiation", tag:"Professional", desc:"Advocate for outcomes with tact and clarity.", duration:22,
+    vocab:[["Leverage","noun · an advantage used to negotiate"],["Concession","noun · something given up to reach agreement"]],
+    practice:"Draft one sentence that firmly but politely states your position.",
+    reflection:"Where do you tend to give in too early?"},
+  {t:"Cultural Fluency", tag:"Context", desc:"Read the room across cultures and contexts.", duration:20,
+    vocab:[["Idiom","noun · an expression not meant literally"],["Convention","noun · an accepted social or professional norm"]],
+    practice:"Learn one idiom and use it correctly in a sentence.",
+    reflection:"What cultural nuance surprised you this week?"},
+  {t:"Advanced Conversation", tag:"Speaking", desc:"Debate, disagree, and persuade with ease.", duration:25,
+    vocab:[["Counterpoint","noun · an opposing argument or perspective"],["Diplomacy","noun · tact in handling sensitive exchanges"]],
+    practice:"Argue a position for one minute, then argue the opposite.",
+    reflection:"Which side was harder to argue, and why?"},
+  {t:"Executive Presence", tag:"Leadership", desc:"Command a room with tone, pace, and posture.", duration:24,
+    vocab:[["Gravitas","noun · seriousness and weight of manner"],["Poise","noun · graceful, composed self-assurance"]],
+    practice:"Record a 60-second update as if briefing a leadership team.",
+    reflection:"What made you sound most credible in that recording?"},
+  {t:"Mastery & Integration", tag:"Capstone", desc:"Bring every skill together into one fluent voice.", duration:30,
+    vocab:[["Integration","noun · combining parts into a unified whole"],["Fluent","adj · able to speak effortlessly and accurately"]],
+    practice:"Deliver a three-minute talk on any topic, unscripted.",
+    reflection:"How has your voice in English changed since Mission 1?"}
+];
+
+const BADGES = [
+  {id:"first_step", icon:"🌱", name:"First Step"},
+  {id:"week_streak", icon:"🔥", name:"7-Day Streak"},
+  {id:"vocab_50", icon:"📖", name:"Word Collector"},
+  {id:"halfway", icon:"⛰️", name:"Halfway There"},
+  {id:"meditator", icon:"🧘", name:"Centered"},
+  {id:"night_owl", icon:"🌙", name:"Dedicated"},
+  {id:"grad", icon:"🎓", name:"Graduate"},
+  {id:"journal_10", icon:"✍️", name:"Reflective"}
+];
+
+const STUCK_REASONS = [
+  "I don't understand.",
+  "I understand but can't remember.",
+  "I remember but can't speak.",
+  "I know it but speak slowly.",
+  "I keep making the same mistake.",
+  "I feel blocked."
+];
+
+const MED_URL = "https://palekor.github.io/lecciones/profgermandario.html";
+
+/* ============================================================
+   DATA — FLUENCY ROADMAP PHASES (mission index ranges, 0-based)
+   ============================================================ */
+const PHASES = [
+  {label:"Foundation",   from:0,  to:4},
+  {label:"Structure",    from:5,  to:9},
+  {label:"Automaticity", from:10, to:13},
+  {label:"Fluency",      from:14, to:16}
+];
+function phaseForMission(i){
+  const clamped = Math.min(i, MISSIONS.length-1);
+  return PHASES.find(p => clamped >= p.from && clamped <= p.to) || PHASES[PHASES.length-1];
+}
+
+/* ============================================================
+   DATA — CENTRALIZED RESOURCE CATALOG
+   ============================================================ */
+const RESOURCES = [
+  {id:"translator", title:"Google Translator", type:"translator", url:"https://translate.google.com", description:"Attempt first, then compare — see the Translator workflow below.", permanent:true, icon:"🌐"},
+  {id:"lessons", title:"GitHub Lessons", type:"lesson", url:"https://palekor.github.io/lecciones/", description:"Interactive lesson library", permanent:true, icon:"📚"},
+  {id:"aid-images", title:"Aid Images — uno · dos · tres + verbs", type:"tool", url:"https://palekor.github.io/lecciones/steps/", description:"Visual verb association set", mission:0, skill:"Vocabulary", permanent:true, icon:"🖼️"},
+  {id:"cognate-dict", title:"Cognate Dictionary", type:"dictionary", url:"https://palekor.github.io/lecciones/steps/", description:"-ción → -tion, -ir → -e patterns", mission:8, skill:"Vocabulary", permanent:true, icon:"📖"},
+  {id:"verbs-audio", title:"44 Verbs Audio Game", type:"audio", url:"https://palekor.github.io/lecciones/steps/", description:"Interactive HTML verb drill", mission:1, skill:"Listening", permanent:true, icon:"🎧"},
+  {id:"meditation", title:"Meditation Center", type:"meditation", url:MED_URL, description:"Guided resets between sessions", permanent:true, icon:"🧘"},
+  {id:"manual", title:"Student Manual", type:"document", url:"https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview", description:"Your complete program reference", permanent:true, icon:"📘"},
+  {id:"about", title:"About ProfGermandario", type:"document", url:"https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview", description:"The methodology behind the system", permanent:true, icon:"👤"},
+  {id:"website", title:"Website", type:"website", url:"https://www.profgermandario.com", description:"profgermandario.com", permanent:true, icon:"🌐"}
+];
+
+/* ============================================================
+   DATA — PERMANENT TOOL DOCK
+   ============================================================ */
+const TOOLS = [
+  {icon:"🌐", name:"Google Translator", desc:"Attempt, translate, compare", action:"external", url:"https://translate.google.com"},
+  {icon:"🎙️", name:"Fluency Lab", desc:"Speak on a topic, then reflect", action:"view", view:"lab"},
+  {icon:"📚", name:"Lesson Repository", desc:"Every mission's lesson page", action:"view", view:"resources"},
+  {icon:"🧠", name:"Learning Tools", desc:"Aid images, dictionary, audio", action:"view", view:"resources"},
+  {icon:"🧘", name:"Meditation", desc:"Guided resets", action:"view", view:"meditation"},
+  {icon:"📖", name:"My Notebook", desc:"Your journal", action:"view", view:"journal"},
+  {icon:"🔊", name:"Audio / Speaking", desc:"44 verbs audio drill", action:"external", url:"https://palekor.github.io/lecciones/steps/"},
+  {icon:"📊", name:"My Progress", desc:"See your evolution", action:"view", view:"evolution"}
+];
+
+/* ============================================================
+   DATA — FLUENCY MIND MAP (skill relationships)
+   ============================================================ */
+const MINDMAP_SKILLS = ["Perception","Memory","Logic","Language","Writing","Speaking","Listening","Assertiveness"];
+
+/* ============================================================
+   DATA — FLUENCY LAB TOPIC LIBRARY (spontaneous speaking prompts,
+   independent of the 17 missions — usable any time)
+   ============================================================ */
+const TOPICS = [
+  {id:"self",       icon:"👤", title:"Myself",              desc:"Who I am, what I do, what matters to me.",            prompt:"Tell me about yourself.",                          chips:["I am…","I live…","I enjoy…","I want to…"]},
+  {id:"home",       icon:"🏠", title:"My Home & My World",  desc:"Describe your home, neighborhood, city or daily world.", prompt:"Tell me about your home and the world around you.", chips:["There is…","I usually…","Near my home…","What I like is…"]},
+  {id:"experience", icon:"🌎", title:"My Experiences",      desc:"Tell a story about something that happened to you.",  prompt:"Tell me about a memorable experience.",             chips:["One time…","It happened when…","At first…","In the end…"]},
+  {id:"explain",    icon:"💡", title:"Explain Something",   desc:"Explain how something works or how to do something.", prompt:"Explain something you know well.",                 chips:["First…","Then…","The reason is…","Finally…"]},
+  {id:"opinion",    icon:"💭", title:"My Opinions",         desc:"Say what you think and explain why.",                 prompt:"What is something you have a strong opinion about? Why?", chips:["I think…","In my opinion…","Because…","For example…"]},
+  {id:"argument",   icon:"⚖️", title:"My Arguments",        desc:"Build an opinion with reasons, examples and a conclusion.", prompt:"Do you agree or disagree with an idea? Defend your position.", chips:["I agree/disagree…","The main reason…","For example…","That's why…"]}
+];
+
+/* ============================================================
+   Reflection word-count minimum, scaled by fluency phase —
+   used to gate BOTH the Today's Session reflection and Fluency
+   Lab attempts, so the requirement grows as the student advances.
+   ============================================================ */
+function minWordsForMission(i){
+  const phase = phaseForMission(i).label;
+  if(phase === "Foundation") return 25;
+  if(phase === "Structure") return 40;
+  if(phase === "Automaticity") return 60;
+  return 80; // Fluency
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const STORE_KEY = "qkesl_state_v1"; // key unchanged on purpose — see migrateState()
+const APP_DATA_VERSION = 2;
+
+function uuid(){
+  return 'qk-' + 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
+    const r = Math.random()*16|0, v = c==='x'? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+
+function defaultState(){
+  return {
+    version: APP_DATA_VERSION,
+    uuid: uuid(),
+    name: "",
+    createdAt: new Date().toISOString(),
+    theme: "light",
+    currentMission: 0,          // index into MISSIONS, 0-based
+    completedMissions: [],      // array of indices
+    xp: 0,
+    hours: 0,
+    vocabLearned: 0,
+    streak: 0,
+    lastActiveDate: null,       // yyyy-mm-dd
+    meditationsCompleted: 0,
+    achievements: [],
+    journalEntries: [],         // {id, date, mood, learned, questions, homework, notes}
+    sessionDoneToday: false,
+    sessionDoneDate: null,
+
+    // ---- v2 additions ----
+    missionProgress: {},        // { [missionIndex]: {status, startedAt, lastPracticedAt, sessions, confidence, notes} }
+    writingSamples: [],         // { id, createdAt, week, missionId, prompt, content, label }
+    sessionLog: [],             // { date, missionId, minutes }
+    meditationLog: [],          // { date }
+    stuckSignals: [],           // { date, missionId, reason }
+    currentFocus: "",           // free-text, student's own words on what they're working on
+    practiceRecords: []         // { id, type:'lesson'|'speaking', date, week, missionId, topic, duration, prep, content, difficulty, wordCount }
+  };
+}
+
+function migrateState(raw){
+  // Safe migration: never destroy existing fields, only fill in what's missing.
+  const base = defaultState();
+  const merged = Object.assign(base, raw);
+  // Arrays/objects introduced in v2 must exist even if the stored file predates them.
+  merged.missionProgress = raw && raw.missionProgress ? raw.missionProgress : {};
+  merged.writingSamples  = raw && Array.isArray(raw.writingSamples) ? raw.writingSamples : [];
+  merged.sessionLog      = raw && Array.isArray(raw.sessionLog) ? raw.sessionLog : [];
+  merged.meditationLog   = raw && Array.isArray(raw.meditationLog) ? raw.meditationLog : [];
+  merged.stuckSignals    = raw && Array.isArray(raw.stuckSignals) ? raw.stuckSignals : [];
+  merged.currentFocus    = raw && raw.currentFocus ? raw.currentFocus : "";
+  merged.practiceRecords = raw && Array.isArray(raw.practiceRecords) ? raw.practiceRecords : [];
+  merged.version = APP_DATA_VERSION;
+  return merged;
+}
+
+let state = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return migrateState(parsed);
+  }catch(e){
+    return defaultState();
+  }
+}
+
+function save(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  }catch(e){ /* storage full or unavailable — fail silently */ }
+}
+
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function updateStreak(){
+  const today = todayStr();
+  if(state.lastActiveDate === today) return; // already counted today
+  const yest = new Date(); yest.setDate(yest.getDate()-1);
+  const yestStr = yest.getFullYear()+'-'+String(yest.getMonth()+1).padStart(2,'0')+'-'+String(yest.getDate()).padStart(2,'0');
+  if(state.lastActiveDate === yestStr){
+    state.streak += 1;
+  } else {
+    state.streak = 1;
+  }
+  state.lastActiveDate = today;
+}
+
+/* ============================================================
+   PERSONAL PACE — week is independent from mission number
+   ============================================================ */
+function studentWeek(){
+  const start = new Date(state.createdAt);
+  const now = new Date();
+  const diffDays = Math.floor((now - start) / (1000*60*60*24));
+  return Math.max(1, Math.floor(diffDays/7) + 1);
+}
+
+function daysActiveInLast(n){
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-n);
+  const dates = new Set();
+  state.sessionLog.forEach(s=>{ if(new Date(s.date) >= cutoff) dates.add(s.date.slice(0,10)); });
+  state.journalEntries.forEach(j=>{ if(new Date(j.date) >= cutoff) dates.add(j.date.slice(0,10)); });
+  state.meditationLog.forEach(m=>{ if(new Date(m.date) >= cutoff) dates.add(m.date.slice(0,10)); });
+  return dates.size;
+}
+
+/* ============================================================
+   MISSION PROGRESS (per-mission mastery state)
+   ============================================================ */
+function ensureMissionProgress(i){
+  if(!state.missionProgress[i]){
+    state.missionProgress[i] = {status:"not_started", startedAt:null, lastPracticedAt:null, sessions:0, confidence:0, notes:""};
+  }
+  return state.missionProgress[i];
+}
+const STATUS_LABEL = {not_started:"Not started", discovered:"Discovered", practicing:"Practicing", revisit:"Revisit", integrated:"Integrated"};
+
+/* ============================================================
+   WEEKLY MIRROR — only real, stored data
+   ============================================================ */
+function weeklyMirror(){
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-7);
+  const sessions = state.sessionLog.filter(s => new Date(s.date) >= cutoff);
+  const journal = state.journalEntries.filter(j => new Date(j.date) >= cutoff);
+  const meds = state.meditationLog.filter(m => new Date(m.date) >= cutoff);
+  const minutes = sessions.reduce((sum,s)=> sum + (s.minutes||0), 0);
+  const lessons = new Set(sessions.map(s=>s.missionId)).size;
+  const hasData = sessions.length > 0 || journal.length > 0 || meds.length > 0;
+  return {
+    hasData, minutes, sessionsCount: sessions.length, lessons,
+    meditations: meds.length, journalCount: journal.length
+  };
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
+}
+
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+function confetti(){
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = innerWidth; canvas.height = innerHeight;
+  const colors = ['#C9A227','#E4C558','#3B2352','#CFC3E8','#E2725B'];
+  const pieces = Array.from({length:80}, ()=>({
+    x: Math.random()*canvas.width, y: -20 - Math.random()*200,
+    r: 4+Math.random()*5, c: colors[Math.floor(Math.random()*colors.length)],
+    vy: 2+Math.random()*3, vx: -2+Math.random()*4, rot: Math.random()*360, vr: -6+Math.random()*12
+  }));
+  let frame = 0;
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);
+      ctx.restore();
+    });
+    if(frame < 130) requestAnimationFrame(tick);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  tick();
+}
+
+/* ============================================================
+   VIEW ROUTING
+   ============================================================ */
+const VIEWS = ["home","session","lab","path","journal","meditation","resources","evolution","profile","settings"];
+function showView(name){
+  VIEWS.forEach(v=>{
+    const el = document.getElementById('view-'+v);
+    if(el) el.hidden = (v !== name);
+  });
+  document.querySelectorAll('.navbtn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  if(name === 'home') renderHome();
+  if(name === 'session') renderSession();
+  if(name === 'path') renderPath();
+  if(name === 'journal') renderJournal();
+  if(name === 'meditation') renderMeditation();
+  if(name === 'resources') renderResources();
+  if(name === 'lab') renderLab();
+  if(name === 'evolution') renderEvolution();
+  if(name === 'profile') renderProfile();
+  if(name === 'settings') renderSettings();
+}
+
+document.querySelectorAll('.navbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=> showView(btn.dataset.view));
+});
+document.getElementById('btnGoSettings').addEventListener('click', ()=> showView('settings'));
+document.getElementById('btnEvoCta').addEventListener('click', ()=> showView('evolution'));
+document.getElementById('btnLabCta').addEventListener('click', ()=> showView('lab'));
+
+/* ============================================================
+   RENDER: HOME
+   ============================================================ */
+function greetingWord(){
+  const h = new Date().getHours();
+  if(h < 12) return "Good morning";
+  if(h < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+function renderHome(){
+  document.getElementById('homeGreeting').textContent = greetingWord() + (state.name ? ',' : '');
+  document.getElementById('homeName').textContent = state.name || "Welcome";
+  document.getElementById('statStreak').textContent = state.streak;
+  document.getElementById('statHours').textContent = Math.round(state.hours*10)/10;
+  document.getElementById('statMission').textContent = (state.currentMission+1) + "/" + MISSIONS.length;
+
+  const m = MISSIONS[Math.min(state.currentMission, MISSIONS.length-1)];
+  const finished = state.currentMission >= MISSIONS.length;
+  document.getElementById('bannerEyebrow').textContent = finished ? "Program complete" : "Current mission · " + m.tag;
+  document.getElementById('bannerTitle').textContent = finished ? "Mastery achieved" : ("Mission " + (state.currentMission+1) + " — " + m.t);
+  document.getElementById('bannerObjective').textContent = finished ? "You've completed all 17 missions. Revisit any mission from your Learning Path." : m.desc;
+  document.getElementById('bannerDuration').textContent = finished ? "🎓 Graduate" : ("⏱ " + m.duration + " min");
+  document.getElementById('bannerStep').textContent = finished ? "17 of 17" : ("Step " + (state.currentMission+1) + " of " + MISSIONS.length);
+
+  document.getElementById('streakBig').textContent = state.streak + "-day streak";
+
+  // Roadmap phase bar
+  const curPhase = phaseForMission(state.currentMission);
+  const phaseBar = document.getElementById('phaseBar');
+  phaseBar.innerHTML = PHASES.map(p=>{
+    const cls = p.label === curPhase.label ? 'active' : (PHASES.indexOf(p) < PHASES.indexOf(curPhase) ? 'done' : '');
+    return `<div class="phase-step ${cls}"><div class="dot"></div><div class="lbl">${p.label}</div></div>`;
+  }).join('');
+
+  // Personal pace — week is independent of mission progress
+  const activeDays = daysActiveInLast(14);
+  document.getElementById('paceGrid').innerHTML = `
+    <div class="pace-cell"><div class="pace-num">${studentWeek()}</div><div class="pace-lbl">Week</div></div>
+    <div class="pace-cell"><div class="pace-num">${Math.round(state.hours*10)/10}</div><div class="pace-lbl">Total hrs</div></div>
+    <div class="pace-cell"><div class="pace-num">${activeDays}/14</div><div class="pace-lbl">Active days</div></div>
+  `;
+
+  // Weekly mirror
+  const mirror = weeklyMirror();
+  const mg = document.getElementById('mirrorGrid');
+  const mn = document.getElementById('mirrorNote');
+  if(!mirror.hasData){
+    mg.innerHTML = "";
+    mn.textContent = "Not enough data yet. Complete a session or journal entry to see your weekly mirror.";
+  }else{
+    mg.innerHTML = `
+      <div class="mirror-cell"><div class="mirror-num">${mirror.minutes}m</div><div class="mirror-lbl">Training</div></div>
+      <div class="mirror-cell"><div class="mirror-num">${mirror.sessionsCount}</div><div class="mirror-lbl">Sessions</div></div>
+      <div class="mirror-cell"><div class="mirror-num">${mirror.lessons}</div><div class="mirror-lbl">Lessons</div></div>
+      <div class="mirror-cell"><div class="mirror-num">${mirror.meditations}</div><div class="mirror-lbl">Meditations</div></div>
+    `;
+    mn.textContent = mirror.journalCount + " journal " + (mirror.journalCount===1 ? "entry" : "entries") + " this week. Keep going.";
+  }
+
+  const startBtn = document.getElementById('btnStartSession');
+  const doneToday = state.sessionDoneDate === todayStr();
+  if(finished){
+    startBtn.textContent = "Review Learning Path →";
+  } else if(doneToday){
+    startBtn.textContent = "Today's session complete ✓ — Review";
+  } else {
+    startBtn.textContent = "Start Today's Session →";
+  }
+}
+
+document.getElementById('btnStartSession').addEventListener('click', ()=>{
+  if(state.currentMission >= MISSIONS.length){ showView('path'); return; }
+  showView('session');
+});
+
+/* ============================================================
+   RENDER: TODAY'S SESSION
+   ============================================================ */
+function renderSession(){
+  const dots = document.getElementById('sessionDots');
+  dots.innerHTML = "";
+  MISSIONS.forEach((_,i)=>{
+    const s = document.createElement('span');
+    if(i < state.currentMission) s.classList.add('done');
+    else if(i === state.currentMission) s.classList.add('current');
+    dots.appendChild(s);
+  });
+
+  const contentEl = document.getElementById('sessionContent');
+  const doneEl = document.getElementById('sessionDoneState');
+
+  if(state.currentMission >= MISSIONS.length){
+    contentEl.innerHTML = "";
+    doneEl.hidden = false;
+    return;
+  }
+  doneEl.hidden = true;
+
+  const m = MISSIONS[state.currentMission];
+  const alreadyDoneToday = state.sessionDoneDate === todayStr();
+
+  const resourcesBlock = m.resources ? `
+    <div class="card session-block">
+      <h4><span class="num">3</span>Resources</h4>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${m.resources.map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="vocab-pill" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:inherit; cursor:pointer;"><span>🔗</span><span>${r.label}</span><span style="margin-left:auto; opacity:.5;">↗</span></a>`).join('')}
+      </div>
+    </div>` : '';
+  const reflectionNum = m.resources ? 4 : 3;
+
+  contentEl.innerHTML = `
+    <div class="card session-block">
+      <div class="eyebrow">${m.tag}${m.step ? ' · ' + m.step : ''}</div>
+      <h3 style="font-size:20px; margin-top:6px;">${m.t}</h3>
+      <p class="section-sub">${m.desc}</p>
+      <p style="font-size:12px; color:var(--gold); font-weight:700; margin-top:10px; letter-spacing:.02em;">“Not perfection — production and speed.”</p>
+      <div class="mission-meta" style="margin-top:12px; color:var(--text-soft);">
+        <span>⏱ ${m.duration} min</span>
+        <span>Mission ${state.currentMission+1} of ${MISSIONS.length}</span>
+      </div>
+      ${m.file ? `<a href="${m.file}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm mt-3" style="text-decoration:none;">Open lesson page ↗</a>` : ''}
+    </div>
+
+    <div class="card session-block">
+      <h4><span class="num">1</span>Vocabulary</h4>
+      <div class="vocab-grid">
+        ${m.vocab.map(v=>`<div class="vocab-pill"><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card session-block">
+      <h4><span class="num">2</span>Practice</h4>
+      <p style="font-size:14px; color:var(--text-soft); line-height:1.5;">${m.practice}</p>
+    </div>
+
+    ${resourcesBlock}
+
+    <div class="card session-block">
+      <h4><span class="num">${reflectionNum}</span>Reflection</h4>
+      <p style="font-size:13.5px; color:var(--text-soft); margin-bottom:8px;">${m.reflection}</p>
+      <p style="font-size:12px; color:var(--text-faint); margin-bottom:6px;">This is your record — every mission is saved as evidence of your progress.</p>
+      <textarea class="reflect" id="sessionReflection" placeholder="Write a few sentences…"></textarea>
+      <div class="word-counter" id="sessionReflectionCount">0 / ${minWordsForMission(state.currentMission)} words</div>
+    </div>
+
+    <button class="stuck-toggle" id="btnStuckToggle">I'm stuck →</button>
+    <div class="stuck-options" id="stuckOptions" hidden>
+      ${STUCK_REASONS.map(r=>`<button class="card stuck-opt" data-reason="${r}">${r}</button>`).join('')}
+    </div>
+
+    <button class="btn btn-primary btn-block mt-3" id="btnCompleteStep" ${alreadyDoneToday ? 'disabled' : ''}>
+      ${alreadyDoneToday ? 'Completed for today ✓' : 'Complete Step →'}
+    </button>
+  `;
+
+  const reflectionEl = document.getElementById('sessionReflection');
+  const counterEl = document.getElementById('sessionReflectionCount');
+  const minWords = minWordsForMission(state.currentMission);
+  const updateReflectionCounter = ()=>{
+    const words = (reflectionEl.value.trim().match(/\S+/g) || []).length;
+    counterEl.textContent = `${words} / ${minWords} words`;
+    counterEl.classList.toggle('ok', words >= minWords);
+  };
+  reflectionEl.addEventListener('input', updateReflectionCounter);
+  updateReflectionCounter();
+
+  const completeBtn = document.getElementById('btnCompleteStep');
+  if(completeBtn && !alreadyDoneToday){
+    completeBtn.addEventListener('click', ()=>{
+      const content = reflectionEl.value.trim();
+      const words = (content.match(/\S+/g) || []).length;
+      if(words < minWords){
+        toast(`Your reflection needs at least ${minWords} words — that's what becomes your record.`);
+        reflectionEl.focus();
+        return;
+      }
+      completeStep(content, words);
+    });
+  }
+
+  const stuckToggle = document.getElementById('btnStuckToggle');
+  const stuckOptions = document.getElementById('stuckOptions');
+  if(stuckToggle){
+    stuckToggle.addEventListener('click', ()=>{ stuckOptions.hidden = !stuckOptions.hidden; });
+    stuckOptions.querySelectorAll('.stuck-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.stuckSignals.push({date:new Date().toISOString(), missionId:state.currentMission, reason:btn.dataset.reason});
+        const mp = ensureMissionProgress(state.currentMission);
+        if(mp.status === "not_started" || mp.status === "discovered") mp.status = "revisit";
+        save();
+        stuckOptions.hidden = true;
+        toast("Noted. That's useful information — keep going.");
+      });
+    });
+  }
+}
+
+function completeStep(reflectionContent, wordCount){
+  const idx = state.currentMission;
+  if(!state.completedMissions.includes(idx)) state.completedMissions.push(idx);
+  state.currentMission = Math.min(idx+1, MISSIONS.length);
+  state.xp += 50;
+  state.hours += (MISSIONS[idx].duration/60);
+  state.vocabLearned += MISSIONS[idx].vocab.length;
+  state.sessionDoneDate = todayStr();
+
+  const mp = ensureMissionProgress(idx);
+  if(!mp.startedAt) mp.startedAt = new Date().toISOString();
+  mp.lastPracticedAt = new Date().toISOString();
+  mp.sessions += 1;
+  mp.status = mp.sessions >= 2 ? "integrated" : "practicing";
+
+  state.sessionLog.push({date:new Date().toISOString(), missionId:idx, minutes:MISSIONS[idx].duration});
+
+  if(reflectionContent){
+    state.practiceRecords.push({
+      id: 'p-'+Date.now(), type:'lesson', date:new Date().toISOString(), week: studentWeek(),
+      missionId: idx, topic: MISSIONS[idx].t, duration: MISSIONS[idx].duration,
+      prep: "", content: reflectionContent, difficulty: "", wordCount: wordCount || 0
+    });
+  }
+
+  updateStreak();
+  checkAchievements();
+  save();
+  toast("Mission complete — great work.");
+  const milestone = (state.currentMission % 4 === 0) || state.currentMission === MISSIONS.length;
+  if(milestone) confetti();
+  renderSession();
+  renderHome();
+}
+
+/* ============================================================
+   RENDER: LEARNING PATH
+   ============================================================ */
+function renderPath(){
+  const list = document.getElementById('pathList');
+  list.innerHTML = "";
+  MISSIONS.forEach((m,i)=>{
+    const status = state.completedMissions.includes(i) ? 'completed' : (i === state.currentMission ? 'current' : 'locked');
+    const node = document.createElement('div');
+    node.className = 'mission-node ' + status;
+    const mp = ensureMissionProgress(i);
+    node.innerHTML = `
+      <div class="node-dot">${status === 'completed' ? '✓' : (i+1)}</div>
+      <div class="card node-card">
+        <div class="node-tag">${m.tag}${m.step ? ' · ' + m.step : ''}</div>
+        <div class="node-title">Mission ${i+1} — ${m.t}</div>
+        <div class="node-desc">${m.desc}</div>
+        <span class="status-pill ${mp.status.replace('_','-')} mt-2">${STATUS_LABEL[mp.status]}</span>
+      </div>
+    `;
+    node.addEventListener('click', ()=> openMissionDetail(i, status));
+    list.appendChild(node);
+  });
+  const pct = Math.round((state.completedMissions.length / MISSIONS.length) * 100);
+  document.getElementById('pathProgressFill').style.width = pct + "%";
+
+  renderMindMap();
+}
+
+function renderMindMap(){
+  const wrap = document.getElementById('mindMapCard');
+  if(!wrap || wrap.dataset.rendered) return;
+  const cx = 175, cy = 175, r = 118;
+  const nodes = MINDMAP_SKILLS.map((label, i)=>{
+    const angle = (Math.PI*2*i/MINDMAP_SKILLS.length) - Math.PI/2;
+    return {label, x: cx + r*Math.cos(angle), y: cy + r*Math.sin(angle)};
+  });
+  const lines = nodes.map(n=>`<line x1="${cx}" y1="${cy}" x2="${n.x}" y2="${n.y}" stroke="var(--border)" stroke-width="1.5"/>`).join('');
+  const dots = nodes.map(n=>`
+    <circle cx="${n.x}" cy="${n.y}" r="24" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="${n.x}" y="${n.y}" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="var(--text)">${n.label}</text>
+  `).join('');
+  wrap.innerHTML = `
+    <div class="eyebrow" style="margin-bottom:8px;">The fluency model</div>
+    <svg viewBox="0 0 350 350" xmlns="http://www.w3.org/2000/svg">
+      ${lines}
+      <circle cx="${cx}" cy="${cy}" r="40" fill="var(--royal)"/>
+      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#fff">FLUENCY</text>
+      ${dots}
+    </svg>
+    <p class="section-sub mt-2">Every mission trains one or more of these eight skills toward fluency.</p>
+  `;
+  wrap.dataset.rendered = "1";
+}
+
+function openMissionDetail(i, status){
+  const m = MISSIONS[i];
+  const mp = ensureMissionProgress(i);
+  const body = document.getElementById('detailModalBody');
+
+  let actionLabel = "Go to today's session";
+  if(status === 'current') actionLabel = mp.sessions > 0 ? "Continue this mission" : "Start this mission";
+  else if(status === 'completed') actionLabel = mp.status === 'revisit' ? "Revisit this mission" : "Practice again";
+
+  body.innerHTML = `
+    <div class="eyebrow">${m.tag}${m.step ? ' · ' + m.step : ''}</div>
+    <h2 style="font-size:22px; margin-top:8px;">Mission ${i+1} — ${m.t}</h2>
+    <span class="status-pill ${mp.status.replace('_','-')} mt-2">${STATUS_LABEL[mp.status]}</span>
+    <p class="section-sub mt-2">${m.desc}</p>
+    <div class="mission-meta" style="margin-top:10px; color:var(--text-soft);">
+      <span>⏱ ${m.duration} min</span>
+      <span>${mp.sessions} session${mp.sessions===1?'':'s'} logged</span>
+    </div>
+    <h4 class="mt-4" style="font-size:14px;">How confident do you feel?</h4>
+    <div class="confidence-row" id="confidenceRow">
+      ${[1,2,3,4,5].map(n=>`<button class="star-btn ${mp.confidence>=n?'on':''}" data-star="${n}">★</button>`).join('')}
+    </div>
+    <h4 class="mt-4" style="font-size:14px;">Vocabulary preview</h4>
+    <div class="vocab-grid mt-2">${m.vocab.map(v=>`<div class="vocab-pill"><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div>
+    ${m.file ? `<a href="${m.file}" target="_blank" rel="noopener" class="btn btn-outline btn-block mt-3" style="text-decoration:none;">Open lesson page ↗</a>` : ''}
+    ${status !== 'locked' ? `<button class="btn btn-primary btn-block mt-3" id="btnGoToSession">${actionLabel}</button>` : `<p class="section-sub mt-4">Complete earlier missions to unlock.</p>`}
+  `;
+  openModal('detailModal');
+
+  document.getElementById('confidenceRow').querySelectorAll('.star-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      mp.confidence = Number(btn.dataset.star);
+      if(mp.status === "not_started") mp.status = "discovered";
+      save();
+      openMissionDetail(i, status);
+    });
+  });
+
+  const goBtn = document.getElementById('btnGoToSession');
+  if(goBtn){
+    goBtn.addEventListener('click', ()=>{
+      closeModal('detailModal');
+      if(mp.status === "not_started") mp.status = "discovered";
+      save();
+      if(status === 'current'){ showView('session'); }
+      else { toast("Revisit mode: browse content in the Learning Path."); }
+    });
+  }
+}
+
+/* ============================================================
+   RENDER: JOURNAL
+   ============================================================ */
+let currentMood = null;
+function renderJournal(){
+  document.getElementById('journalDate').textContent = new Date().toLocaleDateString(undefined, {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  ['jLearned','jQuestions','jHomework','jNotes'].forEach(id=>{
+    document.getElementById(id).value = "";
+  });
+  updateWordCounts();
+  currentMood = null;
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  renderJournalEntries();
+}
+
+document.querySelectorAll('.mood-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentMood = btn.dataset.mood;
+  });
+});
+
+function updateWordCounts(){
+  [['jLearned','wcLearned'],['jQuestions','wcQuestions'],['jHomework','wcHomework'],['jNotes','wcNotes']].forEach(([ta,wc])=>{
+    const val = document.getElementById(ta).value.trim();
+    document.getElementById(wc).textContent = val ? val.split(/\s+/).length : 0;
+  });
+}
+['jLearned','jQuestions','jHomework','jNotes'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{
+    updateWordCounts();
+    autosaveDraft();
+  });
+});
+
+let draftTimer;
+function autosaveDraft(){
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(()=>{ /* silent autosave signal only — entries persist on explicit Save */ }, 400);
+}
+
+document.getElementById('btnSaveEntry').addEventListener('click', ()=>{
+  const learned = document.getElementById('jLearned').value.trim();
+  const questions = document.getElementById('jQuestions').value.trim();
+  const homework = document.getElementById('jHomework').value.trim();
+  const notes = document.getElementById('jNotes').value.trim();
+  if(!learned && !questions && !homework && !notes){
+    toast("Write something before saving.");
+    return;
+  }
+  const entry = {
+    id: 'j-'+Date.now(),
+    date: new Date().toISOString(),
+    mood: currentMood || "🙂",
+    learned, questions, homework, notes
+  };
+  state.journalEntries.unshift(entry);
+  updateStreak();
+  checkAchievements();
+  save();
+  toast("Journal entry saved.");
+  renderJournal();
+}, false);
+
+function renderJournalEntries(){
+  const wrap = document.getElementById('journalEntries');
+  if(state.journalEntries.length === 0){
+    wrap.innerHTML = `<div class="empty-state"><div class="e-icon">📝</div>No entries yet. Your first reflection starts here.</div>`;
+    return;
+  }
+  wrap.innerHTML = state.journalEntries.slice(0,30).map(e=>{
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString(undefined,{month:'short', day:'numeric'}) + ' · ' + d.toLocaleTimeString(undefined,{hour:'numeric', minute:'2-digit'});
+    const body = [e.learned, e.questions ? "Q: "+e.questions : "", e.homework ? "HW: "+e.homework : "", e.notes].filter(Boolean).join('\n');
+    return `<div class="card entry-item">
+      <div class="entry-head"><span>${e.mood} ${dateStr}</span></div>
+      <div class="entry-body">${escapeHtml(body || "(no content)")}</div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+document.getElementById('btnExportJournal').addEventListener('click', ()=>{
+  const lines = state.journalEntries.map(e=>{
+    const d = new Date(e.date).toLocaleString();
+    return `[${d}] Mood: ${e.mood}\nLearned: ${e.learned}\nQuestions: ${e.questions}\nHomework: ${e.homework}\nNotes: ${e.notes}\n`;
+  }).join('\n---\n');
+  downloadBlob(lines || "No journal entries yet.", (state.name || "student") + "-journal.txt", "text/plain");
+});
+
+/* ============================================================
+   RENDER: MEDITATION
+   ============================================================ */
+function renderMeditation(){
+  document.getElementById('medCount').textContent = state.meditationsCompleted;
+}
+document.querySelectorAll('.med-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    state.meditationsCompleted += 1;
+    state.meditationLog.push({date:new Date().toISOString()});
+    updateStreak();
+    checkAchievements();
+    save();
+    window.open(MED_URL, '_blank', 'noopener');
+    toast("Opening " + card.dataset.med + "…");
+    renderMeditation();
+  });
+});
+
+/* ============================================================
+   RESOURCES — doc modal
+   ============================================================ */
+document.querySelectorAll('[data-modal="doc"]').forEach(item=>{
+  item.addEventListener('click', ()=>{
+    document.getElementById('docModalTitle').textContent = item.dataset.title;
+    document.getElementById('docModalFrame').src = item.dataset.url;
+    openModal('docModal');
+  });
+});
+
+function renderResources(){
+  const wrap = document.getElementById('stepLibrary');
+  if(!wrap) return;
+  wrap.innerHTML = MISSIONS.map((m,i)=>{
+    if(!m.file) return `
+      <div class="card res-item" style="opacity:.55;">
+        <div class="res-icon">🔒</div>
+        <div class="res-body"><div class="res-title">${m.step ? m.step + ' — ' : ''}${m.t}</div><div class="res-desc">Page not linked yet</div></div>
+      </div>`;
+    return `
+      <a class="card res-item" href="${m.file}" target="_blank" rel="noopener">
+        <div class="res-icon">📄</div>
+        <div class="res-body"><div class="res-title">${m.step} — ${m.t}</div><div class="res-desc">Mission ${i+1} lesson page</div></div>
+        <div>↗</div>
+      </a>`;
+  }).join('');
+}
+
+/* ============================================================
+   FLUENCY LAB — topic-based speaking practice
+   Prepare -> Speak (timed) -> Reflect, gated by word-count minimum
+   ============================================================ */
+let labSelected = TOPICS[0].id;
+let labTimer = null, labElapsed = 0, labSpeaking = false;
+
+function renderLab(){
+  const grid = document.getElementById('labTopics');
+  grid.innerHTML = TOPICS.map(t => `
+    <button class="topic-card ${labSelected===t.id ? 'active' : ''}" data-topic="${t.id}">
+      <div class="tc-title">${t.icon} ${t.title}</div>
+      <div class="tc-desc">${t.desc}</div>
+    </button>`).join('');
+  grid.querySelectorAll('.topic-card').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ labSelected = btn.dataset.topic; renderLab(); });
+  });
+
+  const t = TOPICS.find(x => x.id === labSelected);
+  document.getElementById('labPrompt').textContent = t.prompt;
+  document.getElementById('labChips').innerHTML = t.chips.map(c=>`<span class="lab-chip">${c}</span>`).join('');
+
+  labElapsed = 0; labSpeaking = false;
+  if(labTimer){ clearInterval(labTimer); labTimer = null; }
+  updateLabClock();
+  document.getElementById('labStartBtn').textContent = "Start speaking";
+  document.getElementById('labTimerMsg').textContent = "Don't chase perfection. Keep your thought alive.";
+  document.getElementById('labPrep').value = "";
+  document.getElementById('labReflection').value = "";
+  document.getElementById('labDifficulty').value = "";
+  updateLabReflectionCounter();
+}
+
+function updateLabClock(){
+  const m = String(Math.floor(labElapsed/60)).padStart(2,'0');
+  const s = String(labElapsed%60).padStart(2,'0');
+  document.getElementById('labClock').textContent = `${m}:${s}`;
+  document.getElementById('labRing').style.setProperty('--pct', Math.min(100, (labElapsed/60)*100) + '%');
+}
+
+function updateLabReflectionCounter(){
+  const min = minWordsForMission(state.currentMission);
+  const words = (document.getElementById('labReflection').value.trim().match(/\S+/g) || []).length;
+  const counter = document.getElementById('labReflectionCount');
+  counter.textContent = `${words} / ${min} words`;
+  counter.classList.toggle('ok', words >= min);
+}
+document.getElementById('labReflection').addEventListener('input', updateLabReflectionCounter);
+
+document.getElementById('labStartBtn').addEventListener('click', ()=>{
+  if(labSpeaking){ stopLabTimer(); return; }
+  labSpeaking = true; labElapsed = 0;
+  document.getElementById('labStartBtn').textContent = "Pause / finish";
+  labTimer = setInterval(()=>{ labElapsed++; updateLabClock(); }, 1000);
+  document.getElementById('labTimerMsg').textContent = "Keep your thought alive. 30 seconds is the minimum.";
+});
+document.getElementById('labFinishBtn').addEventListener('click', stopLabTimer);
+
+function stopLabTimer(){
+  if(labTimer){ clearInterval(labTimer); labTimer = null; }
+  labSpeaking = false;
+  document.getElementById('labStartBtn').textContent = "Start speaking";
+  updateLabClock();
+  const msg = document.getElementById('labTimerMsg');
+  if(labElapsed >= 30) msg.textContent = "✨ Minimum achieved. Save your speaking moment below.";
+  else if(labElapsed > 0) msg.textContent = `${labElapsed}s recorded. You can try again or save this attempt.`;
+}
+
+document.getElementById('btnSaveLabAttempt').addEventListener('click', ()=>{
+  if(labElapsed < 1){ toast("Speak first, then save your moment."); return; }
+  const content = document.getElementById('labReflection').value.trim();
+  const words = (content.match(/\S+/g) || []).length;
+  const min = minWordsForMission(state.currentMission);
+  if(words < min){
+    toast(`Your reflection needs at least ${min} words.`);
+    document.getElementById('labReflection').focus();
+    return;
+  }
+  const t = TOPICS.find(x => x.id === labSelected);
+  state.practiceRecords.push({
+    id: 'p-'+Date.now(), type:'speaking', date:new Date().toISOString(), week: studentWeek(),
+    missionId: state.currentMission, topic: t.title, duration: labElapsed,
+    prep: document.getElementById('labPrep').value.trim(),
+    content, difficulty: document.getElementById('labDifficulty').value.trim(),
+    wordCount: words
+  });
+  state.sessionLog.push({date:new Date().toISOString(), missionId: state.currentMission, minutes: Math.round(labElapsed/60) || 1});
+  save();
+  toast("Speaking moment saved. Your evolution just grew.");
+  showView('evolution');
+});
+
+/* ============================================================
+   RENDER: EVOLUTION (writing samples + compare)
+   ============================================================ */
+function renderEvolution(){
+  document.getElementById('evoNewSample').value = "";
+  renderSampleList();
+  renderCompareControls();
+  renderPracticeRecords();
+}
+
+function renderPracticeRecords(){
+  const records = state.practiceRecords;
+  document.getElementById('prCount').textContent = records.length;
+  const speaking = records.filter(r => r.type === 'speaking');
+  document.getElementById('prLongest').textContent = (speaking.length ? Math.max(...speaking.map(r=>r.duration)) : 0) + "s";
+  document.getElementById('prTopics').textContent = new Set(records.map(r=>r.topic)).size;
+
+  const list = document.getElementById('practiceRecordList');
+  if(records.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="e-icon">🎙️</div>Your mission reflections and speaking moments will appear here.</div>`;
+    return;
+  }
+  list.innerHTML = records.slice().reverse().map(r=>{
+    const icon = r.type === 'speaking' ? '🎙️' : '📝';
+    const meta = r.type === 'speaking' ? `${r.duration}s · Week ${r.week}` : `Week ${r.week} · ${r.wordCount} words`;
+    return `<div class="lab-attempt">
+      <b>${icon} ${escapeHtml(r.topic)}</b> · ${meta}<br>
+      <span class="section-sub">${new Date(r.date).toLocaleDateString()}</span>
+      <p style="font-size:13px; margin-top:6px; white-space:pre-wrap;">${escapeHtml(r.content || "No reflection.")}</p>
+      ${r.difficulty ? `<p style="font-size:11.5px; color:var(--text-faint); margin-top:4px;"><b>Still developing:</b> ${escapeHtml(r.difficulty)}</p>` : ''}
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('btnSaveSample').addEventListener('click', ()=>{
+  const content = document.getElementById('evoNewSample').value.trim();
+  if(!content){ toast("Write a few sentences first."); return; }
+  const isFirst = state.writingSamples.length === 0;
+  const sample = {
+    id: 'w-'+Date.now(),
+    createdAt: new Date().toISOString(),
+    week: studentWeek(),
+    missionId: state.currentMission,
+    prompt: isFirst ? "My Starting Point" : "Free writing",
+    content,
+    label: isFirst ? "My Starting Point" : ("Week " + studentWeek())
+  };
+  state.writingSamples.push(sample);
+  save();
+  toast(isFirst ? "Saved as My Starting Point." : "Sample saved.");
+  renderEvolution();
+});
+
+function renderSampleList(){
+  const wrap = document.getElementById('sampleList');
+  if(state.writingSamples.length === 0){
+    wrap.innerHTML = `<div class="empty-state"><div class="e-icon">📊</div>No writing samples yet. Save your first one above — it becomes your Starting Point.</div>`;
+    return;
+  }
+  wrap.innerHTML = state.writingSamples.slice().reverse().map(s=>{
+    const d = new Date(s.createdAt);
+    const words = s.content.trim().split(/\s+/).length;
+    return `<div class="card sample-item">
+      <div class="sample-head"><span class="sample-week">${s.label}</span><span class="sample-date">${d.toLocaleDateString()}</span></div>
+      <div class="sample-body">${escapeHtml(s.content)}</div>
+      <div class="sample-meta">${words} words · Week ${s.week}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCompareControls(){
+  const row = document.getElementById('compareRow');
+  const pane = document.getElementById('comparePane');
+  if(state.writingSamples.length < 2){
+    row.hidden = true;
+    pane.innerHTML = "";
+    return;
+  }
+  row.hidden = false;
+  const opts = state.writingSamples.map((s,idx)=>`<option value="${idx}">${s.label} — ${new Date(s.createdAt).toLocaleDateString()}</option>`).join('');
+  const selA = document.getElementById('compareA');
+  const selB = document.getElementById('compareB');
+  selA.innerHTML = opts;
+  selB.innerHTML = opts;
+  selA.value = 0;
+  selB.value = state.writingSamples.length - 1;
+  const renderPane = ()=>{
+    const a = state.writingSamples[Number(selA.value)];
+    const b = state.writingSamples[Number(selB.value)];
+    pane.innerHTML = `
+      <div class="card sample-item"><div class="sample-head"><span class="sample-week">${a.label}</span></div><div class="sample-body">${escapeHtml(a.content)}</div></div>
+      <div class="card sample-item"><div class="sample-head"><span class="sample-week">${b.label}</span></div><div class="sample-body">${escapeHtml(b.content)}</div></div>
+    `;
+  };
+  selA.onchange = renderPane;
+  selB.onchange = renderPane;
+  renderPane();
+}
+
+/* ============================================================
+   RENDER: PROFILE
+   ============================================================ */
+function levelForMission(i){
+  if(i >= 17) return "Graduate";
+  if(i >= 13) return "Executive";
+  if(i >= 9) return "Advanced";
+  if(i >= 5) return "Intermediate";
+  return "Foundation";
+}
+function renderProfile(){
+  document.getElementById('avatarInitial').textContent = (state.name || "S").charAt(0).toUpperCase();
+  document.getElementById('profileName').textContent = state.name || "Student";
+  document.getElementById('profileLevel').textContent = levelForMission(state.currentMission) + " · Mission " + Math.min(state.currentMission+1, MISSIONS.length) + "/" + MISSIONS.length;
+  document.getElementById('profileUuid').textContent = state.uuid;
+  document.getElementById('profileMember').textContent = "Member since " + new Date(state.createdAt).toLocaleDateString(undefined,{month:'long', year:'numeric'});
+  document.getElementById('pfHours').textContent = Math.round(state.hours*10)/10;
+  document.getElementById('pfVocab').textContent = state.vocabLearned;
+  document.getElementById('pfMed').textContent = state.meditationsCompleted;
+  document.getElementById('pfStreak').textContent = state.streak;
+
+  const missionsPracticed = Object.values(state.missionProgress).filter(mp => mp.sessions > 0).length;
+  document.getElementById('pfPaceGrid').innerHTML = `
+    <div class="pace-cell"><div class="pace-num">${studentWeek()}</div><div class="pace-lbl">Current week</div></div>
+    <div class="pace-cell"><div class="pace-num">${missionsPracticed}</div><div class="pace-lbl">Missions practiced</div></div>
+    <div class="pace-cell"><div class="pace-num">${state.writingSamples.length}</div><div class="pace-lbl">Writing samples</div></div>
+    <div class="pace-cell"><div class="pace-num">${phaseForMission(state.currentMission).label}</div><div class="pace-lbl">Current phase</div></div>
+  `;
+
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = BADGES.map(b=>{
+    const earned = state.achievements.includes(b.id);
+    return `<div class="card badge ${earned?'earned':''}"><div class="b-icon">${b.icon}</div><div class="b-name">${b.name}</div></div>`;
+  }).join('');
+}
+
+function checkAchievements(){
+  const a = state.achievements;
+  const add = id => { if(!a.includes(id)) a.push(id); };
+  if(state.completedMissions.length >= 1) add('first_step');
+  if(state.streak >= 7) add('week_streak');
+  if(state.vocabLearned >= 50) add('vocab_50');
+  if(state.completedMissions.length >= 9) add('halfway');
+  if(state.meditationsCompleted >= 1) add('meditator');
+  if(new Date().getHours() >= 22) add('night_owl');
+  if(state.completedMissions.length >= 17) add('grad');
+  if(state.journalEntries.length >= 10) add('journal_10');
+}
+
+/* ============================================================
+   RENDER: SETTINGS
+   ============================================================ */
+function renderSettings(){
+  document.getElementById('settingsName').value = state.name || "";
+  document.getElementById('switchDark').classList.toggle('on', state.theme === 'dark');
+}
+document.getElementById('btnSaveName').addEventListener('click', ()=>{
+  const v = document.getElementById('settingsName').value.trim();
+  if(v){ state.name = v; save(); toast("Name updated."); renderHome(); }
+});
+document.getElementById('switchDark').addEventListener('click', ()=>{
+  setTheme(state.theme === 'dark' ? 'light' : 'dark');
+  renderSettings();
+});
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function setTheme(t){
+  state.theme = t;
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  save();
+}
+document.getElementById('btnTheme').addEventListener('click', ()=>{
+  setTheme(state.theme === 'dark' ? 'light' : 'dark');
+});
+
+/* ============================================================
+   EXPORT / IMPORT
+   ============================================================ */
+function downloadBlob(content, filename, type){
+  const blob = new Blob([content], {type: type || 'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=> URL.revokeObjectURL(url), 2000);
+}
+
+document.getElementById('btnExportData').addEventListener('click', ()=>{
+  const payload = {
+    format: "qkesl", version: state.version, exportedAt: new Date().toISOString(), data: state
+  };
+  const filename = (state.name ? state.name.replace(/\s+/g,'') : "Student") + ".qkesl";
+  downloadBlob(JSON.stringify(payload, null, 2), filename, "application/json");
+  toast("Progress exported.");
+});
+
+document.getElementById('btnImportData').addEventListener('click', ()=>{
+  document.getElementById('fileImport').click();
+});
+document.getElementById('fileImport').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      const incoming = parsed.data ? parsed.data : parsed;
+      const looksValid = incoming && typeof incoming === 'object' && ('uuid' in incoming) && ('createdAt' in incoming);
+      if(!looksValid){
+        toast("Could not restore this progress file.");
+        return;
+      }
+      state = migrateState(incoming);
+      save();
+      setTheme(state.theme || 'light');
+      toast("Progress restored.");
+      showView('home');
+    }catch(err){
+      toast("Could not restore this progress file.");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+document.getElementById('btnResetProgress').addEventListener('click', ()=>{
+  if(confirm("Reset mission progress, streak, and stats? Your journal, writing samples (including My Starting Point), and practice records will be kept.")){
+    const keep = {
+      uuid: state.uuid, name: state.name, createdAt: state.createdAt, theme: state.theme,
+      journalEntries: state.journalEntries, writingSamples: state.writingSamples,
+      practiceRecords: state.practiceRecords
+    };
+    state = Object.assign(defaultState(), keep);
+    save();
+    toast("Progress reset. Your journal and writing samples were kept.");
+    showView('home');
+  }
+});
+
+document.getElementById('btnResetData').addEventListener('click', ()=>{
+  if(confirm("Delete EVERYTHING, including your Starting Point and all writing samples? This cannot be undone.")){
+    localStorage.removeItem(STORE_KEY);
+    state = defaultState();
+    save();
+    setTheme('light');
+    toast("All data deleted.");
+    document.getElementById('onboardModal').classList.add('open');
+  }
+});
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-backdrop').forEach(bd=>{
+  bd.addEventListener('click', (e)=>{ if(e.target === bd) closeModal(bd.id); });
+});
+
+/* ============================================================
+   PERMANENT TOOL DOCK
+   ============================================================ */
+function renderToolDock(){
+  const grid = document.getElementById('toolGrid');
+  grid.innerHTML = TOOLS.map((t,i)=>`
+    <button class="card tool-item" data-tool="${i}">
+      <div class="t-icon">${t.icon}</div>
+      <div class="t-name">${t.name}</div>
+      <div class="t-desc">${t.desc}</div>
+    </button>`).join('');
+  grid.querySelectorAll('.tool-item').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const t = TOOLS[Number(btn.dataset.tool)];
+      closeModal('toolModal');
+      if(t.action === 'external'){ window.open(t.url, '_blank', 'noopener'); }
+      else { showView(t.view); }
+    });
+  });
+}
+document.getElementById('btnToolDock').addEventListener('click', ()=>{
+  renderToolDock();
+  openModal('toolModal');
+});
+
+/* ============================================================
+   ONBOARDING
+   ============================================================ */
+document.getElementById('btnOnboardStart').addEventListener('click', ()=>{
+  const name = document.getElementById('onboardName').value.trim();
+  state.name = name || "Student";
+  save();
+  document.getElementById('onboardStep1').hidden = true;
+  document.getElementById('onboardStep2').hidden = false;
+});
+
+function finishOnboarding(){
+  closeModal('onboardModal');
+  document.getElementById('onboardStep1').hidden = false;
+  document.getElementById('onboardStep2').hidden = true;
+  showView('home');
+}
+
+document.getElementById('btnOnboardSaveStart').addEventListener('click', ()=>{
+  const content = document.getElementById('onboardStarting').value.trim();
+  if(content){
+    state.writingSamples.push({
+      id: 'w-'+Date.now(), createdAt: new Date().toISOString(), week: 1,
+      missionId: 0, prompt: "My Starting Point", content, label: "My Starting Point"
+    });
+    save();
+  }
+  finishOnboarding();
+});
+document.getElementById('btnOnboardSkipStart').addEventListener('click', finishOnboarding);
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+const CMDK_ITEMS = [
+  {label:"Home", icon:"🏠", view:"home"},
+  {label:"Today's Session", icon:"🎯", view:"session"},
+  {label:"Learning Path", icon:"🗺️", view:"path"},
+  {label:"Journal", icon:"📝", view:"journal"},
+  {label:"Meditation Center", icon:"🧘", view:"meditation"},
+  {label:"Fluency Lab", icon:"🎙️", view:"lab"},
+  {label:"Resources", icon:"📚", view:"resources"},
+  {label:"My Evolution", icon:"📊", view:"evolution"},
+  {label:"Profile", icon:"👤", view:"profile"},
+  {label:"Settings", icon:"⚙️", view:"settings"}
+];
+function renderCmdk(filter){
+  const list = document.getElementById('cmdkList');
+  const items = CMDK_ITEMS.filter(i => i.label.toLowerCase().includes((filter||'').toLowerCase()));
+  list.innerHTML = items.map((i,idx)=>`<div class="cmdk-item ${idx===0?'hi':''}" data-view="${i.view}"><span>${i.icon}</span><span>${i.label}</span></div>`).join('') || `<div class="cmdk-item">No matches</div>`;
+  list.querySelectorAll('.cmdk-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(el.dataset.view){ showView(el.dataset.view); closeCmdk(); }
+    });
+  });
+}
+function openCmdk(){
+  document.getElementById('cmdk').classList.add('open');
+  document.getElementById('cmdkInput').value = "";
+  renderCmdk("");
+  setTimeout(()=> document.getElementById('cmdkInput').focus(), 50);
+}
+function closeCmdk(){ document.getElementById('cmdk').classList.remove('open'); }
+document.getElementById('btnSearch').addEventListener('click', openCmdk);
+document.getElementById('cmdkInput').addEventListener('input', (e)=> renderCmdk(e.target.value));
+document.addEventListener('keydown', (e)=>{
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openCmdk(); }
+  if(e.key === 'Escape'){ closeCmdk(); closeModal('detailModal'); closeModal('docModal'); }
+});
+document.addEventListener('click', (e)=>{
+  const cmdk = document.getElementById('cmdk');
+  if(cmdk.classList.contains('open') && !cmdk.contains(e.target) && e.target.id !== 'btnSearch'){
+    closeCmdk();
+  }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  setTheme(state.theme || 'light');
+  if(!state.name){
+    openModal('onboardModal');
+  }
+  showView('home');
+}
+init();
+
+})();
+</script>
+</body>
+</html>

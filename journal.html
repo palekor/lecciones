@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#2A1735">
+<meta name="theme-color" content="#120B18">
 <title>QK ESL · Fluency Notebook</title>
 <meta name="description" content="Your personal operating system for learning English — by ProfGermandario">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,16 +52,17 @@
 }
 
 [data-theme="dark"]{
-  --bg: #1A1122;
-  --bg-elev: #241833;
-  --bg-sunken: #150D1C;
+  --bg: #120B18;
+  --bg-elev: #1E1428;
+  --bg-sunken: #0D0812;
   --text: #F4EFE6;
   --text-soft: #C4B9D4;
   --text-faint: #7E7289;
-  --border: rgba(207,195,232,0.12);
-  --card-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 8px 28px rgba(0,0,0,0.35);
+  --border: rgba(207,195,232,0.14);
+  --card-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 32px rgba(0,0,0,0.45);
   --accent: var(--lavender);
   --accent-soft: rgba(207,195,232,0.1);
+  --glass-bg: rgba(30,20,40,0.6);
 }
 
 *,*::before,*::after{box-sizing:border-box;}
@@ -187,7 +188,8 @@ a{color:inherit;}
   font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
   color:var(--gold); opacity:.9;
 }
-.section-title{font-size:22px; font-weight:600; margin-bottom:4px;}
+.section-title{font-size:22px; font-weight:600; margin-bottom:4px; position:relative; padding-bottom:10px;}
+.section-title::after{content:''; position:absolute; left:0; bottom:0; width:36px; height:3px; border-radius:100px; background:linear-gradient(90deg, var(--gold), var(--gold-bright));}
 .section-sub{color:var(--text-soft); font-size:14px; margin-top:6px; line-height:1.5;}
 
 .btn{
@@ -195,6 +197,7 @@ a{color:inherit;}
   border-radius:16px; border:none; padding:15px 22px;
   font-weight:700; font-size:15px; letter-spacing:0.01em;
   transition:transform .18s var(--ease-spring), box-shadow .2s var(--ease), opacity .2s;
+  position:relative; overflow:hidden;
 }
 .btn:active{transform:scale(.97);}
 .btn-primary{
@@ -206,8 +209,13 @@ a{color:inherit;}
 .btn-gold{
   background:linear-gradient(135deg, var(--gold), var(--gold-bright));
   color:var(--royal-deep);
-  box-shadow:0 10px 24px rgba(201,162,39,.3);
+  box-shadow:0 10px 24px rgba(201,162,39,.3), inset 0 1px 0 rgba(255,255,255,.4);
 }
+.btn-gold::after{
+  content:''; position:absolute; inset:0; background:linear-gradient(115deg, transparent 40%, rgba(255,255,255,.5) 50%, transparent 60%);
+  transform:translateX(-120%); transition:transform .7s var(--ease);
+}
+.btn-gold:hover::after{transform:translateX(120%);}
 .btn-ghost{background:var(--accent-soft); color:var(--accent);}
 .btn-outline{background:transparent; border:1.5px solid var(--border); color:var(--text);}
 .btn-block{width:100%;}
@@ -221,14 +229,29 @@ a{color:inherit;}
 }
 
 .progress-track{height:8px; border-radius:100px; background:var(--bg-sunken); overflow:hidden;}
-.progress-fill{height:100%; border-radius:100px; background:linear-gradient(90deg, var(--gold), var(--royal)); transition:width .6s var(--ease-spring);}
+.progress-fill{height:100%; border-radius:100px; background:linear-gradient(90deg, var(--gold), var(--royal)); transition:width .6s var(--ease-spring); box-shadow:0 0 12px rgba(201,162,39,.5);}
 
 /* ---------- HOME ---------- */
 .home-hero{
   text-align:left; padding:6px 2px 18px;
 }
+.hero-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
+.hero-chart{width:118px; height:56px; flex-shrink:0; margin-top:4px;}
+.hero-chart svg{width:100%; height:100%; display:block;}
 .home-greeting{font-size:13px; color:var(--text-soft); font-weight:600;}
 .home-name{font-size:30px; margin-top:4px;}
+
+.quick-actions{display:flex; justify-content:space-between; gap:6px; margin-top:20px;}
+.qa-btn{display:flex; flex-direction:column; align-items:center; gap:7px; background:none; border:none; flex:1; padding:2px 0;}
+.qa-icon{
+  width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px;
+  background:var(--bg-elev); border:1px solid var(--border);
+  box-shadow:0 6px 16px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .18s var(--ease-spring), box-shadow .2s var(--ease);
+}
+.qa-btn:active .qa-icon{transform:scale(.9);}
+.qa-label{font-size:10.5px; font-weight:600; color:var(--text-soft);}
+
 .stat-row{display:flex; gap:10px; margin-top:18px;}
 .stat-card{flex:1; padding:14px 12px; text-align:center;}
 .stat-num{font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--royal);}
@@ -236,19 +259,35 @@ a{color:inherit;}
 .stat-label{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em; margin-top:2px;}
 
 .mission-banner{
-  margin-top:18px; padding:22px; position:relative; overflow:hidden;
-  background:linear-gradient(135deg, var(--royal-deep), var(--royal));
+  margin-top:18px; padding:24px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(228,197,88,.22), transparent 55%),
+    linear-gradient(155deg, var(--royal-deep) 0%, var(--royal) 55%, var(--royal-light) 100%);
   color:var(--ivory); border-radius:var(--radius-xl);
+  box-shadow:0 18px 48px rgba(20,10,30,.5), inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 0 1px rgba(228,197,88,.18);
 }
 .mission-banner::after{
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(circle at 85% 10%, rgba(228,197,88,.22), transparent 55%);
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
 }
 .mission-banner .eyebrow{color:var(--gold-bright);}
 .mission-banner h3{font-size:24px; margin-top:6px; color:#fff;}
 .mission-banner p{color:rgba(250,247,240,.78); font-size:13.5px; margin-top:8px; line-height:1.5;}
 .mission-meta{display:flex; gap:14px; margin-top:14px; font-size:12px; color:rgba(250,247,240,.85);}
 .mission-meta span{display:flex; align-items:center; gap:5px;}
+
+.play-cta{display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:20px;}
+.play-ring{
+  width:76px; height:76px; border-radius:50%; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 55%, var(--royal) 130%);
+  box-shadow:0 0 0 1px rgba(228,197,88,.35), 0 12px 30px rgba(201,162,39,.4), 0 0 40px rgba(201,162,39,.28);
+  color:var(--royal-deep); font-size:26px; transition:transform .2s var(--ease-spring);
+}
+.play-ring:active{transform:scale(.93);}
+.play-cta-label{font-weight:700; font-size:14px; color:var(--text);}
 
 .cta-giant{margin-top:16px; padding:20px; font-size:17px;}
 
@@ -260,17 +299,33 @@ a{color:inherit;}
 .streak-text{font-size:12.5px; color:var(--text-soft);}
 
 /* ---------- ROADMAP PHASE BAR ---------- */
-.phase-bar{display:flex; align-items:center; gap:4px; margin-top:16px;}
-.phase-step{flex:1; text-align:center;}
-.phase-step .dot{width:10px; height:10px; border-radius:50%; margin:0 auto 6px; background:var(--bg-sunken); border:1.5px solid var(--border);}
-.phase-step.active .dot{background:var(--gold); border-color:var(--gold);}
-.phase-step.done .dot{background:var(--royal); border-color:var(--royal);}
-[data-theme="dark"] .phase-step.done .dot{background:var(--lavender); border-color:var(--lavender);}
+.phase-bar{display:flex; align-items:flex-start; gap:4px; margin-top:16px;}
+.phase-step{flex:1; text-align:center; position:relative;}
+.phase-badge{
+  width:56px; height:56px; margin:0 auto 8px; border-radius:18px;
+  display:flex; align-items:center; justify-content:center; position:relative;
+  background:var(--bg-sunken); border:1.5px solid var(--border);
+  transition:all .3s var(--ease);
+}
+.phase-badge svg{width:30px; height:30px; color:var(--text-faint);}
+.phase-step.active .phase-badge svg{color:var(--royal-deep);}
+.phase-step.done .phase-badge svg{color:#fff;}
+.phase-step.active .phase-badge{
+  background:radial-gradient(circle at 32% 28%, var(--gold-bright), var(--gold) 60%, var(--royal-light) 130%);
+  border-color:var(--gold);
+  box-shadow:0 0 0 1px rgba(228,197,88,.4), 0 8px 22px rgba(201,162,39,.4), 0 0 30px rgba(201,162,39,.3);
+}
+.phase-step.done .phase-badge{
+  background:linear-gradient(155deg, var(--royal-light), var(--royal));
+  border-color:var(--royal-light);
+  box-shadow:0 6px 16px rgba(59,35,82,.35);
+}
+[data-theme="dark"] .phase-step.done .phase-badge{background:linear-gradient(155deg, var(--lavender), var(--royal-light)); box-shadow:0 6px 18px rgba(207,195,232,.25);}
 .phase-step .lbl{font-size:9.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--text-faint);}
 .phase-step.active .lbl{color:var(--gold);}
 .phase-step.done .lbl{color:var(--text-soft);}
 .phase-track{position:relative;}
-.phase-track::before{content:''; position:absolute; top:5px; left:10%; right:10%; height:2px; background:var(--border); z-index:0;}
+.phase-track::before{content:''; position:absolute; top:28px; left:10%; right:10%; height:2px; background:var(--border); z-index:0;}
 
 /* ---------- PACE CARD ---------- */
 .pace-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;}
@@ -339,6 +394,51 @@ a{color:inherit;}
 .status-pill.revisit{background:rgba(226,114,91,.15); color:var(--coral);}
 .status-pill.integrated{background:rgba(59,35,82,.15); color:var(--royal);}
 [data-theme="dark"] .status-pill.integrated{background:rgba(207,195,232,.18); color:var(--lavender);}
+
+/* ---------- POP QUIZ ---------- */
+.quiz-q{margin-top:16px;}
+.quiz-term{font-family:var(--font-display); font-size:17px; color:var(--royal); margin-bottom:8px;}
+[data-theme="dark"] .quiz-term{color:var(--lavender);}
+.quiz-opt{display:block; width:100%; text-align:left; padding:12px 14px; margin-top:8px; border:1.5px solid var(--border); border-radius:14px; background:var(--bg-elev); font-size:13px;}
+.quiz-opt.correct{border-color:#3F8F5F; background:rgba(63,143,95,.12);}
+.quiz-opt.wrong{border-color:var(--coral); background:rgba(226,114,91,.12);}
+
+/* ---------- CHARTS ---------- */
+.chart-wrap{margin-top:14px;}
+.chart-wrap svg{width:100%; height:auto; display:block;}
+
+/* ---------- DATE HEADER (notebook-style dateline) ---------- */
+.date-header{
+  font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:10px; display:flex; align-items:center; gap:6px;
+}
+.date-header::before{content:'📅'; font-size:12px;}
+
+/* ---------- WELCOME-BACK NUDGE ---------- */
+.nudge-banner{
+  margin-bottom:14px; padding:14px 16px; border-radius:16px; font-size:13px; line-height:1.5;
+  background:var(--accent-soft); border:1px solid var(--border); color:var(--text);
+  display:flex; align-items:center; gap:10px;
+}
+.nudge-banner b{color:var(--gold);}
+
+/* ---------- CYCLE CARD (4-week milestone cycle) ---------- */
+.cycle-card{position:relative; overflow:hidden;}
+.cycle-head{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+.cycle-title{font-family:var(--font-display); font-size:18px; margin-top:4px;}
+.cycle-ring{
+  width:52px; height:52px; border-radius:50%; flex-shrink:0;
+  background:conic-gradient(var(--gold) var(--cyclepct,0%), var(--bg-sunken) 0);
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.cycle-ring::before{content:''; position:absolute; inset:5px; border-radius:50%; background:var(--bg-elev);}
+.cycle-ring span{position:relative; font-size:11px; font-weight:800; color:var(--text);}
+
+/* ---------- MILESTONE REVIEW MODAL ---------- */
+.milestone-stat-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+.milestone-stat{padding:14px; text-align:center; background:var(--bg-sunken); border-radius:14px;}
+.milestone-stat .m-num{font-family:var(--font-display); font-size:22px; color:var(--gold);}
+.milestone-stat .m-lbl{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px;}
 
 /* ---------- WORD COUNTER ---------- */
 .word-counter{text-align:right; font-size:11px; color:var(--text-faint); margin-top:6px; font-weight:600;}
@@ -443,6 +543,7 @@ textarea.reflect{
 .med-card .med-unit{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em;}
 .med-card .med-name{font-size:14px; font-weight:600; margin-top:8px;}
 .med-card .med-icon{position:absolute; right:14px; top:14px; font-size:20px; opacity:.5;}
+.med-card .med-desc{font-size:11.5px; color:var(--text-faint); margin-top:6px; line-height:1.4;}
 
 /* ---------- RESOURCES ---------- */
 .res-item{padding:16px; display:flex; align-items:center; gap:14px; margin-top:10px;}
@@ -566,9 +667,19 @@ input[type=text].input{
 
   <!-- ===================== HOME ===================== -->
   <main class="view" id="view-home">
+    <div class="nudge-banner" id="nudgeBanner" hidden></div>
+
     <section class="home-hero">
-      <div class="home-greeting" id="homeGreeting">Good day</div>
-      <h1 class="home-name" id="homeName">Welcome</h1>
+      <div class="date-header" id="dateHeader">Today</div>
+      <div class="hero-top">
+        <div>
+          <div class="home-greeting" id="homeGreeting">Good day</div>
+          <h1 class="home-name" id="homeName">Welcome</h1>
+        </div>
+        <div class="hero-chart" id="heroChart"></div>
+      </div>
+
+      <div class="quick-actions" id="quickActions"></div>
 
       <div class="stat-row">
         <div class="card stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day streak</div></div>
@@ -592,33 +703,33 @@ input[type=text].input{
       </div>
     </div>
 
-    <button class="btn btn-gold btn-block cta-giant" id="btnStartSession">Start Today's Session →</button>
+    <div class="play-cta">
+      <button class="play-ring" id="btnStartSession" aria-label="Start Today's Session">▶</button>
+      <div class="play-cta-label">Start Today's Session</div>
+    </div>
 
     <div class="card streak-strip">
       <div class="streak-flame">🔥</div>
       <div class="streak-text"><b id="streakBig">0-day streak</b><br>Keep showing up — consistency compounds.</div>
     </div>
 
-    <div class="card mt-3" style="padding:16px 18px;">
-      <div class="eyebrow">Your pace</div>
-      <div class="pace-grid" id="paceGrid"></div>
-      <p class="section-sub" style="margin-top:10px;">Every student moves at their own speed. Week number and mission number don't have to match.</p>
+    <div class="card mt-3" id="weeklyNoteCard" style="padding:16px 18px;" hidden>
+      <div class="eyebrow">📰 <span id="weeklyNoteTitle">This Week from ProfGermandario</span></div>
+      <p class="section-sub mt-2">A short weekly note from your teacher — thoughts, focus areas, and encouragement.</p>
+      <a class="btn btn-outline btn-block mt-3" id="btnWeeklyNoteOpen" target="_blank" rel="noopener" style="text-decoration:none;">Read this week's note ↗</a>
     </div>
 
-    <button class="card evo-cta btn-block mt-2" id="btnLabCta" style="width:100%; text-align:left; border:none;">
-      <div><div class="evo-txt">🎙️ Fluency Lab</div><div class="evo-sub">Speak on a topic, then reflect</div></div>
-      <div>›</div>
-    </button>
-
-    <button class="card evo-cta btn-block" id="btnEvoCta" style="width:100%; text-align:left; border:none;">
-      <div><div class="evo-txt">📊 Your Evolution</div><div class="evo-sub">Compare my writing across weeks</div></div>
-      <div>›</div>
-    </button>
-
-    <div class="card mt-3" style="padding:16px 18px;">
-      <div class="eyebrow">Your week</div>
-      <div class="mirror-grid" id="mirrorGrid"></div>
-      <p class="mirror-note" id="mirrorNote"></p>
+    <div class="card cycle-card mt-3" style="padding:18px;">
+      <div class="cycle-head">
+        <div>
+          <div class="eyebrow">Your Cycle</div>
+          <div class="cycle-title" id="cycleTitle">Cycle 1 · Day 1 of 28</div>
+        </div>
+        <div class="cycle-ring" id="cycleRing"></div>
+      </div>
+      <p class="section-sub mt-2" id="cycleMilestone">Milestone target for this cycle</p>
+      <div class="pace-grid mt-3" id="paceGrid"></div>
+      <p class="section-sub mt-3" style="text-align:center;">Stuck this cycle? <a href="#" id="cycleTeacherLink" style="color:var(--gold); font-weight:700; text-decoration:none;">Message your teacher →</a></p>
     </div>
   </main>
 
@@ -732,13 +843,13 @@ input[type=text].input{
   <!-- ===================== MEDITATION ===================== -->
   <main class="view" id="view-meditation" hidden>
     <h2 class="section-title">Meditation Center</h2>
-    <p class="section-sub">No clocks to watch. Choose the reset that fits your moment.</p>
-    <div class="med-grid">
-      <button class="card med-card" data-med="8 Minute Focus"><div class="med-icon">✦</div><div class="med-min">8</div><div class="med-unit">Minutes</div><div class="med-name">Focus</div></button>
-      <button class="card med-card" data-med="13 Minute Reset"><div class="med-icon">◐</div><div class="med-min">13</div><div class="med-unit">Minutes</div><div class="med-name">Reset</div></button>
-      <button class="card med-card" data-med="15 Minute Super Yo"><div class="med-icon">✺</div><div class="med-min">15</div><div class="med-unit">Minutes</div><div class="med-name">Super Yo</div></button>
-      <button class="card med-card" data-med="30 Minute Psalm Meditation"><div class="med-icon">✝</div><div class="med-min">30</div><div class="med-unit">Minutes</div><div class="med-name">Psalm Meditation</div></button>
-    </div>
+    <p class="section-sub">No clocks to watch. Guided resets, straight from the ProfGermandario YouTube channel.</p>
+    <div class="med-grid" id="medGrid"></div>
+    <a class="card res-item mt-3" id="medChannelLink" target="_blank" rel="noopener">
+      <div class="res-icon">🎥</div>
+      <div class="res-body"><div class="res-title">ProfGermandario on YouTube</div><div class="res-desc">More guided sessions and lessons</div></div>
+      <div>↗</div>
+    </a>
     <p class="section-sub mt-4">Completed meditations: <b id="medCount">0</b></p>
   </main>
 
@@ -765,6 +876,16 @@ input[type=text].input{
     <a class="card res-item" href="https://palekor.github.io/lecciones/" target="_blank" rel="noopener">
       <div class="res-icon">📚</div>
       <div class="res-body"><div class="res-title">GitHub Lessons</div><div class="res-desc">Interactive lesson library</div></div>
+      <div>↗</div>
+    </a>
+    <a class="card res-item" id="resYoutube" target="_blank" rel="noopener">
+      <div class="res-icon">🎥</div>
+      <div class="res-body"><div class="res-title">YouTube Channel</div><div class="res-desc">Lessons and guided meditations</div></div>
+      <div>↗</div>
+    </a>
+    <a class="card res-item" id="resWhatsapp" target="_blank" rel="noopener">
+      <div class="res-icon">💬</div>
+      <div class="res-body"><div class="res-title">Message ProfGermandario</div><div class="res-desc">Your teacher, one message away</div></div>
       <div>↗</div>
     </a>
 
@@ -795,6 +916,11 @@ input[type=text].input{
   <main class="view" id="view-evolution" hidden>
     <h2 class="section-title">My English Evolution</h2>
     <p class="section-sub">Your authentic writing, saved over time. This is the proof of change — nothing here is rewritten or corrected.</p>
+
+    <div class="card chart-wrap" id="progressChartCard" style="padding:16px 18px;">
+      <div class="eyebrow">Training hours, last 6 weeks</div>
+      <div id="progressChart"></div>
+    </div>
 
     <div class="card mt-3" style="padding:16px 18px;">
       <div class="eyebrow">Add a new sample</div>
@@ -874,6 +1000,16 @@ input[type=text].input{
     </div>
     <input type="file" id="fileImport" accept=".qkesl,application/json" hidden>
 
+    <div class="card settings-row" style="cursor:pointer; border-color:rgba(201,162,39,.5);" id="btnSendProgress">
+      <div><div class="settings-row-title" style="color:var(--gold);">Send my progress to ProfGermandario</div><div class="settings-row-sub">Download your file, identified with your name, then share it on WhatsApp</div></div>
+      <div>📤</div>
+    </div>
+
+    <div class="card mt-3" style="padding:14px 16px;">
+      <div class="settings-row-title">Student ID</div>
+      <div class="settings-row-sub" id="studentIdRow" style="font-family:monospace; word-break:break-all;"></div>
+    </div>
+
     <div class="card settings-row" style="cursor:pointer; border-color:rgba(226,114,91,.4);" id="btnResetProgress">
       <div><div class="settings-row-title" style="color:var(--coral);">Reset current progress</div><div class="settings-row-sub">Missions, streak &amp; XP reset. Journal and writing samples are kept.</div></div>
       <div>↺</div>
@@ -884,7 +1020,7 @@ input[type=text].input{
       <div>⚠</div>
     </div>
 
-    <p class="section-sub mt-4" style="text-align:center;">QK ESL Fluency Notebook · v5.0<br>by ProfGermandario · stored only on this device</p>
+    <p class="section-sub mt-4" style="text-align:center;">QK ESL Fluency Notebook · v8.0<br>by ProfGermandario · stored only on this device</p>
   </main>
 
 </div><!-- /#app -->
@@ -934,6 +1070,27 @@ input[type=text].input{
     <h3 style="font-size:16px;">Your tools</h3>
     <p class="section-sub" style="margin-top:2px;">The essentials, one tap away.</p>
     <div class="tool-grid" id="toolGrid"></div>
+  </div>
+</div>
+
+<!-- ===================== MILESTONE REVIEW MODAL ===================== -->
+<div class="modal-backdrop" id="milestoneModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3 style="font-size:18px;">🏁 Cycle complete</h3>
+    <div id="milestoneBody"></div>
+    <button class="btn btn-gold btn-block mt-3" id="btnMilestoneDone">Start my next cycle →</button>
+  </div>
+</div>
+
+<!-- ===================== POP QUIZ MODAL ===================== -->
+<div class="modal-backdrop" id="quizModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3 style="font-size:16px;">Quick check 🎯</h3>
+    <p class="section-sub" style="margin-top:2px;">A fast recall check from what you've already learned. No pressure — just a nudge.</p>
+    <div id="quizBody"></div>
+    <button class="btn btn-primary btn-block mt-3" id="btnQuizDone" hidden>Continue</button>
   </div>
 </div>
 
@@ -1076,16 +1233,53 @@ const STUCK_REASONS = [
   "I feel blocked."
 ];
 
+/* ============================================================
+   CONFIG — teacher contact, weekly note, meditation videos
+   NOTE: these are placeholders where the exact URL was not
+   provided. Nothing here is fabricated as if it were verified —
+   swap in the real links and the rest of the app updates itself.
+   ============================================================ */
+const CONFIG = {
+  whatsappNumber: "573197894038", // +57 319 789 4038
+  whatsappMessage: "Hola Profe, soy estudiante en el Fluency Notebook y quiero compartir mi progreso.",
+  youtubeChannelUrl: "", // TODO: paste the ProfGermandario YouTube channel URL here
+  weeklyNoteUrl: "",     // TODO: paste this week's published Google Doc / Drive / GitHub Pages URL here
+  weeklyNoteTitle: "This Week from ProfGermandario"
+};
+function waLink(text){
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+
 const MED_URL = "https://palekor.github.io/lecciones/profgermandario.html";
+
+/* ============================================================
+   DATA — MEDITATIONS (ProfGermandario YouTube channel)
+   url left empty until the real video links are supplied —
+   falls back to a channel/title search rather than a guessed link.
+   ============================================================ */
+const MEDITATIONS = [
+  {id:"laser", icon:"✦", title:"Enfoque Láser", desc:"Sharpen your attention before a session.", url:""},
+  {id:"potencial", icon:"✺", title:"Potencial Ilimitado", desc:"Reconnect with your capacity to grow.", url:""},
+  {id:"tercera", icon:"◐", title:"Meditación guiada", desc:"A third guided reset from the channel.", url:""}
+];
+function meditationUrl(m){
+  if(m.url) return m.url;
+  if(CONFIG.youtubeChannelUrl) return CONFIG.youtubeChannelUrl;
+  return "https://www.youtube.com/results?search_query=" + encodeURIComponent("ProfGermandario " + m.title);
+}
 
 /* ============================================================
    DATA — FLUENCY ROADMAP PHASES (mission index ranges, 0-based)
    ============================================================ */
 const PHASES = [
-  {label:"Foundation",   from:0,  to:4},
-  {label:"Structure",    from:5,  to:9},
-  {label:"Automaticity", from:10, to:13},
-  {label:"Fluency",      from:14, to:16}
+  {label:"Foundation",   from:0,  to:4,
+    icon:`<path d="M12 3 L21 19 H3 Z" fill="currentColor" opacity=".9"/><path d="M12 3 L16.5 11 H7.5 Z" fill="currentColor" opacity=".55"/><rect x="2" y="19" width="20" height="2.2" rx="1.1" fill="currentColor"/>`},
+  {label:"Structure",    from:5,  to:9,
+    icon:`<rect x="3" y="10" width="5" height="11" rx="1" fill="currentColor" opacity=".7"/><rect x="9.5" y="5" width="5" height="16" rx="1" fill="currentColor"/><rect x="16" y="13" width="5" height="8" rx="1" fill="currentColor" opacity=".7"/>`},
+  {label:"Automaticity", from:10, to:13,
+    icon:`<circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M22 12h-3M5 12H2M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7 5.6 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>`},
+  {label:"Fluency",      from:14, to:16,
+    icon:`<path d="M4 15c2-6 6-9 8-9s3 2 1 4-6 2-6 5 3 4 6 3 4-4 5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="7" r="1.6" fill="currentColor"/>`}
 ];
 function phaseForMission(i){
   const clamped = Math.min(i, MISSIONS.length-1);
@@ -1108,6 +1302,16 @@ const RESOURCES = [
 ];
 
 /* ============================================================
+   DATA — HOME QUICK ACTIONS
+   ============================================================ */
+const QUICK_ACTIONS = [
+  {icon:"🎯", label:"Practice", view:"session"},
+  {icon:"🎙️", label:"Speak", view:"lab"},
+  {icon:"📊", label:"Progress", view:"evolution"},
+  {icon:"💬", label:"Teacher", action:"whatsapp"}
+];
+
+/* ============================================================
    DATA — PERMANENT TOOL DOCK
    ============================================================ */
 const TOOLS = [
@@ -1118,7 +1322,9 @@ const TOOLS = [
   {icon:"🧘", name:"Meditation", desc:"Guided resets", action:"view", view:"meditation"},
   {icon:"📖", name:"My Notebook", desc:"Your journal", action:"view", view:"journal"},
   {icon:"🔊", name:"Audio / Speaking", desc:"44 verbs audio drill", action:"external", url:"https://palekor.github.io/lecciones/steps/"},
-  {icon:"📊", name:"My Progress", desc:"See your evolution", action:"view", view:"evolution"}
+  {icon:"📊", name:"My Progress", desc:"See your evolution", action:"view", view:"evolution"},
+  {icon:"💬", name:"Message ProfGermandario", desc:"Your teacher, one message away", action:"whatsapp"},
+  {icon:"🤝", name:"Refer a Friend", desc:"Share the Fluency Notebook", action:"referral"}
 ];
 
 /* ============================================================
@@ -1152,6 +1358,15 @@ function minWordsForMission(i){
   return 80; // Fluency
 }
 
+/* Keywords a student is asked to actually use in their reflection,
+   pulled straight from the mission's own vocabulary — never invented. */
+function missionKeywords(m){
+  return m.vocab
+    .map(v => v[0].split(/[\/,·]/)[0].trim())
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
 /* ============================================================
    STATE
    ============================================================ */
@@ -1171,7 +1386,7 @@ function defaultState(){
     uuid: uuid(),
     name: "",
     createdAt: new Date().toISOString(),
-    theme: "light",
+    theme: "dark",
     currentMission: 0,          // index into MISSIONS, 0-based
     completedMissions: [],      // array of indices
     xp: 0,
@@ -1192,7 +1407,9 @@ function defaultState(){
     meditationLog: [],          // { date }
     stuckSignals: [],           // { date, missionId, reason }
     currentFocus: "",           // free-text, student's own words on what they're working on
-    practiceRecords: []         // { id, type:'lesson'|'speaking', date, week, missionId, topic, duration, prep, content, difficulty, wordCount }
+    practiceRecords: [],        // { id, type:'lesson'|'speaking', date, week, missionId, topic, duration, prep, content, difficulty, wordCount }
+    quizzes: [],                // { date, missionCount, correct, total }
+    lastMilestoneCycleShown: 0  // last 4-week cycle number the milestone review was shown for
   };
 }
 
@@ -1208,6 +1425,8 @@ function migrateState(raw){
   merged.stuckSignals    = raw && Array.isArray(raw.stuckSignals) ? raw.stuckSignals : [];
   merged.currentFocus    = raw && raw.currentFocus ? raw.currentFocus : "";
   merged.practiceRecords = raw && Array.isArray(raw.practiceRecords) ? raw.practiceRecords : [];
+  merged.quizzes         = raw && Array.isArray(raw.quizzes) ? raw.quizzes : [];
+  merged.lastMilestoneCycleShown = raw && typeof raw.lastMilestoneCycleShown === 'number' ? raw.lastMilestoneCycleShown : 0;
   merged.version = APP_DATA_VERSION;
   return merged;
 }
@@ -1229,6 +1448,10 @@ function save(){
   try{
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
   }catch(e){ /* storage full or unavailable — fail silently */ }
+}
+
+function formatDateHeader(){
+  return new Date().toLocaleDateString(undefined, {weekday:'long', month:'long', day:'numeric'});
 }
 
 function todayStr(){
@@ -1259,6 +1482,30 @@ function studentWeek(){
   return Math.max(1, Math.floor(diffDays/7) + 1);
 }
 
+/* ============================================================
+   FOUR-WEEK CYCLE — milestones independent of calendar months
+   ============================================================ */
+function daysSinceStart(){
+  const start = new Date(state.createdAt);
+  const now = new Date();
+  return Math.max(0, Math.floor((now - start) / (1000*60*60*24)));
+}
+function cycleNumber(){ return Math.floor(daysSinceStart()/28) + 1; }
+function cycleDay(){ return (daysSinceStart() % 28) + 1; }
+function cycleMilestoneTarget(){
+  // A gentle, non-blocking target — roughly a quarter of the 17-mission
+  // roadmap per cycle. This is a suggestion, never a gate.
+  return {missions: 4, records: 3};
+}
+function cycleProgress(){
+  const start = new Date(state.createdAt);
+  const cycleStartDay = (cycleNumber()-1) * 28;
+  const cycleStart = new Date(start.getTime() + cycleStartDay*24*60*60*1000);
+  const missionsThisCycle = state.sessionLog.filter(s => new Date(s.date) >= cycleStart).length;
+  const recordsThisCycle = state.practiceRecords.filter(r => new Date(r.date) >= cycleStart).length;
+  return {missionsThisCycle, recordsThisCycle};
+}
+
 function daysActiveInLast(n){
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-n);
   const dates = new Set();
@@ -1282,6 +1529,23 @@ const STATUS_LABEL = {not_started:"Not started", discovered:"Discovered", practi
 /* ============================================================
    WEEKLY MIRROR — only real, stored data
    ============================================================ */
+/* ============================================================
+   WEEKLY HOURS SERIES — shared by hero mini-chart and Evolution
+   progress chart, always computed from real sessionLog data.
+   ============================================================ */
+function weeklyHoursBuckets(weeks){
+  const buckets = Array(weeks).fill(0);
+  const start = new Date(state.createdAt);
+  const nowWeek = studentWeek();
+  state.sessionLog.forEach(s=>{
+    const d = new Date(s.date);
+    const wk = Math.floor((d - start) / (1000*60*60*24*7)) + 1;
+    const idx = weeks - (nowWeek - wk) - 1;
+    if(idx >= 0 && idx < weeks) buckets[idx] += (s.minutes || 0) / 60;
+  });
+  return buckets;
+}
+
 function weeklyMirror(){
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-7);
   const sessions = state.sessionLog.filter(s => new Date(s.date) >= cutoff);
@@ -1366,8 +1630,7 @@ document.querySelectorAll('.navbtn').forEach(btn=>{
   btn.addEventListener('click', ()=> showView(btn.dataset.view));
 });
 document.getElementById('btnGoSettings').addEventListener('click', ()=> showView('settings'));
-document.getElementById('btnEvoCta').addEventListener('click', ()=> showView('evolution'));
-document.getElementById('btnLabCta').addEventListener('click', ()=> showView('lab'));
+
 
 /* ============================================================
    RENDER: HOME
@@ -1379,12 +1642,69 @@ function greetingWord(){
   return "Good evening";
 }
 
+function renderQuickActions(){
+  const wrap = document.getElementById('quickActions');
+  wrap.innerHTML = QUICK_ACTIONS.map(a => `
+    <button class="qa-btn" data-view="${a.view||''}" data-action="${a.action||''}">
+      <div class="qa-icon">${a.icon}</div>
+      <div class="qa-label">${a.label}</div>
+    </button>`).join('');
+  wrap.querySelectorAll('.qa-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.dataset.action === 'whatsapp'){ window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener'); }
+      else { showView(btn.dataset.view); }
+    });
+  });
+}
+
+function renderHeroChart(){
+  const wrap = document.getElementById('heroChart');
+  const buckets = weeklyHoursBuckets(6);
+  const hasData = buckets.some(v => v > 0);
+  if(!hasData){ wrap.innerHTML = ""; return; }
+  const max = Math.max(...buckets, 0.5);
+  const w = 118, h = 56, barW = 12, gap = 6;
+  const points = buckets.map((v,i)=>{
+    const x = i*(barW+gap) + barW/2;
+    const y = h - 4 - (v/max)*(h-14);
+    return [x,y];
+  });
+  const linePath = points.map((p,i)=> (i===0?'M':'L') + p[0] + ',' + p[1]).join(' ');
+  const bars = buckets.map((v,i)=>{
+    const barH = Math.max(3, (v/max)*(h-14));
+    const x = i*(barW+gap);
+    const y = h - 4 - barH;
+    return `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="url(#heroGrad)" opacity=".85"/>`;
+  }).join('');
+  wrap.innerHTML = `
+    <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="heroGrad" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="var(--royal-light)"/>
+          <stop offset="60%" stop-color="var(--lavender)"/>
+          <stop offset="100%" stop-color="var(--gold-bright)"/>
+        </linearGradient>
+        <linearGradient id="heroLine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--lavender)"/>
+          <stop offset="100%" stop-color="var(--gold-bright)"/>
+        </linearGradient>
+      </defs>
+      ${bars}
+      <path d="${linePath}" fill="none" stroke="url(#heroLine)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+    </svg>`;
+}
+
 function renderHome(){
+  document.getElementById('dateHeader').textContent = formatDateHeader();
   document.getElementById('homeGreeting').textContent = greetingWord() + (state.name ? ',' : '');
   document.getElementById('homeName').textContent = state.name || "Welcome";
   document.getElementById('statStreak').textContent = state.streak;
   document.getElementById('statHours').textContent = Math.round(state.hours*10)/10;
   document.getElementById('statMission').textContent = (state.currentMission+1) + "/" + MISSIONS.length;
+
+  renderNudgeBanner();
+  renderQuickActions();
+  renderHeroChart();
 
   const m = MISSIONS[Math.min(state.currentMission, MISSIONS.length-1)];
   const finished = state.currentMission >= MISSIONS.length;
@@ -1396,38 +1716,27 @@ function renderHome(){
 
   document.getElementById('streakBig').textContent = state.streak + "-day streak";
 
+  const weeklyCard = document.getElementById('weeklyNoteCard');
+  if(CONFIG.weeklyNoteUrl){
+    weeklyCard.hidden = false;
+    document.getElementById('weeklyNoteTitle').textContent = CONFIG.weeklyNoteTitle;
+    document.getElementById('btnWeeklyNoteOpen').href = CONFIG.weeklyNoteUrl;
+  }else{
+    weeklyCard.hidden = true;
+  }
+
   // Roadmap phase bar
   const curPhase = phaseForMission(state.currentMission);
   const phaseBar = document.getElementById('phaseBar');
   phaseBar.innerHTML = PHASES.map(p=>{
     const cls = p.label === curPhase.label ? 'active' : (PHASES.indexOf(p) < PHASES.indexOf(curPhase) ? 'done' : '');
-    return `<div class="phase-step ${cls}"><div class="dot"></div><div class="lbl">${p.label}</div></div>`;
+    return `<div class="phase-step ${cls}">
+      <div class="phase-badge"><svg viewBox="0 0 24 24">${p.icon}</svg></div>
+      <div class="lbl">${p.label}</div>
+    </div>`;
   }).join('');
 
-  // Personal pace — week is independent of mission progress
-  const activeDays = daysActiveInLast(14);
-  document.getElementById('paceGrid').innerHTML = `
-    <div class="pace-cell"><div class="pace-num">${studentWeek()}</div><div class="pace-lbl">Week</div></div>
-    <div class="pace-cell"><div class="pace-num">${Math.round(state.hours*10)/10}</div><div class="pace-lbl">Total hrs</div></div>
-    <div class="pace-cell"><div class="pace-num">${activeDays}/14</div><div class="pace-lbl">Active days</div></div>
-  `;
-
-  // Weekly mirror
-  const mirror = weeklyMirror();
-  const mg = document.getElementById('mirrorGrid');
-  const mn = document.getElementById('mirrorNote');
-  if(!mirror.hasData){
-    mg.innerHTML = "";
-    mn.textContent = "Not enough data yet. Complete a session or journal entry to see your weekly mirror.";
-  }else{
-    mg.innerHTML = `
-      <div class="mirror-cell"><div class="mirror-num">${mirror.minutes}m</div><div class="mirror-lbl">Training</div></div>
-      <div class="mirror-cell"><div class="mirror-num">${mirror.sessionsCount}</div><div class="mirror-lbl">Sessions</div></div>
-      <div class="mirror-cell"><div class="mirror-num">${mirror.lessons}</div><div class="mirror-lbl">Lessons</div></div>
-      <div class="mirror-cell"><div class="mirror-num">${mirror.meditations}</div><div class="mirror-lbl">Meditations</div></div>
-    `;
-    mn.textContent = mirror.journalCount + " journal " + (mirror.journalCount===1 ? "entry" : "entries") + " this week. Keep going.";
-  }
+  renderCycleCard();
 
   const startBtn = document.getElementById('btnStartSession');
   const doneToday = state.sessionDoneDate === todayStr();
@@ -1438,7 +1747,86 @@ function renderHome(){
   } else {
     startBtn.textContent = "Start Today's Session →";
   }
+
+  checkMilestoneReview();
 }
+
+/* ============================================================
+   CYCLE CARD — merges pace + weekly mirror into one calm summary
+   ============================================================ */
+function renderCycleCard(){
+  const cn = cycleNumber(), cd = cycleDay();
+  document.getElementById('cycleTitle').textContent = `Cycle ${cn} · Day ${cd} of 28`;
+  document.getElementById('cycleRing').style.setProperty('--cyclepct', Math.round((cd/28)*100) + '%');
+  document.getElementById('cycleRing').innerHTML = `<span>${cd}/28</span>`;
+
+  const target = cycleMilestoneTarget();
+  const progress = cycleProgress();
+  document.getElementById('cycleMilestone').textContent =
+    `Milestone target: about ${target.missions} missions and ${target.records} written records by day 28. So far this cycle: ${progress.missionsThisCycle} sessions, ${progress.recordsThisCycle} records.`;
+
+  const activeDays = daysActiveInLast(14);
+  const mirror = weeklyMirror();
+  document.getElementById('paceGrid').innerHTML = `
+    <div class="pace-cell"><div class="pace-num">${studentWeek()}</div><div class="pace-lbl">Week</div></div>
+    <div class="pace-cell"><div class="pace-num">${Math.round(state.hours*10)/10}</div><div class="pace-lbl">Total hrs</div></div>
+    <div class="pace-cell"><div class="pace-num">${activeDays}/14</div><div class="pace-lbl">Active days</div></div>
+    <div class="pace-cell"><div class="pace-num">${mirror.hasData ? mirror.minutes+'m' : '—'}</div><div class="pace-lbl">This week</div></div>
+    <div class="pace-cell"><div class="pace-num">${mirror.hasData ? mirror.sessionsCount : '—'}</div><div class="pace-lbl">Sessions</div></div>
+    <div class="pace-cell"><div class="pace-num">${mirror.hasData ? mirror.meditations : '—'}</div><div class="pace-lbl">Meditations</div></div>
+  `;
+}
+
+/* ============================================================
+   WELCOME-BACK NUDGE — reliable, no permissions, shown on open
+   ============================================================ */
+function renderNudgeBanner(){
+  const banner = document.getElementById('nudgeBanner');
+  if(!state.lastActiveDate){ banner.hidden = true; return; }
+  const last = new Date(state.lastActiveDate);
+  const today = new Date(todayStr());
+  const gapDays = Math.round((today - last) / (1000*60*60*24));
+  if(gapDays <= 0){ banner.hidden = true; return; }
+  let msg;
+  if(gapDays === 1) msg = `<b>Welcome back!</b> Pick up right where you left off — Mission ${state.currentMission+1} is waiting.`;
+  else if(gapDays <= 6) msg = `<b>It's been ${gapDays} days.</b> No pressure — even five minutes today keeps your progress alive.`;
+  else msg = `<b>Welcome back.</b> It's been a while, and that's okay. Your notebook remembered everything — start whenever you're ready.`;
+  banner.innerHTML = `👋 <span>${msg}</span>`;
+  banner.hidden = false;
+}
+
+/* ============================================================
+   MILESTONE REVIEW — fires once per completed 28-day cycle
+   ============================================================ */
+function checkMilestoneReview(){
+  const completedCycle = cycleNumber() - 1; // the most recent fully-elapsed cycle
+  if(completedCycle < 1) return;
+  if(state.lastMilestoneCycleShown >= completedCycle) return;
+
+  const start = new Date(state.createdAt);
+  const cycleStart = new Date(start.getTime() + (completedCycle-1)*28*24*60*60*1000);
+  const cycleEnd = new Date(start.getTime() + completedCycle*28*24*60*60*1000);
+  const inRange = (d)=> d >= cycleStart && d < cycleEnd;
+
+  const missions = state.sessionLog.filter(s => inRange(new Date(s.date)));
+  const records = state.practiceRecords.filter(r => inRange(new Date(r.date)));
+  const hours = missions.reduce((sum,s)=> sum + (s.minutes||0), 0) / 60;
+
+  document.getElementById('milestoneBody').innerHTML = `
+    <p class="section-sub mt-2">You just completed Cycle ${completedCycle}. Here's what you built:</p>
+    <div class="milestone-stat-row">
+      <div class="milestone-stat"><div class="m-num">${missions.length}</div><div class="m-lbl">Sessions</div></div>
+      <div class="milestone-stat"><div class="m-num">${Math.round(hours*10)/10}</div><div class="m-lbl">Hours</div></div>
+      <div class="milestone-stat"><div class="m-num">${records.length}</div><div class="m-lbl">Records written</div></div>
+      <div class="milestone-stat"><div class="m-num">${state.streak}</div><div class="m-lbl">Current streak</div></div>
+    </div>
+    <p class="section-sub mt-3">Cycle ${completedCycle+1} starts now. Same roadmap, your own pace.</p>
+  `;
+  state.lastMilestoneCycleShown = completedCycle;
+  save();
+  openModal('milestoneModal');
+}
+document.getElementById('btnMilestoneDone').addEventListener('click', ()=> closeModal('milestoneModal'));
 
 document.getElementById('btnStartSession').addEventListener('click', ()=>{
   if(state.currentMission >= MISSIONS.length){ showView('path'); return; }
@@ -1511,6 +1899,8 @@ function renderSession(){
       <h4><span class="num">${reflectionNum}</span>Reflection</h4>
       <p style="font-size:13.5px; color:var(--text-soft); margin-bottom:8px;">${m.reflection}</p>
       <p style="font-size:12px; color:var(--text-faint); margin-bottom:6px;">This is your record — every mission is saved as evidence of your progress.</p>
+      <p style="font-size:11.5px; color:var(--text-faint); margin-bottom:6px;">Try to use at least ${Math.min(2, missionKeywords(m).length)} of these words:</p>
+      <div class="lab-chips" id="sessionKeywordChips"></div>
       <textarea class="reflect" id="sessionReflection" placeholder="Write a few sentences…"></textarea>
       <div class="word-counter" id="sessionReflectionCount">0 / ${minWordsForMission(state.currentMission)} words</div>
     </div>
@@ -1528,10 +1918,18 @@ function renderSession(){
   const reflectionEl = document.getElementById('sessionReflection');
   const counterEl = document.getElementById('sessionReflectionCount');
   const minWords = minWordsForMission(state.currentMission);
+  const keywords = missionKeywords(m);
+  const requiredKeywords = Math.min(2, keywords.length);
+  const chipsEl = document.getElementById('sessionKeywordChips');
+  const renderChips = ()=>{
+    const text = reflectionEl.value.toLowerCase();
+    chipsEl.innerHTML = keywords.map(k => `<span class="lab-chip" style="${text.includes(k.toLowerCase()) ? 'background:var(--gold); color:var(--royal-deep);' : ''}">${k}</span>`).join('');
+  };
   const updateReflectionCounter = ()=>{
     const words = (reflectionEl.value.trim().match(/\S+/g) || []).length;
     counterEl.textContent = `${words} / ${minWords} words`;
     counterEl.classList.toggle('ok', words >= minWords);
+    renderChips();
   };
   reflectionEl.addEventListener('input', updateReflectionCounter);
   updateReflectionCounter();
@@ -1543,6 +1941,12 @@ function renderSession(){
       const words = (content.match(/\S+/g) || []).length;
       if(words < minWords){
         toast(`Your reflection needs at least ${minWords} words — that's what becomes your record.`);
+        reflectionEl.focus();
+        return;
+      }
+      const usedCount = keywords.filter(k => content.toLowerCase().includes(k.toLowerCase())).length;
+      if(usedCount < requiredKeywords){
+        toast(`Try to use at least ${requiredKeywords} of today's key words in your reflection.`);
         reflectionEl.focus();
         return;
       }
@@ -1600,7 +2004,67 @@ function completeStep(reflectionContent, wordCount){
   if(milestone) confetti();
   renderSession();
   renderHome();
+
+  if(state.completedMissions.length > 0 && state.completedMissions.length % 3 === 0){
+    setTimeout(()=> openPopQuiz(), 900);
+  }
 }
+
+/* ============================================================
+   POP QUIZ — lightweight recall check, built only from vocab
+   the student has already seen (no invented content, no AI
+   diagnosis — just a quick memory nudge every 3 missions)
+   ============================================================ */
+function buildQuizQuestions(n){
+  const pool = [];
+  state.completedMissions.forEach(idx=>{
+    MISSIONS[idx].vocab.forEach(v => pool.push({term:v[0], def:v[1]}));
+  });
+  if(pool.length < 4) return [];
+  const shuffled = pool.slice().sort(()=> Math.random()-0.5).slice(0, n);
+  return shuffled.map(q=>{
+    const distractors = pool.filter(p => p.def !== q.def).sort(()=> Math.random()-0.5).slice(0,2).map(p=>p.def);
+    const options = [q.def, ...distractors].sort(()=> Math.random()-0.5);
+    return {term:q.term, correct:q.def, options};
+  });
+}
+
+function openPopQuiz(){
+  const questions = buildQuizQuestions(3);
+  if(questions.length === 0) return;
+  let answered = 0, correct = 0;
+  const body = document.getElementById('quizBody');
+  const doneBtn = document.getElementById('btnQuizDone');
+  doneBtn.hidden = true;
+
+  body.innerHTML = questions.map((q,i)=>`
+    <div class="quiz-q">
+      <div class="quiz-term">${q.term}</div>
+      ${q.options.map(o=>`<button class="quiz-opt" data-q="${i}" data-correct="${o===q.correct}">${o}</button>`).join('')}
+    </div>`).join('');
+
+  body.querySelectorAll('.quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const qIndex = btn.dataset.q;
+      const group = body.querySelectorAll(`[data-q="${qIndex}"]`);
+      if(group[0].disabled) return; // already answered this question
+      group.forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.correct === "true") b.classList.add('correct');
+      });
+      if(btn.dataset.correct === "true"){ correct++; } else { btn.classList.add('wrong'); }
+      answered++;
+      if(answered === questions.length){
+        state.quizzes.push({date:new Date().toISOString(), missionCount: state.completedMissions.length, correct, total: questions.length});
+        save();
+        doneBtn.hidden = false;
+      }
+    });
+  });
+
+  openModal('quizModal');
+}
+document.getElementById('btnQuizDone').addEventListener('click', ()=> closeModal('quizModal'));
 
 /* ============================================================
    RENDER: LEARNING PATH
@@ -1808,19 +2272,29 @@ document.getElementById('btnExportJournal').addEventListener('click', ()=>{
    ============================================================ */
 function renderMeditation(){
   document.getElementById('medCount').textContent = state.meditationsCompleted;
-}
-document.querySelectorAll('.med-card').forEach(card=>{
-  card.addEventListener('click', ()=>{
-    state.meditationsCompleted += 1;
-    state.meditationLog.push({date:new Date().toISOString()});
-    updateStreak();
-    checkAchievements();
-    save();
-    window.open(MED_URL, '_blank', 'noopener');
-    toast("Opening " + card.dataset.med + "…");
-    renderMeditation();
+  const grid = document.getElementById('medGrid');
+  grid.innerHTML = MEDITATIONS.map(m => `
+    <button class="card med-card" data-med="${m.id}">
+      <div class="med-icon">${m.icon}</div>
+      <div class="med-name">${m.title}</div>
+      <div class="med-desc">${m.desc}</div>
+    </button>`).join('');
+  grid.querySelectorAll('.med-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const m = MEDITATIONS.find(x => x.id === card.dataset.med);
+      state.meditationsCompleted += 1;
+      state.meditationLog.push({date:new Date().toISOString()});
+      updateStreak();
+      checkAchievements();
+      save();
+      window.open(meditationUrl(m), '_blank', 'noopener');
+      toast("Opening " + m.title + "…");
+      renderMeditation();
+    });
   });
-});
+  const channelLink = document.getElementById('medChannelLink');
+  channelLink.href = CONFIG.youtubeChannelUrl || ("https://www.youtube.com/results?search_query=" + encodeURIComponent("ProfGermandario"));
+}
 
 /* ============================================================
    RESOURCES — doc modal
@@ -1948,9 +2422,46 @@ document.getElementById('btnSaveLabAttempt').addEventListener('click', ()=>{
    ============================================================ */
 function renderEvolution(){
   document.getElementById('evoNewSample').value = "";
+  renderProgressChart();
   renderSampleList();
   renderCompareControls();
   renderPracticeRecords();
+}
+
+function renderProgressChart(){
+  const weeks = 6;
+  const buckets = weeklyHoursBuckets(weeks);
+  const nowWeek = studentWeek();
+  const hasData = buckets.some(v => v > 0);
+  const wrap = document.getElementById('progressChart');
+  if(!hasData){
+    wrap.innerHTML = `<p class="section-sub">Not enough data yet. Complete a few sessions to see your training hours by week.</p>`;
+    return;
+  }
+  const max = Math.max(...buckets, 1);
+  const w = 320, h = 130, barW = 36, gap = 16, baseY = 105;
+  const bars = buckets.map((v,i)=>{
+    const barH = Math.round((v/max) * 80);
+    const x = 10 + i*(barW+gap);
+    const y = baseY - barH;
+    const weekLabel = "W" + (nowWeek - (weeks-1-i));
+    return `
+      <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="6" fill="url(#goldBar)"/>
+      <text x="${x+barW/2}" y="${baseY+16}" text-anchor="middle" font-size="10" fill="var(--text-faint)">${weekLabel}</text>
+      <text x="${x+barW/2}" y="${y-6}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--text)">${Math.round(v*10)/10}h</text>
+    `;
+  }).join('');
+  wrap.innerHTML = `
+    <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="goldBar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--gold-bright)"/>
+          <stop offset="100%" stop-color="var(--gold)"/>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="${baseY}" x2="${w}" y2="${baseY}" stroke="var(--border)" stroke-width="1"/>
+      ${bars}
+    </svg>`;
 }
 
 function renderPracticeRecords(){
@@ -2097,6 +2608,7 @@ function checkAchievements(){
 function renderSettings(){
   document.getElementById('settingsName').value = state.name || "";
   document.getElementById('switchDark').classList.toggle('on', state.theme === 'dark');
+  document.getElementById('studentIdRow').textContent = state.uuid;
 }
 document.getElementById('btnSaveName').addEventListener('click', ()=>{
   const v = document.getElementById('settingsName').value.trim();
@@ -2135,9 +2647,36 @@ document.getElementById('btnExportData').addEventListener('click', ()=>{
   const payload = {
     format: "qkesl", version: state.version, exportedAt: new Date().toISOString(), data: state
   };
-  const filename = (state.name ? state.name.replace(/\s+/g,'') : "Student") + ".qkesl";
+  const filename = studentFileName();
   downloadBlob(JSON.stringify(payload, null, 2), filename, "application/json");
   toast("Progress exported.");
+});
+
+function studentFileName(){
+  const namePart = (state.name ? state.name.replace(/\s+/g,'') : "Student");
+  const shortId = state.uuid.replace('qk-','').slice(0,8);
+  return `${namePart}-${shortId}-${todayStr()}.qkesl`;
+}
+
+document.getElementById('btnSendProgress').addEventListener('click', async ()=>{
+  const payload = { format: "qkesl", version: state.version, exportedAt: new Date().toISOString(), data: state };
+  const json = JSON.stringify(payload, null, 2);
+  const filename = studentFileName();
+  const waText = `Hola Profe, soy ${state.name || 'un estudiante'} (ID ${state.uuid}). Adjunto mi progreso del Fluency Notebook.`;
+
+  if(navigator.canShare && navigator.share){
+    try{
+      const file = new File([json], filename, {type:"application/json"});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:"My Fluency Notebook progress", text: waText});
+        toast("Shared. Thanks for keeping your teacher in the loop.");
+        return;
+      }
+    }catch(e){ /* fall through to manual flow */ }
+  }
+  downloadBlob(json, filename, "application/json");
+  toast(`Saved as ${filename}. Attach this file when WhatsApp opens.`);
+  setTimeout(()=> window.open(waLink(waText), '_blank', 'noopener'), 900);
 });
 
 document.getElementById('btnImportData').addEventListener('click', ()=>{
@@ -2188,7 +2727,7 @@ document.getElementById('btnResetData').addEventListener('click', ()=>{
     localStorage.removeItem(STORE_KEY);
     state = defaultState();
     save();
-    setTheme('light');
+    setTheme('dark');
     toast("All data deleted.");
     document.getElementById('onboardModal').classList.add('open');
   }
@@ -2219,6 +2758,8 @@ function renderToolDock(){
       const t = TOOLS[Number(btn.dataset.tool)];
       closeModal('toolModal');
       if(t.action === 'external'){ window.open(t.url, '_blank', 'noopener'); }
+      else if(t.action === 'whatsapp'){ window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener'); }
+      else if(t.action === 'referral'){ shareReferral(); }
       else { showView(t.view); }
     });
   });
@@ -2227,6 +2768,26 @@ document.getElementById('btnToolDock').addEventListener('click', ()=>{
   renderToolDock();
   openModal('toolModal');
 });
+
+function shareReferral(){
+  const name = state.name || "A student";
+  const text = `${name} is learning English with ProfGermandario's Fluency Notebook — a personal roadmap, journal, and coach in your pocket. Check it out: https://www.profgermandario.com`;
+  if(navigator.share){
+    navigator.share({title:"ProfGermandario Fluency Notebook", text}).catch(()=>{});
+  }else{
+    window.open(waLink(text), '_blank', 'noopener');
+  }
+}
+
+// Wire teacher-contact links that depend on runtime CONFIG values
+(function wireContactLinks(){
+  const yt = document.getElementById('resYoutube');
+  if(yt) yt.href = CONFIG.youtubeChannelUrl || ("https://www.youtube.com/results?search_query=" + encodeURIComponent("ProfGermandario"));
+  const wa = document.getElementById('resWhatsapp');
+  if(wa) wa.href = waLink(CONFIG.whatsappMessage);
+  const cycleWa = document.getElementById('cycleTeacherLink');
+  if(cycleWa) cycleWa.addEventListener('click', (e)=>{ e.preventDefault(); window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener'); });
+})();
 
 /* ============================================================
    ONBOARDING

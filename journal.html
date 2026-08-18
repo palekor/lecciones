@@ -494,8 +494,67 @@ textarea.reflect{
 .session-empty{text-align:center; padding:60px 20px;}
 .session-empty .big-emoji{font-size:44px;}
 
+/* ---------- NEVER STUCK KIT ---------- */
+.kit-card{margin-top:14px; overflow:hidden;}
+.kit-head{
+  display:flex; align-items:center; gap:10px; padding:16px 18px; cursor:pointer; user-select:none;
+}
+.kit-head .kit-icon{
+  width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;
+}
+.kit-head .kit-title{font-size:14px; font-weight:700; flex:1;}
+.kit-head .kit-sub{font-size:11px; color:var(--text-faint);}
+.kit-chevron{font-size:12px; color:var(--text-faint); transition:transform .25s var(--ease);}
+.kit-card.open .kit-chevron{transform:rotate(90deg);}
+.kit-body{max-height:0; overflow:hidden; transition:max-height .3s var(--ease);}
+.kit-card.open .kit-body{max-height:900px;}
+.kit-body-inner{padding:0 18px 18px;}
+.kit-body-inner p{font-size:13.5px; color:var(--text-soft); line-height:1.55;}
+.tts-btn{
+  display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:100px;
+  background:var(--accent-soft); color:var(--accent); border:none; font-size:12.5px; font-weight:700; margin-top:10px;
+}
+.tts-btn.tts-playing{background:var(--gold); color:var(--royal-deep);}
+.cheat-line{display:flex; gap:8px; padding:8px 0; font-size:13px; border-bottom:1px dashed var(--border); color:var(--text-soft);}
+.cheat-line:last-child{border-bottom:none;}
+.cheat-line::before{content:'—'; color:var(--gold); flex-shrink:0;}
+.shadow-line{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; margin-top:6px;
+  background:var(--bg-sunken); border-radius:12px; font-size:13px;
+}
+.shadow-line button{
+  width:30px; height:30px; border-radius:50%; border:none; background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;
+}
+.example-line{padding:10px 12px; background:var(--bg-sunken); border-radius:12px; font-size:13px; margin-top:6px; font-style:italic; color:var(--text);}
+.mistake-row{margin-top:10px; padding:12px; border-radius:12px; background:rgba(226,114,91,.08); border:1px solid rgba(226,114,91,.2);}
+.mistake-wrong{font-size:12.5px; color:var(--coral); text-decoration:line-through; text-decoration-thickness:1.5px;}
+.mistake-right{font-size:13px; color:var(--text); margin-top:4px; line-height:1.5;}
+.mistake-right b{color:var(--gold);}
+
 /* ---------- LEARNING PATH ---------- */
-.path-line{position:relative; padding-left:34px; margin-top:22px;}
+.roadmap-phase{margin-top:28px;}
+.roadmap-phase:first-child{margin-top:20px;}
+.phase-heading{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+.phase-heading-icon{
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--accent-soft); color:var(--accent);
+  transition:all .3s var(--ease);
+}
+.phase-heading-icon svg{width:20px; height:20px;}
+.roadmap-phase.phase-complete .phase-heading-icon{
+  background:linear-gradient(135deg, var(--gold), var(--gold-bright)); color:var(--royal-deep);
+  box-shadow:0 0 0 4px rgba(201,162,39,.18), 0 0 24px rgba(201,162,39,.35);
+}
+.phase-heading-text{flex:1;}
+.phase-heading-label{font-family:var(--font-display); font-size:17px; font-weight:600;}
+.phase-heading-sub{font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em; margin-top:1px;}
+.phase-heading-count{font-size:11.5px; font-weight:700; color:var(--text-faint);}
+.roadmap-phase.phase-complete .phase-heading-count{color:var(--gold);}
+
+.path-line{position:relative; padding-left:34px; margin-top:0;}
 .path-line::before{
   content:''; position:absolute; left:14px; top:6px; bottom:6px; width:2px;
   background:linear-gradient(var(--gold), var(--border));
@@ -508,9 +567,18 @@ textarea.reflect{
   border:2px solid var(--border); background:var(--bg-elev); color:var(--text-faint);
   transition:all .3s var(--ease-spring);
 }
-.mission-node.completed .node-dot{background:var(--gold); border-color:var(--gold); color:var(--royal-deep);}
+.mission-node.completed .node-dot{
+  background:linear-gradient(135deg, var(--gold), var(--gold-bright)); border-color:var(--gold); color:var(--royal-deep);
+  box-shadow:0 0 0 4px rgba(201,162,39,.16), 0 0 18px rgba(201,162,39,.5);
+  animation:goldPulse 2.6s ease-in-out infinite;
+}
+@keyframes goldPulse{
+  0%,100%{ box-shadow:0 0 0 4px rgba(201,162,39,.16), 0 0 14px rgba(201,162,39,.4); }
+  50%{ box-shadow:0 0 0 6px rgba(201,162,39,.22), 0 0 22px rgba(201,162,39,.6); }
+}
 .mission-node.current .node-dot{background:var(--royal); border-color:var(--royal); color:#fff; box-shadow:0 0 0 6px var(--accent-soft);}
-.node-card{padding:14px 16px; transition:transform .2s var(--ease);}
+.node-card{padding:14px 16px; transition:transform .2s var(--ease), box-shadow .3s var(--ease);}
+.mission-node.completed .node-card{box-shadow:0 4px 20px rgba(201,162,39,.14), var(--card-shadow); border-color:rgba(201,162,39,.25);}
 .mission-node:hover .node-card{transform:translateX(2px);}
 .mission-node.locked .node-card{opacity:.55;}
 .node-title{font-size:15px; font-weight:600;}
@@ -636,9 +704,27 @@ input[type=text].input{
   width:64px; height:64px; border-radius:18px; margin:6px auto 18px;
   background:linear-gradient(135deg, var(--royal), var(--royal-light));
   display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:26px; color:var(--gold-bright);
+  overflow:hidden;
 }
+.onboard-logo img{width:100%; height:100%; object-fit:contain; padding:8px;}
 
 .mt-2{margin-top:8px;} .mt-3{margin-top:14px;} .mt-4{margin-top:20px;}
+
+/* ---------- MOBILE FRICTION FIXES ---------- */
+/* iOS Safari zooms the whole page on focus if a field's font-size is under 16px.
+   Force 16px on small screens only, so mobile never zooms mid-flow. */
+@media (max-width:640px){
+  input, select, textarea{ font-size:16px !important; }
+  .btn{ min-height:46px; }
+  .navbtn{ min-height:52px; }
+  .icon-btn{ width:42px; height:42px; }
+  .mood-btn{ min-height:46px; }
+  .tts-btn{ min-height:38px; }
+}
+/* Prevent any fixed-width block from forcing horizontal scroll on narrow phones */
+#app{ overflow-x:hidden; }
+.vocab-grid, .med-grid{ min-width:0; }
+img, svg{ max-width:100%; }
 
 /* Scrollbar (desktop niceties) */
 ::-webkit-scrollbar{width:8px; height:8px;}
@@ -701,6 +787,24 @@ input[type=text].input{
         <span id="bannerDuration">⏱ 15 min</span>
         <span id="bannerStep">Step 1 of 17</span>
       </div>
+    </div>
+
+    <div class="card personal-card" id="personalCard">
+      <div class="eyebrow">Built around you</div>
+      <h3 style="font-size:18px;margin-top:5px;" id="personalHeadline">Your English, your route.</h3>
+      <p class="section-sub" id="personalNudge">Your starting point will shape the way the notebook speaks to you.</p>
+      <div class="personal-grid" id="personalGrid"></div>
+    </div>
+
+    <div class="support-card card">
+      <div class="eyebrow">Never get stuck</div>
+      <div class="support-title">You are not learning alone.</div>
+      <div class="support-list">
+        <div class="support-item">⚡ <span><b>Speak Ya</b> gives you an always-available AI speaking partner.</span></div>
+        <div class="support-item">👨‍🏫 <span><b>Prof German</b> is the human escape hatch when the problem needs a teacher.</span></div>
+        <div class="support-item">🔁 <span><b>Every mission</b> now opens a complete Never Stuck kit: explanation, practice, examples, shadowing and Spanish-speaker mistakes.</span></div>
+      </div>
+      <button class="btn btn-primary btn-block mt-3" id="btnHomeTeacher">Message Prof German · stuck for 24h? →</button>
     </div>
 
     <div class="play-cta">
@@ -794,7 +898,7 @@ input[type=text].input{
 
     <div class="card mindmap-wrap" id="mindMapCard"></div>
 
-    <div class="path-line" id="pathList"></div>
+    <div id="pathList"></div>
   </main>
 
   <!-- ===================== JOURNAL ===================== -->
@@ -889,19 +993,25 @@ input[type=text].input{
       <div>↗</div>
     </a>
 
+    <a class="card res-item" href="https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya" target="_blank" rel="noopener">
+      <div class="res-icon">🎙️</div>
+      <div class="res-body"><div class="res-title">Speak Ya · AI Speaking Companion</div><div class="res-desc">An alternative to generic ChatGPT for guided speaking practice</div></div>
+      <div>↗</div>
+    </a>
+
     <h3 class="section-title mt-4" style="font-size:16px;">Learning Tools</h3>
     <p class="section-sub" style="margin-top:2px;">Quick access to the practice tools used across your missions.</p>
-    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+    <a class="card res-item" href="#" data-action="mission-kit" target="_blank" rel="noopener">
       <div class="res-icon">🖼️</div>
       <div class="res-body"><div class="res-title">Aid Images — uno · dos · tres + verbs</div><div class="res-desc">Visual verb association set</div></div>
       <div>↗</div>
     </a>
-    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+    <a class="card res-item" href="#" data-action="mission-kit" target="_blank" rel="noopener">
       <div class="res-icon">📖</div>
       <div class="res-body"><div class="res-title">Cognate Dictionary</div><div class="res-desc">-ción → -tion, -ir → -e patterns</div></div>
       <div>↗</div>
     </a>
-    <a class="card res-item" href="https://palekor.github.io/lecciones/steps/" target="_blank" rel="noopener">
+    <a class="card res-item" href="#" data-action="mission-kit" target="_blank" rel="noopener">
       <div class="res-icon">🎧</div>
       <div class="res-body"><div class="res-title">44 Verbs Audio Game</div><div class="res-desc">Interactive HTML verb drill</div></div>
       <div>↗</div>
@@ -1020,13 +1130,15 @@ input[type=text].input{
       <div>⚠</div>
     </div>
 
-    <p class="section-sub mt-4" style="text-align:center;">QK ESL Fluency Notebook · v8.0<br>by ProfGermandario · stored only on this device</p>
+    <p class="section-sub mt-4" style="text-align:center;">QK ESL Fluency Notebook · v9.0<br>by ProfGermandario · stored only on this device</p>
   </main>
 
 </div><!-- /#app -->
 
 <!-- ===================== TOOL DOCK FAB ===================== -->
 <button class="tool-fab" id="btnToolDock" aria-label="Tools" title="Tools">🧰</button>
+
+<button class="teacher-fab" id="teacherFab" aria-label="Message Prof German">💬 Prof German</button>
 
 <!-- ===================== BOTTOM NAV ===================== -->
 <nav class="bottomnav">
@@ -1044,22 +1156,54 @@ input[type=text].input{
   <div class="modal">
     <div class="modal-handle"></div>
     <div id="onboardStep1">
-      <div class="onboard-logo">Q</div>
+      <div class="onboard-logo" id="onboardLogo">
+        <img src="https://palekor.github.io/lecciones/profgermandario-logo-clean.png" alt="ProfGermandario" onerror="this.parentElement.textContent='Q'; this.parentElement.classList.add('onboard-logo-fallback');">
+      </div>
       <h2 style="text-align:center; font-size:22px;">Welcome to your Fluency Notebook</h2>
-      <p class="section-sub" style="text-align:center;">Your personal companion for rapid, confident English mastery. Let's set up your journey.</p>
+      <p class="section-sub" style="text-align:center;">This is not a generic course. We are going to build your English around <b>your starting point, your goal, and your real life.</b></p>
       <div class="journal-field">
         <label>What should we call you?</label>
         <input type="text" class="input" id="onboardName" placeholder="Your first name">
       </div>
-      <button class="btn btn-primary btn-block mt-4" id="btnOnboardStart">Continue →</button>
+      <button class="btn btn-primary btn-block mt-4" id="btnOnboardStart">Build my starting point →</button>
     </div>
     <div id="onboardStep2" hidden>
-      <h2 style="text-align:center; font-size:20px;">My Starting Point</h2>
-      <p class="section-sub" style="text-align:center;">Write about anything you want, for about five minutes. Don't use a translator. Don't worry about mistakes — just express yourself. This becomes your baseline, so you can see how far you've come.</p>
-      <textarea class="reflect mt-3" id="onboardStarting" placeholder="Start writing…" style="min-height:130px;"></textarea>
-      <button class="btn btn-primary btn-block mt-4" id="btnOnboardSaveStart">Save & begin my journey →</button>
-      <button class="btn btn-outline btn-block mt-2" id="btnOnboardSkipStart">Skip for now</button>
+      <div class="eyebrow">My Starting Point · 1 of 2</div>
+      <h2 style="font-size:20px; margin-top:6px;">Where are you now?</h2>
+      <p class="section-sub">Choose the answer that feels closest. This is not an exam.</p>
+      <div class="journal-field">
+        <label>My current English level</label>
+        <select id="onboardLevel" class="input" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-sunken);color:var(--text);font:inherit;">
+          <option value="">Choose one</option><option>A1 — I know basic words</option><option>A2 — I can handle familiar situations</option><option>B1 — I can communicate but hesitate</option><option>B2 — I can discuss ideas but need precision</option><option>C1+ — I want refinement and executive fluency</option><option>I'm not sure</option>
+        </select>
+      </div>
+      <div class="journal-field">
+        <label>My main goal</label>
+        <select id="onboardGoal" class="input" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-sunken);color:var(--text);font:inherit;">
+          <option value="">Choose one</option><option>Work & professional communication</option><option>Travel & everyday confidence</option><option>Speaking without freezing</option><option>Exam / certification</option><option>Academic communication</option><option>General fluency</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block mt-4" id="btnOnboardProfileNext">Continue →</button>
     </div>
+    <div id="onboardStep3" hidden>
+      <div class="eyebrow">My Starting Point · 2 of 2</div>
+      <h2 style="font-size:20px; margin-top:6px;">What gets in your way?</h2>
+      <div class="journal-field">
+        <label>My biggest fear / block</label>
+        <textarea class="reflect" id="onboardFear" placeholder="For example: I freeze in meetings, I translate in my head, I fear making mistakes…" style="min-height:78px;"></textarea>
+      </div>
+      <div class="journal-field">
+        <label>How I learn best</label>
+        <select id="onboardStyle" class="input" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-sunken);color:var(--text);font:inherit;">
+          <option value="">Choose one</option><option>Seeing patterns & visuals</option><option>Listening & repeating</option><option>Speaking & doing</option><option>Writing & reflecting</option><option>A mix of everything</option>
+        </select>
+      </div>
+      <div class="journal-field">
+        <label>My English baseline</label>
+        <textarea class="reflect" id="onboardStarting" placeholder="Write for about five minutes. Don't use a translator. Just express yourself." style="min-height:105px;"></textarea>
+      </div>
+      <button class="btn btn-gold btn-block mt-4" id="btnOnboardSaveStart">Save my profile & begin →</button>
+    </div>    </div>
   </div>
 </div>
 
@@ -1129,88 +1273,192 @@ input[type=text].input{
    ============================================================ */
 const MISSIONS = [
   {t:"Personal Pronouns", tag:"Logic — Written & Spoken", step:"step00a", file:"https://palekor.github.io/lecciones/steps/step00a.html", desc:"Meet the 1st, 2nd, and 3rd person pronouns that anchor every English sentence.", duration:15,
-    vocab:[["I / you / he, she, it","1st, 2nd & 3rd person — singular"],["We / you / they","1st, 2nd & 3rd person — plural"]],
+    vocab:[["I / you / he, she, it","1st, 2nd & 3rd person — singular"],["We / you / they","1st, 2nd & 3rd person — plural"],["Subject pronoun","the word that shows who is doing the action"]],
     practice:"Say 10 sentences out loud, one per pronoun, as fast as you can — don't stop to fix mistakes.",
     reflection:"Which pronoun did you hesitate on the most?",
-    resources:[
-      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
-    ]},
+    kit:{
+      explain:"English marks the doer of the action with a subject pronoun placed before the verb: I, you, he, she, it, we, they. Spanish often drops this pronoun because the verb ending already shows who's speaking — English never drops it, even when it feels repetitive.",
+      cheatSheet:["I = yo","You = tú / usted","He = él   ·   She = ella   ·   It = eso (cosas, animales)","We = nosotros   ·   They = ellos/ellas","Rule: every English sentence needs a stated subject — never drop it."],
+      shadow:["I am a student.","You are my friend.","He works every day.","She lives in Bogotá.","We speak English.","They study together."],
+      examples:["I am learning English every day.","She works in an office downtown.","They live near the university."],
+      mistakes:[{wrong:"Am a student. (dropping \"I\")",right:"I am a student. — English never drops the subject pronoun, even though Spanish often can."},{wrong:"He like coffee.",right:"He likes coffee. — third person singular (he/she/it) needs an -s on the verb."}]
+    }},
   {t:"Verbs — Regular & Irregular", tag:"Logic — Written & Spoken", step:"step00b", file:"https://palekor.github.io/lecciones/steps/step00b.html", desc:"Tell the two verb families apart and how each one changes for the past.", duration:18,
-    vocab:[["Regular verb","adds -ed for the past (walk → walked)"],["Irregular verb","changes form unpredictably (go → went)"]],
+    vocab:[["Regular verb","adds -ed for the past — walk → walked"],["Irregular verb","changes form unpredictably — go → went"],["Base form","the verb's dictionary form before any ending is added"]],
     practice:"List 5 regular and 5 irregular verbs from memory, then check them against a dictionary.",
     reflection:"Which irregular verbs keep tripping you up?",
-    resources:[
-      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
-    ]},
+    kit:{
+      explain:"Regular verbs add -ed for the past (walk → walked). Irregular verbs change form completely and must be memorized (go → went, eat → ate) — there's no spelling rule to fall back on, only repetition until it's automatic.",
+      cheatSheet:["Regular: verb + -ed → walked, played, wanted","Irregular: memorize — go/went, eat/ate, see/saw, have/had","Spelling: stop→stopped (double consonant), study→studied (y→ied)","Never add -ed to an irregular verb — there is no \"goed\"."],
+      shadow:["I walked to work yesterday.","She studied all night.","We went to the market.","They ate dinner at seven.","He saw the movie twice."],
+      examples:["Yesterday I walked to school and then I studied for two hours.","Last week she went to the doctor and he gave her some medicine."],
+      mistakes:[{wrong:"I goed to the store.",right:"I went to the store. — \"go\" is irregular, it never becomes \"goed\"."},{wrong:"She eated lunch.",right:"She ate lunch. — \"eat\" is irregular: eat / ate / eaten."}]
+    }},
   {t:"Complement Sentence", tag:"Logic — Written & Spoken", step:"step01", file:"https://palekor.github.io/lecciones/steps/step01.html", desc:"Build complete sentences: subject + verb + complement.", duration:18,
-    vocab:[["Complement","the part of a sentence that completes its meaning"],["Subject","who or what the sentence is about"]],
+    vocab:[["Complement","the part of a sentence that completes its meaning"],["Subject","who or what the sentence is about"],["Complete sentence","subject + verb + complement, never missing a piece"]],
     practice:"Write 5 Subject + Verb + Complement sentences using the aid images and verb list.",
     reflection:"Which sentence felt the most natural to say out loud?",
-    resources:[
-      {label:"Aid images: uno · dos · tres + verbs", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Dictionary — cognates ending in -ción → -tion, -ir → -e", url:"https://palekor.github.io/lecciones/steps/"},
-      {label:"Audio: 44 Verbs HTML game", url:"https://palekor.github.io/lecciones/steps/"}
-    ]},
+    kit:{
+      explain:"Every complete English sentence needs a subject, a verb, and usually a complement that finishes the thought. Spanish can build a full sentence with just a verb (\"Tengo\"); English almost never can (\"I have\" needs something after it).",
+      cheatSheet:["Subject + Verb + Complement","I + eat + breakfast.","She + is + a teacher.","They + live + in Medellín.","A sentence without a complement usually sounds unfinished in English."],
+      shadow:["I eat breakfast every morning.","She is a teacher at the school.","They live in a small apartment.","We need more time."],
+      examples:["I drink coffee every morning before work.","My sister is a nurse at the hospital downtown."],
+      mistakes:[{wrong:"I have. (no complement)",right:"I have a car. — English needs the complement to finish the idea; Spanish's \"tengo\" alone is fine, English's \"I have\" alone is not."},{wrong:"Is difficult.",right:"It is difficult. — English needs the subject \"it\"; Spanish can say \"es difícil\" with no subject at all."}]
+    }},
   {t:"Chunk Logic", tag:"Logic — Written & Spoken", step:"step02", file:"https://palekor.github.io/lecciones/steps/step02.html", desc:"Group words into chunks so speech flows instead of stalling word by word.", duration:18,
-    vocab:[["Chunk","a small group of words used together as one unit"],["Fluency chunk","a memorized phrase used as a single block, e.g. \"I'd like to…\""]],
+    vocab:[["Chunk","a small group of words used together as one unit"],["Fluency chunk","a memorized phrase used as a single block, e.g. \"I'd like to…\""],["Retrieval","pulling a whole chunk from memory instead of building it word by word"]],
     practice:"Pick 3 chunks and use each one twice today in real sentences.",
-    reflection:"Where did chunking make you sound faster?"},
+    reflection:"Where did chunking make you sound faster?",
+    kit:{
+      explain:"Fluent speakers don't build sentences word by word — they retrieve pre-built chunks like \"I'd like to...\" or \"Can you...\" as single units. That's what makes native speech sound fast: it's assembled from blocks, not translated piece by piece.",
+      cheatSheet:["I'd like to…","Can you…?","I'm going to…","Do you mind if…?","It depends on…","Practice each chunk until it comes out in one breath, not four separate words."],
+      shadow:["I'd like to ask you something.","Can you help me with this?","I'm going to finish it tomorrow.","It depends on the weather."],
+      examples:["I'd like to order a coffee, please.","Can you tell me where the station is?"],
+      mistakes:[{wrong:"Translating each word of a chunk separately every time",right:"Memorize the chunk as one block — \"I'd like to\" is one unit in your mouth, not four words to reconstruct."}]
+    }},
   {t:"WH Questions", tag:"Logic — Written & Spoken", step:"step03", file:"https://palekor.github.io/lecciones/steps/step03.html", desc:"Master who, what, where, when, why, and how to fetch information fast.", duration:20,
-    vocab:[["WH-word","a question word: who, what, where, when, why, how"],["Fetching","asking a direct question to retrieve information"]],
+    vocab:[["WH-word","a question word: who, what, where, when, why, how"],["Fetching","asking a direct question to retrieve information"],["Helping verb","do / does / did, used to build most WH-questions"]],
     practice:"Ask 6 questions, one for each WH-word, about something in your day.",
-    reflection:"Which WH-word do you use least, and why?"},
+    reflection:"Which WH-word do you use least, and why?",
+    kit:{
+      explain:"WH-words start information questions and almost always need a helping verb — do, does, or did — placed before the subject. Spanish questions don't need this extra helper word, which is why it's the piece Spanish speakers forget most.",
+      cheatSheet:["Who = quién   ·   What = qué   ·   Where = dónde","When = cuándo   ·   Why = por qué   ·   How = cómo","Pattern: WH + do/does/did + subject + verb? → Where do you live?","Past tense uses \"did\" and the verb goes back to its base form: Where did you go? (not \"went\")."],
+      shadow:["Where do you live?","What time does it start?","Why did you leave early?","How do you make coffee?"],
+      examples:["Where do you work?","What time does the meeting start tomorrow?"],
+      mistakes:[{wrong:"Where you live?",right:"Where do you live? — don't drop the helping verb \"do\"."},{wrong:"What means this word?",right:"What does this word mean? — the pattern is WH + does + subject + verb, not verb-first."}]
+    }},
   {t:"The 44 Sounds", tag:"Logic — Written & Spoken", step:"step04", file:"https://palekor.github.io/lecciones/steps/step04.html", desc:"Meet the 44 phonemes that make up spoken English.", duration:20,
     vocab:[["Phoneme","the smallest unit of sound that changes meaning"],["Minimal pair","two words that differ by one sound, e.g. ship / sheep"]],
     practice:"Practice 5 minimal pairs out loud, exaggerating the sound difference.",
-    reflection:"Which sound is hardest for your mouth to produce?"},
+    reflection:"Which sound is hardest for your mouth to produce?",
+    kit:{
+      explain:"English has 44 distinct sounds (phonemes) packed into only 26 letters, so the same letter can sound completely different depending on the word. Training your ear on minimal pairs — words that differ by exactly one sound — sharpens listening and pronunciation at the same time.",
+      cheatSheet:["ship /ɪ/ vs sheep /iː/   ·   bit vs beat   ·   full vs fool","The \"th\" sound (/θ/, /ð/) doesn't exist in Spanish — tongue lightly between the teeth.","Stress the right syllable: PHOto, phoTOGraphy, photoGRAPHic.","English reduces unstressed vowels to a soft \"uh\" (schwa) — don't pronounce every letter fully."],
+      shadow:["This is a ship.","This is a sheep.","I think that's fine.","The weather is nice today."],
+      examples:["I saw a sheep near the ship in the harbor."],
+      mistakes:[{wrong:"\"th\" pronounced as /t/ or /d/ (\"tink\" for \"think\")",right:"Place the tongue lightly between your teeth for \"th\" — /θ/ in think, /ð/ in this."},{wrong:"Stressing every syllable equally",right:"English stresses one syllable strongly and softens the rest — comFORtable, not com-for-ta-ble evenly."}]
+    }},
   {t:"Prepositions", tag:"Logic — Written & Spoken", step:"step05", file:"https://palekor.github.io/lecciones/steps/step05.html", desc:"Place people, things, and time correctly with prepositions.", duration:18,
     vocab:[["Preposition","a word that shows place, time, or direction — in, on, at"],["Preposition of time","in / on / at used with dates, days, and times"]],
     practice:"Describe your room using 5 different prepositions of place.",
-    reflection:"Which preposition do you still mix up?"},
+    reflection:"Which preposition do you still mix up?",
+    kit:{
+      explain:"Prepositions of place and time (in, on, at) don't translate word-for-word from Spanish — \"en\" alone can become in, on, or at depending on context — so these are best learned as fixed patterns rather than translated each time.",
+      cheatSheet:["at + specific time/point → at 5pm, at the door","on + day/surface → on Monday, on the table","in + longer time/enclosed space → in June, in the room","Memorize the pattern; don't translate \"en\" literally every time."],
+      shadow:["I'll see you at 5pm.","The meeting is on Monday.","She was born in June.","The keys are on the table."],
+      examples:["I have a meeting at 3pm on Friday in the main office."],
+      mistakes:[{wrong:"I arrived in the airport.",right:"I arrived at the airport. — use \"at\" for specific points and locations."},{wrong:"On the morning",right:"In the morning — \"in\" is used for parts of the day, \"on\" for specific days and dates."}]
+    }},
   {t:"Deictics", tag:"Logic — Written & Spoken", step:"step06", file:"https://palekor.github.io/lecciones/steps/step06.html", desc:"Use the words that point — this, that, here, there, now, then.", duration:18,
     vocab:[["Deictic","a word whose meaning depends on who, where, or when it's spoken"],["Reference point","the moment or place a deictic word points from"]],
     practice:"Point at 5 objects around you and name each with this / that / these / those.",
-    reflection:"Did any deictic word feel confusing out of context?"},
+    reflection:"Did any deictic word feel confusing out of context?",
+    kit:{
+      explain:"This/that/here/there/now/then point to something relative to the speaker's position in space or time. The correct choice depends entirely on where you and the listener are standing when you speak — not on any fixed rule.",
+      cheatSheet:["this / here = close to the speaker","that / there = far from the speaker","now = at this moment   ·   then = at that other moment","these / those = the plural versions of this / that"],
+      shadow:["This is my phone.","That is your bag over there.","I need it now.","We talked about it then."],
+      examples:["This book here is mine, but that one there is yours."],
+      mistakes:[{wrong:"Using \"this\" for something far away",right:"Use \"that\" for things far from you — \"this\" is reserved for what's physically or conversationally close."}]
+    }},
   {t:"Vocabulary & Cognates", tag:"Logic — Written & Spoken", step:"step07", file:"https://palekor.github.io/lecciones/steps/step07.html", desc:"Use Spanish–English cognates to expand vocabulary fast.", duration:20,
     vocab:[["Cognate","a word that looks and means almost the same in two languages"],["-ción → -tion","a reliable Spanish-to-English cognate pattern"]],
     practice:"Find 5 -ción words in Spanish and convert each to its -tion cognate in English.",
-    reflection:"Which cognate pattern will save you the most guessing time?"},
+    reflection:"Which cognate pattern will save you the most guessing time?",
+    kit:{
+      explain:"Spanish and English share thousands of cognates through their Latin roots — words ending in -ción often become -tion in English, giving you an instant vocabulary shortcut the moment you learn the pattern.",
+      cheatSheet:["-ción → -tion: información→information, educación→education","-dad → -ty: universidad→university, libertad→liberty","-ir → -e: decidir→decide, permitir→permit","-mente → -ly: rápidamente→rapidly","Watch for false friends: \"embarazada\" ≠ embarrassed (it means pregnant)."],
+      shadow:["I need more information.","She works at the university.","I decided to stay.","He explained it rapidly."],
+      examples:["The organization needs more information before the presentation."],
+      mistakes:[{wrong:"\"Actualmente\" translated as \"actually\"",right:"\"Actualmente\" means \"currently\" — a classic false friend with \"actually\" (en realidad)."},{wrong:"\"Realizar\" translated as \"to realize\"",right:"\"Realizar\" means \"to carry out / do\"; \"realize\" means \"darse cuenta\" — another false friend pair."}]
+    }},
   {t:"Storytelling", tag:"Speaking", desc:"Structure ideas so people want to keep listening.", duration:22,
     vocab:[["Narrative","noun · a spoken or written account of events"],["Arc","noun · the shape a story takes from start to end"]],
     practice:"Tell a 90-second story with a clear beginning, middle, and end.",
-    reflection:"Where did your story lose momentum, if anywhere?"},
+    reflection:"Where did your story lose momentum, if anywhere?",
+    kit:{
+      explain:"A story needs a shape, not just a sequence of facts: something changes from the beginning to the end. In English, that shape is usually set up fast — one sentence of context before the action starts — while Spanish storytelling often lingers longer in the setup.",
+      cheatSheet:["Setup (1 sentence) → Turn (what happened) → Result (how it ended)","Use past tense consistently once you start the story.","Signal transitions: \"So then…\", \"Right after that…\", \"In the end…\"","Land the story with a clear final line — don't trail off."],
+      shadow:["So there I was, waiting at the airport.","Right after that, everything changed.","In the end, it worked out fine.","That's when I realized what I had to do."],
+      examples:["So I was walking home late, and right after that it started raining hard. In the end, I found shelter in a small café and met someone interesting."],
+      mistakes:[{wrong:"Switching between past and present tense mid-story",right:"Pick past tense and stay in it for the whole narrative — mixing tenses breaks the timeline for the listener."}]
+    }},
   {t:"Business English", tag:"Professional", desc:"Communicate with clarity in professional settings.", duration:22,
     vocab:[["Stakeholder","noun · a person invested in an outcome"],["Deliverable","noun · a concrete output of work"]],
     practice:"Write a two-line professional email requesting a meeting.",
-    reflection:"What tone did you aim for, and did you land it?"},
+    reflection:"What tone did you aim for, and did you land it?",
+    kit:{
+      explain:"Business English favors short, direct sentences over the more elaborate courtesy phrasing common in Spanish professional writing. Politeness comes from word choice (\"Would you be able to...\"), not from longer sentences.",
+      cheatSheet:["Subject line: clear and specific, not vague.","Opening: state the purpose in the first line.","Request softeners: \"Would you be able to…\", \"When you have a moment…\"","Close: a clear next step, not just \"thank you\"."],
+      shadow:["Would you be able to meet this week?","I wanted to follow up on our last conversation.","Let me know what works best for you.","Thanks in advance for your time."],
+      examples:["Hi Maria, would you be able to meet Thursday at 10am to review the proposal? Let me know what works. Thanks, Carlos."],
+      mistakes:[{wrong:"Very long, highly formal openings translated directly from Spanish",right:"English business writing is shorter and more direct — get to the point in the first sentence."}]
+    }},
   {t:"Presentations", tag:"Professional", desc:"Speak to a room with structure and presence.", duration:25,
     vocab:[["Framing","noun · how information is positioned for the audience"],["Cadence","noun · the pace and flow of speech"]],
     practice:"Outline a three-point structure for a two-minute talk.",
-    reflection:"What's your strongest presentation habit so far?"},
+    reflection:"What's your strongest presentation habit so far?",
+    kit:{
+      explain:"English presentations are usually structured around three clear points signposted out loud (\"First… Second… Finally…\"), which helps a listening audience track where you are — something a reader can do visually but a listener cannot.",
+      cheatSheet:["Open with the takeaway, not the background.","Signpost each section: \"First… Next… Finally…\"","Pause after key numbers or names — don't rush past them.","Close with a repeat of the main point."],
+      shadow:["Today I'll cover three things.","First, let's look at the numbers.","Next, I'll explain what this means for us.","Finally, here's what I recommend."],
+      examples:["Today I'll cover three things: results, risks, and next steps. First, the results..."],
+      mistakes:[{wrong:"Building up to the main point at the end, as is common in Spanish presentation style",right:"English audiences expect the main takeaway up front — lead with the conclusion, then support it."}]
+    }},
   {t:"Negotiation", tag:"Professional", desc:"Advocate for outcomes with tact and clarity.", duration:22,
     vocab:[["Leverage","noun · an advantage used to negotiate"],["Concession","noun · something given up to reach agreement"]],
     practice:"Draft one sentence that firmly but politely states your position.",
-    reflection:"Where do you tend to give in too early?"},
+    reflection:"Where do you tend to give in too early?",
+    kit:{
+      explain:"English negotiation language pairs firmness with softening phrases in the same sentence — \"I understand, but I'd need...\" — rather than separating politeness and firmness into different sentences the way Spanish often does.",
+      cheatSheet:["Firm + soft in one line: \"I understand, but I'd need…\"","Anchor first: state your position before conceding anything.","Ask, don't assume: \"Would there be room to…?\"","Silence is a tool — you don't have to fill every pause."],
+      shadow:["I understand your position, but I'd need a better rate.","Would there be room to adjust the timeline?","That works for me if we can also agree on…","Let me think about that and get back to you."],
+      examples:["I understand budget is tight, but I'd need at least a 10% adjustment to make this work."],
+      mistakes:[{wrong:"Conceding immediately to avoid sounding rude",right:"State your position first — firmness and politeness aren't opposites in English negotiation."}]
+    }},
   {t:"Cultural Fluency", tag:"Context", desc:"Read the room across cultures and contexts.", duration:20,
     vocab:[["Idiom","noun · an expression not meant literally"],["Convention","noun · an accepted social or professional norm"]],
     practice:"Learn one idiom and use it correctly in a sentence.",
-    reflection:"What cultural nuance surprised you this week?"},
+    reflection:"What cultural nuance surprised you this week?",
+    kit:{
+      explain:"Idioms carry cultural logic that literal translation destroys — \"break the ice\" has nothing to do with ice. Learning idioms means learning the situation they belong to, not just the words.",
+      cheatSheet:["Break the ice = start a conversation in an awkward moment.","On the same page = in agreement / aligned.","Touch base = make brief contact to check in.","Ballpark figure = a rough, approximate number."],
+      shadow:["Let's touch base next week.","Can you give me a ballpark figure?","I think we're on the same page.","That really broke the ice at the meeting."],
+      examples:["Before we start the project, let's touch base to make sure we're on the same page."],
+      mistakes:[{wrong:"Translating an idiom literally word by word",right:"Learn the idiom as a fixed unit tied to its situation — literal translation usually makes no sense in English."}]
+    }},
   {t:"Advanced Conversation", tag:"Speaking", desc:"Debate, disagree, and persuade with ease.", duration:25,
     vocab:[["Counterpoint","noun · an opposing argument or perspective"],["Diplomacy","noun · tact in handling sensitive exchanges"]],
     practice:"Argue a position for one minute, then argue the opposite.",
-    reflection:"Which side was harder to argue, and why?"},
+    reflection:"Which side was harder to argue, and why?",
+    kit:{
+      explain:"Disagreeing in English usually starts with a small concession — \"That's fair, but...\" — before the counterpoint. Dropping straight into disagreement without that opening often reads as more confrontational than intended.",
+      cheatSheet:["\"That's fair, but…\" — concede, then counter.","\"I see it differently because…\" — state your view with a reason.","\"Can I push back on that?\" — ask permission to disagree.","End with common ground when possible."],
+      shadow:["That's fair, but I see it differently.","Can I push back on that for a second?","I hear what you're saying, however…","Let's find some common ground here."],
+      examples:["That's a fair point, but I'd argue the data shows the opposite trend."],
+      mistakes:[{wrong:"Disagreeing bluntly with no softening opener",right:"Open with a small concession before the counterpoint — it keeps the exchange collaborative, not combative."}]
+    }},
   {t:"Executive Presence", tag:"Leadership", desc:"Command a room with tone, pace, and posture.", duration:24,
     vocab:[["Gravitas","noun · seriousness and weight of manner"],["Poise","noun · graceful, composed self-assurance"]],
     practice:"Record a 60-second update as if briefing a leadership team.",
-    reflection:"What made you sound most credible in that recording?"},
+    reflection:"What made you sound most credible in that recording?",
+    kit:{
+      explain:"Executive presence in English comes from pace, not volume — slowing down, pausing between ideas, and using short declarative sentences reads as more credible than speaking quickly to prove fluency.",
+      cheatSheet:["Slow down 20% more than feels natural — pace reads as confidence.","Use short sentences for key points; save complexity for detail.","Pause before your main point, not just after it.","Land your final sentence — don't fade out at the end."],
+      shadow:["Here's where we stand today.","The numbers are strong, and here's why.","I recommend we move forward.","I'll follow up with next steps by Friday."],
+      examples:["Here's where we stand today: revenue is up, risk is contained, and I recommend we move forward as planned."],
+      mistakes:[{wrong:"Speaking quickly to sound more fluent",right:"Deliberate pace reads as more credible in English than speed — slow down, especially before key points."}]
+    }},
   {t:"Mastery & Integration", tag:"Capstone", desc:"Bring every skill together into one fluent voice.", duration:30,
     vocab:[["Integration","noun · combining parts into a unified whole"],["Fluent","adj · able to speak effortlessly and accurately"]],
     practice:"Deliver a three-minute talk on any topic, unscripted.",
-    reflection:"How has your voice in English changed since Mission 1?"}
+    reflection:"How has your voice in English changed since Mission 1?",
+    kit:{
+      explain:"This mission has no new grammar — it's where pronouns, chunks, questions, sounds, prepositions, vocabulary, storytelling, and professional tone all run at the same time, unscripted, the way real conversation actually happens.",
+      cheatSheet:["Pick any topic — don't overthink the choice.","Use chunks to start (\"I'd like to talk about…\") and structure (\"First… then… finally…\").","If you get stuck, use a deictic (\"this, that\") to buy a second to think.","Don't translate in your head — produce first, correct later."],
+      shadow:["I'd like to talk about something that matters to me.","First, let me give you some context.","So, what does this mean going forward?","That's really what it comes down to."],
+      examples:["I'd like to talk about something that changed how I see my work. First, let me give you some context…"],
+      mistakes:[{wrong:"Pausing to translate a sentence in your head before speaking",right:"Trust the chunks and structures you've built — production speed matters more than perfect accuracy now."}]
+    }}
 ];
 
 const BADGES = [
@@ -1291,10 +1539,10 @@ function phaseForMission(i){
    ============================================================ */
 const RESOURCES = [
   {id:"translator", title:"Google Translator", type:"translator", url:"https://translate.google.com", description:"Attempt first, then compare — see the Translator workflow below.", permanent:true, icon:"🌐"},
-  {id:"lessons", title:"GitHub Lessons", type:"lesson", url:"https://palekor.github.io/lecciones/", description:"Interactive lesson library", permanent:true, icon:"📚"},
-  {id:"aid-images", title:"Aid Images — uno · dos · tres + verbs", type:"tool", url:"https://palekor.github.io/lecciones/steps/", description:"Visual verb association set", mission:0, skill:"Vocabulary", permanent:true, icon:"🖼️"},
-  {id:"cognate-dict", title:"Cognate Dictionary", type:"dictionary", url:"https://palekor.github.io/lecciones/steps/", description:"-ción → -tion, -ir → -e patterns", mission:8, skill:"Vocabulary", permanent:true, icon:"📖"},
-  {id:"verbs-audio", title:"44 Verbs Audio Game", type:"audio", url:"https://palekor.github.io/lecciones/steps/", description:"Interactive HTML verb drill", mission:1, skill:"Listening", permanent:true, icon:"🎧"},
+  {id:"speakya", title:"Speak Ya · AI Speaking Companion", type:"ai", url:"https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya", description:"Practice speaking, get unstuck, and keep the thought alive.", permanent:true, icon:"🎙️"},
+  {id:"aid-images", title:"Mission Aid Images", type:"tool", url:"https://palekor.github.io/lecciones/steps/", description:"Open the current mission's Never Stuck kit.", mission:0, skill:"Vocabulary", permanent:true, icon:"🖼️"},
+  {id:"cognate-dict", title:"Cognate Logic", type:"dictionary", url:"https://palekor.github.io/lecciones/steps/step07.html", description:"Spanish → English patterns inside each mission.", mission:8, skill:"Vocabulary", permanent:true, icon:"📖"},
+  {id:"verbs-audio", title:"Speaking & Shadowing", type:"audio", url:"https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya", description:"Use Speak Ya to rehearse and shadow.", mission:1, skill:"Listening", permanent:true, icon:"🎧"},
   {id:"meditation", title:"Meditation Center", type:"meditation", url:MED_URL, description:"Guided resets between sessions", permanent:true, icon:"🧘"},
   {id:"manual", title:"Student Manual", type:"document", url:"https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview", description:"Your complete program reference", permanent:true, icon:"📘"},
   {id:"about", title:"About ProfGermandario", type:"document", url:"https://docs.google.com/document/d/1KbOJQ2vJuMgDQx38ekhbbf4eOhndiqbc6dqsCvgKzHg/preview", description:"The methodology behind the system", permanent:true, icon:"👤"},
@@ -1317,11 +1565,11 @@ const QUICK_ACTIONS = [
 const TOOLS = [
   {icon:"🌐", name:"Google Translator", desc:"Attempt, translate, compare", action:"external", url:"https://translate.google.com"},
   {icon:"🎙️", name:"Fluency Lab", desc:"Speak on a topic, then reflect", action:"view", view:"lab"},
-  {icon:"📚", name:"Lesson Repository", desc:"Every mission's lesson page", action:"view", view:"resources"},
-  {icon:"🧠", name:"Learning Tools", desc:"Aid images, dictionary, audio", action:"view", view:"resources"},
+  {icon:"🎙️", name:"Speak Ya", desc:"AI speaking companion for practice and stuck moments", action:"external", url:"https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya"},
+  {icon:"🧠", name:"Mission Toolkit", desc:"Never Stuck resources for your current mission", action:"view", view:"path"},
   {icon:"🧘", name:"Meditation", desc:"Guided resets", action:"view", view:"meditation"},
   {icon:"📖", name:"My Notebook", desc:"Your journal", action:"view", view:"journal"},
-  {icon:"🔊", name:"Audio / Speaking", desc:"44 verbs audio drill", action:"external", url:"https://palekor.github.io/lecciones/steps/"},
+  {icon:"🔊", name:"Shadow & Speak", desc:"Rehearse, shadow, then produce", action:"external", url:"https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya"},
   {icon:"📊", name:"My Progress", desc:"See your evolution", action:"view", view:"evolution"},
   {icon:"💬", name:"Message ProfGermandario", desc:"Your teacher, one message away", action:"whatsapp"},
   {icon:"🤝", name:"Refer a Friend", desc:"Share the Fluency Notebook", action:"referral"}
@@ -1407,6 +1655,8 @@ function defaultState(){
     meditationLog: [],          // { date }
     stuckSignals: [],           // { date, missionId, reason }
     currentFocus: "",           // free-text, student's own words on what they're working on
+    startingPoint: { level:"", goal:"", fear:"", learningStyle:"", baseline:"" },
+    companions: { feedback:"AI + human hybrid feedback", accountability:"Weekly progress check-in", officeHours:"Teacher office hours when scheduled" },
     practiceRecords: [],        // { id, type:'lesson'|'speaking', date, week, missionId, topic, duration, prep, content, difficulty, wordCount }
     quizzes: [],                // { date, missionCount, correct, total }
     lastMilestoneCycleShown: 0  // last 4-week cycle number the milestone review was shown for
@@ -1424,6 +1674,8 @@ function migrateState(raw){
   merged.meditationLog   = raw && Array.isArray(raw.meditationLog) ? raw.meditationLog : [];
   merged.stuckSignals    = raw && Array.isArray(raw.stuckSignals) ? raw.stuckSignals : [];
   merged.currentFocus    = raw && raw.currentFocus ? raw.currentFocus : "";
+  merged.startingPoint   = raw && raw.startingPoint ? Object.assign({level:"",goal:"",fear:"",learningStyle:"",baseline:""}, raw.startingPoint) : {level:"",goal:"",fear:"",learningStyle:"",baseline:""};
+  merged.companions      = raw && raw.companions ? Object.assign({feedback:"AI + human hybrid feedback", accountability:"Weekly progress check-in", officeHours:"Teacher office hours when scheduled"}, raw.companions) : {feedback:"AI + human hybrid feedback", accountability:"Weekly progress check-in", officeHours:"Teacher office hours when scheduled"};
   merged.practiceRecords = raw && Array.isArray(raw.practiceRecords) ? raw.practiceRecords : [];
   merged.quizzes         = raw && Array.isArray(raw.quizzes) ? raw.quizzes : [];
   merged.lastMilestoneCycleShown = raw && typeof raw.lastMilestoneCycleShown === 'number' ? raw.lastMilestoneCycleShown : 0;
@@ -1561,8 +1813,39 @@ function weeklyMirror(){
 }
 
 /* ============================================================
-   TOAST
+   TEXT-TO-SPEECH — real, in-browser audio for "Never Stuck" kits.
+   No external audio files needed: uses the Web Speech API so
+   Explain / Shadow buttons always produce actual sound.
    ============================================================ */
+const TTS_SUPPORTED = typeof window !== 'undefined' && 'speechSynthesis' in window;
+let ttsQueueTimer = null;
+function ttsStop(){
+  if(TTS_SUPPORTED) window.speechSynthesis.cancel();
+  clearTimeout(ttsQueueTimer);
+}
+function ttsSpeak(text, onEnd){
+  if(!TTS_SUPPORTED){ toast("Audio isn't supported in this browser — read the text instead."); if(onEnd) onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = 0.92;
+  u.onend = ()=>{ if(onEnd) onEnd(); };
+  u.onerror = ()=>{ if(onEnd) onEnd(); };
+  window.speechSynthesis.speak(u);
+}
+function ttsSpeakSequence(lines, btn){
+  ttsStop();
+  if(!lines || !lines.length) return;
+  if(btn) btn.classList.add('tts-playing');
+  let i = 0;
+  const next = ()=>{
+    if(i >= lines.length){ if(btn) btn.classList.remove('tts-playing'); return; }
+    const line = lines[i]; i++;
+    ttsSpeak(line, ()=> { ttsQueueTimer = setTimeout(next, 350); });
+  };
+  next();
+}
+
+
 let toastTimer;
 function toast(msg){
   const el = document.getElementById('toast');
@@ -1694,6 +1977,23 @@ function renderHeroChart(){
     </svg>`;
 }
 
+function renderPersonalCard(){
+  const sp = state.startingPoint || {};
+  const grid = document.getElementById('personalGrid');
+  if(!grid) return;
+  const items = [
+    ['Level', sp.level || 'Not set'],
+    ['Goal', sp.goal || 'Not set'],
+    ['Block', sp.fear || 'Not set'],
+    ['Learning style', sp.learningStyle || 'Not set']
+  ];
+  grid.innerHTML = items.map(([k,v])=>`<div class="personal-cell"><b>${k}</b><span>${escapeHtml(v)}</span></div>`).join('');
+  const n = document.getElementById('personalNudge');
+  if(n){
+    n.textContent = sp.fear ? `Because you said “${sp.fear}”, this notebook will keep bringing you back to production — not perfection.` : 'Complete your Starting Point and the notebook will adapt its language to you.';
+  }
+}
+
 function renderHome(){
   document.getElementById('dateHeader').textContent = formatDateHeader();
   document.getElementById('homeGreeting').textContent = greetingWord() + (state.name ? ',' : '');
@@ -1704,6 +2004,7 @@ function renderHome(){
 
   renderNudgeBanner();
   renderQuickActions();
+  renderPersonalCard();
   renderHeroChart();
 
   const m = MISSIONS[Math.min(state.currentMission, MISSIONS.length-1)];
@@ -1836,6 +2137,119 @@ document.getElementById('btnStartSession').addEventListener('click', ()=>{
 /* ============================================================
    RENDER: TODAY'S SESSION
    ============================================================ */
+function escapeAttr(str){
+  return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+function renderNeverStuckKit(m){
+  if(!m.kit) return '';
+  const k = m.kit;
+  return `
+    <div class="card session-block">
+      <h4><span class="num">★</span>Never Stuck Kit</h4>
+      <p style="font-size:12px; color:var(--text-faint); margin-bottom:2px;">Five ways to get unstuck on this mission — no dead ends.</p>
+
+      <div class="kit-card card mt-2" data-kit="explain">
+        <div class="kit-head" data-kit-toggle>
+          <div class="kit-icon">💡</div>
+          <div style="flex:1;"><div class="kit-title">Explain</div><div class="kit-sub">Plain-English breakdown</div></div>
+          <div class="kit-chevron">›</div>
+        </div>
+        <div class="kit-body"><div class="kit-body-inner">
+          <p>${k.explain}</p>
+          <button class="tts-btn" data-tts-text="${escapeAttr(k.explain)}">🔊 Listen to explanation</button>
+        </div></div>
+      </div>
+
+      <div class="kit-card card mt-2" data-kit="cheat">
+        <div class="kit-head" data-kit-toggle>
+          <div class="kit-icon">📋</div>
+          <div style="flex:1;"><div class="kit-title">Cheat Sheet</div><div class="kit-sub">Downloadable one-pager</div></div>
+          <div class="kit-chevron">›</div>
+        </div>
+        <div class="kit-body"><div class="kit-body-inner">
+          ${k.cheatSheet.map(line=>`<div class="cheat-line">${line}</div>`).join('')}
+          <button class="tts-btn" data-download-cheat>⬇ Download one-pager</button>
+        </div></div>
+      </div>
+
+      <div class="kit-card card mt-2" data-kit="shadow">
+        <div class="kit-head" data-kit-toggle>
+          <div class="kit-icon">🗣️</div>
+          <div style="flex:1;"><div class="kit-title">Shadow &amp; Speak</div><div class="kit-sub">Listen, then repeat out loud</div></div>
+          <div class="kit-chevron">›</div>
+        </div>
+        <div class="kit-body"><div class="kit-body-inner">
+          <button class="tts-btn" data-tts-shadow-all>▶ Play all &amp; shadow</button>
+          ${k.shadow.map(line=>`<div class="shadow-line"><span>${line}</span><button data-tts-text="${escapeAttr(line)}">▶</button></div>`).join('')}
+        </div></div>
+      </div>
+
+      <div class="kit-card card mt-2" data-kit="examples">
+        <div class="kit-head" data-kit-toggle>
+          <div class="kit-icon">✅</div>
+          <div style="flex:1;"><div class="kit-title">Example Answers</div><div class="kit-sub">See it done, then try yours</div></div>
+          <div class="kit-chevron">›</div>
+        </div>
+        <div class="kit-body"><div class="kit-body-inner">
+          ${k.examples.map(line=>`<div class="example-line">“${line}”</div>`).join('')}
+        </div></div>
+      </div>
+
+      <div class="kit-card card mt-2" data-kit="mistakes">
+        <div class="kit-head" data-kit-toggle>
+          <div class="kit-icon">⚠️</div>
+          <div style="flex:1;"><div class="kit-title">Common Mistakes</div><div class="kit-sub">Patterns for Spanish speakers</div></div>
+          <div class="kit-chevron">›</div>
+        </div>
+        <div class="kit-body"><div class="kit-body-inner">
+          ${k.mistakes.map(x=>`<div class="mistake-row"><div class="mistake-wrong">${x.wrong}</div><div class="mistake-right"><b>✓</b> ${x.right}</div></div>`).join('')}
+        </div></div>
+      </div>
+    </div>
+  `;
+}
+
+function wireNeverStuckKit(container, m){
+  if(!container || !m.kit) return;
+  container.querySelectorAll('[data-kit-toggle]').forEach(head=>{
+    head.addEventListener('click', ()=>{
+      head.closest('.kit-card').classList.toggle('open');
+    });
+  });
+  container.querySelectorAll('[data-tts-text]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      ttsSpeak(btn.dataset.ttsText);
+    });
+  });
+  const shadowAllBtn = container.querySelector('[data-tts-shadow-all]');
+  if(shadowAllBtn){
+    shadowAllBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      ttsSpeakSequence(m.kit.shadow, shadowAllBtn);
+    });
+  }
+  const dlBtn = container.querySelector('[data-download-cheat]');
+  if(dlBtn){
+    dlBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const lines = [
+        "QK ESL — Never Stuck Cheat Sheet",
+        `${m.step ? m.step + ' — ' : ''}${m.t}`,
+        `"Not perfection — production and speed."`,
+        "",
+        ...m.kit.cheatSheet.map(l=>'• '+l),
+        "",
+        "Common mistakes for Spanish speakers:",
+        ...m.kit.mistakes.map(x=>`✗ ${x.wrong}\n✓ ${x.right}`)
+      ].join('\n');
+      downloadBlob(lines, (m.step || 'mission') + '-cheatsheet.txt', 'text/plain');
+      toast("Cheat sheet downloaded.");
+    });
+  }
+}
+
 function renderSession(){
   const dots = document.getElementById('sessionDots');
   dots.innerHTML = "";
@@ -1859,14 +2273,8 @@ function renderSession(){
   const m = MISSIONS[state.currentMission];
   const alreadyDoneToday = state.sessionDoneDate === todayStr();
 
-  const resourcesBlock = m.resources ? `
-    <div class="card session-block">
-      <h4><span class="num">3</span>Resources</h4>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        ${m.resources.map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="vocab-pill" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:inherit; cursor:pointer;"><span>🔗</span><span>${r.label}</span><span style="margin-left:auto; opacity:.5;">↗</span></a>`).join('')}
-      </div>
-    </div>` : '';
-  const reflectionNum = m.resources ? 4 : 3;
+  const kitBlock = renderNeverStuckKit(m);
+  const reflectionNum = m.kit ? 4 : 3;
 
   contentEl.innerHTML = `
     <div class="card session-block">
@@ -1893,7 +2301,7 @@ function renderSession(){
       <p style="font-size:14px; color:var(--text-soft); line-height:1.5;">${m.practice}</p>
     </div>
 
-    ${resourcesBlock}
+    ${kitBlock}
 
     <div class="card session-block">
       <h4><span class="num">${reflectionNum}</span>Reflection</h4>
@@ -1914,6 +2322,8 @@ function renderSession(){
       ${alreadyDoneToday ? 'Completed for today ✓' : 'Complete Step →'}
     </button>
   `;
+
+  wireNeverStuckKit(contentEl, m);
 
   const reflectionEl = document.getElementById('sessionReflection');
   const counterEl = document.getElementById('sessionReflectionCount');
@@ -2071,24 +2481,49 @@ document.getElementById('btnQuizDone').addEventListener('click', ()=> closeModal
    ============================================================ */
 function renderPath(){
   const list = document.getElementById('pathList');
-  list.innerHTML = "";
-  MISSIONS.forEach((m,i)=>{
-    const status = state.completedMissions.includes(i) ? 'completed' : (i === state.currentMission ? 'current' : 'locked');
-    const node = document.createElement('div');
-    node.className = 'mission-node ' + status;
-    const mp = ensureMissionProgress(i);
-    node.innerHTML = `
-      <div class="node-dot">${status === 'completed' ? '✓' : (i+1)}</div>
-      <div class="card node-card">
-        <div class="node-tag">${m.tag}${m.step ? ' · ' + m.step : ''}</div>
-        <div class="node-title">Mission ${i+1} — ${m.t}</div>
-        <div class="node-desc">${m.desc}</div>
-        <span class="status-pill ${mp.status.replace('_','-')} mt-2">${STATUS_LABEL[mp.status]}</span>
-      </div>
-    `;
-    node.addEventListener('click', ()=> openMissionDetail(i, status));
-    list.appendChild(node);
+  list.innerHTML = PHASES.map(phase=>{
+    const indices = [];
+    for(let i=phase.from; i<=phase.to && i<MISSIONS.length; i++) indices.push(i);
+    const completedInPhase = indices.filter(i=>state.completedMissions.includes(i)).length;
+    const phaseComplete = indices.length>0 && completedInPhase === indices.length;
+
+    const nodesHtml = indices.map(i=>{
+      const m = MISSIONS[i];
+      const status = state.completedMissions.includes(i) ? 'completed' : (i === state.currentMission ? 'current' : 'locked');
+      const mp = ensureMissionProgress(i);
+      return `
+        <div class="mission-node ${status}" data-mission-index="${i}" data-mission-status="${status}">
+          <div class="node-dot">${status === 'completed' ? '✓' : (i+1)}</div>
+          <div class="card node-card">
+            <div class="node-tag">${m.tag}${m.step ? ' · ' + m.step : ''}</div>
+            <div class="node-title">Mission ${i+1} — ${m.t}</div>
+            <div class="node-desc">${m.desc}</div>
+            <span class="status-pill ${mp.status.replace('_','-')} mt-2">${STATUS_LABEL[mp.status]}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="roadmap-phase ${phaseComplete ? 'phase-complete' : ''}">
+        <div class="phase-heading">
+          <div class="phase-heading-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${phase.icon}</svg></div>
+          <div class="phase-heading-text">
+            <div class="phase-heading-label">${phase.label}</div>
+            <div class="phase-heading-sub">Missions ${phase.from+1}–${Math.min(phase.to+1, MISSIONS.length)}</div>
+          </div>
+          <div class="phase-heading-count">${completedInPhase}/${indices.length}${phaseComplete ? ' ✓' : ''}</div>
+        </div>
+        <div class="path-line">${nodesHtml}</div>
+      </div>`;
+  }).join('');
+
+  list.querySelectorAll('.mission-node').forEach(node=>{
+    node.addEventListener('click', ()=>{
+      const i = Number(node.dataset.missionIndex);
+      openMissionDetail(i, node.dataset.missionStatus);
+    });
   });
+
   const pct = Math.round((state.completedMissions.length / MISSIONS.length) * 100);
   document.getElementById('pathProgressFill').style.width = pct + "%";
 
@@ -2145,10 +2580,14 @@ function openMissionDetail(i, status){
     </div>
     <h4 class="mt-4" style="font-size:14px;">Vocabulary preview</h4>
     <div class="vocab-grid mt-2">${m.vocab.map(v=>`<div class="vocab-pill"><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div>
-    ${m.file ? `<a href="${m.file}" target="_blank" rel="noopener" class="btn btn-outline btn-block mt-3" style="text-decoration:none;">Open lesson page ↗</a>` : ''}
+    ${renderNeverStuckKit(m)}
+    ${m.file ? `<a href="${m.file}" target="_blank" rel="noopener" class="btn btn-outline btn-block mt-3" style="text-decoration:none;">Open dedicated mission lesson ↗</a>` : ''}
+    <a href="https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya" target="_blank" rel="noopener" class="btn btn-gold btn-block mt-2" style="text-decoration:none;">Open Speak Ya · practice with your AI companion ↗</a>
+    <button class="btn btn-outline btn-block mt-2" id="btnMissionTeacher">Message Prof German · stuck for 24h? →</button>
     ${status !== 'locked' ? `<button class="btn btn-primary btn-block mt-3" id="btnGoToSession">${actionLabel}</button>` : `<p class="section-sub mt-4">Complete earlier missions to unlock.</p>`}
   `;
   openModal('detailModal');
+  wireNeverStuckKit(body, m);
 
   document.getElementById('confidenceRow').querySelectorAll('.star-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -2158,6 +2597,9 @@ function openMissionDetail(i, status){
       openMissionDetail(i, status);
     });
   });
+
+  const missionTeacher = document.getElementById('btnMissionTeacher');
+  if(missionTeacher) missionTeacher.addEventListener('click', ()=>window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener'));
 
   const goBtn = document.getElementById('btnGoToSession');
   if(goBtn){
@@ -2730,6 +3172,9 @@ document.getElementById('btnResetData').addEventListener('click', ()=>{
     setTheme('dark');
     toast("All data deleted.");
     document.getElementById('onboardModal').classList.add('open');
+    document.getElementById('onboardStep1').hidden = false;
+    document.getElementById('onboardStep2').hidden = true;
+    document.getElementById('onboardStep3').hidden = true;
   }
 });
 
@@ -2789,6 +3234,22 @@ function shareReferral(){
   if(cycleWa) cycleWa.addEventListener('click', (e)=>{ e.preventDefault(); window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener'); });
 })();
 
+function openTeacherWhatsApp(){
+  window.open(waLink(CONFIG.whatsappMessage), '_blank', 'noopener');
+}
+document.getElementById('teacherFab')?.addEventListener('click', openTeacherWhatsApp);
+document.getElementById('btnHomeTeacher')?.addEventListener('click', openTeacherWhatsApp);
+
+/* Resource shortcuts jump straight into the current mission's real Never Stuck kit — no dead ends. */
+document.querySelectorAll('[data-action="mission-kit"]').forEach(el=>{
+  el.addEventListener('click', e=>{
+    e.preventDefault();
+    const i = Math.min(state.currentMission, MISSIONS.length-1);
+    const status = state.completedMissions.includes(i) ? 'completed' : (i === state.currentMission ? 'current' : 'locked');
+    openMissionDetail(i, status);
+  });
+});
+
 /* ============================================================
    ONBOARDING
    ============================================================ */
@@ -2800,25 +3261,38 @@ document.getElementById('btnOnboardStart').addEventListener('click', ()=>{
   document.getElementById('onboardStep2').hidden = false;
 });
 
+document.getElementById('btnOnboardProfileNext').addEventListener('click', ()=>{
+  state.startingPoint = state.startingPoint || {};
+  state.startingPoint.level = document.getElementById('onboardLevel').value;
+  state.startingPoint.goal = document.getElementById('onboardGoal').value;
+  save();
+  document.getElementById('onboardStep2').hidden = true;
+  document.getElementById('onboardStep3').hidden = false;
+});
+
 function finishOnboarding(){
   closeModal('onboardModal');
   document.getElementById('onboardStep1').hidden = false;
   document.getElementById('onboardStep2').hidden = true;
+  document.getElementById('onboardStep3').hidden = true;
   showView('home');
 }
 
 document.getElementById('btnOnboardSaveStart').addEventListener('click', ()=>{
   const content = document.getElementById('onboardStarting').value.trim();
+  state.startingPoint = state.startingPoint || {};
+  state.startingPoint.fear = document.getElementById('onboardFear').value.trim();
+  state.startingPoint.learningStyle = document.getElementById('onboardStyle').value;
+  state.startingPoint.baseline = content;
   if(content){
     state.writingSamples.push({
       id: 'w-'+Date.now(), createdAt: new Date().toISOString(), week: 1,
       missionId: 0, prompt: "My Starting Point", content, label: "My Starting Point"
     });
-    save();
   }
+  save();
   finishOnboarding();
 });
-document.getElementById('btnOnboardSkipStart').addEventListener('click', finishOnboarding);
 
 /* ============================================================
    COMMAND PALETTE

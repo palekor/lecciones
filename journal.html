@@ -280,16 +280,30 @@ a{color:inherit;}
 
 .play-cta{display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:20px;}
 .play-ring{
-  width:76px; height:76px; border-radius:50%; border:none; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
+  width:76px; height:76px; min-width:76px; min-height:76px; border-radius:50%; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0;
   background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 55%, var(--royal) 130%);
   box-shadow:0 0 0 1px rgba(228,197,88,.35), 0 12px 30px rgba(201,162,39,.4), 0 0 40px rgba(201,162,39,.28);
-  color:var(--royal-deep); font-size:26px; transition:transform .2s var(--ease-spring);
+  color:var(--royal-deep); font-size:26px; line-height:1; white-space:nowrap; transition:transform .2s var(--ease-spring);
 }
 .play-ring:active{transform:scale(.93);}
-.play-cta-label{font-weight:700; font-size:14px; color:var(--text);}
+.play-cta-label{font-weight:700; font-size:14px; color:var(--text); text-align:center;}
 
 .cta-giant{margin-top:16px; padding:20px; font-size:17px;}
+
+/* ---------- PERSONAL CARD (Starting Point summary) ---------- */
+.personal-card{padding:18px 20px; margin-top:16px;}
+.personal-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;}
+.personal-cell{padding:10px 12px; background:var(--bg-sunken); border-radius:12px;}
+.personal-cell b{display:block; font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--text-faint); margin-bottom:3px; font-weight:700;}
+.personal-cell span{font-size:13px; color:var(--text); font-weight:600;}
+
+/* ---------- SUPPORT CARD (Never get stuck) ---------- */
+.support-card{padding:20px; margin-top:16px;}
+.support-title{font-family:var(--font-display); font-size:17px; font-weight:600; margin-top:6px;}
+.support-list{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+.support-item{display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text-soft); line-height:1.5;}
+.support-item b{color:var(--text);}
 
 .streak-strip{
   margin-top:16px; padding:16px 18px; display:flex; align-items:center; gap:12px;
@@ -350,6 +364,17 @@ a{color:inherit;}
 @media (max-width:600px){ .tool-fab{ right:18px; } }
 @media (min-width:860px){ .tool-fab{ right:calc(50% - 460px + 18px); } }
 .tool-fab:active{transform:scale(.93);}
+
+.teacher-fab{
+  position:fixed; left:calc(50% - 260px + 18px); bottom:calc(96px + env(safe-area-inset-bottom)); z-index:60;
+  display:flex; align-items:center; gap:7px; padding:12px 16px; border-radius:100px;
+  background:var(--bg-elev); border:1px solid var(--border); color:var(--text);
+  font-size:12.5px; font-weight:700; box-shadow:0 10px 24px rgba(0,0,0,.14);
+}
+@media (max-width:600px){ .teacher-fab{ left:18px; } }
+@media (min-width:860px){ .teacher-fab{ left:calc(50% - 460px + 18px); } }
+.teacher-fab:active{transform:scale(.94);}
+
 .tool-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;}
 .tool-item{padding:16px 12px; text-align:left; border:1px solid var(--border); background:var(--bg-elev);}
 .tool-item .t-icon{font-size:20px;}
@@ -532,6 +557,24 @@ textarea.reflect{
 .mistake-wrong{font-size:12.5px; color:var(--coral); text-decoration:line-through; text-decoration-thickness:1.5px;}
 .mistake-right{font-size:13px; color:var(--text); margin-top:4px; line-height:1.5;}
 .mistake-right b{color:var(--gold);}
+
+/* ---------- MEMBERSHIP ---------- */
+.plan-card{padding:20px; margin-top:12px; position:relative;}
+.plan-card:first-child{margin-top:0;}
+.plan-card.featured{border-color:rgba(201,162,39,.5); box-shadow:0 8px 28px rgba(201,162,39,.14), var(--card-shadow);}
+.plan-badge{
+  position:absolute; top:-9px; right:16px; background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color:var(--royal-deep); font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  padding:4px 10px; border-radius:100px;
+}
+.plan-name{font-family:var(--font-display); font-size:18px; font-weight:600;}
+.plan-price{font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--royal); margin-top:4px;}
+[data-theme="dark"] .plan-price{color:var(--lavender);}
+.plan-price span{font-size:13px; color:var(--text-faint); font-weight:400; font-family:var(--font-body);}
+.plan-tagline{font-size:12.5px; color:var(--text-soft); margin-top:6px; line-height:1.5;}
+.plan-features{margin-top:12px; display:flex; flex-direction:column; gap:7px;}
+.plan-features div{font-size:12.5px; color:var(--text-soft); display:flex; gap:8px;}
+.plan-features div::before{content:'✓'; color:var(--gold); font-weight:700; flex-shrink:0;}
 
 /* ---------- LEARNING PATH ---------- */
 .roadmap-phase{margin-top:28px;}
@@ -801,15 +844,15 @@ img, svg{ max-width:100%; }
       <div class="support-title">You are not learning alone.</div>
       <div class="support-list">
         <div class="support-item">⚡ <span><b>Speak Ya</b> gives you an always-available AI speaking partner.</span></div>
-        <div class="support-item">👨‍🏫 <span><b>Prof German</b> is the human escape hatch when the problem needs a teacher.</span></div>
+        <div class="support-item">👨‍🏫 <span><b>ProfGermandario</b> is the human escape hatch when the problem needs a teacher.</span></div>
         <div class="support-item">🔁 <span><b>Every mission</b> now opens a complete Never Stuck kit: explanation, practice, examples, shadowing and Spanish-speaker mistakes.</span></div>
       </div>
-      <button class="btn btn-primary btn-block mt-3" id="btnHomeTeacher">Message Prof German · stuck for 24h? →</button>
+      <button class="btn btn-primary btn-block mt-3" id="btnHomeTeacher">Message ProfGermandario · stuck for 24h? →</button>
     </div>
 
     <div class="play-cta">
       <button class="play-ring" id="btnStartSession" aria-label="Start Today's Session">▶</button>
-      <div class="play-cta-label">Start Today's Session</div>
+      <div class="play-cta-label" id="playCtaLabel">Start Today's Session</div>
     </div>
 
     <div class="card streak-strip">
@@ -1088,6 +1131,11 @@ img, svg{ max-width:100%; }
   <main class="view" id="view-settings" hidden>
     <h2 class="section-title">Settings</h2>
 
+    <div class="card settings-row" style="cursor:pointer; border-color:rgba(201,162,39,.5); background:linear-gradient(135deg, rgba(201,162,39,.08), transparent);" id="btnOpenMembership">
+      <div><div class="settings-row-title" style="color:var(--gold);">Membership</div><div class="settings-row-sub">See plans, pricing, and what's included</div></div>
+      <div>✦</div>
+    </div>
+
     <div class="card mt-3" style="padding:16px;">
       <label class="settings-row-title">Student name</label>
       <input type="text" class="input mt-2" id="settingsName" placeholder="Your name">
@@ -1138,7 +1186,7 @@ img, svg{ max-width:100%; }
 <!-- ===================== TOOL DOCK FAB ===================== -->
 <button class="tool-fab" id="btnToolDock" aria-label="Tools" title="Tools">🧰</button>
 
-<button class="teacher-fab" id="teacherFab" aria-label="Message Prof German">💬 Prof German</button>
+<button class="teacher-fab" id="teacherFab" aria-label="Message ProfGermandario">💬 ProfGermandario</button>
 
 <!-- ===================== BOTTOM NAV ===================== -->
 <nav class="bottomnav">
@@ -1203,7 +1251,7 @@ img, svg{ max-width:100%; }
         <textarea class="reflect" id="onboardStarting" placeholder="Write for about five minutes. Don't use a translator. Just express yourself." style="min-height:105px;"></textarea>
       </div>
       <button class="btn btn-gold btn-block mt-4" id="btnOnboardSaveStart">Save my profile & begin →</button>
-    </div>    </div>
+    </div>
   </div>
 </div>
 
@@ -1252,6 +1300,18 @@ img, svg{ max-width:100%; }
     <div class="modal-handle"></div>
     <h3 id="docModalTitle" style="font-size:16px; margin-bottom:10px;">Document</h3>
     <iframe id="docModalFrame" src="" style="flex:1; width:100%; border:1px solid var(--border); border-radius:14px;"></iframe>
+  </div>
+</div>
+
+<!-- ===================== MEMBERSHIP MODAL ===================== -->
+<div class="modal-backdrop" id="membershipModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="eyebrow">Membership</div>
+    <h2 style="font-size:22px; margin-top:6px;">Choose your path</h2>
+    <p class="section-sub">Two monthly plans, or one intensive sprint. Cancel or switch anytime.</p>
+    <div id="plansList" class="mt-3"></div>
+    <p class="section-sub mt-3" style="text-align:center; font-size:11.5px;">Payment is handled outside this app — nothing here ever asks for card details.</p>
   </div>
 </div>
 
@@ -1496,6 +1556,43 @@ const CONFIG = {
 };
 function waLink(text){
   return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+
+/* ============================================================
+   MEMBERSHIP — pricing confirmed for Self-Paced only so far.
+   Companion and Fluency Cycle prices are left null on purpose —
+   nothing here is fabricated as if it were a real number. The UI
+   shows "Ask for pricing" (via WhatsApp) until a real price and
+   checkout link are provided, then it updates itself automatically.
+   checkoutUrl left empty falls back to a WhatsApp enrollment message —
+   no payment is ever collected inside this app.
+   ============================================================ */
+const PLANS = [
+  {
+    id:"self-paced", name:"Self-Paced", price:25, period:"/mo",
+    tagline:"Full access to every mission, kit, and tool — you set the pace.",
+    features:["All 17 missions + Never Stuck Kits","Journal, Fluency Lab, Progress tracking","Meditation Center & resource library","No live coaching"],
+    checkoutUrl:"" // TODO: paste Stripe/Gumroad payment link — falls back to WhatsApp until set
+  },
+  {
+    id:"companion", name:"Companion", price:null, period:"/mo",
+    tagline:"Everything in Self-Paced, plus direct guidance from ProfGermandario.",
+    features:["Everything in Self-Paced","Priority WhatsApp access to your teacher","Feedback on journal & recorded practice","Accountability check-ins"],
+    checkoutUrl:"" // TODO: paste Stripe/Gumroad payment link
+  },
+  {
+    id:"fluency-cycle", name:"Fluency Cycle", price:null, period:"/ 3 months", badge:"Intensive",
+    tagline:"One focused 3-month sprint through three 28-day cycles, single price.",
+    features:["Three full 28-day cycles back to back","Companion-level guidance included","Best for a fixed deadline or trip","Pay once, no monthly billing"],
+    checkoutUrl:"" // TODO: paste Stripe/Gumroad payment link
+  }
+];
+function planPriceLabel(p){
+  return p.price ? `$${p.price}${p.period}` : "Ask for pricing";
+}
+function planCheckoutUrl(p){
+  if(p.checkoutUrl) return p.checkoutUrl;
+  return waLink(`Hola Profe, quiero información sobre el plan "${p.name}" del Fluency Notebook.`);
 }
 
 const MED_URL = "https://palekor.github.io/lecciones/profgermandario.html";
@@ -2040,13 +2137,20 @@ function renderHome(){
   renderCycleCard();
 
   const startBtn = document.getElementById('btnStartSession');
+  const startLabel = document.getElementById('playCtaLabel');
   const doneToday = state.sessionDoneDate === todayStr();
   if(finished){
-    startBtn.textContent = "Review Learning Path →";
+    startBtn.textContent = "🗺";
+    startBtn.setAttribute('aria-label', 'Review Learning Path');
+    startLabel.textContent = "Review Learning Path →";
   } else if(doneToday){
-    startBtn.textContent = "Today's session complete ✓ — Review";
+    startBtn.textContent = "✓";
+    startBtn.setAttribute('aria-label', "Today's session complete — review");
+    startLabel.textContent = "Today's session complete ✓ — Review";
   } else {
-    startBtn.textContent = "Start Today's Session →";
+    startBtn.textContent = "▶";
+    startBtn.setAttribute('aria-label', "Start Today's Session");
+    startLabel.textContent = "Start Today's Session";
   }
 
   checkMilestoneReview();
@@ -2583,7 +2687,7 @@ function openMissionDetail(i, status){
     ${renderNeverStuckKit(m)}
     ${m.file ? `<a href="${m.file}" target="_blank" rel="noopener" class="btn btn-outline btn-block mt-3" style="text-decoration:none;">Open dedicated mission lesson ↗</a>` : ''}
     <a href="https://chatgpt.com/g/g-696536031fc081918b515386f94d21d0-soy-prof-germandario-speak-ya" target="_blank" rel="noopener" class="btn btn-gold btn-block mt-2" style="text-decoration:none;">Open Speak Ya · practice with your AI companion ↗</a>
-    <button class="btn btn-outline btn-block mt-2" id="btnMissionTeacher">Message Prof German · stuck for 24h? →</button>
+    <button class="btn btn-outline btn-block mt-2" id="btnMissionTeacher">Message ProfGermandario · stuck for 24h? →</button>
     ${status !== 'locked' ? `<button class="btn btn-primary btn-block mt-3" id="btnGoToSession">${actionLabel}</button>` : `<p class="section-sub mt-4">Complete earlier missions to unlock.</p>`}
   `;
   openModal('detailModal');
@@ -3056,6 +3160,29 @@ document.getElementById('btnSaveName').addEventListener('click', ()=>{
   const v = document.getElementById('settingsName').value.trim();
   if(v){ state.name = v; save(); toast("Name updated."); renderHome(); }
 });
+
+/* ============================================================
+   MEMBERSHIP
+   ============================================================ */
+function renderPlans(){
+  const wrap = document.getElementById('plansList');
+  if(!wrap) return;
+  wrap.innerHTML = PLANS.map(p=>`
+    <div class="card plan-card ${p.id==='companion' ? 'featured' : ''}">
+      ${p.badge ? `<div class="plan-badge">${p.badge}</div>` : ''}
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-price">${p.price ? `$${p.price}<span>${p.period}</span>` : `<span style="font-size:16px;">Ask for pricing</span>`}</div>
+      <p class="plan-tagline">${p.tagline}</p>
+      <div class="plan-features">${p.features.map(f=>`<div>${f}</div>`).join('')}</div>
+      <a href="${planCheckoutUrl(p)}" target="_blank" rel="noopener" class="btn ${p.checkoutUrl ? 'btn-gold' : 'btn-outline'} btn-block mt-3" style="text-decoration:none;">${p.checkoutUrl ? 'Choose ' + p.name : 'Ask ProfGermandario →'}</a>
+    </div>
+  `).join('');
+}
+document.getElementById('btnOpenMembership').addEventListener('click', ()=>{
+  renderPlans();
+  openModal('membershipModal');
+});
+
 document.getElementById('switchDark').addEventListener('click', ()=>{
   setTheme(state.theme === 'dark' ? 'light' : 'dark');
   renderSettings();

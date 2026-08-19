@@ -333,13 +333,6 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 /* ---------- trade builder sheet ---------- */
 .sheetBackdrop{position:fixed;inset:0;background:rgba(21,34,56,.45);z-index:120;opacity:0;pointer-events:none;transition:.2s}
 .sheetBackdrop.open{opacity:1;pointer-events:auto}
-.gateConfirmBackdrop{position:fixed;inset:0;background:rgba(21,34,56,.55);z-index:220;display:none;align-items:center;justify-content:center;padding:20px}
-.gateConfirmBackdrop.open{display:flex}
-.gateConfirmBox{background:#fff;border-radius:16px;padding:16px;max-width:360px;width:100%;box-shadow:0 12px 40px rgba(21,34,56,.25)}
-.gateConfirmBox h3{margin:0 0 8px;font-size:.95rem}
-.gateConfirmBox p{margin:0 0 12px;font-size:.78rem;color:var(--muted);line-height:1.4}
-.gateConfirmActions{display:flex;gap:8px}
-.gateConfirmActions .btn{flex:1}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:130;max-width:560px;margin:0 auto;
   background:var(--bg);border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;
   transform:translateY(100%);transition:.25s cubic-bezier(.32,.72,0,1);box-shadow:0 -20px 50px rgba(21,34,56,.25)}
@@ -684,16 +677,12 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
       <div class="field"><label>Stop opcional</label><input id="stop" type="number" min="0" step="0.000001" placeholder="0.00"></div>
     </div>
     <div class="field"><label>Fecha y hora entrada</label><input id="entryTime" type="datetime-local" title="Doble clic para colocar fecha y hora actual"><div class="fieldHint"><b>Doble clic:</b> fecha y hora actuales.</div></div>
-    <div class="confidence"><i id="confidenceBar"></i></div>
     <div class="capitalStatus"><div><span>Base</span><b id="baseCapitalOut">—</b></div><div><span>Reservado</span><b id="committedCapitalOut">—</b></div><div><span>Disponible</span><b id="availableCapitalOut">—</b></div></div>
     <div class="two">
       <div class="field"><label>Capital total / presupuesto</label><input id="capital" type="number" min="0" step="0.01" placeholder="5000"><div class="fieldHint">Se puede fijar también desde Inicio; ambos campos quedan sincronizados.</div></div>
       <div class="field"><label>Monto real para este trade</label><input id="tradeAmount" type="number" min="0" step="0.01" placeholder="2500"></div>
     </div>
-    <div class="two">
-      <div class="field"><label>% usado del capital disponible</label><input id="tradePct" type="number" min="0" max="100" step="0.1" placeholder="50"></div>
-      <div class="field"><label>Certeza %</label><input id="certainty" type="number" min="0" max="100" step="1" placeholder="70"></div>
-    </div>
+    <div class="field"><label>% usado del capital disponible</label><input id="tradePct" type="number" min="0" max="100" step="0.1" placeholder="50"></div>
     <div class="riskPolicy">
       <div class="riskPolicyHead"><b>Mandato de riesgo</b><span>límites del portafolio</span></div>
       <div class="riskPolicyGrid">
@@ -734,16 +723,6 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 </div>
 
 <div class="toast" id="toast"></div>
-<div class="gateConfirmBackdrop" id="gateConfirmBackdrop">
-  <div class="gateConfirmBox">
-    <h3 id="gateConfirmTitle">Revisar antes de registrar</h3>
-    <p id="gateConfirmBody"></p>
-    <div class="gateConfirmActions">
-      <button class="btn" id="gateConfirmCancel" type="button">Cancelar</button>
-      <button class="btn primary" id="gateConfirmOk" type="button">Registrar igual</button>
-    </div>
-  </div>
-</div>
 <script>
 const KEY='money-machine-institutional-cockpit-v8';
 const LEGACY_KEYS=['money-machine-research-hub-v7','money-machine-research-hub-v6','money-machine-research-hub-v5','money-machine-research-hub-v4','money-machine-research-hub-v3','money-machine-light-profgermandario-v2'];
@@ -753,10 +732,11 @@ let activeTab='home';
 let researchBusy=false;
 let quantityDriven=false;
 let pctAutoLinked=true;
+let lastClampNote=null;
 let calendarCursor=new Date();
 function $(id){return document.getElementById(id)}
 function emptyBrokerData(){return {fills:[],statements:[],accountSummary:{},equities:[],profitLoss:[],latestRaw:'',latestFileName:'',latestStatementTitle:'',importedAt:'',unmatchedCloses:0,reconciledBaseCapital:NaN}}
-function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,certainty:70,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:''},watch:DEFAULT_WATCH.slice(),recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
+function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:''},watch:DEFAULT_WATCH.slice(),recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
 function loadState(){
   try{
     let raw=localStorage.getItem(KEY);
@@ -873,7 +853,6 @@ function renderSettings(){
   $('capital').value=state.settings.capital;
   $('tradeAmount').value=state.settings.tradeAmount??(state.settings.capital*state.settings.tradePct/100);
   $('tradePct').value=state.settings.tradePct;
-  $('certainty').value=state.settings.certainty;
   $('riskPct').value=state.settings.riskPct;
   $('maxPositionPct').value=state.settings.maxPositionPct;
   $('reservePct').value=state.settings.reservePct;
@@ -964,12 +943,16 @@ function calculatePctResult(){const a=Number($('pctFrom').value),b=Number($('pct
 function syncPctCalculator(force=false){const target=Number($('target').value),last=latestContextPrice();if((pctAutoLinked||force)&&isFinite(last)&&target>0){if(document.activeElement!==$('pctFrom'))$('pctFrom').value=last;if(document.activeElement!==$('pctTo'))$('pctTo').value=target;$('pctMode').textContent='último → target';$('pctContext').textContent=`Vinculado a ${clean($('symbol').value||state.settings.activeSymbol)}: precio disponible y target del trade.`}else if(pctAutoLinked&&target<=0){if(document.activeElement!==$('pctTo'))$('pctTo').value='';$('pctMode').textContent='esperando target';$('pctContext').textContent='El último precio se enlazará automáticamente cuando definas el target.'}else{$('pctMode').textContent='modo manual';$('pctContext').textContent='Los valores fueron editados manualmente. Pulsa Vincular para recuperar el contexto del trade.'}calculatePctResult()}
 function renderCalculator(){
   const capital=Number($('capital').value||state.settings.capital||0);state.settings.capital=capital;
-  const committed=committedCapital(),available=Math.max(0,capital+realizedPnl()-committed),entry=Number($('entry').value||0),certainty=Number($('certainty').value||state.settings.certainty||0);
+  const committed=committedCapital(),available=Math.max(0,capital+realizedPnl()-committed),entry=Number($('entry').value||0);
   let tradeAmount=Number($('tradeAmount').value||state.settings.tradeAmount||0),qty=Number($('qty').value||0);
-  if(quantityDriven&&entry>0&&qty>0){tradeAmount=qty*entry;if(document.activeElement!==$('tradeAmount'))$('tradeAmount').value=tradeAmount.toFixed(2);state.settings.tradeAmount=tradeAmount}else{qty=entry>0?tradeAmount/entry:NaN;if(document.activeElement!==$('qty'))$('qty').value=isFinite(qty)?Number(qty.toFixed(6)):''}
+  if(quantityDriven&&entry>0&&qty>0){tradeAmount=qty*entry}else{qty=entry>0?tradeAmount/entry:NaN}
+  if(entry>0&&tradeAmount>available+1e-9&&available>0){tradeAmount=available;qty=tradeAmount/entry;if(lastClampNote!==available.toFixed(2)){toast('No puede exceder el disponible: ajustado a '+money(available));lastClampNote=available.toFixed(2)}}else{lastClampNote=null}
+  if(document.activeElement!==$('tradeAmount'))$('tradeAmount').value=tradeAmount?tradeAmount.toFixed(2):'';
+  if(document.activeElement!==$('qty'))$('qty').value=isFinite(qty)&&qty>0?Number(qty.toFixed(6)):'';
+  state.settings.tradeAmount=tradeAmount;
   const tradePct=available>0?(tradeAmount/available*100):0,exposure=Math.max(0,tradeAmount),convictionPct=Math.max(0,tradePct);
   if(document.activeElement!==$('tradePct'))$('tradePct').value=convictionPct.toFixed(2);
-  $('confidenceBar').style.width=Math.max(0,Math.min(100,certainty))+'%';$('exposureOut').textContent=money(exposure);$('convictionOut').textContent=convictionPct.toFixed(2)+'%';$('qtyOut').textContent=isFinite(qty)?num(qty,6):'—';$('baseCapitalOut').textContent=money(capital);$('committedCapitalOut').textContent=money(committed);$('availableCapitalOut').textContent=money(available);$('exposureHelp').textContent='Efectivo disponible: '+money(available);$('allocationHelp').textContent='Puede superar 100% solo si el monto es inválido';
+  $('exposureOut').textContent=money(exposure);$('convictionOut').textContent=convictionPct.toFixed(2)+'%';$('qtyOut').textContent=isFinite(qty)?num(qty,6):'—';$('baseCapitalOut').textContent=money(capital);$('committedCapitalOut').textContent=money(committed);$('availableCapitalOut').textContent=money(available);$('exposureHelp').textContent='Efectivo disponible: '+money(available);$('allocationHelp').textContent='Nunca puede superar el disponible: se ajusta solo.';
   const m=currentTradeModel(),rr=m.levels.rr;
   $('rrOut').textContent=isFinite(rr)?rr.toFixed(2)+'R':'—';$('rrOut').className=cls(isFinite(rr)?rr-m.minRR:0);$('rrHelp').textContent=m.levels.stopValid&&m.levels.targetValid?`mínimo requerido ${m.minRR.toFixed(2)}R`:'valida target y stop';
   $('riskLossOut').textContent=isFinite(m.actualRisk)?money(m.actualRisk):'—';$('riskLossOut').className=isFinite(m.actualRisk)&&m.actualRisk>m.riskBudget?'neg':'neu';$('riskLossHelp').textContent='presupuesto '+money(m.riskBudget);
@@ -1258,7 +1241,6 @@ function applySettingsFromInputs(){
   state.settings.capital=Number($('capital').value)||0;
   state.settings.tradeAmount=Number($('tradeAmount').value)||0;
   state.settings.tradePct=state.settings.capital>0?state.settings.tradeAmount/state.settings.capital*100:(Number($('tradePct').value)||0);
-  state.settings.certainty=Number($('certainty').value)||0;
   state.settings.riskPct=Math.max(0.05,Number($('riskPct').value)||1);
   state.settings.maxPositionPct=Math.max(1,Number($('maxPositionPct').value)||25);
   state.settings.reservePct=Math.max(0,Number($('reservePct').value)||0);
@@ -1530,7 +1512,7 @@ window.setActive=function(sym){
 };
 window.removeWatch=function(sym){sym=clean(sym);state.watch=state.watch.filter(s=>s!==sym);if(state.settings.activeSymbol===sym)state.settings.activeSymbol=state.watch[0]||'';persist('Símbolo eliminado.')};
 window.refreshOne=refreshOne;
-window.loadRecord=function(id){const r=state.records.find(x=>x.id===id);if(!r)return;quantityDriven=true;pctAutoLinked=true;$('symbol').value=r.symbol;$('direction').value=r.direction;$('qty').value=r.qty||'';$('entry').value=r.entry;$('target').value=r.target||'';$('stop').value=r.stop||'';$('capital').value=r.capital;$('tradeAmount').value=r.tradeAmount||r.exposure||'';$('tradePct').value=r.tradePct;$('certainty').value=r.certainty;$('riskPct').value=r.riskPctAtEntry||state.settings.riskPct;$('maxPositionPct').value=r.maxPositionPctAtEntry||state.settings.maxPositionPct;$('reservePct').value=r.reservePctAtEntry??state.settings.reservePct;$('minRR').value=r.minRRAtEntry||state.settings.minRR;$('note').value=r.note||'';openTradeBuilder();renderCalculator();toast('Registro cargado al trade builder.')};
+window.loadRecord=function(id){const r=state.records.find(x=>x.id===id);if(!r)return;quantityDriven=true;pctAutoLinked=true;$('symbol').value=r.symbol;$('direction').value=r.direction;$('qty').value=r.qty||'';$('entry').value=r.entry;$('target').value=r.target||'';$('stop').value=r.stop||'';$('capital').value=r.capital;$('tradeAmount').value=r.tradeAmount||r.exposure||'';$('tradePct').value=r.tradePct;$('riskPct').value=r.riskPctAtEntry||state.settings.riskPct;$('maxPositionPct').value=r.maxPositionPctAtEntry||state.settings.maxPositionPct;$('reservePct').value=r.reservePctAtEntry??state.settings.reservePct;$('minRR').value=r.minRRAtEntry||state.settings.minRR;$('note').value=r.note||'';openTradeBuilder();renderCalculator();toast('Registro cargado al trade builder.')};
 window.deleteRecord=function(id){if(confirm('¿Borrar este registro?')){state.records=state.records.filter(r=>r.id!==id);persist('Registro borrado.')}};
 function switchTab(tab){activeTab=tab;['home','research','watch','portfolio','records','data'].forEach(t=>{$('tab-'+t).classList.toggle('hidden',t!==tab);document.querySelector(`[data-tab="${t}"]`)?.setAttribute('aria-pressed',t===tab)});window.scrollTo({top:0,behavior:'instant'});}
 /* ===================== Mobile pocket-app additions ===================== */
@@ -1548,13 +1530,6 @@ function closeTradeBuilder(){$('tradeBuilderSheet')?.classList.remove('open');$(
 window.openTradeBuilder=openTradeBuilder;
 window.closeTradeBuilder=closeTradeBuilder;
 
-function showGateConfirm(title,body,onConfirm){
-  $('gateConfirmTitle').textContent=title;$('gateConfirmBody').textContent=body;
-  $('gateConfirmBackdrop').classList.add('open');
-  const cleanup=()=>{$('gateConfirmBackdrop').classList.remove('open');$('gateConfirmOk').onclick=null;$('gateConfirmCancel').onclick=null;};
-  $('gateConfirmOk').onclick=()=>{cleanup();onConfirm();};
-  $('gateConfirmCancel').onclick=()=>{cleanup();};
-}
 function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function renderHomeMoney(){
   if(!$('homeEquityValue'))return;
@@ -1601,7 +1576,7 @@ function initMobileExtras(){
 }
 
 function init(){
-  ['capital','certainty','target','stop','riskPct','maxPositionPct','reservePct','minRR'].forEach(id=>$(id).addEventListener('input',()=>{applySettingsFromInputs();renderCalculator();renderExecutiveStrip();renderHomeMoney();localStorage.setItem(KEY,JSON.stringify(state));}));
+  ['capital','target','stop','riskPct','maxPositionPct','reservePct','minRR'].forEach(id=>$(id).addEventListener('input',()=>{applySettingsFromInputs();renderCalculator();renderExecutiveStrip();renderHomeMoney();localStorage.setItem(KEY,JSON.stringify(state));}));
   $('homeCapitalInput').addEventListener('input',()=>{state.settings.capital=Number($('homeCapitalInput').value)||0;$('capital').value=state.settings.capital;applySettingsFromInputs();renderCalculator();renderExecutiveStrip();renderHomeMoney();localStorage.setItem(KEY,JSON.stringify(state));});
   $('tradeAmount').addEventListener('input',()=>{quantityDriven=false;applySettingsFromInputs();renderCalculator();localStorage.setItem(KEY,JSON.stringify(state));});
   $('qty').addEventListener('input',()=>{quantityDriven=true;renderCalculator();applySettingsFromInputs();localStorage.setItem(KEY,JSON.stringify(state));});
@@ -1643,11 +1618,10 @@ function init(){
   $('refreshActive').onclick=()=>refreshOne(state.settings.activeSymbol||state.watch[0]);
   $('refreshAll').onclick=refreshAll;
   $('useQuote').onclick=fillQuotePrice;
-  $('recordBtn').onclick=()=>{applySettingsFromInputs();renderCalculator();const m=currentTradeModel(),entry=m.entry,symbol=clean($('symbol').value),qtyInput=Number($('qty').value);if(!symbol||!isFinite(entry)||entry<=0)return toast('Falta símbolo o precio de entrada.');const qty=qtyInput>0?qtyInput:(Number(state.settings.tradeAmount)||0)/entry,tradeAmount=qty*entry,available=m.available;if(!qty||!isFinite(qty)||qty<=0)return toast('Indica una cantidad válida de acciones o unidades.');if(!tradeAmount||tradeAmount>available+1e-9)return toast('La posición supera el capital disponible: '+money(available));if(m.levels.stopPresent&&!m.levels.stopValid)return toast('El stop está al lado incorrecto para una posición '+m.direction+'.');if(m.levels.targetPresent&&!m.levels.targetValid)return toast('El target está al lado incorrecto para una posición '+m.direction+'.');
-    const serious=m.blockers.filter(x=>x.label!=='Riesgo dentro del mandato'||isFinite(m.actualRisk));
-    const doRegister=()=>{state.settings.tradeAmount=tradeAmount;$('tradeAmount').value=tradeAmount.toFixed(2);state.records.unshift({id:uid(),symbol,direction:m.direction,capital:state.settings.capital,equityAtEntry:m.equity,availableAtEntry:available,tradeAmount,tradePct:available?tradeAmount/available*100:0,positionPct:m.positionPct,certainty:state.settings.certainty,riskPctAtEntry:m.riskPct,maxPositionPctAtEntry:m.maxPositionPct,reservePctAtEntry:m.reservePct,minRRAtEntry:m.minRR,riskBudgetAtEntry:m.riskBudget,riskAmount:m.actualRisk,rewardAmount:m.actualReward,rr:m.levels.rr,decisionScore:m.score,decisionStatus:m.status,entry,entryTime:$('entryTime').value||new Date().toISOString(),qty,target:$('target').value?Number($('target').value):'',stop:$('stop').value?Number($('stop').value):'',note:$('note').value.trim(),researchSnapshot:state.research[symbol]?JSON.parse(JSON.stringify({...state.research[symbol],news:(state.research[symbol].news||[]).slice(0,3)})):null,status:'OPEN',exitPrice:'',exitTime:'',createdAt:new Date().toISOString()});persist(m.warnings.length?'Registrada · atención: '+m.warnings.map(w=>w.label).join(', '):'Operación registrada con snapshot de riesgo y decisión.');closeTradeBuilder();switchTab('records');};
-    if(serious.length){showGateConfirm('El pre-trade gate bloquea esta operación ('+m.score+'/100)',serious.map(s=>s.label+': '+s.detail).join(' · ')+' · ¿Registrar de todos modos?',doRegister);return;}
-    doRegister();
+  $('recordBtn').onclick=()=>{applySettingsFromInputs();renderCalculator();const m=currentTradeModel(),entry=m.entry,symbol=clean($('symbol').value),qtyInput=Number($('qty').value);if(!symbol||!isFinite(entry)||entry<=0)return toast('Falta símbolo o precio de entrada.');let qty=qtyInput>0?qtyInput:(Number(state.settings.tradeAmount)||0)/entry;if(!qty||!isFinite(qty)||qty<=0)return toast('Indica una cantidad válida de acciones o unidades.');let tradeAmount=qty*entry;const available=m.available;if(tradeAmount>available+1e-9){if(available<=0)return toast('No hay capital disponible.');qty=available/entry;tradeAmount=available;toast('Cantidad ajustada al disponible: '+money(available));}if(m.levels.stopPresent&&!m.levels.stopValid)return toast('El stop está al lado incorrecto para una posición '+m.direction+'.');if(m.levels.targetPresent&&!m.levels.targetValid)return toast('El target está al lado incorrecto para una posición '+m.direction+'.');
+    state.settings.tradeAmount=tradeAmount;$('tradeAmount').value=tradeAmount.toFixed(2);$('qty').value=Number(qty.toFixed(6));
+    state.records.unshift({id:uid(),symbol,direction:m.direction,capital:state.settings.capital,equityAtEntry:m.equity,availableAtEntry:available,tradeAmount,tradePct:available?tradeAmount/available*100:0,positionPct:m.positionPct,riskPctAtEntry:m.riskPct,maxPositionPctAtEntry:m.maxPositionPct,reservePctAtEntry:m.reservePct,minRRAtEntry:m.minRR,riskBudgetAtEntry:m.riskBudget,riskAmount:m.actualRisk,rewardAmount:m.actualReward,rr:m.levels.rr,decisionScore:m.score,decisionStatus:m.status,entry,entryTime:$('entryTime').value||new Date().toISOString(),qty,target:$('target').value?Number($('target').value):'',stop:$('stop').value?Number($('stop').value):'',note:$('note').value.trim(),researchSnapshot:state.research[symbol]?JSON.parse(JSON.stringify({...state.research[symbol],news:(state.research[symbol].news||[]).slice(0,3)})):null,status:'OPEN',exitPrice:'',exitTime:'',createdAt:new Date().toISOString()});
+    persist('Operación registrada.');closeTradeBuilder();switchTab('records');
   };
   $('clearCalc').onclick=()=>{quantityDriven=false;pctAutoLinked=true;['qty','entry','target','stop','note'].forEach(id=>$(id).value='');renderCalculator();toast('Calculadora limpia.');};
   $('saveBtn').onclick=()=>persist('Guardado local.');$('saveBtn2').onclick=()=>persist('Guardado local.');

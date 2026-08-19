@@ -333,6 +333,13 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 /* ---------- trade builder sheet ---------- */
 .sheetBackdrop{position:fixed;inset:0;background:rgba(21,34,56,.45);z-index:120;opacity:0;pointer-events:none;transition:.2s}
 .sheetBackdrop.open{opacity:1;pointer-events:auto}
+.gateConfirmBackdrop{position:fixed;inset:0;background:rgba(21,34,56,.55);z-index:220;display:none;align-items:center;justify-content:center;padding:20px}
+.gateConfirmBackdrop.open{display:flex}
+.gateConfirmBox{background:#fff;border-radius:16px;padding:16px;max-width:360px;width:100%;box-shadow:0 12px 40px rgba(21,34,56,.25)}
+.gateConfirmBox h3{margin:0 0 8px;font-size:.95rem}
+.gateConfirmBox p{margin:0 0 12px;font-size:.78rem;color:var(--muted);line-height:1.4}
+.gateConfirmActions{display:flex;gap:8px}
+.gateConfirmActions .btn{flex:1}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:130;max-width:560px;margin:0 auto;
   background:var(--bg);border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;
   transform:translateY(100%);transition:.25s cubic-bezier(.32,.72,0,1);box-shadow:0 -20px 50px rgba(21,34,56,.25)}
@@ -727,6 +734,16 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="gateConfirmBackdrop" id="gateConfirmBackdrop">
+  <div class="gateConfirmBox">
+    <h3 id="gateConfirmTitle">Revisar antes de registrar</h3>
+    <p id="gateConfirmBody"></p>
+    <div class="gateConfirmActions">
+      <button class="btn" id="gateConfirmCancel" type="button">Cancelar</button>
+      <button class="btn primary" id="gateConfirmOk" type="button">Registrar igual</button>
+    </div>
+  </div>
+</div>
 <script>
 const KEY='money-machine-institutional-cockpit-v8';
 const LEGACY_KEYS=['money-machine-research-hub-v7','money-machine-research-hub-v6','money-machine-research-hub-v5','money-machine-research-hub-v4','money-machine-research-hub-v3','money-machine-light-profgermandario-v2'];
@@ -1531,6 +1548,13 @@ function closeTradeBuilder(){$('tradeBuilderSheet')?.classList.remove('open');$(
 window.openTradeBuilder=openTradeBuilder;
 window.closeTradeBuilder=closeTradeBuilder;
 
+function showGateConfirm(title,body,onConfirm){
+  $('gateConfirmTitle').textContent=title;$('gateConfirmBody').textContent=body;
+  $('gateConfirmBackdrop').classList.add('open');
+  const cleanup=()=>{$('gateConfirmBackdrop').classList.remove('open');$('gateConfirmOk').onclick=null;$('gateConfirmCancel').onclick=null;};
+  $('gateConfirmOk').onclick=()=>{cleanup();onConfirm();};
+  $('gateConfirmCancel').onclick=()=>{cleanup();};
+}
 function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function renderHomeMoney(){
   if(!$('homeEquityValue'))return;
@@ -1619,7 +1643,12 @@ function init(){
   $('refreshActive').onclick=()=>refreshOne(state.settings.activeSymbol||state.watch[0]);
   $('refreshAll').onclick=refreshAll;
   $('useQuote').onclick=fillQuotePrice;
-  $('recordBtn').onclick=()=>{applySettingsFromInputs();renderCalculator();const m=currentTradeModel(),entry=m.entry,symbol=clean($('symbol').value),qtyInput=Number($('qty').value);if(!symbol||!isFinite(entry)||entry<=0)return toast('Falta símbolo o precio de entrada.');const qty=qtyInput>0?qtyInput:(Number(state.settings.tradeAmount)||0)/entry,tradeAmount=qty*entry,available=m.available;if(!qty||!isFinite(qty)||qty<=0)return toast('Indica una cantidad válida de acciones o unidades.');if(!tradeAmount||tradeAmount>available+1e-9)return toast('La posición supera el capital disponible: '+money(available));if(m.levels.stopPresent&&!m.levels.stopValid)return toast('El stop está al lado incorrecto para una posición '+m.direction+'.');if(m.levels.targetPresent&&!m.levels.targetValid)return toast('El target está al lado incorrecto para una posición '+m.direction+'.');const serious=m.blockers.filter(x=>x.label!=='Riesgo dentro del mandato'||isFinite(m.actualRisk));if((serious.length||m.warnings.length)&&!confirm('El pre-trade gate no está completamente aprobado ('+m.score+'/100). ¿Registrar de todos modos?'))return;state.settings.tradeAmount=tradeAmount;$('tradeAmount').value=tradeAmount.toFixed(2);state.records.unshift({id:uid(),symbol,direction:m.direction,capital:state.settings.capital,equityAtEntry:m.equity,availableAtEntry:available,tradeAmount,tradePct:available?tradeAmount/available*100:0,positionPct:m.positionPct,certainty:state.settings.certainty,riskPctAtEntry:m.riskPct,maxPositionPctAtEntry:m.maxPositionPct,reservePctAtEntry:m.reservePct,minRRAtEntry:m.minRR,riskBudgetAtEntry:m.riskBudget,riskAmount:m.actualRisk,rewardAmount:m.actualReward,rr:m.levels.rr,decisionScore:m.score,decisionStatus:m.status,entry,entryTime:$('entryTime').value||new Date().toISOString(),qty,target:$('target').value?Number($('target').value):'',stop:$('stop').value?Number($('stop').value):'',note:$('note').value.trim(),researchSnapshot:state.research[symbol]?JSON.parse(JSON.stringify({...state.research[symbol],news:(state.research[symbol].news||[]).slice(0,3)})):null,status:'OPEN',exitPrice:'',exitTime:'',createdAt:new Date().toISOString()});persist('Operación registrada con snapshot de riesgo y decisión.');closeTradeBuilder();switchTab('records');};
+  $('recordBtn').onclick=()=>{applySettingsFromInputs();renderCalculator();const m=currentTradeModel(),entry=m.entry,symbol=clean($('symbol').value),qtyInput=Number($('qty').value);if(!symbol||!isFinite(entry)||entry<=0)return toast('Falta símbolo o precio de entrada.');const qty=qtyInput>0?qtyInput:(Number(state.settings.tradeAmount)||0)/entry,tradeAmount=qty*entry,available=m.available;if(!qty||!isFinite(qty)||qty<=0)return toast('Indica una cantidad válida de acciones o unidades.');if(!tradeAmount||tradeAmount>available+1e-9)return toast('La posición supera el capital disponible: '+money(available));if(m.levels.stopPresent&&!m.levels.stopValid)return toast('El stop está al lado incorrecto para una posición '+m.direction+'.');if(m.levels.targetPresent&&!m.levels.targetValid)return toast('El target está al lado incorrecto para una posición '+m.direction+'.');
+    const serious=m.blockers.filter(x=>x.label!=='Riesgo dentro del mandato'||isFinite(m.actualRisk));
+    const doRegister=()=>{state.settings.tradeAmount=tradeAmount;$('tradeAmount').value=tradeAmount.toFixed(2);state.records.unshift({id:uid(),symbol,direction:m.direction,capital:state.settings.capital,equityAtEntry:m.equity,availableAtEntry:available,tradeAmount,tradePct:available?tradeAmount/available*100:0,positionPct:m.positionPct,certainty:state.settings.certainty,riskPctAtEntry:m.riskPct,maxPositionPctAtEntry:m.maxPositionPct,reservePctAtEntry:m.reservePct,minRRAtEntry:m.minRR,riskBudgetAtEntry:m.riskBudget,riskAmount:m.actualRisk,rewardAmount:m.actualReward,rr:m.levels.rr,decisionScore:m.score,decisionStatus:m.status,entry,entryTime:$('entryTime').value||new Date().toISOString(),qty,target:$('target').value?Number($('target').value):'',stop:$('stop').value?Number($('stop').value):'',note:$('note').value.trim(),researchSnapshot:state.research[symbol]?JSON.parse(JSON.stringify({...state.research[symbol],news:(state.research[symbol].news||[]).slice(0,3)})):null,status:'OPEN',exitPrice:'',exitTime:'',createdAt:new Date().toISOString()});persist(m.warnings.length?'Registrada · atención: '+m.warnings.map(w=>w.label).join(', '):'Operación registrada con snapshot de riesgo y decisión.');closeTradeBuilder();switchTab('records');};
+    if(serious.length){showGateConfirm('El pre-trade gate bloquea esta operación ('+m.score+'/100)',serious.map(s=>s.label+': '+s.detail).join(' · ')+' · ¿Registrar de todos modos?',doRegister);return;}
+    doRegister();
+  };
   $('clearCalc').onclick=()=>{quantityDriven=false;pctAutoLinked=true;['qty','entry','target','stop','note'].forEach(id=>$(id).value='');renderCalculator();toast('Calculadora limpia.');};
   $('saveBtn').onclick=()=>persist('Guardado local.');$('saveBtn2').onclick=()=>persist('Guardado local.');
   $('downloadBtn').onclick=downloadBrokerCompatibleCsv;$('downloadBtn2').onclick=downloadJson;

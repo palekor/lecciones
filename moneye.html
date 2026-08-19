@@ -478,6 +478,28 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
       <div class="dateChips" id="dateChips"></div>
     </div>
 
+    <div class="card" id="homeMoneyCard">
+      <div class="cardHead"><h2>Tu dinero</h2><span id="homeMoneyAsOf">—</span></div>
+      <div class="equityHero">
+        <span>Patrimonio de hoy</span>
+        <b class="equityValue" id="homeEquityValue">—</b>
+        <div class="growthLine">
+          <strong class="growthBadge" id="homeDailyBadge">—</strong>
+          <b id="homeDailyAmount">—</b>
+        </div>
+        <small id="homeDailyNote">Cambio de hoy vs. patrimonio al abrir la app.</small>
+      </div>
+      <div class="ledgerKpis" style="margin-top:8px">
+        <div class="ledgerKpi"><span>Desde capital inicial</span><b id="homeTotalGrowth">—</b><small id="homeTotalGrowthSub">—</small></div>
+        <div class="ledgerKpi"><span>Riesgo abierto hoy</span><b id="homeOpenRisk">—</b><small id="homeOpenRiskSub">—</small></div>
+      </div>
+      <div class="field" style="margin-top:8px">
+        <label>Capital inicial / total de la cuenta</label>
+        <input id="homeCapitalInput" type="number" min="0" step="0.01" placeholder="5000">
+        <div class="fieldHint">Este es el único lugar que necesitas para fijarlo — se usa en toda la app.</div>
+      </div>
+    </div>
+
     <div class="card indexCard">
       <div class="indexTop">
         <div>
@@ -488,7 +510,7 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
         <button class="iconBtn" id="refreshIndexBtn" type="button" title="Actualizar S&amp;P 500">⟳</button>
       </div>
       <div id="homeIndexSpark"></div>
-      <div class="indexMeta" id="homeIndexMeta">Se actualiza al abrir la app</div>
+      <div class="indexMeta" id="homeIndexMeta">Referencia de mercado, no es tu cuenta</div>
     </div>
 
     <div class="card tight">
@@ -642,9 +664,23 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
   <div class="sheetHandle"></div>
   <div class="sheetHead"><h2>Trade builder</h2><button class="sheetClose" type="button" onclick="closeTradeBuilder()">✕</button></div>
   <div class="sheetBody">
+    <div class="two">
+      <div class="field"><label>Símbolo</label><input id="symbol" placeholder="TQQQ" title="Doble clic para usar el activo en investigación"><div class="fieldHint"><b>Doble clic:</b> activo actualmente discutido.</div></div>
+      <div class="field"><label>Dirección</label><select id="direction"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select></div>
+    </div>
+    <div class="two">
+      <div class="field"><label>Precio entrada</label><input id="entry" type="number" min="0" step="0.000001" placeholder="0.00" title="Doble clic para usar el precio del activo en investigación"><div class="fieldHint"><b>Doble clic:</b> usar el último precio investigado.</div></div>
+      <div class="field"><label>Cantidad de acciones / unidades</label><input id="qty" type="number" min="0" step="0.000001" placeholder="10" title="Doble clic para calcularla desde monto y precio"><div class="fieldHint"><b>Doble clic:</b> calcular cantidad automáticamente.</div></div>
+    </div>
+    <div class="two">
+      <div class="field"><label>Target opcional</label><input id="target" type="number" min="0" step="0.000001" placeholder="0.00"></div>
+      <div class="field"><label>Stop opcional</label><input id="stop" type="number" min="0" step="0.000001" placeholder="0.00"></div>
+    </div>
+    <div class="field"><label>Fecha y hora entrada</label><input id="entryTime" type="datetime-local" title="Doble clic para colocar fecha y hora actual"><div class="fieldHint"><b>Doble clic:</b> fecha y hora actuales.</div></div>
+    <div class="confidence"><i id="confidenceBar"></i></div>
     <div class="capitalStatus"><div><span>Base</span><b id="baseCapitalOut">—</b></div><div><span>Reservado</span><b id="committedCapitalOut">—</b></div><div><span>Disponible</span><b id="availableCapitalOut">—</b></div></div>
     <div class="two">
-      <div class="field"><label>Capital total / presupuesto</label><input id="capital" type="number" min="0" step="0.01" placeholder="5000"></div>
+      <div class="field"><label>Capital total / presupuesto</label><input id="capital" type="number" min="0" step="0.01" placeholder="5000"><div class="fieldHint">Se puede fijar también desde Inicio; ambos campos quedan sincronizados.</div></div>
       <div class="field"><label>Monto real para este trade</label><input id="tradeAmount" type="number" min="0" step="0.01" placeholder="2500"></div>
     </div>
     <div class="two">
@@ -657,23 +693,9 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
         <div class="field"><label>Riesgo máx. por trade %</label><input id="riskPct" type="number" min="0.05" max="20" step="0.05" placeholder="1"></div>
         <div class="field"><label>Máximo por posición %</label><input id="maxPositionPct" type="number" min="1" max="100" step="1" placeholder="25"></div>
         <div class="field"><label>Reserva mínima %</label><input id="reservePct" type="number" min="0" max="95" step="1" placeholder="10"></div>
-        <div class="field"><label>R:R mínimo</label><input id="minRR" type="number" min="0.25" max="20" step="0.25" placeholder="2"></div>
+        <div class="field"><label>R:R mínimo exigido</label><input id="minRR" type="number" min="0.25" max="20" step="0.25" placeholder="2"><div class="fieldHint">Es una regla, no el resultado: el R:R real de tu trade se calcula solo abajo, desde Target y Stop.</div></div>
       </div>
     </div>
-    <div class="two">
-      <div class="field"><label>Cantidad de acciones / unidades</label><input id="qty" type="number" min="0" step="0.000001" placeholder="10" title="Doble clic para calcularla desde monto y precio"><div class="fieldHint"><b>Doble clic:</b> calcular cantidad automáticamente.</div></div>
-      <div class="field"><label>Precio entrada</label><input id="entry" type="number" min="0" step="0.000001" placeholder="0.00" title="Doble clic para usar el precio del activo en investigación"><div class="fieldHint"><b>Doble clic:</b> usar el último precio investigado.</div></div>
-    </div>
-    <div class="two">
-      <div class="field"><label>Fecha y hora entrada</label><input id="entryTime" type="datetime-local" title="Doble clic para colocar fecha y hora actual"><div class="fieldHint"><b>Doble clic:</b> fecha y hora actuales.</div></div>
-      <div class="field"><label>Símbolo</label><input id="symbol" placeholder="TQQQ" title="Doble clic para usar el activo en investigación"><div class="fieldHint"><b>Doble clic:</b> activo actualmente discutido.</div></div>
-    </div>
-    <div class="field"><label>Dirección</label><select id="direction"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select></div>
-    <div class="two">
-      <div class="field"><label>Target opcional</label><input id="target" type="number" min="0" step="0.000001" placeholder="0.00"></div>
-      <div class="field"><label>Stop opcional</label><input id="stop" type="number" min="0" step="0.000001" placeholder="0.00"></div>
-    </div>
-    <div class="confidence"><i id="confidenceBar"></i></div>
     <div class="calcOut institutionalOutputs">
       <div class="out"><span>Monto asignado</span><b id="exposureOut">—</b><em id="exposureHelp">Monto real / presupuesto</em></div>
       <div class="out"><span>Peso del disponible</span><b id="convictionOut">—</b><em id="allocationHelp">Monto / efectivo disponible</em></div>
@@ -717,7 +739,7 @@ let pctAutoLinked=true;
 let calendarCursor=new Date();
 function $(id){return document.getElementById(id)}
 function emptyBrokerData(){return {fills:[],statements:[],accountSummary:{},equities:[],profitLoss:[],latestRaw:'',latestFileName:'',latestStatementTitle:'',importedAt:'',unmatchedCloses:0,reconciledBaseCapital:NaN}}
-function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,certainty:70,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:''},watch:DEFAULT_WATCH.slice(),recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData()}}
+function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,certainty:70,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:''},watch:DEFAULT_WATCH.slice(),recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
 function loadState(){
   try{
     let raw=localStorage.getItem(KEY);
@@ -728,6 +750,7 @@ function loadState(){
       watch:Array.isArray(p.watch)&&p.watch.length?p.watch:base.watch,recentSymbols:Array.isArray(p.recentSymbols)?p.recentSymbols:[],
       quotes:p.quotes||{},mini:p.mini||{},research:p.research||{},researchSnapshots:Array.isArray(p.researchSnapshots)?p.researchSnapshots:[],calendarEvents:Array.isArray(p.calendarEvents)?p.calendarEvents:[],
       brokerData:{...emptyBrokerData(),...(p.brokerData||{})},
+      dailyBaseline:p.dailyBaseline||null,
       records:Array.isArray(p.records)?p.records.map(r=>({status:r.status||'OPEN',tradeAmount:r.tradeAmount||r.exposure||(Number(r.capital||0)*Number(r.tradePct||0)/100),entryTime:r.entryTime||r.createdAt,...r})):[]
     };
   }catch(e){return emptyState()}
@@ -774,7 +797,7 @@ function createPendingResearch(sym,question=''){const previous=state.research[sy
 function createPartialResearch(sym,question,error,sources={}){const previous=state.research[sym]||{},q=currentQuote(sym)||{},base={...previous,symbol:sym,name:previous.name||sym,assetType:previous.assetType||(isCrypto(sym)?'crypto':'equity'),currency:previous.currency||(isCrypto(sym)?'USDT':'USD'),question,price:firstFinite(q.price,previous.price),change:firstFinite(q.change,previous.change),changePct:firstFinite(q.changePct,previous.changePct),news:ensureResearchNews(sym,previous.news),sources:{...(previous.sources||{}),...sources,'Fuentes verificables':{ok:true}},updatedAt:new Date().toISOString(),status:'partial',partialReason:String(error?.message||error||'Cobertura automática limitada'),note:previous.note||''};base.coverage=coverageScore(base);base.flags=[{severity:'medium',title:'Cobertura automática limitada',text:'Algunas fuentes no respondieron. Se conservaron datos previos, noticias o accesos verificables para continuar la investigación.',tag:'source'},...(buildRiskFlags(base,sym)||[]).filter(f=>f.title!=='Cobertura automática limitada')];base.score=researchScore(base);return base}
 function setResearchGuarantee(r){if(!$('researchGuarantee'))return;if(researchBusy){$('researchGuarantee').innerHTML='<span class="guaranteeIcon">↻</span><div><b>Consultando fuentes independientes:</b> cada respuesta se conservará aunque otra fuente falle.</div>';return}if(!r){$('researchGuarantee').innerHTML='<span class="guaranteeIcon">✓</span><div><b>Resultado mínimo garantizado:</b> se guardarán símbolo y tesis; la salida incluirá datos, noticias o accesos verificables para continuar.</div>';return}const status=inferResearchStatus(r),realNews=(r.news||[]).filter(n=>!n.isSearchLink).length,sourceOk=Object.values(r.sources||{}).filter(v=>v?.ok).length;$('researchGuarantee').innerHTML=`<span class="guaranteeIcon">${status==='complete'?'✓':status==='pending'?'•':'△'}</span><div><b>Investigación ${statusLabel(status)}:</b> ${sourceOk} fuente(s) disponibles · ${realNews} noticia(s) automática(s) · cobertura ${Number(r.coverage)||0}%. ${status==='pending'?'La pregunta quedó en cola para investigar después.':status==='partial'?'La información útil y los enlaces verificables fueron preservados.':'Los resultados pueden guardarse junto con la tesis.'}</div>`}
 
-function render(){renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();renderCalculator();renderExecutiveStrip();renderCharts();renderResearch();renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();}
+function render(){renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();renderCalculator();renderExecutiveStrip();renderHomeMoney();renderCharts();renderResearch();renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();}
 function renderDate(){
   const d=new Date();
   const chips=[
@@ -1508,6 +1531,22 @@ function closeTradeBuilder(){$('tradeBuilderSheet')?.classList.remove('open');$(
 window.openTradeBuilder=openTradeBuilder;
 window.closeTradeBuilder=closeTradeBuilder;
 
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function renderHomeMoney(){
+  if(!$('homeEquityValue'))return;
+  const f=financialLedger(),p=portfolioRiskMetrics(),today=todayKey();
+  if(!state.dailyBaseline||state.dailyBaseline.date!==today){state.dailyBaseline={date:today,equity:f.totalEquity};localStorage.setItem(KEY,JSON.stringify(state));}
+  const dailyChange=f.totalEquity-state.dailyBaseline.equity,dailyPct=state.dailyBaseline.equity?dailyChange/state.dailyBaseline.equity*100:NaN;
+  $('homeMoneyAsOf').textContent='Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  $('homeEquityValue').textContent=money(f.totalEquity);
+  $('homeDailyBadge').textContent=isFinite(dailyPct)?pct(dailyPct):'—';$('homeDailyBadge').className='growthBadge '+cls(dailyChange);
+  $('homeDailyAmount').textContent=money(dailyChange);$('homeDailyAmount').className=cls(dailyChange);
+  $('homeTotalGrowth').textContent=isFinite(f.growthPct)?pct(f.growthPct):'—';$('homeTotalGrowth').className=cls(f.growth);
+  $('homeTotalGrowthSub').textContent=money(f.growth)+' vs. '+money(f.initial)+' inicial';
+  $('homeOpenRisk').textContent=p.open.length&&isFinite(p.riskPctOpen)?p.riskPctOpen.toFixed(2)+'%':'—';
+  $('homeOpenRiskSub').textContent=p.open.length?money(p.knownRisk)+(p.unknownRisk?` · ${p.unknownRisk} sin stop`:''):'sin posiciones abiertas';
+  if(document.activeElement!==$('homeCapitalInput'))$('homeCapitalInput').value=state.settings.capital;
+}
 function renderHomeIndex(){
   if(!$('homeIndexPrice'))return;
   const q=state.quotes[BENCHMARK_SYMBOL];
@@ -1538,7 +1577,8 @@ function initMobileExtras(){
 }
 
 function init(){
-  ['capital','certainty','target','stop','riskPct','maxPositionPct','reservePct','minRR'].forEach(id=>$(id).addEventListener('input',()=>{applySettingsFromInputs();renderCalculator();renderExecutiveStrip();localStorage.setItem(KEY,JSON.stringify(state));}));
+  ['capital','certainty','target','stop','riskPct','maxPositionPct','reservePct','minRR'].forEach(id=>$(id).addEventListener('input',()=>{applySettingsFromInputs();renderCalculator();renderExecutiveStrip();renderHomeMoney();localStorage.setItem(KEY,JSON.stringify(state));}));
+  $('homeCapitalInput').addEventListener('input',()=>{state.settings.capital=Number($('homeCapitalInput').value)||0;$('capital').value=state.settings.capital;applySettingsFromInputs();renderCalculator();renderExecutiveStrip();renderHomeMoney();localStorage.setItem(KEY,JSON.stringify(state));});
   $('tradeAmount').addEventListener('input',()=>{quantityDriven=false;applySettingsFromInputs();renderCalculator();localStorage.setItem(KEY,JSON.stringify(state));});
   $('qty').addEventListener('input',()=>{quantityDriven=true;renderCalculator();applySettingsFromInputs();localStorage.setItem(KEY,JSON.stringify(state));});
   $('entry').addEventListener('input',()=>{renderCalculator();applySettingsFromInputs();localStorage.setItem(KEY,JSON.stringify(state));});

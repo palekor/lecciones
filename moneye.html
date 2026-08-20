@@ -93,8 +93,12 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 .sessionTime span{display:block;color:var(--dim);font-size:.56rem;font-weight:850;text-transform:uppercase}
 .sessionTime b{display:block;font-size:.86rem;margin-top:2px}
 .sessionTime small{display:block;color:var(--dim);font-size:.58rem;margin-top:1px}
+.homeMiniSpark{margin-top:6px}
+.homeMiniSpark svg{width:100%;height:46px;display:block}
 .sessionProgress{height:8px;background:var(--card2);border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .sessionProgress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--green));transition:.3s}
+.sessionProgress i.spUp{background:linear-gradient(90deg,var(--blue),var(--green))}
+.sessionProgress i.spDown{background:linear-gradient(90deg,var(--blue),var(--red))}
 .sessionNote{color:var(--muted);font-size:.66rem;line-height:1.35}
 .dateChips{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
 
@@ -489,6 +493,7 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
         </div>
         <small id="homeDailyNote">Cambio de hoy vs. patrimonio al abrir la app.</small>
       </div>
+      <div class="homeMiniSpark" id="homeEquitySpark"></div>
       <div class="ledgerKpis" style="margin-top:8px">
         <div class="ledgerKpi"><span>Desde capital inicial</span><b id="homeTotalGrowth">—</b><small id="homeTotalGrowthSub">—</small></div>
         <div class="ledgerKpi"><span>Riesgo abierto hoy</span><b id="homeOpenRisk">—</b><small id="homeOpenRiskSub">—</small></div>
@@ -822,7 +827,7 @@ function nextEquityOpen(from){const p=zonedParts(from);for(let offset=0;offset<1
 function durationText(ms){if(!isFinite(ms)||ms<0)return '—';const total=Math.max(0,Math.floor(ms/1000)),days=Math.floor(total/86400),hours=Math.floor(total%86400/3600),mins=Math.floor(total%3600/60),secs=total%60;if(days)return `${days}d ${hours}h ${mins}m`;if(hours)return `${hours}h ${mins}m ${secs}s`;return `${mins}m ${secs}s`}
 function localZoneName(){return Intl.DateTimeFormat().resolvedOptions().timeZone||'hora local'}
 function formatTime(date,timeZone){return new Intl.DateTimeFormat('es-CO',{timeZone,hour:'2-digit',minute:'2-digit',hour12:true}).format(date)}
-function setSessionView({type,stateText,stateClass,countdown,label,open,close,openText,closeText,note,progress=0,marketZone=MARKET_TZ}){if(!$('sessionPanel'))return;$('sessionType').textContent=type;$('sessionState').textContent=stateText;$('sessionState').className=stateClass||'';$('sessionCountdown').textContent=countdown;$('sessionCountdownLabel').textContent=label;$('sessionOpenTime').textContent=openText||(open?formatTime(open,marketZone):'—');$('sessionCloseTime').textContent=closeText||(close?formatTime(close,marketZone):'—');const local=localZoneName();$('sessionOpenLocal').textContent=open?`${formatTime(open,local)} · ${local}`:(openText||'');$('sessionCloseLocal').textContent=close?`${formatTime(close,local)} · ${local}`:(closeText||'');$('sessionNote').textContent=note;$('sessionProgressBar').style.width=Math.max(0,Math.min(100,progress))+'%'}
+function setSessionView({type,stateText,stateClass,countdown,label,open,close,openText,closeText,note,progress=0,marketZone=MARKET_TZ}){if(!$('sessionPanel'))return;$('sessionType').textContent=type;$('sessionState').textContent=stateText;$('sessionState').className=stateClass||'';$('sessionCountdown').textContent=countdown;$('sessionCountdownLabel').textContent=label;$('sessionOpenTime').textContent=openText||(open?formatTime(open,marketZone):'—');$('sessionCloseTime').textContent=closeText||(close?formatTime(close,marketZone):'—');const local=localZoneName();$('sessionOpenLocal').textContent=open?`${formatTime(open,local)} · ${local}`:(openText||'');$('sessionCloseLocal').textContent=close?`${formatTime(close,local)} · ${local}`:(closeText||'');$('sessionNote').textContent=note;$('sessionProgressBar').style.width=Math.max(0,Math.min(100,progress))+'%';const spq=state.quotes[BENCHMARK_SYMBOL],spDown=spq&&isFinite(spq.changePct)&&spq.changePct<0;$('sessionProgressBar').className=spDown?'spDown':'spUp'}
 function updateEquitySession(sym,now){const p=zonedParts(now),day=isEquityTradingDay(p.year,p.month,p.day),open=zonedDate(p.year,p.month,p.day,9,30),close=zonedDate(p.year,p.month,p.day,16,0);if(day.ok&&now>=open&&now<close){const progress=(now-open)/(close-open)*100;return setSessionView({type:`NYSE/Nasdaq · ${sym}`,stateText:'Sesión regular abierta',stateClass:'sessionOpen',countdown:durationText(close-now),label:'hasta el cierre',open,close,progress,note:'Horario regular 9:30 a. m.–4:00 p. m. de Nueva York. Se consideran fines de semana y festivos principales.'})}if(day.ok&&now<open)return setSessionView({type:`NYSE/Nasdaq · ${sym}`,stateText:'Antes de la apertura',stateClass:'sessionWaiting',countdown:durationText(open-now),label:'hasta la apertura',open,close,progress:0,note:'La cuenta regresiva corresponde a la sesión regular; premarket y after-hours no se incluyen.'});const next=nextEquityOpen(now);return setSessionView({type:`NYSE/Nasdaq · ${sym}`,stateText:day.ok?'Sesión regular cerrada':`Mercado cerrado · ${day.name}`,stateClass:'sessionClosed',countdown:next?durationText(next.open-now):'—',label:'hasta la próxima apertura',open:next?.open,close:next?.close,progress:100,note:'Próxima sesión regular calculada con calendario bursátil estadounidense y horario de Nueva York.'})}
 function updateCryptoSession(sym,now){const p=zonedParts(now,'UTC'),next=zonedDate(p.year,p.month,p.day+1,0,0,'UTC'),start=zonedDate(p.year,p.month,p.day,0,0,'UTC'),progress=(now-start)/(next-start)*100;return setSessionView({type:`Cripto 24/7 · ${sym}`,stateText:'Mercado abierto continuamente',stateClass:'sessionOpen',countdown:durationText(next-now),label:'hasta el cierre de vela diaria UTC',openText:'24 horas',closeText:'00:00 UTC',progress,note:'Cripto no tiene cierre de sesión tradicional. La cuenta regresiva usa el cambio de día y cierre de vela diaria en UTC.',marketZone:'UTC'})}
 function updateFuturesSession(sym,now){const p=zonedParts(now),wd=new Date(Date.UTC(p.year,p.month-1,p.day)).getUTCDay(),mins=p.hour*60+p.minute;let openNow=!((wd===5&&mins>=1020)||wd===6||(wd===0&&mins<1080)||(wd>=1&&wd<=4&&mins>=1020&&mins<1080));let transition;if(openNow){if(mins<1020)transition=zonedDate(p.year,p.month,p.day,17,0);else{const tomorrow=new Date(Date.UTC(p.year,p.month-1,p.day+1));transition=zonedDate(tomorrow.getUTCFullYear(),tomorrow.getUTCMonth()+1,tomorrow.getUTCDate(),17,0)}}else{if(wd===6){const sun=new Date(Date.UTC(p.year,p.month-1,p.day+1));transition=zonedDate(sun.getUTCFullYear(),sun.getUTCMonth()+1,sun.getUTCDate(),18,0)}else if(wd===5&&mins>=1020){const sun=new Date(Date.UTC(p.year,p.month-1,p.day+2));transition=zonedDate(sun.getUTCFullYear(),sun.getUTCMonth()+1,sun.getUTCDate(),18,0)}else transition=zonedDate(p.year,p.month,p.day,18,0)}return setSessionView({type:`Futuros CME · ${sym}`,stateText:openNow?'Sesión electrónica abierta':'Pausa / mercado cerrado',stateClass:openNow?'sessionOpen':'sessionClosed',countdown:durationText(transition-now),label:openNow?'hasta la pausa de las 5 p. m. ET':'hasta la reapertura',openText:'6:00 p. m. ET',closeText:'5:00 p. m. ET',progress:openNow?65:0,note:'Horario orientativo para futuros de índices CME: sesión casi 23 horas, con pausa diaria aproximada de 5:00–6:00 p. m. ET.'})}
@@ -1266,13 +1271,14 @@ async function refreshOne(sym){
   render();
   if(sym===state.settings.activeSymbol)refreshMicro(sym);
 }
-async function refreshAll(){
-  $('refreshStatus').textContent='Actualizando lista…';
+function getTrackedSymbols(){const s=new Set((state.watch||[]).map(clean));(state.records||[]).filter(r=>r.status!=='CLOSED').forEach(r=>{if(r.symbol)s.add(clean(r.symbol))});return [...s].filter(Boolean)}
+async function refreshAll(opts={}){
+  const silent=!!opts.silent;
+  if(!silent)$('refreshStatus').textContent='Actualizando lista…';
   let ok=0,fail=0;
-  for(const raw of state.watch){
-    const sym=clean(raw);
+  for(const sym of getTrackedSymbols()){
     state.quotes[sym]={...(state.quotes[sym]||{}),status:'actualizando…'};
-    renderWatch();
+    if(!silent)renderWatch();
     try{
       const data=await fetchLiteQuote(sym);
       state.quotes[sym]=data.quote;
@@ -1286,8 +1292,7 @@ async function refreshAll(){
     await sleep(150);
   }
   localStorage.setItem(KEY,JSON.stringify(state));
-  $('refreshStatus').textContent=`Refresh: ${ok} ok · ${fail} fail`;
-  toast(`Refresh all: ${ok} ok · ${fail} fail.`);
+  if(!silent){$('refreshStatus').textContent=`Refresh: ${ok} ok · ${fail} fail`;toast(`Refresh all: ${ok} ok · ${fail} fail.`);}
   render();
   const active=clean(state.settings.activeSymbol||state.watch[0]);
   if(active)refreshMicro(active);
@@ -1544,6 +1549,7 @@ function renderHomeMoney(){
   $('homeTotalGrowthSub').textContent=money(f.growth)+' vs. '+money(f.initial)+' inicial';
   $('homeOpenRisk').textContent=p.open.length&&isFinite(p.riskPctOpen)?p.riskPctOpen.toFixed(2)+'%':'—';
   $('homeOpenRiskSub').textContent=p.open.length?money(p.knownRisk)+(p.unknownRisk?` · ${p.unknownRisk} sin stop`:''):'sin posiciones abiertas';
+  $('homeEquitySpark').innerHTML=equityPathSvg(f.path,f.initial);
   if(document.activeElement!==$('homeCapitalInput'))$('homeCapitalInput').value=state.settings.capital;
 }
 function renderHomeIndex(){
@@ -1573,6 +1579,7 @@ function initMobileExtras(){
   const active=clean(state.settings.activeSymbol||state.watch[0]);
   if(active)refreshMicro(active);
   setInterval(refreshBenchmark,90000);
+  setInterval(()=>refreshAll({silent:true}),90000);
 }
 
 function init(){

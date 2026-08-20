@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1628">
+<title>ThingsWallet · Your Pocket Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THINGSWALLET — DESIGN TOKENS
+   ============================================================ */
+:root{
+  --ocean:        #0B1628;
+  --ocean-mid:    #141E33;
+  --ocean-light:  #1A2744;
+  --ocean-surface:#1E2D4A;
+  --cyan:         #00E5CC;
+  --cyan-bright:  #33FFDD;
+  --cyan-dim:     #00B8A3;
+  --coral:        #FF6B6B;
+  --coral-warm:   #FF8A5C;
+  --amber:        #FFB84D;
+  --lavender:     #B088F9;
+  --mint:         #4ECDC4;
+  --snow:         #F0F4FA;
+  --snow-dim:     #D6DFF0;
+  --slate:        #7B8FAD;
+  --slate-light:  #9BABC5;
+  --bg:           var(--ocean);
+  --bg-elev:      var(--ocean-mid);
+  --bg-sunken:    #08101E;
+  --bg-card:      var(--ocean-light);
+  --text:         #E8F0FE;
+  --text-soft:    var(--slate-light);
+  --text-faint:   var(--slate);
+  --border:      rgba(0,229,204,0.08);
+  --border-strong:rgba(0,229,204,0.18);
+  --card-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4);
+  --glow-cyan:   0 0 20px rgba(0,229,204,0.15);
+  --glow-coral:  0 0 20px rgba(255,107,107,0.15);
+  --accent:       var(--cyan);
+  --accent-soft:  rgba(0,229,204,0.08);
+  --radius-s: 12px;
+  --radius-m: 18px;
+  --radius-l: 26px;
+  --radius-xl: 36px;
+  --font-display: 'Outfit', sans-serif;
+  --font-body:    'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --ease-bounce: cubic-bezier(.68,-.55,.27,1.55);
+}
+[data-theme="light"]{
+  --bg:           #F0F4FA;
+  --bg-elev:      #FFFFFF;
+  --bg-sunken:    #E4EAF5;
+  --bg-card:      #FFFFFF;
+  --text:         #0B1628;
+  --text-soft:    #4A5D7A;
+  --text-faint:   #7B8FAD;
+  --border:       rgba(0,229,204,0.12);
+  --border-strong:rgba(0,229,204,0.25);
+  --card-shadow: 0 2px 4px rgba(11,22,40,0.05), 0 8px 32px rgba(11,22,40,0.08);
+  --glow-cyan:   0 0 20px rgba(0,229,204,0.1);
+  --glow-coral:  0 0 20px rgba(255,107,107,0.1);
+  --accent-soft:  rgba(0,229,204,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s var(--ease), color .4s var(--ease);
+  overscroll-behavior-y:none;
+}
+h1,h2,h3,h4{font-family:var(--font-display);letter-spacing:-0.02em;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--cyan);color:var(--ocean);}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px;}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* App Shell */
+#app{max-width:580px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative;padding-bottom:calc(88px + env(safe-area-inset-bottom));}
+
+/* Top Bar */
+.topbar{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg, var(--cyan-dim), var(--cyan-bright));
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  box-shadow:0 4px 14px rgba(0,229,204,0.3);
+}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:-0.03em;}
+.brand-text span{color:var(--cyan);}
+.topbar-actions{display:flex;gap:8px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--bg-elev);
+  display:flex;align-items:center;justify-content:center;color:var(--text-soft);font-size:16px;
+  transition:transform .18s var(--ease-spring),background .2s var(--ease),border-color .2s var(--ease);
+}
+.icon-btn:hover{border-color:var(--border-strong);background:var(--accent-soft);}
+.icon-btn:active{transform:scale(.93);}
+
+/* Bottom Nav */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:center;}
+.bottomnav-inner{
+  width:100%;max-width:580px;margin:0 14px;display:flex;justify-content:space-between;
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
+  border:1px solid var(--border);border-radius:26px;margin-bottom:14px;box-shadow:0 -4px 30px rgba(0,0,0,0.2);
+}
+.navbtn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:8px 2px;
+  color:var(--text-faint);border-radius:16px;position:relative;transition:color .2s var(--ease),transform .18s var(--ease-spring);
+}
+.navbtn .navicon{font-size:20px;line-height:1;transition:transform .2s var(--ease-spring);}
+.navbtn .navlabel{font-size:10px;font-weight:600;letter-spacing:.02em;}
+.navbtn.active{color:var(--cyan);}
+.navbtn.active .navicon{transform:translateY(-2px) scale(1.1);}
+.navbtn:active{transform:scale(.9);}
+.navbtn.active::after{
+  content:'';position:absolute;bottom:-2px;width:22px;height:3px;border-radius:100px;
+  background:var(--cyan);box-shadow:0 0 12px rgba(0,229,204,0.5);
+}
+
+/* Views */
+.view{animation:viewIn .4s var(--ease);padding:20px 20px 8px;}
+.view[hidden]{display:none;}
+@keyframes viewIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* Cards */
+.card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-l);
+  box-shadow:var(--card-shadow);padding:20px;transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.card:hover{transform:translateY(-1px);box-shadow:var(--card-shadow),var(--glow-cyan);}
+.card:active{transform:scale(.98);}
+
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);opacity:.85;}
+.section-title{font-size:24px;font-weight:700;margin-bottom:2px;position:relative;padding-bottom:12px;}
+.section-title::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:3px;border-radius:100px;background:linear-gradient(90deg,var(--cyan),var(--cyan-bright));}
+.section-sub{color:var(--text-soft);font-size:13.5px;margin-top:6px;line-height:1.5;}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;border:none;padding:14px 22px;
+  font-weight:600;font-size:14px;letter-spacing:0.01em;
+  transition:transform .18s var(--ease-spring),box-shadow .2s var(--ease),opacity .2s;position:relative;overflow:hidden;
+}
+.btn:active{transform:scale(.96);}
+.btn-cyan{background:linear-gradient(135deg,var(--cyan-dim),var(--cyan-bright));color:var(--ocean);font-weight:700;box-shadow:0 8px 24px rgba(0,229,204,0.3);}
+.btn-cyan:hover{box-shadow:0 12px 32px rgba(0,229,204,0.4);}
+.btn-coral{background:linear-gradient(135deg,var(--coral),var(--coral-warm));color:#fff;font-weight:700;box-shadow:0 8px 24px rgba(255,107,107,0.3);}
+.btn-ghost{background:var(--accent-soft);color:var(--cyan);}
+.btn-outline{background:transparent;border:1.5px solid var(--border-strong);color:var(--text);}
+.btn-block{width:100%;}
+.btn-sm{padding:10px 14px;font-size:12px;border-radius:10px;}
+.btn[disabled]{opacity:.4;pointer-events:none;}
+
+.chip{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:100px;font-size:11px;font-weight:600;
+  background:var(--accent-soft);color:var(--cyan);border:1px solid var(--border);
+}
+
+/* Input */
+.input-field{
+  width:100%;padding:12px 16px;border-radius:var(--radius-s);border:1.5px solid var(--border);
+  background:var(--bg-sunken);color:var(--text);font-family:var(--font-body);font-size:14px;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+.input-field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,204,0.12);outline:none;}
+.input-field::placeholder{color:var(--text-faint);}
+textarea.input-field{resize:vertical;min-height:60px;}
+
+/* Progress */
+.progress-track{height:6px;border-radius:100px;background:var(--bg-sunken);overflow:hidden;}
+.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--cyan),var(--cyan-bright));transition:width .6s var(--ease-spring);box-shadow:0 0 10px rgba(0,229,204,0.4);}
+
+/* Toast */
+.toast{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-100px);z-index:999;
+  padding:12px 22px;border-radius:14px;background:var(--bg-card);border:1px solid var(--border-strong);
+  color:var(--text);font-size:13px;font-weight:600;box-shadow:var(--card-shadow),var(--glow-cyan);
+  transition:transform .4s var(--ease-spring);pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.modal-backdrop.open{opacity:1;pointer-events:auto;}
+.modal-content{
+  width:100%;max-width:580px;max-height:85vh;overflow-y:auto;
+  background:var(--bg-elev);border:1px solid var(--border);border-radius:28px 28px 0 0;
+  padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .4s var(--ease-spring);
+}
+.modal-backdrop.open .modal-content{transform:translateY(0);}
+.modal-handle{width:40px;height:4px;border-radius:100px;background:var(--slate);margin:0 auto 16px;}
+
+/* ============================================================
+   WALLET (HOME)
+   ============================================================ */
+.home-hero{text-align:left;padding:4px 0 18px;}
+.hero-greeting{font-size:13px;color:var(--text-soft);font-weight:500;}
+.hero-name{font-size:32px;font-weight:800;margin-top:4px;}
+.hero-name span{
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-bright));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.avatar-ring{
+  width:64px;height:64px;border-radius:50%;border:2px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--ocean-light),var(--ocean-surface));
+  font-size:28px;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(0,229,204,0.12);
+  cursor:pointer;transition:transform .2s var(--ease-spring);
+}
+.avatar-ring:hover{transform:scale(1.05);}
+.avatar-ring:active{transform:scale(.95);}
+.hero-top{display:flex;align-items:center;justify-content:space-between;}
+
+.stat-row{display:flex;gap:8px;margin-top:18px;}
+.stat-card{
+  flex:1;padding:14px 10px;text-align:center;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius-m);
+}
+.stat-num{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--cyan);}
+.stat-label{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
+
+.focus-card{
+  margin-top:18px;padding:24px;position:relative;overflow:hidden;
+  background:linear-gradient(155deg,var(--ocean-mid) 0%,var(--ocean-light) 50%,rgba(0,229,204,0.08) 100%);
+  border:1px solid var(--border-strong);border-radius:var(--radius-xl);
+  box-shadow:var(--card-shadow),0 0 40px rgba(0,229,204,0.08);
+}
+.focus-card::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(0,229,204,0.1),transparent 70%);border-radius:50%;
+}
+.focus-card .eyebrow{color:var(--cyan-bright);}
+.focus-card h3{font-size:20px;margin-top:6px;color:var(--text);}
+.focus-card p{color:var(--text-soft);font-size:13px;margin-top:6px;line-height:1.5;}
+
+/* Welcome Note */
+.welcome-note{
+  margin-top:16px;padding:20px;position:relative;overflow:hidden;
+  background:linear-gradient(155deg,var(--ocean-mid) 0%,var(--ocean-light) 60%,rgba(0,229,204,0.06) 100%);
+  border:1px solid var(--border-strong);border-radius:var(--radius-xl);
+  box-shadow:var(--card-shadow),0 0 40px rgba(0,229,204,0.06);
+}
+.welcome-note::before{
+  content:'';position:absolute;top:-20px;left:-20px;width:80px;height:80px;
+  background:radial-gradient(circle,rgba(0,229,204,0.08),transparent 70%);border-radius:50%;
+}
+.welcome-note::after{
+  content:'';position:absolute;bottom:-16px;right:-16px;width:70px;height:70px;
+  background:radial-gradient(circle,rgba(255,107,107,0.06),transparent 70%);border-radius:50%;
+}
+.welcome-date-row{display:flex;align-items:center;gap:12px;}
+.welcome-moon{font-size:28px;filter:drop-shadow(0 0 8px rgba(255,184,77,0.3));}
+.welcome-date-info{flex:1;}
+.welcome-date-main{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text);}
+.welcome-date-sub{font-size:11.5px;color:var(--text-soft);margin-top:2px;font-weight:500;}
+.welcome-week-chip{
+  padding:6px 12px;border-radius:100px;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  background:var(--accent-soft);color:var(--cyan);border:1px solid var(--border-strong);text-transform:uppercase;
+}
+.welcome-divider{height:1px;background:var(--border);margin:14px 0;}
+.welcome-pending-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.welcome-pending-label{font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;}
+.welcome-pending-count{font-size:10px;font-weight:700;color:var(--coral-warm);padding:3px 8px;border-radius:100px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.15);}
+.welcome-todo-item{
+  display:flex;align-items:center;gap:10px;padding:8px 0;
+  border-bottom:1px solid var(--border);font-size:13px;color:var(--text);
+}
+.welcome-todo-item:last-child{border-bottom:none;}
+.welcome-todo-bullet{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  background:var(--coral);box-shadow:0 0 6px rgba(255,107,107,0.3);
+}
+.welcome-todo-text{flex:1;line-height:1.3;}
+.welcome-todo-go{
+  font-size:10px;font-weight:700;color:var(--cyan);cursor:pointer;
+  padding:4px 10px;border-radius:8px;border:1px solid var(--border-strong);
+  background:var(--accent-soft);transition:all .15s var(--ease);
+}
+.welcome-todo-go:hover{background:var(--cyan);color:var(--ocean);}
+.welcome-empty{color:var(--text-faint);font-size:12.5px;font-style:italic;padding:4px 0;}
+
+.arcade-section{margin-top:20px;}
+.arcade-title{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.arcade-title h3{font-size:18px;font-weight:700;}
+.arcade-title span{font-size:22px;}
+.arcade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.arcade-card{
+  padding:14px;border:1px solid var(--border);border-radius:var(--radius-m);
+  background:var(--bg-card);cursor:pointer;text-decoration:none;
+  transition:transform .18s var(--ease-spring),border-color .2s var(--ease),box-shadow .2s var(--ease);
+  display:flex;flex-direction:column;gap:4px;
+}
+.arcade-card:hover{transform:translateY(-2px);border-color:var(--border-strong);box-shadow:var(--glow-cyan);}
+.arcade-card:active{transform:scale(.96);}
+.arcade-num{
+  font-family:var(--font-display);font-size:28px;font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-bright));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.arcade-label{font-size:12px;font-weight:600;color:var(--text-soft);line-height:1.3;}
+.arcade-icon{font-size:18px;margin-bottom:2px;}
+
+/* ============================================================
+   TODOS VIEW
+   ============================================================ */
+.todo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.todo-count{font-size:12px;color:var(--text-faint);font-weight:600;}
+.todo-filters{display:flex;gap:6px;margin-bottom:16px;}
+.filter-btn{
+  padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;
+  color:var(--text-faint);font-size:12px;font-weight:600;transition:all .2s var(--ease);
+}
+.filter-btn.active{background:var(--accent-soft);color:var(--cyan);border-color:var(--border-strong);}
+.filter-btn:active{transform:scale(.95);}
+.todo-input-row{display:flex;gap:8px;margin-bottom:16px;}
+.todo-input-row input{flex:1;}
+.todo-input-row .btn{flex-shrink:0;}
+.todo-list{display:flex;flex-direction:column;gap:8px;}
+.todo-item{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-m);
+  transition:transform .18s var(--ease-spring),opacity .2s var(--ease);
+}
+.todo-item:active{transform:scale(.98);}
+.todo-item.done{opacity:.55;}
+.todo-item.done .todo-text{text-decoration:line-through;color:var(--text-faint);}
+.todo-check{
+  width:22px;height:22px;border-radius:7px;border:2px solid var(--border-strong);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:transparent;flex-shrink:0;transition:all .2s var(--ease-spring);
+}
+.todo-item.done .todo-check{background:var(--cyan);border-color:var(--cyan);color:var(--ocean);}
+.todo-text{flex:1;font-size:14px;font-weight:500;line-height:1.4;}
+.todo-delete{
+  width:28px;height:28px;border-radius:8px;border:none;background:transparent;
+  color:var(--text-faint);font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:color .2s var(--ease),background .2s var(--ease);
+}
+.todo-delete:hover{color:var(--coral);background:rgba(255,107,107,0.1);}
+.todo-empty{text-align:center;padding:32px 0;color:var(--text-faint);font-size:14px;}
+.todo-empty span{font-size:36px;display:block;margin-bottom:8px;}
+.todo-clear{margin-top:14px;text-align:center;}
+
+/* ============================================================
+   HABITS VIEW
+   ============================================================ */
+.habit-timer-card{
+  padding:28px;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(155deg,var(--ocean-mid),var(--ocean-light),rgba(255,107,107,0.06));
+  border:1px solid var(--border-strong);border-radius:var(--radius-xl);
+  box-shadow:var(--card-shadow),0 0 30px rgba(255,107,107,0.06);margin-bottom:18px;
+}
+.timer-display{
+  font-family:var(--font-display);font-size:56px;font-weight:800;letter-spacing:-0.04em;
+  color:var(--text);margin:12px 0;
+}
+.timer-display.running{color:var(--cyan-bright);text-shadow:0 0 30px rgba(0,229,204,0.3);}
+.timer-habit-name{font-size:14px;font-weight:600;color:var(--text-soft);margin-bottom:8px;}
+.timer-dur-row{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+.dur-chip{
+  padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;
+  color:var(--text-soft);font-size:12px;font-weight:700;transition:all .2s var(--ease);cursor:pointer;
+}
+.dur-chip.active{border-color:var(--cyan);color:var(--cyan);background:var(--accent-soft);}
+.timer-controls{display:flex;gap:10px;justify-content:center;margin-top:14px;}
+
+.timer-ring-wrap{position:relative;width:160px;height:160px;margin:10px auto;}
+.timer-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.timer-ring-bg{fill:none;stroke:var(--bg-sunken);stroke-width:6;}
+.timer-ring-fg{fill:none;stroke:url(#timerGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .3s var(--ease);}
+.timer-ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+
+.habit-list-section{margin-top:8px;}
+.habit-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.habit-list{display:flex;flex-direction:column;gap:8px;}
+.habit-item{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-m);
+  transition:transform .18s var(--ease-spring);
+}
+.habit-item:active{transform:scale(.98);}
+.habit-emoji{font-size:22px;flex-shrink:0;}
+.habit-info{flex:1;}
+.habit-name{font-size:14px;font-weight:600;}
+.habit-intent{font-size:11px;color:var(--text-faint);margin-top:2px;}
+.habit-streak{font-size:10px;color:var(--coral-warm);font-weight:700;}
+.habit-actions{display:flex;gap:6px;}
+.habit-action-btn{
+  width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--text-faint);font-size:13px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s var(--ease);
+}
+.habit-action-btn:hover{border-color:var(--border-strong);color:var(--cyan);background:var(--accent-soft);}
+.habit-action-btn.danger:hover{color:var(--coral);border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.08);}
+.habit-done-today{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--cyan);font-weight:600;}
+
+/* ============================================================
+   IDEAS VIEW
+   ============================================================ */
+.idea-capture{margin-bottom:18px;}
+.idea-capture-row{display:flex;gap:8px;align-items:flex-start;}
+.idea-capture-row textarea{flex:1;}
+.idea-capture-row .btn{flex-shrink:0;align-self:flex-end;height:46px;}
+.idea-cat-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.cat-btn{
+  padding:6px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;
+  color:var(--text-faint);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s var(--ease);
+}
+.cat-btn.active{background:var(--accent-soft);color:var(--cyan);border-color:var(--border-strong);}
+.cat-btn[data-cat="work"].active{background:rgba(255,184,77,0.1);color:var(--amber);border-color:rgba(255,184,77,0.25);}
+.cat-btn[data-cat="personal"].active{background:rgba(78,205,196,0.1);color:var(--mint);border-color:rgba(78,205,196,0.25);}
+.cat-btn[data-cat="creative"].active{background:rgba(176,136,249,0.1);color:var(--lavender);border-color:rgba(176,136,249,0.25);}
+.cat-btn[data-cat="urgent"].active{background:rgba(255,107,107,0.1);color:var(--coral);border-color:rgba(255,107,107,0.25);}
+.idea-search{margin-bottom:14px;}
+.idea-search input{width:100%;}
+.idea-list{display:flex;flex-direction:column;gap:10px;}
+.idea-card{
+  padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-m);
+  position:relative;transition:transform .18s var(--ease-spring),border-color .2s var(--ease);
+}
+.idea-card:hover{transform:translateY(-1px);border-color:var(--border-strong);}
+.idea-card:active{transform:scale(.98);}
+.idea-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.idea-card-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.idea-card-time{font-size:10px;color:var(--text-faint);}
+.idea-card-body{font-size:14px;line-height:1.5;margin-top:8px;color:var(--text);}
+.idea-card-footer{display:flex;gap:8px;margin-top:10px;justify-content:flex-end;}
+.idea-card-btn{
+  padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--text-faint);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s var(--ease);
+}
+.idea-card-btn:hover{border-color:var(--border-strong);color:var(--cyan);background:var(--accent-soft);}
+.idea-card-btn.delete:hover{color:var(--coral);border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.08);}
+.idea-empty{text-align:center;padding:32px 0;color:var(--text-faint);font-size:14px;}
+.idea-empty span{font-size:36px;display:block;margin-bottom:8px;}
+
+/* ============================================================
+   PERSONALIZE MODAL
+   ============================================================ */
+.personalize-section{margin-bottom:16px;}
+.personalize-label{font-size:12px;font-weight:700;color:var(--text-soft);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;}
+.avatar-options{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.avatar-option{
+  width:52px;height:52px;border-radius:50%;border:2px solid var(--border);
+  background:var(--bg-sunken);display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;transition:all .2s var(--ease-spring);
+}
+.avatar-option:hover{transform:scale(1.1);}
+.avatar-option.active{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,229,204,0.3);transform:scale(1.1);}
+.theme-options{display:flex;gap:10px;margin-bottom:16px;}
+.theme-option{
+  flex:1;padding:12px;border-radius:var(--radius-s);border:2px solid var(--border);
+  background:var(--bg-sunken);text-align:center;cursor:pointer;transition:all .2s var(--ease-spring);
+}
+.theme-option.active{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,229,204,0.2);}
+.theme-option span{display:block;font-size:11px;font-weight:700;margin-top:4px;}
+.theme-swatch{width:100%;height:32px;border-radius:8px;}
+.theme-swatch.dark{background:linear-gradient(135deg,#0B1628,#1A2744);}
+.theme-swatch.light{background:linear-gradient(135deg,#F0F4FA,#FFFFFF);}
+.color-accent-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.color-accent-option{
+  width:36px;height:36px;border-radius:10px;border:2px solid transparent;cursor:pointer;transition:transform .2s var(--ease-spring);
+}
+.color-accent-option:hover{transform:scale(1.15);}
+.color-accent-option.active{border-color:#fff;box-shadow:0 0 12px rgba(255,255,255,0.3);transform:scale(1.15);}
+
+/* Onboarding */
+.onboard-overlay{
+  position:fixed;inset:0;z-index:200;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;text-align:center;
+}
+.onboard-overlay[hidden]{display:none;}
+.onboard-icon{font-size:56px;margin-bottom:14px;}
+.onboard-title{font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:8px;}
+.onboard-title span{color:var(--cyan);}
+.onboard-sub{color:var(--text-soft);font-size:14px;line-height:1.5;margin-bottom:24px;max-width:320px;}
+.onboard-input{width:100%;max-width:280px;margin-bottom:18px;}
+
+/* Completion Animation */
+.completion-overlay{
+  position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(8px);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.completion-overlay.show{opacity:1;pointer-events:auto;}
+.completion-icon{font-size:64px;margin-bottom:12px;animation:popIn .5s var(--ease-bounce);}
+.completion-text{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--cyan-bright);}
+.completion-sub{color:var(--text-soft);font-size:14px;margin-top:6px;}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:100px;}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">👜</div>
+      <div class="brand-text">Things<span>Wallet</span></div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="btnTheme" title="Toggle theme">🌗</button>
+      <button class="icon-btn" id="btnPersonalize" title="Personalize">⚙️</button>
+    </div>
+  </header>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="completion-overlay" id="completionOverlay">
+    <div class="completion-icon">🎉</div>
+    <div class="completion-text">Session Complete!</div>
+    <div class="completion-sub">Every small action compounds into extraordinary results.</div>
+  </div>
+
+  <!-- WALLET VIEW -->
+  <section class="view" id="viewWallet">
+    <div class="home-hero">
+      <div class="hero-top">
+        <div>
+          <div class="hero-greeting" id="heroGreeting">Good evening,</div>
+          <div class="hero-name" id="heroName"><span>Explorer</span></div>
+        </div>
+        <div class="avatar-ring" id="heroAvatar">🧭</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak</div></div>
+      <div class="stat-card"><div class="stat-num" id="statTodos">0</div><div class="stat-label">Done Today</div></div>
+      <div class="stat-card"><div class="stat-num" id="statIdeas">0</div><div class="stat-label">Ideas</div></div>
+    </div>
+    <div class="welcome-note" id="welcomeNote">
+      <div class="welcome-date-row">
+        <div class="welcome-moon" id="welcomeMoon">🌙</div>
+        <div class="welcome-date-info">
+          <div class="welcome-date-main" id="welcomeDateMain"></div>
+          <div class="welcome-date-sub" id="welcomeDateSub"></div>
+        </div>
+        <div class="welcome-week-chip" id="welcomeWeek"></div>
+      </div>
+      <div class="welcome-divider"></div>
+      <div class="welcome-pending-header">
+        <div class="welcome-pending-label">Pending Tasks</div>
+        <div class="welcome-pending-count" id="welcomePendingCount">0</div>
+      </div>
+      <div id="welcomePendingList"></div>
+    </div>
+    <div class="focus-card">
+      <div class="eyebrow">Daily Focus</div>
+      <h3>What will you build today?</h3>
+      <p>Start a habit session, knock out your todos, or catch a fleeting idea before it escapes.</p>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-cyan btn-sm" onclick="showView('habits')">🔄 Focus</button>
+        <button class="btn btn-ghost btn-sm" onclick="showView('todos')">✅ Todos</button>
+        <button class="btn btn-ghost btn-sm" onclick="showView('ideas')">💡 Ideas</button>
+      </div>
+    </div>
+    <div class="arcade-section">
+      <div class="arcade-title">
+        <span>🎮</span><h3>Brain Arcade</h3>
+        <div class="chip" style="margin-left:auto;">10 games</div>
+      </div>
+      <div class="arcade-grid" id="arcadeGrid"></div>
+    </div>
+  </section>
+
+  <!-- TODOS VIEW -->
+  <section class="view" id="viewTodos" hidden>
+    <div class="section-title">To-Do List</div>
+    <div class="section-sub">Capture what matters. Check it off when it's done.</div>
+    <div class="todo-input-row" style="margin-top:18px;">
+      <input type="text" class="input-field" id="todoInput" placeholder="Add a new task…" maxlength="200">
+      <button class="btn btn-cyan btn-sm" onclick="addTodo()">Add</button>
+    </div>
+    <div class="todo-filters">
+      <button class="filter-btn active" data-filter="all" onclick="setTodoFilter('all',this)">All</button>
+      <button class="filter-btn" data-filter="active" onclick="setTodoFilter('active',this)">Active</button>
+      <button class="filter-btn" data-filter="done" onclick="setTodoFilter('done',this)">Done</button>
+    </div>
+    <div class="todo-list" id="todoList"></div>
+    <div class="todo-clear" id="todoClear" hidden>
+      <button class="btn btn-outline btn-sm" onclick="clearDoneTodos()">🗑️ Clear completed</button>
+    </div>
+  </section>
+
+  <!-- HABITS VIEW -->
+  <section class="view" id="viewHabits" hidden>
+    <div class="section-title">Habit Modifier</div>
+    <div class="section-sub">Build character with focused micro-actions.</div>
+    <div class="habit-timer-card" style="margin-top:18px;">
+      <div class="eyebrow">Focus Session</div>
+      <div class="timer-habit-name" id="timerHabitName">Choose a habit to focus on</div>
+      <div class="timer-ring-wrap">
+        <svg viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:var(--cyan)"/>
+              <stop offset="100%" style="stop-color:var(--cyan-bright)"/>
+            </linearGradient>
+          </defs>
+          <circle class="timer-ring-bg" cx="80" cy="80" r="70"/>
+          <circle class="timer-ring-fg" id="timerRing" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-ring-center">
+          <div class="timer-display" id="timerDisplay">03:00</div>
+        </div>
+      </div>
+      <div class="timer-dur-row">
+        <button class="dur-chip active" data-dur="180" onclick="setTimerDur(180,this)">3 min</button>
+        <button class="dur-chip" data-dur="300" onclick="setTimerDur(300,this)">5 min</button>
+        <button class="dur-chip" data-dur="600" onclick="setTimerDur(600,this)">10 min</button>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-cyan btn-sm" id="btnTimerStart" onclick="toggleTimer()">🚀 Start</button>
+        <button class="btn btn-outline btn-sm" onclick="resetTimer()">🔄 Reset</button>
+      </div>
+    </div>
+    <div class="habit-list-section">
+      <div class="habit-list-header">
+        <div><span class="eyebrow">Your Habits</span></div>
+        <button class="btn btn-cyan btn-sm" onclick="openAddHabit()">➕ Add</button>
+      </div>
+      <div class="habit-list" id="habitList"></div>
+    </div>
+  </section>
+
+  <!-- IDEAS VIEW -->
+  <section class="view" id="viewIdeas" hidden>
+    <div class="section-title">Idea Catcher</div>
+    <div class="section-sub">Capture sparks before they fade. Tag them. Find them later.</div>
+    <div class="idea-capture" style="margin-top:18px;">
+      <div class="idea-capture-row">
+        <textarea class="input-field" id="ideaInput" placeholder="What just crossed your mind?" rows="2" maxlength="1000"></textarea>
+        <button class="btn btn-cyan" onclick="addIdea()">💡</button>
+      </div>
+      <div class="idea-cat-row">
+        <button class="cat-btn active" data-cat="general" onclick="setIdeaCat('general',this)">💡 General</button>
+        <button class="cat-btn" data-cat="work" onclick="setIdeaCat('work',this)">💼 Work</button>
+        <button class="cat-btn" data-cat="personal" onclick="setIdeaCat('personal',this)">🌱 Personal</button>
+        <button class="cat-btn" data-cat="creative" onclick="setIdeaCat('creative',this)">🎨 Creative</button>
+        <button class="cat-btn" data-cat="urgent" onclick="setIdeaCat('urgent',this)">🔥 Urgent</button>
+      </div>
+    </div>
+    <div class="idea-search">
+      <input type="text" class="input-field" id="ideaSearch" placeholder="Search ideas…" oninput="renderIdeas()">
+    </div>
+    <div class="idea-list" id="ideaList"></div>
+  </section>
+
+  <!-- Bottom Nav -->
+  <nav class="bottomnav">
+    <div class="bottomnav-inner">
+      <button class="navbtn active" data-view="wallet" onclick="showView('wallet')"><span class="navicon">👜</span><span class="navlabel">Wallet</span></button>
+      <button class="navbtn" data-view="todos" onclick="showView('todos')"><span class="navicon">✅</span><span class="navlabel">Todos</span></button>
+      <button class="navbtn" data-view="habits" onclick="showView('habits')"><span class="navicon">🔄</span><span class="navlabel">Habits</span></button>
+      <button class="navbtn" data-view="ideas" onclick="showView('ideas')"><span class="navicon">💡</span><span class="navlabel">Ideas</span></button>
+    </div>
+  </nav>
+</div>
+
+<!-- PERSONALIZE MODAL -->
+<div class="modal-backdrop" id="personalizeModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title">Personalize</div>
+    <div class="section-sub">Make ThingsWallet truly yours.</div>
+    <div class="personalize-section" style="margin-top:18px;">
+      <div class="personalize-label">Your Name</div>
+      <input type="text" class="input-field" id="personalizeName" placeholder="Enter your name" maxlength="30">
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Choose Avatar</div>
+      <div class="avatar-options" id="avatarOptions"></div>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Theme</div>
+      <div class="theme-options">
+        <div class="theme-option" data-theme-val="dark" onclick="setTheme('dark',this)"><div class="theme-swatch dark"></div><span>Midnight</span></div>
+        <div class="theme-option" data-theme-val="light" onclick="setTheme('light',this)"><div class="theme-swatch light"></div><span>Dawn</span></div>
+      </div>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Accent Color</div>
+      <div class="color-accent-options" id="accentOptions"></div>
+    </div>
+    <button class="btn btn-cyan btn-block" style="margin-top:14px;" onclick="savePersonalize()">Save Changes</button>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closePersonalize()">Cancel</button>
+  </div>
+</div>
+
+<!-- ADD HABIT MODAL -->
+<div class="modal-backdrop" id="addHabitModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title">New Habit</div>
+    <div class="section-sub">Define a micro-habit with its intention.</div>
+    <div class="personalize-section" style="margin-top:18px;">
+      <div class="personalize-label">Habit Emoji</div>
+      <div class="avatar-options" id="habitEmojiOptions"></div>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Habit Name</div>
+      <input type="text" class="input-field" id="habitNameInput" placeholder="e.g. Morning Journal" maxlength="50">
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Intention (Why?)</div>
+      <input type="text" class="input-field" id="habitIntentInput" placeholder="e.g. To start the day with clarity" maxlength="100">
+    </div>
+    <button class="btn btn-coral btn-block" style="margin-top:14px;" onclick="saveNewHabit()">Create Habit</button>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closeAddHabit()">Cancel</button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-icon">👜</div>
+  <div class="onboard-title">Things<span>Wallet</span></div>
+  <div class="onboard-sub">Your pocket companion for todos, habits, ideas — and brain games that make English fluency feel alive.</div>
+  <input type="text" class="input-field onboard-input" id="onboardName" placeholder="What should we call you?" maxlength="30">
+  <button class="btn btn-cyan btn-block" style="max-width:280px;" onclick="finishOnboard()">Let's Go ✨</button>
+</div>
+
+<script>
+/* ============================================================
+   THINGSWALLET — STATE & CONFIG
+   ============================================================ */
+const STORE_KEY = 'thingswallet_v1';
+const GAMES_BASE = 'https://palekor.github.io/lecciones/';
+
+const GAMES = [
+  {num:'00',icon:'🧠',label:'Brain Warm-up',url:GAMES_BASE+'00.html'},
+  {num:'01',icon:'📝',label:'Essential Verbs',url:GAMES_BASE+'01.html'},
+  {num:'02',icon:'⚡',label:'WordBlitz',url:GAMES_BASE+'02.html'},
+  {num:'03',icon:'🔗',label:'Tenses & Connectors',url:GAMES_BASE+'03.html'},
+  {num:'04',icon:'👁️',label:'Visual Memory',url:GAMES_BASE+'04.html'},
+  {num:'05',icon:'🚀',label:'Phrasal Verbs',url:GAMES_BASE+'05.html'},
+  {num:'06',icon:'📖',label:'The Word Vault',url:GAMES_BASE+'06.html'},
+  {num:'07',icon:'🎯',label:'Simple vs Progressive',url:GAMES_BASE+'07.html'},
+  {num:'08',icon:'🔄',label:'Habit Modifier',url:GAMES_BASE+'08.html'},
+  {num:'09',icon:'🧩',label:'Fast Memory Recover',url:GAMES_BASE+'09.html'},
+];
+
+const AVATARS = ['🧭','🦊','🐺','🦉','🐲','🌸','🔥','⚡','🌊','🪐','🎮','💎','🦋','🌿','🎯','🚀'];
+const HABIT_EMOJIS = ['📖','🧘','✍️','🏃','💧','🎵','🌱','💪','🧠','🙏','🎨','💤','🍎','📝','🗣️','🎯'];
+const ACCENT_COLORS = [
+  {name:'Cyan',hex:'#00E5CC'},
+  {name:'Coral',hex:'#FF6B6B'},
+  {name:'Amber',hex:'#FFB84D'},
+  {name:'Lavender',hex:'#B088F9'},
+  {name:'Mint',hex:'#4ECDC4'},
+  {name:'Rose',hex:'#FF6B9D'},
+];
+
+function todayStr(){return new Date().toISOString().split('T')[0];}
+
+function defaultState(){
+  return {
+    version:1,name:'',avatar:'🧭',theme:'dark',accentHex:'#00E5CC',
+    streak:0,lastActiveDate:null,
+    todos:[],habits:[],ideas:[],selectedHabitId:null,timerDur:180,onboarded:false
+  };
+}
+
+let state = defaultState();
+
+function load(){
+  try{const raw=localStorage.getItem(STORE_KEY);if(raw){state=Object.assign(defaultState(),JSON.parse(raw));}}catch(e){}
+}
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
+
+load();
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function uid(){return 'tw-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6);}
+
+function relativeTime(iso){
+  const d=new Date(iso),now=Date.now(),diff=now-d.getTime();
+  if(diff<60000)return 'just now';
+  if(diff<3600000)return Math.floor(diff/60000)+'m ago';
+  if(diff<86400000)return Math.floor(diff/3600000)+'h ago';
+  if(diff<604800000)return Math.floor(diff/86400000)+'d ago';
+  return d.toLocaleDateString();
+}
+
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ============================================================
+   VIEW NAV
+   ============================================================ */
+function showView(name){
+  const viewMap={wallet:'viewWallet',todos:'viewTodos',habits:'viewHabits',ideas:'viewIdeas'};
+  Object.values(viewMap).forEach(id=>{document.getElementById(id).hidden=true;});
+  const target=viewMap[name];
+  if(target){
+    document.getElementById(target).hidden=false;
+    document.getElementById(target).style.animation='none';
+    requestAnimationFrame(()=>{document.getElementById(target).style.animation='';});
+  }
+  document.querySelectorAll('.navbtn').forEach(b=>{b.classList.toggle('active',b.dataset.view===name);});
+  refreshView(name);
+}
+
+function refreshView(name){
+  if(name==='wallet')renderWallet();
+  if(name==='todos')renderTodos();
+  if(name==='habits')renderHabits();
+  if(name==='ideas')renderIdeas();
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(t){
+  state.theme=t;
+  document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');
+  document.querySelector('meta[name="theme-color"]').content=t==='dark'?'#0B1628':'#F0F4FA';
+  save();
+}
+
+function applyAccent(hex){
+  state.accentHex=hex;
+  document.documentElement.style.setProperty('--cyan',hex);
+  document.documentElement.style.setProperty('--cyan-bright',hex);
+  save();
+}
+
+function setTheme(t,el){
+  applyTheme(t);
+  document.querySelectorAll('.theme-option').forEach(o=>o.classList.toggle('active',o.dataset.themeVal===t));
+}
+
+/* ============================================================
+   STREAK
+   ============================================================ */
+function updateStreak(){
+  const today=todayStr();
+  if(state.lastActiveDate===today)return;
+  const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  if(state.lastActiveDate===yesterday){state.streak++;}
+  else if(state.lastActiveDate!==today){state.streak=1;}
+  state.lastActiveDate=today;save();
+}
+
+function getGreeting(){
+  const h=new Date().getHours();
+  if(h<12)return 'Good morning,';
+  if(h<18)return 'Good afternoon,';
+  return 'Good evening,';
+}
+
+/* ============================================================
+   WALLET (HOME)
+   ============================================================ */
+function renderWallet(){
+  updateStreak();
+  document.getElementById('heroGreeting').textContent=getGreeting();
+  document.getElementById('heroName').innerHTML='<span>'+escHtml(state.name||'Explorer')+'</span>';
+  document.getElementById('heroAvatar').textContent=state.avatar;
+  document.getElementById('statStreak').textContent=state.streak;
+  document.getElementById('statTodos').textContent=state.todos.filter(t=>t.done&&t.doneDate===todayStr()).length;
+  document.getElementById('statIdeas').textContent=state.ideas.filter(i=>!i.archived).length;
+  renderWelcomeNote();
+  renderArcade();
+}
+
+/* Moon Phase Calculation (approximate synodic cycle) */
+function getMoonPhase(){
+  const now=new Date();
+  const year=now.getFullYear(),month=now.getMonth()+1,day=now.getDate();
+  // Simplified calculation based on known new moon reference
+  const knownNew=new Date(2024,0,11); // Jan 11 2024 was a new moon
+  const synodic=29.53058867; // days
+  const diffDays=(now-knownNew)/(86400000);
+  const phase=((diffDays%synodic)+synodic)%synodic;
+  const pct=phase/synodic;
+  // 0=new, 0.25=first q, 0.5=full, 0.75=last q
+  let name,emoji;
+  if(pct<0.0625){name='New Moon';emoji='🌑';}
+  else if(pct<0.1875){name='Waxing Crescent';emoji='🌒';}
+  else if(pct<0.3125){name='First Quarter';emoji='🌓';}
+  else if(pct<0.4375){name='Waxing Gibbous';emoji='🌔';}
+  else if(pct<0.5625){name='Full Moon';emoji='🌕';}
+  else if(pct<0.6875){name='Waning Gibbous';emoji='🌖';}
+  else if(pct<0.8125){name='Last Quarter';emoji='🌗';}
+  else if(pct<0.9375){name='Waning Crescent';emoji='🌘';}
+  else{name='New Moon';emoji='🌑';}
+  return {name:name,emoji:emoji,pct:pct};
+}
+
+function getWeekNumber(){
+  const d=new Date();
+  const start=new Date(d.getFullYear(),0,1);
+  const diff=d-start;
+  const oneDay=86400000;
+  const dayNum=Math.floor((diff/oneDay)+((start.getDay()+6)%7)/7);
+  return Math.ceil(dayNum/7);
+}
+
+function renderWelcomeNote(){
+  const now=new Date();
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dayName=days[now.getDay()];
+  const monthName=months[now.getMonth()];
+  const dateNum=now.getDate();
+  const year=now.getFullYear();
+  const moon=getMoonPhase();
+  const weekNum=getWeekNumber();
+  
+  // Date line
+  document.getElementById('welcomeDateMain').textContent=dayName+', '+monthName+' '+dateNum;
+  document.getElementById('welcomeDateSub').textContent=year+' · '+moon.name;
+  document.getElementById('welcomeMoon').textContent=moon.emoji;
+  document.getElementById('welcomeWeek').textContent='Week '+weekNum;
+  
+  // Pending todos
+  const pending=state.todos.filter(t=>!t.done);
+  document.getElementById('welcomePendingCount').textContent=pending.length+' left';
+  
+  if(pending.length===0){
+    document.getElementById('welcomePendingList').innerHTML='<div class="welcome-empty">All clear — nothing pending ✓</div>';
+  } else {
+    const show=pending.slice(0,5); // show max 5
+    document.getElementById('welcomePendingList').innerHTML=
+      show.map(t=>
+        '<div class="welcome-todo-item">'+
+        '<div class="welcome-todo-bullet"></div>'+
+        '<div class="welcome-todo-text">'+escHtml(t.text)+'</div>'+
+        '</div>'
+      ).join('')+
+      (pending.length>5?'<div style="font-size:11px;color:var(--text-faint);padding-top:6px;">+ '+ (pending.length-5)+' more tasks</div>':'')+
+      '<div style="margin-top:10px;text-align:right;"><button class="welcome-todo-go" onclick="showView(\'todos\')">Go to Todos →</button></div>';
+  }
+}
+
+function renderArcade(){
+  document.getElementById('arcadeGrid').innerHTML=GAMES.map(g=>
+    '<a class="arcade-card" href="'+g.url+'" target="_blank" rel="noopener">'+
+    '<div class="arcade-icon">'+g.icon+'</div>'+
+    '<div class="arcade-num">'+g.num+'</div>'+
+    '<div class="arcade-label">'+g.label+'</div>'+
+    '</a>'
+  ).join('');
+}
+
+/* ============================================================
+   TODOS
+   ============================================================ */
+let todoFilter='all';
+
+function addTodo(){
+  const input=document.getElementById('todoInput'),text=input.value.trim();
+  if(!text){toast('Type a task first');return;}
+  state.todos.push({id:uid(),text:text,done:false,doneDate:null,createdAt:new Date().toISOString()});
+  input.value='';save();renderTodos();toast('Task added ✓');
+}
+
+function toggleTodo(id){
+  const t=state.todos.find(x=>x.id===id);if(!t)return;
+  t.done=!t.done;t.doneDate=t.done?todayStr():null;save();renderTodos();
+}
+
+function deleteTodo(id){state.todos=state.todos.filter(x=>x.id!==id);save();renderTodos();}
+
+function clearDoneTodos(){state.todos=state.todos.filter(x=>!x.done);save();renderTodos();toast('Cleared completed tasks');}
+
+function setTodoFilter(f,el){
+  todoFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));
+  renderTodos();
+}
+
+function renderTodos(){
+  const list=document.getElementById('todoList');
+  let filtered=state.todos;
+  if(todoFilter==='active')filtered=state.todos.filter(t=>!t.done);
+  if(todoFilter==='done')filtered=state.todos.filter(t=>t.done);
+  if(filtered.length===0){
+    list.innerHTML='<div class="todo-empty"><span>'+(todoFilter==='done'?'🎉':'✨')+'</span>'+(todoFilter==='done'?'No completed tasks yet':'All clear — add a task above')+'</div>';
+    document.getElementById('todoClear').hidden=true;return;
+  }
+  list.innerHTML=filtered.map(t=>
+    '<div class="todo-item '+(t.done?'done':'')+'" data-id="'+t.id+'">'+
+    '<button class="todo-check" onclick="toggleTodo(\''+t.id+'\')">✓</button>'+
+    '<span class="todo-text">'+escHtml(t.text)+'</span>'+
+    '<button class="todo-delete" onclick="deleteTodo(\''+t.id+'\')" title="Delete">🗑️</button>'+
+    '</div>'
+  ).join('');
+  document.getElementById('todoClear').hidden=!state.todos.some(t=>t.done);
+}
+
+document.getElementById('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
+
+/* ============================================================
+   HABITS
+   ============================================================ */
+let timerInterval=null,timerRemaining=0,timerTotal=0,timerRunning=false;
+const CIRC=2*Math.PI*70;
+
+function renderHabits(){renderHabitList();updateTimerDisplay();updateTimerRing();
+  if(state.selectedHabitId){
+    const h=state.habits.find(x=>x.id===state.selectedHabitId);
+    document.getElementById('timerHabitName').textContent=h?(h.emoji+' '+h.name):'Choose a habit to focus on';
+  }
+}
+
+function renderHabitList(){
+  const list=document.getElementById('habitList');
+  if(state.habits.length===0){
+    list.innerHTML='<div class="todo-empty"><span>🔄</span>No habits yet — create your first one!</div>';return;
+  }
+  list.innerHTML=state.habits.map(h=>{
+    const doneToday=h.doneDates&&h.doneDates.includes(todayStr());
+    const streak=h.doneDates?h.doneDates.length:0;
+    return '<div class="habit-item">'+
+      '<div class="habit-emoji">'+h.emoji+'</div>'+
+      '<div class="habit-info">'+
+        '<div class="habit-name">'+escHtml(h.name)+'</div>'+
+        (h.intent?'<div class="habit-intent">'+escHtml(h.intent)+'</div>':'')+
+        (streak>0?'<div class="habit-streak">🔥 '+streak+' day streak</div>':'')+
+      '</div>'+
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'+
+        (doneToday?'<div class="habit-done-today">✓ Done</div>':'')+
+        '<div class="habit-actions">'+
+          '<button class="habit-action-btn" onclick="selectHabit(\''+h.id+'\')" title="Focus">🎯</button>'+
+          (!doneToday?'<button class="habit-action-btn" onclick="markHabitDone(\''+h.id+'\')" title="Mark done">✓</button>':'')+
+          '<button class="habit-action-btn danger" onclick="deleteHabit(\''+h.id+'\')" title="Delete">🗑️</button>'+
+        '</div>'+
+      '</div></div>';
+  }).join('');
+}
+
+function selectHabit(id){
+  state.selectedHabitId=id;save();
+  const h=state.habits.find(x=>x.id===id);
+  if(h)document.getElementById('timerHabitName').textContent=h.emoji+' '+h.name;
+  toast('Focused: '+(h?h.name:'Habit'));
+}
+
+function markHabitDone(id){
+  const h=state.habits.find(x=>x.id===id);if(!h)return;
+  if(!h.doneDates)h.doneDates=[];
+  if(!h.doneDates.includes(todayStr())){h.doneDates.push(todayStr());}
+  save();renderHabitList();
+  toast('Habit completed for today ✓');
+}
+
+function deleteHabit(id){
+  state.habits=state.habits.filter(x=>x.id!==id);
+  if(state.selectedHabitId===id)state.selectedHabitId=null;
+  save();renderHabits();
+}
+
+/* Timer */
+function setTimerDur(s,el){
+  if(timerRunning)return;
+  state.timerDur=s;timerRemaining=s;timerTotal=s;save();
+  document.querySelectorAll('.dur-chip').forEach(c=>c.classList.toggle('active',Number(c.dataset.dur)===s));
+  updateTimerDisplay();updateTimerRing();
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(timerRemaining/60),s=timerRemaining%60;
+  const str=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  document.getElementById('timerDisplay').textContent=str;
+  document.getElementById('timerDisplay').classList.toggle('running',timerRunning);
+}
+
+function updateTimerRing(){
+  const pct=timerTotal>0?(1-timerRemaining/timerTotal):0;
+  document.getElementById('timerRing').setAttribute('stroke-dashoffset',CIRC*pct);
+}
+
+function toggleTimer(){
+  if(timerRunning){pauseTimer();}
+  else{startTimer();}
+}
+
+function startTimer(){
+  if(timerRemaining<=0){timerRemaining=timerTotal=state.timerDur;}
+  timerRunning=true;
+  document.getElementById('btnTimerStart').textContent='⏸️ Pause';
+  timerInterval=setInterval(()=>{
+    timerRemaining--;
+    if(timerRemaining<=0){
+      timerRemaining=0;pauseTimer();
+      onTimerComplete();
+    }
+    updateTimerDisplay();updateTimerRing();
+  },1000);
+  updateTimerDisplay();
+}
+
+function pauseTimer(){
+  timerRunning=false;clearInterval(timerInterval);timerInterval=null;
+  document.getElementById('btnTimerStart').textContent='🚀 Resume';
+  updateTimerDisplay();
+}
+
+function resetTimer(){
+  pauseTimer();timerRemaining=timerTotal=state.timerDur;
+  document.getElementById('btnTimerStart').textContent='🚀 Start';
+  updateTimerDisplay();updateTimerRing();
+}
+
+function onTimerComplete(){
+  // Mark habit done if selected
+  if(state.selectedHabitId){markHabitDone(state.selectedHabitId);}
+  // Show completion
+  const overlay=document.getElementById('completionOverlay');
+  overlay.classList.add('show');
+  setTimeout(()=>overlay.classList.remove('show'),3000);
+  document.getElementById('btnTimerStart').textContent='🚀 Start';
+  toast('Focus session complete! 🎉');
+}
+
+/* ============================================================
+   IDEAS
+   ============================================================ */
+let ideaCat='general';
+
+function setIdeaCat(cat,el){
+  ideaCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+}
+
+function addIdea(){
+  const input=document.getElementById('ideaInput'),text=input.value.trim();
+  if(!text){toast('Write your idea first');return;}
+  state.ideas.unshift({id:uid(),text:text,category:ideaCat,createdAt:new Date().toISOString(),archived:false});
+  input.value='';save();renderIdeas();toast('Idea captured ✓');
+}
+
+function archiveIdea(id){
+  const i=state.ideas.find(x=>x.id===id);if(i){i.archived=true;save();renderIdeas();}
+}
+
+function deleteIdea(id){state.ideas=state.ideas.filter(x=>x.id!==id);save();renderIdeas();}
+
+const CAT_COLORS={general:'cyan',work:'amber',personal:'mint',creative:'lavender',urgent:'coral'};
+const CAT_ICONS={general:'💡',work:'💼',personal:'🌱',creative:'🎨',urgent:'🔥'};
+
+function renderIdeas(){
+  const search=(document.getElementById('ideaSearch').value||'').toLowerCase();
+  const list=document.getElementById('ideaList');
+  let filtered=state.ideas.filter(i=>!i.archived);
+  if(search)filtered=filtered.filter(i=>i.text.toLowerCase().includes(search)||i.category.includes(search));
+  if(filtered.length===0){
+    list.innerHTML='<div class="idea-empty"><span>💡</span>'+(search?'No ideas match your search':'No ideas yet — capture one above')+'</div>';return;
+  }
+  list.innerHTML=filtered.map(i=>
+    '<div class="idea-card">'+
+    '<div class="idea-card-header">'+
+      '<div class="idea-card-cat" style="color:var(--'+CAT_COLORS[i.category||'general']+')">'+(CAT_ICONS[i.category||'general']||'💡')+' '+(i.category||'general')+'</div>'+
+      '<div class="idea-card-time">'+relativeTime(i.createdAt)+'</div>'+
+    '</div>'+
+    '<div class="idea-card-body">'+escHtml(i.text)+'</div>'+
+    '<div class="idea-card-footer">'+
+      '<button class="idea-card-btn" onclick="archiveIdea(\''+i.id+'\')">📦 Archive</button>'+
+      '<button class="idea-card-btn delete" onclick="deleteIdea(\''+i.id+'\')">🗑️ Delete</button>'+
+    '</div></div>'
+  ).join('');
+}
+
+document.getElementById('ideaInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addIdea();}});
+
+/* ============================================================
+   PERSONALIZE MODAL
+   ============================================================ */
+let tempAvatar=state.avatar;
+let tempAccent=state.accentHex;
+
+function openPersonalize(){
+  tempAvatar=state.avatar;tempAccent=state.accentHex;
+  document.getElementById('personalizeName').value=state.name;
+  renderAvatarOptions();renderAccentOptions();
+  document.querySelectorAll('.theme-option').forEach(o=>o.classList.toggle('active',o.dataset.themeVal===state.theme));
+  document.getElementById('personalizeModal').classList.add('open');
+}
+
+function closePersonalize(){document.getElementById('personalizeModal').classList.remove('open');}
+
+function renderAvatarOptions(){
+  document.getElementById('avatarOptions').innerHTML=AVATARS.map(a=>
+    '<div class="avatar-option'+(a===tempAvatar?' active':'')+'" onclick="pickAvatar(\''+a+'\',this)">'+a+'</div>'
+  ).join('');
+}
+
+function pickAvatar(a,el){tempAvatar=a;renderAvatarOptions();}
+
+function renderAccentOptions(){
+  document.getElementById('accentOptions').innerHTML=ACCENT_COLORS.map(c=>
+    '<div class="color-accent-option'+(c.hex===tempAccent?' active':'')+'" style="background:'+c.hex+'" onclick="pickAccent(\''+c.hex+'\',this)"></div>'
+  ).join('');
+}
+
+function pickAccent(hex,el){tempAccent=hex;renderAccentOptions();}
+
+function savePersonalize(){
+  state.name=document.getElementById('personalizeName').value.trim()||'Explorer';
+  state.avatar=tempAvatar;
+  applyAccent(tempAccent);
+  save();renderWallet();closePersonalize();toast('Personalized ✓');
+}
+
+/* ============================================================
+   ADD HABIT MODAL
+   ============================================================ */
+let tempHabitEmoji='📖';
+
+function openAddHabit(){
+  tempHabitEmoji='📖';
+  document.getElementById('habitNameInput').value='';
+  document.getElementById('habitIntentInput').value='';
+  renderHabitEmojiOptions();
+  document.getElementById('addHabitModal').classList.add('open');
+}
+
+function closeAddHabit(){document.getElementById('addHabitModal').classList.remove('open');}
+
+function renderHabitEmojiOptions(){
+  document.getElementById('habitEmojiOptions').innerHTML=HABIT_EMOJIS.map(e=>
+    '<div class="avatar-option'+(e===tempHabitEmoji?' active':'')+'" onclick="pickHabitEmoji(\''+e+'\',this)">'+e+'</div>'
+  ).join('');
+}
+
+function pickHabitEmoji(e,el){tempHabitEmoji=e;renderHabitEmojiOptions();}
+
+function saveNewHabit(){
+  const name=document.getElementById('habitNameInput').value.trim();
+  if(!name){toast('Give your habit a name');return;}
+  const intent=document.getElementById('habitIntentInput').value.trim();
+  state.habits.push({id:uid(),emoji:tempHabitEmoji,name:name,intent:intent,doneDates:[],createdAt:new Date().toISOString()});
+  save();renderHabits();closeAddHabit();toast('Habit created ✓');
+}
+
+/* ============================================================
+   MODAL CLOSE ON BACKDROP CLICK
+   ============================================================ */
+document.querySelectorAll('.modal-backdrop').forEach(bd=>{
+  bd.addEventListener('click',e=>{if(e.target===bd)bd.classList.remove('open');});
+});
+
+/* ============================================================
+   THEME TOGGLE (topbar button)
+   ============================================================ */
+document.getElementById('btnTheme').addEventListener('click',()=>{
+  const next=state.theme==='dark'?'light':'dark';
+  applyTheme(next);
+  toast(next==='dark'?'Midnight mode':'Dawn mode');
+});
+document.getElementById('btnPersonalize').addEventListener('click',openPersonalize);
+
+/* ============================================================
+   ONBOARDING
+   ============================================================ */
+function finishOnboard(){
+  state.name=document.getElementById('onboardName').value.trim()||'Explorer';
+  state.onboarded=true;save();
+  document.getElementById('onboardOverlay').hidden=true;
+  showView('wallet');
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  applyTheme(state.theme);
+  applyAccent(state.accentHex);
+  if(state.onboarded){
+    document.getElementById('onboardOverlay').hidden=true;
+  }
+  // Set initial timer state
+  timerRemaining=timerTotal=state.timerDur;
+  document.querySelectorAll('.dur-chip').forEach(c=>c.classList.toggle('active',Number(c.dataset.dur)===state.timerDur));
+  showView('wallet');
+}
+init();
+</script>
+</body>
+</html>

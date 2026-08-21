@@ -518,6 +518,109 @@ textarea.input-field{resize:vertical;min-height:60px;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:100px;}
+
+/* ============================================================
+   FUTURISTIC FOCUS TIMER FX
+   ============================================================ */
+.timer-hud-ring{
+  position:absolute;inset:-14px;border-radius:50%;
+  border:1.5px dashed rgba(0,229,204,0.12);
+  animation:hudSpin 20s linear infinite;
+  opacity:0;transition:opacity .6s var(--ease);pointer-events:none;
+}
+.timer-hud-ring-2{
+  inset:-26px;
+  border:1px dotted rgba(0,229,204,0.06);
+  animation-direction:reverse;animation-duration:35s;
+}
+.timer-ring-wrap.has-habit .timer-hud-ring{opacity:1;}
+.timer-ring-wrap.has-habit.running .timer-hud-ring{animation-duration:10s;opacity:.7;}
+.timer-ring-wrap.has-habit.running .timer-hud-ring-2{animation-duration:16s;}
+
+.timer-scan-beam{
+  position:absolute;top:50%;left:50%;width:58%;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(0,229,204,0.06) 25%,var(--cyan) 85%,transparent 100%);
+  transform-origin:0 50%;animation:scanBeam 6s linear infinite;
+  opacity:0;transition:opacity .6s var(--ease);pointer-events:none;
+  border-radius:2px;filter:blur(0.5px);
+}
+.timer-ring-wrap.has-habit .timer-scan-beam{opacity:.4;}
+.timer-ring-wrap.has-habit.running .timer-scan-beam{opacity:.85;animation-duration:2.5s;}
+
+.timer-orbit-dot{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 6px var(--cyan),0 0 16px rgba(0,229,204,0.2);
+  opacity:0;transition:opacity .6s var(--ease),width .3s,box-shadow .3s;pointer-events:none;
+}
+.timer-ring-wrap.has-habit .timer-orbit-dot{opacity:1;}
+.timer-ring-wrap.has-habit.running .timer-orbit-dot{
+  width:7px;height:7px;
+  box-shadow:0 0 10px var(--cyan),0 0 28px rgba(0,229,204,0.4);
+}
+.timer-orbit-1{top:50%;left:50%;margin:-2.5px;animation:orbit1 6s linear infinite;}
+.timer-orbit-2{top:50%;left:50%;margin:-2.5px;animation:orbit2 9s linear infinite;}
+.timer-orbit-3{top:50%;left:50%;margin:-2.5px;animation:orbit3 14s linear infinite;}
+
+@keyframes hudSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes scanBeam{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes orbit1{from{transform:rotate(0deg) translateX(86px) rotate(0deg);}to{transform:rotate(360deg) translateX(86px) rotate(-360deg);}}
+@keyframes orbit2{from{transform:rotate(120deg) translateX(96px) rotate(-120deg);}to{transform:rotate(480deg) translateX(96px) rotate(-480deg);}}
+@keyframes orbit3{from{transform:rotate(240deg) translateX(78px) rotate(-240deg);}to{transform:rotate(600deg) translateX(78px) rotate(-600deg);}}
+
+/* Ring glow pulse */
+.timer-ring-wrap.has-habit .timer-ring-fg{
+  filter:drop-shadow(0 0 4px rgba(0,229,204,0.3));
+  animation:ringGlow 2.5s ease-in-out infinite;
+}
+@keyframes ringGlow{
+  0%,100%{filter:drop-shadow(0 0 3px rgba(0,229,204,0.2));}
+  50%{filter:drop-shadow(0 0 10px rgba(0,229,204,0.5));}
+}
+
+/* Timer card glow */
+.habit-timer-card.has-habit{
+  box-shadow:var(--card-shadow),0 0 40px rgba(0,229,204,0.08);
+}
+
+/* Digital flicker on running display */
+.timer-display.running{
+  color:var(--cyan-bright);text-shadow:0 0 24px rgba(0,229,204,0.3);
+  animation:timerFlicker 4s steps(1) infinite;
+}
+@keyframes timerFlicker{
+  0%,93%,100%{opacity:1;}94%{opacity:.82;}95%{opacity:1;}96%{opacity:.88;}97%{opacity:1;}
+}
+
+/* ============================================================
+   ARCADE ADD / REMOVE
+   ============================================================ */
+.arcade-card{position:relative;}
+.arcade-add-card{
+  padding:14px;border:1.5px dashed var(--border-strong);border-radius:var(--radius-m);
+  background:var(--accent-soft);cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;min-height:90px;
+  transition:transform .18s var(--ease-spring),border-color .2s var(--ease);
+  color:var(--cyan);font-size:22px;
+}
+.arcade-add-card:hover{transform:translateY(-2px);border-color:var(--cyan);}
+.arcade-add-card:active{transform:scale(.96);}
+.arcade-add-card span{font-size:11px;font-weight:600;color:var(--text-soft);}
+.arcade-remove{
+  position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:6px;
+  border:none;background:rgba(255,107,107,0.06);color:var(--coral);font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  opacity:0;transition:opacity .15s var(--ease),background .15s var(--ease);z-index:2;
+}
+.arcade-card:hover .arcade-remove{opacity:1;}
+.arcade-remove:hover{background:rgba(255,107,107,0.2);}
+
+/* ============================================================
+   DATA & SYNC MODAL
+   ============================================================ */
+.data-section{margin-bottom:16px;}
+.data-hint{font-size:12px;color:var(--text-faint);margin-bottom:10px;line-height:1.4;}
+#pasteCodeArea textarea{font-family:monospace;font-size:11px;line-height:1.3;}
 </style>
 </head>
 <body>
@@ -529,6 +632,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
       <div class="brand-text">Things<span>Wallet</span></div>
     </div>
     <div class="topbar-actions">
+      <button class="icon-btn" id="btnSync" title="Data & Sync">☁️</button>
       <button class="icon-btn" id="btnTheme" title="Toggle theme">🌗</button>
       <button class="icon-btn" id="btnPersonalize" title="Personalize">⚙️</button>
     </div>
@@ -587,7 +691,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
     <div class="arcade-section">
       <div class="arcade-title">
         <span>🎮</span><h3>Brain Arcade</h3>
-        <div class="chip" style="margin-left:auto;">10 games</div>
+        <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:10px;padding:5px 10px;" onclick="openArcadeEditor()">✏️ Edit</button>
       </div>
       <div class="arcade-grid" id="arcadeGrid"></div>
     </div>
@@ -619,7 +723,13 @@ textarea.input-field{resize:vertical;min-height:60px;}
     <div class="habit-timer-card" style="margin-top:18px;">
       <div class="eyebrow">Focus Session</div>
       <div class="timer-habit-name" id="timerHabitName">Choose a habit to focus on</div>
-      <div class="timer-ring-wrap">
+      <div class="timer-ring-wrap" id="timerRingWrap">
+        <div class="timer-hud-ring"></div>
+        <div class="timer-hud-ring timer-hud-ring-2"></div>
+        <div class="timer-scan-beam"></div>
+        <div class="timer-orbit-dot timer-orbit-1"></div>
+        <div class="timer-orbit-dot timer-orbit-2"></div>
+        <div class="timer-orbit-dot timer-orbit-3"></div>
         <svg viewBox="0 0 160 160">
           <defs>
             <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -740,6 +850,63 @@ textarea.input-field{resize:vertical;min-height:60px;}
   </div>
 </div>
 
+<!-- ARCADE EDITOR MODAL -->
+<div class="modal-backdrop" id="arcadeEditorModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title">Brain Arcade Editor</div>
+    <div class="section-sub">Add custom games or remove the ones you don't need.</div>
+    <div class="data-section" style="margin-top:18px;">
+      <div class="personalize-label">Current Games</div>
+      <div id="arcadeEditorList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;"></div>
+    </div>
+    <div class="data-section">
+      <div class="personalize-label">Add Custom Game</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" class="input-field" id="arcadeNewEmoji" placeholder="Emoji" style="width:60px;flex-shrink:0;" maxlength="4">
+        <input type="text" class="input-field" id="arcadeNewLabel" placeholder="Game name" style="flex:1;" maxlength="40">
+      </div>
+      <input type="url" class="input-field" id="arcadeNewUrl" placeholder="https://example.com/game.html" style="margin-bottom:10px;">
+      <button class="btn btn-cyan btn-sm btn-block" onclick="addCustomArcadeGame()">➕ Add Game</button>
+    </div>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:12px;" onclick="closeArcadeEditor()">Done</button>
+  </div>
+</div>
+
+<!-- DATA & SYNC MODAL -->
+<div class="modal-backdrop" id="dataSyncModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title">Data & Sync</div>
+    <div class="section-sub">Save your progress, transfer between devices, or restore from a backup.</div>
+    <div class="data-section" style="margin-top:18px;">
+      <div class="personalize-label">Export Data</div>
+      <div class="data-hint">Download a backup file with all your todos, habits, ideas and settings. Open it on another device and use Import to restore.</div>
+      <button class="btn btn-cyan btn-block btn-sm" onclick="exportDataFile()">📥 Download Backup File</button>
+    </div>
+    <div class="data-section">
+      <div class="personalize-label">Copy Backup Code</div>
+      <div class="data-hint">A text code you can paste into messages or notes to transfer on another device.</div>
+      <button class="btn btn-ghost btn-block btn-sm" onclick="copyBackupCode()">📋 Copy Code to Clipboard</button>
+    </div>
+    <div class="data-section">
+      <div class="personalize-label">Import Data</div>
+      <div class="data-hint">Restore from a backup file or paste a backup code.</div>
+      <button class="btn btn-outline btn-block btn-sm" onclick="document.getElementById('importFileInput').click()" style="margin-bottom:8px;">📁 Restore from File</button>
+      <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importDataFile(this)">
+      <div style="display:flex;gap:8px;">
+        <textarea class="input-field" id="pasteCodeArea" placeholder="Paste backup code here…" rows="3" style="flex:1;font-size:11px;"></textarea>
+        <button class="btn btn-coral btn-sm" onclick="importBackupCode()" style="flex-shrink:0;align-self:flex-end;">▶</button>
+      </div>
+    </div>
+    <div class="data-section" style="border-top:1px solid var(--border);padding-top:14px;">
+      <div class="personalize-label" style="color:var(--coral);">Danger Zone</div>
+      <button class="btn btn-outline btn-block btn-sm" style="border-color:rgba(255,107,107,0.2);color:var(--coral);" onclick="clearAllData()">🗑️ Reset All Data</button>
+    </div>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:12px;" onclick="closeDataSync()">Close</button>
+  </div>
+</div>
+
 <!-- ONBOARDING -->
 <div class="onboard-overlay" id="onboardOverlay">
   <div class="onboard-icon">👜</div>
@@ -786,7 +953,7 @@ function defaultState(){
   return {
     version:1,name:'',avatar:'🧭',theme:'dark',accentHex:'#00E5CC',
     streak:0,lastActiveDate:null,
-    todos:[],habits:[],ideas:[],selectedHabitId:null,timerDur:180,onboarded:false
+    todos:[],habits:[],ideas:[],customGames:[],selectedHabitId:null,timerDur:180,onboarded:false
   };
 }
 
@@ -969,14 +1136,26 @@ function renderWelcomeNote(){
   }
 }
 
+function getAllArcadeGames(){
+  const customs=(state.customGames||[]);
+  return [...GAMES,...customs];
+}
+
 function renderArcade(){
-  document.getElementById('arcadeGrid').innerHTML=GAMES.map(g=>
-    '<a class="arcade-card" href="'+g.url+'" target="_blank" rel="noopener">'+
+  const all=getAllArcadeGames();
+  const customs=(state.customGames||[]);
+  document.getElementById('arcadeGrid').innerHTML=all.map(g=>
+    '<a class="arcade-card'+(g.custom?' arcade-custom':'')+'" href="'+g.url+'" target="_blank" rel="noopener">'+
     '<div class="arcade-icon">'+g.icon+'</div>'+
-    '<div class="arcade-num">'+g.num+'</div>'+
+    (g.num?'<div class="arcade-num">'+g.num+'</div>':'')+
     '<div class="arcade-label">'+g.label+'</div>'+
+    (g.custom?'<button class="arcade-remove" onclick="event.preventDefault();event.stopPropagation();removeArcadeGame(\''+g.id+'\')" title="Remove">✕</button>':'')+
     '</a>'
-  ).join('');
+  ).join('')+''+
+  '<div class="arcade-add-card" onclick="openArcadeEditor()">'+
+  '<div style="font-size:28px;">➕</div>'+
+  '<div class="arcade-label">Add Game</div>'+
+  '</div>';
 }
 
 /* ============================================================
@@ -1070,6 +1249,11 @@ function selectHabit(id){
   state.selectedHabitId=id;save();
   const h=state.habits.find(x=>x.id===id);
   if(h)document.getElementById('timerHabitName').textContent=h.emoji+' '+h.name;
+  // Activate futuristic HUD on timer ring and card
+  const wrap=document.getElementById('timerRingWrap');
+  if(wrap)wrap.classList.add('has-habit');
+  const card=document.querySelector('.habit-timer-card');
+  if(card)card.classList.add('has-habit');
   toast('Focused: '+(h?h.name:'Habit'));
 }
 
@@ -1083,7 +1267,13 @@ function markHabitDone(id){
 
 function deleteHabit(id){
   state.habits=state.habits.filter(x=>x.id!==id);
-  if(state.selectedHabitId===id)state.selectedHabitId=null;
+  if(state.selectedHabitId===id){
+    state.selectedHabitId=null;
+    const wrap=document.getElementById('timerRingWrap');
+    if(wrap){wrap.classList.remove('has-habit');wrap.classList.remove('running');}
+    const card=document.querySelector('.habit-timer-card');
+    if(card){card.classList.remove('has-habit');}
+  }
   save();renderHabits();
 }
 
@@ -1116,6 +1306,9 @@ function startTimer(){
   if(timerRemaining<=0){timerRemaining=timerTotal=state.timerDur;}
   timerRunning=true;
   document.getElementById('btnTimerStart').textContent='⏸️ Pause';
+  // Activate running FX on timer ring
+  const wrap=document.getElementById('timerRingWrap');
+  if(wrap)wrap.classList.add('running');
   timerInterval=setInterval(()=>{
     timerRemaining--;
     if(timerRemaining<=0){
@@ -1130,6 +1323,9 @@ function startTimer(){
 function pauseTimer(){
   timerRunning=false;clearInterval(timerInterval);timerInterval=null;
   document.getElementById('btnTimerStart').textContent='🚀 Resume';
+  // Deactivate running FX (keep has-habit if selected)
+  const wrap=document.getElementById('timerRingWrap');
+  if(wrap)wrap.classList.remove('running');
   updateTimerDisplay();
 }
 
@@ -1271,6 +1467,162 @@ function saveNewHabit(){
 }
 
 /* ============================================================
+   ARCADE EDITOR MODAL
+   ============================================================ */
+function openArcadeEditor(){
+  if(!state.customGames)state.customGames=[];
+  renderArcadeEditorList();
+  document.getElementById('arcadeNewEmoji').value='🎮';
+  document.getElementById('arcadeNewLabel').value='';
+  document.getElementById('arcadeNewUrl').value='';
+  document.getElementById('arcadeEditorModal').classList.add('open');
+}
+
+function closeArcadeEditor(){
+  document.getElementById('arcadeEditorModal').classList.remove('open');
+  renderArcade();
+}
+
+function renderArcadeEditorList(){
+  const all=getAllArcadeGames();
+  const customs=(state.customGames||[]);
+  const el=document.getElementById('arcadeEditorList');
+  if(all.length===0){el.innerHTML='<div style="color:var(--text-faint);font-size:12px;">No games yet</div>';return;}
+  el.innerHTML=all.map(g=>
+    '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--border);">'+
+    '<span style="font-size:18px;">'+g.icon+'</span>'+
+    '<span style="flex:1;font-size:12px;color:var(--text-secondary);">'+escHtml(g.label)+'</span>'+
+    (g.custom?'<button class="habit-action-btn danger" onclick="removeArcadeGame(\''+g.id+'\')" style="font-size:10px;width:24px;height:24px;">✕</button>':'')+
+    '</div>'
+  ).join('');
+}
+
+function addCustomArcadeGame(){
+  if(!state.customGames)state.customGames=[];
+  const emoji=document.getElementById('arcadeNewEmoji').value.trim()||'🎮';
+  const label=document.getElementById('arcadeNewLabel').value.trim();
+  const url=document.getElementById('arcadeNewUrl').value.trim();
+  if(!label){toast('Give the game a name');return;}
+  if(!url){toast('Add a game URL');return;}
+  state.customGames.push({id:uid(),icon:emoji,label:label,url:url,custom:true});
+  save();
+  document.getElementById('arcadeNewLabel').value='';
+  document.getElementById('arcadeNewUrl').value='';
+  renderArcadeEditorList();
+  toast('Game added ✓');
+}
+
+function removeArcadeGame(id){
+  if(!state.customGames)state.customGames=[];
+  state.customGames=state.customGames.filter(g=>g.id!==id);
+  save();renderArcadeEditorList();renderArcade();
+  toast('Game removed');
+}
+
+/* ============================================================
+   DATA & SYNC MODAL
+   ============================================================ */
+function openDataSync(){
+  document.getElementById('pasteCodeArea').value='';
+  document.getElementById('dataSyncModal').classList.add('open');
+}
+
+function closeDataSync(){document.getElementById('dataSyncModal').classList.remove('open');}
+
+function exportDataFile(){
+  // Generate backup JSON and download as file
+  const backup=JSON.stringify(state);
+  const blob=new Blob([backup],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='thingswallet-backup-'+todayStr()+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Backup file downloaded ✓');
+}
+
+function copyBackupCode(){
+  // Encode state as base64 string for clipboard
+  const backup=btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  navigator.clipboard.writeText(backup).then(()=>{
+    toast('Backup code copied to clipboard ✓');
+  }).catch(()=>{
+    // Fallback: select the code
+    const ta=document.createElement('textarea');
+    ta.value=backup;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    toast('Backup code copied ✓');
+  });
+}
+
+function importDataFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      mergeImportedData(data);
+      toast('Data restored from file ✓');
+    }catch(err){toast('Invalid backup file');}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+function importBackupCode(){
+  const code=document.getElementById('pasteCodeArea').value.trim();
+  if(!code){toast('Paste a backup code first');return;}
+  try{
+    const json=decodeURIComponent(escape(atob(code)));
+    const data=JSON.parse(json);
+    mergeImportedData(data);
+    toast('Data restored from code ✓');
+    document.getElementById('pasteCodeArea').value='';
+  }catch(err){toast('Invalid backup code');}
+}
+
+function mergeImportedData(data){
+  // Merge imported data into current state
+  const def=defaultState();
+  state.name=data.name||state.name;
+  state.avatar=data.avatar||state.avatar;
+  state.theme=data.theme||state.theme;
+  state.accentHex=data.accentHex||state.accentHex;
+  state.streak=Math.max(state.streak,data.streak||0);
+  state.lastActiveDate=data.lastActiveDate||state.lastActiveDate;
+  // Merge todos: add any that don't exist by id
+  if(data.todos){
+    const existingIds=new Set(state.todos.map(t=>t.id));
+    data.todos.forEach(t=>{if(!existingIds.has(t.id))state.todos.push(t);});
+  }
+  // Merge habits
+  if(data.habits){
+    const existingIds=new Set(state.habits.map(h=>h.id));
+    data.habits.forEach(h=>{if(!existingIds.has(h.id))state.habits.push(h);});
+  }
+  // Merge ideas
+  if(data.ideas){
+    const existingIds=new Set(state.ideas.map(i=>i.id));
+    data.ideas.forEach(i=>{if(!existingIds.has(i.id))state.ideas.push(i);});
+  }
+  // Merge custom games
+  if(data.customGames){
+    if(!state.customGames)state.customGames=[];
+    const existingIds=new Set(state.customGames.map(g=>g.id));
+    data.customGames.forEach(g=>{if(!existingIds.has(g.id))state.customGames.push(g);});
+  }
+  save();applyTheme(state.theme);applyAccent(state.accentHex);showView('wallet');
+}
+
+function clearAllData(){
+  if(!confirm('This will permanently delete all your data. Are you sure?'))return;
+  state=defaultState();state.onboarded=true;state.name='Explorer';
+  save();applyTheme(state.theme);applyAccent(state.accentHex);showView('wallet');
+  closeDataSync();toast('All data cleared');
+}
+
+/* ============================================================
    MODAL CLOSE ON BACKDROP CLICK
    ============================================================ */
 document.querySelectorAll('.modal-backdrop').forEach(bd=>{
@@ -1286,6 +1638,7 @@ document.getElementById('btnTheme').addEventListener('click',()=>{
   toast(next==='dark'?'Midnight mode':'Dawn mode');
 });
 document.getElementById('btnPersonalize').addEventListener('click',openPersonalize);
+document.getElementById('btnSync').addEventListener('click',openDataSync);
 
 /* ============================================================
    ONBOARDING

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Money Machine · Pocket</title>
+<title>Money Machine V2 · Pocket</title>
 <style>
 :root{
   --bg:#f2f5f9;--card:#ffffff;--card2:#f7f9fc;--ink:#152238;--muted:#64748b;--dim:#9aa7b8;
@@ -11,7 +11,51 @@
   --red:#c23f3f;--red2:#fceaea;--gold:#b8862f;--violet:#6e55b7;--shadow:0 10px 30px rgba(21,34,56,.08);
   --r:16px;--rs:12px;--navh:60px;--toph:52px;
 }
+[data-theme="dark"]{
+  --bg:#0b0e13;--card:#141922;--card2:#1a2029;--ink:#eef1f6;--muted:#96a0b2;--dim:#5b6576;
+  --line:rgba(238,241,246,.09);--blue:#4c7bf0;--blue2:#182238;--green:#33c98c;--green2:#0f2420;
+  --red:#ef6a5f;--red2:#2a1616;--gold:#e0b34e;--violet:#9c87e6;--shadow:0 10px 30px rgba(0,0,0,.45);
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{transition:background .2s,color .2s}
+/* ---------- onboarding ---------- */
+.onboard{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:24px;text-align:center;gap:14px}
+.onboard.hidden{display:none!important}
+.onboardLogo{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#2456c7,#173a91);color:#fff;font-weight:900;font-size:1.1rem}
+.onboardTitle{font-size:1.3rem;font-weight:900;letter-spacing:-.01em;margin:2px 0}
+.onboardSub{color:var(--muted);font-size:.82rem;max-width:320px;line-height:1.4}
+.onboardCard{width:100%;max-width:340px;border:1px solid var(--line);background:var(--card);
+  border-radius:18px;padding:18px;box-shadow:var(--shadow);text-align:left}
+.onboardStepLabel{color:var(--dim);font-size:.6rem;font-weight:850;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+/* ---------- v2: greeting, watchlist cards, find-better ---------- */
+.greetLine{font-size:.98rem;font-weight:850;margin-bottom:2px}
+.greetSub{color:var(--muted);font-size:.68rem}
+.watchTabHead{display:grid;gap:2px;margin-bottom:4px}
+.watchTabHead b{font-size:.95rem;font-weight:850}
+.watchTabHead span{color:var(--dim);font-size:.62rem;font-weight:800;text-transform:uppercase}
+.statusPill{display:inline-block;border-radius:999px;padding:3px 8px;font-size:.56rem;font-weight:850;text-transform:uppercase;letter-spacing:.03em}
+.statusPill.bull{background:var(--green2);color:var(--green)}
+.statusPill.watch{background:#fbf3e4;color:var(--gold)}
+.statusPill.broken{background:var(--red2);color:var(--red)}
+.quoteThesis{color:var(--muted);font-size:.62rem;line-height:1.35;margin-top:5px;border-top:1px dashed var(--line);padding-top:5px}
+.targetBar{height:6px;background:var(--card2);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:5px}
+.targetBar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));font-style:normal}
+.targetLine{display:flex;justify-content:space-between;font-size:.56rem;color:var(--dim);font-weight:800;margin-top:3px}
+.storySpark{display:block;width:100%;height:26px;margin-top:4px}
+.findBetterList{display:grid;gap:8px}
+.candidateCard{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px}
+[data-theme="dark"] .candidateCard{background:var(--card)}
+.candidateHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.candidateHead b{font-size:.86rem}
+.candidateScore{font-size:.7rem;font-weight:850;color:var(--green)}
+.candidateMetrics{display:grid;gap:4px}
+.candidateMetric{display:flex;justify-content:space-between;font-size:.66rem;border-bottom:1px dashed var(--line);padding:3px 0}
+.candidateMetric b{font-weight:800}
+.candidateMetric.win{color:var(--green)}
+.candidateMetric.lose{color:var(--red)}
+.transferRow{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 html{scroll-behavior:smooth}
 body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -451,11 +495,24 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 </style>
 </head>
 <body>
+<div class="onboard hidden" id="onboardScreen">
+  <div class="onboardLogo">MM</div>
+  <div class="onboardTitle">Money Machine</div>
+  <div class="onboardSub">Construyamos tu cabina financiera. Dos preguntas rápidas y quedan guardadas solo en este navegador.</div>
+  <div class="onboardCard">
+    <div class="onboardStepLabel">¿Cómo te llamas?</div>
+    <input id="onboardName" placeholder="Germán" autocomplete="off">
+    <div class="onboardStepLabel" style="margin-top:12px">¿Cuál es la primera empresa que quieres investigar?</div>
+    <input id="onboardSymbol" placeholder="NVDA" autocomplete="off" style="text-transform:uppercase">
+    <button class="btn primary block" id="onboardStart" type="button" style="margin-top:14px">Empezar a investigar →</button>
+  </div>
+</div>
 <div class="app">
   <header class="top">
     <div class="logo">MM</div>
-    <div class="brand"><strong>Money Machine</strong><span>research → riesgo → ejecución</span></div>
+    <div class="brand"><strong>Money Machine V2</strong><span>research → riesgo → ejecución</span></div>
     <div class="topIcons">
+      <button class="iconBtn" id="themeToggle" type="button" title="Apariencia">🌙</button>
       <button class="iconBtn" id="saveBtn" type="button" title="Guardar local">💾</button>
       <button class="iconBtn" id="downloadBtn" type="button" title="Descargar CSV compatible">⇩</button>
       <label class="iconBtn" for="uploadInput" title="Subir CSV/JSON">⇧</label><input id="uploadInput" type="file" accept=".csv,text/csv,.json,application/json" hidden>
@@ -465,6 +522,10 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 
   <!-- ============ HOME ============ -->
   <div id="tab-home" class="pane">
+    <div class="card tight" id="greetCard">
+      <div class="greetLine" id="greetLine">Bienvenido</div>
+      <div class="greetSub" id="greetSub">Tu dinero, tu research, tus decisiones.</div>
+    </div>
     <div class="card">
       <div class="cardHead"><h2>Apertura del mercado</h2><span id="refreshStatus" class="chip">Sin actualizar</span></div>
       <div class="sessionPanel" id="sessionPanel">
@@ -579,11 +640,12 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
     <div class="researchGuarantee" id="researchGuarantee"><span class="guaranteeIcon">✓</span><div><b>Research resiliente:</b> la tesis siempre queda guardada; datos disponibles, fuentes verificables y vacíos de cobertura se muestran por separado.</div></div>
     <div class="privacyBanner"><b>Local-first:</b> journal, notas y claves permanecen en este navegador. Solo el símbolo consultado se envía a las fuentes de mercado al ejecutar una búsqueda.</div>
     <div id="researchWorkspace"><div class="researchEmpty"><b>Centro de Investigación</b>Escribe un símbolo y ejecuta Investigar. El sistema calculará tendencia, momentum, cobertura de datos, catalizadores y banderas de riesgo.</div></div>
+    <div id="findBetterWorkspace"></div>
   </div>
 
-  <!-- ============ MERCADO / WATCHLIST ============ -->
+  <!-- ============ WATCHLIST ============ -->
   <div id="tab-watch" class="pane hidden">
-    <div class="section"><h2>Reporte de seguimiento</h2><span>último · % cambio</span></div>
+    <div class="watchTabHead"><b>👁 Watchlist</b><span>precio · target · tesis · estado</span></div>
     <div class="addSymbol"><input id="watchInput" placeholder="Agregar símbolo: TQQQ, SQQQ, QQQ, BTCUSDT"><button class="btn primary" id="addWatch" type="button">Agregar</button></div>
     <div class="watchGrid" id="watchGrid"></div>
   </div>
@@ -637,6 +699,14 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
     </div>
     <p class="critical" id="storageInfo">El sistema guarda en este navegador. El JSON conserva toda la configuración; el CSV conserva un formato de trading similar al statement importado.</p>
     <div class="researchSection">
+      <div class="researchSectionHead"><h3>📲 Transferir tu Money Machine</h3><span>sin cuenta · sin servidor</span></div>
+      <div class="transferRow">
+        <button class="btn primary" id="shareTransfer" type="button">Compartir (AirDrop)</button>
+        <label class="btn" for="uploadInput3">Importar</label><input id="uploadInput3" type="file" accept=".json,application/json" hidden>
+      </div>
+      <div class="providerHelp" style="margin-top:6px">Exporta perfil, watchlist, research, portafolio, journal, ajustes y tema — nunca tus claves API. En iPhone, "Compartir" abre el panel nativo para enviarlo por AirDrop; si el navegador no lo soporta, descarga el archivo y compártelo tú mismo.</div>
+    </div>
+    <div class="researchSection">
       <div class="researchSectionHead"><h3>Biblioteca de investigaciones</h3><span>historial local verificable</span></div>
       <div class="actions" style="margin-bottom:8px"><button class="btn" id="downloadResearchJson" type="button">Exportar research JSON</button><button class="btn" id="downloadResearchCsv" type="button">Exportar resumen CSV</button></div>
       <div class="researchVault" id="researchVault"></div>
@@ -658,7 +728,7 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 <nav class="bottomNav" aria-label="Navegación principal">
   <button class="navBtn" data-tab="home" type="button"><i>🏠</i>Inicio</button>
   <button class="navBtn" data-tab="research" type="button"><i>🔍</i>Research</button>
-  <button class="navBtn" data-tab="watch" type="button"><i>📈</i>Mercado</button>
+  <button class="navBtn" data-tab="watch" type="button"><i>👁</i>Watchlist</button>
   <button class="navBtn" data-tab="portfolio" type="button"><i>📊</i>Portafolio</button>
   <button class="navBtn" data-tab="records" type="button"><i>📒</i>Diario</button>
 </nav>
@@ -741,7 +811,7 @@ let lastClampNote=null;
 let calendarCursor=new Date();
 function $(id){return document.getElementById(id)}
 function emptyBrokerData(){return {fills:[],statements:[],accountSummary:{},equities:[],profitLoss:[],latestRaw:'',latestFileName:'',latestStatementTitle:'',importedAt:'',unmatchedCloses:0,reconciledBaseCapital:NaN}}
-function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:''},watch:DEFAULT_WATCH.slice(),recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
+function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:'',theme:'system'},profile:{name:'',onboarded:false},watch:DEFAULT_WATCH.slice(),watchDetails:{},recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
 function loadState(){
   try{
     let raw=localStorage.getItem(KEY);
@@ -749,7 +819,8 @@ function loadState(){
     const p=JSON.parse(raw||'{}'), base=emptyState();
     return {
       settings:{...base.settings,...(p.settings||{})},
-      watch:Array.isArray(p.watch)&&p.watch.length?p.watch:base.watch,recentSymbols:Array.isArray(p.recentSymbols)?p.recentSymbols:[],
+      profile:{...base.profile,...(p.profile||{})},
+      watch:Array.isArray(p.watch)&&p.watch.length?p.watch:base.watch,watchDetails:p.watchDetails||{},recentSymbols:Array.isArray(p.recentSymbols)?p.recentSymbols:[],
       quotes:p.quotes||{},mini:p.mini||{},research:p.research||{},researchSnapshots:Array.isArray(p.researchSnapshots)?p.researchSnapshots:[],calendarEvents:Array.isArray(p.calendarEvents)?p.calendarEvents:[],
       brokerData:{...emptyBrokerData(),...(p.brokerData||{})},
       dailyBaseline:p.dailyBaseline||null,
@@ -759,6 +830,40 @@ function loadState(){
 }
 function persist(msg){localStorage.setItem(KEY,JSON.stringify(state));render();if(msg)toast(msg)}
 function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function applyTheme(){
+  const mode=state.settings.theme||'system';
+  const dark=mode==='dark'||(mode==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  if($('themeToggle'))$('themeToggle').textContent=mode==='system'?'🌓':(dark?'🌙':'☀️');
+  if($('themeToggle'))$('themeToggle').title='Apariencia: '+(mode==='system'?'sistema':mode==='dark'?'oscuro':'claro');
+}
+function cycleTheme(){
+  const order=['system','light','dark'],cur=state.settings.theme||'system',next=order[(order.indexOf(cur)+1)%order.length];
+  state.settings.theme=next;applyTheme();localStorage.setItem(KEY,JSON.stringify(state));
+  toast('Apariencia: '+(next==='system'?'según el sistema':next==='dark'?'oscuro':'claro'));
+}
+function maybeShowOnboarding(){
+  if(state.profile&&state.profile.onboarded)return;
+  $('onboardScreen').classList.remove('hidden');
+  $('onboardSymbol').value=state.settings.activeSymbol||'';
+}
+function completeOnboarding(){
+  const name=$('onboardName').value.trim(),sym=clean($('onboardSymbol').value);
+  state.profile={name,onboarded:true};
+  if(sym){rememberSymbol(sym);state.settings.activeSymbol=sym;$('researchSymbol').value=sym;$('symbol').value=sym;}
+  localStorage.setItem(KEY,JSON.stringify(state));
+  $('onboardScreen').classList.add('hidden');
+  render();
+  if(sym)runResearch(sym);
+}
+function greetingWord(){const h=new Date().getHours();return h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches'}
+function renderGreeting(){
+  if(!$('greetLine'))return;
+  const name=state.profile?.name;
+  $('greetLine').textContent=name?`${greetingWord()}, ${name}.`:'Tu dinero, tu research, tus decisiones.';
+  const watchCount=state.watch.length,researchCount=Object.keys(state.research||{}).length,openCount=state.records.filter(r=>r.status!=='CLOSED').length;
+  $('greetSub').textContent=`Watchlist ${watchCount} · Research ${researchCount} · Posiciones abiertas ${openCount}`;
+}
 function clean(s){return String(s||'').trim().toUpperCase()}
 function todayIso(){return new Date().toISOString().slice(0,10)}
 function money(v){const n=Number(v);if(!isFinite(n))return '—';return '$'+n.toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:Math.abs(n)<10?2:0})}
@@ -799,7 +904,7 @@ function createPendingResearch(sym,question=''){const previous=state.research[sy
 function createPartialResearch(sym,question,error,sources={}){const previous=state.research[sym]||{},q=currentQuote(sym)||{},base={...previous,symbol:sym,name:previous.name||sym,assetType:previous.assetType||(isCrypto(sym)?'crypto':'equity'),currency:previous.currency||(isCrypto(sym)?'USDT':'USD'),question,price:firstFinite(q.price,previous.price),change:firstFinite(q.change,previous.change),changePct:firstFinite(q.changePct,previous.changePct),news:ensureResearchNews(sym,previous.news),sources:{...(previous.sources||{}),...sources,'Fuentes verificables':{ok:true}},updatedAt:new Date().toISOString(),status:'partial',partialReason:String(error?.message||error||'Cobertura automática limitada'),note:previous.note||''};base.coverage=coverageScore(base);base.flags=[{severity:'medium',title:'Cobertura automática limitada',text:'Algunas fuentes no respondieron. Se conservaron datos previos, noticias o accesos verificables para continuar la investigación.',tag:'source'},...(buildRiskFlags(base,sym)||[]).filter(f=>f.title!=='Cobertura automática limitada')];base.score=researchScore(base);return base}
 function setResearchGuarantee(r){if(!$('researchGuarantee'))return;if(researchBusy){$('researchGuarantee').innerHTML='<span class="guaranteeIcon">↻</span><div><b>Consultando fuentes independientes:</b> cada respuesta se conservará aunque otra fuente falle.</div>';return}if(!r){$('researchGuarantee').innerHTML='<span class="guaranteeIcon">✓</span><div><b>Resultado mínimo garantizado:</b> se guardarán símbolo y tesis; la salida incluirá datos, noticias o accesos verificables para continuar.</div>';return}const status=inferResearchStatus(r),realNews=(r.news||[]).filter(n=>!n.isSearchLink).length,sourceOk=Object.values(r.sources||{}).filter(v=>v?.ok).length;$('researchGuarantee').innerHTML=`<span class="guaranteeIcon">${status==='complete'?'✓':status==='pending'?'•':'△'}</span><div><b>Investigación ${statusLabel(status)}:</b> ${sourceOk} fuente(s) disponibles · ${realNews} noticia(s) automática(s) · cobertura ${Number(r.coverage)||0}%. ${status==='pending'?'La pregunta quedó en cola para investigar después.':status==='partial'?'La información útil y los enlaces verificables fueron preservados.':'Los resultados pueden guardarse junto con la tesis.'}</div>`}
 
-function render(){renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();renderCalculator();renderExecutiveStrip();renderHomeMoney();renderCharts();renderResearch();renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();}
+function render(){renderGreeting();renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();renderCalculator();renderExecutiveStrip();renderHomeMoney();renderCharts();renderResearch();renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();}
 function renderDate(){
   const d=new Date();
   const chips=[
@@ -1117,7 +1222,7 @@ function renderResearch(){
   const revenueHistory=(r.revenueHistory||[]).map(x=>factHtml(x.date||'Periodo',compact(x.revenue),'revenue reportado')).join('');
   const snapshots=(state.researchSnapshots||[]).slice(0,5).map(x=>`<div class="sourceItem"><div><b>${esc(x.symbol)} · ${x.score}/100</b><span style="display:block;margin-top:2px">${dateFmt(x.snapshotAt)}</span></div><div class="actions"><button class="btn small" onclick="loadResearchSnapshot('${x.id}')">Abrir</button><button class="xbtn" onclick="deleteResearchSnapshot('${x.id}')">×</button></div></div>`).join('')||'<div class="empty">Todavía no hay snapshots.</div>';
   $('researchWorkspace').innerHTML=`
-    <div class="researchHero"><div class="heroCard"><div class="heroTop"><div><div class="heroSymbol">${esc(sym)}</div><div class="heroName">${esc(r.name||'Instrumento')} · ${esc(r.exchange||r.assetType||'mercado')}</div></div><span class="resultMode ${researchStatus}">${statusLabel(researchStatus)}</span></div><div class="heroPrice">${money(r.price)}</div><div class="heroChange ${changeClass}">${isFinite(r.changePct)?pct(r.changePct):'—'} · ${isFinite(r.change)?money(r.change):'—'}</div><div class="heroMeta"><span class="chip">${esc(r.currency||'USD')}</span><span class="chip">${updated}</span><span class="chip warn">cobertura ${r.coverage}%</span></div></div><div class="heroCard qualityCard"><div class="scoreRing" style="--score:${r.score}"><div><b>${r.score}</b><span>setup score</span></div></div><div><div class="verdict">${verdict}</div><div class="verdictSub">${verdictSub}</div><div class="coverage"><i style="width:${r.coverage}%"></i></div><div class="actions" style="margin-top:10px"><button class="btn primary small" onclick="useResearchInCalc('${esc(sym)}')">Usar en calculadora</button><button class="btn small" onclick="addResearchToWatch('${esc(sym)}')">Watchlist</button><button class="btn small" onclick="saveResearchSnapshot('${esc(sym)}')">Guardar investigación</button>${researchStatus!=='complete'?`<button class="btn small" onclick="runResearch('${esc(sym)}')">Investigar de nuevo</button>`:''}</div></div></div></div>
+    <div class="researchHero"><div class="heroCard"><div class="heroTop"><div><div class="heroSymbol">${esc(sym)}</div><div class="heroName">${esc(r.name||'Instrumento')} · ${esc(r.exchange||r.assetType||'mercado')}</div></div><span class="resultMode ${researchStatus}">${statusLabel(researchStatus)}</span></div><div class="heroPrice">${money(r.price)}</div><div class="heroChange ${changeClass}">${isFinite(r.changePct)?pct(r.changePct):'—'} · ${isFinite(r.change)?money(r.change):'—'}</div><div class="heroMeta"><span class="chip">${esc(r.currency||'USD')}</span><span class="chip">${updated}</span><span class="chip warn">cobertura ${r.coverage}%</span></div></div><div class="heroCard qualityCard"><div class="scoreRing" style="--score:${r.score}"><div><b>${r.score}</b><span>setup score</span></div></div><div><div class="verdict">${verdict}</div><div class="verdictSub">${verdictSub}</div><div class="coverage"><i style="width:${r.coverage}%"></i></div><div class="actions" style="margin-top:10px"><button class="btn primary small" onclick="useResearchInCalc('${esc(sym)}')">Usar en calculadora</button><button class="btn small" onclick="addResearchToWatch('${esc(sym)}')">Watchlist</button><button class="btn small" onclick="saveResearchSnapshot('${esc(sym)}')">Guardar investigación</button><button class="btn small" onclick="findBetter('${esc(sym)}')">⚔️ Encontrar Mejor</button>${researchStatus!=='complete'?`<button class="btn small" onclick="runResearch('${esc(sym)}')">Investigar de nuevo</button>`:''}</div></div></div></div>
     <div class="researchGrid">${quick}</div>
     <div class="researchColumns"><div>
       <div class="researchSection"><div class="researchSectionHead"><h3>Fundamentals snapshot</h3><span>TTM / último dato</span></div><div class="fundGrid">${fundamentals}</div>${revenueHistory?`<div class="researchSectionHead" style="margin-top:10px"><h3 style="font-size:.88rem">Revenue reportado</h3><span>historial disponible</span></div><div class="fundGrid">${revenueHistory}</div>`:''}</div>
@@ -1196,15 +1301,110 @@ window.deleteResearchSnapshot=function(id){state.researchSnapshots=state.researc
 window.saveResearchNote=function(sym){const r=state.research[clean(sym)];if(!r)return;r.note=$('researchNote').value.trim();persist('Nota de investigación guardada.');};
 function researchBrief(r){const flags=(r.flags||[]).filter(x=>x.severity!=='low').map(x=>x.title).join(', ')||'sin alertas críticas automáticas';return `[Research ${new Date(r.updatedAt).toLocaleDateString('es-CO')}]${r.question?' Pregunta: '+r.question+'.':''} Score ${r.score}/100 · cobertura ${r.coverage}% · precio ${money(r.price)} · SMA20/50/200 ${money(r.sma20)} / ${money(r.sma50)} / ${money(r.sma200)} · rel. volume ${isFinite(r.relVolume)?r.relVolume.toFixed(2)+'x':'—'} · riesgos: ${flags}.\nTesis/invalidación: ${r.note||'pendiente de documentar'}`}
 window.copyResearchBrief=async function(sym){const r=state.research[clean(sym)];if(!r)return;try{await navigator.clipboard.writeText(researchBrief(r));toast('Brief copiado.')}catch(e){toast('No se pudo copiar automáticamente.')}};
+async function fetchCandidateMetrics(sym){
+  sym=clean(sym);
+  const daily=await yahooChart(sym,'1y','1d'),tech=technicalSnapshot(daily.ohlcv||[]);
+  const closes=(daily.ohlcv||[]).map(r=>r[3]).filter(isFinite);
+  const past=closes.length>126?closes[closes.length-127]:closes[0];
+  const ret6m=isFinite(past)&&past?((tech.last/past-1)*100):NaN;
+  let fcf=NaN;
+  try{const s=await fetchYahooSummary(sym);fcf=s.freeCashFlow}catch(e){}
+  return {symbol:sym,price:tech.last,ret6m,distHigh:tech.distHigh,smaTrend:isFinite(tech.sma50)&&isFinite(tech.sma200)?(tech.sma50>tech.sma200?1:0):NaN,volatility20:tech.volatility20,freeCashFlow:fcf};
+}
+const FIND_BETTER_METRICS=[
+  {key:'ret6m',label:'Rendimiento 6M',higherBetter:true,fmt:v=>isFinite(v)?pct(v):'—'},
+  {key:'distHigh',label:'Distancia a máx. 52S',higherBetter:true,fmt:v=>isFinite(v)?pct(v):'—'},
+  {key:'smaTrend',label:'Tendencia SMA50 vs 200',higherBetter:true,fmt:v=>isFinite(v)?(v>0?'Alcista':'Bajista'):'—'},
+  {key:'volatility20',label:'Volatilidad 20D (menor mejor)',higherBetter:false,fmt:v=>isFinite(v)?v.toFixed(1)+'%':'—'},
+  {key:'freeCashFlow',label:'Free Cash Flow',higherBetter:true,fmt:v=>isFinite(v)?compact(v):'—'}
+];
+function compareMetric(m,base,candidate){
+  const a=base[m.key],b=candidate[m.key];
+  if(!isFinite(a)||!isFinite(b))return null;
+  const win=m.higherBetter?b>a:b<a;
+  return win;
+}
+window.findBetter=async function(sym){
+  sym=clean(sym);
+  const input=prompt(`¿Con qué símbolos comparamos ${sym}? Sepáralos con comas (ideal: mismo sector).`,'');
+  if(input===null)return;
+  const candidates=[...new Set(input.split(',').map(clean).filter(Boolean))].slice(0,5);
+  if(!candidates.length)return toast('Escribe al menos un símbolo para comparar.');
+  $('findBetterWorkspace').innerHTML='<div class="researchSection"><div class="researchSectionHead"><h3>⚔️ Encontrar Mejor</h3><span>calculando…</span></div><div class="empty">Comparando '+esc(sym)+' contra '+candidates.length+' candidato(s)…</div></div>';
+  try{
+    const base=await fetchCandidateMetrics(sym);
+    const results=[];
+    for(const c of candidates){
+      try{results.push(await fetchCandidateMetrics(c))}catch(e){console.warn('candidate failed',c,e)}
+    }
+    const ranked=results.map(cand=>{
+      let wins=0,evaluable=0;
+      const rows=FIND_BETTER_METRICS.map(m=>{
+        const win=compareMetric(m,base,cand);
+        if(win!==null){evaluable++;if(win)wins++}
+        return {label:m.label,baseVal:m.fmt(base[m.key]),candVal:m.fmt(cand[m.key]),win};
+      });
+      return {...cand,wins,evaluable,rows};
+    }).sort((a,b)=>b.wins-a.wins);
+    const medal=['🥇','🥈','🥉','🏅','🏅'];
+    $('findBetterWorkspace').innerHTML=`<div class="researchSection"><div class="researchSectionHead"><h3>⚔️ Encontrar Mejor: ${esc(sym)} vs. candidatos</h3><span>según tus criterios de research</span></div>
+      <div class="providerHelp" style="margin-bottom:8px">El sistema compara métricas de precio, tendencia y volatilidad calculadas localmente — nunca fabrica una recomendación de compra. Verifica siempre la tesis fundamental antes de actuar.</div>
+      <div class="findBetterList">${ranked.map((r,i)=>`<div class="candidateCard"><div class="candidateHead"><b>${medal[i]||'🏅'} ${esc(r.symbol)}</b><span class="candidateScore">Supera a ${esc(sym)} en ${r.wins}/${r.evaluable}</span></div><div class="candidateMetrics">${r.rows.map(row=>`<div class="candidateMetric ${row.win===null?'':row.win?'win':'lose'}"><span>${esc(row.label)}</span><b>${esc(sym)}: ${row.baseVal} → ${esc(r.symbol)}: ${row.candVal}</b></div>`).join('')}</div><div class="actions" style="margin-top:7px"><button class="btn small" onclick="addResearchToWatch('${esc(r.symbol)}')">＋ Watchlist</button><button class="btn small" onclick="openResearch('${esc(r.symbol)}')">Research</button></div></div>`).join('')||'<div class="empty">Ningún candidato devolvió datos suficientes.</div>'}</div>
+    </div>`;
+  }catch(e){console.warn(e);$('findBetterWorkspace').innerHTML='<div class="researchSection"><div class="empty">No fue posible completar la comparación. Intenta de nuevo.</div></div>';}
+};
 function renderPortfolio(){if(!$('portfolioSummary'))return;const f=financialLedger(),open=f.open,equity=Math.max(0,f.totalEquity);let gross=0,positionEquity=0,reserved=0;const rows=open.map(r=>{const q=currentQuote(r.symbol),price=firstFinite(q?.price,state.research?.[clean(r.symbol)]?.price,r.entry),qty=+r.qty||0,basis=Number(r.tradeAmount||r.exposure||(+r.entry*qty)||0),dir=r.direction==='SHORT'?-1:1,pnl=(price-+r.entry)*qty*dir,posEq=basis+pnl,grossExposure=price*qty,ret=r.entry?((price-r.entry)/r.entry*100*dir):NaN,weight=equity>0?basis/equity*100:NaN,risk=recordStopRisk(r),reward=recordReward(r),levels=directionalLevels(r.direction,r.entry,r.target,r.stop);gross+=grossExposure;positionEquity+=posEq;reserved+=basis;return {...r,price,basis,grossExposure,posEq,pnl,ret,weight,risk,reward,rr:levels.rr}});const riskKnown=rows.reduce((a,r)=>a+(isFinite(r.risk)?r.risk:0),0),unknown=rows.filter(r=>!isFinite(r.risk)).length;const cards=[['Capital en posiciones',money(positionEquity)],['Exposición bruta',money(gross)],['Capital reservado',money(reserved)],['P/L no realizado',`<span class="${cls(f.unrealized)}">${money(f.unrealized)}</span>`],['Riesgo a stops',`${money(riskKnown)}${unknown?` · ${unknown} sin stop`:''}`]];$('portfolioSummary').innerHTML=cards.map(c=>`<div class="patternCard"><span>${c[0]}</span><b>${c[1]}</b></div>`).join('');if(!rows.length){$('portfolioBody').innerHTML='<div class="empty">No hay posiciones abiertas. El portafolio se construye automáticamente desde el journal.</div>';return}$('portfolioBody').innerHTML=`<div style="overflow-x:auto"><table class="portfolioTable"><thead><tr><th>Símbolo</th><th>Dir.</th><th>Cant.</th><th>Entrada</th><th>Último</th><th>Exposición</th><th>Capital + P/L</th><th>P/L</th><th>Peso</th><th>Stop</th><th>Riesgo</th><th>R:R</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td class="symCell">${esc(r.symbol)}</td><td>${esc(r.direction)}</td><td>${num(r.qty,4)}</td><td>${money(r.entry)}</td><td>${money(r.price)}</td><td>${money(r.grossExposure)}</td><td>${money(r.posEq)}</td><td class="${cls(r.pnl)}">${money(r.pnl)}</td><td>${isFinite(r.weight)?r.weight.toFixed(1)+'%':'—'}</td><td>${r.stop?money(r.stop):'—'}</td><td class="${isFinite(r.risk)?'':'neg'}">${isFinite(r.risk)?money(r.risk):'NO MEDIDO'}</td><td>${isFinite(r.rr)?r.rr.toFixed(2)+'R':'—'}</td><td><button class="btn small" onclick="refreshOne('${esc(r.symbol)}')">Refresh</button></td></tr>`).join('')}</tbody></table></div><div class="portfolioAlerts">${rows.filter(r=>(isFinite(r.weight)&&r.weight>Number(state.settings.maxPositionPct||25))||!isFinite(r.risk)).map(r=>`<div class="positionRisk"><b>${esc(r.symbol)} · ${!isFinite(r.risk)?'riesgo no cuantificado':`concentración ${r.weight.toFixed(1)}%`}</b><p>${!isFinite(r.risk)?'Sin stop válido, la pérdida máxima no puede incorporarse al riesgo agregado.':'La posición excede el mandato de concentración configurado.'}</p></div>`).join('')||'<div class="positionRisk"><b>Mandato de portafolio dentro de límites</b><p>Todas las posiciones tienen stop cuantificable y respetan el máximo por posición.</p></div>'}</div>`;}
 window.closeRecord=function(id){const r=state.records.find(x=>x.id===id);if(!r)return;const q=currentQuote(r.symbol);const suggested=isFinite(q?.price)?q.price:'';const input=prompt(`Precio de salida para ${r.symbol}`,suggested);if(input===null)return;const px=Number(input);if(!isFinite(px)||px<=0)return toast('Precio de salida inválido.');r.exitPrice=px;r.exitTime=new Date().toISOString();r.status='CLOSED';persist('Operación cerrada.');};
 window.reopenRecord=function(id){const r=state.records.find(x=>x.id===id);if(!r)return;r.exitPrice='';r.exitTime='';r.status='OPEN';persist('Operación reabierta.');};
+function watchDetail(sym){return (state.watchDetails||{})[clean(sym)]||null}
+function statusLabelEs(s){return s==='bull'?'Alcista':s==='broken'?'Tesis rota':'Vigilando'}
+function storySparkSvg(snapshots){
+  const arr=(snapshots||[]).map(s=>Number(s.price)).filter(isFinite);
+  if(arr.length<2)return '';
+  const min=Math.min(...arr),max=Math.max(...arr),range=max-min||1;
+  const coords=arr.map((v,i)=>`${(i/(arr.length-1)*100).toFixed(2)},${(24-((v-min)/range*20)).toFixed(2)}`).join(' ');
+  const positive=arr.at(-1)>=arr[0];
+  return `<svg class="storySpark" viewBox="0 0 100 26" preserveAspectRatio="none"><polyline points="${coords}" fill="none" stroke="${positive?'var(--green)':'var(--red)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+function recordWatchSnapshot(sym,price){
+  if(!isFinite(price))return;
+  sym=clean(sym);const d=watchDetail(sym);if(!d)return;
+  const last=d.snapshots?.at(-1);
+  if(last&&localDateKey(last.date)===localDateKey(new Date())){last.price=price;return}
+  d.snapshots=[...(d.snapshots||[]),{date:new Date().toISOString(),price}].slice(-60);
+}
 function renderWatch(){
   $('watchGrid').innerHTML=state.watch.map(sym=>{
     const q=currentQuote(sym)||{};const cp=Number(q.changePct);const updated=q.updatedAt?new Date(q.updatedAt).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}):'sin refresh';const source=q.status?esc(q.status):(q.source||'manual');
-    return `<article class="quote"><div class="quoteHead"><div><div class="sym">${esc(sym)}</div><div class="change ${cls(cp)}">${isFinite(cp)?pct(cp):'sin data'}</div></div><div class="quoteBtns"><button class="xbtn" title="Hacer activo" onclick="setActive('${esc(sym)}')">●</button><button class="xbtn" title="Eliminar" onclick="removeWatch('${esc(sym)}')">×</button></div></div><div class="quoteStats"><div><span>Último</span><b>${isFinite(q.price)?money(q.price):'—'}</b></div><div><span>Cambio</span><b class="${cls(cp)}">${isFinite(cp)?pct(cp):'—'}</b></div></div>${spark(q.points||[],cp)}<div class="quoteFoot"><small>${source} · ${updated}</small><div class="actions"><button class="btn small" onclick="openResearch('${esc(sym)}')" type="button">Research</button><button class="btn small" onclick="refreshOne('${esc(sym)}')" type="button">Refresh</button></div></div></article>`;
-  }).join('')||'<div class="empty">Agrega un símbolo para empezar.</div>';
+    const d=watchDetail(sym);
+    let thesisHtml='';
+    if(d&&(d.entry||d.target||d.thesis)){
+      const price=isFinite(q.price)?q.price:NaN,entry=Number(d.entry),target=Number(d.target);
+      const upside=isFinite(price)&&isFinite(target)&&price?((target/price-1)*100):NaN;
+      let progress=NaN;
+      if(isFinite(entry)&&isFinite(target)&&isFinite(price)&&target!==entry)progress=Math.max(0,Math.min(100,(price-entry)/(target-entry)*100));
+      thesisHtml=`<div class="quoteThesis"><span class="statusPill ${d.status||'watch'}">${statusLabelEs(d.status)}</span> ${d.entry?`Ref: ${money(d.entry)}`:''} ${d.target?` · Target: ${money(d.target)}`:''}${isFinite(upside)?` · ${pct(upside)}`:''}
+        ${d.thesis?`<div style="margin-top:3px">${esc(d.thesis)}</div>`:''}
+        ${isFinite(progress)?`<div class="targetBar"><i style="width:${progress}%"></i></div><div class="targetLine"><span>${d.entry?money(d.entry):''}</span><span>${d.target?money(d.target):''}</span></div>`:''}
+        ${storySparkSvg(d.snapshots)}
+      </div>`;
+    }
+    return `<article class="quote"><div class="quoteHead"><div><div class="sym">${esc(sym)}</div><div class="change ${cls(cp)}">${isFinite(cp)?pct(cp):'sin data'}</div></div><div class="quoteBtns"><button class="xbtn" title="Hacer activo" onclick="setActive('${esc(sym)}')">●</button><button class="xbtn" title="Editar tesis" onclick="editWatchDetail('${esc(sym)}')">✎</button><button class="xbtn" title="Eliminar" onclick="removeWatch('${esc(sym)}')">×</button></div></div><div class="quoteStats"><div><span>Último</span><b>${isFinite(q.price)?money(q.price):'—'}</b></div><div><span>Cambio</span><b class="${cls(cp)}">${isFinite(cp)?pct(cp):'—'}</b></div></div>${spark(q.points||[],cp)}${thesisHtml}<div class="quoteFoot"><small>${source} · ${updated}</small><div class="actions"><button class="btn small" onclick="openResearch('${esc(sym)}')" type="button">Research</button><button class="btn small" onclick="refreshOne('${esc(sym)}')" type="button">Refresh</button></div></div></article>`;
+  }).join('')||'<div class="empty">Agrega un símbolo para empezar tu watchlist.</div>';
 }
+window.editWatchDetail=function(sym){
+  sym=clean(sym);
+  const cur=watchDetail(sym)||{};
+  const entry=prompt(`${sym} · Precio de referencia / entrada`,cur.entry||'');if(entry===null)return;
+  const target=prompt(`${sym} · Target`,cur.target||'');if(target===null)return;
+  const horizon=prompt(`${sym} · Horizonte (3 meses, 6 meses, 1 año, 3 años…)`,cur.horizon||'');if(horizon===null)return;
+  const thesis=prompt(`${sym} · ¿Por qué lo estás vigilando?`,cur.thesis||'');if(thesis===null)return;
+  const status=prompt(`${sym} · Estado: bull (alcista) / watch (vigilando) / broken (tesis rota)`,cur.status||'watch');if(status===null)return;
+  state.watchDetails=state.watchDetails||{};
+  state.watchDetails[sym]={entry:entry?Number(entry):'',target:target?Number(target):'',horizon:horizon.trim(),thesis:thesis.trim(),status:['bull','watch','broken'].includes(clean(status).toLowerCase())?status.toLowerCase():'watch',snapshots:cur.snapshots||[]};
+  const q=currentQuote(sym);if(q&&isFinite(q.price))recordWatchSnapshot(sym,q.price);
+  persist('Ficha de watchlist actualizada.');
+};
 function recordStats(t){
   const last=currentQuote(t.symbol)?.price; const entry=Number(t.entry), qty=Number(t.qty);
   const live=isFinite(last)?last*qty:NaN; const cost=entry*qty; const dir=t.direction==='SHORT'?-1:1; const pnl=isFinite(last)?(last-entry)*qty*dir:NaN; const ret=isFinite(last)&&entry?((last-entry)/entry*100*dir):NaN;
@@ -1262,6 +1462,7 @@ async function refreshOne(sym){
     const data=await fetchLiteQuote(sym);
     state.quotes[sym]=data.quote;
     if(data.mini)state.mini[sym]={...(state.mini[sym]||{}),...data.mini};
+    if(isFinite(data.quote?.price))recordWatchSnapshot(sym,data.quote.price);
     localStorage.setItem(KEY,JSON.stringify(state));
     $('refreshStatus').textContent='Actualizado '+sym;
     toast(sym+' actualizado.');
@@ -1283,6 +1484,7 @@ async function refreshAll(opts={}){
       const data=await fetchLiteQuote(sym);
       state.quotes[sym]=data.quote;
       if(data.mini)state.mini[sym]={...(state.mini[sym]||{}),...data.mini};
+      if(isFinite(data.quote?.price))recordWatchSnapshot(sym,data.quote.price);
       ok++;
     }catch(e){
       state.quotes[sym]={...(state.quotes[sym]||{}),status:'falló refresh'};
@@ -1503,6 +1705,19 @@ function maskStatementTitle(title){return String(title||'').replace(/for\s+([A-Z
 function renderBrokerStatus(){if(!$('brokerImportStatus'))return;const b=state.brokerData||emptyBrokerData(),fills=(b.fills||[]).length,statements=(b.statements||[]).length,nlv=b.accountSummary?.['Net Liquidating Value'],bp=b.accountSummary?.['Stock Buying Power'];$('downloadOriginalBrokerCsv').disabled=!b.latestRaw;if(!fills){$('brokerImportStatus').innerHTML='<b>Sin statement importado.</b><span>Importa el CSV del broker. El sistema leerá fills ejecutados, posiciones, P/L y resumen de cuenta.</span>';return}$('brokerImportStatus').innerHTML=`<b>${esc(maskStatementTitle(b.latestStatementTitle||b.latestFileName))}</b><span>${esc(b.latestFileName||'statement.csv')} · importado ${dateFmt(b.importedAt)} · los statements superpuestos se deduplican por fill.</span><div class="brokerStats"><div class="brokerStat"><span>Fills únicos</span><strong>${fills}</strong></div><div class="brokerStat"><span>Statements</span><strong>${statements}</strong></div><div class="brokerStat"><span>Net liquidation</span><strong>${money(nlv)}</strong></div><div class="brokerStat"><span>Buying power</span><strong>${money(bp)}</strong></div></div>${b.unmatchedCloses?`<span class="neg">${b.unmatchedCloses} cierre(s) no tienen apertura dentro del período importado; se conservaron como fills, pero no se inventó una base de costo.</span>`:''}`}
 
 function downloadJson(){const backup=JSON.parse(JSON.stringify(state));if(backup.settings)backup.settings.finnhubKey='';download('money-machine-institutional-cockpit-v8-3-backup-'+todayIso()+'.json',JSON.stringify(backup,null,2),'application/json')}
+async function shareTransfer(){
+  const backup=JSON.parse(JSON.stringify(state));if(backup.settings)backup.settings.finnhubKey='';
+  const name='money-machine-transfer-'+todayIso()+'.json',text=JSON.stringify(backup,null,2);
+  const file=new File([text],name,{type:'application/json'});
+  try{
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Money Machine',text:'Mi Money Machine — importa este archivo en Datos → Transferir.'});
+      toast('Compartido.');return;
+    }
+  }catch(e){if(e?.name==='AbortError')return;console.warn('share failed',e)}
+  download(name,text,'application/json');
+  toast('Tu navegador no soporta compartir archivos: se descargó en su lugar.');
+}
 function download(name,text,type){const blob=new Blob([text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url)}
 function handleUpload(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const text=String(r.result||'');try{if(/\.csv$/i.test(f.name)||!text.trim().startsWith('{')){importBrokerStatement(text,f.name)}else{const data=JSON.parse(text);if(!data||!Array.isArray(data.records))throw new Error('Backup inválido');state={...emptyState(),settings:{...emptyState().settings,...(data.settings||{})},watch:Array.isArray(data.watch)&&data.watch.length?data.watch:DEFAULT_WATCH.slice(),recentSymbols:Array.isArray(data.recentSymbols)?data.recentSymbols:[],quotes:data.quotes||{},mini:data.mini||{},research:data.research||{},researchSnapshots:Array.isArray(data.researchSnapshots)?data.researchSnapshots:[],calendarEvents:Array.isArray(data.calendarEvents)?data.calendarEvents:[],brokerData:{...emptyBrokerData(),...(data.brokerData||{})},records:data.records};persist('Backup JSON cargado.')}}catch(e){console.error(e);toast(/\.csv$/i.test(f.name)?'CSV no compatible: '+e.message:'Archivo inválido.')}finally{input.value=''}};r.readAsText(f)}
 window.setActive=function(sym){
@@ -1634,15 +1849,21 @@ function init(){
   $('saveBtn').onclick=()=>persist('Guardado local.');$('saveBtn2').onclick=()=>persist('Guardado local.');
   $('downloadBtn').onclick=downloadBrokerCompatibleCsv;$('downloadBtn2').onclick=downloadJson;
   $('downloadBrokerCsv').onclick=downloadBrokerCompatibleCsv;$('downloadOriginalBrokerCsv').onclick=downloadOriginalBrokerCsv;
-  $('uploadInput').onchange=e=>handleUpload(e.target);$('uploadInput2').onchange=e=>handleUpload(e.target);$('brokerImportInput').onchange=e=>handleUpload(e.target);
+  $('uploadInput').onchange=e=>handleUpload(e.target);$('uploadInput2').onchange=e=>handleUpload(e.target);$('brokerImportInput').onchange=e=>handleUpload(e.target);$('uploadInput3').onchange=e=>handleUpload(e.target);
+  $('themeToggle').onclick=cycleTheme;
+  $('onboardStart').onclick=completeOnboarding;
+  $('shareTransfer').onclick=shareTransfer;
   $('searchRecords').addEventListener('input',renderRecords);
   $('clearAll').onclick=()=>{if(confirm('¿Borrar todo el panel local?')){state=emptyState();persist('Todo borrado.')}};
   document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='r')refreshOne(state.settings.activeSymbol||state.watch[0]);if(k==='a')refreshAll();if(k==='s')persist('Guardado local.');if(k==='q')runResearch(state.settings.activeSymbol||state.watch[0]);if(k==='p')switchTab('portfolio');});
   if(!$('entryTime').value)$('entryTime').value=localDateTimeNow();
+  applyTheme();
   switchTab('home');render();
+  maybeShowOnboarding();
   setInterval(updateSessionPanel,1000);
   initMobileExtras();
 }
+applyTheme();
 init();
 </script>
 </body>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://palekor.github.io/lecciones/sitemap.xml

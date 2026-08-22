@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ProfGermandario — Laboratorio de Fluidez</title>
+<meta name="description" content="Convierte el inglés que ya entiendes en inglés que puedes usar: diagnóstico, ruta MCERL A1–C2, entrenamiento cognitivo, preparación mental y evidencia de progreso.">
+<meta name="keywords" content="inglés para graduarse, inglés para profesionales, inglés para empresarios, inglés para profesores, fluidez en inglés, MCERL, CEFR, ProfGermandario">
+<meta name="author" content="Prof Germandario">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://palekor.github.io/lecciones/newprofgermandario.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Prof Germandario">
+<meta property="og:locale" content="es_CO">
+<meta property="og:url" content="https://palekor.github.io/lecciones/newprofgermandario.html">
+<meta property="og:title" content="ProfGermandario — El inglés como herramienta de transformación">
+<meta property="og:description" content="Una ruta personalizada para estudiantes, profesionales, empresarios, docentes y familias que necesitan resultados concretos con el inglés.">
+<meta property="og:image" content="https://palekor.github.io/lecciones/assets/img/lesson-02.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ProfGermandario — Inglés para avanzar">
+<meta name="twitter:description" content="Diagnóstico, mapa MCERL, entrenamiento cognitivo y práctica estratégica para convertir el inglés en una herramienta real.">
+<meta name="twitter:image" content="https://palekor.github.io/lecciones/assets/img/lesson-02.jpg">
+
+<meta name="theme-color" content="#1A1730">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Prof Germandario",
+  "url": "https://palekor.github.io/lecciones/newprofgermandario.html",
+  "description": "Sistema de transformación lingüística con diagnóstico, ruta personalizada, acompañamiento y laboratorios interactivos.",
+  "sameAs": [
+    "https://www.tiktok.com/@profgermandario",
+    "https://www.facebook.com/profgermandario",
+    "https://www.linkedin.com/in/profgermandario",
+    "https://twitter.com/profgermandario",
+    "https://www.youtube.com/@profgermandario"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "url": "https://wa.me/573197894038"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
+
+<style>
+/* =========================================================
+   PROFGERMANDARIO — BRAND TOKENS (source of truth: live site)
+   Three primary surfaces only:
+   1. BRAND BACKGROUND -> --lienzo (cream) / --nube (soft alt)
+   2. ELEVATED PANEL    -> white cards, or the single dark "--noche"
+                           family used for a handful of focus sections
+   3. ACTIVE/FOCUS      -> accent color/border shift, never a new bg shade
+   ========================================================= */
+:root{
+  --lienzo:#FCF8F3;
+  --nube:#F2ECE2;
+  --white:#FFFFFF;
+  --tinta:#1A1730;
+  --tinta-soft:#3A3552;
+  --bruma:#76718A;
+  --coral:#FF5A3C;
+  --coral-deep:#E8482C;
+  --menta:#15B79E;
+  --menta-deep:#0E8C79;
+  --ambar:#FFB627;
+  --ambar-deep:#D4930F;
+  --vino:#7B2CBF;
+  --linea:rgba(26,23,48,.13);
+  --linea-soft:rgba(26,23,48,.07);
+  /* single dark surface family — variety comes from gradient overlays, not new base shades */
+  --noche:#120F1E;
+  --noche-2:#17132A;
+  --on-dark:#FFFFFF;
+  --on-dark-muted:rgba(255,255,255,.68);
+  --line-dark:rgba(255,255,255,.13);
+  --pill:999px;
+  --shadow:0 18px 45px rgba(26,23,48,.10);
+  --shadow-lg:0 28px 75px rgba(26,23,48,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){ *{scroll-behavior:auto!important;animation:none!important;transition:none!important} .reveal{opacity:1!important;transform:none!important} }
+body{
+  margin:0;background:var(--lienzo);color:var(--tinta);
+  font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;
+  line-height:1.6;-webkit-text-size-adjust:100%;overflow-x:hidden;padding-bottom:64px;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:3px solid rgba(255,90,60,.45);outline-offset:3px}
+.wrap{max-width:1180px;margin:auto;padding:0 22px}
+.wrap-narrow{max-width:900px;margin:auto;padding:0 22px}
+.display{font-family:Fraunces,Georgia,serif}
+.mono{font-family:"DM Mono",monospace}
+section{padding:76px 0}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;font-weight:900}
+p{margin:0;color:var(--tinta-soft)}
+
+.eyebrow{margin:0 0 12px;font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:.22em;font-size:.68rem;color:var(--coral);font-weight:700;display:flex;align-items:center;gap:10px}
+.eyebrow.menta{color:var(--menta-deep)}
+.eyebrow.ambar{color:var(--ambar-deep)}
+.eyebrow.on-dark{color:#FFD8CF}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:50px;border-radius:var(--pill);padding:14px 22px;font-weight:900;border:1.5px solid transparent;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease;}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 14px 35px rgba(255,90,60,.28)}
+.btn-primary:hover{background:var(--coral-deep)}
+.btn-dark{background:var(--tinta);color:#fff}
+.btn-light{border-color:var(--linea);background:rgba(255,255,255,.8);color:var(--tinta-soft)}
+.btn-light:hover{border-color:var(--coral)}
+.btn-ghost-dark{border-color:var(--line-dark);background:rgba(255,255,255,.07);color:#fff}
+.btn-ghost-dark:hover{border-color:var(--coral)}
+.btn-block{width:100%}
+
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--coral),var(--ambar),var(--menta));z-index:80;}
+
+/* ---------- TOPBAR ---------- */
+.topbar{position:sticky;top:0;z-index:60;background:rgba(252,248,243,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--linea-soft);}
+.topbar .wrap{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:1.14rem;white-space:nowrap}
+.brand span{color:var(--coral)}
+.nav{display:none;align-items:center;gap:4px}
+.nav a{padding:9px 11px;border-radius:var(--pill);color:var(--tinta-soft);font-size:.83rem;font-weight:800}
+.nav a:hover{background:var(--nube);color:var(--coral)}
+.nav-cta{background:var(--tinta)!important;color:#fff!important;padding-inline:15px!important}
+@media(min-width:980px){ .nav{display:flex} }
+
+/* ---------- BOTTOM MOBILE NAV ---------- */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:70;display:flex;background:rgba(252,248,243,.96);backdrop-filter:blur(14px);border-top:1px solid var(--linea);padding-bottom:env(safe-area-inset-bottom);}
+.bottomnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;color:var(--bruma);font-size:.65rem;font-weight:800;}
+.bottomnav a.active{color:var(--coral)}
+.bottomnav svg{width:19px;height:19px}
+@media(min-width:980px){ .bottomnav{display:none} body{padding-bottom:0} }
+
+.float-wa{position:fixed;right:16px;bottom:74px;z-index:65;display:flex;align-items:center;gap:9px;padding:13px 16px;border-radius:var(--pill);background:#25D366;color:#fff;font-weight:900;box-shadow:0 15px 40px rgba(37,211,102,.32);}
+@media(min-width:980px){ .float-wa{bottom:22px} }
+
+/* ---------- HERO ---------- */
+.hero{position:relative;overflow:hidden;padding:56px 0 64px;background:radial-gradient(70% 75% at 8% 0%,rgba(255,90,60,.14),transparent 62%),radial-gradient(65% 70% at 95% 10%,rgba(21,183,158,.14),transparent 64%),var(--lienzo);}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:36px;align-items:center}
+@media(min-width:980px){ .hero-grid{grid-template-columns:1.08fr .92fr;gap:46px} }
+.hero h1{font-size:clamp(2.4rem,6.6vw,4.6rem);line-height:.98;letter-spacing:-.03em;margin:12px 0 20px;}
+.hero h1 em{color:var(--coral);font-style:normal;font-weight:500}
+.hero-lead{max-width:640px;font-size:clamp(1.02rem,2vw,1.16rem);line-height:1.7}
+.hero-lead strong{color:var(--tinta)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-proof{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px;color:var(--bruma);font-size:.84rem;font-weight:700}
+.hero-proof span{display:flex;align-items:center;gap:7px}
+.hero-proof i{color:var(--menta-deep)}
+
+.loop-card{position:relative;background:rgba(255,255,255,.82);border:1px solid var(--linea-soft);border-radius:32px;padding:24px;box-shadow:var(--shadow-lg);overflow:hidden;}
+.loop-card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,90,60,.07),transparent 45%,rgba(21,183,158,.08));pointer-events:none;}
+.loop-card>*{position:relative}
+.loop-svg{width:100%;height:auto;display:block}
+.loop-caption{text-align:center;margin-top:8px;font-size:.8rem;color:var(--bruma)}
+.loop-node-label{font-family:Figtree,sans-serif;font-weight:800;font-size:11.5px;}
+.loop-node-sub{font-family:Figtree,sans-serif;font-size:9px;}
+
+/* ---------- section head ---------- */
+.section-head{display:flex;flex-direction:column;gap:14px;margin-bottom:34px;max-width:640px}
+.section-head.wide{max-width:100%;flex-direction:row;align-items:flex-end;justify-content:space-between;gap:30px}
+.section-head h2{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.02;letter-spacing:-.02em}
+.section-head p{max-width:560px}
+@media(max-width:720px){ .section-head.wide{flex-direction:column;align-items:flex-start} }
+
+/* ---------- AUDIENCES ---------- */
+.audiences{background:var(--white);border-top:1px solid var(--linea-soft);border-bottom:1px solid var(--linea-soft)}
+.audience-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:900px){ .audience-grid{grid-template-columns:repeat(3,1fr)} }
+.audience-card{position:relative;padding:24px;border:1px solid var(--linea-soft);border-radius:26px;background:var(--lienzo);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;}
+.audience-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(255,90,60,.3)}
+.audience-icon{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;color:#fff;background:var(--coral);font-size:1.1rem;margin-bottom:18px}
+.audience-card:nth-child(2) .audience-icon{background:var(--menta-deep)}
+.audience-card:nth-child(3) .audience-icon{background:var(--vino)}
+.audience-card h3{font-size:1.5rem;line-height:1.05;margin:0 0 10px}
+.audience-card ul{padding:0;margin:16px 0 0;list-style:none;display:grid;gap:8px}
+.audience-card li{display:flex;gap:8px;color:var(--tinta-soft);font-size:.9rem}
+.audience-card li:before{content:"✓";color:var(--menta-deep);font-weight:900}
+.audience-link{margin-top:auto;padding-top:18px;color:var(--coral);font-weight:900;font-size:.92rem}
+
+/* ---------- PROBLEM (dark) ---------- */
+.dark-section{position:relative;background:var(--noche);color:#fff;overflow:hidden;}
+.problem:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 0% 100%,rgba(123,44,191,.30),transparent 65%),radial-gradient(52% 70% at 100% 0%,rgba(255,90,60,.20),transparent 65%);}
+.dark-section .wrap{position:relative}
+.problem-grid{display:grid;grid-template-columns:1fr;gap:36px;align-items:center}
+@media(min-width:980px){ .problem-grid{grid-template-columns:.92fr 1.08fr;gap:44px} }
+.problem h2{font-size:clamp(2.1rem,5vw,3.6rem);line-height:.97;letter-spacing:-.02em;margin:12px 0 16px}
+.problem h2 em{color:var(--ambar);font-style:normal;font-weight:500}
+.problem-copy>p{color:var(--on-dark-muted);font-size:1.04rem}
+.problem-thesis{margin-top:18px;padding:16px 18px;border-left:3px solid var(--coral);background:rgba(255,90,60,.09);color:#FFE2DB;font-weight:800;border-radius:0 14px 14px 0;}
+.problem-list{display:grid;gap:12px}
+.problem-item{display:grid;grid-template-columns:42px 1fr;gap:13px;padding:16px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid var(--line-dark);}
+.problem-item i{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgba(255,182,39,.14);color:var(--ambar)}
+.problem-item h3{margin:0 0 4px;font-size:1.02rem;font-family:Figtree,sans-serif;font-weight:800}
+.problem-item p{margin:0;color:var(--on-dark-muted);font-size:.92rem}
+
+/* ---------- DIAGNOSTIC (light elevated panel) ---------- */
+.diag-wrap{background:var(--white);border:1px solid var(--linea-soft);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);}
+.diag-top{padding:24px 26px 0}
+.diag-progress{height:4px;background:var(--nube);border-radius:99px;overflow:hidden;margin:16px 0 0}
+.diag-progress-bar{height:100%;background:linear-gradient(90deg,var(--coral),var(--ambar));width:0%;transition:width .3s ease}
+.diag-body{padding:26px}
+.diag-q{display:none}
+.diag-q.active{display:block}
+.diag-q p.qtext{color:var(--tinta);font-size:1.14rem;font-family:Fraunces,serif;font-weight:600;margin-bottom:18px}
+.opt{display:block;width:100%;text-align:left;padding:14px 16px;margin-bottom:10px;background:var(--lienzo);border:1.5px solid var(--linea);border-radius:14px;color:var(--tinta);font-size:.92rem;font-weight:600;transition:border-color .15s ease,background .15s ease;}
+.opt:hover{border-color:var(--coral)}
+.opt.selected{border-color:var(--coral);background:rgba(255,90,60,.08)}
+.diag-nav{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.diag-step-count{font-size:.78rem;color:var(--bruma);font-weight:700}
+.diag-hint{font-size:.78rem;color:var(--bruma)}
+.diag-result{display:none;padding:28px 26px 30px}
+.diag-result.active{display:block}
+.result-level{display:inline-flex;align-items:center;gap:9px;background:rgba(255,90,60,.09);border:1px solid rgba(255,90,60,.3);padding:8px 16px;border-radius:999px;font-family:"DM Mono",monospace;font-size:.8rem;color:var(--coral-deep);letter-spacing:.06em;font-weight:700;margin-bottom:16px;}
+.diag-result h3{font-size:1.5rem;font-weight:700}
+.result-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0}
+@media(min-width:640px){ .result-grid{grid-template-columns:1fr 1fr} }
+.result-item{background:var(--lienzo);border:1px solid var(--linea-soft);border-radius:16px;padding:15px}
+.result-item .label{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bruma);margin-bottom:6px;font-weight:700}
+.result-item .value{font-size:.95rem;color:var(--tinta);font-weight:800}
+.diag-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- ROADMAP / METHOD ---------- */
+.method-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:720px){ .method-grid{grid-template-columns:repeat(2,1fr)} }
+@media(min-width:1080px){ .method-grid{grid-template-columns:repeat(4,1fr)} }
+.method-step{padding:22px;background:var(--white);border:1px solid var(--linea-soft);border-radius:24px;min-height:210px;}
+.method-num{font-family:"DM Mono",monospace;color:var(--coral);font-size:.72rem;letter-spacing:.12em;font-weight:900}
+.method-step:nth-child(2) .method-num{color:var(--vino)}
+.method-step:nth-child(3) .method-num{color:var(--menta-deep)}
+.method-step:nth-child(4) .method-num{color:var(--ambar-deep)}
+.method-step h3{font-size:1.32rem;line-height:1.06;margin:22px 0 10px;font-weight:800}
+.method-step p{font-size:.92rem}
+
+.method-band{margin-top:20px;display:grid;grid-template-columns:1fr;gap:20px;padding:24px;border-radius:26px;color:#fff;background:var(--tinta);}
+@media(min-width:900px){ .method-band{grid-template-columns:1.1fr .9fr} }
+.method-band h3{font-size:1.7rem;line-height:1;margin:8px 0;font-weight:800;font-family:Fraunces,serif;}
+.method-band p{color:var(--on-dark-muted)}
+.method-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.method-stat{border:1px solid var(--line-dark);background:rgba(255,255,255,.06);border-radius:18px;padding:14px;text-align:center;}
+.method-stat b{font-family:Fraunces,serif;font-size:1.8rem;color:var(--ambar);display:block;line-height:1}
+.method-stat span{font-family:"DM Mono",monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.1em;color:var(--on-dark-muted)}
+
+/* ---------- MCERL (dark) ---------- */
+.mcerl:before{content:"";position:absolute;inset:0;background:radial-gradient(56% 72% at 10% 10%,rgba(123,44,191,.38),transparent 64%),radial-gradient(45% 55% at 88% 20%,rgba(255,182,39,.22),transparent 62%),radial-gradient(48% 62% at 78% 88%,rgba(21,183,158,.16),transparent 60%);}
+.mcerl-shell{position:relative;border:1px solid var(--line-dark);background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03));backdrop-filter:blur(12px);border-radius:32px;padding:clamp(22px,4vw,40px);}
+.mcerl h2{font-size:clamp(2.1rem,5.2vw,3.6rem);line-height:.96;margin:12px 0 16px;letter-spacing:-.02em}
+.mcerl h2 em{color:var(--ambar);font-style:normal;font-weight:500}
+.mcerl-copy p{color:var(--on-dark-muted);font-size:1rem}
+.mcerl-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+.mcerl-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
+@media(min-width:640px){ .mcerl-levels{grid-template-columns:repeat(6,1fr)} }
+.lvl-btn{background:rgba(255,255,255,.06);border:1px solid var(--line-dark);border-radius:14px;padding:10px 6px;text-align:center;color:var(--on-dark-muted);}
+.lvl-btn .code{font-family:Fraunces,serif;font-size:1.05rem;color:#fff;display:block;font-weight:800;}
+.lvl-btn .tag{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;}
+.lvl-btn.active{border-color:var(--ambar);background:rgba(255,182,39,.14)}
+.lvl-btn.active .code{color:var(--ambar)}
+.ladder-panel{border:1px solid var(--line-dark);background:rgba(255,255,255,.05);border-radius:22px;padding:22px;margin-top:6px;}
+.ladder-idea-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.idea-chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line-dark);color:var(--on-dark-muted);font-size:.79rem;}
+.idea-chip.active{border-color:var(--menta);color:var(--menta);background:rgba(21,183,158,.14)}
+.ladder-sentence{font-family:Fraunces,serif;font-size:1.28rem;font-style:italic;color:#fff;min-height:2.6em;font-weight:500;}
+.ladder-meta{font-size:.78rem;color:var(--on-dark-muted);margin-top:10px}
+
+.level-ladder{display:grid;gap:9px;margin-top:22px}
+.level-row{display:grid;grid-template-columns:56px 1fr;align-items:center;gap:11px;padding:11px;background:rgba(255,255,255,.06);border:1px solid var(--line-dark);border-radius:16px;}
+.level{height:46px;border-radius:12px;display:grid;place-items:center;font-family:Fraunces,serif;font-weight:900;font-size:1.2rem;color:#fff;background:#35BD55;}
+.level-row:nth-child(2) .level{background:#79C857}
+.level-row:nth-child(3) .level{background:#F3BF28;color:#19142A}
+.level-row:nth-child(4) .level{background:#EF7430}
+.level-row:nth-child(5) .level{background:#DF4F7D}
+.level-row:nth-child(6) .level{background:#6B3DD6}
+.level-row b{display:block;font-size:.92rem}
+.level-row small{color:var(--on-dark-muted);font-size:.78rem}
+
+/* ---------- STATE / MEDITATION (dark) ---------- */
+.meditations:before{content:"";position:absolute;inset:0;background:radial-gradient(65% 70% at 80% 0%,rgba(21,183,158,.22),transparent 60%),radial-gradient(65% 80% at 10% 100%,rgba(123,44,191,.26),transparent 60%);}
+.meditations .section-head h2,.meditations .section-head p{color:#fff}
+.meditations .section-head p{color:var(--on-dark-muted)}
+.state-flow{display:flex;overflow-x:auto;gap:10px;padding-bottom:6px;margin-bottom:28px;-webkit-overflow-scrolling:touch;}
+.state-step{flex:0 0 auto;background:rgba(255,255,255,.06);border:1px solid var(--line-dark);border-radius:14px;padding:13px 17px;min-width:140px;}
+.state-step .n{font-family:"DM Mono",monospace;font-size:.66rem;color:var(--menta);letter-spacing:.08em;}
+.state-step .t{font-weight:800;margin-top:4px;font-size:.9rem;color:#fff}
+.med-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:720px){ .med-grid{grid-template-columns:repeat(3,1fr)} }
+.med-card{background:rgba(255,255,255,.07);border:1px solid var(--line-dark);border-radius:24px;overflow:hidden;transition:transform .2s ease,background .2s ease;}
+.med-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.1)}
+.med-thumb{position:relative;aspect-ratio:16/9;background-size:cover;background-position:center;background-color:rgba(255,255,255,.05);}
+.med-play{position:absolute;right:16px;bottom:16px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--coral);box-shadow:0 12px 30px rgba(255,90,60,.4);font-weight:900;color:#fff;}
+.med-body{padding:19px}
+.med-body h3{margin:0 0 7px;font-size:1.22rem;color:#fff;font-weight:700;}
+.med-body p{margin:0 0 10px;color:var(--on-dark-muted);font-size:.88rem;line-height:1.5}
+.med-meta{display:flex;gap:10px;font-size:.72rem;color:rgba(255,255,255,.5);}
+
+/* ---------- MISSION (light elevated panel) ---------- */
+.time-picker{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+.time-chip{padding:9px 16px;border-radius:999px;border:1.5px solid var(--linea);color:var(--tinta-soft);font-size:.85rem;font-weight:800;background:var(--white);}
+.time-chip.active{border-color:var(--coral);color:var(--coral-deep);background:rgba(255,90,60,.08)}
+.mission-card{background:var(--white);border:1px solid var(--linea-soft);border-radius:28px;padding:28px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.mission-card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,90,60,.05),transparent 40%,rgba(21,183,158,.06));pointer-events:none;}
+.mission-card>*{position:relative}
+.mission-stage{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.mission-stage .st{flex:1;min-width:70px;text-align:center;padding:8px 4px;border-radius:12px;background:var(--lienzo);border:1px solid var(--linea);font-size:.66rem;color:var(--bruma);font-weight:800;letter-spacing:.02em;}
+.mission-stage .st.done{border-color:var(--menta);color:var(--menta-deep);background:rgba(21,183,158,.08)}
+.mission-stage .st.current{border-color:var(--coral);color:var(--coral-deep);background:rgba(255,90,60,.08)}
+.mission-body{margin-bottom:22px}
+.mission-body .task{font-family:Fraunces,serif;font-size:1.35rem;color:var(--tinta);font-style:italic;font-weight:600;}
+.mission-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.mstat{background:var(--lienzo);border:1px solid var(--linea-soft);border-radius:14px;padding:12px;text-align:center;}
+.mstat .v{font-family:Fraunces,serif;font-size:1.2rem;color:var(--coral-deep);font-weight:800;}
+.mstat .l{font-size:.63rem;color:var(--bruma);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-weight:700;}
+.mission-actions{display:flex;gap:10px;flex-wrap:wrap}
+.mission-note{font-size:.8rem;color:var(--bruma);margin-top:16px}
+
+/* ---------- TOOLS ---------- */
+.tool-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:22px;-webkit-overflow-scrolling:touch;}
+.tool-tab{flex:0 0 auto;padding:9px 15px;border-radius:999px;border:1.5px solid var(--linea);color:var(--tinta-soft);font-size:.82rem;font-weight:800;background:var(--white);}
+.tool-tab.active{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.tool-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){ .tool-grid{grid-template-columns:repeat(2,1fr)} }
+@media(min-width:1080px){ .tool-grid{grid-template-columns:repeat(3,1fr)} }
+.tool-card{background:var(--white);border:1px solid var(--linea-soft);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;}
+.tool-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(255,90,60,.3)}
+.tool-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.tool-cat{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--vino);font-weight:700;background:rgba(123,44,191,.08);padding:4px 8px;border-radius:999px;}
+.tool-idx{font-size:.68rem;color:var(--bruma);font-family:"DM Mono",monospace;}
+.tool-card h3{font-size:1.14rem;color:var(--tinta);margin:0;font-weight:800;}
+.tool-card .why{font-size:.86rem;color:var(--tinta-soft)}
+.tool-meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:auto;padding-top:12px;border-top:1px solid var(--linea-soft);}
+.tool-meta .m{font-size:.72rem;color:var(--bruma)}
+.tool-meta .m b{color:var(--coral-deep);font-weight:800}
+.tool-go{font-size:.82rem;color:var(--coral-deep);font-weight:800;margin-top:2px;}
+
+/* ---------- TESTIMONIALS (nube) ---------- */
+.stories{background:var(--nube)}
+.story-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:900px){ .story-grid{grid-template-columns:repeat(3,1fr)} }
+.story-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--linea-soft);border-radius:26px;padding:24px;box-shadow:0 10px 30px rgba(26,23,48,.05);}
+.story-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.story-person{display:flex;align-items:center;gap:11px}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:Fraunces,serif;font-weight:900;color:#fff;background:var(--coral);}
+.story-card:nth-child(2) .avatar{background:var(--menta-deep)}
+.story-card:nth-child(3) .avatar{background:var(--vino)}
+.story-person b{display:block;font-size:.94rem}
+.story-person small{display:block;color:var(--bruma)}
+.story-tag{font-family:"DM Mono",monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;border-radius:999px;padding:6px 9px;color:var(--coral-deep);background:rgba(255,90,60,.09);font-weight:700;}
+.story-card:nth-child(2) .story-tag{color:var(--menta-deep);background:rgba(21,183,158,.1)}
+.story-card:nth-child(3) .story-tag{color:var(--vino);background:rgba(123,44,191,.09)}
+.story-card h3{font-size:1.35rem;line-height:1.05;margin:0 0 11px;font-weight:800;}
+.story-card p{margin:0 0 14px;color:var(--tinta-soft);font-size:.92rem;}
+.story-result{margin-top:auto;padding-top:16px;border-top:1px solid var(--linea-soft);display:grid;grid-template-columns:auto 1fr;align-items:center;gap:11px;}
+.result-number{font-family:Fraunces,serif;font-size:1.9rem;line-height:1;color:var(--coral-deep);font-weight:900;}
+.story-card:nth-child(2) .result-number{color:var(--menta-deep)}
+.story-card:nth-child(3) .result-number{color:var(--vino)}
+.story-result span{font-size:.82rem;color:var(--bruma);line-height:1.35}
+.evidence-note{margin:22px 0 0;text-align:center;color:var(--bruma);font-size:.85rem}
+
+/* ---------- MANIFESTO (nube) ---------- */
+.manifesto{background:var(--nube);text-align:center}
+.manifesto blockquote{margin:14px auto 0;font-size:clamp(1.7rem,4vw,3rem);line-height:1.08;max-width:900px;font-weight:600;}
+.manifesto strong{color:var(--coral)}
+.manifesto cite{display:block;margin-top:20px;color:var(--bruma);font-style:normal;font-weight:800;font-size:.88rem;}
+
+/* ---------- FINAL (dark) ---------- */
+.final{text-align:center;padding:76px 0;}
+.final:before{content:"";position:absolute;inset:0;background:radial-gradient(55% 100% at 0% 100%,rgba(123,44,191,.32),transparent 64%),radial-gradient(55% 100% at 100% 0%,rgba(255,90,60,.20),transparent 64%);}
+.final h2{font-size:clamp(2.2rem,5.6vw,4rem);line-height:.96;margin:12px 0 18px}
+.final h2 em{color:var(--ambar);font-style:normal;font-weight:500}
+.final p{color:var(--on-dark-muted);font-size:1.04rem;max-width:680px;margin:0 auto 24px}
+.final-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* ---------- FOOTER (darkest, single dark family) ---------- */
+footer{background:var(--noche-2);color:rgba(255,255,255,.78);padding:38px 0 30px;}
+.footer-grid{display:flex;flex-direction:column;gap:20px}
+@media(min-width:720px){ .footer-grid{flex-direction:row;justify-content:space-between;align-items:center} }
+.footer-brand{font-family:Fraunces,serif;font-size:1.3rem;font-weight:900;color:#fff}
+.footer-small{font-size:.83rem;color:rgba(255,255,255,.5);margin-top:5px}
+.socials{display:flex;flex-wrap:wrap;gap:10px}
+.socials a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);border:1px solid var(--line-dark);transition:transform .16s ease,background .16s ease;}
+.socials a:hover{transform:scale(1.08);background:rgba(255,255,255,.14)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media(max-width:520px){
+  .wrap,.wrap-narrow{padding-inline:16px}
+  .topbar .wrap{min-height:60px}
+  section{padding:56px 0}
+}
+</style>
+</head>
+<body>
+
+<a class="sr-only" href="#main">Saltar al contenido principal</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<a class="float-wa" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20identificar%20la%20mejor%20ruta%20para%20mi%20objetivo%20con%20el%20ingl%C3%A9s." target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <i class="fab fa-whatsapp"></i><span class="sr-only">WhatsApp</span>
+</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Prof<span>Germandario</span></a>
+    <nav class="nav">
+      <a href="#para-quien">Para quién</a>
+      <a href="#mapa">Mapa MCERL</a>
+      <a href="#mision">Misión de hoy</a>
+      <a href="#laboratorio">Laboratorio</a>
+      <a href="#diagnostico" class="nav-cta">Diagnóstico</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Sistema de transformación lingüística · 12 semanas</p>
+        <h1>Que el inglés que ya sabes<br><em>te salga solo.</em></h1>
+        <p class="hero-lead">Convierte el inglés en una herramienta para <strong>graduarte, liderar, negociar, enseñar y abrir nuevas oportunidades</strong>. Diagnóstico, mapa MCERL, entrenamiento cognitivo y evidencia de progreso real.</p>
+        <div class="hero-actions">
+          <a href="#diagnostico" class="btn btn-primary">Descubre tu nivel <i class="fa-solid fa-arrow-down"></i></a>
+          <a href="#como-funciona" class="btn btn-light">Ver cómo funciona</a>
+        </div>
+        <div class="hero-proof">
+          <span><i class="fa-solid fa-circle-check"></i> Diagnóstico gratuito</span>
+          <span><i class="fa-solid fa-circle-check"></i> Ruta MCERL A1–C2</span>
+          <span><i class="fa-solid fa-circle-check"></i> 15 herramientas</span>
+          <span><i class="fa-solid fa-circle-check"></i> Acompañamiento humano</span>
+        </div>
+      </div>
+
+      <div class="loop-card" id="como-funciona">
+        <svg class="loop-svg" viewBox="0 0 340 340" role="img" aria-label="El ciclo del sistema: estado, misión, entrenamiento, uso y evidencia">
+          <circle cx="170" cy="170" r="120" fill="none" stroke="rgba(26,23,48,.10)" stroke-width="1"/>
+          <circle cx="170" cy="170" r="120" fill="none" stroke="url(#loopGrad)" stroke-width="2" stroke-dasharray="4 10" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="loopGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FF5A3C"/>
+              <stop offset="100%" stop-color="#15B79E"/>
+            </linearGradient>
+          </defs>
+          <g><circle cx="170" cy="50" r="30" fill="#fff" stroke="#15B79E" stroke-width="1.6"/>
+            <text x="170" y="47" text-anchor="middle" class="loop-node-label" fill="#1A1730">ESTADO</text>
+            <text x="170" y="60" text-anchor="middle" class="loop-node-sub" fill="#76718A">calma</text></g>
+          <g><circle cx="284" cy="118" r="30" fill="#fff" stroke="#FF5A3C" stroke-width="1.6"/>
+            <text x="284" y="115" text-anchor="middle" class="loop-node-label" fill="#1A1730">MISIÓN</text>
+            <text x="284" y="128" text-anchor="middle" class="loop-node-sub" fill="#76718A">un objetivo</text></g>
+          <g><circle cx="242" cy="252" r="30" fill="#fff" stroke="#FFB627" stroke-width="1.6"/>
+            <text x="242" y="249" text-anchor="middle" class="loop-node-label" fill="#1A1730">ENTRENA</text>
+            <text x="242" y="262" text-anchor="middle" class="loop-node-sub" fill="#76718A">repite</text></g>
+          <g><circle cx="98" cy="252" r="30" fill="#fff" stroke="#7B2CBF" stroke-width="1.6"/>
+            <text x="98" y="249" text-anchor="middle" class="loop-node-label" fill="#1A1730">USA</text>
+            <text x="98" y="262" text-anchor="middle" class="loop-node-sub" fill="#76718A">habla / graba</text></g>
+          <g><circle cx="56" cy="118" r="30" fill="#fff" stroke="#15B79E" stroke-width="1.6"/>
+            <text x="56" y="115" text-anchor="middle" class="loop-node-label" fill="#1A1730">EVIDENCIA</text>
+            <text x="56" y="128" text-anchor="middle" class="loop-node-sub" fill="#76718A">progreso</text></g>
+          <text x="170" y="176" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="15" fill="#1A1730">Primero calma</text>
+          <text x="170" y="196" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="15" fill="#76718A">el sistema.</text>
+        </svg>
+        <p class="loop-caption">No eliges entre 15 herramientas — avanzas por un ciclo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AUDIENCES ================= -->
+  <section class="audiences" id="para-quien">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Una ruta para cada necesidad</p>
+        <h2>No todos necesitan el mismo inglés.</h2>
+        <p>El error habitual es empezar por un curso genérico. Aquí se empieza por el resultado que necesitas conseguir, el plazo disponible y las situaciones reales donde debes usar el idioma.</p>
+      </div>
+      <div class="audience-grid">
+        <article class="audience-card reveal">
+          <div class="audience-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <p class="eyebrow">Estudiantes y familias</p>
+          <h3>Supera el requisito sin perder de vista tu futuro.</h3>
+          <ul>
+            <li>Plan alineado con el plazo y la exigencia académica.</li>
+            <li>Práctica concentrada en las brechas que frenan el avance.</li>
+            <li>Confianza para participar, responder y presentar evaluaciones.</li>
+          </ul>
+          <a class="audience-link" href="#resultados">Ver casos de estudiantes →</a>
+        </article>
+        <article class="audience-card reveal">
+          <div class="audience-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <p class="eyebrow menta">Profesionales y empresarios</p>
+          <h3>Comunica decisiones, no inseguridad.</h3>
+          <ul>
+            <li>Lenguaje funcional para conversaciones de alto valor.</li>
+            <li>Regulación del estrés y preparación para situaciones exigentes.</li>
+            <li>Mayor precisión, seguridad y presencia profesional.</li>
+          </ul>
+          <a class="audience-link" href="#caso-carlos">Ver transformación profesional →</a>
+        </article>
+        <article class="audience-card reveal">
+          <div class="audience-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <p class="eyebrow">Profesores e instituciones</p>
+          <h3>Convierte la práctica en una experiencia medible.</h3>
+          <ul>
+            <li>Herramientas listas para navegador, sin instalaciones.</li>
+            <li>Recursos para práctica autónoma y acompañada.</li>
+            <li>Ruta visible para conectar actividad, nivel y objetivo.</li>
+          </ul>
+          <a class="audience-link" href="#laboratorio">Explorar recursos docentes →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FLUENCY GAP (dark) ================= -->
+  <section class="dark-section problem" id="brecha">
+    <div class="wrap problem-grid">
+      <div class="problem-copy reveal">
+        <p class="eyebrow on-dark">El problema real</p>
+        <h2>No te falta estudiar más.<br><em>Te falta dirección.</em></h2>
+        <p>Sabes más inglés del que puedes usar. Esa distancia entre lo que reconoces y lo que puedes producir bajo presión es la brecha de fluidez.</p>
+        <div class="problem-thesis">La transformación ocurre cuando el aprendizaje deja de ser contenido acumulado y se convierte en respuesta entrenada.</div>
+      </div>
+      <div class="problem-list">
+        <article class="problem-item reveal"><i class="fa-solid fa-route"></i><div><h3>Objetivo difuso</h3><p>“Aprender inglés” es demasiado amplio. Graduarte, negociar o enseñar exige rutas diferentes.</p></div></article>
+        <article class="problem-item reveal"><i class="fa-solid fa-layer-group"></i><div><h3>Práctica desconectada</h3><p>Ejercicios aislados no garantizan que puedas responder cuando la situación real aparece.</p></div></article>
+        <article class="problem-item reveal"><i class="fa-solid fa-brain"></i><div><h3>Bloqueo bajo presión</h3><p>El conocimiento existe, pero el estrés y la traducción mental impiden recuperarlo a tiempo.</p></div></article>
+        <article class="problem-item reveal"><i class="fa-solid fa-chart-line"></i><div><h3>Progreso sin evidencia</h3><p>Sin indicadores claros, la percepción reemplaza a los datos y no sabes qué corregir.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DIAGNOSTIC ================= -->
+  <section id="diagnostico">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;align-items:center;">
+        <p class="eyebrow" style="justify-content:center;">Empieza aquí</p>
+        <h2>Descubre tu nivel real.</h2>
+        <p>Cinco preguntas. Sin examen, sin presión. Al final tienes tu perfil de fluidez y tu primera misión.</p>
+      </div>
+
+      <div class="diag-wrap reveal" style="max-width:640px;margin:0 auto;">
+        <div class="diag-top">
+          <span class="diag-step-count" id="diagStepLabel">Pregunta 1 de 5</span>
+          <div class="diag-progress"><div class="diag-progress-bar" id="diagProgressBar"></div></div>
+        </div>
+        <div class="diag-body" id="diagBody">
+
+          <div class="diag-q active" data-q="0">
+            <p class="qtext">¿Qué tan cómodo te sientes respondiendo preguntas en inglés sin pensarlo en español primero?</p>
+            <button class="opt" data-score="1">Traduzco todo mentalmente, es lento.</button>
+            <button class="opt" data-score="2">A veces respondo directo, a veces traduzco.</button>
+            <button class="opt" data-score="3">Casi siempre respondo directo en inglés.</button>
+            <button class="opt" data-score="4">Pienso en inglés sin esfuerzo.</button>
+          </div>
+
+          <div class="diag-q" data-q="1">
+            <p class="qtext">Cuando alguien te habla en inglés más rápido de lo normal, ¿qué pasa?</p>
+            <button class="opt" data-score="1">Pierdo el hilo con frecuencia.</button>
+            <button class="opt" data-score="2">Entiendo ideas generales, se me escapan detalles.</button>
+            <button class="opt" data-score="3">Sigo casi todo, con algún vacío ocasional.</button>
+            <button class="opt" data-score="4">Entiendo con naturalidad, incluido el matiz.</button>
+          </div>
+
+          <div class="diag-q" data-q="2">
+            <p class="qtext">¿Cuál es tu objetivo principal con el inglés ahora mismo?</p>
+            <button class="opt" data-goal="hablar" data-score="2">Hablar y responder con más soltura.</button>
+            <button class="opt" data-goal="vocabulario" data-score="2">Dejar de olvidar palabras que ya aprendí.</button>
+            <button class="opt" data-goal="nivel" data-score="1">No sé en qué nivel estoy realmente.</button>
+            <button class="opt" data-goal="profesional" data-score="3">Comunicarme con seguridad en el trabajo.</button>
+          </div>
+
+          <div class="diag-q" data-q="3">
+            <p class="qtext">¿Cuánto tiempo puedes dedicar a entrenar la mayoría de los días?</p>
+            <button class="opt" data-time="5" data-score="2">5 minutos.</button>
+            <button class="opt" data-time="15" data-score="2">15 minutos.</button>
+            <button class="opt" data-time="25" data-score="3">25 minutos.</button>
+            <button class="opt" data-time="45" data-score="3">45 minutos o más.</button>
+          </div>
+
+          <div class="diag-q" data-q="4">
+            <p class="qtext">¿Qué te bloquea más al hablar?</p>
+            <button class="opt" data-score="1">Los nervios, más que el idioma en sí.</button>
+            <button class="opt" data-score="2">No encuentro la palabra a tiempo.</button>
+            <button class="opt" data-score="3">Construyo la oración muy despacio.</button>
+            <button class="opt" data-score="4">Casi nada, quiero pulir precisión y matiz.</button>
+          </div>
+
+          <div class="diag-nav">
+            <button class="btn btn-light" id="diagBack" style="padding:10px 18px;font-size:.82rem;visibility:hidden;">Atrás</button>
+            <span class="diag-hint" id="diagHint">Elige una opción para continuar.</span>
+          </div>
+        </div>
+
+        <div class="diag-result" id="diagResult">
+          <span class="result-level" id="resultLevelChip">B1 · INDEPENDENCIA</span>
+          <h3>Tu perfil de fluidez</h3>
+          <p style="margin-top:6px;">Este es tu punto de partida — no una calificación. Tu ruta de 12 semanas empieza aquí.</p>
+          <div class="result-grid">
+            <div class="result-item"><div class="label">Nivel estimado</div><div class="value" id="resLevel">B1 — Independencia</div></div>
+            <div class="result-item"><div class="label">Foco prioritario</div><div class="value" id="resGoal">Hablar con más soltura</div></div>
+            <div class="result-item"><div class="label">Tiempo diario recomendado</div><div class="value" id="resTime">15 minutos</div></div>
+            <div class="result-item"><div class="label">Herramientas sugeridas</div><div class="value" id="resTools">WordBlitz, Complete Sentences</div></div>
+          </div>
+          <div class="diag-actions">
+            <button class="btn btn-primary" id="startMissionBtn">Empezar tu primera misión</button>
+            <button class="btn btn-light" id="retakeDiag">Repetir diagnóstico</button>
+          </div>
+          <p class="mission-note">¿Prefieres un diagnóstico completo con acompañamiento humano? <a href="https://forms.gle/ChyEuqGGxFmzfoUNA" target="_blank" rel="noopener" style="color:var(--coral-deep);font-weight:700;">Solicítalo aquí →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 12 WEEK ROADMAP ================= -->
+  <section id="ruta">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Tu transformación</p>
+        <h2>Doce semanas, cuatro fases.</h2>
+        <p>No es una promesa de fluidez instantánea. Es un periodo estructurado con evidencia medible en cada fase.</p>
+      </div>
+      <div class="method-grid">
+        <article class="method-step reveal"><span class="method-num">SEMANAS 1–3</span><h3>Orientación</h3><p>Nivel real, brechas, errores recurrentes y patrones que bloquean tu desempeño.</p></article>
+        <article class="method-step reveal"><span class="method-num">SEMANAS 4–6</span><h3>Automaticidad</h3><p>Vocabulario esencial, conectores, tiempos verbales y velocidad de respuesta.</p></article>
+        <article class="method-step reveal"><span class="method-num">SEMANAS 7–9</span><h3>Fluidez</h3><p>Habla espontánea, escucha activa, shadowing y escenarios de la vida real.</p></article>
+        <article class="method-step reveal"><span class="method-num">SEMANAS 10–12</span><h3>Comunicación asertiva</h3><p>Explicar, matizar, presentar y responder bajo presión con precisión profesional.</p></article>
+      </div>
+      <div class="method-band reveal">
+        <div>
+          <p class="eyebrow ambar">El sistema ProfGermandario</p>
+          <h3>Tecnología que acompaña. Un profesor que interpreta.</h3>
+          <p>Los laboratorios permiten repetir. El acompañamiento decide qué repetir, por qué hacerlo y cómo conectar esa práctica con el resultado que necesitas.</p>
+        </div>
+        <div class="method-stats">
+          <div class="method-stat"><b>15</b><span>Herramientas</span></div>
+          <div class="method-stat"><b>6</b><span>Niveles MCERL</span></div>
+          <div class="method-stat"><b>3</b><span>Meditaciones</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MCERL MAP (dark) ================= -->
+  <section class="dark-section mcerl" id="mapa">
+    <div class="wrap">
+      <div class="mcerl-shell reveal">
+        <p class="eyebrow on-dark">Tu mapa, no una prueba</p>
+        <h2>Avanzar exige saber<br><em>qué sigue.</em></h2>
+        <p style="color:var(--on-dark-muted);max-width:640px;">Estás aquí. Este es tu siguiente paso. No necesitas dominarlo todo hoy — solo escuchar cómo suena la misma idea en cada nivel.</p>
+        <div class="mcerl-actions">
+          <a class="btn btn-primary" href="https://palekor.github.io/lecciones/MCERL.html">Abrir The Paths of MCERL <i class="fa-solid fa-arrow-right"></i></a>
+          <a class="btn btn-ghost-dark" href="#laboratorio">Explorar laboratorios</a>
+        </div>
+
+        <div class="mcerl-levels" id="mcerlLevels" style="margin-top:34px;">
+          <button class="lvl-btn active" data-level="0"><span class="code">A1</span><span class="tag">Inicio</span></button>
+          <button class="lvl-btn" data-level="1"><span class="code">A2</span><span class="tag">Base</span></button>
+          <button class="lvl-btn" data-level="2"><span class="code">B1</span><span class="tag">Habla</span></button>
+          <button class="lvl-btn" data-level="3"><span class="code">B2</span><span class="tag">Fluye</span></button>
+          <button class="lvl-btn" data-level="4"><span class="code">C1</span><span class="tag">Matiza</span></button>
+          <button class="lvl-btn" data-level="5"><span class="code">C2</span><span class="tag">Domina</span></button>
+        </div>
+        <div class="ladder-panel">
+          <div class="ladder-idea-select">
+            <button class="idea-chip active" data-idea="0">Hablar de tu trabajo</button>
+            <button class="idea-chip" data-idea="1">Dar tu opinión</button>
+            <button class="idea-chip" data-idea="2">Explicar un problema</button>
+          </div>
+          <p class="ladder-sentence" id="ladderSentence">"I work in an office."</p>
+          <p class="ladder-meta" id="ladderMeta">A1 — Inicio funcional: mensajes básicos, presente simple, vocabulario directo.</p>
+        </div>
+
+        <div class="level-ladder">
+          <div class="level-row"><span class="level">A1</span><span><b>Inicio funcional</b><small>Comprender y producir mensajes básicos.</small></span></div>
+          <div class="level-row"><span class="level">A2</span><span><b>Base operativa</b><small>Resolver situaciones frecuentes y describir.</small></span></div>
+          <div class="level-row"><span class="level">B1</span><span><b>Independencia</b><small>Conectar ideas y sostener conversaciones conocidas.</small></span></div>
+          <div class="level-row"><span class="level">B2</span><span><b>Fluidez funcional</b><small>Argumentar, interactuar y trabajar con mayor autonomía.</small></span></div>
+          <div class="level-row"><span class="level">C1</span><span><b>Precisión avanzada</b><small>Expresar matices y manejar contextos complejos.</small></span></div>
+          <div class="level-row"><span class="level">C2</span><span><b>Dominio flexible</b><small>Comprender y producir con alta naturalidad y precisión.</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATE / MEDITATION (dark) ================= -->
+  <section class="dark-section meditations" id="estado">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow menta">Preparación mental</p>
+        <h2>Primero calma.<br>Después responde.</h2>
+        <p>El estado mental afecta atención, memoria y recuperación. Regular el enfoque antes de entrenar no es opcional — es el primer paso del ciclo.</p>
+      </div>
+
+      <div class="state-flow reveal" aria-label="Secuencia diaria">
+        <div class="state-step"><span class="n">1 · ARRIVE</span><div class="t">Llegar</div></div>
+        <div class="state-step"><span class="n">2 · BREATHE</span><div class="t">Respirar</div></div>
+        <div class="state-step"><span class="n">3 · FOCUS</span><div class="t">Enfocar</div></div>
+        <div class="state-step"><span class="n">4 · TRAIN</span><div class="t">Entrenar</div></div>
+        <div class="state-step"><span class="n">5 · SPEAK</span><div class="t">Hablar</div></div>
+        <div class="state-step"><span class="n">6 · REFLECT</span><div class="t">Reflexionar</div></div>
+      </div>
+
+      <div class="med-grid">
+        <a class="med-card reveal" href="https://youtu.be/lJ3ja0dMyD0?si=3pZLQQ3-Ax7ldyEe" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/lJ3ja0dMyD0/maxresdefault.jpg')"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Fluidez y confianza</h3><p>Relaja el cuerpo y prepara la mente para practicar sin bloqueo.</p><div class="med-meta"><span>2 min · Reset</span><span>Antes de hablar</span></div></div>
+        </a>
+        <a class="med-card reveal" href="https://youtu.be/2RSIZ8oLMrE?si=pLgKHKimF1rr3j04" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/2RSIZ8oLMrE/maxresdefault.jpg')"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Hablar con naturalidad</h3><p>Visualiza conversaciones reales y reduce la fricción al responder.</p><div class="med-meta"><span>5 min · Enfoque</span><span>Antes de entrenar</span></div></div>
+        </a>
+        <a class="med-card reveal" href="https://youtu.be/8XFZktYWm88?si=y4d6MgeIzTPOrJvN" target="_blank" rel="noopener">
+          <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/8XFZktYWm88/maxresdefault.jpg')"><span class="med-play">▶</span></div>
+          <div class="med-body"><h3>Retención y memoria</h3><p>Fortalece la conexión entre palabra, imagen, emoción y significado.</p><div class="med-meta"><span>8 min · Aprendizaje</span><span>Antes de vocabulario</span></div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TODAY'S MISSION ================= -->
+  <section id="mision">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Tu sesión de hoy</p>
+        <h2>No elijas entre 15 herramientas.<br>Completa una misión.</h2>
+        <p>Dinos cuánto tiempo tienes. El sistema arma la secuencia — reset, entrenamiento, uso y reflexión.</p>
+      </div>
+
+      <div class="time-picker reveal" id="timePicker">
+        <button class="time-chip" data-min="5">5 min</button>
+        <button class="time-chip active" data-min="15">15 min</button>
+        <button class="time-chip" data-min="25">25 min</button>
+        <button class="time-chip" data-min="45">45 min</button>
+        <button class="time-chip" data-min="60">60 min</button>
+      </div>
+
+      <div class="mission-card reveal">
+        <div class="mission-stage" id="missionStage">
+          <div class="st current" data-stage="reset">RESET</div>
+          <div class="st" data-stage="train">ENTRENA</div>
+          <div class="st" data-stage="use">USA</div>
+          <div class="st" data-stage="reflect">REFLEXIONA</div>
+        </div>
+        <div class="mission-body">
+          <p class="eyebrow" id="missionStageLabel" style="margin-bottom:8px;">Etapa 1 · Reset (2 min)</p>
+          <p class="task" id="missionTask">Respira y suelta la tensión antes de empezar. No necesitas estar “listo”, solo presente.</p>
+        </div>
+        <div class="mission-stats">
+          <div class="mstat"><div class="v" id="statXP">0</div><div class="l">XP hoy</div></div>
+          <div class="mstat"><div class="v" id="statStreak">0</div><div class="l">Racha (días)</div></div>
+          <div class="mstat"><div class="v" id="statLevel">B1</div><div class="l">Nivel MCERL</div></div>
+        </div>
+        <div class="mission-actions">
+          <button class="btn btn-primary" id="missionAdvance">Completar esta etapa</button>
+          <button class="btn btn-light" id="missionReset">Reiniciar misión</button>
+        </div>
+        <p class="mission-note">Si hoy solo tienes 5 minutos, elige "5 min" arriba — el sistema ajusta la misión, no la cancela.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLS LIBRARY ================= -->
+  <section id="laboratorio">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">La maquinaria, debajo del camino</p>
+        <h2>15 herramientas. Una misión a la vez.</h2>
+        <p>Cada herramienta entrena algo específico. No necesitas explorarlas todas — el sistema te trae la que corresponde a tu misión de hoy.</p>
+      </div>
+
+      <div class="tool-tabs" id="toolTabs">
+        <button class="tool-tab active" data-cat="todas">Todas</button>
+        <button class="tool-tab" data-cat="Habla">Habla</button>
+        <button class="tool-tab" data-cat="Vocabulario">Vocabulario</button>
+        <button class="tool-tab" data-cat="Gramática">Gramática</button>
+        <button class="tool-tab" data-cat="Memoria">Memoria</button>
+        <button class="tool-tab" data-cat="Escucha">Escucha</button>
+        <button class="tool-tab" data-cat="Agilidad">Agilidad mental</button>
+        <button class="tool-tab" data-cat="Hábitos">Hábitos</button>
+      </div>
+
+      <div class="tool-grid" id="toolGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIALS ================= -->
+  <section class="stories" id="resultados">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Evidencia, no promesas</p>
+        <h2>El resultado cambia cuando cambia la estrategia.</h2>
+      </div>
+      <div class="story-grid">
+        <div class="story-card reveal">
+          <div class="story-top"><div class="story-person"><span class="avatar">D</span><span><b>Daniel</b><small>Estudiante universitario</small></span></div><span class="story-tag">Graduación</span></div>
+          <h3>De un plazo crítico a graduarse a tiempo.</h3>
+          <p>A tres meses de perder su oportunidad de graduarse, necesitaba aprobar A1, A2 y B1. Diseñamos un plan intensivo centrado en sus brechas y práctica deliberada.</p>
+          <div class="story-result"><strong class="result-number">3</strong><span>niveles aprobados — A1, A2 y B1 — dentro de tres meses.</span></div>
+        </div>
+        <div class="story-card reveal" id="caso-carlos">
+          <div class="story-top"><div class="story-person"><span class="avatar">C</span><span><b>Carlos</b><small>Empresario</small></span></div><span class="story-tag">Liderazgo</span></div>
+          <h3>De la tensión en reuniones a comunicar con liderazgo.</h3>
+          <p>Le costaba comunicarse con clientes internacionales. Trabajamos el inglés funcional junto con la regulación emocional bajo presión.</p>
+          <div class="story-result"><strong class="result-number"><i class="fa-solid fa-arrow-trend-up"></i></strong><span>más seguridad y control en reuniones exigentes.</span></div>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-top"><div class="story-person"><span class="avatar">M</span><span><b>Mateo</b><small>Estudiante, 8 años</small></span></div><span class="story-tag">Confianza</span></div>
+          <h3>Del rechazo al inglés a ser uno de los mejores de su clase.</h3>
+          <p>Rechazaba el inglés por completo. En dos meses, con un enfoque dinámico y adaptado, pasó a destacarse en su clase.</p>
+          <div class="story-result"><strong class="result-number">4.9</strong><span>calificación final y una relación más positiva con el inglés.</span></div>
+        </div>
+      </div>
+      <p class="evidence-note">Los casos describen procesos individuales. El resultado depende del punto de partida, el plazo, la asistencia, la práctica y la disposición para corregir.</p>
+    </div>
+  </section>
+
+  <!-- ================= MANIFESTO ================= -->
+  <section class="manifesto">
+    <div class="wrap reveal">
+      <p class="eyebrow" style="justify-content:center;">La filosofía</p>
+      <blockquote>El idioma no es información.<br>El idioma es <strong>reacción, ritmo, memoria,</strong><br>confianza, emoción e identidad.</blockquote>
+      <cite>— ProfGermandario · Metodología CBLT + PNL</cite>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA (dark) ================= -->
+  <section class="dark-section final">
+    <div class="wrap-narrow reveal">
+      <p class="eyebrow on-dark" style="justify-content:center;">Tu siguiente paso</p>
+      <h2>Empieza con claridad.<br><em>No con presión.</em></h2>
+      <p>El diagnóstico permite definir tu punto de partida, el objetivo prioritario y la ruta más adecuada: práctica autoguiada, acompañamiento estratégico o English Mastery 1:1.</p>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="https://forms.gle/ChyEuqGGxFmzfoUNA" target="_blank" rel="noopener">Solicitar diagnóstico <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="btn btn-ghost-dark" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20saber%20qu%C3%A9%20ruta%20me%20conviene." target="_blank" rel="noopener">Hablar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="footer-brand">Prof Germandario</div>
+      <div class="footer-small">© 2026 · Sistema de transformación lingüística · Inglés para avanzar con propósito</div>
+    </div>
+    <div class="socials" aria-label="Redes y contacto ProfGermandario">
+      <a href="https://wa.me/573197894038" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp" style="color:#34D399"></i></a>
+      <a href="mailto:profgermandario@gmail.com" aria-label="Email"><i class="fas fa-envelope" style="color:#FACC15"></i></a>
+      <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook" style="color:#1877F2"></i></a>
+      <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin" style="color:#0A66C2"></i></a>
+      <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube" style="color:#FF0000"></i></a>
+    </div>
+  </div>
+</footer>
+
+<nav class="bottomnav" aria-label="Navegación principal">
+  <a href="#inicio" class="active" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Home</a>
+  <a href="#mision" data-nav="mision"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg>Misión</a>
+  <a href="#mapa" data-nav="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2V6z"/><path d="M9 4v14M15 6v14"/></svg>Mapa</a>
+  <a href="#laboratorio" data-nav="tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Tools</a>
+  <a href="#estado" data-nav="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>Más</a>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- scroll progress ---- */
+  var progress = document.getElementById('scrollProgress');
+  function updateProgress(){
+    var root = document.documentElement;
+    var range = root.scrollHeight - root.clientHeight;
+    progress.style.width = (range > 0 ? (root.scrollTop/range)*100 : 0) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  /* ---- reveal on scroll ---- */
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealItems = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)){
+    revealItems.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, {threshold:.1});
+    revealItems.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---- 15 tools, reclassified ---- */
+  var TOOLS = [
+    {i:1, name:"Verbos Esenciales", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/01.html", level:"A1–A2", time:"10 min", why:"Significado, pasado, participio y pronunciación de los verbos que más usarás."},
+    {i:2, name:"WordBlitz", cat:"Agilidad", url:"https://palekor.github.io/lecciones/02.html", level:"A2–B1", time:"5 min", why:"Velocidad de traducción y recuperación de vocabulario bajo presión."},
+    {i:3, name:"Complete Sentences", cat:"Gramática", url:"https://palekor.github.io/lecciones/02b.html", level:"A2–B1", time:"8 min", why:"Construye oraciones completas y conecta ideas con conectores."},
+    {i:4, name:"Tiempos y Conectores", cat:"Gramática", url:"https://palekor.github.io/lecciones/03.html", level:"B1", time:"10 min", why:"Diferencia tiempos verbales y combina ideas en frases más completas."},
+    {i:5, name:"Memoria Visual", cat:"Memoria", url:"https://palekor.github.io/lecciones/04.html", level:"A1–C1", time:"6 min", why:"Secuencias progresivas para memoria de trabajo y control de impulsos."},
+    {i:6, name:"Phrasal Verbs", cat:"Gramática", url:"https://palekor.github.io/lecciones/05.html", level:"B1–B2", time:"10 min", why:"Significados y reglas de uso para sonar más natural."},
+    {i:7, name:"The Word Vault", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/06.html", level:"A2–B2", time:"8 min", why:"Vocabulario de alta frecuencia con audio, IPA y memoria de parejas."},
+    {i:8, name:"Simple vs Progressive", cat:"Gramática", url:"https://palekor.github.io/lecciones/07.html", level:"A1–A2", time:"7 min", why:"Contrasta rutina y acción en progreso con señales temporales."},
+    {i:9, name:"Modelador de Hábitos", cat:"Hábitos", url:"https://palekor.github.io/lecciones/08.html", level:"Todos", time:"5 min", why:"Organiza enfoque, tareas y reflexiones para sostener tu práctica."},
+    {i:10, name:"Fast Memory Recover", cat:"Memoria", url:"https://palekor.github.io/lecciones/09.html", level:"B1–B2", time:"8 min", why:"Escucha profunda para recuperar información con rapidez."},
+    {i:11, name:"Gold Words", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/10.html", level:"B1–C1", time:"10 min", why:"100 palabras clave: definición, recuerdo, emparejamiento y automatización."},
+    {i:12, name:"Paragraph Builder", cat:"Habla", url:"https://palekor.github.io/lecciones/Paragraph.html", level:"B1–B2", time:"12 min", why:"Pasa de la oración al párrafo analizando la función de cada parte."},
+    {i:13, name:"Gold Words · Audio", cat:"Escucha", url:"https://palekor.github.io/lecciones/gold.html", level:"A2–C1", time:"8 min", why:"Escucha palabras y frases hasta que sean recuperables al instante."},
+    {i:14, name:"Mental Math Trainer", cat:"Agilidad", url:"https://palekor.github.io/lecciones/speedmath.html", level:"Todos", time:"5 min", why:"Velocidad mental y precisión bajo presión — transferible al habla."},
+    {i:15, name:"WH Questions Lab", cat:"Habla", url:"https://palekor.github.io/lecciones/wh.html", level:"A2–B1", time:"8 min", why:"Orden, auxiliares y respuestas cortas para preguntar con naturalidad."}
+  ];
+  var toolGrid = document.getElementById('toolGrid');
+  function renderTools(cat){
+    toolGrid.innerHTML = '';
+    TOOLS.filter(function(t){ return cat === 'todas' || t.cat === cat; }).forEach(function(t){
+      var a = document.createElement('a');
+      a.className = 'tool-card'; a.href = t.url; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML =
+        '<div class="tool-top"><span class="tool-cat">'+t.cat+'</span><span class="tool-idx">'+t.i+' / 15</span></div>'+
+        '<h3>'+t.name+'</h3>'+
+        '<p class="why">'+t.why+'</p>'+
+        '<div class="tool-meta"><span class="m">Nivel <b>'+t.level+'</b></span><span class="m">Tiempo <b>'+t.time+'</b></span></div>'+
+        '<span class="tool-go">Abrir herramienta →</span>';
+      toolGrid.appendChild(a);
+    });
+  }
+  renderTools('todas');
+  document.querySelectorAll('.tool-tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tool-tab').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderTools(btn.dataset.cat);
+    });
+  });
+
+  /* ---- MCERL ladder ---- */
+  var LADDER = [
+    [
+      {s:'"I work in an office."', m:'A1 — Inicio funcional: mensajes básicos, presente simple, vocabulario directo.'},
+      {s:'"I work in an office and I usually start at eight."', m:'A2 — Base operativa: describe rutinas con más detalle.'},
+      {s:'"I\'ve been working in marketing for three years, and I really enjoy it."', m:'B1 — Independencia: conecta tiempo, experiencia y opinión.'},
+      {s:'"I work in marketing, mostly focused on campaigns that target international clients."', m:'B2 — Fluidez funcional: precisión y contexto profesional.'},
+      {s:'"I lead a small marketing team, though I still get hands-on with strategy when it matters."', m:'C1 — Precisión avanzada: matiz, estructura compleja, tono natural.'},
+      {s:'"I run marketing for the region — though \'run\' undersells how much of it is still firefighting."', m:'C2 — Dominio flexible: ironía, registro y naturalidad total.'}
+    ],
+    [
+      {s:'"I like it."', m:'A1 — Mensaje básico y directo.'},
+      {s:'"I think it\'s good, but it\'s expensive."', m:'A2 — Opinión simple con una razón.'},
+      {s:'"In my opinion, it\'s worth it, even though it\'s a bit expensive."', m:'B1 — Conecta opinión y contraste.'},
+      {s:'"I\'d say it\'s worth the price, mainly because of the quality."', m:'B2 — Matiza con seguridad y justificación clara.'},
+      {s:'"I\'m inclined to think it\'s worth it, though I can see why some people would disagree."', m:'C1 — Reconoce perspectivas opuestas con precisión.'},
+      {s:'"I\'d argue it\'s worth every peso — though I\'ll admit that\'s partly bias talking."', m:'C2 — Tono, autoconciencia y fluidez natural.'}
+    ],
+    [
+      {s:'"The system doesn\'t work."', m:'A1 — Mensaje básico y funcional.'},
+      {s:'"The system doesn\'t work because the internet is slow."', m:'A2 — Causa simple y directa.'},
+      {s:'"The system isn\'t working properly, and I think it\'s because of the connection."', m:'B1 — Explica con hipótesis propia.'},
+      {s:'"There seems to be a connectivity issue that\'s preventing the system from syncing correctly."', m:'B2 — Vocabulario técnico y estructura más formal.'},
+      {s:'"It looks like an intermittent connectivity issue — possibly on the server side rather than ours."', m:'C1 — Diagnóstico matizado y profesional.'},
+      {s:'"My best guess is it\'s a server-side hiccup, not our config — but I\'d want to rule that out before we escalate."', m:'C2 — Precisión técnica con tono natural y seguro.'}
+    ]
+  ];
+  var currentIdea = 0, currentLevel = 0;
+  function renderLadder(){
+    var entry = LADDER[currentIdea][currentLevel];
+    document.getElementById('ladderSentence').textContent = entry.s;
+    document.getElementById('ladderMeta').textContent = entry.m;
+  }
+  document.querySelectorAll('.idea-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.idea-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentIdea = parseInt(chip.dataset.idea, 10);
+      renderLadder();
+    });
+  });
+  document.querySelectorAll('.lvl-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.lvl-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentLevel = parseInt(btn.dataset.level, 10);
+      renderLadder();
+    });
+  });
+  renderLadder();
+
+  /* ---- diagnostic ---- */
+  var qs = Array.prototype.slice.call(document.querySelectorAll('.diag-q'));
+  var qIndex = 0;
+  var answers = { score:0, goal:null, time:15 };
+  var progressBar = document.getElementById('diagProgressBar');
+  var stepLabel = document.getElementById('diagStepLabel');
+  var backBtn = document.getElementById('diagBack');
+
+  function showQuestion(idx){
+    qs.forEach(function(q,i){ q.classList.toggle('active', i===idx); });
+    stepLabel.textContent = 'Pregunta ' + (idx+1) + ' de ' + qs.length;
+    progressBar.style.width = ((idx)/qs.length*100) + '%';
+    backBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
+  }
+  showQuestion(0);
+
+  qs.forEach(function(q, idx){
+    q.querySelectorAll('.opt').forEach(function(opt){
+      opt.addEventListener('click', function(){
+        q.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        answers.score += parseInt(opt.dataset.score || 0, 10);
+        if (opt.dataset.goal) answers.goal = opt.dataset.goal;
+        if (opt.dataset.time) answers.time = parseInt(opt.dataset.time, 10);
+        setTimeout(function(){
+          if (idx < qs.length - 1){ qIndex = idx + 1; showQuestion(qIndex); }
+          else { finishDiagnostic(); }
+        }, 220);
+      });
+    });
+  });
+
+  backBtn.addEventListener('click', function(){
+    if (qIndex > 0){ qIndex -= 1; showQuestion(qIndex); }
+  });
+
+  var LEVELS = ['A1 — Inicio funcional','A2 — Base operativa','B1 — Independencia','B2 — Fluidez funcional','C1 — Precisión avanzada'];
+  var LEVEL_CODES = ['A1','A2','B1','B2','C1'];
+  var GOAL_LABELS = {hablar:'Hablar con más soltura', vocabulario:'Recuperar vocabulario más rápido', nivel:'Confirmar tu nivel real', profesional:'Comunicación profesional segura'};
+  var GOAL_TOOLS = {
+    hablar:'WordBlitz, WH Questions Lab, Complete Sentences',
+    vocabulario:'Gold Words, The Word Vault, Fast Memory Recover',
+    nivel:'Verbos Esenciales, Memoria Visual',
+    profesional:'Paragraph Builder, Tiempos y Conectores'
+  };
+
+  function finishDiagnostic(){
+    var maxScore = 18;
+    var pct = Math.min(answers.score / maxScore, 1);
+    var levelIdx = Math.min(Math.floor(pct * LEVELS.length), LEVELS.length - 1);
+    var goal = answers.goal || 'hablar';
+
+    document.getElementById('diagBody').style.display = 'none';
+    var result = document.getElementById('diagResult');
+    result.classList.add('active');
+
+    document.getElementById('resultLevelChip').textContent = LEVEL_CODES[levelIdx] + ' · ' + LEVELS[levelIdx].split(' — ')[1].toUpperCase();
+    document.getElementById('resLevel').textContent = LEVELS[levelIdx];
+    document.getElementById('resGoal').textContent = GOAL_LABELS[goal];
+    document.getElementById('resTime').textContent = answers.time + ' minutos';
+    document.getElementById('resTools').textContent = GOAL_TOOLS[goal];
+
+    try{
+      localStorage.setItem('pg_level', LEVEL_CODES[levelIdx]);
+      localStorage.setItem('pg_goal', goal);
+      localStorage.setItem('pg_time', String(answers.time));
+    }catch(e){}
+
+    document.getElementById('statLevel').textContent = LEVEL_CODES[levelIdx];
+  }
+
+  document.getElementById('retakeDiag').addEventListener('click', function(){
+    answers = { score:0, goal:null, time:15 };
+    qIndex = 0;
+    qs.forEach(function(q){ q.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected'); }); });
+    document.getElementById('diagBody').style.display = 'block';
+    document.getElementById('diagResult').classList.remove('active');
+    showQuestion(0);
+  });
+
+  document.getElementById('startMissionBtn').addEventListener('click', function(){
+    document.getElementById('mision').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* ---- mission engine ---- */
+  var STAGES = ['reset','train','use','reflect'];
+  var STAGE_LABELS = {reset:'Etapa 1 · Reset (2 min)', train:'Etapa 2 · Entrena', use:'Etapa 3 · Usa (habla / graba)', reflect:'Etapa 4 · Reflexiona'};
+  var TASKS_BY_TIME = {
+    5:  {train:'Ronda rápida de WordBlitz: recupera 15 palabras antes de que caigan.', use:'Di en voz alta una frase con 3 de esas palabras.', reflect:'¿Qué palabra te costó más? Anótala mentalmente para mañana.'},
+    15: {train:'Completa 8 oraciones en Complete Sentences enlazando ideas con conectores.', use:'Graba 30 segundos hablando de tu día usando 2 conectores nuevos.', reflect:'¿Qué conector usaste con más naturalidad?'},
+    25: {train:'Tiempos y Conectores + WH Questions Lab: dos rondas cortas.', use:'Graba 60 segundos respondiendo: "What did you do yesterday?"', reflect:'Escucha tu grabación una vez. ¿Qué palabra reemplazarías?'},
+    45: {train:'Sesión combinada: Gold Words + Paragraph Builder.', use:'Graba 90 segundos explicando una opinión con al menos un contraste ("but", "even though").', reflect:'Escribe una frase que quieras poder decir sin pensar la próxima vez.'},
+    60: {train:'Entrenamiento profundo: Fast Memory Recover + Paragraph Builder + Phrasal Verbs.', use:'Graba 2 minutos explicando un problema real y cómo lo resolviste.', reflect:'Compara esta grabación con la de hace dos semanas, si la tienes.'}
+  };
+  var currentStageIdx = 0;
+  var currentTime = 15;
+  var xp = 0, streak = 0;
+
+  try{
+    xp = parseInt(localStorage.getItem('pg_xp_today') || '0', 10);
+    streak = parseInt(localStorage.getItem('pg_streak') || '0', 10);
+    var savedLevel = localStorage.getItem('pg_level');
+    if (savedLevel) document.getElementById('statLevel').textContent = savedLevel;
+  }catch(e){}
+  document.getElementById('statXP').textContent = xp;
+  document.getElementById('statStreak').textContent = streak;
+
+  function xpForTime(min){ return {5:15, 15:30, 25:45, 45:65, 60:80}[min] || 30; }
+
+  function renderMissionStage(){
+    var stage = STAGES[currentStageIdx];
+    document.querySelectorAll('#missionStage .st').forEach(function(el, i){
+      el.classList.remove('done','current');
+      if (i < currentStageIdx) el.classList.add('done');
+      if (i === currentStageIdx) el.classList.add('current');
+    });
+    document.getElementById('missionStageLabel').textContent = STAGE_LABELS[stage];
+    var t = TASKS_BY_TIME[currentTime] || TASKS_BY_TIME[15];
+    var taskText = stage === 'reset'
+      ? 'Respira y suelta la tensión antes de empezar. No necesitas estar "listo", solo presente.'
+      : t[stage];
+    document.getElementById('missionTask').textContent = taskText;
+    var advanceBtn = document.getElementById('missionAdvance');
+    advanceBtn.textContent = currentStageIdx === STAGES.length - 1 ? 'Completar misión (+' + xpForTime(currentTime) + ' XP)' : 'Completar esta etapa';
+  }
+
+  document.getElementById('missionAdvance').addEventListener('click', function(){
+    if (currentStageIdx < STAGES.length - 1){
+      currentStageIdx += 1;
+      renderMissionStage();
+    } else {
+      xp += xpForTime(currentTime);
+      streak += 1;
+      document.getElementById('statXP').textContent = xp;
+      document.getElementById('statStreak').textContent = streak;
+      try{
+        localStorage.setItem('pg_xp_today', String(xp));
+        localStorage.setItem('pg_streak', String(streak));
+      }catch(e){}
+      document.getElementById('missionStageLabel').textContent = 'Misión completa';
+      document.getElementById('missionTask').textContent = 'Bien hecho. Vuelve mañana para continuar tu racha — perder un día no reinicia tu camino, solo lo pausa.';
+      document.getElementById('missionAdvance').textContent = 'Misión completada';
+      document.getElementById('missionAdvance').disabled = true;
+    }
+  });
+
+  document.getElementById('missionReset').addEventListener('click', function(){
+    currentStageIdx = 0;
+    document.getElementById('missionAdvance').disabled = false;
+    renderMissionStage();
+  });
+
+  document.querySelectorAll('.time-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.time-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentTime = parseInt(chip.dataset.min, 10);
+      currentStageIdx = 0;
+      document.getElementById('missionAdvance').disabled = false;
+      renderMissionStage();
+    });
+  });
+  renderMissionStage();
+
+  /* ---- bottom nav active state ---- */
+  var navLinks = document.querySelectorAll('.bottomnav a');
+  var sectionMap = {inicio:'home', mision:'mision', mapa:'mapa', laboratorio:'tools', estado:'more'};
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 140;
+    var current = 'home';
+    Object.keys(sectionMap).forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= pos) current = sectionMap[id];
+    });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.dataset.nav === current); });
+  }, {passive:true});
+
+  /* ---- topnav active underline via section observer ---- */
+  var trackedSections = ['para-quien','mapa','mision','laboratorio']
+    .map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var topNavLinks = document.querySelectorAll('.nav a[href^="#"]');
+  if ('IntersectionObserver' in window){
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          topNavLinks.forEach(function(l){ l.classList.remove('active'); });
+          var match = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
+          if (match) match.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-45% 0px -45% 0px'});
+    trackedSections.forEach(function(s){ navObserver.observe(s); });
+  }
+
+})();
+</script>
+</body>
+</html>

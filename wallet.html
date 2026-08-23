@@ -216,98 +216,169 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .modal-handle{width:40px;height:4px;border-radius:100px;background:var(--slate);margin:0 auto 16px;}
 
 /* ============================================================
-   WALLET (HOME)
+   WALLET (HOME) — "Freedom inside structure"
    ============================================================ */
-.home-hero{text-align:left;padding:4px 0 18px;}
+
+/* --- Hero --- */
+.home-hero{text-align:left;padding:6px 0 22px;}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
 .hero-greeting{font-size:13px;color:var(--text-soft);font-weight:500;}
-.hero-name{font-size:32px;font-weight:800;margin-top:4px;}
-.hero-name span{
-  background:linear-gradient(135deg,var(--cyan),var(--cyan-bright));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
+.hero-name{font-family:var(--font-display);font-size:30px;font-weight:700;margin-top:2px;letter-spacing:-0.02em;}
+.hero-name span{color:var(--text);}
 .avatar-ring{
-  width:64px;height:64px;border-radius:50%;border:2px solid var(--border-strong);
+  width:52px;height:52px;border-radius:50%;border:1.5px solid var(--border-strong);
   display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--ocean-light),var(--ocean-surface));
-  font-size:28px;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(0,229,204,0.12);
+  background:var(--bg-card);
+  font-size:24px;position:relative;overflow:hidden;flex-shrink:0;
   cursor:pointer;transition:transform .2s var(--ease-spring);
 }
 .avatar-ring:hover{transform:scale(1.05);}
 .avatar-ring:active{transform:scale(.95);}
-.hero-top{display:flex;align-items:center;justify-content:space-between;}
 
-.stat-row{display:flex;gap:8px;margin-top:18px;}
-.stat-card{
-  flex:1;padding:14px 10px;text-align:center;background:var(--bg-card);border:1px solid var(--border);
-  border-radius:var(--radius-m);
+.hero-question{
+  font-family:var(--font-display);font-size:22px;font-weight:600;margin-top:16px;
+  color:var(--text);letter-spacing:-0.01em;
 }
-.stat-num{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--cyan);}
-.stat-label{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
 
-.focus-card{
-  margin-top:18px;padding:24px;position:relative;overflow:hidden;
-  background:linear-gradient(155deg,var(--ocean-mid) 0%,var(--ocean-light) 50%,rgba(0,229,204,0.08) 100%);
-  border:1px solid var(--border-strong);border-radius:var(--radius-xl);
-  box-shadow:var(--card-shadow),0 0 40px rgba(0,229,204,0.08);
+/* Three quiet actions: FOCUS / DO / CAPTURE */
+.hero-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.hero-action{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:16px 8px;border-radius:var(--radius-m);border:1px solid var(--border);
+  background:var(--bg-card);color:var(--text-soft);
+  transition:transform .18s var(--ease-spring),border-color .2s var(--ease),color .2s var(--ease);
 }
-.focus-card::before{
-  content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
-  background:radial-gradient(circle,rgba(0,229,204,0.1),transparent 70%);border-radius:50%;
-}
-.focus-card .eyebrow{color:var(--cyan-bright);}
-.focus-card h3{font-size:20px;margin-top:6px;color:var(--text);}
-.focus-card p{color:var(--text-soft);font-size:13px;margin-top:6px;line-height:1.5;}
+.hero-action:active{transform:scale(.95);}
+.hero-action .hero-action-icon{font-size:18px;}
+.hero-action .hero-action-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.hero-action.is-focus:hover,.hero-action.is-focus:focus-visible{border-color:rgba(0,229,204,0.35);color:var(--cyan);}
+.hero-action.is-do:hover,.hero-action.is-do:focus-visible{border-color:rgba(255,107,107,0.35);color:var(--coral-warm);}
+.hero-action.is-capture:hover,.hero-action.is-capture:focus-visible{border-color:rgba(255,184,77,0.35);color:var(--amber);}
 
-/* Welcome Note */
-.welcome-note{
-  margin-top:16px;padding:20px;position:relative;overflow:hidden;
-  background:linear-gradient(155deg,var(--ocean-mid) 0%,var(--ocean-light) 60%,rgba(0,229,204,0.06) 100%);
-  border:1px solid var(--border-strong);border-radius:var(--radius-xl);
-  box-shadow:var(--card-shadow),0 0 40px rgba(0,229,204,0.06);
+/* Inline quick-capture bar (revealed by CAPTURE) */
+.quick-capture{
+  display:flex;gap:8px;margin-top:10px;overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .3s var(--ease),opacity .25s var(--ease),margin .3s var(--ease);
 }
-.welcome-note::before{
-  content:'';position:absolute;top:-20px;left:-20px;width:80px;height:80px;
-  background:radial-gradient(circle,rgba(0,229,204,0.08),transparent 70%);border-radius:50%;
+.quick-capture.open{max-height:70px;opacity:1;}
+.quick-capture input{flex:1;}
+.quick-capture-toggle{
+  display:flex;gap:4px;flex-shrink:0;background:var(--bg-sunken);border:1px solid var(--border);border-radius:10px;padding:3px;
 }
-.welcome-note::after{
-  content:'';position:absolute;bottom:-16px;right:-16px;width:70px;height:70px;
-  background:radial-gradient(circle,rgba(255,107,107,0.06),transparent 70%);border-radius:50%;
+.quick-capture-toggle button{
+  border:none;background:transparent;color:var(--text-faint);font-size:10.5px;font-weight:700;
+  padding:7px 9px;border-radius:7px;transition:all .15s var(--ease);
 }
-.welcome-date-row{display:flex;align-items:center;gap:12px;}
-.welcome-moon{font-size:28px;filter:drop-shadow(0 0 8px rgba(255,184,77,0.3));}
-.welcome-date-info{flex:1;}
-.welcome-date-main{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text);}
-.welcome-date-sub{font-size:11.5px;color:var(--text-soft);margin-top:2px;font-weight:500;}
-.welcome-week-chip{
-  padding:6px 12px;border-radius:100px;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-  background:var(--accent-soft);color:var(--cyan);border:1px solid var(--border-strong);text-transform:uppercase;
-}
-.welcome-divider{height:1px;background:var(--border);margin:14px 0;}
-.welcome-pending-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.welcome-pending-label{font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;}
-.welcome-pending-count{font-size:10px;font-weight:700;color:var(--coral-warm);padding:3px 8px;border-radius:100px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.15);}
-.welcome-todo-item{
-  display:flex;align-items:center;gap:10px;padding:8px 0;
-  border-bottom:1px solid var(--border);font-size:13px;color:var(--text);
-}
-.welcome-todo-item:last-child{border-bottom:none;}
-.welcome-todo-bullet{
-  width:8px;height:8px;border-radius:50%;flex-shrink:0;
-  background:var(--coral);box-shadow:0 0 6px rgba(255,107,107,0.3);
-}
-.welcome-todo-text{flex:1;line-height:1.3;}
-.welcome-todo-go{
-  font-size:10px;font-weight:700;color:var(--cyan);cursor:pointer;
-  padding:4px 10px;border-radius:8px;border:1px solid var(--border-strong);
-  background:var(--accent-soft);transition:all .15s var(--ease);
-}
-.welcome-todo-go:hover{background:var(--cyan);color:var(--ocean);}
-.welcome-empty{color:var(--text-faint);font-size:12.5px;font-style:italic;padding:4px 0;}
+.quick-capture-toggle button.active{background:var(--amber);color:#2b1c00;}
 
-.arcade-section{margin-top:20px;}
-.arcade-title{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.arcade-title h3{font-size:18px;font-weight:700;}
-.arcade-title span{font-size:22px;}
+/* --- Today card (the one primary card) --- */
+.today-card{
+  margin-top:20px;padding:22px;position:relative;overflow:hidden;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);
+  box-shadow:var(--card-shadow);
+}
+.today-head{display:flex;align-items:center;gap:12px;}
+.today-moon{font-size:24px;filter:drop-shadow(0 0 6px rgba(255,184,77,0.25));flex-shrink:0;}
+.today-head-info{flex:1;min-width:0;}
+.today-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);}
+.today-date-main{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text);margin-top:2px;}
+.today-date-sub{font-size:11.5px;color:var(--text-soft);margin-top:1px;}
+.today-week-chip{
+  font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--text-faint);
+  padding:5px 10px;border-radius:100px;border:1px solid var(--border);white-space:nowrap;
+}
+.today-divider{height:1px;background:var(--border);margin:18px 0 14px;}
+.today-list-label{font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:10px;}
+.today-item-row{
+  display:flex;align-items:flex-start;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--border);
+}
+.today-item-row:last-child{border-bottom:none;}
+.today-item-check{
+  width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-strong);background:transparent;
+  flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;color:transparent;font-size:11px;
+  transition:all .15s var(--ease);
+}
+.today-item-check:hover{border-color:var(--coral);color:var(--coral);}
+.today-item-body{flex:1;min-width:0;}
+.today-item-text{font-size:14px;color:var(--text);line-height:1.4;word-break:break-word;}
+.today-item-age{font-size:11px;color:var(--text-faint);margin-top:2px;}
+.today-item-age.is-recent{color:var(--text-faint);}
+.today-item-age.is-waiting{color:var(--coral-warm);}
+.today-more{font-size:11.5px;color:var(--text-faint);margin-top:8px;text-align:center;}
+.today-empty{text-align:center;padding:20px 0 6px;color:var(--text-faint);font-size:13px;}
+
+/* --- Still Carrying This? --- */
+.carrying-section{margin-top:16px;}
+.carrying-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;padding-left:2px;}
+.carrying-card{
+  padding:18px;margin-bottom:10px;border-radius:var(--radius-l);
+  background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--coral);
+}
+.carrying-text{font-size:14.5px;color:var(--text);line-height:1.4;}
+.carrying-age{font-size:12px;color:var(--coral-warm);margin-top:4px;font-weight:600;}
+.carrying-actions{display:flex;gap:8px;margin-top:14px;}
+.carrying-actions button{
+  flex:1;padding:9px 10px;border-radius:10px;font-size:11.5px;font-weight:700;border:1px solid var(--border);
+  background:transparent;color:var(--text-soft);transition:all .15s var(--ease);
+}
+.carrying-actions button:active{transform:scale(.96);}
+.carrying-actions .act-do:hover{border-color:var(--coral);color:var(--coral);background:rgba(255,107,107,0.06);}
+.carrying-actions .act-move:hover{border-color:var(--cyan-dim);color:var(--cyan);background:rgba(0,229,204,0.06);}
+.carrying-actions .act-let-go:hover{border-color:var(--text-faint);color:var(--text);background:var(--bg-sunken);}
+
+/* --- Rhythm --- */
+.rhythm-section{margin-top:20px;padding:16px 18px;border-radius:var(--radius-l);background:var(--bg-card);border:1px solid var(--border);}
+.rhythm-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.rhythm-label{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
+.rhythm-headline{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--text);margin-top:4px;}
+.rhythm-dots{display:flex;gap:4px;}
+.rhythm-dot{width:6px;height:6px;border-radius:50%;background:var(--border-strong);}
+.rhythm-dot.lit{background:var(--cyan);}
+.rhythm-foot{display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.rhythm-metric{font-size:12px;color:var(--text-soft);}
+
+/* --- Your Space --- */
+.space-section{margin-top:24px;}
+.space-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;padding-left:2px;}
+.space-grid{display:flex;flex-direction:column;gap:8px;}
+.space-card{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--radius-l);
+  background:var(--bg-card);border:1px solid var(--border);
+  transition:transform .18s var(--ease-spring),border-color .2s var(--ease);
+}
+.space-card:active{transform:scale(.985);}
+.space-card-icon{font-size:20px;flex-shrink:0;}
+.space-card-title{font-size:14px;font-weight:700;color:var(--text);}
+.space-card-sub{font-size:12px;color:var(--text-faint);margin-top:2px;}
+.space-card.tone-focus:hover{border-color:rgba(0,229,204,0.3);}
+.space-card.tone-habits:hover{border-color:rgba(255,107,107,0.3);}
+.space-card.tone-ideas:hover{border-color:rgba(255,184,77,0.3);}
+
+/* --- Recent Ideas --- */
+.recent-ideas-section{margin-top:24px;}
+.recent-idea-row{
+  display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:var(--radius-m);
+  background:var(--bg-card);border:1px solid var(--border);margin-bottom:8px;
+}
+.recent-idea-icon{color:var(--amber);font-size:14px;margin-top:1px;}
+.recent-idea-text{flex:1;font-size:13.5px;color:var(--text);line-height:1.4;}
+.recent-idea-time{font-size:11px;color:var(--text-faint);white-space:nowrap;margin-top:2px;}
+.recent-ideas-empty{font-size:12.5px;color:var(--text-faint);font-style:italic;padding:2px 2px 0;}
+
+/* --- Quiet Arcade drawer --- */
+.arcade-section{margin-top:24px;}
+.arcade-toggle{
+  width:100%;display:flex;align-items:center;gap:8px;padding:12px 4px;background:transparent;border:none;
+  color:var(--text-faint);font-size:12px;font-weight:600;
+}
+.arcade-toggle .chev{margin-left:auto;transition:transform .2s var(--ease);}
+.arcade-toggle.open .chev{transform:rotate(180deg);}
+.arcade-drawer{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);}
+.arcade-drawer.open{max-height:900px;}
+.arcade-title{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-top:6px;}
+.arcade-title h3{font-size:16px;font-weight:700;}
+.arcade-title span{font-size:20px;}
 .arcade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .arcade-card{
   padding:14px;border:1px solid var(--border);border-radius:var(--radius-m);
@@ -670,52 +741,120 @@ textarea.input-field{resize:vertical;min-height:60px;}
 
   <!-- WALLET VIEW -->
   <section class="view" id="viewWallet">
+
+    <!-- 1. HERO -->
     <div class="home-hero">
       <div class="hero-top">
         <div>
           <div class="hero-greeting" id="heroGreeting">Good evening,</div>
           <div class="hero-name" id="heroName"><span>Explorer</span></div>
         </div>
-        <div class="avatar-ring" id="heroAvatar">🧭</div>
+        <div class="avatar-ring" id="heroAvatar" onclick="openPersonalize()">🧭</div>
       </div>
-    </div>
-    <div class="stat-row">
-      <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak</div></div>
-      <div class="stat-card"><div class="stat-num" id="statTodos">0</div><div class="stat-label">Done Today</div></div>
-      <div class="stat-card"><div class="stat-num" id="statIdeas">0</div><div class="stat-label">Ideas</div></div>
-    </div>
-    <div class="welcome-note" id="welcomeNote">
-      <div class="welcome-date-row">
-        <div class="welcome-moon" id="welcomeMoon">🌙</div>
-        <div class="welcome-date-info">
-          <div class="welcome-date-main" id="welcomeDateMain"></div>
-          <div class="welcome-date-sub" id="welcomeDateSub"></div>
+      <div class="hero-question">What matters today?</div>
+      <div class="hero-actions">
+        <button class="hero-action is-focus" onclick="showView('habits')">
+          <span class="hero-action-icon">🎯</span><span class="hero-action-label">Focus</span>
+        </button>
+        <button class="hero-action is-do" onclick="showView('todos')">
+          <span class="hero-action-icon">✅</span><span class="hero-action-label">Do</span>
+        </button>
+        <button class="hero-action is-capture" onclick="toggleQuickCapture()">
+          <span class="hero-action-icon">💡</span><span class="hero-action-label">Capture</span>
+        </button>
+      </div>
+      <div class="quick-capture" id="quickCapture">
+        <div class="quick-capture-toggle">
+          <button class="active" data-kind="idea" onclick="setQuickCaptureKind('idea',this)">Idea</button>
+          <button data-kind="task" onclick="setQuickCaptureKind('task',this)">Task</button>
         </div>
-        <div class="welcome-week-chip" id="welcomeWeek"></div>
-      </div>
-      <div class="welcome-divider"></div>
-      <div class="welcome-pending-header">
-        <div class="welcome-pending-label">Pending Tasks</div>
-        <div class="welcome-pending-count" id="welcomePendingCount">0</div>
-      </div>
-      <div id="welcomePendingList"></div>
-    </div>
-    <div class="focus-card">
-      <div class="eyebrow">Daily Focus</div>
-      <h3>What will you build today?</h3>
-      <p>Start a habit session, knock out your todos, or catch a fleeting idea before it escapes.</p>
-      <div style="display:flex;gap:8px;margin-top:14px;">
-        <button class="btn btn-cyan btn-sm" onclick="showView('habits')">🔄 Focus</button>
-        <button class="btn btn-ghost btn-sm" onclick="showView('todos')">✅ Todos</button>
-        <button class="btn btn-ghost btn-sm" onclick="showView('ideas')">💡 Ideas</button>
+        <input type="text" class="input-field" id="quickCaptureInput" placeholder="What's on your mind?" maxlength="200">
       </div>
     </div>
+
+    <!-- 2. TODAY'S WALLET -->
+    <div class="today-card">
+      <div class="today-head">
+        <div class="today-moon" id="todayMoon">🌙</div>
+        <div class="today-head-info">
+          <div class="today-eyebrow">Today</div>
+          <div class="today-date-main" id="todayDateMain"></div>
+          <div class="today-date-sub" id="todayDateSub"></div>
+        </div>
+        <div class="today-week-chip" id="todayWeek"></div>
+      </div>
+      <div class="today-divider"></div>
+      <div class="today-list-label" id="todayListLabel">What's with you right now</div>
+      <div id="todayItemsList"></div>
+    </div>
+
+    <!-- 4. STILL CARRYING THIS? -->
+    <div class="carrying-section" id="carryingSection" hidden>
+      <div class="carrying-eyebrow">Still carrying this?</div>
+      <div id="carryingList"></div>
+    </div>
+
+    <!-- 6. RHYTHM -->
+    <div class="rhythm-section">
+      <div class="rhythm-top">
+        <div>
+          <div class="rhythm-label">Your Rhythm</div>
+          <div class="rhythm-headline" id="rhythmHeadline">4 days showing up</div>
+        </div>
+        <div class="rhythm-dots" id="rhythmDots"></div>
+      </div>
+      <div class="rhythm-foot">
+        <div class="rhythm-metric" id="rhythmDoneToday">Nothing finished yet</div>
+        <div class="rhythm-metric" id="rhythmIdeasToday"></div>
+      </div>
+    </div>
+
+    <!-- 7. YOUR SPACE -->
+    <div class="space-section">
+      <div class="space-eyebrow">Your Space</div>
+      <div class="space-grid">
+        <div class="space-card tone-focus" onclick="showView('habits')">
+          <div class="space-card-icon">🧠</div>
+          <div>
+            <div class="space-card-title">Focus</div>
+            <div class="space-card-sub">Give one thing your attention.</div>
+          </div>
+        </div>
+        <div class="space-card tone-habits" onclick="showView('habits')">
+          <div class="space-card-icon">🔄</div>
+          <div>
+            <div class="space-card-title">Habits</div>
+            <div class="space-card-sub">Keep what matters alive.</div>
+          </div>
+        </div>
+        <div class="space-card tone-ideas" onclick="showView('ideas')">
+          <div class="space-card-icon">💡</div>
+          <div>
+            <div class="space-card-title">Ideas</div>
+            <div class="space-card-sub">Capture before it disappears.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. RECENT IDEAS -->
+    <div class="recent-ideas-section">
+      <div class="space-eyebrow">Recent Ideas</div>
+      <div id="recentIdeasList"></div>
+    </div>
+
+    <!-- Quiet Brain Arcade drawer (existing feature, kept out of the way) -->
     <div class="arcade-section">
-      <div class="arcade-title">
-        <span>🎮</span><h3>Brain Arcade</h3>
-        <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:10px;padding:5px 10px;" onclick="openArcadeEditor()">✏️ Edit</button>
+      <button class="arcade-toggle" id="arcadeToggle" onclick="toggleArcadeDrawer()">
+        <span>🎮</span><span>Brain Arcade</span><span class="chev">⌄</span>
+      </button>
+      <div class="arcade-drawer" id="arcadeDrawer">
+        <div class="arcade-title">
+          <span>🎮</span><h3>Brain Arcade</h3>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:10px;padding:5px 10px;" onclick="openArcadeEditor()">✏️ Edit</button>
+        </div>
+        <div class="arcade-grid" id="arcadeGrid"></div>
       </div>
-      <div class="arcade-grid" id="arcadeGrid"></div>
     </div>
   </section>
 
@@ -1005,6 +1144,11 @@ let state = defaultState();
 
 function load(){
   try{const raw=localStorage.getItem(STORE_KEY);if(raw){state=Object.assign(defaultState(),JSON.parse(raw));}}catch(e){}
+  // Data compatibility: gracefully backfill createdAt on legacy records without erasing anything.
+  let touched=false;
+  (state.todos||[]).forEach(t=>{if(!t.createdAt){t.createdAt=new Date().toISOString();touched=true;}});
+  (state.ideas||[]).forEach(i=>{if(!i.createdAt){i.createdAt=new Date().toISOString();touched=true;}});
+  if(touched)save();
 }
 function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
 
@@ -1130,11 +1274,180 @@ function renderWallet(){
   document.getElementById('heroGreeting').textContent=getGreeting();
   document.getElementById('heroName').innerHTML='<span>'+escHtml(state.name||'Explorer')+'</span>';
   document.getElementById('heroAvatar').textContent=state.avatar;
-  document.getElementById('statStreak').textContent=state.streak;
-  document.getElementById('statTodos').textContent=state.todos.filter(t=>t.done&&t.doneDate===todayStr()).length;
-  document.getElementById('statIdeas').textContent=state.ideas.filter(i=>!i.archived).length;
-  renderWelcomeNote();
+  renderTodayDate();
+  renderTodayCard();
+  renderCarrying();
+  renderRhythm();
+  renderRecentIdeas();
   renderArcade();
+}
+
+/* --- Age Intelligence ---
+   ageInDays is computed live from createdAt (or snoozedAt, if the person
+   chose "Move" to quietly reset the clock without losing the original date). */
+function effectiveCreatedAt(t){
+  return t.snoozedAt ? t.snoozedAt : t.createdAt;
+}
+
+function ageInDays(iso){
+  const created=new Date(iso);
+  const created0=new Date(created.getFullYear(),created.getMonth(),created.getDate());
+  const now=new Date();
+  const now0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.round((now0-created0)/86400000);
+}
+
+function ageLabel(t){
+  const days=ageInDays(effectiveCreatedAt(t));
+  if(days<=0)return 'Added today';
+  if(days===1)return 'Waiting since yesterday';
+  if(days<7)return 'Waiting '+days+' days';
+  if(days<14)return '1 week waiting';
+  if(days<30){const w=Math.floor(days/7);return w+' weeks waiting';}
+  const m=Math.floor(days/30);
+  return (m===1?'1 month waiting':m+' months waiting');
+}
+
+/* --- Today's Wallet --- */
+function renderTodayDate(){
+  const now=new Date();
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const moon=getMoonPhase();
+  document.getElementById('todayDateMain').textContent=days[now.getDay()]+', '+months[now.getMonth()]+' '+now.getDate();
+  document.getElementById('todayDateSub').textContent=moon.name+' · '+moon.emoji;
+  document.getElementById('todayMoon').textContent=moon.emoji;
+  document.getElementById('todayWeek').textContent='Week '+getWeekNumber();
+}
+
+function renderTodayCard(){
+  const pending=sortTodosList(state.todos.filter(t=>!t.done));
+  const label=document.getElementById('todayListLabel');
+  const list=document.getElementById('todayItemsList');
+  if(pending.length===0){
+    label.textContent="What's with you right now";
+    list.innerHTML='<div class="today-empty">Nothing you\'re carrying right now — a clean slate.</div>';
+    return;
+  }
+  label.textContent=pending.length===1?'1 thing is with you':pending.length+' things are with you';
+  const show=pending.slice(0,6);
+  list.innerHTML=show.map(t=>{
+    const days=ageInDays(effectiveCreatedAt(t));
+    const cls=days<=0?'is-recent':(days>=3?'is-waiting':'is-recent');
+    return '<div class="today-item-row">'+
+      '<button class="today-item-check" onclick="doItTodo(\''+t.id+'\')" title="Mark done">✓</button>'+
+      '<div class="today-item-body">'+
+        '<div class="today-item-text">'+escHtml(t.text)+'</div>'+
+        '<div class="today-item-age '+cls+'">'+ageLabel(t)+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('')+
+  (pending.length>6?'<div class="today-more">+ '+(pending.length-6)+' more — <span style="text-decoration:underline;cursor:pointer;" onclick="showView(\'todos\')">see all</span></div>':'');
+}
+
+/* --- Still Carrying This? (quiet reflection, not a punishment) --- */
+function renderCarrying(){
+  const section=document.getElementById('carryingSection');
+  const list=document.getElementById('carryingList');
+  const old=state.todos.filter(t=>!t.done&&ageInDays(effectiveCreatedAt(t))>=7)
+    .sort((a,b)=>new Date(effectiveCreatedAt(a))-new Date(effectiveCreatedAt(b)))
+    .slice(0,3);
+  if(old.length===0){section.hidden=true;list.innerHTML='';return;}
+  section.hidden=false;
+  list.innerHTML=old.map(t=>
+    '<div class="carrying-card">'+
+      '<div class="carrying-text">'+escHtml(t.text)+'</div>'+
+      '<div class="carrying-age">'+ageLabel(t)+'</div>'+
+      '<div class="carrying-actions">'+
+        '<button class="act-do" onclick="doItTodo(\''+t.id+'\')">Do it</button>'+
+        '<button class="act-move" onclick="moveTodo(\''+t.id+'\')">Move</button>'+
+        '<button class="act-let-go" onclick="letGoTodo(\''+t.id+'\')">Let go</button>'+
+      '</div>'+
+    '</div>'
+  ).join('');
+}
+
+function doItTodo(id){toggleTodo(id);renderWallet();toast('Done ✓');}
+function moveTodo(id){
+  const t=state.todos.find(x=>x.id===id);if(!t)return;
+  t.snoozedAt=new Date().toISOString();save();renderWallet();
+  toast('Moved — it\'ll wait quietly');
+}
+function letGoTodo(id){
+  deleteTodo(id);renderWallet();toast('Let go ✓');
+}
+
+/* --- Your Rhythm --- */
+function renderRhythm(){
+  const headline=document.getElementById('rhythmHeadline');
+  if(state.streak<=0){
+    headline.textContent='Your rhythm can begin again';
+  }else if(state.streak===1){
+    headline.textContent='1 day showing up';
+  }else{
+    headline.textContent=state.streak+' days showing up';
+  }
+  const dotsEl=document.getElementById('rhythmDots');
+  const lit=Math.min(state.streak,7);
+  let dots='';
+  for(let i=0;i<7;i++){dots+='<div class="rhythm-dot'+(i<lit?' lit':'')+'"></div>';}
+  dotsEl.innerHTML=dots;
+
+  const doneToday=state.todos.filter(t=>t.done&&t.doneDate===todayStr()).length;
+  document.getElementById('rhythmDoneToday').textContent=doneToday>0?(doneToday+(doneToday===1?' thing':' things')+' completed'):'Nothing finished yet';
+  const ideasToday=state.ideas.filter(i=>i.createdAt&&i.createdAt.slice(0,10)===todayStr()).length;
+  document.getElementById('rhythmIdeasToday').textContent=ideasToday>0?(ideasToday+(ideasToday===1?' idea':' ideas')+' captured'):'';
+}
+
+/* --- Recent Ideas --- */
+function renderRecentIdeas(){
+  const list=document.getElementById('recentIdeasList');
+  const recent=state.ideas.filter(i=>!i.archived).slice(0,3);
+  if(recent.length===0){
+    list.innerHTML='<div class="recent-ideas-empty">Nothing captured yet — a thought is welcome anytime.</div>';
+    return;
+  }
+  list.innerHTML=recent.map(i=>
+    '<div class="recent-idea-row" onclick="showView(\'ideas\')">'+
+      '<div class="recent-idea-icon">💡</div>'+
+      '<div class="recent-idea-text">'+escHtml(i.text)+'</div>'+
+      '<div class="recent-idea-time">'+relativeTime(i.createdAt)+'</div>'+
+    '</div>'
+  ).join('');
+}
+
+/* --- Quick Capture --- */
+let quickCaptureKind='idea';
+function toggleQuickCapture(){
+  const el=document.getElementById('quickCapture');
+  el.classList.toggle('open');
+  if(el.classList.contains('open'))document.getElementById('quickCaptureInput').focus();
+}
+function setQuickCaptureKind(kind,el){
+  quickCaptureKind=kind;
+  document.querySelectorAll('.quick-capture-toggle button').forEach(b=>b.classList.toggle('active',b.dataset.kind===kind));
+}
+function submitQuickCapture(){
+  const input=document.getElementById('quickCaptureInput');
+  const text=input.value.trim();
+  if(!text){toast('Type something first');return;}
+  if(quickCaptureKind==='idea'){
+    state.ideas.unshift({id:uid(),text:text,category:'general',createdAt:new Date().toISOString(),archived:false});
+    toast('Idea captured ✓');
+  }else{
+    state.todos.push({id:uid(),text:text,done:false,doneDate:null,priority:null,dueDate:null,dueTime:null,createdAt:new Date().toISOString()});
+    toast('Task added ✓');
+  }
+  save();
+  input.value='';
+  document.getElementById('quickCapture').classList.remove('open');
+  renderWallet();
+}
+
+/* --- Quiet Arcade Drawer --- */
+function toggleArcadeDrawer(){
+  document.getElementById('arcadeToggle').classList.toggle('open');
+  document.getElementById('arcadeDrawer').classList.toggle('open');
 }
 
 /* Moon Phase Calculation (approximate synodic cycle) */
@@ -1165,41 +1478,6 @@ function getWeekNumber(){
   const oneDay=86400000;
   const dayNum=Math.floor((diff/oneDay)+((start.getDay()+6)%7)/7);
   return Math.ceil(dayNum/7);
-}
-
-function renderWelcomeNote(){
-  const now=new Date();
-  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const dayName=days[now.getDay()];
-  const monthName=months[now.getMonth()];
-  const dateNum=now.getDate();
-  const year=now.getFullYear();
-  const moon=getMoonPhase();
-  const weekNum=getWeekNumber();
-
-  document.getElementById('welcomeDateMain').textContent=dayName+', '+monthName+' '+dateNum;
-  document.getElementById('welcomeDateSub').textContent=year+' · '+moon.name;
-  document.getElementById('welcomeMoon').textContent=moon.emoji;
-  document.getElementById('welcomeWeek').textContent='Week '+weekNum;
-
-  const pending=state.todos.filter(t=>!t.done);
-  document.getElementById('welcomePendingCount').textContent=pending.length+' left';
-
-  if(pending.length===0){
-    document.getElementById('welcomePendingList').innerHTML='<div class="welcome-empty">All clear — nothing pending ✓</div>';
-  } else {
-    const show=pending.slice(0,5);
-    document.getElementById('welcomePendingList').innerHTML=
-      show.map(t=>
-        '<div class="welcome-todo-item">'+
-        '<div class="welcome-todo-bullet"></div>'+
-        '<div class="welcome-todo-text">'+escHtml(t.text)+'</div>'+
-        '</div>'
-      ).join('')+
-      (pending.length>5?'<div style="font-size:11px;color:var(--text-faint);padding-top:6px;">+ '+ (pending.length-5)+' more tasks</div>':'')+
-      '<div style="margin-top:10px;text-align:right;"><button class="welcome-todo-go" onclick="showView(\'todos\')">Go to Todos →</button></div>';
-  }
 }
 
 function getAllArcadeGames(){
@@ -1731,6 +2009,7 @@ document.getElementById('btnTheme').addEventListener('click',()=>{
 });
 document.getElementById('btnPersonalize').addEventListener('click',openPersonalize);
 document.getElementById('btnSync').addEventListener('click',openDataSync);
+document.getElementById('quickCaptureInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitQuickCapture();});
 
 /* ============================================================
    ONBOARDING

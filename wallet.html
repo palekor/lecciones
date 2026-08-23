@@ -224,12 +224,16 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
 .hero-greeting{font-size:13px;color:var(--text-soft);font-weight:500;}
 .hero-name{font-family:var(--font-display);font-size:30px;font-weight:700;margin-top:2px;letter-spacing:-0.02em;}
-.hero-name span{color:var(--text);}
+.hero-name span{
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-bright));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 .avatar-ring{
-  width:52px;height:52px;border-radius:50%;border:1.5px solid var(--border-strong);
+  width:64px;height:64px;border-radius:50%;border:2px solid var(--border-strong);
   display:flex;align-items:center;justify-content:center;
-  background:var(--bg-card);
-  font-size:24px;position:relative;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(135deg,var(--ocean-light),var(--ocean-surface));
+  font-size:28px;position:relative;overflow:hidden;flex-shrink:0;
+  box-shadow:0 0 20px rgba(0,229,204,0.12), 0 0 20px color-mix(in srgb, var(--cyan) 30%, transparent);
   cursor:pointer;transition:transform .2s var(--ease-spring);
 }
 .avatar-ring:hover{transform:scale(1.05);}

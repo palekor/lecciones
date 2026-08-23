@@ -46,6 +46,42 @@
     .conj-panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:start}.conj-side{background:var(--ink);color:white;border-radius:28px;padding:26px}.conj-side h3{font:800 1.7rem Fraunces,serif;margin:0 0 10px}.conj-side p{color:#d8d4e4}.conj-side select{width:100%;margin-top:12px;border:0;border-radius:15px;padding:12px;background:white;color:var(--ink);font-weight:800}.conj-table{background:white;border:1px solid var(--line-soft);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}.conj-row{display:grid;grid-template-columns:1fr 1.6fr;border-bottom:1px solid var(--line-soft)}.conj-row:last-child{border-bottom:0}.conj-row div{padding:14px 18px}.conj-row .pp{font:800 .95rem 'DM Mono';color:var(--mist);background:var(--cloud)}.conj-row b{font:800 1.15rem Fraunces,serif}
     .osascomp{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.osas-chip{background:var(--ink);color:white;border-radius:14px;padding:10px 12px;text-align:center;flex:1;min-width:88px}.osas-chip small{display:block;font:.55rem 'DM Mono';color:var(--amber);letter-spacing:.08em;text-transform:uppercase}.osas-chip b{display:block;font-family:Fraunces,serif}
     .tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tc-card{background:white;border:1px solid var(--line-soft);border-radius:22px;padding:18px;box-shadow:0 10px 24px rgba(26,23,48,.05)}.tc-card b{display:block;font:800 1.15rem Fraunces,serif;color:var(--wine)}.tc-card p{margin:8px 0 0;color:var(--soft);font-size:.9rem}.tc-card code{display:block;margin-top:10px;background:var(--cloud);border-radius:12px;padding:9px;font:.72rem 'DM Mono'}
+    /* --- Premium: audio, motion, shimmer --- */
+    .say-btn{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:white;color:var(--coral-dark);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:8px;transition:.15s;padding:0;font-size:.8rem}
+    .say-btn:hover{background:var(--coral);color:white;border-color:var(--coral);transform:scale(1.08)}
+    .say-btn.playing{background:var(--coral);color:white;border-color:var(--coral);animation:sayPulse 1s ease-in-out infinite}
+    @keyframes sayPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+    .model .say-btn,.quiz .say-btn,.builder-side .say-btn,.conj-side .say-btn{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:var(--amber)}
+    .model .say-btn:hover,.quiz .say-btn:hover{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+    .say-word{display:inline-flex;align-items:center;gap:2px;flex-wrap:wrap}
+    .vb-card{cursor:pointer}.vb-card .say-btn{margin-left:0}
+    .conj-row{cursor:pointer;transition:.15s}.conj-row:hover{background:var(--cloud)}
+    body.no-speech .say-btn{display:none}
+    /* hero motion */
+    .hero h1 em{background:linear-gradient(100deg,var(--coral) 20%,var(--amber) 45%,var(--coral) 70%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+    @keyframes shine{to{background-position:-220% center}}
+    .hero-stage{perspective:1200px}
+    .question-core{transition:transform .12s ease-out}
+    .wh-orbit{animation:orbitFloat 4.2s ease-in-out infinite}
+    .w1{animation-delay:0s}.w2{animation-delay:-.7s}.w3{animation-delay:-1.4s}.w4{animation-delay:-2.1s}.w5{animation-delay:-2.8s}
+    @keyframes orbitFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-11px) rotate(2deg)}}
+    .wh-orbit:hover{animation-play-state:paused;transform:translateY(-14px) scale(1.06);box-shadow:0 20px 40px rgba(26,23,48,.18);z-index:5}
+    /* stagger reveal */
+    .reveal{transition-delay:calc(var(--d,0) * 70ms)}
+    /* card lift */
+    .rule-card,.tc-card,.script-card,.drill,.vb-card{transition:transform .22s ease,box-shadow .22s ease}
+    .rule-card:hover,.tc-card:hover,.script-card:hover,.drill:hover,.vb-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(26,23,48,.12)}
+    /* meter shimmer */
+    .meter span{position:relative;overflow:hidden}
+    .meter span:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);animation:meterShine 1.6s linear infinite}
+    @keyframes meterShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    /* whatsapp pulse */
+    .wa{animation:waPulse 3.2s ease-in-out infinite}
+    @keyframes waPulse{0%,100%{box-shadow:0 12px 32px rgba(37,211,102,.35)}50%{box-shadow:0 12px 32px rgba(37,211,102,.35),0 0 0 9px rgba(37,211,102,.14)}}
+    /* confetti */
+    .confetti-piece{position:fixed;top:-10px;z-index:200;border-radius:2px;pointer-events:none;animation:confettiFall linear forwards}
+    @keyframes confettiFall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}
+    @media(prefers-reduced-motion:reduce){.hero h1 em{animation:none}.wh-orbit{animation:none}.meter span:after{animation:none}.wa{animation:none}}
     @media(max-width:920px){.hero-grid,.section-head,.lab-top,.builder,.conj-panel{grid-template-columns:1fr}.hero{min-height:auto;padding-top:70px}.hero-stage{min-height:360px}.formula-track,.wh-grid,.vb-grid,.tc-grid{grid-template-columns:repeat(2,1fr)}.rules,.drills,.script-grid{grid-template-columns:1fr 1fr}.matrix{font-size:.92rem}.matrix div{padding:13px}}
     @media(max-width:620px){.wrap{width:min(100% - 22px,1140px)}section{padding:56px 0}.hero h1{font-size:clamp(3.2rem,16vw,4.8rem)}.hero-actions .btn{width:100%}.wh-orbit{width:72px;height:72px;font-size:1rem}.formula-track,.wh-grid,.fact-grid,.rules,.drills,.answers,.script-grid,.vb-grid,.tc-grid{grid-template-columns:1fr}.matrix{display:block}.matrix div{border-right:0}.conj-row{grid-template-columns:1fr}.wa span{display:none}.wa{width:54px;height:54px;display:grid;place-items:center;padding:0}.nav-shell a{font-size:.78rem;padding:9px 12px}}
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
@@ -64,8 +100,8 @@
           <a class="btn btn-light" href="#builder">Build sentences</a>
         </div>
       </div>
-      <div class="hero-stage" aria-label="The sentence engine pieces orbiting the core">
-        <div class="question-core"><div><b>S+V</b><small>SUBJECT · VERB · SOUND</small></div></div>
+      <div class="hero-stage" aria-label="The sentence engine pieces orbiting the core" id="heroStage">
+        <div class="question-core" id="questionCore" role="button" tabindex="0" aria-label="Listen to Subject plus verb"><div><b>S+V</b><small>SUBJECT · VERB · SOUND</small></div></div>
         <div class="wh-orbit w1">Subject<small>7 pronouns</small></div>
         <div class="wh-orbit w2">Verb<small>reg / irreg</small></div>
         <div class="wh-orbit w3">Suffix<small>-s -ing -ed</small></div>
@@ -93,7 +129,7 @@
             <div class="formula-card"><small>Step 4</small><b>Auxiliary</b><p>do / does / did / am / is / are</p></div>
             <div class="formula-card"><small>Step 5</small><b>Complement</b><p>adjective, time clause, place, object</p></div>
           </div>
-          <div class="warning"><b>Core rule:</b> he / she / it always steals a suffix in present simple. Correct: <strong>She works from home.</strong> Incorrect: <strong>She work from home.</strong></div>
+          <div class="warning"><b>Core rule:</b> he / she / it always steals a suffix in present simple. Correct: <strong>She works from home.</strong> <button type="button" class="say-btn" data-say="She works from home." aria-label="Listen">🔊</button> Incorrect: <strong>She work from home.</strong></div>
         </div>
       </div>
     </section>
@@ -124,28 +160,28 @@
       <div class="wrap">
         <div class="section-head reveal"><div><div class="eyebrow">04 · Regular vs. irregular</div><h2>Two families. One logic.</h2></div><p>This step is only about affirmations and present tenses — speed and pattern recognition first, perfect accuracy later. Regular verbs never change their spine. Irregular verbs change shape between present and past, but still follow the same suffix logic in the present.</p></div>
         <div class="rules" style="margin-bottom:18px">
-          <article class="rule-card reveal"><h3>Regular verbs</h3><p>Present stays the same. Past always adds <b>-ed</b>. Future keeps the base form after "will".</p><code>walk → walked → will walk</code></article>
-          <article class="rule-card reveal"><h3>Irregular verbs</h3><p>Present looks regular. Past changes shape completely and must be memorized one by one.</p><code>go → went → will go</code></article>
-          <article class="rule-card reveal"><h3>Suffixes</h3><p>Regular takes <b>-s, -ing, -er, -ed</b>. Irregular still takes <b>-es, -ing</b> in the present.</p><code>work → works / working</code></article>
+          <article class="rule-card reveal"><h3>Regular verbs</h3><p>Present stays the same. Past always adds <b>-ed</b>. Future keeps the base form after "will".</p><code class="say-word">walk → walked → will walk<button type="button" class="say-btn" data-say="walk. walked. will walk." aria-label="Listen">🔊</button></code></article>
+          <article class="rule-card reveal"><h3>Irregular verbs</h3><p>Present looks regular. Past changes shape completely and must be memorized one by one.</p><code class="say-word">go → went → will go<button type="button" class="say-btn" data-say="go. went. will go." aria-label="Listen">🔊</button></code></article>
+          <article class="rule-card reveal"><h3>Suffixes</h3><p>Regular takes <b>-s, -ing, -er, -ed</b>. Irregular still takes <b>-es, -ing</b> in the present.</p><code class="say-word">work → works / working<button type="button" class="say-btn" data-say="work. works. working." aria-label="Listen">🔊</button></code></article>
         </div>
         <div class="matrix reveal" style="margin-bottom:14px">
           <div class="head"><small>Family</small><b>Regular</b></div><div class="head"><small>Present</small><b>Base form</b></div><div class="head"><small>Past</small><b>+ -ed</b></div><div class="head"><small>Future</small><b>will + base</b></div>
-          <div class="rowhead"><small>01</small><b>Walk</b></div><div>Walk</div><div>Walked</div><div>will Walk</div>
-          <div class="rowhead"><small>02</small><b>Talk</b></div><div>Talk</div><div>Talked</div><div>will Talk</div>
-          <div class="rowhead"><small>03</small><b>Work</b></div><div>Work</div><div>Worked</div><div>will Work</div>
-          <div class="rowhead"><small>04</small><b>Like</b></div><div>Like</div><div>Liked</div><div>will Like</div>
-          <div class="rowhead"><small>05</small><b>Love</b></div><div>Love</div><div>Loved</div><div>will Love</div>
+          <div class="rowhead"><small>01</small><b>Walk</b> <button type="button" class="say-btn" data-say="Walk. Walked. Will walk." aria-label="Listen">🔊</button></div><div>Walk</div><div>Walked</div><div>will Walk</div>
+          <div class="rowhead"><small>02</small><b>Talk</b> <button type="button" class="say-btn" data-say="Talk. Talked. Will talk." aria-label="Listen">🔊</button></div><div>Talk</div><div>Talked</div><div>will Talk</div>
+          <div class="rowhead"><small>03</small><b>Work</b> <button type="button" class="say-btn" data-say="Work. Worked. Will work." aria-label="Listen">🔊</button></div><div>Work</div><div>Worked</div><div>will Work</div>
+          <div class="rowhead"><small>04</small><b>Like</b> <button type="button" class="say-btn" data-say="Like. Liked. Will like." aria-label="Listen">🔊</button></div><div>Like</div><div>Liked</div><div>will Like</div>
+          <div class="rowhead"><small>05</small><b>Love</b> <button type="button" class="say-btn" data-say="Love. Loved. Will love." aria-label="Listen">🔊</button></div><div>Love</div><div>Loved</div><div>will Love</div>
         </div>
-        <div class="warning reveal" style="margin-bottom:24px"><b>Question / auxiliary (regular):</b> use <b>did</b>. Affirmation: <em>he did love her.</em> Question: <em>did he love her?</em></div>
+        <div class="warning reveal" style="margin-bottom:24px"><b>Question / auxiliary (regular):</b> use <b>did</b>. Affirmation: <em>he did love her.</em> Question: <em>did he love her?</em> <button type="button" class="say-btn" data-say="He did love her. Did he love her?" aria-label="Listen">🔊</button></div>
         <div class="matrix reveal" style="margin-bottom:14px">
           <div class="head"><small>Family</small><b>Irregular</b></div><div class="head"><small>Present</small><b>Base form</b></div><div class="head"><small>Past</small><b>Changes shape</b></div><div class="head"><small>Future</small><b>will + base</b></div>
-          <div class="rowhead"><small>01</small><b>Eat</b></div><div>Eat</div><div>Ate</div><div>will Eat</div>
-          <div class="rowhead"><small>02</small><b>Get</b></div><div>Get</div><div>Got</div><div>will Get</div>
-          <div class="rowhead"><small>03</small><b>Have</b></div><div>Have</div><div>Had</div><div>will have</div>
-          <div class="rowhead"><small>04</small><b>Go</b></div><div>Go</div><div>Went</div><div>will go</div>
-          <div class="rowhead"><small>05</small><b>Make</b></div><div>Make</div><div>Made</div><div>will make</div>
+          <div class="rowhead"><small>01</small><b>Eat</b> <button type="button" class="say-btn" data-say="Eat. Ate. Will eat." aria-label="Listen">🔊</button></div><div>Eat</div><div>Ate</div><div>will Eat</div>
+          <div class="rowhead"><small>02</small><b>Get</b> <button type="button" class="say-btn" data-say="Get. Got. Will get." aria-label="Listen">🔊</button></div><div>Get</div><div>Got</div><div>will Get</div>
+          <div class="rowhead"><small>03</small><b>Have</b> <button type="button" class="say-btn" data-say="Have. Had. Will have." aria-label="Listen">🔊</button></div><div>Have</div><div>Had</div><div>will have</div>
+          <div class="rowhead"><small>04</small><b>Go</b> <button type="button" class="say-btn" data-say="Go. Went. Will go." aria-label="Listen">🔊</button></div><div>Go</div><div>Went</div><div>will go</div>
+          <div class="rowhead"><small>05</small><b>Make</b> <button type="button" class="say-btn" data-say="Make. Made. Will make." aria-label="Listen">🔊</button></div><div>Make</div><div>Made</div><div>will make</div>
         </div>
-        <div class="warning reveal"><b>Question / auxiliary (irregular):</b> use <b>do</b> / <b>does</b> (3rd person). Affirmation: <em>he does eat meat for breakfast.</em> Question: <em>does he eat meat for breakfast?</em></div>
+        <div class="warning reveal"><b>Question / auxiliary (irregular):</b> use <b>do</b> / <b>does</b> (3rd person). Affirmation: <em>he does eat meat for breakfast.</em> Question: <em>does he eat meat for breakfast?</em> <button type="button" class="say-btn" data-say="He does eat meat for breakfast. Does he eat meat for breakfast?" aria-label="Listen">🔊</button></div>
       </div>
     </section>
 
@@ -215,14 +251,14 @@
             <div class="osas-chip"><small>6</small><b>Origin</b></div>
             <div class="osas-chip"><small>7</small><b>Material</b></div>
           </div>
-          <div class="warning"><b>Example:</b> a <em>beautiful (opinion) small (size) old (age) round (shape) brown (color) Colombian (origin) wooden (material)</em> table. Elementary level only needs two or three of these at once.</div>
+          <div class="warning"><b>Example:</b> a <em>beautiful (opinion) small (size) old (age) round (shape) brown (color) Colombian (origin) wooden (material)</em> table. <button type="button" class="say-btn" data-say="A beautiful, small, old, round, brown, Colombian, wooden table." aria-label="Listen">🔊</button> Elementary level only needs two or three of these at once.</div>
         </div>
         <div class="section-head reveal" style="margin-bottom:18px"><div><h2 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Time clauses connect two actions.</h2></div><p>A time clause tells the listener exactly when the main action happens. It attaches to a sentence you already know how to build — just add the connector.</p></div>
         <div class="tc-grid reveal">
-          <article class="tc-card"><b>When</b><p>A general or single moment.</p><code>When I finish my homework, I watch TV.</code></article>
-          <article class="tc-card"><b>While</b><p>Two things happening at once — pairs well with progressive.</p><code>She is studying while I am cooking.</code></article>
-          <article class="tc-card"><b>Before / After</b><p>Order of two actions.</p><code>Before you go, close the door.</code></article>
-          <article class="tc-card"><b>As soon as</b><p>Immediate sequence.</p><code>I call her as soon as I arrive.</code></article>
+          <article class="tc-card"><b>When</b><p>A general or single moment.</p><code class="say-word">When I finish my homework, I watch TV.<button type="button" class="say-btn" data-say="When I finish my homework, I watch TV." aria-label="Listen">🔊</button></code></article>
+          <article class="tc-card"><b>While</b><p>Two things happening at once — pairs well with progressive.</p><code class="say-word">She is studying while I am cooking.<button type="button" class="say-btn" data-say="She is studying while I am cooking." aria-label="Listen">🔊</button></code></article>
+          <article class="tc-card"><b>Before / After</b><p>Order of two actions.</p><code class="say-word">Before you go, close the door.<button type="button" class="say-btn" data-say="Before you go, close the door." aria-label="Listen">🔊</button></code></article>
+          <article class="tc-card"><b>As soon as</b><p>Immediate sequence.</p><code class="say-word">I call her as soon as I arrive.<button type="button" class="say-btn" data-say="I call her as soon as I arrive." aria-label="Listen">🔊</button></code></article>
         </div>
       </div>
     </section>
@@ -260,7 +296,42 @@
   <footer class="wrap">ProfGermandario · Step 01 · Foundations Masterclass · QK Rapid Learning System</footer>
 
   <script>
-    function speak(text,rate=.88){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate; const voices=speechSynthesis.getVoices(); const v=voices.find(x=>x.lang==='en-US')||voices.find(x=>x.lang&&x.lang.startsWith('en')); if(v) u.voice=v; speechSynthesis.speak(u); }
+    // ---- Audio engine (shared) ----
+    let ttsVoices=[]; function loadVoices(){ttsVoices=speechSynthesis.getVoices()}
+    if('speechSynthesis' in window){ loadVoices(); if('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged=loadVoices; } else { document.body.classList.add('no-speech'); }
+    function pickVoice(){ return ttsVoices.find(x=>/en-US/i.test(x.lang)&&/Samantha|Google US English|Female/i.test(x.name)) || ttsVoices.find(x=>x.lang==='en-US') || ttsVoices.find(x=>x.lang&&x.lang.startsWith('en')) || null; }
+    function speak(text,rate=.88,btn){ if(!('speechSynthesis' in window)||!text) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate; const v=pickVoice(); if(v) u.voice=v; document.querySelectorAll('.say-btn.playing').forEach(b=>b.classList.remove('playing')); if(btn) btn.classList.add('playing'); u.onend=()=>{if(btn)btn.classList.remove('playing')}; u.onerror=()=>{if(btn)btn.classList.remove('playing')}; speechSynthesis.speak(u); }
+    function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+    function sayBtn(text,extra=''){ return `<button type="button" class="say-btn ${extra}" data-say="${escAttr(text)}" aria-label="Listen">🔊</button>`; }
+    document.addEventListener('click',e=>{ const b=e.target.closest('.say-btn'); if(!b) return; e.preventDefault(); const t=b.getAttribute('data-say'); if(t) speak(t,.88,b); });
+
+    // ---- Hero: click-to-listen + mouse parallax ----
+    const qCore=document.querySelector('#questionCore'), hStage=document.querySelector('#heroStage');
+    if(qCore) qCore.addEventListener('click',()=>speak('Subject plus verb.',.85,qCore));
+    if(hStage && matchMedia('(hover:hover)').matches){
+      hStage.addEventListener('mousemove',e=>{
+        const r=hStage.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+        qCore.style.transform=`rotateY(${px*10}deg) rotateX(${-py*10}deg)`;
+      });
+      hStage.addEventListener('mouseleave',()=>{ qCore.style.transform='rotateY(0) rotateX(0)'; });
+    }
+
+    // ---- Confetti burst ----
+    function burstConfetti(){
+      const colors=['#FF5A3C','#FFB627','#15B79E','#7B2CBF','#2374AB'];
+      for(let i=0;i<48;i++){
+        const p=document.createElement('div'); p.className='confetti-piece';
+        const size=6+Math.random()*6;
+        p.style.left=Math.random()*100+'vw';
+        p.style.width=size+'px'; p.style.height=size*.6+'px';
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDuration=(2.2+Math.random()*1.6)+'s';
+        p.style.opacity=String(.8+Math.random()*.2);
+        document.body.appendChild(p);
+        p.addEventListener('animationend',()=>p.remove());
+      }
+    }
 
     // ---- Pronouns ----
     const PRONOUNS=[
@@ -272,7 +343,7 @@
       {word:'We',es:'Nosotros',emoji:'🧑‍🤝‍🧑',color:'coral',note:'1st person plural'},
       {word:'They',es:'Ellos',emoji:'👥',color:'mint',note:'3rd person plural, any gender'}
     ];
-    document.querySelector('#pronounGrid').innerHTML=PRONOUNS.map(p=>`<article class="wh-card ${p.color}"><div class="emoji">${p.emoji}</div><h3>${p.word}</h3><p>${p.es}</p><code>${p.note}</code></article>`).join('');
+    document.querySelector('#pronounGrid').innerHTML=PRONOUNS.map(p=>`<article class="wh-card ${p.color}"><div class="emoji">${p.emoji}</div><h3 class="say-word">${p.word}${sayBtn(p.word)}</h3><p>${p.es}</p><code>${p.note}</code></article>`).join('');
 
     const PP_TABLE=[
       ['I / Yo','Me','My','Mine'],
@@ -331,7 +402,8 @@
       {en:'love',es:'amar',irr:false,ing:'loving',s:'loves'},
       {en:'like',es:'gustar',irr:false,ing:'liking',s:'likes'}
     ];
-    document.querySelector('#verbBank').innerHTML=VERBS.map(v=>`<div class="vb-card ${v.irr?'irr':'reg'}"><div><b>${v.en}</b><small>${v.es}</small></div><span class="vb-tag">${v.irr?'irregular':'regular'}</span></div>`).join('');
+    document.querySelector('#verbBank').innerHTML=VERBS.map(v=>`<div class="vb-card ${v.irr?'irr':'reg'}" data-say="${v.en}" role="button" tabindex="0" aria-label="Listen to ${v.en}"><div><b>${v.en}</b><small>${v.es}</small></div><span class="vb-tag">${v.irr?'irregular':'regular'} 🔊</span></div>`).join('');
+    document.querySelector('#verbBank').addEventListener('click',e=>{const c=e.target.closest('.vb-card');if(c)speak(c.dataset.say,.85,c)});
 
     // ---- Conjugation Lab ----
     const conjSelect=document.querySelector('#conjVerb'), conjTable=document.querySelector('#conjTable'), tabSimple=document.querySelector('#tabSimple'), tabProg=document.querySelector('#tabProg');
@@ -340,7 +412,8 @@
     const PP_LABELS=['I','You','He','She','It','We','They'];
     function baseSimple(v,pp){ if(pp==='He'||pp==='She'||pp==='It') return v.s; return v.en; }
     function progressive(v,pp){ if(!v.ing) return `${v.en} <em>(modal — no progressive form)</em>`; const be=(pp==='I')?'am':(pp==='He'||pp==='She'||pp==='It')?'is':'are'; return `${be} ${v.ing}`; }
-    function drawConj(){ const v=VERBS[+conjSelect.value]; let html=''; PP_LABELS.forEach(pp=>{ const form=conjMode==='simple'?baseSimple(v,pp):progressive(v,pp); html+=`<div class="conj-row"><div class="pp">${pp}</div><div><b>${form}</b></div></div>`; }); conjTable.innerHTML=html; }
+    function drawConj(){ const v=VERBS[+conjSelect.value]; let html=''; PP_LABELS.forEach(pp=>{ const form=conjMode==='simple'?baseSimple(v,pp):progressive(v,pp); const plain=form.replace(/<[^>]+>/g,''); html+=`<div class="conj-row" data-say="${pp} ${plain}" role="button" tabindex="0"><div class="pp">${pp}</div><div><b>${form}</b> <button type="button" class="say-btn" data-say="${pp} ${plain}" aria-label="Listen">🔊</button></div></div>`; }); conjTable.innerHTML=html; }
+    conjTable.addEventListener('click',e=>{ if(e.target.closest('.say-btn')) return; const r=e.target.closest('.conj-row'); if(r) speak(r.dataset.say,.88,r) });
     conjSelect.onchange=drawConj; tabSimple.onclick=()=>{conjMode='simple';tabSimple.classList.add('on');tabProg.classList.remove('on');drawConj();}; tabProg.onclick=()=>{conjMode='progressive';tabProg.classList.add('on');tabSimple.classList.remove('on');drawConj();};
     conjSelect.value=VERBS.findIndex(v=>v.en==='have'); drawConj();
 
@@ -377,9 +450,10 @@
     let qi=0,score=0,locked=false; const quizBox=document.querySelector('#quizBox'), quizBar=document.querySelector('#quizBar');
     function drawQuiz(){locked=false; const x=quizData[qi]; quizBar.style.width=(qi/quizData.length*100)+'%'; quizBox.innerHTML=`<div class="question">${qi+1}. ${x.q}</div><div class="answers">${x.a.map((v,i)=>`<button class="answer" data-i="${i}">${v}</button>`).join('')}</div><div class="quiz-feedback" id="qfb">Choose one answer.</div><button class="btn btn-coral next" id="nextQ">${qi===quizData.length-1?'See result':'Next →'}</button>`; quizBox.querySelectorAll('.answer').forEach(btn=>btn.onclick=answerQuiz); quizBox.querySelector('#nextQ').onclick=nextQuiz;}
     function answerQuiz(e){if(locked)return;locked=true; const n=+e.currentTarget.dataset.i,c=quizData[qi].c; quizBox.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;if(i===c)b.classList.add('correct'); if(i===n&&i!==c)b.classList.add('wrong')}); if(n===c)score++; document.querySelector('#qfb').innerHTML=`<b>${n===c?'Correct.':'Not quite.'}</b> ${quizData[qi].e}`; document.querySelector('#nextQ').classList.add('show')}
-    function nextQuiz(){qi++; if(qi<quizData.length)drawQuiz(); else{quizBar.style.width='100%'; quizBox.innerHTML=`<div class="score">${score}/${quizData.length}</div><div class="question">${score>=8?'Engine calibrated. Ready for Step 02.':'Repeat the formula and the builder before Step 02.'}</div><p style="color:#d8d4e4">A strong student explains why each wrong option is wrong, not only picks the right one.</p><button class="btn btn-coral" id="restartQuiz">Try again ↺</button>`; document.querySelector('#restartQuiz').onclick=()=>{qi=0;score=0;drawQuiz()}}}
+    function nextQuiz(){qi++; if(qi<quizData.length)drawQuiz(); else{quizBar.style.width='100%'; quizBox.innerHTML=`<div class="score">${score}/${quizData.length}</div><div class="question">${score>=8?'Engine calibrated. Ready for Step 02.':'Repeat the formula and the builder before Step 02.'}</div><p style="color:#d8d4e4">A strong student explains why each wrong option is wrong, not only picks the right one.</p><button class="btn btn-coral" id="restartQuiz">Try again ↺</button>`; document.querySelector('#restartQuiz').onclick=()=>{qi=0;score=0;drawQuiz()}; if(score>=8) burstConfetti(); }}
     drawQuiz();
 
+    document.querySelectorAll('section, header').forEach(sec=>{ sec.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.setProperty('--d', Math.min(i,5)); }); });
     const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     const sections=[...document.querySelectorAll('header[id],section[id]')], links=[...document.querySelectorAll('.nav-shell a')]; const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-20% 0px -72%'}); sections.forEach(s=>navObserver.observe(s));
   </script>

@@ -3,222 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Modelador de Hábitos — Lección 8 · ProfGermandario</title>
-<meta name="theme-color" content="#1A1730">
+<title>Shadowing Masterclass — Lección 08 · ProfGermandario</title>
+<meta name="theme-color" content="#0B0A16">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --lienzo:#FCF8F3; --nube:#F2ECE2; --tinta:#1A1730; --tintasoft:#3A3552; --bruma:#76718A;
-    --coral:#FF5A3C; --coraldeep:#E8482C; --menta:#15B79E; --mentadeep:#0E8C79; --ambar:#FFB627;
-    --paper:#F6F1FF; --violet:#7C5CFF; --ok:#15B79E; --err:#D64545;
-    --linea:rgba(26,23,48,0.10); --linea-soft:rgba(26,23,48,0.06);
+    --bg:#0B0A16; --panel:#15132487; --panel-solid:#15132a; --panel2:#1C1934;
+    --gold:#E8B84B; --gold-deep:#C99A32; --violet:#8B6CFF; --violet-deep:#6F4EEF;
+    --coral:#FF5A3C; --coral-deep:#E8482C; --mint:#15B79E; --mint-deep:#0E8C79;
+    --ink:#F6F2E9; --ink-soft:#C7C0DA; --bruma:#8B84A3;
+    --line:rgba(232,184,75,0.16); --line-soft:rgba(232,184,75,0.08);
+    --err:#FF6B6B;
   }
   *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
-  body{ background:var(--lienzo); color:var(--tinta); font-family:'Figtree',system-ui,sans-serif; min-height:100vh;
-    overflow-x:hidden; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; padding-bottom:92px; }
-  body::before{ content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-    background:radial-gradient(60% 45% at 12% 0%, rgba(255,90,60,0.06), transparent 60%),
-               radial-gradient(55% 55% at 100% 100%, rgba(124,92,255,0.07), transparent 60%); }
-  .shell{ width:100%; max-width:680px; margin:0 auto; padding:0 18px; position:relative; z-index:10; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--ink); font-family:'Figtree',system-ui,sans-serif; min-height:100vh;
+    overflow-x:hidden; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
+    padding-bottom:calc(56px + env(safe-area-inset-bottom));
+  }
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(55% 40% at 15% 0%, rgba(139,108,255,0.16), transparent 60%),
+      radial-gradient(50% 45% at 100% 10%, rgba(232,184,75,0.10), transparent 60%),
+      radial-gradient(60% 50% at 50% 100%, rgba(255,90,60,0.08), transparent 60%);
+  }
+  .shell{ width:100%; max-width:700px; margin:0 auto; padding:0 18px; position:relative; z-index:10; }
 
-  header{ text-align:center; padding:28px 0 4px; }
-  .eyebrow{ font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.26em; text-transform:uppercase;
-    color:var(--coral); display:inline-flex; align-items:center; gap:10px; }
-  .eyebrow::before{ content:''; width:24px; height:2px; background:var(--coral); border-radius:2px; }
-  header h1{ font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2rem,6vw,2.9rem); line-height:1.02;
-    letter-spacing:-0.02em; margin:12px 0 2px;
-    background:linear-gradient(120deg,var(--coral) 38%, var(--violet)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-  header .sub{ color:var(--tintasoft); font-size:0.96rem; max-width:420px; margin:0 auto; }
-  .wave{ display:flex; align-items:flex-end; gap:4px; height:26px; justify-content:center; margin:11px 0; }
-  .wave i{ display:block; width:4px; border-radius:4px; transform-origin:bottom;
-    background:linear-gradient(to top,var(--menta),var(--coral) 60%,var(--ambar)); animation:vox 1.3s ease-in-out infinite; }
-  @keyframes vox{0%,100%{transform:scaleY(.25);}50%{transform:scaleY(1);}}
+  header{ text-align:center; padding:30px 0 6px; }
+  .eyebrow{ font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.28em; text-transform:uppercase;
+    color:var(--gold); display:inline-flex; align-items:center; gap:10px; }
+  .eyebrow::before,.eyebrow::after{ content:''; width:20px; height:1px; background:var(--gold); opacity:.6; }
+  header h1{ font-family:'Cinzel',serif; font-weight:700; font-size:clamp(1.9rem,6.4vw,2.7rem); line-height:1.08;
+    letter-spacing:0.01em; margin:14px 0 6px; color:var(--ink); }
+  header h1 span{ background:linear-gradient(120deg,var(--gold) 20%, var(--coral) 55%, var(--violet) 90%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  header .sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; color:var(--ink-soft);
+    font-size:1.12rem; max-width:460px; margin:0 auto; line-height:1.5; }
 
-  /* AFIRMACIÓN */
-  .aff{ display:flex; align-items:center; gap:10px; background:rgba(21,183,158,0.08); border:1px solid rgba(21,183,158,0.22);
-    border-radius:14px; padding:12px 14px; margin:16px 0; }
-  .aff p{ flex:1; text-align:center; font-family:'Fraunces',serif; font-style:italic; font-weight:500; color:var(--mentadeep); font-size:0.98rem; line-height:1.4; }
-  .aff button{ flex-shrink:0; width:34px; height:34px; border-radius:999px; border:1.5px solid rgba(21,183,158,0.3); background:#fff; color:var(--mentadeep); cursor:pointer; font-size:0.85rem; transition:all .2s; touch-action:manipulation; }
-  .aff button:hover{ background:rgba(21,183,158,0.12); }
+  .panel{ background:var(--panel-solid); border:1px solid var(--line-soft); border-radius:18px; padding:20px;
+    box-shadow:0 14px 40px rgba(0,0,0,0.35); margin-top:16px; }
+  .panel h2{ font-family:'Cinzel',serif; font-weight:600; font-size:1.02rem; color:var(--gold); letter-spacing:0.02em; margin-bottom:10px; }
+  .panel .desc{ color:var(--ink-soft); font-size:0.9rem; line-height:1.55; }
+  .steps{ display:grid; gap:10px; margin-top:12px; }
+  .step{ display:flex; gap:12px; align-items:flex-start; }
+  .step .num{ flex-shrink:0; width:26px; height:26px; border-radius:8px; background:rgba(232,184,75,0.12);
+    border:1px solid var(--line); color:var(--gold); font-family:'DM Mono',monospace; font-size:0.72rem;
+    display:flex; align-items:center; justify-content:center; font-weight:600; }
+  .step p{ color:var(--ink-soft); font-size:0.88rem; line-height:1.5; }
+  .step b{ color:var(--ink); font-weight:600; }
 
-  /* TIMER */
-  .focal{ border-radius:20px; color:var(--paper); padding:26px 22px; text-align:center;
-    background:radial-gradient(120% 130% at 0% 0%, #2A2348 0%, #1A1730 70%); box-shadow:0 18px 48px rgba(26,23,48,0.18); }
-  .timer{ font-family:'DM Mono',monospace; font-weight:500; font-size:clamp(3.4rem,16vw,5.5rem); color:var(--paper); line-height:1; letter-spacing:2px; }
-  .timer.run{ color:var(--ambar); }
-  .timer-habit{ font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; color:var(--paper); margin-top:10px; }
-  .timer-intention{ color:var(--paper); opacity:0.65; font-size:0.9rem; margin-top:3px; min-height:18px; }
+  /* LEVEL PICKER */
+  .level-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+  .level-chip{ flex:1; min-width:70px; padding:10px 8px; border-radius:12px; border:1.5px solid var(--line);
+    background:transparent; color:var(--ink-soft); font-family:'DM Mono',monospace; font-weight:600; font-size:0.82rem;
+    cursor:pointer; transition:all .2s; text-align:center; touch-action:manipulation; }
+  .level-chip .lvl-name{ display:block; font-family:'Figtree',sans-serif; font-weight:500; font-size:0.66rem;
+    color:var(--bruma); margin-top:2px; letter-spacing:0.02em; }
+  .level-chip.active{ background:linear-gradient(135deg,var(--violet-deep),var(--violet)); border-color:var(--violet); color:#fff; }
+  .level-chip.active .lvl-name{ color:rgba(255,255,255,0.75); }
+  .level-chip:disabled{ opacity:.4; cursor:not-allowed; }
 
-  .field{ width:100%; padding:12px 16px; border-radius:12px; border:1.5px solid var(--linea); background:#fff;
-    font-family:'Figtree',sans-serif; font-size:0.98rem; color:var(--tinta); outline:none; transition:border-color .2s; }
-  .field:focus{ border-color:var(--coral); }
-  select.field{ cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2376718A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:38px; }
-  .timer-select{ margin:14px 0 12px; }
+  /* SHADOW READER */
+  .reader-card{ border-radius:20px; padding:26px 22px; margin-top:18px; position:relative; overflow:hidden;
+    background:radial-gradient(130% 140% at 0% 0%, #241F44 0%, #100E20 65%); box-shadow:0 20px 54px rgba(0,0,0,0.45); }
+  .reader-card::after{ content:''; position:absolute; inset:0; pointer-events:none; border-radius:20px;
+    box-shadow:inset 0 0 0 1px rgba(232,184,75,0.14); }
+  .reader-text{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(1.15rem,4vw,1.42rem);
+    line-height:1.85; color:var(--ink-soft); position:relative; z-index:2; }
+  .reader-text .word{ transition:color .12s, background .12s, transform .12s; border-radius:5px; padding:1px 2px; }
+  .reader-text .word.active{ color:#100E20; background:linear-gradient(120deg,var(--gold),#F3D98A); font-weight:600;
+    box-shadow:0 2px 10px rgba(232,184,75,0.4); }
+  .reader-text .word.done{ color:var(--ink); }
+  .reader-text .term{ border-bottom:1.5px dotted var(--coral); cursor:pointer; }
+  .reader-text .term.active{ border-bottom-color:transparent; }
 
-  .dur-row{ display:flex; gap:8px; justify-content:center; margin-bottom:12px; }
-  .dur-chip{ padding:8px 16px; border-radius:999px; border:1.5px solid var(--linea); background:#fff; color:var(--tintasoft);
-    font-family:'Figtree',sans-serif; font-weight:600; font-size:0.82rem; cursor:pointer; transition:all .2s; touch-action:manipulation; }
-  .dur-chip.active{ background:var(--violet); border-color:var(--violet); color:#fff; }
-  .dur-chip:disabled{ opacity:.45; cursor:not-allowed; }
+  .progress-track{ height:5px; border-radius:100px; background:rgba(255,255,255,0.08); overflow:hidden; margin:18px 0 6px; position:relative; z-index:2; }
+  .progress-fill{ height:100%; width:0%; border-radius:100px; background:linear-gradient(90deg,var(--gold),var(--coral)); transition:width .15s linear; }
+  .reader-meta{ display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.68rem;
+    color:var(--bruma); letter-spacing:0.04em; position:relative; z-index:2; }
 
+  .reader-actions{ display:flex; gap:8px; margin-top:16px; position:relative; z-index:2; flex-wrap:wrap; }
   .btn{ display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:13px 20px; border-radius:12px;
-    font-family:'Figtree',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; border:none; transition:transform .15s, background .2s, border-color .2s; touch-action:manipulation; }
+    font-family:'Figtree',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; border:none;
+    transition:transform .15s, background .2s, border-color .2s, opacity .2s; touch-action:manipulation; }
   .btn:active{ transform:scale(.97); }
-  .btn-primary{ background:var(--coral); color:#fff; box-shadow:0 8px 22px rgba(255,90,60,0.28); }
-  .btn-primary:hover{ background:var(--coraldeep); }
-  .btn-ghost{ background:#fff; color:var(--tintasoft); border:1.5px solid var(--linea); }
-  .btn-ghost:hover{ border-color:var(--coral); color:var(--coral); }
-  .timer-actions{ display:flex; gap:8px; }
-  .timer-actions .btn{ flex:1; }
+  .btn-primary{ background:linear-gradient(120deg,var(--coral),var(--coral-deep)); color:#fff; box-shadow:0 8px 22px rgba(255,90,60,0.3); }
+  .btn-ghost{ background:rgba(255,255,255,0.06); color:var(--ink-soft); border:1.5px solid rgba(255,255,255,0.14); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+  .btn[disabled]{ opacity:.4; pointer-events:none; }
+  .reader-actions .btn{ flex:1; min-width:120px; }
 
-  .completion{ margin-top:14px; }
-  .completion h2{ font-family:'Fraunces',serif; font-weight:900; font-size:1.7rem; color:var(--ambar); margin-bottom:6px; }
-  .completion p{ color:var(--paper); opacity:0.8; font-size:0.92rem; margin-bottom:4px; }
+  .voice-row{ display:flex; gap:8px; margin-top:12px; position:relative; z-index:2; flex-wrap:wrap; }
+  .field{ padding:10px 14px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.05);
+    font-family:'Figtree',sans-serif; font-size:0.82rem; color:var(--ink); outline:none; }
+  select.field{ cursor:pointer; appearance:none; flex:1; min-width:160px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C7C0DA' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; padding-right:34px; }
+  .no-support{ display:none; background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.3); border-radius:12px;
+    padding:12px 14px; font-size:0.82rem; color:#FFB4B4; margin-top:14px; }
 
-  .block{ margin-top:18px; }
-  /* TABS */
-  .tabs{ display:flex; gap:8px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
-  .tab{ padding:9px 18px; border-radius:999px; border:1.5px solid var(--linea); background:transparent; color:var(--tintasoft);
-    font-family:'Figtree',sans-serif; font-weight:600; font-size:0.86rem; cursor:pointer; transition:all .2s; touch-action:manipulation; }
-  .tab:hover{ border-color:var(--coral); color:var(--coral); }
-  .tab.active{ background:var(--tinta); color:var(--paper); border-color:var(--tinta); }
+  .completion{ margin-top:16px; text-align:center; display:none; position:relative; z-index:2; }
+  .completion.show{ display:block; }
+  .completion h3{ font-family:'Cinzel',serif; font-size:1.1rem; color:var(--gold); margin-bottom:4px; }
+  .completion p{ color:var(--ink-soft); font-size:0.84rem; }
 
-  .panel{ background:#fff; border:1px solid var(--linea-soft); border-radius:16px; padding:18px; box-shadow:0 6px 18px rgba(26,23,48,0.05); }
-  .panel h3{ font-family:'Fraunces',serif; font-size:1.2rem; margin-bottom:4px; }
-  .panel .desc{ color:var(--bruma); font-size:0.85rem; margin-bottom:14px; }
-  .add-row{ display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
-  .add-row .btn{ align-self:flex-start; }
-  @media(min-width:520px){ .add-row.inline{ flex-direction:row; } .add-row.inline .field{ flex:1; } .add-row.inline .btn{ align-self:auto; white-space:nowrap; } }
+  /* GLOSSARY */
+  .glossary-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:12px; }
+  .gloss-item{ background:rgba(255,255,255,0.04); border:1px solid var(--line-soft); border-radius:10px; padding:9px 11px; }
+  .gloss-item .en{ font-weight:700; color:var(--ink); font-size:0.84rem; }
+  .gloss-item .es{ font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--bruma); font-size:0.8rem; margin-top:1px; }
 
-  .list{ display:flex; flex-direction:column; gap:8px; }
-  .empty{ text-align:center; color:var(--bruma); font-size:0.88rem; padding:14px; font-style:italic; }
-  .item{ display:flex; align-items:flex-start; gap:10px; background:var(--nube); border-radius:12px; padding:12px 14px; }
+  /* SESSIONS LOG */
+  .stat-row{ display:flex; gap:8px; margin-top:12px; }
+  .stat-card{ flex:1; text-align:center; padding:12px 8px; background:rgba(255,255,255,0.04); border:1px solid var(--line-soft); border-radius:12px; }
+  .stat-num{ font-family:'DM Mono',monospace; font-size:1.3rem; font-weight:500; color:var(--gold); }
+  .stat-label{ font-size:0.62rem; color:var(--bruma); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+  .add-row{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  textarea.field{ resize:vertical; min-height:64px; font-family:'Figtree',sans-serif; width:100%; }
+  .list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .empty{ text-align:center; color:var(--bruma); font-size:0.84rem; padding:10px; font-style:italic; }
+  .item{ display:flex; align-items:flex-start; gap:10px; background:rgba(255,255,255,0.04); border-radius:12px; padding:11px 13px; }
   .item .body{ flex:1; min-width:0; }
-  .item .name{ font-weight:700; color:var(--tinta); }
-  .item .meta{ font-size:0.85rem; color:var(--tintasoft); margin-top:2px; }
-  .item .count{ font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--mentadeep); background:rgba(21,183,158,0.12); padding:2px 8px; border-radius:999px; display:inline-block; margin-top:6px; }
-  .item.done .name{ text-decoration:line-through; color:var(--bruma); }
-  .del{ flex-shrink:0; width:30px; height:30px; border-radius:999px; border:none; background:transparent; color:var(--bruma); cursor:pointer; font-size:1.1rem; transition:all .15s; touch-action:manipulation; }
-  .del:hover{ background:rgba(214,69,69,0.12); color:var(--err); }
-  .chk{ flex-shrink:0; width:22px; height:22px; margin-top:1px; accent-color:var(--coral); cursor:pointer; }
-  textarea.field{ resize:vertical; min-height:80px; font-family:'Figtree',sans-serif; }
+  .item .meta{ font-size:0.66rem; color:var(--gold); font-family:'DM Mono',monospace; letter-spacing:0.04em; }
+  .item .txt{ font-size:0.85rem; color:var(--ink-soft); margin-top:3px; line-height:1.4; }
+  .del{ flex-shrink:0; width:28px; height:28px; border-radius:999px; border:none; background:transparent; color:var(--bruma);
+    cursor:pointer; font-size:1.05rem; transition:all .15s; touch-action:manipulation; }
+  .del:hover{ background:rgba(255,107,107,0.14); color:var(--err); }
 
-  /* PROGRESO */
-  .save-card{ margin-top:18px; background:#fff; border:1px solid var(--linea-soft); border-radius:16px; padding:16px 18px; box-shadow:0 6px 18px rgba(26,23,48,0.05); }
-  .save-card h3{ font-family:'Fraunces',serif; font-size:1.05rem; margin-bottom:4px; }
-  .save-card .desc{ color:var(--bruma); font-size:0.82rem; margin-bottom:12px; }
-  .save-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .file-label{ display:inline-flex; align-items:center; gap:7px; padding:11px 16px; border-radius:12px; border:1.5px dashed var(--linea); color:var(--tintasoft); font-weight:600; font-size:0.85rem; cursor:pointer; background:#fff; transition:all .2s; }
-  .file-label:hover{ border-color:var(--coral); color:var(--coral); }
+  .save-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+  .file-label{ display:inline-flex; align-items:center; gap:7px; padding:11px 16px; border-radius:12px; border:1.5px dashed rgba(255,255,255,0.18);
+    color:var(--ink-soft); font-weight:600; font-size:0.82rem; cursor:pointer; background:transparent; transition:all .2s; }
+  .file-label:hover{ border-color:var(--gold); color:var(--gold); }
   #uploadProgress{ display:none; }
 
-  /* TOAST + WA */
-  #toast{ position:fixed; bottom:98px; left:50%; transform:translateX(-50%) translateY(40px); background:var(--tinta);
-    color:var(--paper); border-radius:999px; padding:9px 22px; font-weight:600; font-size:0.85rem; white-space:nowrap;
-    transition:transform .25s, opacity .25s; opacity:0; z-index:60; pointer-events:none; box-shadow:0 10px 30px rgba(26,23,48,.25); }
+  #toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(40px); background:var(--panel2);
+    color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:9px 22px; font-weight:600; font-size:0.82rem;
+    max-width:88vw; text-align:center; transition:transform .25s, opacity .25s; opacity:0; z-index:80; pointer-events:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.4); }
   #toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
-  #toast.ok{ background:var(--mentadeep); } #toast.bad{ background:#C8453F; }
+  #toast.ok{ border-color:rgba(21,183,158,0.4); } #toast.bad{ border-color:rgba(255,107,107,0.4); }
+
   .wa-fab{ position:fixed; z-index:70; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff;
     font-family:'Figtree',sans-serif; font-weight:600; text-decoration:none; border-radius:999px;
-    box-shadow:0 10px 30px rgba(37,211,102,.45); padding:13px 18px; transition:transform .2s; }
+    box-shadow:0 10px 30px rgba(37,211,102,.4); padding:13px 18px; transition:transform .2s; }
   .wa-fab:active{ transform:scale(.95); }
   @media(max-width:420px){ .wa-label{ display:none; } }
-  .foot{ text-align:center; margin-top:18px; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--bruma); }
+  .foot{ text-align:center; margin-top:22px; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--bruma); }
   [hidden]{ display:none !important; }
-  :focus-visible{ outline:3px solid var(--coral); outline-offset:3px; border-radius:10px; }
-  @media(prefers-reduced-motion:reduce){ .wave i{ animation:none; transform:scaleY(.6); } }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:8px; }
 </style>
 </head>
 <body>
 <div class="shell">
   <header>
-    <span class="eyebrow">Lección 8 · Modelador de hábitos</span>
-    <h1>Modelador de Hábitos</h1>
-    <div class="wave" id="wave" aria-hidden="true"></div>
-    <p class="sub" id="greet">Construye carácter con acciones enfocadas de 3 minutos.</p>
+    <span class="eyebrow">Lección 08 · Shadowing Masterclass</span>
+    <h1>Domina el <span>Shadowing</span></h1>
+    <p class="sub">Escucha, lee y repite al mismo tiempo. Así se reprograma un comportamiento — un ritmo a la vez.</p>
   </header>
 
-  <div class="aff">
-    <button onclick="affPrev()" aria-label="Anterior">←</button>
-    <p id="affirmation"></p>
-    <button onclick="affNext()" aria-label="Siguiente">→</button>
-  </div>
-
-  <!-- TEMPORIZADOR -->
-  <div class="focal">
-    <div class="timer" id="timer">03:00</div>
-    <div class="timer-habit" id="selName">Elige un hábito para enfocarte</div>
-    <div class="timer-intention" id="selIntention"></div>
-  </div>
-  <select class="field timer-select" id="habitSelect" onchange="onSelectHabit()">
-    <option value="">Elige un hábito para tu sesión de enfoque</option>
-  </select>
-  <div class="dur-row" id="durRow">
-    <button class="dur-chip active" data-min="3" onclick="setDuration(3,this)">3 min</button>
-    <button class="dur-chip" data-min="5" onclick="setDuration(5,this)">5 min</button>
-    <button class="dur-chip" data-min="10" onclick="setDuration(10,this)">10 min</button>
-  </div>
-  <div class="timer-actions">
-    <button class="btn btn-primary" id="startBtn" onclick="startFocus()">🚀 Empezar</button>
-    <button class="btn btn-ghost" id="pauseBtn" onclick="pauseResume()" hidden>⏸️ Pausar</button>
-    <button class="btn btn-ghost" onclick="resetFocus()">🔄 Reiniciar</button>
-  </div>
-  <div class="focal completion" id="completion" hidden>
-    <h2>🎉 ¡Increíble!</h2>
-    <p>Completaste tu sesión de enfoque.</p>
-    <p style="opacity:0.6; font-size:0.85rem;">Cada pequeña acción se acumula en resultados extraordinarios.</p>
-    <button class="btn btn-primary" style="margin-top:12px;" onclick="continueBuilding()">Seguir construyendo</button>
-  </div>
-
-  <!-- PESTAÑAS -->
-  <div class="block">
-    <div class="tabs">
-      <button class="tab active" data-tab="habits" onclick="setTab('habits',this)">📋 Hábitos</button>
-      <button class="tab" data-tab="tasks" onclick="setTab('tasks',this)">📝 Tareas</button>
-      <button class="tab" data-tab="reflections" onclick="setTab('reflections',this)">📔 Reflexiones</button>
-    </div>
-
-    <!-- HÁBITOS -->
-    <div class="panel" id="tab-habits">
-      <h3>Constructor de hábitos</h3>
-      <p class="desc">Define hábitos de 3 minutos con su intención.</p>
-      <div class="add-row">
-        <input class="field" id="habitName" type="text" placeholder="Nombre del hábito (p. ej. Leer)" onkeydown="if(event.key==='Enter')addHabit()">
-        <input class="field" id="habitIntention" type="text" placeholder="Intención (¿para qué lo haces?)" onkeydown="if(event.key==='Enter')addHabit()">
-        <button class="btn btn-primary" onclick="addHabit()">➕ Agregar hábito</button>
-      </div>
-      <div class="list" id="habitList"></div>
-    </div>
-
-    <!-- TAREAS -->
-    <div class="panel" id="tab-tasks" hidden>
-      <h3>Lista de tareas del día</h3>
-      <p class="desc">Anota lo que quieres lograr hoy.</p>
-      <div class="add-row inline">
-        <input class="field" id="taskInput" type="text" placeholder="Escribe una tarea…" onkeydown="if(event.key==='Enter')addTask()">
-        <button class="btn btn-primary" onclick="addTask()">➕ Agregar</button>
-      </div>
-      <div class="list" id="taskList"></div>
-    </div>
-
-    <!-- REFLEXIONES -->
-    <div class="panel" id="tab-reflections" hidden>
-      <h3>Reflexión diaria</h3>
-      <p class="desc">¿Cómo impactaron hoy tus hábitos de 3 minutos?</p>
-      <div class="add-row">
-        <textarea class="field" id="reflectionInput" placeholder="Escribe tu reflexión de hoy…"></textarea>
-        <button class="btn btn-primary" onclick="saveReflection()">💾 Guardar reflexión</button>
-      </div>
-      <div class="list" id="reflectionList"></div>
+  <!-- QUÉ ES / CÓMO -->
+  <div class="panel">
+    <h2>¿Qué es el Shadowing?</h2>
+    <p class="desc">El shadowing es una técnica de PNL aplicada al idioma: escuchas una voz nativa y hablas <b style="color:var(--ink)">al mismo tiempo</b>, como una sombra. No traduces, no piensas — tu cerebro imita el ritmo, la entonación y la música del inglés directamente.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><p><b>Elige tu nivel</b> — esto ajusta la velocidad de la voz, no el texto.</p></div>
+      <div class="step"><div class="num">2</div><p><b>Presiona Reproducir</b> y habla en voz alta al mismo tiempo que la voz, palabra por palabra.</p></div>
+      <div class="step"><div class="num">3</div><p><b>No te detengas</b> si te equivocas — sigue el ritmo, no la perfección.</p></div>
+      <div class="step"><div class="num">4</div><p><b>Repite la sesión</b> 3 veces seguidas. La repetición es lo que ancla el patrón.</p></div>
     </div>
   </div>
 
-  <!-- GUARDAR / CARGAR -->
-  <div class="save-card">
-    <h3>💾 Guardar / Cargar progreso</h3>
-    <p class="desc">Tu progreso se guarda solo en este dispositivo. Descárgalo para respaldarlo o pasarlo a otro.</p>
+  <!-- NIVEL -->
+  <div class="panel">
+    <h2>Tu nivel de hoy</h2>
+    <p class="desc">El texto es el mismo para todos los niveles — lo que cambia es la velocidad de la voz.</p>
+    <div class="level-row" id="levelRow">
+      <button class="level-chip" data-level="A1" data-rate="0.62" onclick="setLevel('A1',this)">A1<span class="lvl-name">Muy lento</span></button>
+      <button class="level-chip" data-level="A2" data-rate="0.78" onclick="setLevel('A2',this)">A2<span class="lvl-name">Lento</span></button>
+      <button class="level-chip active" data-level="B1" data-rate="0.92" onclick="setLevel('B1',this)">B1<span class="lvl-name">Natural</span></button>
+      <button class="level-chip" data-level="B2" data-rate="1.08" onclick="setLevel('B2',this)">B2<span class="lvl-name">Fluido</span></button>
+    </div>
+  </div>
+
+  <!-- LECTOR / SHADOWING -->
+  <div class="reader-card">
+    <div class="reader-text" id="readerText"></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="reader-meta">
+      <span id="wordCounter">0 / 0 palabras</span>
+      <span id="levelBadge">NIVEL B1</span>
+    </div>
+    <div class="reader-actions">
+      <button class="btn btn-primary" id="playBtn" onclick="togglePlay()">🚀 Reproducir y repetir</button>
+      <button class="btn btn-ghost" onclick="restartReader()">🔄 Reiniciar</button>
+    </div>
+    <div class="voice-row">
+      <select class="field" id="voiceSelect"></select>
+    </div>
+    <div class="no-support" id="noSupport">Tu navegador no soporta síntesis de voz. Usa Chrome, Edge o Safari actualizado para esta lección.</div>
+    <div class="completion" id="completion">
+      <h3>🎉 ¡Sesión completada!</h3>
+      <p>Repite dos veces más para anclar el patrón en tu memoria muscular.</p>
+    </div>
+  </div>
+
+  <!-- GLOSARIO -->
+  <div class="panel">
+    <h2>Glosario rápido</h2>
+    <p class="desc">Toca las palabras subrayadas en el texto, o revisa esta lista.</p>
+    <div class="glossary-grid" id="glossaryGrid"></div>
+  </div>
+
+  <!-- SESIONES / REFLEXIÓN -->
+  <div class="panel">
+    <h2>Tu progreso</h2>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num" id="statSessions">0</div><div class="stat-label">Sesiones</div></div>
+      <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Racha (días)</div></div>
+      <div class="stat-card"><div class="stat-num" id="statLevel">B1</div><div class="stat-label">Último nivel</div></div>
+    </div>
+    <div class="add-row">
+      <textarea class="field" id="reflectionInput" placeholder="¿Qué notaste en esta sesión? (opcional)"></textarea>
+      <button class="btn btn-primary" onclick="saveReflection()">💾 Guardar reflexión</button>
+    </div>
+    <div class="list" id="reflectionList"></div>
     <div class="save-row">
       <button class="btn btn-ghost" onclick="downloadProgress()">📥 Descargar (.txt)</button>
       <label class="file-label" for="uploadProgress">📤 Elegir archivo…</label>
@@ -231,7 +244,7 @@
 
 <div id="toast" role="status"></div>
 
-<a class="wa-fab" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20usando%20el%20Modelador%20de%20H%C3%A1bitos%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
+<a class="wa-fab" href="https://wa.me/573197894038?text=%C2%A1Hola%20Prof.%20Germandario!%20Estoy%20usando%20el%20Shadowing%20Masterclass%20y%20quiero%20m%C3%A1s%20info%20%F0%9F%99%8C"
    target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
    style="bottom:calc(1.1rem + env(safe-area-inset-bottom)); right:1.1rem;">
   <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 4C9.96 4 5 8.95 5 15.02c0 2.4.77 4.62 2.08 6.43L5 28l6.74-2.03a11 11 0 0 0 4.3.87h.01C22.12 26.84 27 21.9 27 15.83 27 9.76 22.04 4 16.04 4Zm0 20.4h-.01a9.1 9.1 0 0 1-4.64-1.27l-.33-.2-3.86 1.16 1.18-3.76-.22-.35a9.06 9.06 0 0 1-1.38-4.81c0-5.02 4.1-9.1 9.13-9.1 2.44 0 4.73.95 6.45 2.67a9.06 9.06 0 0 1 2.68 6.44c0 5.02-4.1 9.1-9.13 9.1Zm5.01-6.81c-.27-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.62.14-.18.27-.71.89-.87 1.07-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.2-1.36-.81-.72-1.36-1.62-1.52-1.89-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.46.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.98 2.66 1.12 2.84c.14.18 1.93 2.95 4.68 4.13.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32Z"/></svg>
@@ -241,171 +254,220 @@
 <script>
 const $ = (id)=>document.getElementById(id);
 
-// ── ESTADO (persistido en localStorage) ──
+/* ── TEXTO MAESTRO (comportamiento, PNL, meseta) ── */
+const SHADOW_TEXT = "Every behavior you repeat becomes a signal to your brain. In NLP, we call this pattern an anchor, a small action linked to a specific state of mind. When you practice English every day, even for three minutes, your brain builds a new pathway. At first, progress feels fast. You learn new words, new sounds, new rhythms. Then, one day, everything slows down. You practice, but nothing seems to change. This moment is called the plateau. A plateau is not a wall. It is a sign that your brain is organizing what it already knows. Elite athletes face this stage. Professional musicians face it too. The real difference between people who improve and people who quit is not talent. It is persistence. Instead of fighting the plateau, work with it. Change your input. Listen to new voices. Shadow new rhythms. Speak slower, then faster, with full intention. Your brain needs variety to break an old pattern and build a stronger one. Persistence through a plateau builds real, lasting fluency. It rewires behavior at a deeper level than motivation ever could. Trust the process, repeat with purpose, and your breakthrough will arrive, often exactly when you expect it least.";
+
+const GLOSSARY = {
+  "anchor":"ancla (técnica de PNL)","pathway":"camino neuronal","plateau":"meseta / estancamiento",
+  "persistence":"persistencia","input":"estímulo recibido","intention":"intención",
+  "rewires":"reconecta / reconfigura","breakthrough":"avance repentino"
+};
+
+/* ── ESTADO ── */
 function load(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
-let habits = load('habits', []);
-let reflections = load('reflections', []);
-let tasks = load('tasks', []);
-let affirmations = [
-  "Construyo disciplina inquebrantable, un momento a la vez.",
-  "Cada pequeño paso me lleva a un crecimiento enorme.",
-  "Soy dueño de mis hábitos y de mi destino.",
-  "La constancia le gana al talento.",
-  "Tres minutos enfocados valen más que una hora distraída.",
-  "Hoy elijo avanzar, no la perfección."
-];
-let affIdx = 0, affTimer = null;
-let duration = 180, timeLeft = 180, timerInterval = null, currentHabitIndex = null;
+let reflections = load('shadow_reflections', []);
+let sessionLog = load('shadow_sessions', []);
+let currentLevel = 'B1', currentRate = 0.92;
+let words = [];       // {text,start,end,isTerm}
+let wordSpans = [];
+let speaking = false;
 
 function save(){ try{
-  localStorage.setItem('habits', JSON.stringify(habits));
-  localStorage.setItem('reflections', JSON.stringify(reflections));
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('shadow_reflections', JSON.stringify(reflections));
+  localStorage.setItem('shadow_sessions', JSON.stringify(sessionLog));
 }catch(e){} }
 
-// ── HELPERS UI ──
-function toast(msg,type){ const el=$("toast"); el.textContent=msg; el.className="show "+(type||""); clearTimeout(window._t); window._t=setTimeout(()=>el.classList.remove("show"),1700); }
-function buildWave(){ const el=$("wave"); for(let i=0;i<22;i++){const b=document.createElement("i"); b.style.height=(8+Math.abs(Math.sin(i*0.6))*16)+"px"; b.style.animationDelay=(i*0.07)+"s"; b.style.animationDuration=(1.1+(i%5)*0.12)+"s"; el.appendChild(b);} }
-function fmt(s){ const m=Math.floor(s/60), x=s%60; return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0'); }
-function greeting(){ const h=new Date().getHours(); const g=h<12?'¡Buenos días!':h<19?'¡Buenas tardes!':'¡Buenas noches!'; $("greet").textContent = g + " Empieza con propósito, un momento a la vez."; }
+/* ── HELPERS ── */
+function toast(msg,type){ const el=$("toast"); el.textContent=msg; el.className="show "+(type||""); clearTimeout(window._t); window._t=setTimeout(()=>el.classList.remove("show"),1900); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
-// ── PESTAÑAS ──
-function setTab(t, btn){
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active")); btn.classList.add("active");
-  ["habits","tasks","reflections"].forEach(x=>$("tab-"+x).hidden = x!==t);
-}
-
-// ── AFIRMACIONES ──
-function renderAff(){ $("affirmation").textContent = affirmations[affIdx]; }
-function affPrev(){ affIdx=(affIdx-1+affirmations.length)%affirmations.length; renderAff(); restartAff(); }
-function affNext(){ affIdx=(affIdx+1)%affirmations.length; renderAff(); }
-function restartAff(){ clearInterval(affTimer); affTimer=setInterval(()=>{ affNext(); }, 9000); }
-
-// ── TEMPORIZADOR ──
-function renderTimer(){ $("timer").textContent = fmt(timeLeft); }
-function setRunningUI(running){
-  $("startBtn").hidden = running; $("pauseBtn").hidden = !running;
-  document.querySelectorAll(".dur-chip").forEach(c=>c.disabled = running);
-  $("timer").classList.toggle("run", running);
-}
-function setDuration(min, btn){
-  if(timerInterval) return;
-  duration = min*60; timeLeft = duration; renderTimer();
-  document.querySelectorAll(".dur-chip").forEach(c=>c.classList.remove("active")); btn.classList.add("active");
-  $("completion").hidden = true;
-}
-function tick(){ timeLeft--; renderTimer(); if(timeLeft<=0) finishTimer(); }
-function startFocus(){
-  if($("habitSelect").value===""){ toast("Elige un hábito primero","bad"); return; }
-  if(timerInterval) return;
-  currentHabitIndex = parseInt($("habitSelect").value);
-  $("completion").hidden = true;
-  timerInterval = setInterval(tick, 1000);
-  setRunningUI(true);
-}
-function pauseResume(){
-  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; $("pauseBtn").textContent="▶️ Reanudar"; $("timer").classList.remove("run"); }
-  else { timerInterval=setInterval(tick,1000); $("pauseBtn").textContent="⏸️ Pausar"; $("timer").classList.add("run"); }
-}
-function resetFocus(){
-  clearInterval(timerInterval); timerInterval=null;
-  timeLeft = duration; renderTimer();
-  setRunningUI(false); $("pauseBtn").textContent="⏸️ Pausar";
-  $("completion").hidden = true; currentHabitIndex = null;
-}
-function finishTimer(){
-  clearInterval(timerInterval); timerInterval=null;
-  if(currentHabitIndex!=null && habits[currentHabitIndex]){
-    habits[currentHabitIndex].count = (habits[currentHabitIndex].count||0)+1;
-    save(); renderHabits(); renderHabitSelect(currentHabitIndex);
+/* ── CONSTRUIR PALABRAS Y RENDER ── */
+function buildWords(){
+  words = [];
+  const re = /\S+/g; let m;
+  while((m = re.exec(SHADOW_TEXT)) !== null){
+    const raw = m[0];
+    const clean = raw.replace(/[^a-zA-Z']/g,'').toLowerCase();
+    words.push({ text: raw, start: m.index, end: m.index + raw.length, isTerm: !!GLOSSARY[clean], key: clean });
   }
-  setRunningUI(false);
-  $("completion").hidden = false;
 }
-function continueBuilding(){ resetFocus(); }
-
-// ── HÁBITOS ──
-function renderHabitSelect(keep){
-  const sel=$("habitSelect"); const cur = keep!=null?String(keep):sel.value;
-  sel.innerHTML = '<option value="">Elige un hábito para tu sesión de enfoque</option>';
-  habits.forEach((h,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=h.name; sel.appendChild(o); });
-  if(cur!=="" && habits[cur]) sel.value=cur;
-  onSelectHabit();
-}
-function onSelectHabit(){
-  const i=$("habitSelect").value;
-  if(i===""){ $("selName").textContent="Elige un hábito para enfocarte"; $("selIntention").textContent=""; }
-  else { $("selName").textContent=habits[i].name; $("selIntention").textContent=habits[i].intention; }
-}
-function renderHabits(){
-  const el=$("habitList");
-  if(!habits.length){ el.innerHTML='<div class="empty">Aún no hay hábitos. ¡Crea tu primer hábito de 3 minutos!</div>'; return; }
-  el.innerHTML="";
-  habits.forEach((h,i)=>{
-    const d=document.createElement("div"); d.className="item";
-    d.innerHTML=`<div class="body"><div class="name">${esc(h.name)}</div><div class="meta">${esc(h.intention)}</div><span class="count">${h.count||0} sesiones</span></div>
-      <button class="del" onclick="deleteHabit(${i})" aria-label="Eliminar">×</button>`;
-    el.appendChild(d);
+function renderReader(){
+  const el = $("readerText");
+  el.innerHTML = '';
+  wordSpans = [];
+  let cursor = 0;
+  words.forEach((w,i)=>{
+    if(w.start > cursor) el.appendChild(document.createTextNode(SHADOW_TEXT.slice(cursor, w.start)));
+    const span = document.createElement('span');
+    span.className = 'word' + (w.isTerm ? ' term' : '');
+    span.textContent = w.text;
+    span.dataset.index = i;
+    if(w.isTerm) span.onclick = ()=> toast(w.key.toUpperCase()+' → '+GLOSSARY[w.key], 'ok');
+    el.appendChild(span);
+    wordSpans.push(span);
+    cursor = w.end;
   });
+  if(cursor < SHADOW_TEXT.length) el.appendChild(document.createTextNode(SHADOW_TEXT.slice(cursor)));
+  $("wordCounter").textContent = '0 / '+words.length+' palabras';
+  $("progressFill").style.width = '0%';
 }
-function addHabit(){
-  const n=$("habitName").value.trim(), it=$("habitIntention").value.trim();
-  if(!n || !it){ toast("Escribe el nombre y la intención","bad"); return; }
-  habits.push({name:n, intention:it, count:0}); save();
-  renderHabitSelect(); renderHabits();
-  $("habitName").value=""; $("habitIntention").value=""; $("habitName").focus();
-  toast("Hábito agregado ✓","ok");
+function renderGlossary(){
+  $("glossaryGrid").innerHTML = Object.entries(GLOSSARY).map(([en,es])=>
+    `<div class="gloss-item"><div class="en">${esc(en)}</div><div class="es">${esc(es)}</div></div>`
+  ).join('');
 }
-window.deleteHabit = (i)=>{ habits.splice(i,1); save(); renderHabitSelect(); renderHabits(); };
 
-// ── TAREAS ──
-function renderTasks(){
-  const el=$("taskList");
-  if(!tasks.length){ el.innerHTML='<div class="empty">Tus tareas aparecerán aquí. ¡Agrega la primera!</div>'; return; }
-  el.innerHTML="";
-  tasks.forEach((t,i)=>{
-    const d=document.createElement("div"); d.className="item"+(t.completed?" done":"");
-    d.innerHTML=`<input type="checkbox" class="chk" ${t.completed?"checked":""} onchange="toggleTask(${i})">
-      <div class="body"><div class="name">${esc(t.text)}</div></div>
-      <button class="del" onclick="deleteTask(${i})" aria-label="Eliminar">×</button>`;
-    el.appendChild(d);
+/* ── NIVEL ── */
+function setLevel(level, btn){
+  if(speaking) return;
+  currentLevel = level;
+  currentRate = parseFloat(btn.dataset.rate);
+  document.querySelectorAll('.level-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  $("levelBadge").textContent = 'NIVEL '+level;
+  $("statLevel").textContent = level;
+}
+
+/* ── VOCES ── */
+function populateVoices(){
+  if(!('speechSynthesis' in window)) return;
+  const voices = speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('en'));
+  const sel = $("voiceSelect");
+  const prev = sel.value;
+  sel.innerHTML = '';
+  if(!voices.length){ sel.innerHTML = '<option value="">Voz predeterminada del sistema</option>'; return; }
+  voices.forEach((v,i)=>{
+    const o = document.createElement('option');
+    o.value = i; o.textContent = v.name + ' ('+v.lang+')';
+    sel.appendChild(o);
   });
+  sel.dataset.voices = JSON.stringify(voices.map(v=>v.name));
+  window._enVoices = voices;
+  if(prev !== '' && voices[prev]) sel.value = prev;
 }
-function addTask(){
-  const t=$("taskInput").value.trim();
-  if(!t){ toast("Escribe una tarea","bad"); return; }
-  tasks.push({text:t, completed:false}); save(); renderTasks();
-  $("taskInput").value=""; $("taskInput").focus();
-}
-window.toggleTask = (i)=>{ tasks[i].completed=!tasks[i].completed; save(); renderTasks(); };
-window.deleteTask = (i)=>{ tasks.splice(i,1); save(); renderTasks(); };
 
-// ── REFLEXIONES ──
+/* ── SHADOWING ENGINE ── */
+function findWordIndex(charIndex){
+  for(let i=0;i<words.length;i++){
+    if(charIndex >= words[i].start && charIndex < words[i].end) return i;
+  }
+  // fallback: nearest word whose start <= charIndex
+  let best = 0;
+  for(let i=0;i<words.length;i++){ if(words[i].start <= charIndex) best = i; else break; }
+  return best;
+}
+function highlightWord(i){
+  wordSpans.forEach((s,idx)=>{
+    s.classList.toggle('active', idx===i);
+    if(idx < i) s.classList.add('done'); 
+  });
+  $("wordCounter").textContent = (i+1)+' / '+words.length+' palabras';
+  $("progressFill").style.width = (((i+1)/words.length)*100)+'%';
+  const active = wordSpans[i];
+  if(active) active.scrollIntoView({block:'center', behavior:'smooth', inline:'nearest'});
+}
+function setControlsPlaying(isPlaying){
+  speaking = isPlaying;
+  $("playBtn").textContent = isPlaying ? '⏹️ Detener' : '🚀 Reproducir y repetir';
+  document.querySelectorAll('.level-chip').forEach(c=>c.disabled = isPlaying);
+  $("voiceSelect").disabled = isPlaying;
+}
+function togglePlay(){
+  if(!('speechSynthesis' in window)){ $("noSupport").style.display='block'; return; }
+  if(speaking){ speechSynthesis.cancel(); setControlsPlaying(false); return; }
+  startShadowing();
+}
+function startShadowing(){
+  speechSynthesis.cancel();
+  $("completion").classList.remove('show');
+  wordSpans.forEach(s=>{ s.classList.remove('active'); s.classList.remove('done'); });
+  $("progressFill").style.width = '0%';
+
+  const utter = new SpeechSynthesisUtterance(SHADOW_TEXT);
+  utter.rate = currentRate;
+  utter.pitch = 1;
+  utter.lang = 'en-US';
+  const sel = $("voiceSelect");
+  if(window._enVoices && window._enVoices[sel.value]) utter.voice = window._enVoices[sel.value];
+
+  utter.onboundary = (e)=>{
+    if(e.name && e.name !== 'word') return;
+    const idx = findWordIndex(e.charIndex);
+    highlightWord(idx);
+  };
+  utter.onend = ()=>{
+    highlightWord(words.length-1);
+    setControlsPlaying(false);
+    $("completion").classList.add('show');
+    logSession();
+  };
+  utter.onerror = ()=>{ setControlsPlaying(false); toast('La voz se interrumpió. Intenta de nuevo.','bad'); };
+
+  setControlsPlaying(true);
+  speechSynthesis.speak(utter);
+}
+function restartReader(){
+  speechSynthesis.cancel();
+  setControlsPlaying(false);
+  wordSpans.forEach(s=>{ s.classList.remove('active'); s.classList.remove('done'); });
+  $("wordCounter").textContent = '0 / '+words.length+' palabras';
+  $("progressFill").style.width = '0%';
+  $("completion").classList.remove('show');
+}
+
+/* ── SESIONES / RACHA ── */
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function logSession(){
+  const today = todayStr();
+  sessionLog.push({date:today, level:currentLevel});
+  save();
+  renderStats();
+  toast('Sesión registrada ✓','ok');
+}
+function renderStats(){
+  $("statSessions").textContent = sessionLog.length;
+  const days = [...new Set(sessionLog.map(s=>s.date))].sort();
+  let streak = 0;
+  if(days.length){
+    let cursor = new Date();
+    for(let i=0;i<days.length+1;i++){
+      const ds = cursor.toISOString().split('T')[0];
+      if(days.includes(ds)){ streak++; cursor.setDate(cursor.getDate()-1); }
+      else break;
+    }
+  }
+  $("statStreak").textContent = streak;
+}
+
+/* ── REFLEXIONES ── */
 function renderReflections(){
-  const el=$("reflectionList");
-  if(!reflections.length){ el.innerHTML='<div class="empty">Aún no hay reflexiones. ¡Empieza a escribir tu camino!</div>'; return; }
-  el.innerHTML="";
-  reflections.forEach((r,i)=>{
-    const d=document.createElement("div"); d.className="item";
-    d.innerHTML=`<div class="body"><div class="meta" style="color:var(--tinta)">${esc(r)}</div></div>
+  const el = $("reflectionList");
+  if(!reflections.length){ el.innerHTML = '<div class="empty">Aún no hay reflexiones. Escribe la primera después de tu sesión.</div>'; return; }
+  el.innerHTML = '';
+  reflections.slice().reverse().forEach((r)=>{
+    const i = reflections.indexOf(r);
+    const d = document.createElement('div'); d.className = 'item';
+    d.innerHTML = `<div class="body"><div class="meta">${esc(r.level||'')} · ${esc(r.date||'')}</div><div class="txt">${esc(r.text)}</div></div>
       <button class="del" onclick="deleteReflection(${i})" aria-label="Eliminar">×</button>`;
     el.appendChild(d);
   });
 }
 function saveReflection(){
-  const r=$("reflectionInput").value.trim();
-  if(!r){ toast("Escribe una reflexión","bad"); return; }
-  reflections.push(r); save(); renderReflections();
-  $("reflectionInput").value=""; toast("Reflexión guardada ✓","ok");
+  const t = $("reflectionInput").value.trim();
+  if(!t){ toast('Escribe algo primero','bad'); return; }
+  reflections.push({text:t, level:currentLevel, date:todayStr()});
+  save(); renderReflections();
+  $("reflectionInput").value = '';
+  toast('Reflexión guardada ✓','ok');
 }
 window.deleteReflection = (i)=>{ reflections.splice(i,1); save(); renderReflections(); };
 
-// ── GUARDAR / CARGAR ──
+/* ── GUARDAR / CARGAR ── */
 function downloadProgress(){
-  const progress = { habits, reflections, tasks, affirmations, currentAffirmationIndex:affIdx };
+  const progress = { reflections, sessionLog };
   const blob = new Blob([JSON.stringify(progress,null,2)], {type:"text/plain"});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download="progreso_habitos.txt"; a.click();
+  const a = document.createElement("a"); a.href=url; a.download="progreso_shadowing.txt"; a.click();
   URL.revokeObjectURL(url);
   toast("Progreso descargado ✓","ok");
 }
@@ -416,22 +478,27 @@ function loadProgress(){
   reader.onload = (e)=>{
     try{
       const p = JSON.parse(e.target.result);
-      habits = p.habits || []; reflections = p.reflections || []; tasks = p.tasks || [];
-      affirmations = p.affirmations || affirmations; affIdx = p.currentAffirmationIndex || 0;
-      save();
-      renderHabitSelect(); renderHabits(); renderReflections(); renderTasks(); renderAff();
+      reflections = p.reflections || []; sessionLog = p.sessionLog || [];
+      save(); renderReflections(); renderStats();
       toast("Progreso cargado ✓","ok"); $("uploadProgress").value="";
     }catch(err){ toast("Archivo inválido","bad"); }
   };
   reader.readAsText(file);
 }
 
-function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
-
-// ── INIT ──
-buildWave(); greeting(); renderTimer();
-renderHabitSelect(); renderHabits(); renderTasks(); renderReflections();
-renderAff(); restartAff();
+/* ── INIT ── */
+function init(){
+  buildWords(); renderReader(); renderGlossary();
+  renderReflections(); renderStats();
+  if('speechSynthesis' in window){
+    populateVoices();
+    speechSynthesis.onvoiceschanged = populateVoices;
+  } else {
+    $("noSupport").style.display = 'block';
+    $("playBtn").disabled = true;
+  }
+}
+init();
 </script>
 </body>
 </html>

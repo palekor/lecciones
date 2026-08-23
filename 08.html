@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0B0A16; --panel:#15132487; --panel-solid:#15132a; --panel2:#1C1934;
+    --bg:#0B0A16; --panel-solid:#15132a; --panel2:#1C1934;
     --gold:#E8B84B; --gold-deep:#C99A32; --violet:#8B6CFF; --violet-deep:#6F4EEF;
     --coral:#FF5A3C; --coral-deep:#E8482C; --mint:#15B79E; --mint-deep:#0E8C79;
     --ink:#F6F2E9; --ink-soft:#C7C0DA; --bruma:#8B84A3;
@@ -27,34 +27,48 @@
   body::before{
     content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
     background:
-      radial-gradient(55% 40% at 15% 0%, rgba(139,108,255,0.16), transparent 60%),
-      radial-gradient(50% 45% at 100% 10%, rgba(232,184,75,0.10), transparent 60%),
+      radial-gradient(55% 40% at 15% 0%, rgba(139,108,255,0.17), transparent 60%),
+      radial-gradient(50% 45% at 100% 8%, rgba(232,184,75,0.11), transparent 60%),
       radial-gradient(60% 50% at 50% 100%, rgba(255,90,60,0.08), transparent 60%);
   }
   .shell{ width:100%; max-width:700px; margin:0 auto; padding:0 18px; position:relative; z-index:10; }
 
-  header{ text-align:center; padding:30px 0 6px; }
+  header{ text-align:center; padding:32px 0 6px; animation:fadeUp .6s ease both; }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+  @media(prefers-reduced-motion:reduce){ header{ animation:none; } }
   .eyebrow{ font-family:'DM Mono',monospace; font-size:0.66rem; letter-spacing:0.28em; text-transform:uppercase;
     color:var(--gold); display:inline-flex; align-items:center; gap:10px; }
   .eyebrow::before,.eyebrow::after{ content:''; width:20px; height:1px; background:var(--gold); opacity:.6; }
-  header h1{ font-family:'Cinzel',serif; font-weight:700; font-size:clamp(1.9rem,6.4vw,2.7rem); line-height:1.08;
+  header h1{ font-family:'Cinzel',serif; font-weight:700; font-size:clamp(2rem,6.6vw,2.9rem); line-height:1.08;
     letter-spacing:0.01em; margin:14px 0 6px; color:var(--ink); }
   header h1 span{ background:linear-gradient(120deg,var(--gold) 20%, var(--coral) 55%, var(--violet) 90%);
     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
   header .sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; color:var(--ink-soft);
-    font-size:1.12rem; max-width:460px; margin:0 auto; line-height:1.5; }
+    font-size:1.14rem; max-width:480px; margin:0 auto; line-height:1.5; }
+  .hairline{ height:1px; width:100%; margin:22px 0 0; background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent); }
 
-  .panel{ background:var(--panel-solid); border:1px solid var(--line-soft); border-radius:18px; padding:20px;
-    box-shadow:0 14px 40px rgba(0,0,0,0.35); margin-top:16px; }
-  .panel h2{ font-family:'Cinzel',serif; font-weight:600; font-size:1.02rem; color:var(--gold); letter-spacing:0.02em; margin-bottom:10px; }
+  .panel{ background:var(--panel-solid); border:1px solid var(--line-soft); border-radius:20px; padding:22px;
+    box-shadow:0 16px 46px rgba(0,0,0,0.38); margin-top:16px; position:relative; }
+  .panel h2{ font-family:'Cinzel',serif; font-weight:600; font-size:1.02rem; color:var(--gold); letter-spacing:0.03em; margin-bottom:10px; }
   .panel .desc{ color:var(--ink-soft); font-size:0.9rem; line-height:1.55; }
-  .steps{ display:grid; gap:10px; margin-top:12px; }
+  .steps{ display:grid; gap:11px; margin-top:14px; }
   .step{ display:flex; gap:12px; align-items:flex-start; }
   .step .num{ flex-shrink:0; width:26px; height:26px; border-radius:8px; background:rgba(232,184,75,0.12);
     border:1px solid var(--line); color:var(--gold); font-family:'DM Mono',monospace; font-size:0.72rem;
     display:flex; align-items:center; justify-content:center; font-weight:600; }
   .step p{ color:var(--ink-soft); font-size:0.88rem; line-height:1.5; }
   .step b{ color:var(--ink); font-weight:600; }
+
+  /* TOPIC PICKER */
+  .topic-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:6px; }
+  .topic-chip{ padding:14px 12px; border-radius:14px; border:1.5px solid var(--line); background:rgba(255,255,255,0.02);
+    color:var(--ink-soft); text-align:left; cursor:pointer; transition:all .2s; touch-action:manipulation; }
+  .topic-chip .t-icon{ font-size:1.3rem; display:block; margin-bottom:6px; }
+  .topic-chip .t-label{ font-family:'Figtree',sans-serif; font-weight:700; font-size:0.84rem; color:var(--ink); display:block; }
+  .topic-chip .t-title{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.8rem; color:var(--bruma); margin-top:2px; display:block; }
+  .topic-chip.active{ border-color:var(--gold); background:linear-gradient(155deg,rgba(232,184,75,0.14),rgba(139,108,255,0.08)); box-shadow:0 0 0 1px rgba(232,184,75,0.25) inset; }
+  .topic-chip.active .t-title{ color:var(--gold); }
+  .topic-chip:disabled{ opacity:.4; cursor:not-allowed; }
 
   /* LEVEL PICKER */
   .level-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
@@ -68,18 +82,29 @@
   .level-chip:disabled{ opacity:.4; cursor:not-allowed; }
 
   /* SHADOW READER */
-  .reader-card{ border-radius:20px; padding:26px 22px; margin-top:18px; position:relative; overflow:hidden;
-    background:radial-gradient(130% 140% at 0% 0%, #241F44 0%, #100E20 65%); box-shadow:0 20px 54px rgba(0,0,0,0.45); }
-  .reader-card::after{ content:''; position:absolute; inset:0; pointer-events:none; border-radius:20px;
-    box-shadow:inset 0 0 0 1px rgba(232,184,75,0.14); }
-  .reader-text{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(1.15rem,4vw,1.42rem);
-    line-height:1.85; color:var(--ink-soft); position:relative; z-index:2; }
-  .reader-text .word{ transition:color .12s, background .12s, transform .12s; border-radius:5px; padding:1px 2px; }
-  .reader-text .word.active{ color:#100E20; background:linear-gradient(120deg,var(--gold),#F3D98A); font-weight:600;
-    box-shadow:0 2px 10px rgba(232,184,75,0.4); }
+  .reader-card{ border-radius:22px; padding:28px 24px; margin-top:18px; position:relative; overflow:hidden;
+    background:radial-gradient(130% 140% at 0% 0%, #241F44 0%, #100E20 65%); box-shadow:0 22px 58px rgba(0,0,0,0.48); }
+  .reader-card::after{ content:''; position:absolute; inset:0; pointer-events:none; border-radius:22px;
+    box-shadow:inset 0 0 0 1px rgba(232,184,75,0.16); }
+  .reader-topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; position:relative; z-index:2; }
+  .reader-topic-badge{ font-family:'DM Mono',monospace; font-size:0.64rem; letter-spacing:0.06em; color:var(--gold);
+    background:rgba(232,184,75,0.1); border:1px solid var(--line); border-radius:999px; padding:5px 11px; text-transform:uppercase; }
+  .wave{ display:flex; align-items:flex-end; gap:3px; height:16px; opacity:0; transition:opacity .3s; }
+  .wave.on{ opacity:1; }
+  .wave i{ display:block; width:3px; border-radius:3px; background:linear-gradient(to top,var(--mint),var(--gold)); animation:vox 1s ease-in-out infinite; }
+  @keyframes vox{0%,100%{transform:scaleY(.3);}50%{transform:scaleY(1);}}
+
+  .reader-text{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(1.4rem,4.6vw,1.95rem);
+    line-height:1.9; color:var(--ink-soft); position:relative; z-index:2; cursor:pointer; user-select:none; }
+  .reader-text .word{ transition:color .12s, background-color .12s, box-shadow .12s; border-radius:6px; padding:1px 3px; }
+  .reader-text .word.active{ color:#100E20; background-color:var(--gold);
+    box-shadow:0 2px 12px rgba(232,184,75,0.45); }
   .reader-text .word.done{ color:var(--ink); }
   .reader-text .term{ border-bottom:1.5px dotted var(--coral); cursor:pointer; }
   .reader-text .term.active{ border-bottom-color:transparent; }
+  .reader-hint{ font-size:0.72rem; color:var(--bruma); text-align:center; margin-top:6px; position:relative; z-index:2;
+    font-family:'DM Mono',monospace; letter-spacing:0.03em; opacity:0; transition:opacity .3s; }
+  .reader-hint.show{ opacity:1; }
 
   .progress-track{ height:5px; border-radius:100px; background:rgba(255,255,255,0.08); overflow:hidden; margin:18px 0 6px; position:relative; z-index:2; }
   .progress-fill{ height:100%; width:0%; border-radius:100px; background:linear-gradient(90deg,var(--gold),var(--coral)); transition:width .15s linear; }
@@ -87,15 +112,16 @@
     color:var(--bruma); letter-spacing:0.04em; position:relative; z-index:2; }
 
   .reader-actions{ display:flex; gap:8px; margin-top:16px; position:relative; z-index:2; flex-wrap:wrap; }
-  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:13px 20px; border-radius:12px;
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:14px 20px; border-radius:13px;
     font-family:'Figtree',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; border:none;
-    transition:transform .15s, background .2s, border-color .2s, opacity .2s; touch-action:manipulation; }
+    transition:transform .15s, background .2s, border-color .2s, opacity .2s, box-shadow .2s; touch-action:manipulation; }
   .btn:active{ transform:scale(.97); }
-  .btn-primary{ background:linear-gradient(120deg,var(--coral),var(--coral-deep)); color:#fff; box-shadow:0 8px 22px rgba(255,90,60,0.3); }
+  .btn-primary{ background:linear-gradient(120deg,var(--coral),var(--coral-deep)); color:#fff; box-shadow:0 8px 24px rgba(255,90,60,0.32); }
+  .btn-primary:hover{ box-shadow:0 10px 30px rgba(255,90,60,0.42); }
   .btn-ghost{ background:rgba(255,255,255,0.06); color:var(--ink-soft); border:1.5px solid rgba(255,255,255,0.14); }
   .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
   .btn[disabled]{ opacity:.4; pointer-events:none; }
-  .reader-actions .btn{ flex:1; min-width:120px; }
+  .reader-actions .btn{ flex:1; min-width:130px; }
 
   .voice-row{ display:flex; gap:8px; margin-top:12px; position:relative; z-index:2; flex-wrap:wrap; }
   .field{ padding:10px 14px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.05);
@@ -104,7 +130,7 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C7C0DA' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat:no-repeat; background-position:right 12px center; padding-right:34px; }
   .no-support{ display:none; background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.3); border-radius:12px;
-    padding:12px 14px; font-size:0.82rem; color:#FFB4B4; margin-top:14px; }
+    padding:12px 14px; font-size:0.82rem; color:#FFB4B4; margin-top:14px; position:relative; z-index:2; }
 
   .completion{ margin-top:16px; text-align:center; display:none; position:relative; z-index:2; }
   .completion.show{ display:block; }
@@ -117,28 +143,18 @@
   .gloss-item .en{ font-weight:700; color:var(--ink); font-size:0.84rem; }
   .gloss-item .es{ font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--bruma); font-size:0.8rem; margin-top:1px; }
 
-  /* SESSIONS LOG */
-  .stat-row{ display:flex; gap:8px; margin-top:12px; }
-  .stat-card{ flex:1; text-align:center; padding:12px 8px; background:rgba(255,255,255,0.04); border:1px solid var(--line-soft); border-radius:12px; }
-  .stat-num{ font-family:'DM Mono',monospace; font-size:1.3rem; font-weight:500; color:var(--gold); }
-  .stat-label{ font-size:0.62rem; color:var(--bruma); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
-  .add-row{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
-  textarea.field{ resize:vertical; min-height:64px; font-family:'Figtree',sans-serif; width:100%; }
-  .list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-  .empty{ text-align:center; color:var(--bruma); font-size:0.84rem; padding:10px; font-style:italic; }
-  .item{ display:flex; align-items:flex-start; gap:10px; background:rgba(255,255,255,0.04); border-radius:12px; padding:11px 13px; }
-  .item .body{ flex:1; min-width:0; }
-  .item .meta{ font-size:0.66rem; color:var(--gold); font-family:'DM Mono',monospace; letter-spacing:0.04em; }
-  .item .txt{ font-size:0.85rem; color:var(--ink-soft); margin-top:3px; line-height:1.4; }
-  .del{ flex-shrink:0; width:28px; height:28px; border-radius:999px; border:none; background:transparent; color:var(--bruma);
-    cursor:pointer; font-size:1.05rem; transition:all .15s; touch-action:manipulation; }
-  .del:hover{ background:rgba(255,107,107,0.14); color:var(--err); }
+  /* TIPS */
+  .tips-list{ display:grid; gap:10px; margin-top:14px; }
+  .tip{ display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.03); border:1px solid var(--line-soft); border-radius:12px; padding:12px 14px; }
+  .tip .t-icon{ flex-shrink:0; font-size:1.05rem; }
+  .tip p{ color:var(--ink-soft); font-size:0.86rem; line-height:1.5; }
+  .tip b{ color:var(--gold); font-weight:600; }
 
-  .save-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
-  .file-label{ display:inline-flex; align-items:center; gap:7px; padding:11px 16px; border-radius:12px; border:1.5px dashed rgba(255,255,255,0.18);
-    color:var(--ink-soft); font-weight:600; font-size:0.82rem; cursor:pointer; background:transparent; transition:all .2s; }
-  .file-label:hover{ border-color:var(--gold); color:var(--gold); }
-  #uploadProgress{ display:none; }
+  /* STATS */
+  .stat-row{ display:flex; gap:8px; margin-top:12px; }
+  .stat-card{ flex:1; text-align:center; padding:14px 8px; background:rgba(255,255,255,0.04); border:1px solid var(--line-soft); border-radius:12px; }
+  .stat-num{ font-family:'DM Mono',monospace; font-size:1.4rem; font-weight:500; color:var(--gold); }
+  .stat-label{ font-size:0.62rem; color:var(--bruma); text-transform:uppercase; letter-spacing:0.06em; margin-top:3px; }
 
   #toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(40px); background:var(--panel2);
     color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:9px 22px; font-weight:600; font-size:0.82rem;
@@ -152,7 +168,7 @@
     box-shadow:0 10px 30px rgba(37,211,102,.4); padding:13px 18px; transition:transform .2s; }
   .wa-fab:active{ transform:scale(.95); }
   @media(max-width:420px){ .wa-label{ display:none; } }
-  .foot{ text-align:center; margin-top:22px; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em;
+  .foot{ text-align:center; margin-top:24px; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em;
     text-transform:uppercase; color:var(--bruma); }
   [hidden]{ display:none !important; }
   :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:8px; }
@@ -165,17 +181,25 @@
     <h1>Domina el <span>Shadowing</span></h1>
     <p class="sub">Escucha, lee y repite al mismo tiempo. Así se reprograma un comportamiento — un ritmo a la vez.</p>
   </header>
+  <div class="hairline"></div>
 
   <!-- QUÉ ES / CÓMO -->
   <div class="panel">
     <h2>¿Qué es el Shadowing?</h2>
     <p class="desc">El shadowing es una técnica de PNL aplicada al idioma: escuchas una voz nativa y hablas <b style="color:var(--ink)">al mismo tiempo</b>, como una sombra. No traduces, no piensas — tu cerebro imita el ritmo, la entonación y la música del inglés directamente.</p>
     <div class="steps">
-      <div class="step"><div class="num">1</div><p><b>Elige tu nivel</b> — esto ajusta la velocidad de la voz, no el texto.</p></div>
+      <div class="step"><div class="num">1</div><p><b>Elige un tema y tu nivel</b> — el nivel ajusta la velocidad de la voz, no el texto.</p></div>
       <div class="step"><div class="num">2</div><p><b>Presiona Reproducir</b> y habla en voz alta al mismo tiempo que la voz, palabra por palabra.</p></div>
-      <div class="step"><div class="num">3</div><p><b>No te detengas</b> si te equivocas — sigue el ritmo, no la perfección.</p></div>
+      <div class="step"><div class="num">3</div><p><b>Toca el texto</b> en cualquier momento para pausar y continuar cuando quieras.</p></div>
       <div class="step"><div class="num">4</div><p><b>Repite la sesión</b> 3 veces seguidas. La repetición es lo que ancla el patrón.</p></div>
     </div>
+  </div>
+
+  <!-- TEMA -->
+  <div class="panel">
+    <h2>Elige tu tema</h2>
+    <p class="desc">Cuatro textos, cuatro contextos reales de comunicación profesional.</p>
+    <div class="topic-grid" id="topicGrid"></div>
   </div>
 
   <!-- NIVEL -->
@@ -192,14 +216,19 @@
 
   <!-- LECTOR / SHADOWING -->
   <div class="reader-card">
+    <div class="reader-topbar">
+      <span class="reader-topic-badge" id="topicBadge">TEMA</span>
+      <div class="wave" id="wave"></div>
+    </div>
     <div class="reader-text" id="readerText"></div>
+    <div class="reader-hint" id="readerHint">toca el texto para pausar / continuar</div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="reader-meta">
       <span id="wordCounter">0 / 0 palabras</span>
       <span id="levelBadge">NIVEL B1</span>
     </div>
     <div class="reader-actions">
-      <button class="btn btn-primary" id="playBtn" onclick="togglePlay()">🚀 Reproducir y repetir</button>
+      <button class="btn btn-primary" id="playBtn" onclick="onPlayBtn()">🚀 Reproducir y repetir</button>
       <button class="btn btn-ghost" onclick="restartReader()">🔄 Reiniciar</button>
     </div>
     <div class="voice-row">
@@ -219,23 +248,25 @@
     <div class="glossary-grid" id="glossaryGrid"></div>
   </div>
 
-  <!-- SESIONES / REFLEXIÓN -->
+  <!-- TIPS -->
+  <div class="panel">
+    <h2>Tips para un mejor shadowing</h2>
+    <div class="tips-list">
+      <div class="tip"><span class="t-icon">🎭</span><p><b>Imita la entonación</b>, no solo las palabras. La música del idioma se aprende antes que la gramática.</p></div>
+      <div class="tip"><span class="t-icon">🙈</span><p><b>No mires la traducción</b> mientras hablas. Deja que tu cerebro conecte sonido con significado directamente.</p></div>
+      <div class="tip"><span class="t-icon">🎙️</span><p><b>Grábate</b> una vez por semana y compara tu ritmo con el original. El progreso se escucha, no se imagina.</p></div>
+      <div class="tip"><span class="t-icon">🎯</span><p><b>Exagera el acento</b> al principio — parece incómodo, pero así se rompe el acento materno más rápido.</p></div>
+      <div class="tip"><span class="t-icon">🔁</span><p><b>Repite el mismo texto 3 veces</b> antes de cambiar de tema. La repetición inmediata ancla el patrón.</p></div>
+    </div>
+  </div>
+
+  <!-- PROGRESO -->
   <div class="panel">
     <h2>Tu progreso</h2>
     <div class="stat-row">
       <div class="stat-card"><div class="stat-num" id="statSessions">0</div><div class="stat-label">Sesiones</div></div>
       <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Racha (días)</div></div>
       <div class="stat-card"><div class="stat-num" id="statLevel">B1</div><div class="stat-label">Último nivel</div></div>
-    </div>
-    <div class="add-row">
-      <textarea class="field" id="reflectionInput" placeholder="¿Qué notaste en esta sesión? (opcional)"></textarea>
-      <button class="btn btn-primary" onclick="saveReflection()">💾 Guardar reflexión</button>
-    </div>
-    <div class="list" id="reflectionList"></div>
-    <div class="save-row">
-      <button class="btn btn-ghost" onclick="downloadProgress()">📥 Descargar (.txt)</button>
-      <label class="file-label" for="uploadProgress">📤 Elegir archivo…</label>
-      <input type="file" id="uploadProgress" accept=".txt" onchange="loadProgress()">
     </div>
   </div>
 
@@ -254,72 +285,108 @@
 <script>
 const $ = (id)=>document.getElementById(id);
 
-/* ── TEXTO MAESTRO (comportamiento, PNL, meseta) ── */
-const SHADOW_TEXT = "Every behavior you repeat becomes a signal to your brain. In NLP, we call this pattern an anchor, a small action linked to a specific state of mind. When you practice English every day, even for three minutes, your brain builds a new pathway. At first, progress feels fast. You learn new words, new sounds, new rhythms. Then, one day, everything slows down. You practice, but nothing seems to change. This moment is called the plateau. A plateau is not a wall. It is a sign that your brain is organizing what it already knows. Elite athletes face this stage. Professional musicians face it too. The real difference between people who improve and people who quit is not talent. It is persistence. Instead of fighting the plateau, work with it. Change your input. Listen to new voices. Shadow new rhythms. Speak slower, then faster, with full intention. Your brain needs variety to break an old pattern and build a stronger one. Persistence through a plateau builds real, lasting fluency. It rewires behavior at a deeper level than motivation ever could. Trust the process, repeat with purpose, and your breakthrough will arrive, often exactly when you expect it least.";
-
-const GLOSSARY = {
-  "anchor":"ancla (técnica de PNL)","pathway":"camino neuronal","plateau":"meseta / estancamiento",
-  "persistence":"persistencia","input":"estímulo recibido","intention":"intención",
-  "rewires":"reconecta / reconfigura","breakthrough":"avance repentino"
-};
+/* ── BIBLIOTECA DE TEXTOS ── */
+const TEXTS = [
+  {
+    id:'behavior', icon:'🧠', label:'Comportamiento y PNL', title:'Persistencia sobre la meseta',
+    text:"Every behavior you repeat becomes a signal to your brain. In NLP, we call this pattern an anchor, a small action linked to a specific state of mind. When you practice English every day, even for three minutes, your brain builds a new pathway. At first, progress feels fast. You learn new words, new sounds, new rhythms. Then, one day, everything slows down. You practice, but nothing seems to change. This moment is called the plateau. A plateau is not a wall. It is a sign that your brain is organizing what it already knows. Elite athletes face this stage. Professional musicians face it too. The real difference between people who improve and people who quit is not talent. It is persistence. Instead of fighting the plateau, work with it. Change your input. Listen to new voices. Shadow new rhythms. Speak slower, then faster, with full intention. Your brain needs variety to break an old pattern and build a stronger one. Persistence through a plateau builds real, lasting fluency. It rewires behavior at a deeper level than motivation ever could. Trust the process, repeat with purpose, and your breakthrough will arrive, often exactly when you expect it least.",
+    glossary:{ "anchor":"ancla (técnica de PNL)","pathway":"camino neuronal","plateau":"meseta / estancamiento","persistence":"persistencia","input":"estímulo recibido","intention":"intención","rewires":"reconecta / reconfigura","breakthrough":"avance repentino" }
+  },
+  {
+    id:'speaking', icon:'🎤', label:'Oratoria', title:'La voz del liderazgo',
+    text:"Confidence is not the absence of fear. It is action taken in spite of it. Every powerful speaker once stood in silence, heart racing, before their very first audience. What changed was not the fear itself, it was their relationship with it. They learned to breathe through pressure instead of running from it. Your voice carries more than words. It carries posture, pace, and presence. A pause, used well, says more than a rushed sentence ever could. Silence is not empty, it is a tool. Leaders who pause command a room without raising their voice. Preparation builds the floor, but presence builds the connection. People remember how a speaker made them feel, not every word they used. Eye contact, open hands, a grounded stance, these signals tell the room, I belong here. Practice out loud, every single day, even for two minutes. Speak to a mirror, to your phone, to an empty room. Your nervous system learns through repetition, not theory. Executive presence is not a personality trait, it is a skill, built one spoken sentence at a time. This is the real work of leadership, showing up fully, again and again, until presence becomes your default state.",
+    glossary:{ "confidence":"confianza","presence":"presencia escénica","posture":"postura","pace":"ritmo / velocidad","stance":"postura corporal","grounded":"firme / con los pies en la tierra","repetition":"repetición" }
+  },
+  {
+    id:'money', icon:'💰', label:'Mentalidad de dinero', title:'La psicología del dinero',
+    text:"Money behaves the way you believe it behaves. If you were taught that money is scarce, your brain will search for scarcity everywhere, even when opportunity is right in front of you. Beliefs formed in childhood quietly run your financial decisions as an adult. Wealthy behavior is rarely about one big decision. It is built from small, repeated choices, tracking expenses, negotiating with confidence, saying no to bad debt, saying yes to calculated risk. Consistency compounds, in money and in skill. Track every dollar for thirty days, and patterns you never noticed will finally become visible. Fear makes people freeze or overspend. Clarity makes people plan. The difference between the two is usually information, not intelligence. When you understand how money moves, income, expenses, investment, time, anxiety turns into strategy. Negotiation is a language skill before it is a financial one. The words you choose in a meeting can be worth more than a full year of savings. Speak with precision. Ask direct questions. Silence, again, is powerful, the first person to speak after a number is often the one who loses leverage. Wealth is not an accident, it is a language, and fluent speakers make it look effortless.",
+    glossary:{ "scarcity":"escasez","wealthy":"adinerado / próspero","compounds":"se acumula (interés compuesto)","clarity":"claridad","negotiation":"negociación","leverage":"ventaja / influencia","vocabulary":"vocabulario" }
+  },
+  {
+    id:'focus', icon:'🎯', label:'Enfoque profundo', title:'Tu atención es tu moneda',
+    text:"Attention is the most valuable currency you own, and most of it leaks away without your permission. Every notification, every open tab, every half finished thought pulls a small piece of your focus somewhere else. Deep work is not about having more time. It is about protecting shorter blocks of time completely. Twenty five focused minutes can outperform three scattered hours. The brain does not multitask, it switches rapidly, and every switch has a hidden cost. Guard your calendar the same way you guard your bank account, because both measure what you truly value. Start with a single, clear objective before you sit down. A vague goal produces vague effort. Remove your phone from the room, not just from your sight. Environment shapes behavior more reliably than willpower ever will. Fatigue after deep focus is a good sign, it means real thinking happened, not just movement. Rest with intention, a short walk, silence, water, natural light. Recovery is part of the work, not a break from it. Depth compounds quietly, day after day, until the results become impossible to ignore. Small, focused hours build a career that scattered ones never could.",
+    glossary:{ "attention":"atención","currency":"moneda","multitask":"multitarea","willpower":"fuerza de voluntad","fatigue":"fatiga","recovery":"recuperación","deposits":"depósitos" }
+  }
+];
 
 /* ── ESTADO ── */
-function load(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
-let reflections = load('shadow_reflections', []);
-let sessionLog = load('shadow_sessions', []);
+let currentTopicIndex = 0;
 let currentLevel = 'B1', currentRate = 0.92;
-let words = [];       // {text,start,end,isTerm}
+let words = [];
 let wordSpans = [];
-let speaking = false;
+let playState = 'idle'; // idle | playing | paused
+let sessionLog = (function(){ try{ return JSON.parse(localStorage.getItem('shadow_sessions'))||[]; }catch(e){ return []; } })();
 
-function save(){ try{
-  localStorage.setItem('shadow_reflections', JSON.stringify(reflections));
-  localStorage.setItem('shadow_sessions', JSON.stringify(sessionLog));
-}catch(e){} }
+function saveSessions(){ try{ localStorage.setItem('shadow_sessions', JSON.stringify(sessionLog)); }catch(e){} }
 
 /* ── HELPERS ── */
 function toast(msg,type){ const el=$("toast"); el.textContent=msg; el.className="show "+(type||""); clearTimeout(window._t); window._t=setTimeout(()=>el.classList.remove("show"),1900); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function currentTopic(){ return TEXTS[currentTopicIndex]; }
+
+/* ── TOPICS ── */
+function renderTopicGrid(){
+  $("topicGrid").innerHTML = TEXTS.map((t,i)=>
+    `<button class="topic-chip${i===currentTopicIndex?' active':''}" data-i="${i}" onclick="setTopic(${i})">
+       <span class="t-icon">${t.icon}</span>
+       <span class="t-label">${esc(t.label)}</span>
+       <span class="t-title">${esc(t.title)}</span>
+     </button>`
+  ).join('');
+}
+function setTopic(i){
+  if(playState !== 'idle') return;
+  currentTopicIndex = i;
+  document.querySelectorAll('.topic-chip').forEach((c,idx)=>c.classList.toggle('active', idx===i));
+  $("topicBadge").textContent = currentTopic().label.toUpperCase();
+  buildWords(); renderReader(); renderGlossary();
+}
 
 /* ── CONSTRUIR PALABRAS Y RENDER ── */
 function buildWords(){
+  const text = currentTopic().text;
+  const glossary = currentTopic().glossary;
   words = [];
   const re = /\S+/g; let m;
-  while((m = re.exec(SHADOW_TEXT)) !== null){
+  while((m = re.exec(text)) !== null){
     const raw = m[0];
     const clean = raw.replace(/[^a-zA-Z']/g,'').toLowerCase();
-    words.push({ text: raw, start: m.index, end: m.index + raw.length, isTerm: !!GLOSSARY[clean], key: clean });
+    words.push({ text: raw, start: m.index, end: m.index + raw.length, isTerm: !!glossary[clean], key: clean });
   }
 }
 function renderReader(){
+  const text = currentTopic().text;
   const el = $("readerText");
   el.innerHTML = '';
   wordSpans = [];
   let cursor = 0;
   words.forEach((w,i)=>{
-    if(w.start > cursor) el.appendChild(document.createTextNode(SHADOW_TEXT.slice(cursor, w.start)));
+    if(w.start > cursor) el.appendChild(document.createTextNode(text.slice(cursor, w.start)));
     const span = document.createElement('span');
     span.className = 'word' + (w.isTerm ? ' term' : '');
     span.textContent = w.text;
     span.dataset.index = i;
-    if(w.isTerm) span.onclick = ()=> toast(w.key.toUpperCase()+' → '+GLOSSARY[w.key], 'ok');
+    if(w.isTerm){
+      span.addEventListener('click',(e)=>{ e.stopPropagation(); toast(w.key.toUpperCase()+' → '+currentTopic().glossary[w.key], 'ok'); });
+    }
     el.appendChild(span);
     wordSpans.push(span);
     cursor = w.end;
   });
-  if(cursor < SHADOW_TEXT.length) el.appendChild(document.createTextNode(SHADOW_TEXT.slice(cursor)));
+  if(cursor < text.length) el.appendChild(document.createTextNode(text.slice(cursor)));
   $("wordCounter").textContent = '0 / '+words.length+' palabras';
   $("progressFill").style.width = '0%';
 }
 function renderGlossary(){
-  $("glossaryGrid").innerHTML = Object.entries(GLOSSARY).map(([en,es])=>
+  const glossary = currentTopic().glossary;
+  $("glossaryGrid").innerHTML = Object.entries(glossary).map(([en,es])=>
     `<div class="gloss-item"><div class="en">${esc(en)}</div><div class="es">${esc(es)}</div></div>`
   ).join('');
 }
 
 /* ── NIVEL ── */
 function setLevel(level, btn){
-  if(speaking) return;
+  if(playState !== 'idle') return;
   currentLevel = level;
   currentRate = parseFloat(btn.dataset.rate);
   document.querySelectorAll('.level-chip').forEach(c=>c.classList.remove('active'));
@@ -341,7 +408,6 @@ function populateVoices(){
     o.value = i; o.textContent = v.name + ' ('+v.lang+')';
     sel.appendChild(o);
   });
-  sel.dataset.voices = JSON.stringify(voices.map(v=>v.name));
   window._enVoices = voices;
   if(prev !== '' && voices[prev]) sel.value = prev;
 }
@@ -351,7 +417,6 @@ function findWordIndex(charIndex){
   for(let i=0;i<words.length;i++){
     if(charIndex >= words[i].start && charIndex < words[i].end) return i;
   }
-  // fallback: nearest word whose start <= charIndex
   let best = 0;
   for(let i=0;i<words.length;i++){ if(words[i].start <= charIndex) best = i; else break; }
   return best;
@@ -359,23 +424,40 @@ function findWordIndex(charIndex){
 function highlightWord(i){
   wordSpans.forEach((s,idx)=>{
     s.classList.toggle('active', idx===i);
-    if(idx < i) s.classList.add('done'); 
+    if(idx < i) s.classList.add('done');
   });
   $("wordCounter").textContent = (i+1)+' / '+words.length+' palabras';
   $("progressFill").style.width = (((i+1)/words.length)*100)+'%';
-  const active = wordSpans[i];
-  if(active) active.scrollIntoView({block:'center', behavior:'smooth', inline:'nearest'});
 }
-function setControlsPlaying(isPlaying){
-  speaking = isPlaying;
-  $("playBtn").textContent = isPlaying ? '⏹️ Detener' : '🚀 Reproducir y repetir';
-  document.querySelectorAll('.level-chip').forEach(c=>c.disabled = isPlaying);
-  $("voiceSelect").disabled = isPlaying;
+function updateUI(){
+  const btn = $("playBtn");
+  const locked = playState !== 'idle';
+  document.querySelectorAll('.level-chip, .topic-chip').forEach(c=>c.disabled = locked);
+  $("voiceSelect").disabled = locked;
+  $("wave").classList.toggle('on', playState==='playing');
+  $("readerHint").classList.toggle('show', locked);
+  if(playState==='idle') btn.textContent = '🚀 Reproducir y repetir';
+  else if(playState==='playing') btn.textContent = '⏸️ Pausar';
+  else if(playState==='paused') btn.textContent = '▶️ Continuar';
 }
-function togglePlay(){
+function onPlayBtn(){
   if(!('speechSynthesis' in window)){ $("noSupport").style.display='block'; return; }
-  if(speaking){ speechSynthesis.cancel(); setControlsPlaying(false); return; }
-  startShadowing();
+  if(playState === 'idle'){ startShadowing(); }
+  else{ togglePauseResume(); }
+}
+function onReaderTextClick(){
+  if(playState === 'idle') return;
+  togglePauseResume();
+}
+function togglePauseResume(){
+  if(playState === 'playing'){
+    speechSynthesis.pause();
+    playState = 'paused';
+  } else if(playState === 'paused'){
+    speechSynthesis.resume();
+    playState = 'playing';
+  }
+  updateUI();
 }
 function startShadowing(){
   speechSynthesis.cancel();
@@ -383,7 +465,8 @@ function startShadowing(){
   wordSpans.forEach(s=>{ s.classList.remove('active'); s.classList.remove('done'); });
   $("progressFill").style.width = '0%';
 
-  const utter = new SpeechSynthesisUtterance(SHADOW_TEXT);
+  const text = currentTopic().text;
+  const utter = new SpeechSynthesisUtterance(text);
   utter.rate = currentRate;
   utter.pitch = 1;
   utter.lang = 'en-US';
@@ -397,32 +480,33 @@ function startShadowing(){
   };
   utter.onend = ()=>{
     highlightWord(words.length-1);
-    setControlsPlaying(false);
+    playState = 'idle';
+    updateUI();
     $("completion").classList.add('show');
     logSession();
   };
-  utter.onerror = ()=>{ setControlsPlaying(false); toast('La voz se interrumpió. Intenta de nuevo.','bad'); };
+  utter.onerror = ()=>{ playState = 'idle'; updateUI(); toast('La voz se interrumpió. Intenta de nuevo.','bad'); };
 
-  setControlsPlaying(true);
+  playState = 'playing';
+  updateUI();
   speechSynthesis.speak(utter);
 }
 function restartReader(){
   speechSynthesis.cancel();
-  setControlsPlaying(false);
+  playState = 'idle';
+  updateUI();
   wordSpans.forEach(s=>{ s.classList.remove('active'); s.classList.remove('done'); });
   $("wordCounter").textContent = '0 / '+words.length+' palabras';
   $("progressFill").style.width = '0%';
   $("completion").classList.remove('show');
 }
 
-/* ── SESIONES / RACHA ── */
+/* ── SESIONES / RACHA (automático, sin escritura manual) ── */
 function todayStr(){ return new Date().toISOString().split('T')[0]; }
 function logSession(){
-  const today = todayStr();
-  sessionLog.push({date:today, level:currentLevel});
-  save();
+  sessionLog.push({date:todayStr(), level:currentLevel, topic:currentTopic().id});
+  saveSessions();
   renderStats();
-  toast('Sesión registrada ✓','ok');
 }
 function renderStats(){
   $("statSessions").textContent = sessionLog.length;
@@ -439,57 +523,12 @@ function renderStats(){
   $("statStreak").textContent = streak;
 }
 
-/* ── REFLEXIONES ── */
-function renderReflections(){
-  const el = $("reflectionList");
-  if(!reflections.length){ el.innerHTML = '<div class="empty">Aún no hay reflexiones. Escribe la primera después de tu sesión.</div>'; return; }
-  el.innerHTML = '';
-  reflections.slice().reverse().forEach((r)=>{
-    const i = reflections.indexOf(r);
-    const d = document.createElement('div'); d.className = 'item';
-    d.innerHTML = `<div class="body"><div class="meta">${esc(r.level||'')} · ${esc(r.date||'')}</div><div class="txt">${esc(r.text)}</div></div>
-      <button class="del" onclick="deleteReflection(${i})" aria-label="Eliminar">×</button>`;
-    el.appendChild(d);
-  });
-}
-function saveReflection(){
-  const t = $("reflectionInput").value.trim();
-  if(!t){ toast('Escribe algo primero','bad'); return; }
-  reflections.push({text:t, level:currentLevel, date:todayStr()});
-  save(); renderReflections();
-  $("reflectionInput").value = '';
-  toast('Reflexión guardada ✓','ok');
-}
-window.deleteReflection = (i)=>{ reflections.splice(i,1); save(); renderReflections(); };
-
-/* ── GUARDAR / CARGAR ── */
-function downloadProgress(){
-  const progress = { reflections, sessionLog };
-  const blob = new Blob([JSON.stringify(progress,null,2)], {type:"text/plain"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download="progreso_shadowing.txt"; a.click();
-  URL.revokeObjectURL(url);
-  toast("Progreso descargado ✓","ok");
-}
-function loadProgress(){
-  const file = $("uploadProgress").files[0];
-  if(!file){ toast("Elige un archivo","bad"); return; }
-  const reader = new FileReader();
-  reader.onload = (e)=>{
-    try{
-      const p = JSON.parse(e.target.result);
-      reflections = p.reflections || []; sessionLog = p.sessionLog || [];
-      save(); renderReflections(); renderStats();
-      toast("Progreso cargado ✓","ok"); $("uploadProgress").value="";
-    }catch(err){ toast("Archivo inválido","bad"); }
-  };
-  reader.readAsText(file);
-}
-
 /* ── INIT ── */
 function init(){
-  buildWords(); renderReader(); renderGlossary();
-  renderReflections(); renderStats();
+  renderTopicGrid();
+  $("topicBadge").textContent = currentTopic().label.toUpperCase();
+  buildWords(); renderReader(); renderGlossary(); renderStats();
+  $("readerText").addEventListener('click', onReaderTextClick);
   if('speechSynthesis' in window){
     populateVoices();
     speechSynthesis.onvoiceschanged = populateVoices;

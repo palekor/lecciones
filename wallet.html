@@ -86,7 +86,7 @@ a{color:inherit;text-decoration:none;}
 @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
 
 /* App Shell */
-#app{max-width:580px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative;padding-bottom:calc(88px + env(safe-area-inset-bottom));}
+#app{max-width:580px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative;padding-bottom:calc(112px + env(safe-area-inset-bottom));}
 
 /* Top Bar */
 .topbar{
@@ -119,9 +119,9 @@ a{color:inherit;text-decoration:none;}
 .bottomnav-inner{
   width:100%;max-width:580px;margin:0 14px;display:flex;justify-content:space-between;
   padding:8px 4px calc(8px + env(safe-area-inset-bottom));
-  background:color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  background:color-mix(in srgb, var(--bg-elev) 90%, transparent);
   backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
-  border:1px solid var(--border);border-radius:26px;margin-bottom:14px;box-shadow:0 -4px 30px rgba(0,0,0,0.2);
+  border:1px solid var(--border);border-radius:26px;margin-bottom:16px;box-shadow:0 -4px 30px rgba(0,0,0,0.25), var(--card-shadow);
 }
 .navbtn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:8px 2px;
@@ -138,7 +138,7 @@ a{color:inherit;text-decoration:none;}
 }
 
 /* Views */
-.view{animation:viewIn .4s var(--ease);padding:20px 20px 8px;}
+.view{animation:viewIn .4s var(--ease);padding:20px 20px 32px;}
 .view[hidden]{display:none;}
 @keyframes viewIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
@@ -337,13 +337,27 @@ textarea.input-field{resize:vertical;min-height:60px;}
 }
 .filter-btn.active{background:var(--accent-soft);color:var(--cyan);border-color:var(--border-strong);}
 .filter-btn:active{transform:scale(.95);}
-.todo-input-row{display:flex;gap:8px;margin-bottom:16px;}
+.todo-input-row{display:flex;gap:8px;margin-bottom:10px;}
 .todo-input-row input{flex:1;}
 .todo-input-row .btn{flex-shrink:0;}
+
+/* Priority + due date/time row */
+.todo-options-row{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.priority-picker{display:flex;gap:6px;align-items:center;}
+.priority-picker-label{font-size:10px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;margin-right:2px;}
+.priority-chip{
+  width:32px;height:32px;border-radius:9px;border:1.5px solid var(--border);background:transparent;
+  color:var(--text-faint);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  transition:all .2s var(--ease);flex-shrink:0;
+}
+.priority-chip.active{color:#0B1628;box-shadow:0 0 10px rgba(0,0,0,0.15);}
+.todo-datetime-inputs{display:flex;gap:6px;flex:1;min-width:0;}
+.todo-date-input,.todo-time-input{flex:1;min-width:0;padding:9px 8px;font-size:12px;}
+
 .todo-list{display:flex;flex-direction:column;gap:8px;}
 .todo-item{
-  display:flex;align-items:center;gap:12px;padding:14px 16px;
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-m);
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;
+  background:var(--bg-card);border:1px solid var(--border);border-left-width:3px;border-radius:var(--radius-m);
   transition:transform .18s var(--ease-spring),opacity .2s var(--ease);
 }
 .todo-item:active{transform:scale(.98);}
@@ -352,14 +366,22 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .todo-check{
   width:22px;height:22px;border-radius:7px;border:2px solid var(--border-strong);
   background:transparent;display:flex;align-items:center;justify-content:center;
-  font-size:12px;color:transparent;flex-shrink:0;transition:all .2s var(--ease-spring);
+  font-size:12px;color:transparent;flex-shrink:0;transition:all .2s var(--ease-spring);margin-top:1px;
 }
 .todo-item.done .todo-check{background:var(--cyan);border-color:var(--cyan);color:var(--ocean);}
-.todo-text{flex:1;font-size:14px;font-weight:500;line-height:1.4;}
+.todo-body{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0;}
+.todo-text{font-size:14px;font-weight:500;line-height:1.4;word-break:break-word;}
+.todo-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.todo-priority-badge{
+  width:19px;height:19px;border-radius:6px;font-size:10px;font-weight:800;color:#0B1628;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.todo-due{font-size:10.5px;color:var(--text-faint);font-weight:600;display:inline-flex;align-items:center;gap:3px;}
+.todo-due.overdue{color:var(--coral);font-weight:700;}
 .todo-delete{
   width:28px;height:28px;border-radius:8px;border:none;background:transparent;
   color:var(--text-faint);font-size:14px;display:flex;align-items:center;justify-content:center;
-  transition:color .2s var(--ease),background .2s var(--ease);
+  transition:color .2s var(--ease),background .2s var(--ease);flex-shrink:0;margin-top:1px;
 }
 .todo-delete:hover{color:var(--coral);background:rgba(255,107,107,0.1);}
 .todo-empty{text-align:center;padding:32px 0;color:var(--text-faint);font-size:14px;}
@@ -381,7 +403,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
 }
 .timer-display.running{color:var(--cyan-bright);text-shadow:0 0 30px rgba(0,229,204,0.3);}
 .timer-habit-name{font-size:14px;font-weight:600;color:var(--text-soft);margin-bottom:8px;}
-.timer-dur-row{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+.timer-dur-row{display:flex;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .dur-chip{
   padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;
   color:var(--text-soft);font-size:12px;font-weight:700;transition:all .2s var(--ease);cursor:pointer;
@@ -447,7 +469,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .idea-card:active{transform:scale(.98);}
 .idea-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .idea-card-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
-.idea-card-time{font-size:10px;color:var(--text-faint);}
+.idea-card-time{font-size:10px;color:var(--text-faint);text-align:right;line-height:1.3;flex-shrink:0;}
 .idea-card-body{font-size:14px;line-height:1.5;margin-top:8px;color:var(--text);}
 .idea-card-footer{display:flex;gap:8px;margin-top:10px;justify-content:flex-end;}
 .idea-card-btn{
@@ -700,10 +722,23 @@ textarea.input-field{resize:vertical;min-height:60px;}
   <!-- TODOS VIEW -->
   <section class="view" id="viewTodos" hidden>
     <div class="section-title">To-Do List</div>
-    <div class="section-sub">Capture what matters. Check it off when it's done.</div>
+    <div class="section-sub">Capture what matters. Set a priority, a due date, and check it off when it's done.</div>
     <div class="todo-input-row" style="margin-top:18px;">
       <input type="text" class="input-field" id="todoInput" placeholder="Add a new task…" maxlength="200">
       <button class="btn btn-cyan btn-sm" onclick="addTodo()">Add</button>
+    </div>
+    <div class="todo-options-row">
+      <div class="priority-picker" id="todoPriorityPicker">
+        <span class="priority-picker-label">Priority</span>
+        <button class="priority-chip" data-p="A" style="border-color:#FF6B6B;color:#FF6B6B;" onclick="setTodoPriority('A',this)">A</button>
+        <button class="priority-chip" data-p="B" style="border-color:#FFB84D;color:#FFB84D;" onclick="setTodoPriority('B',this)">B</button>
+        <button class="priority-chip" data-p="C" style="border-color:#00E5CC;color:#00E5CC;" onclick="setTodoPriority('C',this)">C</button>
+        <button class="priority-chip" data-p="D" style="border-color:#7B8FAD;color:#7B8FAD;" onclick="setTodoPriority('D',this)">D</button>
+      </div>
+      <div class="todo-datetime-inputs">
+        <input type="date" class="input-field todo-date-input" id="todoDateInput" title="Due date">
+        <input type="time" class="input-field todo-time-input" id="todoTimeInput" title="Due time">
+      </div>
     </div>
     <div class="todo-filters">
       <button class="filter-btn active" data-filter="all" onclick="setTodoFilter('all',this)">All</button>
@@ -748,6 +783,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
         <button class="dur-chip active" data-dur="180" onclick="setTimerDur(180,this)">3 min</button>
         <button class="dur-chip" data-dur="300" onclick="setTimerDur(300,this)">5 min</button>
         <button class="dur-chip" data-dur="600" onclick="setTimerDur(600,this)">10 min</button>
+        <button class="dur-chip" data-dur="2400" onclick="setTimerDur(2400,this)">40 min</button>
       </div>
       <div class="timer-controls">
         <button class="btn btn-cyan btn-sm" id="btnTimerStart" onclick="toggleTimer()">🚀 Start</button>
@@ -945,7 +981,15 @@ const ACCENT_COLORS = [
   {name:'Lavender',hex:'#B088F9'},
   {name:'Mint',hex:'#4ECDC4'},
   {name:'Rose',hex:'#FF6B9D'},
+  {name:'Sky',hex:'#4FC3F7'},
+  {name:'Emerald',hex:'#2ECC71'},
+  {name:'Gold',hex:'#F2C94C'},
+  {name:'Violet',hex:'#9B59B6'},
+  {name:'Crimson',hex:'#E85D5D'},
 ];
+
+const PRIORITY_COLORS = {A:'#FF6B6B',B:'#FFB84D',C:'#00E5CC',D:'#7B8FAD'};
+const PRIORITY_RANK = {A:0,B:1,C:2,D:3};
 
 function todayStr(){return new Date().toISOString().split('T')[0];}
 
@@ -983,6 +1027,33 @@ function relativeTime(iso){
   if(diff<86400000)return Math.floor(diff/3600000)+'h ago';
   if(diff<604800000)return Math.floor(diff/86400000)+'d ago';
   return d.toLocaleDateString();
+}
+
+function formatDateTime(iso){
+  const d=new Date(iso);
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let h=d.getHours(),m=d.getMinutes();
+  const ampm=h>=12?'PM':'AM';h=h%12;if(h===0)h=12;
+  return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()+' · '+h+':'+String(m).padStart(2,'0')+' '+ampm;
+}
+
+function formatDueLabel(t){
+  if(!t.dueDate)return '';
+  const d=new Date(t.dueDate+'T'+(t.dueTime||'00:00'));
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let label=months[d.getMonth()]+' '+d.getDate();
+  if(t.dueTime){
+    let h=d.getHours(),m=d.getMinutes();
+    const ampm=h>=12?'PM':'AM';h=h%12;if(h===0)h=12;
+    label+=' · '+h+':'+String(m).padStart(2,'0')+' '+ampm;
+  }
+  return label;
+}
+
+function isOverdue(t){
+  if(!t.dueDate||t.done)return false;
+  const d=new Date(t.dueDate+'T'+(t.dueTime||'23:59'));
+  return d.getTime()<Date.now();
 }
 
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
@@ -1069,14 +1140,11 @@ function renderWallet(){
 /* Moon Phase Calculation (approximate synodic cycle) */
 function getMoonPhase(){
   const now=new Date();
-  const year=now.getFullYear(),month=now.getMonth()+1,day=now.getDate();
-  // Simplified calculation based on known new moon reference
   const knownNew=new Date(2024,0,11); // Jan 11 2024 was a new moon
   const synodic=29.53058867; // days
   const diffDays=(now-knownNew)/(86400000);
   const phase=((diffDays%synodic)+synodic)%synodic;
   const pct=phase/synodic;
-  // 0=new, 0.25=first q, 0.5=full, 0.75=last q
   let name,emoji;
   if(pct<0.0625){name='New Moon';emoji='🌑';}
   else if(pct<0.1875){name='Waxing Crescent';emoji='🌒';}
@@ -1109,21 +1177,19 @@ function renderWelcomeNote(){
   const year=now.getFullYear();
   const moon=getMoonPhase();
   const weekNum=getWeekNumber();
-  
-  // Date line
+
   document.getElementById('welcomeDateMain').textContent=dayName+', '+monthName+' '+dateNum;
   document.getElementById('welcomeDateSub').textContent=year+' · '+moon.name;
   document.getElementById('welcomeMoon').textContent=moon.emoji;
   document.getElementById('welcomeWeek').textContent='Week '+weekNum;
-  
-  // Pending todos
+
   const pending=state.todos.filter(t=>!t.done);
   document.getElementById('welcomePendingCount').textContent=pending.length+' left';
-  
+
   if(pending.length===0){
     document.getElementById('welcomePendingList').innerHTML='<div class="welcome-empty">All clear — nothing pending ✓</div>';
   } else {
-    const show=pending.slice(0,5); // show max 5
+    const show=pending.slice(0,5);
     document.getElementById('welcomePendingList').innerHTML=
       show.map(t=>
         '<div class="welcome-todo-item">'+
@@ -1143,7 +1209,6 @@ function getAllArcadeGames(){
 
 function renderArcade(){
   const all=getAllArcadeGames();
-  const customs=(state.customGames||[]);
   document.getElementById('arcadeGrid').innerHTML=all.map(g=>
     '<a class="arcade-card'+(g.custom?' arcade-custom':'')+'" href="'+g.url+'" target="_blank" rel="noopener">'+
     '<div class="arcade-icon">'+g.icon+'</div>'+
@@ -1162,12 +1227,44 @@ function renderArcade(){
    TODOS
    ============================================================ */
 let todoFilter='all';
+let todoPriority=null;
+
+function setTodoPriority(p,el){
+  if(todoPriority===p){
+    todoPriority=null;
+    document.querySelectorAll('.priority-chip').forEach(c=>{c.classList.remove('active');c.style.background='transparent';});
+    return;
+  }
+  todoPriority=p;
+  document.querySelectorAll('.priority-chip').forEach(c=>{
+    if(c.dataset.p===p){c.classList.add('active');c.style.background=PRIORITY_COLORS[p];c.style.color='#0B1628';}
+    else{c.classList.remove('active');c.style.background='transparent';c.style.color=PRIORITY_COLORS[c.dataset.p];}
+  });
+}
+
+function sortTodosList(list){
+  return list.slice().sort((a,b)=>{
+    const ra=a.priority?PRIORITY_RANK[a.priority]:4, rb=b.priority?PRIORITY_RANK[b.priority]:4;
+    if(ra!==rb)return ra-rb;
+    const da=a.dueDate?new Date(a.dueDate+'T'+(a.dueTime||'00:00')).getTime():Infinity;
+    const db=b.dueDate?new Date(b.dueDate+'T'+(b.dueTime||'00:00')).getTime():Infinity;
+    if(da!==db)return da-db;
+    return new Date(a.createdAt)-new Date(b.createdAt);
+  });
+}
 
 function addTodo(){
   const input=document.getElementById('todoInput'),text=input.value.trim();
   if(!text){toast('Type a task first');return;}
-  state.todos.push({id:uid(),text:text,done:false,doneDate:null,createdAt:new Date().toISOString()});
-  input.value='';save();renderTodos();toast('Task added ✓');
+  const dueDate=document.getElementById('todoDateInput').value||null;
+  const dueTime=document.getElementById('todoTimeInput').value||null;
+  state.todos.push({id:uid(),text:text,done:false,doneDate:null,priority:todoPriority,dueDate:dueDate,dueTime:dueTime,createdAt:new Date().toISOString()});
+  input.value='';
+  document.getElementById('todoDateInput').value='';
+  document.getElementById('todoTimeInput').value='';
+  todoPriority=null;
+  document.querySelectorAll('.priority-chip').forEach(c=>{c.classList.remove('active');c.style.background='transparent';c.style.color=PRIORITY_COLORS[c.dataset.p];});
+  save();renderTodos();toast('Task added ✓');
 }
 
 function toggleTodo(id){
@@ -1190,17 +1287,27 @@ function renderTodos(){
   let filtered=state.todos;
   if(todoFilter==='active')filtered=state.todos.filter(t=>!t.done);
   if(todoFilter==='done')filtered=state.todos.filter(t=>t.done);
+  filtered=sortTodosList(filtered);
   if(filtered.length===0){
     list.innerHTML='<div class="todo-empty"><span>'+(todoFilter==='done'?'🎉':'✨')+'</span>'+(todoFilter==='done'?'No completed tasks yet':'All clear — add a task above')+'</div>';
     document.getElementById('todoClear').hidden=true;return;
   }
-  list.innerHTML=filtered.map(t=>
-    '<div class="todo-item '+(t.done?'done':'')+'" data-id="'+t.id+'">'+
+  list.innerHTML=filtered.map(t=>{
+    const overdue=isOverdue(t);
+    const dueLabel=formatDueLabel(t);
+    const pcolor=t.priority?PRIORITY_COLORS[t.priority]:'transparent';
+    return '<div class="todo-item '+(t.done?'done':'')+'" data-id="'+t.id+'" style="border-left-color:'+pcolor+';">'+
     '<button class="todo-check" onclick="toggleTodo(\''+t.id+'\')">✓</button>'+
-    '<span class="todo-text">'+escHtml(t.text)+'</span>'+
+    '<div class="todo-body">'+
+      '<span class="todo-text">'+escHtml(t.text)+'</span>'+
+      (t.priority||dueLabel?'<div class="todo-meta">'+
+        (t.priority?'<span class="todo-priority-badge" style="background:'+PRIORITY_COLORS[t.priority]+'">'+t.priority+'</span>':'')+
+        (dueLabel?'<span class="todo-due'+(overdue?' overdue':'')+'">🗓 '+dueLabel+(overdue?' · overdue':'')+'</span>':'')+
+      '</div>':'')+
+    '</div>'+
     '<button class="todo-delete" onclick="deleteTodo(\''+t.id+'\')" title="Delete">🗑️</button>'+
-    '</div>'
-  ).join('');
+    '</div>';
+  }).join('');
   document.getElementById('todoClear').hidden=!state.todos.some(t=>t.done);
 }
 
@@ -1249,7 +1356,6 @@ function selectHabit(id){
   state.selectedHabitId=id;save();
   const h=state.habits.find(x=>x.id===id);
   if(h)document.getElementById('timerHabitName').textContent=h.emoji+' '+h.name;
-  // Activate futuristic HUD on timer ring and card
   const wrap=document.getElementById('timerRingWrap');
   if(wrap)wrap.classList.add('has-habit');
   const card=document.querySelector('.habit-timer-card');
@@ -1306,7 +1412,6 @@ function startTimer(){
   if(timerRemaining<=0){timerRemaining=timerTotal=state.timerDur;}
   timerRunning=true;
   document.getElementById('btnTimerStart').textContent='⏸️ Pause';
-  // Activate running FX on timer ring
   const wrap=document.getElementById('timerRingWrap');
   if(wrap)wrap.classList.add('running');
   timerInterval=setInterval(()=>{
@@ -1323,7 +1428,6 @@ function startTimer(){
 function pauseTimer(){
   timerRunning=false;clearInterval(timerInterval);timerInterval=null;
   document.getElementById('btnTimerStart').textContent='🚀 Resume';
-  // Deactivate running FX (keep has-habit if selected)
   const wrap=document.getElementById('timerRingWrap');
   if(wrap)wrap.classList.remove('running');
   updateTimerDisplay();
@@ -1336,9 +1440,7 @@ function resetTimer(){
 }
 
 function onTimerComplete(){
-  // Mark habit done if selected
   if(state.selectedHabitId){markHabitDone(state.selectedHabitId);}
-  // Show completion
   const overlay=document.getElementById('completionOverlay');
   overlay.classList.add('show');
   setTimeout(()=>overlay.classList.remove('show'),3000);
@@ -1384,7 +1486,7 @@ function renderIdeas(){
     '<div class="idea-card">'+
     '<div class="idea-card-header">'+
       '<div class="idea-card-cat" style="color:var(--'+CAT_COLORS[i.category||'general']+')">'+(CAT_ICONS[i.category||'general']||'💡')+' '+(i.category||'general')+'</div>'+
-      '<div class="idea-card-time">'+relativeTime(i.createdAt)+'</div>'+
+      '<div class="idea-card-time" title="'+relativeTime(i.createdAt)+'">'+formatDateTime(i.createdAt)+'</div>'+
     '</div>'+
     '<div class="idea-card-body">'+escHtml(i.text)+'</div>'+
     '<div class="idea-card-footer">'+
@@ -1422,7 +1524,7 @@ function pickAvatar(a,el){tempAvatar=a;renderAvatarOptions();}
 
 function renderAccentOptions(){
   document.getElementById('accentOptions').innerHTML=ACCENT_COLORS.map(c=>
-    '<div class="color-accent-option'+(c.hex===tempAccent?' active':'')+'" style="background:'+c.hex+'" onclick="pickAccent(\''+c.hex+'\',this)"></div>'
+    '<div class="color-accent-option'+(c.hex===tempAccent?' active':'')+'" style="background:'+c.hex+'" title="'+c.name+'" onclick="pickAccent(\''+c.hex+'\',this)"></div>'
   ).join('');
 }
 
@@ -1485,13 +1587,12 @@ function closeArcadeEditor(){
 
 function renderArcadeEditorList(){
   const all=getAllArcadeGames();
-  const customs=(state.customGames||[]);
   const el=document.getElementById('arcadeEditorList');
   if(all.length===0){el.innerHTML='<div style="color:var(--text-faint);font-size:12px;">No games yet</div>';return;}
   el.innerHTML=all.map(g=>
-    '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--border);">'+
+    '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:var(--bg-sunken);border:1px solid var(--border);">'+
     '<span style="font-size:18px;">'+g.icon+'</span>'+
-    '<span style="flex:1;font-size:12px;color:var(--text-secondary);">'+escHtml(g.label)+'</span>'+
+    '<span style="flex:1;font-size:12px;color:var(--text-soft);">'+escHtml(g.label)+'</span>'+
     (g.custom?'<button class="habit-action-btn danger" onclick="removeArcadeGame(\''+g.id+'\')" style="font-size:10px;width:24px;height:24px;">✕</button>':'')+
     '</div>'
   ).join('');
@@ -1530,7 +1631,6 @@ function openDataSync(){
 function closeDataSync(){document.getElementById('dataSyncModal').classList.remove('open');}
 
 function exportDataFile(){
-  // Generate backup JSON and download as file
   const backup=JSON.stringify(state);
   const blob=new Blob([backup],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -1543,12 +1643,10 @@ function exportDataFile(){
 }
 
 function copyBackupCode(){
-  // Encode state as base64 string for clipboard
   const backup=btoa(unescape(encodeURIComponent(JSON.stringify(state))));
   navigator.clipboard.writeText(backup).then(()=>{
     toast('Backup code copied to clipboard ✓');
   }).catch(()=>{
-    // Fallback: select the code
     const ta=document.createElement('textarea');
     ta.value=backup;document.body.appendChild(ta);ta.select();
     document.execCommand('copy');document.body.removeChild(ta);
@@ -1583,30 +1681,24 @@ function importBackupCode(){
 }
 
 function mergeImportedData(data){
-  // Merge imported data into current state
-  const def=defaultState();
   state.name=data.name||state.name;
   state.avatar=data.avatar||state.avatar;
   state.theme=data.theme||state.theme;
   state.accentHex=data.accentHex||state.accentHex;
   state.streak=Math.max(state.streak,data.streak||0);
   state.lastActiveDate=data.lastActiveDate||state.lastActiveDate;
-  // Merge todos: add any that don't exist by id
   if(data.todos){
     const existingIds=new Set(state.todos.map(t=>t.id));
     data.todos.forEach(t=>{if(!existingIds.has(t.id))state.todos.push(t);});
   }
-  // Merge habits
   if(data.habits){
     const existingIds=new Set(state.habits.map(h=>h.id));
     data.habits.forEach(h=>{if(!existingIds.has(h.id))state.habits.push(h);});
   }
-  // Merge ideas
   if(data.ideas){
     const existingIds=new Set(state.ideas.map(i=>i.id));
     data.ideas.forEach(i=>{if(!existingIds.has(i.id))state.ideas.push(i);});
   }
-  // Merge custom games
   if(data.customGames){
     if(!state.customGames)state.customGames=[];
     const existingIds=new Set(state.customGames.map(g=>g.id));
@@ -1659,7 +1751,6 @@ function init(){
   if(state.onboarded){
     document.getElementById('onboardOverlay').hidden=true;
   }
-  // Set initial timer state
   timerRemaining=timerTotal=state.timerDur;
   document.querySelectorAll('.dur-chip').forEach(c=>c.classList.toggle('active',Number(c.dataset.dur)===state.timerDur));
   showView('wallet');

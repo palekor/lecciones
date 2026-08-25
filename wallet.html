@@ -516,6 +516,47 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .habit-action-btn.danger:hover{color:var(--coral);border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.08);}
 .habit-done-today{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--cyan);font-weight:600;}
 
+/* --- Daily target chunk picker (Add Habit modal) --- */
+.chunk-picker{display:flex;gap:8px;}
+.chunk-chip{
+  flex:1;padding:12px 6px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg-sunken);
+  text-align:center;color:var(--text-soft);transition:all .2s var(--ease-spring);
+}
+.chunk-chip .chunk-chip-num{font-family:var(--font-display);font-size:18px;font-weight:800;display:block;}
+.chunk-chip .chunk-chip-min{font-size:10px;color:var(--text-faint);display:block;margin-top:1px;}
+.chunk-chip.active{border-color:var(--coral);background:rgba(255,107,107,0.08);color:var(--coral-warm);}
+.chunk-chip.active .chunk-chip-min{color:var(--coral-warm);}
+.chunk-picker-hint{font-size:11.5px;color:var(--text-faint);margin-top:8px;line-height:1.4;}
+
+/* --- Habit card: weekly grid + streak + chunks --- */
+.habit-item{flex-direction:column;align-items:stretch;gap:10px;}
+.habit-item-top{display:flex;align-items:center;gap:12px;}
+.habit-streak-flame{
+  display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--coral-warm);
+  padding:3px 8px;border-radius:100px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.15);
+}
+.habit-milestone{margin-top:2px;}
+.habit-milestone-label{display:flex;justify-content:space-between;font-size:10px;color:var(--text-faint);margin-bottom:4px;}
+.habit-milestone-track{height:5px;border-radius:100px;background:var(--bg-sunken);overflow:hidden;}
+.habit-milestone-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--coral),var(--coral-warm));transition:width .5s var(--ease-spring);}
+
+.habit-week-grid{display:flex;gap:6px;justify-content:space-between;}
+.habit-week-day{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.habit-week-day-label{font-size:9px;color:var(--text-faint);font-weight:700;text-transform:uppercase;}
+.habit-week-dot{width:100%;aspect-ratio:1;max-width:26px;border-radius:8px;background:var(--bg-sunken);border:1.5px solid var(--border);}
+.habit-week-dot.done{background:var(--coral);border-color:var(--coral);}
+.habit-week-dot.today{border-color:var(--coral-warm);}
+
+.habit-chunk-row{display:flex;align-items:center;gap:6px;}
+.habit-chunk-btn{
+  flex:1;height:26px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg-sunken);
+  transition:all .15s var(--ease-spring);
+}
+.habit-chunk-btn.filled{background:var(--cyan);border-color:var(--cyan);}
+.habit-chunk-btn:active{transform:scale(.92);}
+.habit-chunk-label{font-size:11px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;}
+.habit-last-block{font-size:10.5px;color:var(--text-faint);margin-top:-2px;}
+
 /* ============================================================
    IDEAS VIEW
    ============================================================ */
@@ -1024,6 +1065,11 @@ textarea.input-field{resize:vertical;min-height:60px;}
       <div class="personalize-label">Intention (Why?)</div>
       <input type="text" class="input-field" id="habitIntentInput" placeholder="e.g. To start the day with clarity" maxlength="100">
     </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Daily Target</div>
+      <div class="chunk-picker" id="habitChunkPicker"></div>
+      <div class="chunk-picker-hint" id="habitChunkHint"></div>
+    </div>
     <button class="btn btn-coral btn-block" style="margin-top:14px;" onclick="saveNewHabit()">Create Habit</button>
     <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closeAddHabit()">Cancel</button>
   </div>
@@ -1152,6 +1198,10 @@ function load(){
   let touched=false;
   (state.todos||[]).forEach(t=>{if(!t.createdAt){t.createdAt=new Date().toISOString();touched=true;}});
   (state.ideas||[]).forEach(i=>{if(!i.createdAt){i.createdAt=new Date().toISOString();touched=true;}});
+  (state.habits||[]).forEach(h=>{
+    if(!h.targetChunks){h.targetChunks=3;touched=true;}
+    if(!h.log){h.log={};touched=true;}
+  });
   if(touched)save();
 }
 function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
@@ -1608,30 +1658,111 @@ function renderHabits(){renderHabitList();updateTimerDisplay();updateTimerRing()
   }
 }
 
+const MILESTONES=[21,66,90];
+function nextMilestone(streak){
+  for(const m of MILESTONES){if(streak<m)return m;}
+  return null; // past all milestones
+}
+
+/* Real consecutive-day streak, with 1 grace day forgiven per 7-day window
+   so a single missed day doesn't zero out weeks of consistency. */
+function computeStreak(h){
+  const doneSet=new Set(h.doneDates||[]);
+  let streak=0,grace=1,walked=0;
+  const cursor=new Date();
+  if(!doneSet.has(todayStr()))cursor.setDate(cursor.getDate()-1);
+  while(walked<400){
+    const ds=cursor.toISOString().split('T')[0];
+    if(doneSet.has(ds)){streak++;}
+    else if(grace>0){grace--;}
+    else{break;}
+    walked++;
+    if(walked%7===0)grace=Math.min(grace+1,1);
+    cursor.setDate(cursor.getDate()-1);
+  }
+  return streak;
+}
+
+function renderHabitWeekGrid(h){
+  const doneSet=new Set(h.doneDates||[]);
+  const labels=['S','M','T','W','T','F','S'];
+  let html='<div class="habit-week-grid">';
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const done=doneSet.has(ds);
+    const isToday=ds===todayStr();
+    html+='<div class="habit-week-day"><div class="habit-week-day-label">'+labels[d.getDay()]+'</div>'+
+      '<div class="habit-week-dot'+(done?' done':'')+(isToday?' today':'')+'"></div></div>';
+  }
+  return html+'</div>';
+}
+
 function renderHabitList(){
   const list=document.getElementById('habitList');
   if(state.habits.length===0){
     list.innerHTML='<div class="todo-empty"><span>🔄</span>No habits yet — create your first one!</div>';return;
   }
   list.innerHTML=state.habits.map(h=>{
-    const doneToday=h.doneDates&&h.doneDates.includes(todayStr());
-    const streak=h.doneDates?h.doneDates.length:0;
+    const target=h.targetChunks||3;
+    const today=todayStr();
+    const log=(h.log&&h.log[today])?h.log[today]:{count:0,timestamps:[]};
+    const streak=computeStreak(h);
+    const milestone=nextMilestone(streak);
+    const pct=milestone?Math.min(100,Math.round((streak/milestone)*100)):100;
+    const milestoneLabel=milestone?('Racha: '+streak+'/'+milestone+' días'):('🎉 '+streak+' días — más allá de 90');
+    const lastTs=log.timestamps&&log.timestamps.length?log.timestamps[log.timestamps.length-1]:null;
+    let chunkBtns='';
+    for(let i=0;i<target;i++){
+      chunkBtns+='<button class="habit-chunk-btn'+(i<log.count?' filled':'')+'" onclick="logHabitChunk(\''+h.id+'\')" title="15 min"></button>';
+    }
     return '<div class="habit-item">'+
-      '<div class="habit-emoji">'+h.emoji+'</div>'+
-      '<div class="habit-info">'+
-        '<div class="habit-name">'+escHtml(h.name)+'</div>'+
-        (h.intent?'<div class="habit-intent">'+escHtml(h.intent)+'</div>':'')+
-        (streak>0?'<div class="habit-streak">🔥 '+streak+' day streak</div>':'')+
-      '</div>'+
-      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'+
-        (doneToday?'<div class="habit-done-today">✓ Done</div>':'')+
+      '<div class="habit-item-top">'+
+        '<div class="habit-emoji">'+h.emoji+'</div>'+
+        '<div class="habit-info">'+
+          '<div class="habit-name">'+escHtml(h.name)+'</div>'+
+          (h.intent?'<div class="habit-intent">'+escHtml(h.intent)+'</div>':'')+
+        '</div>'+
+        (streak>0?'<div class="habit-streak-flame">🔥 '+streak+'</div>':'')+
         '<div class="habit-actions">'+
           '<button class="habit-action-btn" onclick="selectHabit(\''+h.id+'\')" title="Focus">🎯</button>'+
-          (!doneToday?'<button class="habit-action-btn" onclick="markHabitDone(\''+h.id+'\')" title="Mark done">✓</button>':'')+
           '<button class="habit-action-btn danger" onclick="deleteHabit(\''+h.id+'\')" title="Delete">🗑️</button>'+
         '</div>'+
-      '</div></div>';
+      '</div>'+
+      '<div class="habit-milestone">'+
+        '<div class="habit-milestone-label"><span>'+milestoneLabel+'</span></div>'+
+        '<div class="habit-milestone-track"><div class="habit-milestone-fill" style="width:'+pct+'%;"></div></div>'+
+      '</div>'+
+      renderHabitWeekGrid(h)+
+      '<div class="habit-chunk-row">'+
+        '<span class="habit-chunk-label">'+log.count+'/'+target+' × 15min</span>'+chunkBtns+
+      '</div>'+
+      (lastTs?'<div class="habit-last-block">Último bloque: '+relativeTime(lastTs)+'</div>':'')+
+    '</div>';
   }).join('');
+}
+
+function logHabitChunk(id){
+  const h=state.habits.find(x=>x.id===id);if(!h)return;
+  const target=h.targetChunks||3;
+  const today=todayStr();
+  if(!h.log)h.log={};
+  if(!h.log[today])h.log[today]={count:0,timestamps:[]};
+  const entry=h.log[today];
+  if(entry.count>=target){
+    // all chunks already logged today — tapping again quietly resets so the person can re-log a fresh session
+    entry.count=0;entry.timestamps=[];
+    save();renderHabitList();
+    return;
+  }
+  entry.count++;
+  entry.timestamps.push(new Date().toISOString());
+  if(entry.count>=target){
+    if(!h.doneDates)h.doneDates=[];
+    if(!h.doneDates.includes(today))h.doneDates.push(today);
+    toast(h.emoji+' '+h.name+' — completo por hoy ✓');
+  }
+  save();renderHabitList();
 }
 
 function selectHabit(id){
@@ -1823,12 +1954,16 @@ function savePersonalize(){
    ADD HABIT MODAL
    ============================================================ */
 let tempHabitEmoji='📖';
+let tempHabitChunks=3;
+const CHUNK_OPTIONS=[1,2,3,4]; // 15 / 30 / 45 / 60 min
 
 function openAddHabit(){
   tempHabitEmoji='📖';
+  tempHabitChunks=3;
   document.getElementById('habitNameInput').value='';
   document.getElementById('habitIntentInput').value='';
   renderHabitEmojiOptions();
+  renderHabitChunkPicker();
   document.getElementById('addHabitModal').classList.add('open');
 }
 
@@ -1842,11 +1977,21 @@ function renderHabitEmojiOptions(){
 
 function pickHabitEmoji(e,el){tempHabitEmoji=e;renderHabitEmojiOptions();}
 
+function renderHabitChunkPicker(){
+  document.getElementById('habitChunkPicker').innerHTML=CHUNK_OPTIONS.map(n=>
+    '<button type="button" class="chunk-chip'+(n===tempHabitChunks?' active':'')+'" onclick="pickHabitChunks('+n+')">'+
+    '<span class="chunk-chip-num">'+n+'</span><span class="chunk-chip-min">'+(n*15)+' min</span></button>'
+  ).join('');
+  document.getElementById('habitChunkHint').textContent='Empieza con bloques de 15 min. '+tempHabitChunks+' × 15 min = '+(tempHabitChunks*15)+' min al día.';
+}
+
+function pickHabitChunks(n){tempHabitChunks=n;renderHabitChunkPicker();}
+
 function saveNewHabit(){
   const name=document.getElementById('habitNameInput').value.trim();
   if(!name){toast('Give your habit a name');return;}
   const intent=document.getElementById('habitIntentInput').value.trim();
-  state.habits.push({id:uid(),emoji:tempHabitEmoji,name:name,intent:intent,doneDates:[],createdAt:new Date().toISOString()});
+  state.habits.push({id:uid(),emoji:tempHabitEmoji,name:name,intent:intent,doneDates:[],targetChunks:tempHabitChunks,log:{},createdAt:new Date().toISOString()});
   save();renderHabits();closeAddHabit();toast('Habit created ✓');
 }
 

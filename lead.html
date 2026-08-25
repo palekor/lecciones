@@ -51,11 +51,12 @@
   .settings-field input{width:100px;}
   .settings-save{background:var(--gold);border:none;color:#1A1108;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;}
 
-  .grid{display:grid;grid-template-columns:340px 1fr;gap:20px;margin-bottom:24px;}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:20px;margin-bottom:20px;}
   @media(max-width:760px){.grid{grid-template-columns:1fr;}}
 
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
   .card h2{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-dim);margin:0 0 16px;}
+  .card p.hint{font-size:12px;color:var(--text-faint);margin:-8px 0 16px;}
 
   .gauge-wrap{display:flex;align-items:center;gap:20px;}
   .therm{position:relative;width:52px;height:200px;background:var(--panel-2);border:1px solid var(--border);border-radius:26px;overflow:hidden;flex-shrink:0;}
@@ -74,13 +75,22 @@
   .long-track{height:8px;background:var(--panel-2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
   .long-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--magenta));border-radius:6px;transition:width .5s ease;}
 
+  .clicker-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .clicker-btn{position:relative;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:left;color:var(--text);font-family:'Inter',sans-serif;}
+  .clicker-btn:hover{border-color:var(--gold);}
+  .clicker-btn:active{transform:scale(0.98);}
+  .clicker-src{font-size:13px;font-weight:600;display:block;}
+  .clicker-count{font-family:'Oswald',sans-serif;font-size:20px;color:var(--gold);margin-top:4px;display:block;}
+  .clicker-flash{position:absolute;top:8px;right:10px;font-size:11px;color:var(--ok);opacity:0;transition:opacity .2s;}
+  .clicker-flash.show{opacity:1;}
+
   form.quick-add{display:flex;flex-direction:column;gap:10px;}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   form.quick-add button{margin-top:4px;background:linear-gradient(120deg,var(--gold),var(--flame));border:none;color:#1A1108;font-weight:600;font-size:14px;padding:11px;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;}
   form.quick-add button:hover{filter:brightness(1.08);}
   .err{color:var(--danger);font-size:12px;display:none;}
 
-  .leaderboard{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+  .leaderboard{display:flex;flex-direction:column;gap:10px;}
   .lb-row{display:flex;align-items:center;gap:12px;}
   .lb-name{width:110px;font-size:13px;color:var(--text-dim);flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .lb-track{flex:1;height:10px;background:var(--panel-2);border-radius:6px;overflow:hidden;border:1px solid var(--border);}
@@ -120,6 +130,9 @@
   .msg-add-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
   .msg-add button.save{background:var(--gold);border:none;color:#1A1108;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;}
   .file-actions{display:flex;gap:8px;}
+
+  .stat-line{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+  .stat-line b{color:var(--gold);font-family:'Oswald',sans-serif;}
 </style>
 </head>
 <body>
@@ -130,7 +143,7 @@
       <div class="mark">PG</div>
       <div>
         <h1>Control de Números</h1>
-        <div class="sub">Meta diaria y meta acumulada, ajustables</div>
+        <div class="sub">Salidas primero, datos del contacto solo si responde</div>
       </div>
     </div>
     <div class="head-right">
@@ -141,17 +154,11 @@
 
   <div class="settings-panel" id="settingsPanel">
     <div class="settings-row">
-      <div class="settings-field">
-        <label>Meta diaria</label>
-        <input type="number" id="dailyGoalInput" min="1">
-      </div>
-      <div class="settings-field">
-        <label>Meta acumulada (total)</label>
-        <input type="number" id="longGoalInput" min="1">
-      </div>
+      <div class="settings-field"><label>Meta diaria</label><input type="number" id="dailyGoalInput" min="1"></div>
+      <div class="settings-field"><label>Meta acumulada (total)</label><input type="number" id="longGoalInput" min="1"></div>
       <button class="settings-save" id="saveSettingsBtn" type="button">Guardar</button>
     </div>
-    <div class="note">La meta acumulada suma todos los contactos históricos de la persona seleccionada (no se reinicia cada día).</div>
+    <div class="note">La meta acumulada suma todas las salidas históricas de la persona seleccionada (no se reinicia cada día).</div>
   </div>
 
   <div class="rep-bar">
@@ -161,7 +168,7 @@
   </div>
 
   <div class="grid">
-    <div class="card">
+    <div class="card" style="margin-bottom:0;">
       <h2>Termómetro de hoy</h2>
       <div class="gauge-wrap">
         <div class="therm">
@@ -180,46 +187,53 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>Registrar contacto</h2>
-      <form class="quick-add" id="addForm">
-        <input type="text" id="fName" placeholder="Nombre del contacto">
-        <div class="row2">
-          <input type="text" id="fPhone" placeholder="Teléfono / WhatsApp">
-          <select id="fSource">
-            <option value="Instagram">Instagram</option>
-            <option value="WhatsApp frío">WhatsApp frío</option>
-            <option value="Referido">Referido</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="Webinar">Webinar</option>
-            <option value="Llamada fría">Llamada fría</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
-        <div class="row2">
-          <select id="fStatus">
-            <option value="Nuevo">Nuevo</option>
-            <option value="Contactado" selected>Contactado</option>
-            <option value="Seguimiento">Seguimiento</option>
-            <option value="Agendado">Agendado</option>
-            <option value="Cerrado">Cerrado</option>
-            <option value="Descartado">Descartado</option>
-          </select>
-          <input type="text" id="fNotes" placeholder="Nota rápida (opcional)">
-        </div>
-        <span class="err" id="formErr">Escribe al menos el nombre o el teléfono.</span>
-        <button type="submit">Agregar número</button>
-      </form>
+    <div class="card" style="margin-bottom:0;">
+      <h2>Registrar salida</h2>
+      <p class="hint">Toca la fuente por donde acabas de escribirle a alguien. Sin nombre, sin fricción — eso solo importa si responde.</p>
+      <div class="clicker-grid" id="clickerGrid"></div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:24px;">
+  <div class="card">
     <h2>Ranking del equipo — hoy</h2>
     <div class="leaderboard" id="leaderboard"></div>
     <div class="note">Datos compartidos: todos los asociados que abren este panel ven y suman al mismo conteo.</div>
   </div>
 
-  <div class="card" style="margin-bottom:24px;">
+  <div class="card">
+    <h2>Registrar respuesta</h2>
+    <p class="hint">Solo cuando alguien te contesta. Escribe el nombre a mano si el usuario de Instagram no se dejó pegar.</p>
+    <form class="quick-add" id="responseForm">
+      <div class="row2">
+        <input type="text" id="rName" placeholder="Nombre (escribe a mano si hace falta)">
+        <input type="text" id="rContact" placeholder="Usuario / Teléfono / WhatsApp">
+      </div>
+      <div class="row2">
+        <select id="rSource">
+          <option value="Instagram">Instagram</option>
+          <option value="WhatsApp frío">WhatsApp frío</option>
+          <option value="Referido">Referido</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Webinar">Webinar</option>
+          <option value="Llamada fría">Llamada fría</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <select id="rStatus">
+          <option value="Interesado" selected>Interesado</option>
+          <option value="Seguimiento">Seguimiento</option>
+          <option value="Agendado">Agendado</option>
+          <option value="Cerrado">Cerrado</option>
+          <option value="Descartado">Descartado</option>
+        </select>
+      </div>
+      <input type="text" id="rMessage" placeholder="Mensaje que usaste (opcional)">
+      <input type="text" id="rNotes" placeholder="Nota rápida (opcional)">
+      <span class="err" id="responseErr">Escribe al menos el nombre o el usuario/teléfono.</span>
+      <button type="submit">Guardar respuesta</button>
+    </form>
+  </div>
+
+  <div class="card">
     <h2>Recursos — mensajes listos para copiar</h2>
     <div class="tabs">
       <button class="tab-btn active" data-cat="Frío" id="tabFrio" type="button">En frío</button>
@@ -251,27 +265,46 @@
   </div>
 
   <div class="card">
-    <div class="toolbar">
-      <h2 style="margin:0;">Bitácora de hoy</h2>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <select id="filterRep"><option value="">Todos</option></select>
-        <button class="export-btn" id="exportCsvBtn" type="button">Exportar CSV</button>
-      </div>
+    <div class="tabs">
+      <button class="tab-btn active" id="tabSalidas" type="button">Salidas de hoy</button>
+      <button class="tab-btn" id="tabRespondieron" type="button">Respondieron</button>
+      <select id="filterRep" style="margin-left:auto;"><option value="">Todos</option></select>
     </div>
-    <table id="logTable">
-      <thead><tr><th>Hora</th><th>Persona</th><th>Contacto</th><th>Fuente</th><th>Estado</th><th>Nota</th></tr></thead>
-      <tbody id="logBody"></tbody>
-    </table>
-    <div class="empty" id="emptyMsg" style="display:none;">Todavía no hay números hoy. Agrega el primero arriba.</div>
+
+    <div id="panelSalidas">
+      <div class="toolbar">
+        <span class="stat-line" style="margin:0;">Total de hoy: <b id="salidasTotal">0</b></span>
+        <button class="export-btn" id="exportOutboundBtn" type="button">Exportar CSV</button>
+      </div>
+      <table>
+        <thead><tr><th>Hora</th><th>Persona</th><th>Fuente</th></tr></thead>
+        <tbody id="outboundBody"></tbody>
+      </table>
+      <div class="empty" id="emptyOutbound" style="display:none;">Todavía no hay salidas hoy. Toca una fuente arriba.</div>
+    </div>
+
+    <div id="panelRespondieron" style="display:none;">
+      <div class="toolbar">
+        <span class="stat-line" style="margin:0;"><b id="respondieronHoy">0</b> respondieron hoy · <b id="respondieronTotal">0</b> en total</span>
+        <button class="export-btn" id="exportResponsesBtn" type="button">Exportar CSV</button>
+      </div>
+      <table>
+        <thead><tr><th>Fecha</th><th>Persona</th><th>Nombre</th><th>Contacto</th><th>Fuente</th><th>Mensaje</th><th>Estado</th><th>Nota</th></tr></thead>
+        <tbody id="responsesBody"></tbody>
+      </table>
+      <div class="empty" id="emptyResponses" style="display:none;">Todavía no hay respuestas registradas.</div>
+    </div>
   </div>
 
 </div>
 
 <script>
 const STORE_KEY = 'control-numeros-data';
-let data = { leads: [], reps: [], settings: { dailyGoal: 25, longGoal: 100 }, messages: [] };
+const SOURCES = ["Instagram","WhatsApp frío","Referido","LinkedIn","Webinar","Llamada fría","Otro"];
+let data = { leads: [], responses: [], reps: [], settings: { dailyGoal: 25, longGoal: 100 }, messages: [] };
 let currentRep = null;
-let activeTab = 'Frío';
+let activeMsgTab = 'Frío';
+let activeLogTab = 'salidas';
 
 const DEFAULT_MESSAGES = [
 ["Frío","Pregunta directa","¿Te ha pasado que en una reunión en inglés tenías clarísima la idea pero no las palabras, y terminaste callado? No es falta de vocabulario, es un problema de método. Te cuento en 2 minutos cómo lo resolvemos, sin compromiso."],
@@ -328,6 +361,7 @@ async function loadData(){
   }catch(e){ /* first run, keep defaults */ }
   if(!data.reps) data.reps = [];
   if(!data.leads) data.leads = [];
+  if(!data.responses) data.responses = [];
   if(!data.settings) data.settings = { dailyGoal: 25, longGoal: 100 };
   if(data.settings.dailyGoal == null) data.settings.dailyGoal = 25;
   if(data.settings.longGoal == null) data.settings.longGoal = 100;
@@ -418,6 +452,34 @@ function renderGauge(){
   document.getElementById('longFill').style.width = longPct + '%';
 }
 
+function renderClicker(){
+  const grid = document.getElementById('clickerGrid');
+  grid.innerHTML = '';
+  const today = todayStr(Date.now());
+  SOURCES.forEach(src=>{
+    const count = currentRep ? leadsForRepOnDate(currentRep, today).filter(l=>l.source===src).length : 0;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'clicker-btn';
+    btn.innerHTML = `<span class="clicker-flash" id="flash-${sourceId(src)}">+1</span><span class="clicker-src">${escapeHtml(src)}</span><span class="clicker-count">${count}</span>`;
+    btn.addEventListener('click', ()=> addOutbound(src));
+    grid.appendChild(btn);
+  });
+}
+function sourceId(src){ return src.replace(/[^a-zA-Z]/g,''); }
+
+async function addOutbound(source){
+  if(!currentRep){ alert('Primero agrega tu nombre arriba.'); return; }
+  data.leads.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,7), rep: currentRep, source, timestamp: Date.now() });
+  await saveData();
+  const flash = document.getElementById('flash-'+sourceId(source));
+  if(flash){ flash.classList.add('show'); setTimeout(()=>flash.classList.remove('show'), 400); }
+  renderGauge();
+  renderLeaderboard();
+  renderClicker();
+  renderOutboundLog();
+}
+
 function renderLeaderboard(){
   const today = todayStr(Date.now());
   const box = document.getElementById('leaderboard');
@@ -435,29 +497,50 @@ function renderLeaderboard(){
   });
 }
 
-function renderLog(){
+function renderOutboundLog(){
   const filterRep = document.getElementById('filterRep').value;
   const today = todayStr(Date.now());
   let todays = data.leads.filter(l => todayStr(l.timestamp) === today);
   if(filterRep) todays = todays.filter(l => l.rep === filterRep);
   todays.sort((a,b) => b.timestamp - a.timestamp);
+  document.getElementById('salidasTotal').textContent = todays.length;
 
-  const body = document.getElementById('logBody');
+  const body = document.getElementById('outboundBody');
   body.innerHTML = '';
-  document.getElementById('emptyMsg').style.display = todays.length ? 'none' : 'block';
-
+  document.getElementById('emptyOutbound').style.display = todays.length ? 'none' : 'block';
   todays.forEach(l=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${fmtTime(l.timestamp)}</td><td>${escapeHtml(l.rep)}</td><td>${escapeHtml(l.name || l.phone || '—')}${l.name && l.phone ? '<br><span style="color:var(--text-faint);font-size:11px;">'+escapeHtml(l.phone)+'</span>' : ''}</td><td>${escapeHtml(l.source)}</td><td></td><td>${escapeHtml(l.notes || '—')}</td>`;
-    const statusTd = tr.children[4];
+    tr.innerHTML = `<td>${fmtTime(l.timestamp)}</td><td>${escapeHtml(l.rep)}</td><td>${escapeHtml(l.source)}</td>`;
+    body.appendChild(tr);
+  });
+}
+
+function renderResponses(){
+  const filterRep = document.getElementById('filterRep').value;
+  const today = todayStr(Date.now());
+  let list = data.responses.slice();
+  if(filterRep) list = list.filter(r => r.rep === filterRep);
+  list.sort((a,b) => b.timestamp - a.timestamp);
+
+  document.getElementById('respondieronTotal').textContent = data.responses.filter(r => !filterRep || r.rep === filterRep).length;
+  document.getElementById('respondieronHoy').textContent = list.filter(r => todayStr(r.timestamp) === today).length;
+
+  const body = document.getElementById('responsesBody');
+  body.innerHTML = '';
+  document.getElementById('emptyResponses').style.display = list.length ? 'none' : 'block';
+
+  list.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${todayStr(r.timestamp)}</td><td>${escapeHtml(r.rep)}</td><td>${escapeHtml(r.name||'—')}</td><td>${escapeHtml(r.contact||'—')}</td><td>${escapeHtml(r.source)}</td><td>${escapeHtml(r.message||'—')}</td><td></td><td>${escapeHtml(r.notes||'—')}</td>`;
+    const statusTd = tr.children[6];
     const sel = document.createElement('select');
     sel.className = 'status-inline';
-    ['Nuevo','Contactado','Seguimiento','Agendado','Cerrado','Descartado'].forEach(s=>{
+    ['Interesado','Seguimiento','Agendado','Cerrado','Descartado'].forEach(s=>{
       const o = document.createElement('option'); o.value = s; o.textContent = s;
-      if(s === l.status) o.selected = true;
+      if(s === r.status) o.selected = true;
       sel.appendChild(o);
     });
-    sel.addEventListener('change', async ()=>{ l.status = sel.value; await saveData(); });
+    sel.addEventListener('change', async ()=>{ r.status = sel.value; await saveData(); });
     statusTd.appendChild(sel);
     body.appendChild(tr);
   });
@@ -467,7 +550,7 @@ function renderMessages(){
   const box = document.getElementById('msgList');
   const query = document.getElementById('msgSearch').value.trim().toLowerCase();
   box.innerHTML = '';
-  let list = data.messages.filter(m => m.category === activeTab);
+  let list = data.messages.filter(m => m.category === activeMsgTab);
   if(query){ list = list.filter(m => (m.title+' '+m.text).toLowerCase().includes(query)); }
   if(list.length === 0){ box.innerHTML = '<div class="empty">No hay mensajes en esta categoría todavía.</div>'; return; }
   list.forEach(m=>{
@@ -487,43 +570,69 @@ function renderMessages(){
   });
 }
 
-function renderAll(){ renderRepSelect(); renderGauge(); renderLeaderboard(); renderLog(); renderMessages(); }
-
-async function addLead(e){
-  e.preventDefault();
-  const name = document.getElementById('fName').value.trim();
-  const phone = document.getElementById('fPhone').value.trim();
-  const source = document.getElementById('fSource').value;
-  const status = document.getElementById('fStatus').value;
-  const notes = document.getElementById('fNotes').value.trim();
-  const errEl = document.getElementById('formErr');
-
-  if(!currentRep){ errEl.textContent = 'Primero agrega tu nombre arriba.'; errEl.style.display = 'block'; return; }
-  if(!name && !phone){ errEl.textContent = 'Escribe al menos el nombre o el teléfono.'; errEl.style.display = 'block'; return; }
-  errEl.style.display = 'none';
-
-  data.leads.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,7), rep: currentRep, name, phone, source, status, notes, timestamp: Date.now() });
-  await saveData();
-  document.getElementById('fName').value = '';
-  document.getElementById('fPhone').value = '';
-  document.getElementById('fNotes').value = '';
-  document.getElementById('fStatus').value = 'Contactado';
-  renderAll();
+function renderAll(){
+  renderRepSelect(); renderGauge(); renderClicker(); renderLeaderboard();
+  renderOutboundLog(); renderResponses(); renderMessages();
 }
 
-function exportCsv(){
-  const rows = [['Fecha','Hora','Persona','Nombre','Telefono','Fuente','Estado','Nota']];
+async function addResponse(e){
+  e.preventDefault();
+  const name = document.getElementById('rName').value.trim();
+  const contact = document.getElementById('rContact').value.trim();
+  const source = document.getElementById('rSource').value;
+  const status = document.getElementById('rStatus').value;
+  const message = document.getElementById('rMessage').value.trim();
+  const notes = document.getElementById('rNotes').value.trim();
+  const errEl = document.getElementById('responseErr');
+
+  if(!currentRep){ errEl.textContent = 'Primero agrega tu nombre arriba.'; errEl.style.display = 'block'; return; }
+  if(!name && !contact){ errEl.textContent = 'Escribe al menos el nombre o el usuario/teléfono.'; errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+
+  data.responses.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,7), rep: currentRep, name, contact, source, status, message, notes, timestamp: Date.now() });
+  await saveData();
+  document.getElementById('rName').value = '';
+  document.getElementById('rContact').value = '';
+  document.getElementById('rMessage').value = '';
+  document.getElementById('rNotes').value = '';
+  document.getElementById('rStatus').value = 'Interesado';
+  renderResponses();
+  activeLogTab = 'respondieron';
+  document.getElementById('tabSalidas').classList.remove('active');
+  document.getElementById('tabRespondieron').classList.add('active');
+  document.getElementById('panelSalidas').style.display = 'none';
+  document.getElementById('panelRespondieron').style.display = 'block';
+}
+
+function downloadBlob(content, type, filename){
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportOutboundCsv(){
+  const rows = [['Fecha','Hora','Persona','Fuente']];
   data.leads.slice().sort((a,b)=>a.timestamp-b.timestamp).forEach(l=>{
-    rows.push([todayStr(l.timestamp), fmtTime(l.timestamp), l.rep, l.name||'', l.phone||'', l.source, l.status, (l.notes||'').replace(/,/g,';')]);
+    rows.push([todayStr(l.timestamp), fmtTime(l.timestamp), l.rep, l.source]);
   });
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  downloadBlob(csv, 'text/csv', 'control-numeros.csv');
+  downloadBlob(csv, 'text/csv', 'salidas.csv');
+}
+function exportResponsesCsv(){
+  const rows = [['Fecha','Hora','Persona','Nombre','Contacto','Fuente','Mensaje','Estado','Nota']];
+  data.responses.slice().sort((a,b)=>a.timestamp-b.timestamp).forEach(r=>{
+    rows.push([todayStr(r.timestamp), fmtTime(r.timestamp), r.rep, r.name||'', r.contact||'', r.source, r.message||'', r.status, (r.notes||'').replace(/,/g,';')]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob(csv, 'text/csv', 'respondieron.csv');
 }
 
 function messagesToTxt(){
   return data.messages.map(m => `::${m.category}::${m.title}\n${m.text}\n====`).join('\n\n');
 }
-
 function parseTxt(text){
   const blocks = text.split('====').map(b=>b.trim()).filter(Boolean);
   const parsed = [];
@@ -540,21 +649,11 @@ function parseTxt(text){
   return parsed;
 }
 
-function downloadBlob(content, type, filename){
-  const blob = new Blob([content], {type});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 document.getElementById('todayLabel').textContent = fmtDate();
 
-document.getElementById('addForm').addEventListener('submit', addLead);
-document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
-document.getElementById('filterRep').addEventListener('change', renderLog);
-document.getElementById('repSelect').addEventListener('change', (e)=>{ currentRep = e.target.value; renderGauge(); });
+document.getElementById('responseForm').addEventListener('submit', addResponse);
+document.getElementById('filterRep').addEventListener('change', ()=>{ renderOutboundLog(); renderResponses(); });
+document.getElementById('repSelect').addEventListener('change', (e)=>{ currentRep = e.target.value; renderGauge(); renderClicker(); });
 document.getElementById('addRepBtn').addEventListener('click', async ()=>{
   const name = prompt('¿Cómo te llamas? (o el nombre del nuevo asociado)');
   if(name && name.trim()){ ensureRep(name.trim()); currentRep = name.trim(); await saveData(); renderAll(); }
@@ -574,18 +673,31 @@ document.getElementById('saveSettingsBtn').addEventListener('click', async ()=>{
 });
 
 document.getElementById('tabFrio').addEventListener('click', ()=>{
-  activeTab = 'Frío';
+  activeMsgTab = 'Frío';
   document.getElementById('tabFrio').classList.add('active');
   document.getElementById('tabInteresado').classList.remove('active');
   renderMessages();
 });
 document.getElementById('tabInteresado').addEventListener('click', ()=>{
-  activeTab = 'Interesado';
+  activeMsgTab = 'Interesado';
   document.getElementById('tabInteresado').classList.add('active');
   document.getElementById('tabFrio').classList.remove('active');
   renderMessages();
 });
 document.getElementById('msgSearch').addEventListener('input', renderMessages);
+
+document.getElementById('tabSalidas').addEventListener('click', ()=>{
+  document.getElementById('tabSalidas').classList.add('active');
+  document.getElementById('tabRespondieron').classList.remove('active');
+  document.getElementById('panelSalidas').style.display = 'block';
+  document.getElementById('panelRespondieron').style.display = 'none';
+});
+document.getElementById('tabRespondieron').addEventListener('click', ()=>{
+  document.getElementById('tabRespondieron').classList.add('active');
+  document.getElementById('tabSalidas').classList.remove('active');
+  document.getElementById('panelRespondieron').style.display = 'block';
+  document.getElementById('panelSalidas').style.display = 'none';
+});
 
 document.getElementById('saveMsgBtn').addEventListener('click', async ()=>{
   const cat = document.getElementById('newMsgCat').value;
@@ -596,7 +708,7 @@ document.getElementById('saveMsgBtn').addEventListener('click', async ()=>{
   await saveData();
   document.getElementById('newMsgTitle').value = '';
   document.getElementById('newMsgText').value = '';
-  activeTab = cat;
+  activeMsgTab = cat;
   document.getElementById('tabFrio').classList.toggle('active', cat === 'Frío');
   document.getElementById('tabInteresado').classList.toggle('active', cat === 'Interesado');
   renderMessages();
@@ -619,6 +731,9 @@ document.getElementById('importTxtFile').addEventListener('change', async (e)=>{
   renderMessages();
   e.target.value = '';
 });
+
+document.getElementById('exportOutboundBtn').addEventListener('click', exportOutboundCsv);
+document.getElementById('exportResponsesBtn').addEventListener('click', exportResponsesCsv);
 
 (async function init(){ await loadData(); renderAll(); })();
 </script>

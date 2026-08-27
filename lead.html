@@ -57,17 +57,17 @@
 
   .streak-line{text-align:center;font-size:13px;color:var(--text-2);margin-bottom:10px;}
 
-  .cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:20px;}
-  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
-  .cal-weekdays div{text-align:center;font-size:11px;color:var(--text-2);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-  .cal-cell{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;border:1px solid var(--border);background:var(--card-2);overflow:hidden;}
+  .cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;margin-bottom:16px;max-width:340px;margin-left:auto;margin-right:auto;}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:5px;}
+  .cal-weekdays div{text-align:center;font-size:10px;color:var(--text-2);text-transform:uppercase;font-weight:700;letter-spacing:.3px;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+  .cal-cell{height:34px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;border:1px solid var(--border);background:var(--card-2);overflow:hidden;}
   .cal-cell.empty{visibility:hidden;cursor:default;}
   .cal-cell.today{border:2px solid var(--accent);background:var(--card);}
-  .cal-day-num{font-size:11px;color:var(--text-2);position:relative;z-index:2;}
-  .cal-cell.today .cal-day-num{color:var(--accent);font-weight:700;font-size:12px;}
+  .cal-day-num{font-size:10.5px;color:var(--text-2);position:relative;z-index:2;}
+  .cal-cell.today .cal-day-num{color:var(--accent);font-weight:700;font-size:11.5px;}
   .cal-intensity{position:absolute;bottom:0;left:0;right:0;background:var(--accent);opacity:.55;z-index:1;}
-  .cal-check{position:absolute;top:3px;right:3px;font-size:8px;color:var(--ok);z-index:2;}
+  .cal-check{position:absolute;top:2px;right:2px;font-size:7px;color:var(--ok);z-index:2;}
 
   .today-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:20px;text-align:center;}
   .today-label{font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
@@ -76,7 +76,8 @@
   .progress-track{height:6px;background:var(--card-2);border-radius:4px;overflow:hidden;margin:10px 0 16px;}
   .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .3s;}
   .progress-fill.done{background:var(--ok);}
-  .big-btn{width:100%;background:var(--accent);color:var(--accent-ink);border:none;font-weight:600;font-size:15px;padding:15px;border-radius:12px;cursor:pointer;}
+  .big-btn{width:100%;background:var(--accent);color:var(--accent-ink);border:none;font-weight:800;font-size:16px;letter-spacing:.4px;padding:18px;border-radius:14px;cursor:pointer;box-shadow:0 6px 18px rgba(232,179,76,.35);display:flex;align-items:center;justify-content:center;gap:8px;}
+  .big-btn i{font-size:18px;}
   .big-btn:hover{filter:brightness(1.06);}
   .big-btn:active{transform:scale(.98);}
 
@@ -227,17 +228,20 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 function greeting(){ const h=new Date().getHours(); return h<12?'Buenos días':(h<19?'Buenas tardes':'Buenas noches'); }
 
 /* ===== STORAGE + MIGRATION ===== */
+function localGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+function localSet(key,val){ try{ localStorage.setItem(key,val); return true; }catch(e){ return false; } }
+async function cloudGet(key){ try{ if(window.storage){ const r = await window.storage.get(key, true); return r && r.value; } }catch(e){} return null; }
+async function cloudSet(key,val){ try{ if(window.storage){ await window.storage.set(key, val, true); } }catch(e){} }
+
 async function loadData(){
-  let newRes=null, oldRes=null;
-  try{ newRes = await window.storage.get(STORE_KEY, true); }catch(e){}
-  if(newRes && newRes.value){
-    data = JSON.parse(newRes.value);
+  let raw = localGet(STORE_KEY);
+  if(!raw){ raw = await cloudGet(STORE_KEY); }
+  if(raw){
+    data = JSON.parse(raw);
   } else {
-    try{ oldRes = await window.storage.get(OLD_KEY, true); }catch(e){}
-    if(oldRes && oldRes.value){
-      data = migrateFromOld(JSON.parse(oldRes.value));
-      await saveData();
-    }
+    let oldRaw = localGet(OLD_KEY);
+    if(!oldRaw){ oldRaw = await cloudGet(OLD_KEY); }
+    if(oldRaw){ data = migrateFromOld(JSON.parse(oldRaw)); }
   }
   if(!data.reps) data.reps=[];
   if(!data.dailyRecords) data.dailyRecords={};
@@ -247,10 +251,13 @@ async function loadData(){
   if(data.settings.dailyGoal==null) data.settings.dailyGoal=20;
   if(!data.settings.theme) data.settings.theme='dark';
   await seedHooksIfMissing();
+  await saveData();
 }
 async function saveData(){
-  try{ await window.storage.set(STORE_KEY, JSON.stringify(data), true); }
-  catch(e){ console.error('No se pudo guardar', e); }
+  const json = JSON.stringify(data);
+  const ok = localSet(STORE_KEY, json);
+  if(!ok) console.error('No se pudo guardar en este navegador (localStorage bloqueado).');
+  cloudSet(STORE_KEY, json);
 }
 
 function migrateFromOld(old){
@@ -393,7 +400,7 @@ function renderHome(){
       <div class="today-label">Hoy · ${new Date().getDate()} ${MONTH_NAMES[viewedMonth].toUpperCase()}</div>
       <div class="today-progress ${todayDone?'done':''}">${todayRec.messages} / ${goal}${todayDone?' · LISTO':''}</div>
       <div class="progress-track"><div class="progress-fill ${todayDone?'done':''}" style="width:${Math.min(100,Math.round(todayRec.messages/goal*100))}%"></div></div>
-      <button class="big-btn" id="quickMsgBtn">+ MENSAJE</button>
+      <button class="big-btn" id="quickMsgBtn"><i class="ti ti-send"></i>+ MENSAJE</button>
     </div>` : ''}
   `;
 
@@ -711,7 +718,7 @@ function showWelcome(){
       <div style="font-size:14px;color:var(--text-2);margin-bottom:18px;">¡Bienvenido! Antes de empezar, ¿cómo te llamas?</div>
       <div class="field" style="text-align:left;"><label>Tu nombre</label><input type="text" id="welcomeName" placeholder="Ej. Germán" autofocus></div>
       <span class="err" id="welcomeErr">Escribe tu nombre para continuar.</span>
-      <button class="btn primary" id="welcomeStart" style="width:100%;margin-top:14px;">Empezar</button>
+      <button class="big-btn" id="welcomeStart" style="width:100%;margin-top:14px;"><i class="ti ti-arrow-right"></i>EMPEZAR</button>
     </div>
   `;
   document.body.appendChild(overlay);

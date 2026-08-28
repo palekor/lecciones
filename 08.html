@@ -69,6 +69,21 @@
   .topic-chip.active{ border-color:var(--gold); background:linear-gradient(155deg,rgba(232,184,75,0.14),rgba(139,108,255,0.08)); box-shadow:0 0 0 1px rgba(232,184,75,0.25) inset; }
   .topic-chip.active .t-title{ color:var(--gold); }
   .topic-chip:disabled{ opacity:.4; cursor:not-allowed; }
+  .topic-chip.custom-chip{ grid-column:1/-1; background:linear-gradient(155deg,rgba(139,108,255,0.1),rgba(232,184,75,0.05)); }
+
+  /* PASTE-YOUR-OWN-TEXT PANEL */
+  .custom-panel{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); }
+  .custom-panel[hidden]{ display:none; }
+  .custom-label{ display:block; font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.05em; color:var(--gold); margin-bottom:8px; text-transform:uppercase; }
+  .custom-textarea{ width:100%; min-height:120px; resize:vertical; padding:13px 14px; border-radius:12px;
+    border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.05); color:var(--ink);
+    font-family:'Figtree',sans-serif; font-size:0.94rem; line-height:1.55; outline:none; transition:border-color .2s; }
+  .custom-textarea:focus{ border-color:var(--gold); }
+  .custom-meta{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  .custom-count{ font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--bruma); letter-spacing:0.02em; }
+  .custom-count.over{ color:var(--err); font-weight:600; }
+  .custom-meta .btn{ padding:11px 18px; font-size:0.82rem; }
+  .custom-hint{ color:var(--ink-soft); font-size:0.8rem; line-height:1.5; margin-top:4px; }
 
   /* LEVEL PICKER */
   .level-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
@@ -96,6 +111,7 @@
 
   .reader-text{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(1.4rem,4.6vw,1.95rem);
     line-height:1.9; color:var(--ink-soft); position:relative; z-index:2; cursor:pointer; user-select:none; }
+  .reader-text.custom-mode{ font-size:clamp(1.65rem,5.6vw,2.35rem); line-height:2.02; letter-spacing:0.005em; }
   .reader-text .word{ transition:color .12s, background-color .12s, box-shadow .12s; border-radius:6px; padding:1px 3px; }
   .reader-text .word.active{ color:#100E20; background-color:var(--gold);
     box-shadow:0 2px 12px rgba(232,184,75,0.45); }
@@ -198,8 +214,18 @@
   <!-- TEMA -->
   <div class="panel">
     <h2>Elige tu tema</h2>
-    <p class="desc">Cuatro textos, cuatro contextos reales de comunicación profesional.</p>
+    <p class="desc">Cuatro textos, cuatro contextos reales de comunicación profesional — o pega el tuyo.</p>
     <div class="topic-grid" id="topicGrid"></div>
+
+    <div class="custom-panel" id="customPanel" hidden>
+      <label class="custom-label" for="customTextInput">Pega tu propio texto (hasta 200 palabras)</label>
+      <p class="custom-hint">Un correo, una transcripción, un discurso que debas dar — lo convertimos en tu ejercicio de shadowing personalizado, con letra grande y voz en inglés de EE. UU.</p>
+      <textarea class="custom-textarea" id="customTextInput" placeholder="Pega aquí tu texto en inglés..." oninput="updateCustomWordCount()"></textarea>
+      <div class="custom-meta">
+        <span class="custom-count" id="customWordCount">0 / 200 palabras</span>
+        <button class="btn btn-primary" id="useCustomBtn" onclick="useCustomText()" disabled>🎙️ Usar este texto</button>
+      </div>
+    </div>
   </div>
 
   <!-- NIVEL -->
@@ -234,6 +260,7 @@
     <div class="voice-row">
       <select class="field" id="voiceSelect"></select>
     </div>
+    <p class="reader-hint" id="voiceHint" style="margin-top:6px;opacity:.75;">🇺🇸 usando una voz en inglés de EE. UU. cuando está disponible</p>
     <div class="no-support" id="noSupport">Tu navegador no soporta síntesis de voz. Usa Chrome, Edge o Safari actualizado para esta lección.</div>
     <div class="completion" id="completion">
       <h3>🎉 ¡Sesión completada!</h3>
@@ -311,6 +338,8 @@ const TEXTS = [
 
 /* ── ESTADO ── */
 let currentTopicIndex = 0;
+let customTopic = null;
+const CUSTOM_MAX_WORDS = 200;
 let currentLevel = 'B1', currentRate = 0.92;
 let words = [];
 let wordSpans = [];
@@ -322,24 +351,71 @@ function saveSessions(){ try{ localStorage.setItem('shadow_sessions', JSON.strin
 /* ── HELPERS ── */
 function toast(msg,type){ const el=$("toast"); el.textContent=msg; el.className="show "+(type||""); clearTimeout(window._t); window._t=setTimeout(()=>el.classList.remove("show"),1900); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
-function currentTopic(){ return TEXTS[currentTopicIndex]; }
+function currentTopic(){ return currentTopicIndex === 'custom' ? customTopic : TEXTS[currentTopicIndex]; }
 
 /* ── TOPICS ── */
 function renderTopicGrid(){
-  $("topicGrid").innerHTML = TEXTS.map((t,i)=>
+  const built = TEXTS.map((t,i)=>
     `<button class="topic-chip${i===currentTopicIndex?' active':''}" data-i="${i}" onclick="setTopic(${i})">
        <span class="t-icon">${t.icon}</span>
        <span class="t-label">${esc(t.label)}</span>
        <span class="t-title">${esc(t.title)}</span>
      </button>`
   ).join('');
+  const customLabel = customTopic ? 'Tu texto (editar)' : 'Pega tu propio texto';
+  const customChip = `<button class="topic-chip custom-chip${currentTopicIndex==='custom'?' active':''}" data-i="custom" onclick="toggleCustomPanel()">
+       <span class="t-icon">✍️</span>
+       <span class="t-label">${esc(customLabel)}</span>
+       <span class="t-title">Hasta 200 palabras · letra grande · voz de EE. UU.</span>
+     </button>`;
+  $("topicGrid").innerHTML = built + customChip;
 }
 function setTopic(i){
   if(playState !== 'idle') return;
   currentTopicIndex = i;
-  document.querySelectorAll('.topic-chip').forEach((c,idx)=>c.classList.toggle('active', idx===i));
+  $("customPanel").hidden = true;
+  $("readerText").classList.remove('custom-mode');
+  renderTopicGrid();
   $("topicBadge").textContent = currentTopic().label.toUpperCase();
   buildWords(); renderReader(); renderGlossary();
+}
+
+/* ── TEXTO PERSONALIZADO ── */
+function toggleCustomPanel(){
+  if(playState !== 'idle') return;
+  const panel = $("customPanel");
+  panel.hidden = !panel.hidden;
+  if(!panel.hidden){
+    if(customTopic) $("customTextInput").value = customTopic.text;
+    updateCustomWordCount();
+    $("customTextInput").focus();
+  }
+}
+function countWords(text){
+  const t = text.trim();
+  return t ? t.split(/\s+/).length : 0;
+}
+function updateCustomWordCount(){
+  const text = $("customTextInput").value;
+  const n = countWords(text);
+  const el = $("customWordCount");
+  el.textContent = n+' / '+CUSTOM_MAX_WORDS+' palabras';
+  el.classList.toggle('over', n > CUSTOM_MAX_WORDS);
+  $("useCustomBtn").disabled = (n === 0 || n > CUSTOM_MAX_WORDS);
+}
+function useCustomText(){
+  const raw = $("customTextInput").value.trim();
+  const n = countWords(raw);
+  if(!raw || n > CUSTOM_MAX_WORDS) return;
+  customTopic = { id:'custom', icon:'✍️', label:'Tu texto', title:'Texto personalizado', text: raw, glossary:{} };
+  currentTopicIndex = 'custom';
+  $("customPanel").hidden = true;
+  renderTopicGrid();
+  $("topicBadge").textContent = 'TU TEXTO';
+  $("readerText").classList.add('custom-mode');
+  buildWords(); renderReader(); renderGlossary();
+  toast('Texto personalizado listo — ¡a hacer shadowing!','ok');
+  document.querySelector('.reader-card').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 /* ── CONSTRUIR PALABRAS Y RENDER ── */
@@ -378,8 +454,13 @@ function renderReader(){
   $("progressFill").style.width = '0%';
 }
 function renderGlossary(){
-  const glossary = currentTopic().glossary;
-  $("glossaryGrid").innerHTML = Object.entries(glossary).map(([en,es])=>
+  const glossary = currentTopic().glossary || {};
+  const entries = Object.entries(glossary);
+  if(!entries.length){
+    $("glossaryGrid").innerHTML = '<p class="desc" style="grid-column:1/-1">Tu texto personalizado no tiene glosario — concéntrate en el ritmo y la pronunciación.</p>';
+    return;
+  }
+  $("glossaryGrid").innerHTML = entries.map(([en,es])=>
     `<div class="gloss-item"><div class="en">${esc(en)}</div><div class="es">${esc(es)}</div></div>`
   ).join('');
 }
@@ -398,18 +479,24 @@ function setLevel(level, btn){
 /* ── VOCES ── */
 function populateVoices(){
   if(!('speechSynthesis' in window)) return;
-  const voices = speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('en'));
+  const all = speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('en'));
+  // Voces de EE. UU. primero, para un shadowing con acento americano por defecto
+  const isUS = v => v.lang.toLowerCase() === 'en-us';
+  const voices = [...all.filter(isUS), ...all.filter(v=>!isUS(v))];
   const sel = $("voiceSelect");
-  const prev = sel.value;
+  const prevName = window._enVoices && sel.value !== '' && window._enVoices[sel.value] ? window._enVoices[sel.value].name : null;
   sel.innerHTML = '';
   if(!voices.length){ sel.innerHTML = '<option value="">Voz predeterminada del sistema</option>'; return; }
   voices.forEach((v,i)=>{
     const o = document.createElement('option');
-    o.value = i; o.textContent = v.name + ' ('+v.lang+')';
+    o.value = i; o.textContent = (isUS(v)?'🇺🇸 ':'') + v.name + ' ('+v.lang+')';
     sel.appendChild(o);
   });
   window._enVoices = voices;
-  if(prev !== '' && voices[prev]) sel.value = prev;
+  if(prevName){
+    const keep = voices.findIndex(v=>v.name === prevName);
+    if(keep !== -1) sel.value = keep;
+  }
 }
 
 /* ── SHADOWING ENGINE ── */
@@ -434,6 +521,8 @@ function updateUI(){
   const locked = playState !== 'idle';
   document.querySelectorAll('.level-chip, .topic-chip').forEach(c=>c.disabled = locked);
   $("voiceSelect").disabled = locked;
+  $("customTextInput").disabled = locked;
+  if(locked) $("useCustomBtn").disabled = true; else updateCustomWordCount();
   $("wave").classList.toggle('on', playState==='playing');
   $("readerHint").classList.toggle('show', locked);
   if(playState==='idle') btn.textContent = '🚀 Reproducir y repetir';

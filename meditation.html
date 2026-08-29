@@ -9,414 +9,481 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 
-  /* ===================== TOKENS ===================== */
+  /* ===================== TOKENS — black + gold liquid glass ===================== */
   :root{
-    --bg:        #090c16;
-    --bg-2:      #10152a;
-    --surface:   #141a35;
-    --surface-2: #1b2247;
-    --indigo:    #2d3a7c;
-    --glow:      #7c9eff;
-    --glow-dim:  #4a5fb0;
-    --warm:      #ffb49a;
-    --warm-dim:  #c98670;
-    --text:      #eceefb;
-    --text-dim:  #9aa2c7;
-    --text-faint:#5c6390;
-    --line:      rgba(124,158,255,0.14);
+    --bg:          #07070a;
+    --bg-2:        #0f0d0f;
+    --glass:       rgba(255,255,255,0.035);
+    --glass-hi:    rgba(255,255,255,0.07);
+    --glass-line:  rgba(207,166,104,0.18);
+    --gold:        #cfa668;
+    --gold-bright: #f0cf98;
+    --gold-dim:    #8a7248;
+    --text:        #f3ede2;
+    --text-dim:    #a79c8c;
+    --text-faint:  #605646;
+    --line:        rgba(207,166,104,0.14);
 
     --display: 'Fraunces', serif;
     --body:    'Manrope', sans-serif;
     --mono:    'IBM Plex Mono', monospace;
-
     --ease: cubic-bezier(.16,.8,.24,1);
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior:smooth; }
   body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--body);
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-    width:100%;
+    background:var(--bg); color:var(--text); font-family:var(--body);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; width:100%;
   }
-  ::selection{ background:var(--glow); color:var(--bg); }
-
+  ::selection{ background:var(--gold); color:var(--bg); }
   a{ color:inherit; text-decoration:none; }
   img,svg{ display:block; }
 
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background:radial-gradient(ellipse 120% 80% at 50% -10%, rgba(124,158,255,0.10), transparent 60%),
-               radial-gradient(ellipse 100% 60% at 90% 110%, rgba(255,180,154,0.06), transparent 60%);
-    pointer-events:none;
-    z-index:0;
+  .grain{ position:fixed; inset:0; z-index:-1; opacity:.035; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; position:relative; z-index:2; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:4px; border-radius:4px; }
 
-  :focus-visible{ outline:2px solid var(--glow); outline-offset:4px; border-radius:4px; }
-
-  /* ===================== NAV ===================== */
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:50;
-    padding:22px 0;
-    background:linear-gradient(to bottom, rgba(9,12,22,0.92), transparent);
-  }
-  header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-  .word{
-    font-family:var(--display); font-weight:500; font-size:19px; letter-spacing:0.03em;
-    white-space:nowrap;
-  }
-  .word em{ font-style:italic; color:var(--glow); font-weight:400; }
-  .word small{ display:block; font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:0.16em; color:var(--text-faint); text-transform:uppercase; margin-top:2px; }
-  nav{ display:flex; align-items:center; gap:22px; }
-  nav a{
-    font-size:12.5px; color:var(--text-dim);
-    letter-spacing:0.03em; text-transform:uppercase; transition:color .3s var(--ease);
-    white-space:nowrap;
-  }
-  nav a:hover{ color:var(--text); }
-  .nav-access{
-    color:var(--text) !important;
-    border:1px solid var(--line);
-    padding:8px 16px; border-radius:100px;
-    transition:border-color .3s var(--ease), background .3s var(--ease);
-  }
-  .nav-access:hover{ border-color:var(--glow); background:rgba(124,158,255,0.08); }
-  .nav-link-text{ display:inline; }
-
-  /* ===================== HERO — DEPTH RINGS ===================== */
-  .hero{
-    position:relative;
-    min-height:100svh;
-    display:flex; align-items:center; justify-content:center;
-    perspective:1200px;
-    padding:130px 0 80px;
-    overflow:hidden;
+  /* ---- reusable glass panel ---- */
+  .glass{
+    background:linear-gradient(160deg, var(--glass-hi), var(--glass));
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    border:1px solid var(--glass-line);
+    box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 30px 60px -25px rgba(0,0,0,0.75);
   }
 
-  .rings{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    transform-style:preserve-3d;
-    transition:transform .2s var(--ease);
-    will-change:transform;
-  }
-  .ring{
-    position:absolute;
-    border-radius:50%;
-    border:1px solid var(--line);
-    transform-style:preserve-3d;
-    animation:breathe 9s ease-in-out infinite;
-  }
-  .ring.r1{ width:260px;  height:260px;  translate:0 0 260px; animation-delay:0s;   border-color:rgba(124,158,255,0.35); }
-  .ring.r2{ width:440px;  height:440px;  translate:0 0 160px; animation-delay:.6s;  }
-  .ring.r3{ width:620px;  height:620px;  translate:0 0 60px;  animation-delay:1.2s; }
-  .ring.r4{ width:820px;  height:820px;  translate:0 0 -60px; animation-delay:1.8s; opacity:.7; }
-  .ring.r5{ width:1040px; height:1040px; translate:0 0 -160px;animation-delay:2.4s; opacity:.45;}
-  .ring.r6{ width:1300px; height:1300px; translate:0 0 -280px;animation-delay:3s;   opacity:.25;}
-
-  @keyframes breathe{
-    0%,100%{ scale:1;    opacity:.55; }
-    50%{     scale:1.045; opacity:.95; }
-  }
-
-  .hero-core{
-    position:relative; z-index:5;
-    text-align:center;
-    transform-style:preserve-3d;
-    translate:0 0 320px;
-    width:100%;
-    padding:0 20px;
-  }
   .eyebrow{
-    font-family:var(--mono); font-size:12px; letter-spacing:0.22em; text-transform:uppercase;
-    color:var(--glow); margin-bottom:22px; opacity:.85;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.22em; text-transform:uppercase;
+    color:var(--gold); opacity:.9;
   }
-  .hero h1{
-    font-family:var(--display); font-weight:400; font-style:italic;
-    font-size:clamp(32px, 8vw, 78px); line-height:1.08;
-    letter-spacing:-0.01em;
-    max-width:15ch; margin:0 auto;
-  }
-  .hero h1 .not-italic{ font-style:normal; font-weight:300; color:var(--text-dim); }
-  .hero p{
-    margin:26px auto 0; max-width:42ch;
-    color:var(--text-dim); font-size:16px; line-height:1.6;
-  }
-  .hero-cta{ margin-top:40px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:10px;
     padding:15px 26px; border-radius:100px;
     font-size:14px; font-weight:600; letter-spacing:0.01em;
-    transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease);
-    cursor:pointer; border:1px solid transparent;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease);
+    cursor:pointer; border:1px solid transparent; white-space:nowrap;
   }
   .btn-primary{
-    background:var(--text); color:var(--bg-2);
-    box-shadow:0 8px 30px -6px rgba(124,158,255,0.35);
+    background:linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color:#211705;
+    box-shadow:0 8px 30px -6px rgba(207,166,104,0.45);
   }
-  .btn-primary:hover{ transform:translateY(-3px); box-shadow:0 16px 40px -8px rgba(124,158,255,0.5); }
-  .btn-ghost{
-    background:transparent; color:var(--text); border-color:var(--line);
+  .btn-primary:hover{ transform:translateY(-3px); box-shadow:0 16px 40px -8px rgba(207,166,104,0.6); }
+  .btn-ghost{ background:transparent; color:var(--text); border-color:var(--glass-line); }
+  .btn-ghost:hover{ border-color:var(--gold); background:rgba(207,166,104,0.08); }
+
+  /* ===================== NAV ===================== */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    padding:20px 0;
+    background:linear-gradient(to bottom, rgba(7,7,10,0.9), transparent);
   }
-  .btn-ghost:hover{ border-color:var(--glow); background:rgba(124,158,255,0.06); }
+  header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .word{ font-family:var(--display); font-weight:500; font-size:18px; letter-spacing:0.03em; white-space:nowrap; line-height:1.15; }
+  .word em{ font-style:italic; color:var(--gold); font-weight:400; }
+  .word small{ display:block; font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:0.16em; color:var(--text-faint); text-transform:uppercase; margin-top:2px; }
+  nav{ display:flex; align-items:center; gap:20px; }
+  nav a{ font-size:12px; color:var(--text-dim); letter-spacing:0.03em; text-transform:uppercase; transition:color .3s var(--ease); white-space:nowrap; }
+  nav a:hover{ color:var(--text); }
+  .nav-access{ color:#211705 !important; background:linear-gradient(135deg, var(--gold-bright), var(--gold)); padding:8px 16px; border-radius:100px; font-weight:700; }
+
+  /* ===================== STAGE SIDE NAV (scrollspy) ===================== */
+  .stage-nav{
+    position:fixed; right:26px; top:50%; translate:0 -50%; z-index:55;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .stage-nav button{
+    all:unset; cursor:pointer; display:flex; align-items:center; gap:10px; justify-content:flex-end;
+    color:var(--text-faint); font-family:var(--mono); font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
+    transition:color .3s var(--ease);
+  }
+  .stage-nav button .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); transition:all .3s var(--ease); flex-shrink:0; }
+  .stage-nav button .lbl{ opacity:0; translate:8px 0; transition:opacity .3s var(--ease), translate .3s var(--ease); max-width:0; overflow:hidden; white-space:nowrap; }
+  .stage-nav button:hover .lbl, .stage-nav button.active .lbl{ opacity:1; translate:0 0; max-width:140px; }
+  .stage-nav button.active{ color:var(--gold-bright); }
+  .stage-nav button.active .dot{ background:var(--gold); box-shadow:0 0 0 4px rgba(207,166,104,0.18); width:8px; height:8px; }
+  @media (max-width:960px){ .stage-nav{ display:none; } }
+
+  /* ===================== FLOATING PERSISTENT CTA ===================== */
+  .fab{
+    position:fixed; bottom:26px; right:26px; z-index:70;
+    opacity:0; translate:0 12px; pointer-events:none;
+    transition:opacity .5s var(--ease), translate .5s var(--ease);
+  }
+  .fab.show{ opacity:1; translate:0 0; pointer-events:auto; }
+  .fab .btn{ box-shadow:0 12px 34px -8px rgba(207,166,104,0.55); }
+  @media (max-width:640px){ .fab{ right:16px; bottom:16px; } .fab .btn{ padding:13px 20px; font-size:13px; } }
+
+  /* ===================== STAGE 1 — ARRIVAL (pinned scroll-zoom image) ===================== */
+  .stage{ position:relative; z-index:1; }
+
+  .zoom-stage{ position:relative; height:280vh; }
+  .zoom-sticky{ position:sticky; top:0; height:100svh; overflow:hidden; }
+
+  .zoom-image{
+    position:absolute; inset:0;
+    transform:scale(1);
+    will-change:transform;
+  }
+  .zoom-image svg{ width:100%; height:100%; }
+
+  .zoom-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(7,7,10,0.35) 0%, rgba(7,7,10,0.15) 40%, rgba(7,7,10,0.55) 78%, var(--bg) 100%);
+    pointer-events:none;
+  }
+
+  .arrival-inner{
+    position:relative; z-index:3; max-width:760px; margin:0 auto;
+    height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:0 24px;
+  }
+  .arrival-q{ font-family:var(--mono); font-size:12.5px; color:var(--text-dim); letter-spacing:0.04em; margin-bottom:22px; }
+  h1.arrival-h{
+    font-family:var(--display); font-weight:400; font-style:italic;
+    font-size:clamp(32px, 8vw, 78px); line-height:1.08; letter-spacing:-0.01em;
+    text-shadow:0 4px 40px rgba(0,0,0,0.5);
+  }
+  .arrival-h .not-italic{ font-style:normal; font-weight:300; color:var(--text-dim); }
+  .arrival-p{ margin:26px auto 0; max-width:42ch; color:var(--text-dim); font-size:16px; line-height:1.6; }
+  .arrival-cta{ margin-top:38px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 
   .scroll-cue{
-    position:absolute; bottom:28px; left:50%; translate:-50% 0;
+    position:absolute; bottom:26px; left:50%; translate:-50% 0; z-index:3;
     font-family:var(--mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
-    color:var(--text-faint); display:flex; flex-direction:column; align-items:center; gap:10px;
-    z-index:5;
+    color:var(--text-dim); display:flex; flex-direction:column; align-items:center; gap:10px;
   }
-  .scroll-cue .line{ width:1px; height:30px; background:linear-gradient(var(--glow), transparent); animation:pulse-line 2s ease-in-out infinite; }
+  .scroll-cue .line{ width:1px; height:30px; background:linear-gradient(var(--gold), transparent); animation:pulse-line 2s ease-in-out infinite; }
   @keyframes pulse-line{ 0%,100%{opacity:.3} 50%{opacity:1} }
 
-  /* ===================== SECTION HEADERS ===================== */
-  .section{ position:relative; padding:100px 0; z-index:1; }
-  .section-head{ max-width:640px; margin-bottom:56px; }
-  .section-head .eyebrow{ margin-bottom:16px; }
+  /* action badges that appear "inside" the image as you scroll through it */
+  .action-badge{
+    position:absolute; z-index:3;
+    display:flex; align-items:center; gap:10px;
+    padding:11px 18px; border-radius:100px;
+    font-family:var(--mono); font-size:12px; color:var(--text);
+    background:linear-gradient(160deg, var(--glass-hi), var(--glass));
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--glass-line);
+    opacity:0; translate:0 14px;
+    transition:opacity .6s var(--ease), translate .6s var(--ease);
+    white-space:nowrap;
+  }
+  .action-badge.show{ opacity:1; translate:0 0; }
+  .action-badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .badge-1{ top:20%; left:8%; }
+  .badge-2{ top:64%; right:8%; }
+  .badge-3{ top:42%; left:6%; }
+  @media (max-width:760px){
+    .action-badge{ font-size:10.5px; padding:9px 14px; }
+    .badge-1{ top:16%; left:5%; } .badge-2{ top:70%; right:5%; } .badge-3{ top:46%; left:4%; }
+  }
+
+  /* ===================== STAGE 2 — THRESHOLD ===================== */
+  #threshold{ padding:120px 20px; text-align:center; }
+  .triptych{ max-width:680px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  .triptych p{
+    font-family:var(--display); font-style:italic; font-weight:400;
+    font-size:clamp(20px, 3.4vw, 32px); line-height:1.4; color:var(--text-dim);
+    opacity:0; translate:0 16px; transition:opacity .8s var(--ease), translate .8s var(--ease);
+  }
+  .triptych p.in{ opacity:1; translate:0 0; }
+  .triptych p:last-child{ color:var(--gold-bright); }
+
+  /* ===================== STAGE 3 — THE ROOMS (transition) ===================== */
+  #rooms-intro{ padding:100px 20px; text-align:center; }
+  #rooms-intro .wrap{ max-width:620px; }
+  #rooms-intro p{ font-size:16.5px; line-height:1.75; color:var(--text-dim); }
+  #rooms-intro p strong{ color:var(--text); font-weight:600; }
+
+  /* ===================== SECTION HEADERS (generic) ===================== */
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head .eyebrow{ display:block; margin-bottom:14px; }
   .section-head h2{
-    font-family:var(--display); font-weight:400; font-size:clamp(27px,4vw,44px);
+    font-family:var(--display); font-weight:400; font-size:clamp(26px,4vw,42px);
     line-height:1.15; letter-spacing:-0.01em;
   }
-  .section-head p{ color:var(--text-dim); margin-top:16px; font-size:15.5px; line-height:1.6; max-width:52ch; }
+  .section-head p{ color:var(--text-dim); margin-top:14px; font-size:15px; line-height:1.6; max-width:52ch; }
 
-  /* ===================== ROOMS GRID — TRUE 3D TILT CARDS ===================== */
-  .rooms{
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
-  }
-  @media (max-width:960px){ .rooms{ grid-template-columns:repeat(2,1fr); gap:16px;} }
+  /* ===================== STAGE 4 — WHY IT MATTERS (stats) ===================== */
+  #why-it-matters{ padding:100px 0; }
+  .stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media (max-width:860px){ .stat-grid{ grid-template-columns:1fr; } }
+  .stat-card{ border-radius:20px; padding:30px 26px; }
+  .stat-num{ font-family:var(--display); font-size:clamp(34px,5vw,48px); color:var(--gold-bright); line-height:1; }
+  .stat-desc{ margin-top:14px; font-size:14px; color:var(--text-dim); line-height:1.55; }
+  .stat-src{ margin-top:16px; font-family:var(--mono); font-size:10.5px; color:var(--text-faint); letter-spacing:0.02em; }
+
+  /* ===================== STAGE 5 — THE LIBRARY (grid) ===================== */
+  #library{ padding:100px 0; }
+  .rooms{ display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+  @media (max-width:960px){ .rooms{ grid-template-columns:repeat(2,1fr); gap:14px;} }
   @media (max-width:600px){ .rooms{ grid-template-columns:1fr; } }
 
   .room{
-    position:relative;
-    aspect-ratio:1/1;
-    min-height:210px;
-    border-radius:20px;
-    background:linear-gradient(155deg, var(--surface), var(--surface-2));
-    border:1px solid var(--line);
-    perspective:900px;
-    overflow:hidden;
-    opacity:0; translate:0 26px;
-    transition:opacity .7s var(--ease), translate .7s var(--ease);
+    position:relative; aspect-ratio:1/1; min-height:200px; border-radius:20px;
+    perspective:900px; overflow:hidden;
+    opacity:0; translate:0 24px; transition:opacity .7s var(--ease), translate .7s var(--ease);
   }
   .room.in{ opacity:1; translate:0 0; }
-
-  .room-stage{
-    position:relative; width:100%; height:100%;
-    transform-style:preserve-3d;
-    transition:transform .5s var(--ease);
-    padding:24px;
-    display:flex; flex-direction:column; justify-content:space-between;
-  }
-
-  .room-glow{
-    position:absolute; inset:-20%;
-    background:radial-gradient(circle at 30% 20%, rgba(124,158,255,0.28), transparent 60%);
-    transform:translateZ(0px);
-    transition:transform .5s var(--ease), opacity .5s var(--ease);
-    opacity:0;
-    pointer-events:none;
-  }
+  .room-stage{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s var(--ease); padding:22px; display:flex; flex-direction:column; justify-content:space-between; }
+  .room-glow{ position:absolute; inset:-20%; background:radial-gradient(circle at 30% 20%, rgba(207,166,104,0.28), transparent 60%); transform:translateZ(0px); transition:transform .5s var(--ease), opacity .5s var(--ease); opacity:0; pointer-events:none; }
   .room:hover .room-glow, .room:focus-within .room-glow{ opacity:1; }
-
-  .room-icon{
-    width:38px; height:38px;
-    transform:translateZ(60px);
-    transition:transform .5s var(--ease);
-    color:var(--glow);
-  }
+  .room-icon{ width:34px; height:34px; transform:translateZ(60px); transition:transform .5s var(--ease); color:var(--gold); }
   .room-icon svg{ width:100%; height:100%; }
-
-  .room-duration{
-    position:absolute; top:24px; right:24px;
-    font-family:var(--mono); font-size:11px; color:var(--text-faint);
-    transform:translateZ(70px);
-    transition:transform .5s var(--ease);
-  }
-
+  .room-duration{ position:absolute; top:22px; right:22px; font-family:var(--mono); font-size:10.5px; color:var(--text-faint); transform:translateZ(70px); transition:transform .5s var(--ease); }
   .room-body{ transform:translateZ(40px); transition:transform .5s var(--ease); }
-  .room-index{ font-family:var(--mono); font-size:11px; color:var(--text-faint); letter-spacing:0.1em; margin-bottom:10px; display:block; }
-  .room-name{ font-family:var(--display); font-size:19px; font-weight:500; line-height:1.15; margin-bottom:7px; }
-  .room-desc{ font-size:13px; color:var(--text-dim); line-height:1.5; }
-  .room-note{ font-style:italic; font-size:11.5px; color:var(--text-faint); margin-top:8px; line-height:1.4; }
-
-  .room-edge{
-    position:absolute; inset:0; border-radius:20px;
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03);
-    transform:translateZ(2px);
-    pointer-events:none;
-  }
-
-  .room-shadow{
-    position:absolute; left:8%; right:8%; bottom:-14px; height:34px;
-    background:radial-gradient(ellipse at center, rgba(0,0,0,0.55), transparent 70%);
-    filter:blur(4px);
-    opacity:0; transition:opacity .5s var(--ease), transform .5s var(--ease);
-    pointer-events:none;
-  }
+  .room-index{ font-family:var(--mono); font-size:10.5px; color:var(--text-faint); letter-spacing:0.1em; margin-bottom:9px; display:block; }
+  .room-name{ font-family:var(--display); font-size:18px; font-weight:500; line-height:1.15; margin-bottom:6px; }
+  .room-desc{ font-size:12.5px; color:var(--text-dim); line-height:1.5; }
+  .room-note{ font-style:italic; font-size:11px; color:var(--gold-dim); margin-top:7px; line-height:1.4; }
+  .room-edge{ position:absolute; inset:0; border-radius:20px; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03); transform:translateZ(2px); pointer-events:none; }
+  .room-shadow{ position:absolute; left:8%; right:8%; bottom:-14px; height:34px; background:radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 70%); filter:blur(4px); opacity:0; transition:opacity .5s var(--ease); pointer-events:none; }
   .room:hover .room-shadow{ opacity:1; }
 
-  /* ===================== MEMBERSHIP ===================== */
-  .membership{
-    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
-  }
-  @media (max-width:860px){ .membership{ grid-template-columns:1fr; gap:44px;} }
-
+  /* ===================== STAGE 6 — MEMBERSHIP ===================== */
+  #membership{ padding:100px 0; }
+  .membership{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  @media (max-width:860px){ .membership{ grid-template-columns:1fr; gap:40px; } }
   .pass-wrap{ perspective:1400px; }
-  .pass{
-    position:relative;
-    border-radius:24px;
-    padding:36px;
-    background:linear-gradient(160deg, var(--surface-2), var(--bg-2) 70%);
-    border:1px solid var(--line);
-    transform-style:preserve-3d;
-    transition:transform .5s var(--ease), box-shadow .5s var(--ease);
-    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
-    overflow:hidden;
-  }
-  .pass-glow{
-    position:absolute; inset:-1px; border-radius:24px;
-    background:radial-gradient(circle at 20% 0%, rgba(124,158,255,0.22), transparent 55%);
-    transform:translateZ(20px);
-    pointer-events:none;
-  }
+  .pass{ position:relative; border-radius:24px; padding:34px; transform-style:preserve-3d; transition:transform .5s var(--ease); overflow:hidden; }
+  .pass-glow{ position:absolute; inset:-1px; border-radius:24px; background:radial-gradient(circle at 20% 0%, rgba(207,166,104,0.25), transparent 55%); transform:translateZ(20px); pointer-events:none; }
   .pass-top{ transform:translateZ(48px); display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
-  .pass-top .eyebrow{ margin-bottom:0; }
-  .pass-weeks{
-    font-family:var(--mono); font-size:12px; color:var(--warm);
-    border:1px solid rgba(255,180,154,0.35); padding:5px 12px; border-radius:100px;
-    white-space:nowrap;
-  }
-  .pass-price{ transform:translateZ(64px); margin-top:32px; }
-  .pass-price .num{ font-family:var(--display); font-size:clamp(38px,8vw,56px); font-weight:400; }
-  .pass-price .num sup{ font-size:0.4em; top:-0.9em; position:relative; }
-  .pass-price .cycle{ color:var(--text-dim); font-size:13.5px; margin-top:4px; }
+  .pass-weeks{ font-family:var(--mono); font-size:11.5px; color:var(--gold-bright); border:1px solid rgba(207,166,104,0.4); padding:5px 12px; border-radius:100px; white-space:nowrap; }
+  .pass-price{ transform:translateZ(64px); margin-top:30px; }
+  .pass-price .num{ font-family:var(--display); font-size:clamp(36px,8vw,54px); font-weight:400; color:var(--gold-bright); }
+  .pass-price .num sup{ font-size:.4em; top:-.9em; position:relative; }
+  .pass-price .cycle{ color:var(--text-dim); font-size:13px; margin-top:4px; }
+  .pass-list{ transform:translateZ(40px); margin-top:26px; display:flex; flex-direction:column; gap:12px; }
+  .pass-list li{ list-style:none; display:flex; gap:11px; font-size:13px; color:var(--text-dim); line-height:1.5; }
+  .pass-list li svg{ flex-shrink:0; margin-top:2px; color:var(--gold); }
+  .pass-cta{ transform:translateZ(56px); margin-top:30px; }
+  .pass-cta .btn{ width:100%; }
+  .pass-note{ transform:translateZ(30px); margin-top:13px; font-size:11.5px; color:var(--text-faint); text-align:center; }
+  .membership-copy h2{ font-family:var(--display); font-weight:400; font-size:clamp(25px,3.6vw,36px); line-height:1.18; margin-bottom:16px; }
+  .membership-copy p{ color:var(--text-dim); line-height:1.7; font-size:14.5px; margin-bottom:13px; max-width:46ch; }
+  .membership-copy .mini-label{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-faint); margin-top:28px; }
 
-  .pass-list{ transform:translateZ(40px); margin-top:28px; display:flex; flex-direction:column; gap:13px; }
-  .pass-list li{ list-style:none; display:flex; gap:12px; font-size:13.5px; color:var(--text-dim); line-height:1.5; }
-  .pass-list li svg{ flex-shrink:0; margin-top:2px; color:var(--glow); }
+  /* ===================== STAGE 7 — THE PRACTICE ===================== */
+  #practice{ padding:100px 0; }
+  .practice-body{ max-width:640px; margin-bottom:48px; }
+  .practice-body p{ font-size:15.5px; color:var(--text-dim); line-height:1.75; margin-top:14px; }
+  .practice-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:860px){ .practice-grid{ grid-template-columns:1fr; } }
+  .principle{ border-radius:18px; padding:26px 24px; }
+  .principle .pnum{ font-family:var(--mono); font-size:11px; color:var(--gold-dim); letter-spacing:0.1em; }
+  .principle h3{ font-family:var(--display); font-size:18px; font-weight:500; margin:12px 0 8px; }
+  .principle p{ font-size:13px; color:var(--text-dim); line-height:1.55; }
 
-  .pass-cta{ transform:translateZ(56px); margin-top:32px; }
-  .pass-cta .btn{ width:100%; justify-content:center; }
-  .pass-note{ transform:translateZ(30px); margin-top:14px; font-size:12px; color:var(--text-faint); text-align:center; }
+  /* ===================== STAGE 8 — BEGIN + FAQ ===================== */
+  #begin{ padding:110px 0 60px; text-align:center; }
+  #begin h2{ font-family:var(--display); font-weight:400; font-style:italic; font-size:clamp(28px,5vw,50px); line-height:1.15; max-width:16ch; margin:0 auto; }
+  #begin .begin-cta{ margin-top:34px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  #begin .contact-line{ margin-top:22px; font-family:var(--mono); font-size:12px; color:var(--text-faint); }
 
-  .membership-copy h2{ font-family:var(--display); font-weight:400; font-size:clamp(26px,3.6vw,38px); line-height:1.18; margin-bottom:18px; }
-  .membership-copy p{ color:var(--text-dim); line-height:1.7; font-size:15px; margin-bottom:14px; max-width:46ch; }
-  .membership-copy .mini-label{ font-family:var(--mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-faint); margin-top:32px; margin-bottom:14px; }
+  #faq{ padding:80px 0 100px; }
+  .faq-item{ border-radius:16px; padding:22px 26px; margin-bottom:12px; cursor:pointer; }
+  .faq-q{ display:flex; justify-content:space-between; align-items:center; gap:16px; font-family:var(--display); font-size:16px; font-weight:500; }
+  .faq-q .plus{ font-family:var(--mono); color:var(--gold); font-size:18px; transition:transform .3s var(--ease); flex-shrink:0; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .4s var(--ease), margin-top .4s var(--ease); font-size:13.5px; color:var(--text-dim); line-height:1.6; margin-top:0; }
+  .faq-item.open .faq-a{ max-height:200px; margin-top:14px; }
 
-  /* ===================== FOOTER ===================== */
-  footer{
-    border-top:1px solid var(--line);
-    padding:40px 0;
-  }
+  footer{ border-top:1px solid var(--line); padding:36px 0; position:relative; z-index:1; }
   footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
-  footer p{ font-size:12px; color:var(--text-faint); }
+  footer p{ font-size:11.5px; color:var(--text-faint); }
 
-  /* ===================== MOBILE FIXES ===================== */
+  /* ===================== MOBILE ===================== */
   @media (max-width:640px){
     .wrap{ padding:0 20px; }
-    header{ padding:16px 0; }
-    .word{ font-size:16px; }
-    nav{ gap:12px; }
-    nav a{ font-size:11px; }
+    header{ padding:14px 0; }
+    .word{ font-size:15px; }
+    nav{ gap:10px; }
     nav a:not(.nav-access){ display:none; }
-    .nav-access{ padding:7px 14px; }
-
-    .hero{ padding:110px 0 60px; min-height:auto; }
-    .hero h1{ font-size:clamp(28px, 9vw, 44px); }
-    .hero p{ font-size:14.5px; }
-    .btn{ padding:13px 22px; font-size:13px; }
-
-    .section{ padding:64px 0; }
-    .section-head{ margin-bottom:36px; }
-
-    .room{ min-height:180px; padding:0; }
-    .room-stage{ padding:20px; }
-    .room-name{ font-size:17px; }
-
-    .pass{ padding:26px 22px; }
-    .pass-top{ align-items:center; }
+    .nav-access{ padding:7px 14px; font-size:11px; }
+    .zoom-stage{ height:220vh; }
+    .arrival-h{ font-size:clamp(28px, 9vw, 44px); }
+    #threshold, #rooms-intro, #why-it-matters, #library, #membership, #practice{ padding:60px 0; }
+    .section-head{ margin-bottom:32px; }
+    .room{ min-height:170px; }
+    .room-stage{ padding:18px; }
+    .room-name{ font-size:16px; }
+    .pass{ padding:24px 20px; }
+    .stat-card, .principle{ padding:22px 20px; }
+    #begin{ padding:80px 0 40px; }
   }
 
   @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.2s !important; }
-    .rings{ transform:none !important; }
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.2s !important; }
   }
 </style>
 </head>
 <body>
 
+<div class="grain"></div>
+
 <header>
   <div class="wrap">
     <div class="word">WELL<em>BEING</em><small>Meditation Center</small></div>
     <nav>
-      <a href="#rooms"><span class="nav-link-text">Sessions</span></a>
-      <a href="#membership"><span class="nav-link-text">Membership</span></a>
+      <a href="#library">Sessions</a>
+      <a href="#membership">Membership</a>
       <a href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request" class="nav-access">Get Access</a>
     </nav>
   </div>
 </header>
 
-<!-- ===================== HERO ===================== -->
-<section class="hero" id="top">
-  <div class="rings" id="rings">
-    <div class="ring r1"></div>
-    <div class="ring r2"></div>
-    <div class="ring r3"></div>
-    <div class="ring r4"></div>
-    <div class="ring r5"></div>
-    <div class="ring r6"></div>
-  </div>
+<nav class="stage-nav" id="stageNav"></nav>
 
-  <div class="hero-core">
-    <div class="eyebrow">Wellbeing · Guided Meditation</div>
-    <h1>Somewhere between <span class="not-italic">focus</span> and <span class="not-italic">sleep</span></h1>
-    <p>Thirteen states of mind, each built like a real space — near sounds up front, distance behind. Put on headphones and it opens around you.</p>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request">Get Access</a>
-      <a class="btn btn-ghost" href="#rooms">See the Sessions</a>
+<div class="fab" id="fab">
+  <a class="btn btn-primary" href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request">Get Access</a>
+</div>
+
+<!-- ===================== STAGE 1 — ARRIVAL (pinned scroll-zoom image) ===================== -->
+<section class="stage zoom-stage" id="arrival" data-stage-label="Arrival">
+  <div class="zoom-sticky">
+
+    <div class="zoom-image" id="zoomImage">
+      <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="skyGlow" cx="50%" cy="36%" r="62%">
+            <stop offset="0%" stop-color="#3a2f1c"/>
+            <stop offset="45%" stop-color="#1c1712"/>
+            <stop offset="100%" stop-color="#07070a"/>
+          </radialGradient>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f0cf98" stop-opacity="0.9"/>
+            <stop offset="35%" stop-color="#cfa668" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#cfa668" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#241c2e"/>
+            <stop offset="100%" stop-color="#100d14"/>
+          </linearGradient>
+          <linearGradient id="mtnNear" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#100d10"/>
+            <stop offset="100%" stop-color="#07070a"/>
+          </linearGradient>
+        </defs>
+
+        <rect width="1600" height="1000" fill="url(#skyGlow)"/>
+
+        <g fill="#f0cf98" opacity="0.55">
+          <circle cx="120" cy="110" r="1.6"/><circle cx="300" cy="70" r="1.2"/><circle cx="470" cy="140" r="1.4"/>
+          <circle cx="640" cy="60" r="1.1"/><circle cx="220" cy="220" r="1.3"/><circle cx="1120" cy="90" r="1.5"/>
+          <circle cx="1280" cy="160" r="1.2"/><circle cx="1420" cy="70" r="1.4"/><circle cx="1500" cy="200" r="1.1"/>
+          <circle cx="980" cy="130" r="1.3"/><circle cx="60" cy="300" r="1.2"/><circle cx="1550" cy="320" r="1.3"/>
+        </g>
+
+        <circle cx="800" cy="420" r="300" fill="url(#moonGlow)"/>
+        <circle cx="800" cy="420" r="90" fill="none" stroke="#f0cf98" stroke-width="1" opacity="0.5"/>
+        <circle cx="800" cy="420" r="150" fill="none" stroke="#cfa668" stroke-width="1" opacity="0.35"/>
+        <circle cx="800" cy="420" r="220" fill="none" stroke="#cfa668" stroke-width="1" opacity="0.22"/>
+        <circle cx="800" cy="420" r="300" fill="none" stroke="#cfa668" stroke-width="1" opacity="0.14"/>
+        <circle cx="800" cy="420" r="58" fill="#f3ede2" opacity="0.92"/>
+
+        <rect x="0" y="630" width="1600" height="90" fill="#cfa668" opacity="0.06"/>
+
+        <path d="M0,760 L200,660 400,720 620,600 850,700 1080,630 1300,710 1600,650 1600,1000 0,1000 Z" fill="url(#mtnFar)"/>
+        <path d="M0,860 L250,780 500,840 780,760 1020,830 1300,770 1600,830 1600,1000 0,1000 Z" fill="url(#mtnNear)"/>
+      </svg>
     </div>
-  </div>
 
-  <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+    <div class="zoom-scrim"></div>
+
+    <div class="action-badge badge-1" id="badge1"><span class="dot"></span>13 layered sessions</div>
+    <div class="action-badge badge-2" id="badge2"><span class="dot"></span>Real depth, not loops</div>
+    <div class="action-badge badge-3" id="badge3"><span class="dot"></span>New rooms, no update needed</div>
+
+    <div class="arrival-inner" id="arrivalText">
+      <div class="arrival-q">How much of today did you actually choose to be present for?</div>
+      <h1 class="arrival-h">Somewhere between <span class="not-italic">focus</span> and <span class="not-italic">sleep</span></h1>
+      <p class="arrival-p">Thirteen states of mind, each built like a real space — near sounds up front, distance behind. Put on headphones and it opens around you.</p>
+      <div class="arrival-cta">
+        <a class="btn btn-primary" href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request">Get Access</a>
+        <a class="btn btn-ghost" href="#library">Enter the Rooms</a>
+      </div>
+    </div>
+
+    <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+  </div>
 </section>
 
-<!-- ===================== SESSIONS ===================== -->
-<section class="section" id="rooms">
+<!-- ===================== STAGE 2 — THRESHOLD ===================== -->
+<section class="stage" id="threshold" data-stage-label="Threshold">
+  <div class="triptych">
+    <p>Speed without rest is exhaustion.</p>
+    <p>Rest without practice is just sitting still.</p>
+    <p>Wellbeing is both, together.</p>
+  </div>
+</section>
+
+<!-- ===================== STAGE 3 — THE ROOMS (transition) ===================== -->
+<section class="stage" id="rooms-intro" data-stage-label="The Rooms">
+  <div class="wrap">
+    <p>Some mornings need sharpening. Some nights need letting go. <strong>Every state you move through already has a room waiting for it</strong> — you're just not always sure which door to open.</p>
+  </div>
+</section>
+
+<!-- ===================== STAGE 4 — WHY IT MATTERS ===================== -->
+<section class="stage" id="why-it-matters" data-stage-label="Why It Matters">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">The Library</div>
+      <span class="eyebrow">The Problem</span>
+      <h2>Most people are running on a deficit they've stopped noticing</h2>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card glass">
+        <div class="stat-num">37%</div>
+        <div class="stat-desc">of adults worldwide reported feeling a lot of stress the day before they were surveyed — and in several Latin American countries, the share runs even higher.</div>
+        <div class="stat-src">Source: Gallup Global Emotions Report, 2024</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-num">36.8%</div>
+        <div class="stat-desc">of U.S. adults aren't getting enough sleep on a given night — a share that's stayed roughly flat for a decade.</div>
+        <div class="stat-src">Source: CDC, 2022</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-num">$4.2B</div>
+        <div class="stat-desc">is the size the mindfulness and meditation app market is projected to reach by 2027 — demand is real, and still growing fast.</div>
+        <div class="stat-src">Source: market research estimates, 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STAGE 5 — THE LIBRARY ===================== -->
+<section class="stage" id="library" data-stage-label="The Library">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The Library</span>
       <h2>Thirteen rooms, each with its own weather</h2>
       <p>Move your cursor across a session — it tilts and lifts like something you could actually pick up. New sessions get added quietly on our end; they just appear here the next time you open the app.</p>
     </div>
-
     <div class="rooms" id="roomsGrid"></div>
   </div>
 </section>
 
-<!-- ===================== MEMBERSHIP ===================== -->
-<section class="section" id="membership">
+<!-- ===================== STAGE 6 — MEMBERSHIP ===================== -->
+<section class="stage" id="membership" data-stage-label="Membership">
   <div class="wrap membership">
-
     <div class="membership-copy">
-      <div class="eyebrow">Membership</div>
+      <span class="eyebrow">Membership</span>
       <h2>One key, four weeks, the whole library</h2>
       <p>A Wellbeing pass unlocks all thirteen sessions for four weeks at a time. No session is held back for a higher tier — the difference is only whether the door is open.</p>
       <p>When we finish a new session, it's placed on the shelf remotely. You won't need to update anything — it's simply there the next time you look.</p>
       <div class="mini-label">Renews every 4 weeks</div>
     </div>
-
     <div class="pass-wrap">
-      <div class="pass" id="passCard">
+      <div class="pass glass" id="passCard">
         <div class="pass-glow"></div>
         <div class="pass-top">
-          <div class="eyebrow">Wellbeing Pass</div>
+          <span class="eyebrow">Wellbeing Pass</span>
           <div class="pass-weeks">4 WEEKS</div>
         </div>
         <div class="pass-price">
@@ -432,19 +499,84 @@
         <div class="pass-note">Price shown is a placeholder — edit in code</div>
       </div>
     </div>
+  </div>
+</section>
 
+<!-- ===================== STAGE 7 — THE PRACTICE ===================== -->
+<section class="stage" id="practice" data-stage-label="The Practice">
+  <div class="wrap">
+    <div class="practice-body">
+      <span class="eyebrow">The Practice</span>
+      <h2 style="font-family:var(--display);font-weight:400;font-size:clamp(25px,3.6vw,36px);margin-top:14px;">Built like a real space, not a soundtrack</h2>
+      <p>Most meditation audio is one flat layer — a voice over music, the same distance the whole way through. Every Wellbeing session is layered instead: near sounds up front, distance behind, so the room has actual depth to sit inside.</p>
+    </div>
+    <div class="practice-grid">
+      <div class="principle glass">
+        <div class="pnum">01</div>
+        <h3>Layered, not looped</h3>
+        <p>Foreground and background move independently, so the space feels dimensional through headphones instead of flat.</p>
+      </div>
+      <div class="principle glass">
+        <div class="pnum">02</div>
+        <h3>Guided, not generic</h3>
+        <p>Each of the thirteen rooms is written for a specific state — focus, grief, sleep, a nap — not a one-size script.</p>
+      </div>
+      <div class="principle glass">
+        <div class="pnum">03</div>
+        <h3>Built for return visits</h3>
+        <p>Short enough to fit a real day, structured so the same room still works the fortieth time you open it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STAGE 8 — BEGIN + FAQ ===================== -->
+<section class="stage" id="begin" data-stage-label="Begin">
+  <div class="wrap">
+    <h2>Ready to walk into one?</h2>
+    <div class="begin-cta">
+      <a class="btn btn-primary" href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request">Get Access</a>
+    </div>
+    <div class="contact-line">Or write to us directly — PASTE_YOUR_EMAIL_HERE</div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-head">
+      <span class="eyebrow">Questions</span>
+      <h2>Before you start</h2>
+    </div>
+    <div id="faqList"></div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="word" style="font-size:14px;">WELL<em>BEING</em></div>
+    <div class="word" style="font-size:13px;">WELL<em>BEING</em></div>
     <p>© 2026 Wellbeing Meditation Center.</p>
   </div>
 </footer>
 
 <script>
 (function(){
+
+  /* =====================================================================
+     REAL PHOTO / VIDEO INSTEAD OF THE SVG
+     #zoomImage currently holds hand-drawn SVG art (safe to ship — no
+     licensing issue). To swap in your own photo or footage:
+
+     Photo:  replace the <svg>...</svg> inside #zoomImage with
+             <img src="YOUR_IMAGE.jpg" style="width:100%;height:100%;object-fit:cover;">
+
+     Video:  replace it with
+             <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+               <source src="YOUR_VIDEO.mp4" type="video/mp4">
+             </video>
+
+     Nothing else changes — the scroll-zoom math in zoomHero() above
+     transforms whatever is inside #zoomImage, image or video alike.
+  ===================================================================== */
 
   const ICONS = {
     target: `<svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="16" stroke="currentColor" stroke-width="1.4"/><circle cx="22" cy="22" r="9" stroke="currentColor" stroke-width="1.4"/><circle cx="22" cy="22" r="2" fill="currentColor"/></svg>`,
@@ -478,10 +610,57 @@
     { icon:'moon',   dur:'25 min', name:'Deep Sleep',           desc:"A slow descent into rest." },
   ];
 
+  const FAQS = [
+    { q:"How does the 4-week pass work?", a:"One payment unlocks every session in the library for four weeks. It renews automatically at the end of that window unless you cancel." },
+    { q:"Do I need any experience with meditation?", a:"No. Sessions guide you from the first second, whether it's a 7-minute reset or a 25-minute wind-down." },
+    { q:"Will new sessions be added?", a:"Yes — new rooms are added to the library remotely. You don't need to update anything; they just appear the next time you open the app." },
+    { q:"Can I cancel?", a:"Yes, any time before the next 4-week renewal." },
+    { q:"What do I need to start?", a:"Headphones and about fifteen quiet minutes. That's really it." },
+  ];
+
+  /* ---- pinned scroll-zoom hero: image scales up, text fades, badges reveal
+         as you scroll through the pinned section. Replace the SVG in
+         #zoomImage with a <img>/<video> of your own footage later — the
+         scroll math below works the same either way. ---- */
+  (function zoomHero(){
+    const stage = document.getElementById('arrival');
+    const image = document.getElementById('zoomImage');
+    const text  = document.getElementById('arrivalText');
+    const b1 = document.getElementById('badge1');
+    const b2 = document.getElementById('badge2');
+    const b3 = document.getElementById('badge3');
+    if (!stage) return;
+
+    let ticking = false;
+    function update(){
+      ticking = false;
+      const rect = stage.getBoundingClientRect();
+      const total = stage.offsetHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      const progress = Math.min(1, Math.max(0, total > 0 ? scrolled / total : 0));
+
+      image.style.transform = `scale(${1 + progress * 0.35})`;
+
+      const textOpacity = Math.max(0, 1 - progress / 0.3);
+      text.style.opacity = textOpacity;
+      text.style.transform = `translateY(${-progress * 40}px) scale(${1 - progress * 0.06})`;
+
+      b1.classList.toggle('show', progress > 0.18 && progress < 0.58);
+      b2.classList.toggle('show', progress > 0.4 && progress < 0.78);
+      b3.classList.toggle('show', progress > 0.6 && progress < 0.97);
+    }
+    function onScroll(){
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+
   const grid = document.getElementById('roomsGrid');
   ROOMS.forEach((r, i) => {
     const el = document.createElement('div');
-    el.className = 'room';
+    el.className = 'room glass';
     el.innerHTML = `
       <div class="room-stage">
         <div class="room-glow"></div>
@@ -500,68 +679,100 @@
     grid.appendChild(el);
   });
 
-  const canHover = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const faqList = document.getElementById('faqList');
+  FAQS.forEach((f) => {
+    const el = document.createElement('div');
+    el.className = 'faq-item glass';
+    el.innerHTML = `<div class="faq-q"><span>${f.q}</span><span class="plus">+</span></div><div class="faq-a">${f.a}</div>`;
+    el.addEventListener('click', () => el.classList.toggle('open'));
+    faqList.appendChild(el);
+  });
 
+  /* ---- stage scrollspy nav ---- */
+  const stages = Array.from(document.querySelectorAll('.stage'));
+  const stageNav = document.getElementById('stageNav');
+  stages.forEach(s => {
+    const btn = document.createElement('button');
+    btn.dataset.target = s.id;
+    btn.innerHTML = `<span class="lbl">${s.dataset.stageLabel}</span><span class="dot"></span>`;
+    btn.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+    stageNav.appendChild(btn);
+  });
+  const navButtons = Array.from(stageNav.children);
+
+  const stageIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navButtons.forEach(b => b.classList.toggle('active', b.dataset.target === entry.target.id));
+      }
+    });
+  }, { threshold: 0.2 });
+  stages.forEach(s => stageIO.observe(s));
+
+  /* ---- floating CTA appears after leaving hero ---- */
+  const fab = document.getElementById('fab');
+  const arrival = document.getElementById('arrival');
+  const fabIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => fab.classList.toggle('show', !entry.isIntersecting));
+  }, { threshold: 0.1 });
+  fabIO.observe(arrival);
+
+  /* ---- triptych staggered reveal ---- */
+  document.querySelectorAll('.triptych p').forEach((p, i) => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => p.classList.add('in'), i * 220);
+          io.unobserve(p);
+        }
+      });
+    }, { threshold: 0.6 });
+    io.observe(p);
+  });
+
+  /* ---- room card reveal ---- */
   const rooms = document.querySelectorAll('.room');
-  const io = new IntersectionObserver((entries) => {
+  const roomIO = new IntersectionObserver((entries) => {
     entries.forEach((entry, idx) => {
       if (entry.isIntersecting) {
         setTimeout(() => entry.target.classList.add('in'), idx * 50);
-        io.unobserve(entry.target);
+        roomIO.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15 });
-  rooms.forEach(r => io.observe(r));
+  rooms.forEach(r => roomIO.observe(r));
 
+  const canHover = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !canHover) return;
 
-  const rings = document.getElementById('rings');
-  let heroTarget = {x:0,y:0}, heroCurrent = {x:0,y:0};
-  window.addEventListener('mousemove', (e) => {
-    heroTarget.x = (e.clientX / window.innerWidth - 0.5);
-    heroTarget.y = (e.clientY / window.innerHeight - 0.5);
-  });
-  function animateRings(){
-    heroCurrent.x += (heroTarget.x - heroCurrent.x) * 0.06;
-    heroCurrent.y += (heroTarget.y - heroCurrent.y) * 0.06;
-    rings.style.transform = `rotateX(${heroCurrent.y * -14}deg) rotateY(${heroCurrent.x * 14}deg)`;
-    requestAnimationFrame(animateRings);
-  }
-  animateRings();
-
   function attachTilt(el, stageSel, opts){
-    const stage = el.querySelector(stageSel);
+    const stageEl = el.querySelector(stageSel);
     const strength = opts.strength || 12;
     let raf = null;
-
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width;
       const py = (e.clientY - rect.top) / rect.height;
       const rotY = (px - 0.5) * strength * 2;
       const rotX = (0.5 - py) * strength * 2;
-
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        stage.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        stageEl.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
         const glow = el.querySelector('.room-glow, .pass-glow');
         if (glow) glow.style.transform = `translateZ(0) translate(${(px-0.5)*30}px, ${(py-0.5)*30}px)`;
         const shadow = el.querySelector('.room-shadow');
         if (shadow) shadow.style.transform = `translate(${(px-0.5)*-20}px,0) scale(${1 + Math.abs(px-0.5)*0.1})`;
       });
     });
-
     el.addEventListener('mouseleave', () => {
       cancelAnimationFrame(raf);
-      stage.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      stageEl.style.transform = 'rotateX(0deg) rotateY(0deg)';
       const glow = el.querySelector('.room-glow, .pass-glow');
       if (glow) glow.style.transform = 'translateZ(0) translate(0,0)';
     });
   }
-
   document.querySelectorAll('.room').forEach(r => attachTilt(r, '.room-stage', {strength:10}));
-
   const passWrap = document.querySelector('.pass-wrap');
   attachTilt(passWrap, '#passCard', {strength:6});
 

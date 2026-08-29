@@ -9,16 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 
-  /* ===================== TOKENS — black + gold liquid glass ===================== */
+  /* ===================== TOKENS — navy + gold liquid glass ===================== */
   :root{
-    --bg:          #07070a;
-    --bg-2:        #0f0d0f;
+    --bg:          #070a12;
+    --bg-2:        #0d0f16;
     --glass:       rgba(255,255,255,0.035);
     --glass-hi:    rgba(255,255,255,0.07);
     --glass-line:  rgba(207,166,104,0.18);
     --gold:        #cfa668;
     --gold-bright: #f0cf98;
     --gold-dim:    #8a7248;
+    --navy:        #0a1128;
+    --navy-bright: #17224a;
     --text:        #f3ede2;
     --text-dim:    #a79c8c;
     --text-faint:  #605646;
@@ -81,7 +83,7 @@
   header{
     position:fixed; top:0; left:0; right:0; z-index:60;
     padding:20px 0;
-    background:linear-gradient(to bottom, rgba(7,7,10,0.9), transparent);
+    background:linear-gradient(to bottom, rgba(7,10,18,0.9), transparent);
   }
   header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
   .word{ font-family:var(--display); font-weight:500; font-size:18px; letter-spacing:0.03em; white-space:nowrap; line-height:1.15; }
@@ -134,7 +136,7 @@
 
   .zoom-scrim{
     position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(7,7,10,0.35) 0%, rgba(7,7,10,0.15) 40%, rgba(7,7,10,0.55) 78%, var(--bg) 100%);
+    background:linear-gradient(180deg, rgba(7,10,18,0.35) 0%, rgba(7,10,18,0.15) 40%, rgba(7,10,18,0.55) 78%, var(--bg) 100%);
     pointer-events:none;
   }
 
@@ -280,6 +282,19 @@
   .principle h3{ font-family:var(--display); font-size:18px; font-weight:500; margin:12px 0 8px; }
   .principle p{ font-size:13px; color:var(--text-dim); line-height:1.55; }
 
+  /* ===================== STAGE 7B — THE SCIENCE (NLP) ===================== */
+  #science{ padding:100px 0; }
+  .science-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center; }
+  @media (max-width:860px){ .science-grid{ grid-template-columns:1fr; gap:36px; } }
+  .science-copy p{ font-size:15px; color:var(--text-dim); line-height:1.75; margin-top:14px; max-width:52ch; }
+  .science-copy p strong{ color:var(--gold-bright); font-weight:600; }
+  .science-panel{ border-radius:20px; padding:30px 28px; }
+  .science-panel .mini-label{ font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-faint); margin-bottom:18px; display:block; }
+  .science-list{ display:flex; flex-direction:column; gap:16px; }
+  .science-list li{ list-style:none; display:flex; gap:13px; font-size:13.5px; color:var(--text-dim); line-height:1.55; }
+  .science-list li .num{ font-family:var(--mono); font-size:11px; color:var(--gold); flex-shrink:0; padding-top:2px; }
+  .science-list li strong{ color:var(--text); font-weight:600; }
+
   /* ===================== STAGE 8 — BEGIN + FAQ ===================== */
   #begin{ padding:110px 0 60px; text-align:center; }
   #begin h2{ font-family:var(--display); font-weight:400; font-style:italic; font-size:clamp(28px,5vw,50px); line-height:1.15; max-width:16ch; margin:0 auto; }
@@ -308,13 +323,13 @@
     .nav-access{ padding:7px 14px; font-size:11px; }
     .zoom-stage{ height:220vh; }
     .arrival-h{ font-size:clamp(28px, 9vw, 44px); }
-    #threshold, #rooms-intro, #why-it-matters, #library, #membership, #practice{ padding:60px 0; }
+    #threshold, #rooms-intro, #why-it-matters, #library, #membership, #practice, #science{ padding:60px 0; }
     .section-head{ margin-bottom:32px; }
     .room{ min-height:170px; }
     .room-stage{ padding:18px; }
     .room-name{ font-size:16px; }
     .pass{ padding:24px 20px; }
-    .stat-card, .principle{ padding:22px 20px; }
+    .stat-card, .principle, .science-panel{ padding:22px 20px; }
     #begin{ padding:80px 0 40px; }
   }
 
@@ -332,6 +347,7 @@
     <div class="word">WELL<em>BEING</em><small>Meditation Center</small></div>
     <nav>
       <a href="#library">Sessions</a>
+      <a href="#science">The Science</a>
       <a href="#membership">Membership</a>
       <a href="mailto:PASTE_YOUR_EMAIL_HERE?subject=Access%20request" class="nav-access">Get Access</a>
     </nav>
@@ -352,9 +368,9 @@
       <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="skyGlow" cx="50%" cy="36%" r="62%">
-            <stop offset="0%" stop-color="#3a2f1c"/>
-            <stop offset="45%" stop-color="#1c1712"/>
-            <stop offset="100%" stop-color="#07070a"/>
+            <stop offset="0%" stop-color="#2c3560"/>
+            <stop offset="45%" stop-color="#141a30"/>
+            <stop offset="100%" stop-color="#070a12"/>
           </radialGradient>
           <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#f0cf98" stop-opacity="0.9"/>
@@ -362,12 +378,12 @@
             <stop offset="100%" stop-color="#cfa668" stop-opacity="0"/>
           </radialGradient>
           <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#241c2e"/>
-            <stop offset="100%" stop-color="#100d14"/>
+            <stop offset="0%" stop-color="#1b2140"/>
+            <stop offset="100%" stop-color="#0d1122"/>
           </linearGradient>
           <linearGradient id="mtnNear" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#100d10"/>
-            <stop offset="100%" stop-color="#07070a"/>
+            <stop offset="0%" stop-color="#0c0f1a"/>
+            <stop offset="100%" stop-color="#070a12"/>
           </linearGradient>
         </defs>
 
@@ -526,6 +542,29 @@
         <h3>Built for return visits</h3>
         <p>Short enough to fit a real day, structured so the same room still works the fortieth time you open it.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STAGE 7B — THE SCIENCE (NLP) ===================== -->
+<section class="stage" id="science" data-stage-label="The Science">
+  <div class="wrap science-grid">
+    <div class="science-copy">
+      <span class="eyebrow">The Science</span>
+      <h2 style="font-family:var(--display);font-weight:400;font-size:clamp(25px,3.6vw,36px);line-height:1.18;margin-top:14px;">A clear mind isn't a mood. It's a mechanism.</h2>
+      <p>Every session draws on <strong>Neuro-Linguistic Programming</strong> — the study of how language, imagery, and attention shape the internal state you operate from. Guided phrasing, deliberate pacing, and sensory-rich cues aren't decoration; they're the actual lever that moves you out of noise and into focus.</p>
+      <p>The premise is simple: your mental state isn't fixed. It's a pattern, and patterns can be interrupted and re-set on purpose — the same way a language or a habit is trained, not willed.</p>
+      <p>And a clear mind doesn't just feel better. <strong>It performs better in every direction at once</strong> — sharper decisions, steadier emotion, faster recall, more patient relationships — because clarity is the shared input all of those draw from.</p>
+    </div>
+    <div class="science-panel glass">
+      <span class="mini-label">What clarity changes</span>
+      <ul class="science-list">
+        <li><span class="num">01</span><span><strong>Decisions</strong> — less noise between the situation and the choice you actually want to make.</span></li>
+        <li><span class="num">02</span><span><strong>Emotional regulation</strong> — reactions have room to be a response instead of a reflex.</span></li>
+        <li><span class="num">03</span><span><strong>Memory & recall</strong> — a settled mind encodes and retrieves more reliably under pressure.</span></li>
+        <li><span class="num">04</span><span><strong>Communication</strong> — presence reads as confidence, in a meeting or a conversation that matters.</span></li>
+        <li><span class="num">05</span><span><strong>Recovery</strong> — the nervous system spends less of the day in a low simmer of alert.</span></li>
+      </ul>
     </div>
   </div>
 </section>

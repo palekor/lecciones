@@ -3,70 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0B1628">
+<meta name="theme-color" content="#05070E">
 <title>ThingsWallet · Your Pocket Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    THINGSWALLET — DESIGN TOKENS
+   Midnight = deep-space voyage, gold as the luxury signature.
+   Dawn = warm ivory, emerald as the signature, gold as trim.
    ============================================================ */
 :root{
-  --ocean:        #0B1628;
-  --ocean-mid:    #141E33;
-  --ocean-light:  #1A2744;
-  --ocean-surface:#1E2D4A;
-  --cyan:         #00E5CC;
-  --cyan-bright:  #33FFDD;
-  --cyan-dim:     #00B8A3;
+  --ocean:        #05070E;
+  --ocean-mid:    #0A0E1B;
+  --ocean-light:  #131A30;
+  --ocean-surface:#1A2340;
+  --cyan:         #D4AF37;
+  --cyan-bright:  #F2D479;
+  --cyan-dim:     #A8811F;
   --coral:        #FF6B6B;
   --coral-warm:   #FF8A5C;
   --amber:        #FFB84D;
   --lavender:     #B088F9;
   --mint:         #4ECDC4;
-  --snow:         #F0F4FA;
-  --snow-dim:     #D6DFF0;
+  --gold:         #D4AF37;
+  --gold-bright:  #F2D479;
+  --emerald:      #10B981;
+  --snow:         #F5F1E6;
+  --snow-dim:     #E4DEC9;
   --slate:        #7B8FAD;
   --slate-light:  #9BABC5;
   --bg:           var(--ocean);
   --bg-elev:      var(--ocean-mid);
-  --bg-sunken:    #08101E;
+  --bg-sunken:    #030409;
   --bg-card:      var(--ocean-light);
-  --text:         #E8F0FE;
+  --text:         #F1EEE3;
   --text-soft:    var(--slate-light);
   --text-faint:   var(--slate);
-  --border:      rgba(0,229,204,0.08);
-  --border-strong:rgba(0,229,204,0.18);
-  --card-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4);
-  --glow-cyan:   0 0 20px rgba(0,229,204,0.15);
+  --border:      rgba(212,175,55,0.10);
+  --border-strong:rgba(212,175,55,0.24);
+  --card-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 10px 34px rgba(0,0,0,0.5);
+  --glow-cyan:   0 0 22px rgba(212,175,55,0.18);
   --glow-coral:  0 0 20px rgba(255,107,107,0.15);
   --accent:       var(--cyan);
-  --accent-soft:  rgba(0,229,204,0.08);
+  --accent-soft:  rgba(212,175,55,0.09);
+  --edge-light:   rgba(255,255,255,0.06);
   --radius-s: 12px;
   --radius-m: 18px;
   --radius-l: 26px;
   --radius-xl: 36px;
-  --font-display: 'Outfit', sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-numeric: 'Outfit', sans-serif;
   --font-body:    'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --ease: cubic-bezier(.4,0,.2,1);
   --ease-spring: cubic-bezier(.34,1.56,.64,1);
   --ease-bounce: cubic-bezier(.68,-.55,.27,1.55);
 }
 [data-theme="light"]{
-  --bg:           #F0F4FA;
+  --bg:           #FBF7EC;
   --bg-elev:      #FFFFFF;
-  --bg-sunken:    #E4EAF5;
+  --bg-sunken:    #F1E9D6;
   --bg-card:      #FFFFFF;
-  --text:         #0B1628;
-  --text-soft:    #4A5D7A;
-  --text-faint:   #7B8FAD;
-  --border:       rgba(0,229,204,0.12);
-  --border-strong:rgba(0,229,204,0.25);
-  --card-shadow: 0 2px 4px rgba(11,22,40,0.05), 0 8px 32px rgba(11,22,40,0.08);
-  --glow-cyan:   0 0 20px rgba(0,229,204,0.1);
-  --glow-coral:  0 0 20px rgba(255,107,107,0.1);
-  --accent-soft:  rgba(0,229,204,0.06);
+  --text:         #1B2A22;
+  --text-soft:    #4B5D52;
+  --text-faint:   #8A9A8C;
+  --border:       rgba(16,185,129,0.16);
+  --border-strong:rgba(16,185,129,0.30);
+  --card-shadow: 0 2px 4px rgba(27,42,34,0.06), 0 10px 30px rgba(27,42,34,0.09);
+  --glow-cyan:   0 0 20px rgba(16,185,129,0.16);
+  --glow-coral:  0 0 20px rgba(255,107,107,0.12);
+  --accent-soft:  rgba(16,185,129,0.09);
+  --edge-light:   rgba(255,255,255,0.9);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
@@ -393,7 +401,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .arcade-card:hover{transform:translateY(-2px);border-color:var(--border-strong);box-shadow:var(--glow-cyan);}
 .arcade-card:active{transform:scale(.96);}
 .arcade-num{
-  font-family:var(--font-display);font-size:28px;font-weight:800;
+  font-family:var(--font-numeric);font-size:28px;font-weight:800;
   background:linear-gradient(135deg,var(--cyan),var(--cyan-bright));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
@@ -403,9 +411,9 @@ textarea.input-field{resize:vertical;min-height:60px;}
 /* ============================================================
    TODOS VIEW
    ============================================================ */
-.todo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.todo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:8px;flex-wrap:wrap;}
 .todo-count{font-size:12px;color:var(--text-faint);font-weight:600;}
-.todo-filters{display:flex;gap:6px;margin-bottom:16px;}
+.todo-filters{display:flex;gap:6px;flex-wrap:wrap;}
 .filter-btn{
   padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;
   color:var(--text-faint);font-size:12px;font-weight:600;transition:all .2s var(--ease);
@@ -425,7 +433,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
   color:var(--text-faint);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;
   transition:all .2s var(--ease);flex-shrink:0;
 }
-.priority-chip.active{color:#0B1628;box-shadow:0 0 10px rgba(0,0,0,0.15);}
+.priority-chip.active{color:#05070E;box-shadow:0 0 10px rgba(0,0,0,0.15);}
 .todo-datetime-inputs{display:flex;gap:6px;flex:1;min-width:0;}
 .todo-date-input,.todo-time-input{flex:1;min-width:0;padding:9px 8px;font-size:12px;}
 
@@ -448,7 +456,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .todo-text{font-size:14px;font-weight:500;line-height:1.4;word-break:break-word;}
 .todo-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .todo-priority-badge{
-  width:19px;height:19px;border-radius:6px;font-size:10px;font-weight:800;color:#0B1628;
+  width:19px;height:19px;border-radius:6px;font-size:10px;font-weight:800;color:#05070E;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .todo-due{font-size:10.5px;color:var(--text-faint);font-weight:600;display:inline-flex;align-items:center;gap:3px;}
@@ -463,6 +471,30 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .todo-empty span{font-size:36px;display:block;margin-bottom:8px;}
 .todo-clear{margin-top:14px;text-align:center;}
 
+/* --- Multi-select (bulk actions across the month) --- */
+.todo-item.select-mode{padding-left:12px;}
+.todo-select-check{
+  width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-strong);background:transparent;
+  flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;color:transparent;font-size:11px;font-weight:800;
+  transition:all .15s var(--ease-spring);
+}
+.todo-item.selected{border-color:var(--cyan);background:var(--accent-soft);}
+.todo-item.selected .todo-select-check{background:var(--cyan);border-color:var(--cyan);color:var(--ocean);}
+.bulk-bar{
+  position:fixed;left:0;right:0;bottom:calc(96px + env(safe-area-inset-bottom));z-index:60;
+  display:flex;justify-content:center;
+}
+.bulk-bar[hidden]{display:none;}
+#bulkBar{
+  margin:0 20px;padding:12px 16px;max-width:540px;width:calc(100% - 40px);
+  background:color-mix(in srgb, var(--bg-elev) 94%, transparent);border:1px solid var(--border-strong);border-radius:20px;
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  box-shadow:0 -4px 30px rgba(0,0,0,0.25), var(--card-shadow);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.bulk-count{font-size:12.5px;font-weight:700;color:var(--text);}
+.bulk-actions{display:flex;gap:8px;}
+
 /* ============================================================
    HABITS VIEW
    ============================================================ */
@@ -473,7 +505,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
   box-shadow:var(--card-shadow),0 0 30px rgba(255,107,107,0.06);margin-bottom:18px;
 }
 .timer-display{
-  font-family:var(--font-display);font-size:56px;font-weight:800;letter-spacing:-0.04em;
+  font-family:var(--font-numeric);font-size:56px;font-weight:800;letter-spacing:-0.04em;
   color:var(--text);margin:12px 0;
 }
 .timer-display.running{color:var(--cyan-bright);text-shadow:0 0 30px rgba(0,229,204,0.3);}
@@ -515,6 +547,25 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .habit-action-btn:hover{border-color:var(--border-strong);color:var(--cyan);background:var(--accent-soft);}
 .habit-action-btn.danger:hover{color:var(--coral);border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.08);}
 .habit-done-today{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--cyan);font-weight:600;}
+.habit-group-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
+  margin:18px 2px 10px;
+}
+.habit-group-label:first-child{margin-top:0;}
+[data-theme="light"] .habit-group-label{color:var(--emerald);}
+.habit-default-badge{
+  display:inline-block;margin-left:7px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 7px;border-radius:100px;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.25);
+  vertical-align:middle;
+}
+.habit-action-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--accent-soft);}
+.habit-check-btn{
+  width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--border-strong);background:var(--bg-sunken);
+  color:var(--text-soft);font-size:13px;font-weight:700;transition:all .2s var(--ease-spring);
+}
+.habit-check-btn:active{transform:scale(.97);}
+.habit-check-btn.done{background:linear-gradient(135deg,var(--cyan-dim),var(--cyan));color:var(--ocean);border-color:transparent;box-shadow:0 4px 16px rgba(212,175,55,0.25);}
+[data-theme="light"] .habit-check-btn.done{color:#fff;box-shadow:0 4px 16px rgba(16,185,129,0.25);}
 
 /* --- Daily target chunk picker (Add Habit modal) --- */
 .chunk-picker{display:flex;gap:8px;}
@@ -522,7 +573,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
   flex:1;padding:12px 6px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg-sunken);
   text-align:center;color:var(--text-soft);transition:all .2s var(--ease-spring);
 }
-.chunk-chip .chunk-chip-num{font-family:var(--font-display);font-size:18px;font-weight:800;display:block;}
+.chunk-chip .chunk-chip-num{font-family:var(--font-numeric);font-size:18px;font-weight:800;display:block;}
 .chunk-chip .chunk-chip-min{font-size:10px;color:var(--text-faint);display:block;margin-top:1px;}
 .chunk-chip.active{border-color:var(--coral);background:rgba(255,107,107,0.08);color:var(--coral-warm);}
 .chunk-chip.active .chunk-chip-min{color:var(--coral-warm);}
@@ -618,8 +669,8 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .theme-option.active{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,229,204,0.2);}
 .theme-option span{display:block;font-size:11px;font-weight:700;margin-top:4px;}
 .theme-swatch{width:100%;height:32px;border-radius:8px;}
-.theme-swatch.dark{background:linear-gradient(135deg,#0B1628,#1A2744);}
-.theme-swatch.light{background:linear-gradient(135deg,#F0F4FA,#FFFFFF);}
+.theme-swatch.dark{background:linear-gradient(135deg,#05070E,#1A2340 70%,#D4AF37);}
+.theme-swatch.light{background:linear-gradient(135deg,#FBF7EC,#FFFFFF 55%,#10B981);}
 .color-accent-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
 .color-accent-option{
   width:36px;height:36px;border-radius:10px;border:2px solid transparent;cursor:pointer;transition:transform .2s var(--ease-spring);
@@ -635,7 +686,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
 }
 .onboard-overlay[hidden]{display:none;}
 .onboard-icon{font-size:56px;margin-bottom:14px;}
-.onboard-title{font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:8px;}
+.onboard-title{font-family:var(--font-display);font-size:32px;font-weight:700;margin-bottom:8px;}
 .onboard-title span{color:var(--cyan);}
 .onboard-sub{color:var(--text-soft);font-size:14px;line-height:1.5;margin-bottom:24px;max-width:320px;}
 .onboard-input{width:100%;max-width:280px;margin-bottom:18px;}
@@ -759,9 +810,57 @@ textarea.input-field{resize:vertical;min-height:60px;}
 .data-section{margin-bottom:16px;}
 .data-hint{font-size:12px;color:var(--text-faint);margin-bottom:10px;line-height:1.4;}
 #pasteCodeArea textarea{font-family:monospace;font-size:11px;line-height:1.3;}
+
+/* ============================================================
+   VOYAGE FIELD — space canvas (Midnight) / bokeh canvas (Dawn)
+   ============================================================ */
+html{background:var(--ocean);}
+[data-theme="light"] html{background:#FBF7EC;}
+#voyageField{
+  position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 90% at 50% -10%, #131A30 0%, var(--ocean) 55%, var(--ocean-mid) 100%);
+  transition:opacity .5s var(--ease);
+}
+[data-theme="light"] #voyageField{
+  background:radial-gradient(ellipse 130% 90% at 50% -10%, #FFFDF6 0%, #FBF7EC 60%, #F5EDD9 100%);
+}
+body{position:relative;z-index:1;background:transparent;}
+#app{position:relative;z-index:1;}
+
+/* Glass edge-lighting: a hairline of light along the top of every card, the
+   cheapest believable "3D bevel" — cut everywhere else so it stays a signature. */
+.card,.today-card,.habit-timer-card,.space-card,.carrying-card,.rhythm-section,
+.todo-item,.habit-item,.idea-card,.recent-idea-row,.arcade-card,.modal-content{
+  position:relative;
+}
+.card::before,.today-card::before,.habit-timer-card::before,.rhythm-section::before,
+.modal-content::before{
+  content:'';position:absolute;top:0;left:18px;right:18px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--edge-light) 50%,transparent);
+  opacity:.7;pointer-events:none;
+}
+
+/* Hero card gets a slow, subtle pointer-driven tilt on hover-capable devices —
+   a single deliberate 3D moment, not scattered across every element. */
+.today-card{
+  transform:perspective(900px) rotateX(var(--tiltX,0deg)) rotateY(var(--tiltY,0deg)) translateZ(0);
+  transition:transform .5s var(--ease), box-shadow .3s var(--ease);
+  will-change:transform;
+}
+@media(hover:hover) and (pointer:fine){
+  .today-card:hover{transition:transform .08s linear;}
+}
+
+/* Gold trim on the avatar ring — a constant luxury signature in both themes */
+.avatar-ring{border-color:rgba(212,175,55,0.4);box-shadow:0 0 0 1px rgba(212,175,55,.15),0 0 24px rgba(212,175,55,.18);}
+[data-theme="light"] .avatar-ring{border-color:rgba(16,185,129,0.35);box-shadow:0 0 0 1px rgba(16,185,129,.14),0 0 20px rgba(16,185,129,.16);}
+
+#starsCanvas{position:absolute;inset:0;width:100%;height:100%;}
+@media(prefers-reduced-motion:reduce){#starsCanvas{display:none;}}
 </style>
 </head>
 <body>
+<div id="voyageField"><canvas id="starsCanvas"></canvas></div>
 
 <div id="app">
   <header class="topbar">
@@ -924,16 +1023,30 @@ textarea.input-field{resize:vertical;min-height:60px;}
         <input type="time" class="input-field todo-time-input" id="todoTimeInput" title="Due time">
       </div>
     </div>
-    <div class="todo-filters">
-      <button class="filter-btn active" data-filter="all" onclick="setTodoFilter('all',this)">All</button>
-      <button class="filter-btn" data-filter="active" onclick="setTodoFilter('active',this)">Active</button>
-      <button class="filter-btn" data-filter="done" onclick="setTodoFilter('done',this)">Done</button>
+    <div class="todo-header">
+      <div class="todo-filters" style="margin-bottom:0;">
+        <button class="filter-btn active" data-filter="all" onclick="setTodoFilter('all',this)">All</button>
+        <button class="filter-btn" data-filter="active" onclick="setTodoFilter('active',this)">Active</button>
+        <button class="filter-btn" data-filter="done" onclick="setTodoFilter('done',this)">Done</button>
+        <button class="filter-btn" data-filter="month" onclick="setTodoFilter('month',this)">This Month</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="btnSelectMode" onclick="toggleSelectMode()" style="flex-shrink:0;">Select</button>
     </div>
     <div class="todo-list" id="todoList"></div>
     <div class="todo-clear" id="todoClear" hidden>
       <button class="btn btn-outline btn-sm" onclick="clearDoneTodos()">🗑️ Clear completed</button>
     </div>
   </section>
+
+  <!-- Bulk-select action bar (todos) -->
+  <div class="bulk-bar" id="bulkBar" hidden>
+    <span class="bulk-count" id="bulkCount">0 selected</span>
+    <div class="bulk-actions">
+      <button class="btn btn-cyan btn-sm" onclick="bulkMarkDone()">✓ Done</button>
+      <button class="btn btn-outline btn-sm" onclick="bulkDelete()" style="border-color:rgba(255,107,107,0.3);color:var(--coral);">🗑️ Delete</button>
+      <button class="btn btn-outline btn-sm" onclick="toggleSelectMode()">Cancel</button>
+    </div>
+  </div>
 
   <!-- HABITS VIEW -->
   <section class="view" id="viewHabits" hidden>
@@ -965,8 +1078,8 @@ textarea.input-field{resize:vertical;min-height:60px;}
       </div>
       <div class="timer-dur-row">
         <button class="dur-chip active" data-dur="180" onclick="setTimerDur(180,this)">3 min</button>
-        <button class="dur-chip" data-dur="300" onclick="setTimerDur(300,this)">5 min</button>
         <button class="dur-chip" data-dur="600" onclick="setTimerDur(600,this)">10 min</button>
+        <button class="dur-chip" data-dur="1800" onclick="setTimerDur(1800,this)">30 min</button>
         <button class="dur-chip" data-dur="2400" onclick="setTimerDur(2400,this)">40 min</button>
       </div>
       <div class="timer-controls">
@@ -976,7 +1089,7 @@ textarea.input-field{resize:vertical;min-height:60px;}
     </div>
     <div class="habit-list-section">
       <div class="habit-list-header">
-        <div><span class="eyebrow">Your Habits</span></div>
+        <div><span class="eyebrow">Daily Practice</span></div>
         <button class="btn btn-cyan btn-sm" onclick="openAddHabit()">➕ Add</button>
       </div>
       <div class="habit-list" id="habitList"></div>
@@ -1164,6 +1277,8 @@ const GAMES = [
 const AVATARS = ['🧭','🦊','🐺','🦉','🐲','🌸','🔥','⚡','🌊','🪐','🎮','💎','🦋','🌿','🎯','🚀'];
 const HABIT_EMOJIS = ['📖','🧘','✍️','🏃','💧','🎵','🌱','💪','🧠','🙏','🎨','💤','🍎','📝','🗣️','🎯'];
 const ACCENT_COLORS = [
+  {name:'Gold',hex:'#D4AF37'},
+  {name:'Emerald',hex:'#10B981'},
   {name:'Cyan',hex:'#00E5CC'},
   {name:'Coral',hex:'#FF6B6B'},
   {name:'Amber',hex:'#FFB84D'},
@@ -1171,8 +1286,6 @@ const ACCENT_COLORS = [
   {name:'Mint',hex:'#4ECDC4'},
   {name:'Rose',hex:'#FF6B9D'},
   {name:'Sky',hex:'#4FC3F7'},
-  {name:'Emerald',hex:'#2ECC71'},
-  {name:'Gold',hex:'#F2C94C'},
   {name:'Violet',hex:'#9B59B6'},
   {name:'Crimson',hex:'#E85D5D'},
 ];
@@ -1182,11 +1295,15 @@ const PRIORITY_RANK = {A:0,B:1,C:2,D:3};
 
 function todayStr(){return new Date().toISOString().split('T')[0];}
 
+const DEFAULT_GOLD='#D4AF37', DEFAULT_EMERALD='#10B981';
+
 function defaultState(){
   return {
-    version:1,name:'',avatar:'🧭',theme:'dark',accentHex:'#00E5CC',
+    version:1,name:'',avatar:'🧭',theme:'dark',
+    accentHex:DEFAULT_GOLD,accentHexLight:DEFAULT_EMERALD,
     streak:0,lastActiveDate:null,
-    todos:[],habits:[],ideas:[],customGames:[],selectedHabitId:null,timerDur:180,onboarded:false
+    todos:[],habits:[],ideas:[],customGames:[],selectedHabitId:null,timerDur:180,
+    onboarded:false,challengeSeeded:false
   };
 }
 
@@ -1199,14 +1316,150 @@ function load(){
   (state.todos||[]).forEach(t=>{if(!t.createdAt){t.createdAt=new Date().toISOString();touched=true;}});
   (state.ideas||[]).forEach(i=>{if(!i.createdAt){i.createdAt=new Date().toISOString();touched=true;}});
   (state.habits||[]).forEach(h=>{
-    if(!h.targetChunks){h.targetChunks=3;touched=true;}
+    if(!h.mode){h.mode='chunks';touched=true;}
+    if(h.mode==='chunks'&&!h.targetChunks){h.targetChunks=3;touched=true;}
     if(!h.log){h.log={};touched=true;}
   });
+  if(!state.accentHexLight){state.accentHexLight=DEFAULT_EMERALD;touched=true;}
+  if(!state.habits)state.habits=[];
+  if(!state.challengeSeeded&&state.habits.length===0){
+    state.habits=seedChallengeHabits();
+    state.challengeSeeded=true;touched=true;
+  }else if(!state.challengeSeeded){
+    state.challengeSeeded=true;touched=true; // returning user with existing habits — don't inject defaults on top
+  }
   if(touched)save();
+}
+
+/* The 3-Minute Transformation — default starter habits. A teacher can delete
+   any of these freely; deleting is just deleting a normal habit. */
+function seedChallengeHabits(){
+  const now=new Date().toISOString();
+  return [
+    {id:uid(),emoji:'🛏️',name:'Make Your Bed',intent:'Win the first minute of the day',mode:'check',durationMin:3,doneDates:[],log:{},isDefault:true,createdAt:now},
+    {id:uid(),emoji:'💧',name:'Drink 4 Glasses of Water',intent:'Hydrate before you caffeinate',mode:'check',durationMin:3,doneDates:[],log:{},isDefault:true,createdAt:now},
+    {id:uid(),emoji:'🎯',name:'Finish 3 Priorities',intent:'Move the 3 things that actually matter',mode:'check',durationMin:10,doneDates:[],log:{},isDefault:true,createdAt:now},
+    {id:uid(),emoji:'🚶',name:'Walk',intent:'Move your body, clear your mind',mode:'check',durationMin:30,doneDates:[],log:{},isDefault:true,createdAt:now}
+  ];
 }
 function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
 
 load();
+
+/* ============================================================
+   VOYAGE FIELD — Midnight: forward-drifting starfield.
+   Dawn: slow golden bokeh. A brief "boost" pulse marks progress.
+   ============================================================ */
+(function(){
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canvas=document.getElementById('starsCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W=0,H=0,DPR=1,particles=[],boost=0,lastT=performance.now();
+
+  function mkStar(initial){
+    return {
+      x:(Math.random()-0.5)*W*1.5,
+      y:initial?Math.random()*H*1.3-H*0.15:-H*0.5+Math.random()*40,
+      z:0.15+Math.random()*0.85,
+      r:0.5+Math.random()*1.6,
+      tw:Math.random()*Math.PI*2,
+      twS:0.02+Math.random()*0.03
+    };
+  }
+  function mkBokeh(){
+    return {
+      x:Math.random()*W,y:Math.random()*H,
+      r:10+Math.random()*24,tw:Math.random()*Math.PI*2,twS:0.006+Math.random()*0.008,
+      vx:(Math.random()-0.5)*0.05,vy:-0.025-Math.random()*0.045
+    };
+  }
+  function seed(){
+    const isDark=state.theme!=='light';
+    const narrow=window.innerWidth<700;
+    const count=isDark?(narrow?90:150):(narrow?14:24);
+    particles=[];
+    for(let i=0;i<count;i++)particles.push(isDark?mkStar(true):mkBokeh());
+  }
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,1.75);
+    W=canvas.width=Math.round(window.innerWidth*DPR);
+    H=canvas.height=Math.round(window.innerHeight*DPR);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    seed();
+  }
+  function stepDark(dt){
+    ctx.clearRect(0,0,W,H);
+    const speed=(0.09+boost*1.1)*dt;
+    const cx=W*0.5,cy=H*0.1;
+    for(const p of particles){
+      const dx=p.x-cx,dy=p.y-cy;
+      const dist=Math.max(50,Math.sqrt(dx*dx+dy*dy));
+      const push=(p.z*speed*DPR*24)/dist;
+      p.x+=dx*push;p.y+=dy*push;p.tw+=p.twS*dt;
+      if(p.x<-W*0.7||p.x>W*1.7||p.y<-H*0.7||p.y>H*1.7){
+        const n=mkStar(false);p.x=cx+(Math.random()-0.5)*80;p.y=cy+(Math.random()-0.5)*80;
+        p.z=n.z;p.r=n.r;p.tw=n.tw;p.twS=n.twS;
+      }
+      const alpha=(0.3+0.55*Math.abs(Math.sin(p.tw)))*(0.5+p.z*0.5);
+      const size=p.r*DPR*(0.6+p.z*0.8);
+      ctx.beginPath();ctx.fillStyle='rgba(255,248,225,'+alpha.toFixed(3)+')';ctx.arc(p.x,p.y,size,0,Math.PI*2);ctx.fill();
+      if(boost>0.12&&p.z>0.45){
+        ctx.beginPath();ctx.strokeStyle='rgba(242,212,121,'+(boost*0.3).toFixed(3)+')';ctx.lineWidth=size*0.7;
+        ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-dx*push*2.6,p.y-dy*push*2.6);ctx.stroke();
+      }
+    }
+    if(boost>0)boost=Math.max(0,boost-0.01*dt);
+  }
+  function stepLight(dt){
+    ctx.clearRect(0,0,W,H);
+    for(const p of particles){
+      p.x+=p.vx*dt*DPR;p.y+=p.vy*dt*DPR;p.tw+=p.twS*dt;
+      if(p.y<-p.r*DPR*2){p.y=H+p.r*DPR*2;p.x=Math.random()*W;}
+      if(p.x<-p.r*DPR*2)p.x=W+p.r*DPR*2;if(p.x>W+p.r*DPR*2)p.x=-p.r*DPR*2;
+      const alpha=0.045+0.05*Math.abs(Math.sin(p.tw));
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*DPR);
+      g.addColorStop(0,'rgba(212,175,55,'+alpha.toFixed(3)+')');g.addColorStop(1,'rgba(212,175,55,0)');
+      ctx.beginPath();ctx.fillStyle=g;ctx.arc(p.x,p.y,p.r*DPR,0,Math.PI*2);ctx.fill();
+    }
+  }
+  function frame(t){
+    const dt=Math.min(2.2,(t-lastT)/16.67);lastT=t;
+    if(state.theme==='light')stepLight(dt);else stepDark(dt);
+    requestAnimationFrame(frame);
+  }
+  window.boostVoyage=function(){boost=1;};
+  window.__voyageReseed=seed;
+  window.addEventListener('resize',resize);
+  resize();
+  if(!reduced)requestAnimationFrame(frame);
+})();
+
+/* ============================================================
+   TODAY-CARD TILT — one deliberate 3D moment, desktop only.
+   ============================================================ */
+(function(){
+  const canHover=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if(!canHover)return;
+  const card=document.querySelector('.today-card');
+  if(!card)return;
+  let raf=null;
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-0.5;
+    const py=(e.clientY-r.top)/r.height-0.5;
+    if(raf)cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      card.style.setProperty('--tiltY',(px*5).toFixed(2)+'deg');
+      card.style.setProperty('--tiltX',(-py*5).toFixed(2)+'deg');
+    });
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.setProperty('--tiltX','0deg');
+    card.style.setProperty('--tiltY','0deg');
+  });
+})();
 
 /* ============================================================
    UTILS
@@ -1269,6 +1522,7 @@ function showView(name){
     requestAnimationFrame(()=>{document.getElementById(target).style.animation='';});
   }
   document.querySelectorAll('.navbtn').forEach(b=>{b.classList.toggle('active',b.dataset.view===name);});
+  if(name!=='todos'&&selectMode){selectMode=false;selectedIds.clear();updateBulkBar();}
   refreshView(name);
 }
 
@@ -1285,20 +1539,27 @@ function refreshView(name){
 function applyTheme(t){
   state.theme=t;
   document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');
-  document.querySelector('meta[name="theme-color"]').content=t==='dark'?'#0B1628':'#F0F4FA';
+  document.querySelector('meta[name="theme-color"]').content=t==='dark'?'#05070E':'#FBF7EC';
+  applyAccent(t==='dark'?(state.accentHex||DEFAULT_GOLD):(state.accentHexLight||DEFAULT_EMERALD),true);
+  if(window.__voyageReseed)window.__voyageReseed();
   save();
 }
 
-function applyAccent(hex){
-  state.accentHex=hex;
+function applyAccent(hex,skipStore){
+  if(!skipStore){
+    if(state.theme==='dark')state.accentHex=hex;else state.accentHexLight=hex;
+  }
   document.documentElement.style.setProperty('--cyan',hex);
-  document.documentElement.style.setProperty('--cyan-bright',hex);
+  document.documentElement.style.setProperty('--cyan-bright','color-mix(in srgb, '+hex+' 70%, white)');
+  document.documentElement.style.setProperty('--cyan-dim','color-mix(in srgb, '+hex+' 72%, black)');
   save();
 }
 
 function setTheme(t,el){
   applyTheme(t);
   document.querySelectorAll('.theme-option').forEach(o=>o.classList.toggle('active',o.dataset.themeVal===t));
+  tempAccent=t==='dark'?state.accentHex:state.accentHexLight;
+  renderAccentOptions();
 }
 
 /* ============================================================
@@ -1560,6 +1821,51 @@ function renderArcade(){
    ============================================================ */
 let todoFilter='all';
 let todoPriority=null;
+let selectMode=false;
+let selectedIds=new Set();
+
+function isThisMonth(t){
+  const now=new Date();
+  const ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  if(t.dueDate)return t.dueDate.slice(0,7)===ym;
+  return (t.createdAt||'').slice(0,7)===ym;
+}
+
+function toggleSelectMode(){
+  selectMode=!selectMode;
+  selectedIds.clear();
+  document.getElementById('btnSelectMode').textContent=selectMode?'Cancel':'Select';
+  document.getElementById('btnSelectMode').classList.toggle('btn-ghost',!selectMode);
+  updateBulkBar();
+  renderTodos();
+}
+
+function toggleTodoSelect(id){
+  if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);
+  updateBulkBar();
+  const row=document.querySelector('.todo-item[data-id="'+id+'"]');
+  if(row)row.classList.toggle('selected',selectedIds.has(id));
+}
+
+function updateBulkBar(){
+  const bar=document.getElementById('bulkBar');
+  const n=selectedIds.size;
+  bar.hidden=!(selectMode&&n>0);
+  document.getElementById('bulkCount').textContent=n+(n===1?' selected':' selected');
+}
+
+function bulkMarkDone(){
+  let any=false;
+  state.todos.forEach(t=>{if(selectedIds.has(t.id)&&!t.done){t.done=true;t.doneDate=todayStr();any=true;}});
+  save();toggleSelectMode();renderTodos();
+  if(any){boostVoyage&&boostVoyage();toast('Marked done ✓');}
+}
+
+function bulkDelete(){
+  if(!confirm('Delete '+selectedIds.size+' task(s)? This can\'t be undone.'))return;
+  state.todos=state.todos.filter(t=>!selectedIds.has(t.id));
+  save();toggleSelectMode();renderTodos();toast('Deleted');
+}
 
 function setTodoPriority(p,el){
   if(todoPriority===p){
@@ -1569,7 +1875,7 @@ function setTodoPriority(p,el){
   }
   todoPriority=p;
   document.querySelectorAll('.priority-chip').forEach(c=>{
-    if(c.dataset.p===p){c.classList.add('active');c.style.background=PRIORITY_COLORS[p];c.style.color='#0B1628';}
+    if(c.dataset.p===p){c.classList.add('active');c.style.background=PRIORITY_COLORS[p];c.style.color='#05070E';}
     else{c.classList.remove('active');c.style.background='transparent';c.style.color=PRIORITY_COLORS[c.dataset.p];}
   });
 }
@@ -1602,6 +1908,7 @@ function addTodo(){
 function toggleTodo(id){
   const t=state.todos.find(x=>x.id===id);if(!t)return;
   t.done=!t.done;t.doneDate=t.done?todayStr():null;save();renderTodos();
+  if(t.done)boostVoyage&&boostVoyage();
 }
 
 function deleteTodo(id){state.todos=state.todos.filter(x=>x.id!==id);save();renderTodos();}
@@ -1619,28 +1926,35 @@ function renderTodos(){
   let filtered=state.todos;
   if(todoFilter==='active')filtered=state.todos.filter(t=>!t.done);
   if(todoFilter==='done')filtered=state.todos.filter(t=>t.done);
+  if(todoFilter==='month')filtered=state.todos.filter(isThisMonth);
   filtered=sortTodosList(filtered);
   if(filtered.length===0){
-    list.innerHTML='<div class="todo-empty"><span>'+(todoFilter==='done'?'🎉':'✨')+'</span>'+(todoFilter==='done'?'No completed tasks yet':'All clear — add a task above')+'</div>';
+    const emptyMsg=todoFilter==='done'?'No completed tasks yet':(todoFilter==='month'?'Nothing on the books this month':'All clear — add a task above');
+    list.innerHTML='<div class="todo-empty"><span>'+(todoFilter==='done'?'🎉':'✨')+'</span>'+emptyMsg+'</div>';
     document.getElementById('todoClear').hidden=true;return;
   }
   list.innerHTML=filtered.map(t=>{
     const overdue=isOverdue(t);
     const dueLabel=formatDueLabel(t);
     const pcolor=t.priority?PRIORITY_COLORS[t.priority]:'transparent';
-    return '<div class="todo-item '+(t.done?'done':'')+'" data-id="'+t.id+'" style="border-left-color:'+pcolor+';">'+
-    '<button class="todo-check" onclick="toggleTodo(\''+t.id+'\')">✓</button>'+
-    '<div class="todo-body">'+
+    const isSel=selectedIds.has(t.id);
+    return '<div class="todo-item '+(t.done?'done':'')+(selectMode?' select-mode':'')+(isSel?' selected':'')+'" data-id="'+t.id+'" style="border-left-color:'+pcolor+';">'+
+    (selectMode?
+      '<button class="todo-select-check" onclick="toggleTodoSelect(\''+t.id+'\')">'+(isSel?'✓':'')+'</button>'
+      :'<button class="todo-check" onclick="toggleTodo(\''+t.id+'\')">✓</button>'
+    )+
+    '<div class="todo-body" '+(selectMode?'onclick="toggleTodoSelect(\''+t.id+'\')" style="cursor:pointer;"':'')+'>'+
       '<span class="todo-text">'+escHtml(t.text)+'</span>'+
       (t.priority||dueLabel?'<div class="todo-meta">'+
         (t.priority?'<span class="todo-priority-badge" style="background:'+PRIORITY_COLORS[t.priority]+'">'+t.priority+'</span>':'')+
         (dueLabel?'<span class="todo-due'+(overdue?' overdue':'')+'">🗓 '+dueLabel+(overdue?' · overdue':'')+'</span>':'')+
       '</div>':'')+
     '</div>'+
-    '<button class="todo-delete" onclick="deleteTodo(\''+t.id+'\')" title="Delete">🗑️</button>'+
+    (selectMode?'':'<button class="todo-delete" onclick="deleteTodo(\''+t.id+'\')" title="Delete">🗑️</button>')+
     '</div>';
   }).join('');
   document.getElementById('todoClear').hidden=!state.todos.some(t=>t.done);
+  updateBulkBar();
 }
 
 document.getElementById('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
@@ -1698,48 +2012,81 @@ function renderHabitWeekGrid(h){
   return html+'</div>';
 }
 
+function habitCardHtml(h){
+  const today=todayStr();
+  const streak=computeStreak(h);
+  const milestone=nextMilestone(streak);
+  const pct=milestone?Math.min(100,Math.round((streak/milestone)*100)):100;
+  const milestoneLabel=milestone?(streak+'/'+milestone+' days'):('🎉 '+streak+' days — beyond 90');
+  const topRow='<div class="habit-item-top">'+
+      '<div class="habit-emoji">'+h.emoji+'</div>'+
+      '<div class="habit-info">'+
+        '<div class="habit-name">'+escHtml(h.name)+(h.isDefault?'<span class="habit-default-badge">Starter</span>':'')+'</div>'+
+        (h.intent?'<div class="habit-intent">'+escHtml(h.intent)+'</div>':'')+
+      '</div>'+
+      (streak>0?'<div class="habit-streak-flame">🔥 '+streak+'</div>':'')+
+      '<div class="habit-actions">'+
+        '<button class="habit-action-btn'+(state.selectedHabitId===h.id?' active':'')+'" onclick="selectHabit(\''+h.id+'\')" title="Focus">🎯</button>'+
+        '<button class="habit-action-btn danger" onclick="deleteHabit(\''+h.id+'\')" title="Delete">🗑️</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="habit-milestone">'+
+      '<div class="habit-milestone-label"><span>'+milestoneLabel+'</span></div>'+
+      '<div class="habit-milestone-track"><div class="habit-milestone-fill" style="width:'+pct+'%;"></div></div>'+
+    '</div>'+
+    renderHabitWeekGrid(h);
+
+  if(h.mode==='check'){
+    const doneToday=(h.doneDates||[]).includes(today);
+    return '<div class="habit-item">'+topRow+
+      '<button class="habit-check-btn'+(doneToday?' done':'')+'" onclick="toggleHabitCheck(\''+h.id+'\')">'+
+        (doneToday?'✓ Done today':'Mark done · '+h.durationMin+' min')+
+      '</button>'+
+    '</div>';
+  }
+
+  const target=h.targetChunks||3;
+  const log=(h.log&&h.log[today])?h.log[today]:{count:0,timestamps:[]};
+  const lastTs=log.timestamps&&log.timestamps.length?log.timestamps[log.timestamps.length-1]:null;
+  let chunkBtns='';
+  for(let i=0;i<target;i++){
+    chunkBtns+='<button class="habit-chunk-btn'+(i<log.count?' filled':'')+'" onclick="logHabitChunk(\''+h.id+'\')" title="15 min"></button>';
+  }
+  return '<div class="habit-item">'+topRow+
+    '<div class="habit-chunk-row">'+
+      '<span class="habit-chunk-label">'+log.count+'/'+target+' × 15min</span>'+chunkBtns+
+    '</div>'+
+    (lastTs?'<div class="habit-last-block">Last block: '+relativeTime(lastTs)+'</div>':'')+
+  '</div>';
+}
+
 function renderHabitList(){
   const list=document.getElementById('habitList');
   if(state.habits.length===0){
     list.innerHTML='<div class="todo-empty"><span>🔄</span>No habits yet — create your first one!</div>';return;
   }
-  list.innerHTML=state.habits.map(h=>{
-    const target=h.targetChunks||3;
-    const today=todayStr();
-    const log=(h.log&&h.log[today])?h.log[today]:{count:0,timestamps:[]};
-    const streak=computeStreak(h);
-    const milestone=nextMilestone(streak);
-    const pct=milestone?Math.min(100,Math.round((streak/milestone)*100)):100;
-    const milestoneLabel=milestone?('Racha: '+streak+'/'+milestone+' días'):('🎉 '+streak+' días — más allá de 90');
-    const lastTs=log.timestamps&&log.timestamps.length?log.timestamps[log.timestamps.length-1]:null;
-    let chunkBtns='';
-    for(let i=0;i<target;i++){
-      chunkBtns+='<button class="habit-chunk-btn'+(i<log.count?' filled':'')+'" onclick="logHabitChunk(\''+h.id+'\')" title="15 min"></button>';
-    }
-    return '<div class="habit-item">'+
-      '<div class="habit-item-top">'+
-        '<div class="habit-emoji">'+h.emoji+'</div>'+
-        '<div class="habit-info">'+
-          '<div class="habit-name">'+escHtml(h.name)+'</div>'+
-          (h.intent?'<div class="habit-intent">'+escHtml(h.intent)+'</div>':'')+
-        '</div>'+
-        (streak>0?'<div class="habit-streak-flame">🔥 '+streak+'</div>':'')+
-        '<div class="habit-actions">'+
-          '<button class="habit-action-btn" onclick="selectHabit(\''+h.id+'\')" title="Focus">🎯</button>'+
-          '<button class="habit-action-btn danger" onclick="deleteHabit(\''+h.id+'\')" title="Delete">🗑️</button>'+
-        '</div>'+
-      '</div>'+
-      '<div class="habit-milestone">'+
-        '<div class="habit-milestone-label"><span>'+milestoneLabel+'</span></div>'+
-        '<div class="habit-milestone-track"><div class="habit-milestone-fill" style="width:'+pct+'%;"></div></div>'+
-      '</div>'+
-      renderHabitWeekGrid(h)+
-      '<div class="habit-chunk-row">'+
-        '<span class="habit-chunk-label">'+log.count+'/'+target+' × 15min</span>'+chunkBtns+
-      '</div>'+
-      (lastTs?'<div class="habit-last-block">Último bloque: '+relativeTime(lastTs)+'</div>':'')+
-    '</div>';
-  }).join('');
+  const defaults=state.habits.filter(h=>h.isDefault);
+  const custom=state.habits.filter(h=>!h.isDefault);
+  let html='';
+  if(defaults.length){
+    html+='<div class="habit-group-label">⚡ The 3-Minute Transformation</div>';
+    html+=defaults.map(habitCardHtml).join('');
+  }
+  if(custom.length){
+    if(defaults.length)html+='<div class="habit-group-label">Your Habits</div>';
+    html+=custom.map(habitCardHtml).join('');
+  }
+  list.innerHTML=html;
+}
+
+function toggleHabitCheck(id){
+  const h=state.habits.find(x=>x.id===id);if(!h)return;
+  const today=todayStr();
+  if(!h.doneDates)h.doneDates=[];
+  const idx=h.doneDates.indexOf(today);
+  if(idx>=0){h.doneDates.splice(idx,1);}
+  else{h.doneDates.push(today);toast(h.emoji+' '+h.name+' — done ✓');boostVoyage&&boostVoyage();}
+  save();renderHabitList();
 }
 
 function logHabitChunk(id){
@@ -1760,7 +2107,8 @@ function logHabitChunk(id){
   if(entry.count>=target){
     if(!h.doneDates)h.doneDates=[];
     if(!h.doneDates.includes(today))h.doneDates.push(today);
-    toast(h.emoji+' '+h.name+' — completo por hoy ✓');
+    toast(h.emoji+' '+h.name+' — complete for today ✓');
+    boostVoyage&&boostVoyage();
   }
   save();renderHabitList();
 }
@@ -1769,10 +2117,15 @@ function selectHabit(id){
   state.selectedHabitId=id;save();
   const h=state.habits.find(x=>x.id===id);
   if(h)document.getElementById('timerHabitName').textContent=h.emoji+' '+h.name;
+  if(h&&h.durationMin&&!timerRunning){
+    const secs=h.durationMin*60;
+    setTimerDur(secs,document.querySelector('.dur-chip[data-dur="'+secs+'"]'));
+  }
   const wrap=document.getElementById('timerRingWrap');
   if(wrap)wrap.classList.add('has-habit');
   const card=document.querySelector('.habit-timer-card');
   if(card)card.classList.add('has-habit');
+  renderHabitList();
   toast('Focused: '+(h?h.name:'Habit'));
 }
 
@@ -1853,7 +2206,12 @@ function resetTimer(){
 }
 
 function onTimerComplete(){
-  if(state.selectedHabitId){markHabitDone(state.selectedHabitId);}
+  if(state.selectedHabitId){
+    const h=state.habits.find(x=>x.id===state.selectedHabitId);
+    if(h&&h.mode==='check')toggleHabitCheck(h.id);
+    else markHabitDone(state.selectedHabitId);
+  }
+  boostVoyage&&boostVoyage();
   const overlay=document.getElementById('completionOverlay');
   overlay.classList.add('show');
   setTimeout(()=>overlay.classList.remove('show'),3000);
@@ -1915,10 +2273,10 @@ document.getElementById('ideaInput').addEventListener('keydown',e=>{if(e.key==='
    PERSONALIZE MODAL
    ============================================================ */
 let tempAvatar=state.avatar;
-let tempAccent=state.accentHex;
+let tempAccent=state.theme==='dark'?state.accentHex:state.accentHexLight;
 
 function openPersonalize(){
-  tempAvatar=state.avatar;tempAccent=state.accentHex;
+  tempAvatar=state.avatar;tempAccent=state.theme==='dark'?state.accentHex:state.accentHexLight;
   document.getElementById('personalizeName').value=state.name;
   renderAvatarOptions();renderAccentOptions();
   document.querySelectorAll('.theme-option').forEach(o=>o.classList.toggle('active',o.dataset.themeVal===state.theme));
@@ -1982,7 +2340,7 @@ function renderHabitChunkPicker(){
     '<button type="button" class="chunk-chip'+(n===tempHabitChunks?' active':'')+'" onclick="pickHabitChunks('+n+')">'+
     '<span class="chunk-chip-num">'+n+'</span><span class="chunk-chip-min">'+(n*15)+' min</span></button>'
   ).join('');
-  document.getElementById('habitChunkHint').textContent='Empieza con bloques de 15 min. '+tempHabitChunks+' × 15 min = '+(tempHabitChunks*15)+' min al día.';
+  document.getElementById('habitChunkHint').textContent='Built in 15-min blocks. '+tempHabitChunks+' × 15 min = '+(tempHabitChunks*15)+' min a day.';
 }
 
 function pickHabitChunks(n){tempHabitChunks=n;renderHabitChunkPicker();}
@@ -1991,7 +2349,7 @@ function saveNewHabit(){
   const name=document.getElementById('habitNameInput').value.trim();
   if(!name){toast('Give your habit a name');return;}
   const intent=document.getElementById('habitIntentInput').value.trim();
-  state.habits.push({id:uid(),emoji:tempHabitEmoji,name:name,intent:intent,doneDates:[],targetChunks:tempHabitChunks,log:{},createdAt:new Date().toISOString()});
+  state.habits.push({id:uid(),emoji:tempHabitEmoji,name:name,intent:intent,mode:'chunks',doneDates:[],targetChunks:tempHabitChunks,log:{},createdAt:new Date().toISOString()});
   save();renderHabits();closeAddHabit();toast('Habit created ✓');
 }
 
@@ -2112,6 +2470,7 @@ function mergeImportedData(data){
   state.avatar=data.avatar||state.avatar;
   state.theme=data.theme||state.theme;
   state.accentHex=data.accentHex||state.accentHex;
+  state.accentHexLight=data.accentHexLight||state.accentHexLight;
   state.streak=Math.max(state.streak,data.streak||0);
   state.lastActiveDate=data.lastActiveDate||state.lastActiveDate;
   if(data.todos){
@@ -2131,13 +2490,14 @@ function mergeImportedData(data){
     const existingIds=new Set(state.customGames.map(g=>g.id));
     data.customGames.forEach(g=>{if(!existingIds.has(g.id))state.customGames.push(g);});
   }
-  save();applyTheme(state.theme);applyAccent(state.accentHex);showView('wallet');
+  save();applyTheme(state.theme);showView('wallet');
 }
 
 function clearAllData(){
   if(!confirm('This will permanently delete all your data. Are you sure?'))return;
   state=defaultState();state.onboarded=true;state.name='Explorer';
-  save();applyTheme(state.theme);applyAccent(state.accentHex);showView('wallet');
+  state.habits=seedChallengeHabits();state.challengeSeeded=true;
+  save();applyTheme(state.theme);showView('wallet');
   closeDataSync();toast('All data cleared');
 }
 
@@ -2175,7 +2535,6 @@ function finishOnboard(){
    ============================================================ */
 function init(){
   applyTheme(state.theme);
-  applyAccent(state.accentHex);
   if(state.onboarded){
     document.getElementById('onboardOverlay').hidden=true;
   }

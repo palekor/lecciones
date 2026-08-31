@@ -231,6 +231,12 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 .richCandleAxis span{position:absolute;right:0;transform:translateY(-50%);font-size:.56rem;font-weight:800;color:var(--dim);background:var(--card);padding:0 3px;border-radius:3px;line-height:1.4}
 .richCandleTimeAxis{display:flex;justify-content:space-between;margin-top:3px;padding:0 2px}
 .richCandleTimeAxis span{font-size:.55rem;font-weight:800;color:var(--dim)}
+.usedAvailableHead{display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim);font-weight:800;margin-bottom:4px}
+.usedAvailableHead b{color:var(--ink);font-weight:900;margin-left:3px}
+.usedAvailableHead i{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:3px;font-style:normal;vertical-align:middle}
+.dotUsed{background:var(--gold)}
+.dotAvail{background:var(--blue)}
+#homeUsedAvailableFill{background:var(--gold);display:block;height:100%;border-radius:99px;font-style:normal}
 
 /* ---------- capital / risk (portfolio) ---------- */
 .executiveStrip{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
@@ -607,9 +613,14 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
         <small id="homeDailyNote">Cambio de hoy vs. patrimonio al abrir la app.</small>
       </div>
       <div class="homeMiniSpark" id="homeEquitySpark"></div>
+      <div class="usedAvailableBox" style="margin-top:8px">
+        <div class="usedAvailableHead"><span><i class="dotUsed"></i>Usado <b id="homeUsedAmount">—</b></span><span><i class="dotAvail"></i>Disponible <b id="homeAvailableAmount">—</b></span></div>
+        <div class="targetBar" id="homeUsedAvailableBar"><i id="homeUsedAvailableFill" style="width:0%"></i></div>
+      </div>
       <div class="ledgerKpis" style="margin-top:8px">
         <div class="ledgerKpi"><span>Desde capital inicial</span><b id="homeTotalGrowth">—</b><small id="homeTotalGrowthSub">—</small></div>
         <div class="ledgerKpi"><span>Riesgo abierto hoy</span><b id="homeOpenRisk">—</b><small id="homeOpenRiskSub">—</small></div>
+        <div class="ledgerKpi"><span>P/L en posiciones abiertas</span><b id="homeOpenPnlPct">—</b><small id="homeOpenPnlSub">—</small></div>
       </div>
       <div class="field" style="margin-top:8px">
         <label>Capital inicial / total de la cuenta</label>
@@ -1523,7 +1534,10 @@ function renderPatternStats(){
 }
 function renderRecords(){
   const q=clean($('searchRecords')?.value||'');let arr=state.records.filter(r=>!q||clean(r.symbol).includes(q)||String(r.note||'').toUpperCase().includes(q)||String(r.direction||'').includes(q));$('recordsCount').textContent=arr.length+' trades';renderPatternStats();
-  $('recordsList').innerHTML=arr.length?arr.map(r=>{const ret=recordReturn(r),dur=durationMinutes(r),basis=Number(r.tradeAmount||r.exposure||0),denom=Number(r.equityAtEntry||r.capital||0),usedPct=denom?basis/denom*100:0,risk=recordStopRisk(r),reward=recordReward(r),l=directionalLevels(r.direction,r.entry,r.target,r.stop),pnl=r.status==='CLOSED'?recordPnl(r,r.exitPrice):NaN;return `<article class="record"><div><div class="recordTitle"><b>${esc(r.symbol)}</b><span class="chip">${esc(r.direction)}</span><span class="chip ${r.status==='CLOSED'?'good':'warn'}">${r.status==='CLOSED'?'CERRADO':'ABIERTO'}</span><span class="chip">${new Date(r.entryTime||r.createdAt).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</span>${r.decisionScore!=null?`<span class="chip ${r.decisionScore>=80?'good':r.decisionScore>=60?'warn':'bad'}">Gate ${r.decisionScore}/100</span>`:''}${r.researchSnapshot?`<span class="chip good">R ${r.researchSnapshot.score}/100</span>`:''}</div><div class="recordMeta"><div class="mini"><span>Capital usado</span><b>${money(basis)} · ${usedPct.toFixed(1)}%</b></div><div class="mini"><span>Riesgo al stop</span><b class="${isFinite(risk)?'':'neg'}">${isFinite(risk)?money(risk):'NO MEDIDO'}</b></div><div class="mini"><span>R:R inicial</span><b>${isFinite(l.rr)?l.rr.toFixed(2)+'R':'—'}</b></div><div class="mini"><span>Entrada / salida</span><b>${money(r.entry)} / ${r.exitPrice?money(r.exitPrice):'—'}</b></div><div class="mini"><span>Resultado</span><b class="${cls(isFinite(pnl)?pnl:ret)}">${r.status==='CLOSED'?`${money(pnl)} · ${pct(ret)}`:'abierto'}</b></div><div class="mini"><span>Tiempo</span><b>${isFinite(dur)?Math.round(dur)+' min':'—'}</b></div></div>${r.note?`<div class="note">${esc(r.note)}</div>`:''}<div class="closeBox actions">${r.status==='CLOSED'?`<button class="btn small" onclick="reopenRecord('${r.id}')">Reabrir</button>`:`<button class="btn primary small" onclick="closeRecord('${r.id}')">Registrar venta</button>`}<button class="btn small" onclick="loadRecord('${r.id}')">Cargar</button><button class="btn danger small" onclick="deleteRecord('${r.id}')">Borrar</button></div></div></article>`}).join(''):'<div class="empty">No hay registros todavía. Define entrada, stop, target y tamaño antes de registrar.</div>';
+  $('recordsList').innerHTML=arr.length?arr.map(r=>{const ret=recordReturn(r),dur=durationMinutes(r),basis=Number(r.tradeAmount||r.exposure||0),denom=Number(r.equityAtEntry||r.capital||0),usedPct=denom?basis/denom*100:0,risk=recordStopRisk(r),reward=recordReward(r),l=directionalLevels(r.direction,r.entry,r.target,r.stop),pnl=r.status==='CLOSED'?recordPnl(r,r.exitPrice):NaN;
+    const live=r.status!=='CLOSED'?recordStats(r):null;
+    const liveMini=live?`<div class="mini"><span>Hoy vs. registro</span><b class="${cls(isFinite(live.ret)?live.ret:0)}">${isFinite(live.last)?money(live.last):'—'}${isFinite(live.ret)?' · '+pct(live.ret):''}</b></div>`:`<div class="mini"><span>Precio de cierre</span><b>${r.exitPrice?money(r.exitPrice):'—'}</b></div>`;
+    return `<article class="record"><div><div class="recordTitle"><b>${esc(r.symbol)}</b><span class="chip">${esc(r.direction)}</span><span class="chip ${r.status==='CLOSED'?'good':'warn'}">${r.status==='CLOSED'?'CERRADO':'ABIERTO'}</span><span class="chip">${new Date(r.entryTime||r.createdAt).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</span>${r.decisionScore!=null?`<span class="chip ${r.decisionScore>=80?'good':r.decisionScore>=60?'warn':'bad'}">Gate ${r.decisionScore}/100</span>`:''}${r.researchSnapshot?`<span class="chip good">R ${r.researchSnapshot.score}/100</span>`:''}</div><div class="recordMeta"><div class="mini"><span>Capital usado</span><b>${money(basis)} · ${usedPct.toFixed(1)}%</b></div><div class="mini"><span>Riesgo al stop</span><b class="${isFinite(risk)?'':'neg'}">${isFinite(risk)?money(risk):'NO MEDIDO'}</b></div><div class="mini"><span>R:R inicial</span><b>${isFinite(l.rr)?l.rr.toFixed(2)+'R':'—'}</b></div><div class="mini"><span>Precio de registro</span><b>${money(r.entry)}</b></div>${liveMini}<div class="mini"><span>Objetivo / Salida</span><b>${r.target?money(r.target):'—'} / ${r.stop?money(r.stop):'—'}</b></div><div class="mini"><span>Resultado</span><b class="${cls(isFinite(pnl)?pnl:ret)}">${r.status==='CLOSED'?`${money(pnl)} · ${pct(ret)}`:'abierto'}</b></div><div class="mini"><span>Tiempo</span><b>${isFinite(dur)?Math.round(dur)+' min':'—'}</b></div></div>${r.note?`<div class="note">${esc(r.note)}</div>`:''}<div class="closeBox actions">${r.status==='CLOSED'?`<button class="btn small" onclick="reopenRecord('${r.id}')">Reabrir</button>`:`<button class="btn primary small" onclick="closeRecord('${r.id}')">Registrar venta</button>`}<button class="btn small" onclick="loadRecord('${r.id}')">Cargar</button><button class="btn danger small" onclick="deleteRecord('${r.id}')">Borrar</button></div></div></article>`}).join(''):'<div class="empty">No hay registros todavía. Define entrada, stop, target y tamaño antes de registrar.</div>';
 }
 function renderResearchVault(){if(!$('researchVault'))return;const arr=(state.researchSnapshots||[]).slice(0,50);$('researchVault').innerHTML=arr.length?arr.map(s=>{const status=inferResearchStatus(s),score=status==='pending'?'pendiente':`${s.score??'—'}/100`;return `<div class="vaultItem ${status}"><div><b>${esc(s.symbol)} · ${score} ${s.autoSaved?'<span class="autoBadge">auto</span>':''} <span class="resultMode ${status}">${statusLabel(status)}</span></b><p>${dateFmt(s.snapshotAt)} · cobertura ${s.coverage??0}% · precio ${money(s.price)} · ${esc(s.question||'sin pregunta registrada')}</p></div><div class="vaultActions"><button class="btn small" onclick="loadResearchSnapshot('${s.id}')">Abrir</button>${status!=='complete'?`<button class="btn primary small" onclick="researchPending('${s.id}')">Investigar</button>`:''}<button class="btn small" onclick="downloadResearchSnapshot('${s.id}')">JSON</button><button class="btn danger small" onclick="deleteResearchSnapshot('${s.id}')">Borrar</button></div></div>`}).join(''):'<div class="empty">Guarda una tesis o ejecuta una búsqueda. Incluso las investigaciones pendientes aparecerán aquí.</div>'}
 window.downloadResearchSnapshot=function(id){const s=state.researchSnapshots.find(x=>x.id===id);if(!s)return;download(`research-${s.symbol}-${localDateKey(s.snapshotAt)}.json`,JSON.stringify(s,null,2),'application/json')};
@@ -1848,10 +1862,25 @@ window.openTradeBuilder=openTradeBuilder;
 window.closeTradeBuilder=closeTradeBuilder;
 
 function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function recordEquitySnapshot(value){
+  if(!isFinite(value))return;
+  if(!Array.isArray(state.equityHistory))state.equityHistory=[];
+  const last=state.equityHistory.at(-1);
+  if(last&&localDateKey(last.date)===localDateKey(new Date())){last.value=value;last.date=new Date().toISOString();}
+  else state.equityHistory.push({date:new Date().toISOString(),value});
+  state.equityHistory=state.equityHistory.slice(-90);
+}
+function equityHistoryPath(){
+  const hist=(state.equityHistory||[]).filter(p=>isFinite(p.value));
+  if(hist.length<2)return null;
+  return hist.map(p=>({label:localDateKey(p.date),value:p.value,date:new Date(p.date)}));
+}
 function renderHomeMoney(){
   if(!$('homeEquityValue'))return;
   const f=financialLedger(),p=portfolioRiskMetrics(),today=todayKey();
-  if(!state.dailyBaseline||state.dailyBaseline.date!==today){state.dailyBaseline={date:today,equity:f.totalEquity};localStorage.setItem(KEY,JSON.stringify(state));}
+  if(!state.dailyBaseline||state.dailyBaseline.date!==today){state.dailyBaseline={date:today,equity:f.totalEquity};}
+  recordEquitySnapshot(f.totalEquity);
+  localStorage.setItem(KEY,JSON.stringify(state));
   const dailyChange=f.totalEquity-state.dailyBaseline.equity,dailyPct=state.dailyBaseline.equity?dailyChange/state.dailyBaseline.equity*100:NaN;
   $('homeMoneyAsOf').textContent='Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
   $('homeEquityValue').textContent=money(f.totalEquity);
@@ -1861,7 +1890,15 @@ function renderHomeMoney(){
   $('homeTotalGrowthSub').textContent=money(f.growth)+' vs. '+money(f.initial)+' inicial';
   $('homeOpenRisk').textContent=p.open.length&&isFinite(p.riskPctOpen)?p.riskPctOpen.toFixed(2)+'%':'—';
   $('homeOpenRiskSub').textContent=p.open.length?money(p.knownRisk)+(p.unknownRisk?` · ${p.unknownRisk} sin stop`:''):'sin posiciones abiertas';
-  $('homeEquitySpark').innerHTML=equityPathSvg(f.path,f.initial);
+  const usedPct=p.equity>0?(f.invested/p.equity*100):0;
+  $('homeUsedAmount').textContent=money(f.invested);
+  $('homeAvailableAmount').textContent=money(p.cash);
+  $('homeUsedAvailableFill').style.width=Math.min(100,Math.max(0,usedPct)).toFixed(1)+'%';
+  const openPnlPct=f.invested>0?(f.unrealized/f.invested*100):NaN,arrow=f.unrealized>0?'▲':f.unrealized<0?'▼':'→';
+  $('homeOpenPnlPct').textContent=p.open.length&&isFinite(openPnlPct)?`${arrow} ${pct(openPnlPct)}`:'—';
+  $('homeOpenPnlPct').className=cls(f.unrealized);
+  $('homeOpenPnlSub').textContent=p.open.length?money(f.unrealized)+' en '+p.open.length+' posición'+(p.open.length===1?'':'es'):'sin posiciones abiertas';
+  $('homeEquitySpark').innerHTML=equityPathSvg(equityHistoryPath()||f.path,f.initial);
   if(document.activeElement!==$('homeCapitalInput'))$('homeCapitalInput').value=state.settings.capital;
 }
 function renderHomeIndex(){

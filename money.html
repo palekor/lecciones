@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Money Machine V2 · Pocket</title>
+<title>Money Machine V3 · Watchlist Command Center</title>
 <style>
 :root{
   --bg:#f2f5f9;--card:#ffffff;--card2:#f7f9fc;--ink:#152238;--muted:#64748b;--dim:#9aa7b8;
@@ -550,6 +550,253 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 .rewardOut{background:var(--green2)}
 .brokerSection{background:linear-gradient(145deg,#fff,var(--blue2));border-color:rgba(36,86,199,.18)}
 .institutionalOutputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* ============================================================
+   WATCHLIST COMMAND CENTER  ·  watch → wait → buy → hold → sell
+   ============================================================ */
+body.wlWide .app{max-width:1180px}
+.wlHead{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-bottom:8px}
+.wlHead b{display:block;font-size:1rem;font-weight:900;letter-spacing:-.01em}
+.wlHead span{display:block;color:var(--dim);font-size:.6rem;font-weight:850;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---------- alert bar ---------- */
+.wlAlertBar{position:sticky;top:var(--toph);z-index:70;margin:0;display:none}
+.wlAlertBar.on{display:block}
+.wlAlertInner{background:var(--card);border-bottom:1px solid var(--line);box-shadow:var(--shadow);
+  padding:6px 12px 7px}
+.wlAlertTop{display:flex;align-items:center;gap:8px;cursor:pointer}
+.wlAlertTop b{font-size:.72rem;font-weight:900;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wlAlertTop em{font-style:normal;color:var(--dim);font-size:.58rem;font-weight:850}
+.wlAlertCount{border-radius:999px;padding:2px 7px;font-size:.55rem;font-weight:900;letter-spacing:.03em;
+  background:var(--red2);color:var(--red)}
+.wlAlertList{display:none;margin-top:6px;gap:5px;grid-template-columns:1fr}
+.wlAlertBar.open .wlAlertList{display:grid}
+.wlAlertItem{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;
+  border:1px solid var(--line);border-radius:11px;padding:7px 9px;background:var(--card2);text-align:left;width:100%}
+.wlAlertItem i{font-style:normal;font-size:.8rem}
+.wlAlertItem b{display:block;font-size:.68rem;font-weight:900}
+.wlAlertItem p{margin:1px 0 0;font-size:.6rem;color:var(--muted);line-height:1.3}
+.wlAlertItem span{font-size:.5rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+  border-radius:999px;padding:2px 6px;white-space:nowrap}
+.wlSev-critical span{background:var(--red2);color:var(--red)}
+.wlSev-action span{background:var(--red2);color:var(--red)}
+.wlSev-opportunity span{background:var(--green2);color:var(--green)}
+.wlSev-review span{background:#fbf3e4;color:var(--gold)}
+.wlSev-info span{background:var(--blue2);color:var(--blue)}
+[data-theme="dark"] .wlSev-review span{background:#2a2410}
+[data-theme="dark"] .wlAlertInner{background:var(--card)}
+
+/* ---------- daily review ---------- */
+.wlReview{border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow);
+  padding:10px 11px;margin-bottom:9px}
+.wlReviewHead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.wlReviewHead b{font-size:.8rem;font-weight:900}
+.wlReviewHead span{color:var(--dim);font-size:.56rem;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+.wlReviewGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.wlStat{border:1px solid var(--line);border-radius:10px;background:var(--card2);padding:6px 5px;text-align:center}
+.wlStat b{display:block;font-size:1rem;font-weight:900;line-height:1.1}
+.wlStat span{display:block;font-size:.5rem;color:var(--dim);font-weight:850;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+.wlStat.buy b{color:var(--green)}.wlStat.sell b{color:var(--red)}.wlStat.tgt b{color:var(--blue)}
+.wlStat.due b{color:var(--gold)}
+
+/* ---------- toolbar ---------- */
+.wlToolbar{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:9px}
+.wlToolbar select{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;
+  padding:8px 9px;font-size:.68rem;font-weight:800;width:100%}
+
+/* ---------- watch rows ---------- */
+.wlList{display:grid;gap:7px}
+.wlRow{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);
+  padding:9px 10px;display:grid;gap:6px;cursor:pointer;position:relative;overflow:hidden}
+.wlRow:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--dim)}
+.wlRow.st-BUY:before{background:var(--green)}
+.wlRow.st-HOLD:before{background:var(--blue)}
+.wlRow.st-WAIT:before{background:var(--gold)}
+.wlRow.st-SELL:before{background:var(--red)}
+.wlRow:active{transform:scale(.995)}
+.wlRowTop{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.wlPrio{font-size:.72rem;line-height:1}
+.wlTicker{font-size:.95rem;font-weight:900;letter-spacing:-.01em}
+.wlName{color:var(--muted);font-size:.6rem;font-weight:750;flex:1;min-width:0;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.wlPrice{font-size:.9rem;font-weight:900;font-variant-numeric:tabular-nums}
+.wlDay{font-size:.66rem;font-weight:900;font-variant-numeric:tabular-nums}
+.wlBadge{border-radius:999px;padding:3px 8px;font-size:.55rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.wlBadge.BUY{background:var(--green2);color:var(--green)}
+.wlBadge.HOLD{background:var(--blue2);color:var(--blue)}
+.wlBadge.WAIT{background:#fbf3e4;color:var(--gold)}
+.wlBadge.SELL{background:var(--red2);color:var(--red)}
+[data-theme="dark"] .wlBadge.WAIT{background:#2a2410}
+.wlScore{font-size:.62rem;font-weight:900;color:var(--muted);font-variant-numeric:tabular-nums}
+.wlMetrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.wlMetric{border-top:1px dashed var(--line);padding-top:4px;min-width:0}
+.wlMetric span{display:block;color:var(--dim);font-size:.5rem;font-weight:850;text-transform:uppercase;letter-spacing:.03em}
+.wlMetric b{display:block;font-size:.7rem;font-weight:850;font-variant-numeric:tabular-nums;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wlNext{font-size:.62rem;color:var(--muted);line-height:1.35;border-top:1px dashed var(--line);padding-top:5px}
+.wlNext b{color:var(--ink);font-weight:850}
+.wlRail{height:5px;border-radius:99px;background:var(--card2);border:1px solid var(--line);position:relative;overflow:hidden}
+.wlRail i{position:absolute;top:0;bottom:0;left:0;background:linear-gradient(90deg,var(--red),var(--gold),var(--green));font-style:normal}
+.wlRailLine{display:flex;justify-content:space-between;font-size:.5rem;color:var(--dim);font-weight:850;margin-top:2px}
+.wlFlags{display:flex;gap:4px;flex-wrap:wrap}
+.wlFlag{font-size:.5rem;font-weight:900;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:2px 5px;
+  background:var(--card2);color:var(--muted);border:1px solid var(--line)}
+.wlFlag.hot{background:var(--red2);color:var(--red);border-color:transparent}
+.wlFlag.good{background:var(--green2);color:var(--green);border-color:transparent}
+.wlFlag.warn{background:#fbf3e4;color:var(--gold);border-color:transparent}
+[data-theme="dark"] .wlFlag.warn{background:#2a2410}
+.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--muted)}
+
+/* ---------- detail overlay ---------- */
+.wlDetail{position:fixed;inset:0;z-index:150;background:var(--bg);overflow-y:auto;
+  transform:translateY(100%);transition:transform .22s ease;visibility:hidden}
+.wlDetail.open{transform:translateY(0);visibility:visible}
+.wlDetailInner{max-width:1180px;margin:0 auto;padding:0 12px calc(var(--navh) + 40px)}
+.wlDetailBar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:9px;height:var(--toph);
+  background:var(--bg);border-bottom:1px solid var(--line);margin:0 -12px 10px;padding:0 12px}
+.wlDetailBar .wlBack{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+  font-size:.95rem;flex:none}
+.wlDetailBar b{font-size:.95rem;font-weight:900}
+.wlDetailBar small{display:block;color:var(--muted);font-size:.58rem;font-weight:750;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wlHero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:9px}
+.wlHeroCell{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:8px 9px}
+.wlHeroCell span{display:block;color:var(--dim);font-size:.5rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.wlHeroCell b{display:block;font-size:1.02rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:2px}
+.wlHeroCell small{display:block;color:var(--muted);font-size:.55rem;font-weight:750;margin-top:1px}
+
+/* decision panel */
+.wlDecide{border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow);
+  padding:11px;margin-bottom:9px}
+.wlDecideTop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.wlBigBadge{border-radius:12px;padding:7px 13px;font-size:.9rem;font-weight:900;letter-spacing:.04em}
+.wlBigBadge.BUY{background:var(--green2);color:var(--green)}
+.wlBigBadge.HOLD{background:var(--blue2);color:var(--blue)}
+.wlBigBadge.WAIT{background:#fbf3e4;color:var(--gold)}
+.wlBigBadge.SELL{background:var(--red2);color:var(--red)}
+[data-theme="dark"] .wlBigBadge.WAIT{background:#2a2410}
+.wlScoreBig{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.wlScoreBig small{font-size:.7rem;color:var(--dim);font-weight:850}
+.wlScoreMeta{flex:1;min-width:120px}
+.wlScoreMeta span{display:block;color:var(--dim);font-size:.55rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.wlScoreMeta b{display:block;font-size:.7rem;font-weight:850}
+.wlBreak{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:9px}
+.wlBreakCell{border:1px solid var(--line);border-radius:10px;background:var(--card2);padding:5px 6px}
+.wlBreakCell span{display:block;color:var(--dim);font-size:.48rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.wlBreakCell b{font-size:.72rem;font-weight:900;font-variant-numeric:tabular-nums}
+.wlBreakBar{height:3px;border-radius:99px;background:var(--line);margin-top:3px;overflow:hidden}
+.wlBreakBar i{display:block;height:100%;background:var(--blue);font-style:normal}
+.wlConds{display:grid;gap:3px;margin-bottom:9px}
+.wlCond{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;font-size:.66rem;
+  border-bottom:1px dashed var(--line);padding:4px 0}
+.wlCond i{font-style:normal;font-size:.72rem;width:14px;text-align:center}
+.wlCond em{font-style:normal;color:var(--muted);font-size:.56rem;display:block;margin-top:1px}
+.wlCond u{text-decoration:none;color:var(--dim);font-size:.56rem;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wlCond.ok u{color:var(--green)}
+.wlCond.no u{color:var(--red)}
+.wlPlan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.wlPlanCell{border:1px solid var(--line);border-radius:11px;padding:7px 8px;background:var(--card2)}
+.wlPlanCell span{display:block;color:var(--dim);font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.wlPlanCell b{display:block;font-size:.82rem;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
+.wlPlanCell small{display:block;color:var(--muted);font-size:.55rem;font-weight:750}
+.wlNextBox{border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:11px;padding:8px 10px;
+  background:var(--card2);margin-top:8px}
+.wlNextBox span{display:block;color:var(--dim);font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.wlNextBox b{display:block;font-size:.78rem;font-weight:850;margin-top:2px;line-height:1.35}
+.wlDisclaimer{color:var(--dim);font-size:.54rem;line-height:1.4;margin-top:8px;font-weight:700}
+
+/* quick actions */
+.wlActions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:10px}
+.wlActions .btn{padding:9px 4px;font-size:.6rem;text-align:center;font-weight:900}
+
+/* chart */
+.wlChartCard{border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow);
+  padding:10px;margin-bottom:9px}
+.wlTfRow{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.wlTf{border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:9px;
+  padding:5px 9px;font-size:.6rem;font-weight:900;letter-spacing:.02em}
+.wlTf.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.wlChartWrap{position:relative}
+.wlChartSvg{width:100%;height:auto;display:block;border-radius:10px;background:var(--card2)}
+.wlChartLegend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:.55rem;color:var(--muted);font-weight:850}
+.wlChartLegend i{display:inline-block;width:12px;height:2px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.wlChartMsg{padding:34px 10px;text-align:center;color:var(--dim);font-size:.72rem}
+
+/* timeline */
+.wlTimeline{display:grid;gap:0;position:relative;padding-left:20px}
+.wlTimeline:before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.wlEvent{position:relative;padding:8px 0 9px;border-bottom:1px dashed var(--line)}
+.wlEvent:last-child{border-bottom:none}
+.wlEvent:before{content:'';position:absolute;left:-17px;top:13px;width:10px;height:10px;border-radius:50%;
+  background:var(--card);border:2px solid var(--dim)}
+.wlEvent.setup:before{border-color:var(--violet)}
+.wlEvent.entry:before{border-color:var(--blue)}
+.wlEvent.follow:before{border-color:var(--gold)}
+.wlEvent.follow.BUY:before{border-color:var(--green)}
+.wlEvent.follow.SELL:before{border-color:var(--red)}
+.wlEventHead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wlEventHead b{font-size:.68rem;font-weight:900;letter-spacing:.03em;text-transform:uppercase}
+.wlEventHead span{color:var(--dim);font-size:.58rem;font-weight:850}
+.wlEventBody{font-size:.66rem;color:var(--muted);line-height:1.4;margin-top:3px}
+.wlEventBody b{color:var(--ink);font-weight:850}
+.wlEventDel{position:absolute;right:0;top:6px;border:none;background:transparent;color:var(--dim);font-size:.75rem}
+
+/* modal */
+.wlModalBack{position:fixed;inset:0;background:rgba(21,34,56,.5);z-index:160;opacity:0;pointer-events:none;transition:.18s}
+.wlModalBack.open{opacity:1;pointer-events:auto}
+.wlModal{position:fixed;left:0;right:0;bottom:0;z-index:170;max-width:620px;margin:0 auto;background:var(--card);
+  border-radius:20px 20px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.28);transform:translateY(101%);
+  transition:transform .22s ease;max-height:92vh;overflow-y:auto}
+.wlModal.open{transform:translateY(0)}
+.wlModalHead{display:flex;justify-content:space-between;align-items:center;padding:12px 14px 6px;position:sticky;top:0;background:var(--card);z-index:2}
+.wlModalHead h3{margin:0;font-size:.92rem;font-weight:900}
+.wlModalBody{padding:4px 14px 22px}
+.wlTwo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wlThree{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.wlSeg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.wlSeg button{border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:10px;
+  padding:9px 4px;font-size:.66rem;font-weight:900}
+.wlSeg button.on.BUY{background:var(--green);color:#fff;border-color:var(--green)}
+.wlSeg button.on.HOLD{background:var(--blue);color:#fff;border-color:var(--blue)}
+.wlSeg button.on.WAIT{background:var(--gold);color:#fff;border-color:var(--gold)}
+.wlSeg button.on.SELL{background:var(--red);color:#fff;border-color:var(--red)}
+.wlCondEditor{display:grid;gap:6px}
+.wlCondRow{display:grid;grid-template-columns:1fr 90px auto;gap:5px;align-items:center}
+.wlCondRow select,.wlCondRow input{padding:7px 8px;font-size:.66rem}
+.wlCondRow .xb{border:1px solid var(--line);background:var(--card2);border-radius:9px;width:30px;height:30px;color:var(--red)}
+.wlCondList{display:grid;gap:4px;margin-bottom:8px}
+.wlCondChip{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;border:1px solid var(--line);
+  border-radius:10px;padding:6px 8px;background:var(--card2);font-size:.64rem}
+.wlSubhead{color:var(--dim);font-size:.55rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 5px}
+
+/* ---------- responsive: landscape / desktop ---------- */
+@media (min-width:700px){
+  .wlList{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wlHero{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media (min-width:1000px){
+  .wlList{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .wlAlertList{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (orientation:landscape) and (max-height:520px){
+  .wlReviewGrid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .wlRow{padding:7px 9px;gap:4px}
+  .wlMetrics{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .wlTicker{font-size:.85rem}
+  .wlDetailInner{padding-bottom:30px}
+  .wlHero{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .wlActions{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .wlModal{max-height:96vh}
+}
+@media (max-width:420px){
+  .wlMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wlHero{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wlActions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .wlPlan{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wlBreak{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wlReviewGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .wlToolbar{grid-template-columns:1fr 1fr}
+}
+
 </style>
 </head>
 <body>
@@ -568,7 +815,7 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
 <div class="app">
   <header class="top">
     <div class="logo">MM</div>
-    <div class="brand"><strong>Money Machine V2</strong><span>research → riesgo → ejecución</span></div>
+    <div class="brand"><strong>Money Machine V3</strong><span>watch → wait → buy → hold → sell</span></div>
     <div class="topIcons">
       <button class="iconBtn" id="themeToggle" type="button" title="Apariencia">🌙</button>
       <button class="iconBtn" id="saveBtn" type="button" title="Guardar local">💾</button>
@@ -577,6 +824,9 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
       <button class="iconBtn" type="button" title="Sistema y ajustes" onclick="switchTab('data')">⚙</button>
     </div>
   </header>
+
+  <!-- ============ ALERTAS ============ -->
+  <div class="wlAlertBar" id="wlAlertBar"></div>
 
   <!-- ============ HOME ============ -->
   <div id="tab-home" class="pane">
@@ -706,11 +956,39 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
     <div id="findBetterWorkspace"></div>
   </div>
 
-  <!-- ============ WATCHLIST ============ -->
+  <!-- ============ WATCHLIST · COMMAND CENTER ============ -->
   <div id="tab-watch" class="pane hidden">
-    <div class="watchTabHead"><b>👁 Watchlist</b><span>precio · target · tesis · estado</span></div>
-    <div class="addSymbol"><input id="watchInput" placeholder="Agregar símbolo: TQQQ, SQQQ, QQQ, BTCUSDT"><button class="btn primary" id="addWatch" type="button">Agregar</button></div>
-    <div class="watchGrid" id="watchGrid"></div>
+    <div class="wlHead">
+      <div><b>Watchlist</b><span>watch → wait → buy → hold → sell</span></div>
+      <button class="btn small" id="wlRefreshBtn" type="button">↻ Actualizar todo</button>
+    </div>
+    <div class="wlReview" id="wlReview"></div>
+    <div class="addSymbol"><input id="watchInput" placeholder="Agregar símbolo: NVDA, TQQQ, QQQ, BTCUSDT"><button class="btn primary" id="addWatch" type="button">Agregar</button></div>
+    <div class="wlToolbar">
+      <select id="wlSort" aria-label="Ordenar">
+        <option value="attention">Orden: necesita atención</option>
+        <option value="buy">Orden: señal de compra</option>
+        <option value="sell">Orden: señal de venta</option>
+        <option value="gain">Orden: mayor ganancia</option>
+        <option value="loss">Orden: mayor pérdida</option>
+        <option value="target">Orden: distancia al target</option>
+        <option value="stop">Orden: distancia al stop</option>
+        <option value="updated">Orden: actualizados recientemente</option>
+        <option value="alpha">Orden: alfabético</option>
+        <option value="setup">Orden: fecha de setup</option>
+      </select>
+      <select id="wlFilter" aria-label="Filtrar">
+        <option value="all">Filtro: todos</option>
+        <option value="att">Filtro: requiere atención</option>
+        <option value="pos">Filtro: con posición</option>
+        <option value="nopos">Filtro: sin posición</option>
+        <option value="BUY">Filtro: BUY</option>
+        <option value="HOLD">Filtro: HOLD</option>
+        <option value="WAIT">Filtro: WAIT</option>
+        <option value="SELL">Filtro: SELL</option>
+      </select>
+    </div>
+    <div class="wlList" id="watchGrid"></div>
   </div>
 
   <!-- ============ PORTAFOLIO ============ -->
@@ -795,6 +1073,25 @@ textarea{min-height:66px;resize:vertical;line-height:1.4}
   <button class="navBtn" data-tab="portfolio" type="button"><i>📊</i>Portafolio</button>
   <button class="navBtn" data-tab="records" type="button"><i>📒</i>Diario</button>
 </nav>
+
+<!-- ============ WATCHLIST · DETALLE / SEGUIMIENTO ============ -->
+<div class="wlDetail" id="wlDetail">
+  <div class="wlDetailInner">
+    <div class="wlDetailBar">
+      <button class="wlBack" type="button" onclick="wlClose()" aria-label="Volver">‹</button>
+      <div id="wlDetailTitle" style="flex:1;min-width:0"><b>—</b><small>—</small></div>
+      <button class="btn small primary" type="button" onclick="wlFollowUpModal(wlOpenSymbol())">+ Follow up</button>
+    </div>
+    <div id="wlDetailBody"></div>
+  </div>
+</div>
+
+<!-- ============ WATCHLIST · MODAL ============ -->
+<div class="wlModalBack" id="wlModalBack" onclick="wlCloseModal()"></div>
+<div class="wlModal" id="wlModalEl">
+  <div class="wlModalHead"><h3 id="wlModalTitle">—</h3><button class="sheetClose" type="button" onclick="wlCloseModal()">✕</button></div>
+  <div class="wlModalBody" id="wlModalBody"></div>
+</div>
 
 <!-- ============ TRADE BUILDER SHEET ============ -->
 <div class="sheetBackdrop" id="sheetBackdrop" onclick="closeTradeBuilder()"></div>
@@ -1997,8 +2294,842 @@ function init(){
   setInterval(updateSessionPanel,1000);
   initMobileExtras();
 }
+
+/* ============================================================================ */
+/* ==========================================================================================
+   WATCHLIST COMMAND CENTER — v3
+   WATCH → WAIT → BUY → HOLD → SELL
+   Decision Score con condiciones explícitas (nunca una señal opaca) + línea de tiempo.
+   Reutiliza: state, persist(), $(), clean(), money(), pct(), cls(), esc(), yahooChart(),
+   fetchJson(), technicalSnapshot helpers (mean, smaAt, rsiSeries, atr), refreshOne(), toast().
+   ========================================================================================== */
+
+const WL_TF=[
+  {k:'5m5d',  lab:'5M · 5D', range:'5d',  iv:'5m',  bi:'5m',  blimit:576},
+  {k:'1d6m',  lab:'1D · 6M', range:'6mo', iv:'1d',  bi:'1d',  blimit:180},
+  {k:'4h3m',  lab:'4H · 3M', range:'3mo', iv:'60m', agg:4,    bi:'4h', blimit:540},
+  {k:'1w2y',  lab:'1S · 2A', range:'2y',  iv:'1wk', bi:'1w',  blimit:110}
+];
+const WL_SEV=['critical','action','opportunity','review','info'];
+const WL_SEV_LABEL={critical:'crítico',action:'acción requerida',opportunity:'oportunidad',review:'revisión',info:'info'};
+const WL_COND_TYPES=[
+  {t:'priceAbove',  lab:'Precio por encima de',   needsVal:true},
+  {t:'priceBelow',  lab:'Precio por debajo de',   needsVal:true},
+  {t:'aboveSma50',  lab:'Precio sobre SMA 50',    needsVal:false},
+  {t:'belowSma50',  lab:'Precio bajo SMA 50',     needsVal:false},
+  {t:'aboveSma200', lab:'Precio sobre SMA 200',   needsVal:false},
+  {t:'belowSma200', lab:'Precio bajo SMA 200',    needsVal:false},
+  {t:'volAbove',    lab:'Volumen relativo mayor a',needsVal:true},
+  {t:'rsiAbove',    lab:'RSI 14 mayor a',         needsVal:true},
+  {t:'rsiBelow',    lab:'RSI 14 menor a',         needsVal:true},
+  {t:'manual',      lab:'Condición manual (texto)',needsVal:false,text:true}
+];
+const WL_CACHE={};              /* series crudas en memoria — no van a localStorage */
+let wlSort='attention', wlFilter='all', wlOpenSym='', wlTf='1d6m', wlChartBusy=false, wlModalCtx=null;
+
+/* ---------------------------------------------------------------- estado / migración */
+function wlEnsureState(){
+  if(!state.watchDetails||typeof state.watchDetails!=='object')state.watchDetails={};
+  if(!state.wlTech||typeof state.wlTech!=='object')state.wlTech={};
+  if(!state.settings.wlReviewDays)state.settings.wlReviewDays=30;
+  for(const sym of (state.watch||[]).map(clean)){
+    const d=state.watchDetails[sym];
+    if(!d){state.watchDetails[sym]=wlBlank(sym);continue}
+    /* migración desde el formato viejo {entry,target,horizon,thesis,status,snapshots} */
+    if(!Array.isArray(d.entries))d.entries=[];
+    if(!Array.isArray(d.followUps))d.followUps=[];
+    if(!Array.isArray(d.buyConditions))d.buyConditions=[];
+    if(!Array.isArray(d.sellConditions))d.sellConditions=[];
+    if(!Array.isArray(d.snapshots))d.snapshots=[];
+    if(!d.setupPrice&&d.entry)d.setupPrice=Number(d.entry);
+    if(!d.setupDate)d.setupDate=(d.snapshots[0]?.date||new Date().toISOString()).slice(0,10);
+    if(!d.thesisStatus)d.thesisStatus=d.status==='broken'?'invalidated':'intact';
+    if(!d.priority)d.priority='auto';
+    if(d.target!==''&&d.target!=null)d.target=Number(d.target)||'';
+    if(d.stop!==''&&d.stop!=null)d.stop=Number(d.stop)||'';
+    d.symbol=sym;
+  }
+}
+function wlBlank(sym){
+  const q=currentQuote(sym)||{};
+  return {symbol:sym,companyName:'',setupDate:todayIso(),setupPrice:isFinite(q.price)?q.price:'',thesis:'',
+    target:'',stop:'',buyConditions:[],sellConditions:[],thesisStatus:'intact',priority:'auto',
+    entries:[],followUps:[],snapshots:[],notes:[]};
+}
+function wlNum(v){const n=Number(v);return isFinite(n)&&n>0?n:NaN}
+function wlD(sym){sym=clean(sym);wlEnsureState();return state.watchDetails[sym]||(state.watchDetails[sym]=wlBlank(sym))}
+function wlPrice(sym){const q=currentQuote(sym)||{},t=state.wlTech[clean(sym)]||{};return firstFinite(q.price,t.last,state.research?.[clean(sym)]?.price)}
+function wlDayPct(sym){const q=currentQuote(sym)||{},t=state.wlTech[clean(sym)]||{};return firstFinite(q.changePct,t.dayPct)}
+function wlName(sym){const d=wlD(sym);return d.companyName||state.research?.[clean(sym)]?.name||''}
+function wlDays(iso){const d=new Date(iso);return isNaN(d)?NaN:Math.floor((Date.now()-d.getTime())/86400000)}
+function wlShort(v){const d=new Date(v);return isNaN(d)?'—':d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'})}
+
+/* ---------------------------------------------------------------- técnica */
+function wlComputeTech(rows){
+  const a=(rows||[]).filter(r=>Array.isArray(r)&&r.length>=4&&r.slice(0,4).every(x=>isFinite(+x)));
+  if(a.length<3)return null;
+  const c=a.map(r=>+r[3]),h=a.map(r=>+r[1]),l=a.map(r=>+r[2]),v=a.map(r=>+r[4]||0);
+  const last=c.at(-1),prev=c.at(-2);
+  const s50=smaAt(c,Math.min(50,c.length)),s200=c.length>=200?smaAt(c,200):NaN;
+  const s50b=c.length>60?smaAt(c,50,c.length-11):NaN,s200b=c.length>=211?smaAt(c,200,c.length-11):NaN;
+  const back=i=>c.length>i?c[c.length-1-i]:NaN;
+  const avgVol20=mean(v.slice(-20)),relVol=avgVol20?v.at(-1)/avgVol20:NaN;
+  const upVol=mean(a.slice(-20).filter(r=>+r[3]>=+r[0]).map(r=>+r[4]||0));
+  const dnVol=mean(a.slice(-20).filter(r=>+r[3]<+r[0]).map(r=>+r[4]||0));
+  return {last,prevClose:prev,dayPct:prev?(last/prev-1)*100:NaN,
+    sma50:s50,sma200:s200,sma50Slope:isFinite(s50b)?(s50-s50b)/s50b*100:NaN,
+    sma200Slope:isFinite(s200b)?(s200-s200b)/s200b*100:NaN,
+    mom10:isFinite(back(10))?(last/back(10)-1)*100:NaN,
+    hi20:Math.max(...h.slice(-21,-1)),lo20:Math.min(...l.slice(-21,-1)),
+    hi52:Math.max(...h.slice(-252)),lo52:Math.min(...l.slice(-252)),
+    avgVol20,relVol,upVol,dnVol,vol:v.at(-1),
+    rsi14:rsiSeries(c,14).at(-1),atr14:atr(a,14),bars:a.length,
+    updatedAt:new Date().toISOString()};
+}
+async function wlFetchSeries(sym,tfKey){
+  const tf=WL_TF.find(x=>x.k===tfKey)||WL_TF[1];
+  const key=clean(sym)+'|'+tf.k, hit=WL_CACHE[key];
+  if(hit&&Date.now()-hit.at<4*60*1000)return hit.data;
+  let rows=[],times=[];
+  if(isCrypto(sym)){
+    const k=await fetchJson(`https://api.binance.com/api/v3/klines?symbol=${encodeURIComponent(clean(sym))}&interval=${tf.bi}&limit=${tf.blimit}`);
+    rows=(k||[]).map(r=>[+r[1],+r[2],+r[3],+r[4],+r[5]]).filter(r=>r.every(isFinite));
+    times=(k||[]).map(r=>Math.floor(+r[0]/1000));
+  }else{
+    const d=await yahooChart(clean(sym),tf.range,tf.iv);
+    rows=d.ohlcv||[];times=d.times||[];
+    if(tf.agg>1){const o=[],t=[];for(let i=0;i<rows.length;i+=tf.agg){const g=rows.slice(i,i+tf.agg);if(!g.length)continue;
+      o.push([g[0][0],Math.max(...g.map(r=>r[1])),Math.min(...g.map(r=>r[2])),g.at(-1)[3],g.reduce((a,r)=>a+(r[4]||0),0)]);t.push(times[i])}
+      rows=o;times=t}
+  }
+  const data={rows,times};WL_CACHE[key]={at:Date.now(),data};return data;
+}
+async function wlEnsureTech(sym,force=false){
+  sym=clean(sym);const cur=state.wlTech[sym];
+  if(!force&&cur&&Date.now()-new Date(cur.updatedAt).getTime()<6*3600*1000)return cur;
+  try{
+    const {rows}=await wlFetchSeries(sym,'1d6m');
+    let all=rows;
+    if(!isCrypto(sym)&&rows.length<210){try{const long=await yahooChart(sym,'2y','1d');if((long.ohlcv||[]).length>rows.length)all=long.ohlcv}catch(e){}}
+    const t=wlComputeTech(all);if(t){state.wlTech[sym]=t;localStorage.setItem(KEY,JSON.stringify(state))}
+    return t;
+  }catch(e){console.warn('wlEnsureTech',sym,e);return cur||null}
+}
+
+/* ---------------------------------------------------------------- posición */
+function wlPosition(sym){
+  const d=wlD(sym),price=wlPrice(sym);
+  const es=(d.entries||[]).filter(e=>isFinite(+e.price)&&isFinite(+e.qty)&&+e.qty>0);
+  const qty=es.reduce((a,e)=>a+(+e.qty),0);
+  const invested=es.reduce((a,e)=>a+(isFinite(+e.investment)?+e.investment:(+e.price)*(+e.qty)),0);
+  const avg=qty?invested/qty:NaN;
+  const value=isFinite(price)&&qty?price*qty:NaN;
+  const upl=isFinite(value)?value-invested:NaN;
+  const uplPct=invested?upl/invested*100:NaN;
+  const best=es.length?es.reduce((a,b)=>(+a.price<+b.price?a:b)):null;
+  const worst=es.length?es.reduce((a,b)=>(+a.price>+b.price?a:b)):null;
+  return {entries:es,count:es.length,qty,invested,avg,value,upl,uplPct,best,worst,hasPosition:qty>0};
+}
+function wlSetupDelta(sym){
+  const d=wlD(sym),p=wlPrice(sym),sp=wlNum(d.setupPrice);
+  return isFinite(p)&&isFinite(sp)&&sp?{pct:(p/sp-1)*100,abs:p-sp,days:wlDays(d.setupDate)}:{pct:NaN,abs:NaN,days:wlDays(d.setupDate)};
+}
+
+/* ---------------------------------------------------------------- condiciones del usuario */
+function wlEvalCond(c,t,price){
+  const v=Number(c.value);
+  switch(c.type){
+    case 'priceAbove':  return isFinite(price)&&isFinite(v)?price>v:null;
+    case 'priceBelow':  return isFinite(price)&&isFinite(v)?price<v:null;
+    case 'aboveSma50':  return isFinite(price)&&isFinite(t?.sma50)?price>t.sma50:null;
+    case 'belowSma50':  return isFinite(price)&&isFinite(t?.sma50)?price<t.sma50:null;
+    case 'aboveSma200': return isFinite(price)&&isFinite(t?.sma200)?price>t.sma200:null;
+    case 'belowSma200': return isFinite(price)&&isFinite(t?.sma200)?price<t.sma200:null;
+    case 'volAbove':    return isFinite(t?.relVol)?t.relVol>(isFinite(v)?v:1):null;
+    case 'rsiAbove':    return isFinite(t?.rsi14)&&isFinite(v)?t.rsi14>v:null;
+    case 'rsiBelow':    return isFinite(t?.rsi14)&&isFinite(v)?t.rsi14<v:null;
+    case 'manual':      return !!c.done;
+    default: return null;
+  }
+}
+function wlCondLabel(c){
+  const m=WL_COND_TYPES.find(x=>x.t===c.type);
+  if(c.type==='manual')return c.text||'Condición manual';
+  return (m?m.lab:c.type)+(m?.needsVal?' '+(c.type==='volAbove'||c.type.startsWith('rsi')?Number(c.value):money(c.value)):'');
+}
+function wlCondState(list,t,price){
+  const arr=(list||[]).map(c=>({c,r:wlEvalCond(c,t,price)}));
+  const known=arr.filter(x=>x.r!==null);
+  return {arr,all:known.length>0&&known.every(x=>x.r===true)&&arr.length===known.length,
+    any:arr.some(x=>x.r===true),met:arr.filter(x=>x.r===true).length,total:arr.length};
+}
+
+/* ---------------------------------------------------------------- MOTOR DE DECISIÓN */
+function wlAssess(sym){
+  sym=clean(sym);
+  const d=wlD(sym),t=state.wlTech[sym]||null,price=wlPrice(sym),pos=wlPosition(sym);
+  const target=wlNum(d.target),stop=wlNum(d.stop);
+  const conds=[],groups={trend:{lab:'Tendencia',e:0,m:24},mom:{lab:'Momentum',e:0,m:20},vol:{lab:'Volumen',e:0,m:16},
+    loc:{lab:'Ubicación',e:0,m:16},risk:{lab:'Riesgo',e:0,m:12},thesis:{lab:'Tesis',e:0,m:12}};
+  const add=(g,label,res,pts,detail)=>{
+    const st=res===null?'na':res?'ok':'no',earned=res===true?pts:0;
+    groups[g].e+=earned;conds.push({g,label,state:st,pts:earned,max:pts,detail:detail||''});
+  };
+  /* TENDENCIA 24 */
+  add('trend','Precio > SMA 50', isFinite(price)&&isFinite(t?.sma50)?price>t.sma50:null,8,
+      isFinite(t?.sma50)?`SMA 50 ${money(t.sma50)}`:'sin dato de SMA 50');
+  add('trend','SMA 50 > SMA 200', isFinite(t?.sma50)&&isFinite(t?.sma200)?t.sma50>t.sma200:null,8,
+      isFinite(t?.sma200)?`SMA 200 ${money(t.sma200)}`:'histórico insuficiente');
+  add('trend','Pendiente SMA 50 ascendente', isFinite(t?.sma50Slope)?t.sma50Slope>0:null,4,
+      isFinite(t?.sma50Slope)?`${pct(t.sma50Slope)} en 10 sesiones`:'');
+  add('trend','Pendiente SMA 200 ascendente', isFinite(t?.sma200Slope)?t.sma200Slope>0:null,4,
+      isFinite(t?.sma200Slope)?`${pct(t.sma200Slope)} en 10 sesiones`:'');
+  /* MOMENTUM 20 */
+  add('mom','Momentum 10 sesiones positivo', isFinite(t?.mom10)?t.mom10>0:null,8,
+      isFinite(t?.mom10)?pct(t.mom10):'');
+  add('mom','Ruptura del máximo de 20 sesiones', isFinite(price)&&isFinite(t?.hi20)?price>=t.hi20:null,6,
+      isFinite(t?.hi20)?`máx. 20 ${money(t.hi20)}`:'');
+  const ext=isFinite(price)&&isFinite(t?.sma50)&&t.sma50?(price/t.sma50-1)*100:NaN;
+  add('mom','Extensión sobre SMA 50 bajo 12%', isFinite(ext)?Math.abs(ext)<12:null,6,
+      isFinite(ext)?`${pct(ext)} vs SMA 50`:'');
+  /* VOLUMEN 16 */
+  add('vol','Volumen relativo > 1.0x', isFinite(t?.relVol)?t.relVol>1:null,8,
+      isFinite(t?.relVol)?`${t.relVol.toFixed(2)}x vs promedio 20`:'sin volumen');
+  const dayUp=isFinite(wlDayPct(sym))?wlDayPct(sym)>0:null;
+  add('vol','Volumen confirma el movimiento',
+      dayUp===null||!isFinite(t?.relVol)?null:(dayUp?t.relVol>1:t.relVol<1),8,
+      isFinite(t?.upVol)&&isFinite(t?.dnVol)?`vol. alcista prom. ${Intl.NumberFormat('en-US',{notation:'compact'}).format(t.upVol||0)} vs bajista ${Intl.NumberFormat('en-US',{notation:'compact'}).format(t.dnVol||0)}`:'');
+  /* UBICACIÓN 16 */
+  const distTgt=isFinite(price)&&isFinite(target)&&price?(target/price-1)*100:NaN;
+  const distStop=isFinite(price)&&isFinite(stop)&&price?(price/stop-1)*100:NaN;
+  add('loc','Recorrido al target > 5%', isFinite(distTgt)?distTgt>5:null,8,
+      isFinite(distTgt)?`${pct(distTgt)} hasta ${money(target)}`:'define un target');
+  add('loc','Distancia al stop > 3%', isFinite(distStop)?distStop>3:null,8,
+      isFinite(distStop)?`${pct(-distStop)} hasta ${money(stop)}`:'define una invalidación');
+  /* RIESGO 12 */
+  const rr=isFinite(distTgt)&&isFinite(distStop)&&distStop>0?distTgt/distStop:NaN;
+  const minRR=Number(state.settings.minRR||2);
+  add('risk',`R:R ≥ ${minRR}`, isFinite(rr)?rr>=minRR:null,8,isFinite(rr)?rr.toFixed(2)+':1':'');
+  const eq=Math.max(1,Number(state.settings.capital||0)),wgt=pos.invested/eq*100;
+  add('risk','Concentración dentro del mandato', pos.hasPosition?wgt<=Number(state.settings.maxPositionPct||25):null,4,
+      pos.hasPosition?`${wgt.toFixed(1)}% del capital`:'sin posición abierta');
+  /* TESIS 12 */
+  const ts=d.thesisStatus||'intact';
+  conds.push({g:'thesis',label:'Estado de la tesis',state:ts==='intact'?'ok':ts==='weakening'?'no':'no',
+    pts:ts==='intact'?12:ts==='weakening'?6:0,max:12,
+    detail:ts==='intact'?'intacta':ts==='weakening'?'debilitándose':'invalidada'});
+  groups.thesis.e=ts==='intact'?12:ts==='weakening'?6:0;
+
+  /* score sobre el máximo evaluable (no castiga por datos ausentes) */
+  const evaluable=conds.filter(c=>c.state!=='na').reduce((a,c)=>a+c.max,0);
+  const earned=conds.reduce((a,c)=>a+c.pts,0);
+  /* con muy pocos datos evaluables el score no es confiable: se declara sin datos */
+  let score=evaluable>=45?Math.round(earned/evaluable*100):NaN;
+
+  /* invalidaciones duras */
+  const stopHit=isFinite(price)&&isFinite(stop)&&price<=stop;
+  const targetHit=isFinite(price)&&isFinite(target)&&price>=target;
+  const overrides=[];
+  if(ts==='invalidated'){score=Math.min(isFinite(score)?score:25,25);overrides.push('Tesis marcada como invalidada por ti.')}
+  if(stopHit){score=Math.min(isFinite(score)?score:18,18);overrides.push(`Precio en o por debajo de la invalidación (${money(stop)}).`)}
+
+  const user={buy:wlCondState(d.buyConditions,t,price),sell:wlCondState(d.sellConditions,t,price)};
+  if(user.sell.any&&!stopHit){score=Math.min(isFinite(score)?score:35,35);overrides.push('Se cumplió al menos una condición de venta definida por ti.')}
+
+  /* banda → estado */
+  let band='',status='WAIT';
+  if(!isFinite(score)){band='DATOS INSUFICIENTES';status='WAIT'}
+  else if(score>=80){band='SETUP FUERTE';status='BUY'}
+  else if(score>=65){band='COMPRA CON CONFIRMACIÓN';status='BUY'}
+  else if(score>=45){band=pos.hasPosition?'MANTENER':'ESPERAR';status=pos.hasPosition?'HOLD':'WAIT'}
+  else if(score>=30){band='PRECAUCIÓN';status=pos.hasPosition?'HOLD':'WAIT'}
+  else{band='INVALIDADO';status='SELL'}
+  if(stopHit||ts==='invalidated')status='SELL';
+
+  /* razones (las 4-5 que más pesan) */
+  const reasons=conds.filter(c=>c.state==='ok').sort((a,b)=>b.max-a.max).slice(0,4).map(c=>c.label);
+  const fails=conds.filter(c=>c.state==='no').sort((a,b)=>b.max-a.max).slice(0,3).map(c=>c.label);
+
+  /* próxima acción */
+  let nextAction=d.nextAction||'';
+  if(!nextAction){
+    if(stopHit)nextAction=`Ejecutar el plan de salida: el precio perdió ${money(stop)}.`;
+    else if(targetHit)nextAction=`Target ${money(target)} alcanzado — toma de ganancia total o parcial según tu plan.`;
+    else if(user.buy.total&&user.buy.all)nextAction='Todas tus condiciones de compra están cumplidas.';
+    else if(user.buy.total)nextAction=`Faltan ${user.buy.total-user.buy.met} de ${user.buy.total} condiciones de compra.`;
+    else if(status==='BUY'&&isFinite(t?.hi20))nextAction=`Confirmar cierre por encima de ${money(t.hi20)}.`;
+    else if(status==='WAIT'&&isFinite(t?.sma50))nextAction=`Esperar recuperación de la SMA 50 (${money(t.sma50)}).`;
+    else nextAction='Definir target, invalidación y condiciones para que el sistema pueda monitorearlas.';
+  }
+  return {score,band,status,groups,conds,reasons,fails,overrides,user,pos,price,target,stop,
+    distTgt,distStop,rr,stopHit,targetHit,nextAction,tech:t,thesisStatus:ts,
+    lastFollow:(d.followUps||[]).at(-1)||null,daysSinceReview:wlDaysSinceReview(d)};
+}
+function wlDaysSinceReview(d){
+  const last=(d.followUps||[]).at(-1)?.date||d.setupDate;
+  return wlDays(last);
+}
+
+/* ---------------------------------------------------------------- prioridad + alertas */
+function wlPriority(sym,a){
+  const d=wlD(sym);
+  if(d.priority&&d.priority!=='auto')return d.priority;
+  a=a||wlAssess(sym);
+  const near=v=>isFinite(v)&&Math.abs(v)<4;
+  if(a.stopHit||a.targetHit||a.status==='SELL'||a.score>=80||near(a.distStop)||near(a.distTgt)||(a.user.buy.total&&a.user.buy.all)||a.user.sell.any)return 'high';
+  if(a.daysSinceReview>=Number(state.settings.wlReviewDays||30)||a.score>=65||a.thesisStatus==='weakening')return 'med';
+  return 'low';
+}
+function wlPrioIcon(p){return p==='high'?'🔥':p==='med'?'👀':'📌'}
+function wlAlerts(){
+  const out=[];
+  for(const sym of (state.watch||[]).map(clean)){
+    const d=wlD(sym),a=wlAssess(sym);
+    if(a.stopHit)out.push({sym,sev:'critical',title:`${sym} — INVALIDACIÓN ALCANZADA`,text:`El precio cruzó por debajo de ${money(a.stop)}. Tu plan pedía salir aquí.`});
+    else if(isFinite(a.distStop)&&a.distStop<3&&a.distStop>0)out.push({sym,sev:'action',title:`${sym} — CERCA DEL STOP`,text:`A ${pct(-a.distStop)} de la invalidación (${money(a.stop)}).`});
+    if(a.targetHit)out.push({sym,sev:'action',title:`${sym} — TARGET ALCANZADO`,text:`El precio llegó a ${money(a.target)}. Decide toma total o parcial.`});
+    else if(isFinite(a.distTgt)&&a.distTgt<3&&a.distTgt>0)out.push({sym,sev:'opportunity',title:`${sym} — TARGET A LA VISTA`,text:`Faltan ${pct(a.distTgt)} para ${money(a.target)}.`});
+    if(a.user.sell.total&&a.user.sell.any&&!a.stopHit)out.push({sym,sev:'action',title:`${sym} — CONDICIÓN DE VENTA CUMPLIDA`,text:a.user.sell.arr.filter(x=>x.r===true).map(x=>wlCondLabel(x.c)).join(' · ')});
+    if(a.user.buy.total&&a.user.buy.all)out.push({sym,sev:'opportunity',title:`${sym} — CONDICIÓN DE COMPRA CUMPLIDA`,text:`${a.user.buy.met}/${a.user.buy.total} condiciones confirmadas.`});
+    if(a.thesisStatus==='invalidated')out.push({sym,sev:'critical',title:`${sym} — TESIS INVALIDADA`,text:'Marcaste la tesis como rota. El score quedó limitado a 25.'});
+    if(a.daysSinceReview>=Number(state.settings.wlReviewDays||30))out.push({sym,sev:'review',title:`${sym} — REVISIÓN DE TESIS`,text:`${a.daysSinceReview} días sin follow-up.`});
+    if(!isFinite(wlNum(d.stop))&&wlPosition(sym).hasPosition)out.push({sym,sev:'review',title:`${sym} — POSICIÓN SIN INVALIDACIÓN`,text:'Hay capital comprometido sin nivel de salida definido.'});
+  }
+  return out.sort((x,y)=>WL_SEV.indexOf(x.sev)-WL_SEV.indexOf(y.sev));
+}
+
+/* ---------------------------------------------------------------- render: barra de alertas */
+function renderWlAlerts(){
+  const bar=$('wlAlertBar');if(!bar)return;
+  const list=wlAlerts();
+  if(!list.length){bar.classList.remove('on');bar.innerHTML='';return}
+  bar.classList.add('on');
+  const top=list[0],crit=list.filter(a=>a.sev==='critical'||a.sev==='action').length;
+  bar.innerHTML=`<div class="wlAlertInner">
+    <div class="wlAlertTop" onclick="wlToggleAlerts()">
+      <span>🔔</span><b>${esc(top.title)}</b>
+      <span class="wlAlertCount">${list.length}</span>
+      <em>${crit?crit+' urgente(s)':'ver todo'} ▾</em>
+    </div>
+    <div class="wlAlertList">
+      ${list.slice(0,12).map(a=>`<button type="button" class="wlAlertItem wlSev-${a.sev}" onclick="wlOpen('${esc(a.sym)}')">
+        <i>${a.sev==='critical'?'🔴':a.sev==='action'?'🟠':a.sev==='opportunity'?'🟢':a.sev==='review'?'🟡':'🔵'}</i>
+        <div><b>${esc(a.title)}</b><p>${esc(a.text)}</p></div>
+        <span>${WL_SEV_LABEL[a.sev]}</span></button>`).join('')}
+    </div></div>`;
+}
+window.wlToggleAlerts=function(){$('wlAlertBar').classList.toggle('open')};
+
+/* ---------------------------------------------------------------- render: revisión diaria */
+function renderWlReview(){
+  const box=$('wlReview');if(!box)return;
+  const syms=(state.watch||[]).map(clean);
+  let buy=0,sell=0,tgt=0,due=0,att=0;
+  for(const s of syms){const a=wlAssess(s);
+    if(a.status==='BUY')buy++;
+    if(a.status==='SELL')sell++;
+    if(a.targetHit)tgt++;
+    if(a.daysSinceReview>=Number(state.settings.wlReviewDays||30))due++;
+    if(wlPriority(s,a)==='high')att++;
+  }
+  box.innerHTML=`<div class="wlReviewHead"><b>Chequeo de hoy</b><span>${syms.length} activos · ${new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short'})}</span></div>
+  <div class="wlReviewGrid">
+    <div class="wlStat"><b>${att}</b><span>Atención</span></div>
+    <div class="wlStat buy"><b>${buy}</b><span>Compra</span></div>
+    <div class="wlStat sell"><b>${sell}</b><span>Venta</span></div>
+    <div class="wlStat tgt"><b>${tgt}</b><span>Target</span></div>
+    <div class="wlStat due"><b>${due}</b><span>Revisar</span></div>
+  </div>`;
+}
+
+/* ---------------------------------------------------------------- render: filas */
+function wlSortValue(sym,a){
+  const p=wlPosition(sym),d=wlD(sym);
+  switch(wlSort){
+    case 'buy':return -(isFinite(a.score)?a.score:-1);
+    case 'sell':return isFinite(a.score)?a.score:999;
+    case 'gain':return -(isFinite(p.uplPct)?p.uplPct:-1e9);
+    case 'loss':return isFinite(p.uplPct)?p.uplPct:1e9;
+    case 'target':return isFinite(a.distTgt)?Math.abs(a.distTgt):1e9;
+    case 'stop':return isFinite(a.distStop)?Math.abs(a.distStop):1e9;
+    case 'updated':return -(new Date((d.followUps||[]).at(-1)?.date||d.setupDate).getTime()||0);
+    case 'alpha':return sym;
+    case 'setup':return -(new Date(d.setupDate).getTime()||0);
+    default:{const rank={high:0,med:1,low:2}[wlPriority(sym,a)];return rank*1000-(isFinite(a.score)?Math.abs(a.score-50):0)}
+  }
+}
+function wlPassFilter(sym,a){
+  const p=wlPosition(sym);
+  switch(wlFilter){
+    case 'pos':return p.hasPosition;
+    case 'nopos':return !p.hasPosition;
+    case 'BUY':case 'HOLD':case 'WAIT':case 'SELL':return a.status===wlFilter;
+    case 'att':return wlPriority(sym,a)==='high';
+    default:return true;
+  }
+}
+function renderWatch(){
+  wlEnsureState();
+  renderWlAlerts();renderWlReview();
+  const grid=$('watchGrid');if(!grid)return;
+  const rows=(state.watch||[]).map(clean).map(sym=>({sym,a:wlAssess(sym)})).filter(x=>wlPassFilter(x.sym,x.a));
+  rows.sort((x,y)=>{const va=wlSortValue(x.sym,x.a),vb=wlSortValue(y.sym,y.a);
+    return typeof va==='string'?va.localeCompare(vb):va-vb});
+  if(!rows.length){grid.innerHTML='<div class="empty">Sin activos en este filtro. Agrega un símbolo o cambia el filtro.</div>';return}
+  grid.innerHTML=rows.map(({sym,a})=>{
+    const d=wlD(sym),p=a.pos,price=a.price,day=wlDayPct(sym),sd=wlSetupDelta(sym);
+    let rail='';
+    if(isFinite(price)&&isFinite(a.stop)&&isFinite(a.target)&&a.target>a.stop){
+      const w=Math.max(0,Math.min(100,(price-a.stop)/(a.target-a.stop)*100));
+      rail=`<div><div class="wlRail"><i style="width:${w.toFixed(1)}%"></i></div>
+        <div class="wlRailLine"><span>stop ${money(a.stop)}</span><span>${money(price)}</span><span>target ${money(a.target)}</span></div></div>`;
+    }
+    const flags=[];
+    if(a.stopHit)flags.push('<span class="wlFlag hot">stop tocado</span>');
+    if(a.targetHit)flags.push('<span class="wlFlag good">target</span>');
+    if(a.user.buy.total)flags.push(`<span class="wlFlag ${a.user.buy.all?'good':''}">compra ${a.user.buy.met}/${a.user.buy.total}</span>`);
+    if(a.user.sell.total)flags.push(`<span class="wlFlag ${a.user.sell.any?'hot':''}">venta ${a.user.sell.met}/${a.user.sell.total}</span>`);
+    if(a.daysSinceReview>=Number(state.settings.wlReviewDays||30))flags.push(`<span class="wlFlag warn">${a.daysSinceReview}d sin revisar</span>`);
+    if(a.thesisStatus!=='intact')flags.push(`<span class="wlFlag ${a.thesisStatus==='invalidated'?'hot':'warn'}">tesis ${a.thesisStatus==='invalidated'?'rota':'débil'}</span>`);
+    return `<article class="wlRow st-${a.status}" onclick="wlOpen('${esc(sym)}')">
+      <div class="wlRowTop">
+        <span class="wlPrio">${wlPrioIcon(wlPriority(sym,a))}</span>
+        <span class="wlTicker">${esc(sym)}</span>
+        <span class="wlName">${esc(wlName(sym))}</span>
+        <span class="wlPrice">${isFinite(price)?money(price):'—'}</span>
+        <span class="wlDay ${cls(day)}">${isFinite(day)?pct(day):'—'}</span>
+        <span class="wlBadge ${a.status}">${a.status}</span>
+        <span class="wlScore">${isFinite(a.score)?a.score+'/100':'s/d'}</span>
+      </div>
+      <div class="wlMetrics">
+        <div class="wlMetric"><span>Desde setup</span><b class="${cls(sd.pct)}">${isFinite(sd.pct)?pct(sd.pct):'—'}</b></div>
+        <div class="wlMetric"><span>Entradas</span><b>${p.count||'—'}${p.count?' · '+money(p.avg):''}</b></div>
+        <div class="wlMetric"><span>P/L abierto</span><b class="${cls(p.upl)}">${isFinite(p.upl)?money(p.upl)+' · '+pct(p.uplPct):'—'}</b></div>
+        <div class="wlMetric"><span>Invertido</span><b>${p.invested?money(p.invested):'—'}</b></div>
+        <div class="wlMetric"><span>A target</span><b>${isFinite(a.distTgt)?pct(a.distTgt):'—'}</b></div>
+        <div class="wlMetric"><span>A stop</span><b>${isFinite(a.distStop)?pct(-a.distStop):'—'}</b></div>
+        <div class="wlMetric"><span>Último follow-up</span><b>${a.lastFollow?wlShort(a.lastFollow.date):'—'}</b></div>
+        <div class="wlMetric"><span>Setup</span><b>${wlShort(d.setupDate)} · ${d.setupPrice?money(d.setupPrice):'—'}</b></div>
+      </div>
+      ${rail}
+      ${flags.length?`<div class="wlFlags">${flags.join('')}</div>`:''}
+      <div class="wlNext"><b>Siguiente:</b> ${esc(a.nextAction)}</div>
+    </article>`;
+  }).join('');
+  if(wlOpenSym)wlRenderDetail(wlOpenSym);
+}
+
+/* ---------------------------------------------------------------- detalle */
+window.wlOpen=function(sym){
+  sym=clean(sym);wlOpenSym=sym;
+  $('wlDetail').classList.add('open');document.body.style.overflow='hidden';
+  wlRenderDetail(sym);
+  wlEnsureTech(sym).then(()=>{if(wlOpenSym===sym){wlRenderDetail(sym);wlLoadChart(sym)}});
+  wlLoadChart(sym);
+  if(!currentQuote(sym))refreshOne(sym);
+};
+window.wlClose=function(){wlOpenSym='';$('wlDetail').classList.remove('open');document.body.style.overflow=''};
+function wlTimelineEvents(sym){
+  const d=wlD(sym),ev=[];
+  ev.push({t:'setup',date:d.setupDate,title:'SETUP',price:d.setupPrice,
+    body:`${d.thesis?esc(d.thesis):'Sin tesis registrada'}${d.target?` · Target inicial ${money(d.target)}`:''}${d.stop?` · Invalidación ${money(d.stop)}`:''}`});
+  (d.entries||[]).forEach((e,i)=>ev.push({t:'entry',date:e.date,title:`ENTRADA #${i+1}`,price:e.price,id:e.id,
+    body:`${num(e.qty,4)} unidades · ${money(isFinite(+e.investment)?+e.investment:(+e.price)*(+e.qty))}${e.reason?' · '+esc(e.reason):''}`}));
+  (d.followUps||[]).forEach((f,i)=>ev.push({t:'follow',date:f.date,title:`FOLLOW-UP #${i+1}`,price:f.price,cls:f.assessment,id:f.id,
+    body:`<b>${esc(f.assessment||'')}${isFinite(f.score)?` · ${f.score}/100`:''}</b>${f.whatChanged?' — '+esc(f.whatChanged):''}${f.nextAction?`<br>Siguiente: ${esc(f.nextAction)}`:''}${f.note?`<br><em>${esc(f.note)}</em>`:''}`}));
+  return ev.sort((a,b)=>new Date(a.date)-new Date(b.date));
+}
+function wlRenderDetail(sym){
+  sym=clean(sym);const box=$('wlDetailBody');if(!box)return;
+  const d=wlD(sym),a=wlAssess(sym),p=a.pos,sd=wlSetupDelta(sym),day=wlDayPct(sym);
+  $('wlDetailTitle').innerHTML=`<b>${esc(sym)}</b><small>${esc(wlName(sym)||'—')}</small>`;
+  const g=a.groups;
+  const groupHtml=Object.entries(g).map(([k,v])=>`<div class="wlBreakCell"><span>${v.lab}</span><b>${v.e}/${v.m}</b>
+    <div class="wlBreakBar"><i style="width:${v.m?v.e/v.m*100:0}%"></i></div></div>`).join('');
+  const condHtml=a.conds.map(c=>`<div class="wlCond ${c.state==='ok'?'ok':c.state==='no'?'no':''}">
+    <i>${c.state==='ok'?'✅':c.state==='no'?'❌':'➖'}</i>
+    <div>${esc(c.label)}${c.detail?`<em>${esc(c.detail)}</em>`:''}</div>
+    <u>${c.pts}/${c.max}</u></div>`).join('');
+  const userCond=(list,kind)=>{
+    if(!list.arr.length)return `<div class="empty" style="padding:10px;font-size:.66rem">Sin condiciones de ${kind} definidas.</div>`;
+    return `<div class="wlCondList">${list.arr.map(x=>`<div class="wlCondChip"><i>${x.r===true?'✅':x.r===false?'❌':'➖'}</i>
+      <span>${esc(wlCondLabel(x.c))}</span><u style="font-size:.5rem;color:var(--dim);font-weight:900;text-decoration:none">${x.r===true?'cumplida':x.r===false?'pendiente':'manual'}</u></div>`).join('')}</div>`;
+  };
+  box.innerHTML=`
+  <div class="wlHero">
+    <div class="wlHeroCell"><span>Precio actual</span><b>${isFinite(a.price)?money(a.price):'—'}</b><small>${state.quotes[sym]?.updatedAt?new Date(state.quotes[sym].updatedAt).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}):'sin refresh'}</small></div>
+    <div class="wlHeroCell"><span>Hoy</span><b class="${cls(day)}">${isFinite(day)?pct(day):'—'}</b><small>sesión actual</small></div>
+    <div class="wlHeroCell"><span>Desde el setup</span><b class="${cls(sd.pct)}">${isFinite(sd.pct)?pct(sd.pct):'—'}</b><small>${wlShort(d.setupDate)} · ${isFinite(sd.days)?sd.days+' días':''}</small></div>
+    <div class="wlHeroCell"><span>Posición</span><b>${p.count?money(p.value):'—'}</b><small>${p.count?`${p.count} entrada(s) · prom. ${money(p.avg)}`:'sin entradas'}</small></div>
+    <div class="wlHeroCell"><span>P/L no realizado</span><b class="${cls(p.upl)}">${isFinite(p.upl)?money(p.upl):'—'}</b><small>${isFinite(p.uplPct)?pct(p.uplPct):'—'}</small></div>
+    <div class="wlHeroCell"><span>Invertido</span><b>${p.invested?money(p.invested):'—'}</b><small>${p.best?`mejor ${money(p.best.price)} · peor ${money(p.worst.price)}`:'—'}</small></div>
+  </div>
+
+  <div class="wlDecide">
+    <div class="wlDecideTop">
+      <span class="wlBigBadge ${a.status}">${a.status}</span>
+      <div class="wlScoreBig">${isFinite(a.score)?a.score:'—'}<small>/100</small></div>
+      <div class="wlScoreMeta"><span>${esc(a.band)}</span><b>${a.conds.filter(c=>c.state==='ok').length} condiciones confirmadas · ${a.conds.filter(c=>c.state==='no').length} en contra · ${a.conds.filter(c=>c.state==='na').length} sin dato</b></div>
+    </div>
+    <div class="wlBreak">${groupHtml}</div>
+    ${a.overrides.length?`<div class="wlNextBox" style="border-left-color:var(--red);margin:0 0 9px"><span>Anulaciones aplicadas</span><b>${a.overrides.map(esc).join(' ')}</b></div>`:''}
+    <div class="wlSubhead">Condiciones evaluadas</div>
+    <div class="wlConds">${condHtml}</div>
+    <div class="wlPlan">
+      <div class="wlPlanCell"><span>Target</span><b>${isFinite(a.target)?money(a.target):'—'}</b><small>${isFinite(a.distTgt)?pct(a.distTgt)+' de recorrido':'sin definir'}</small></div>
+      <div class="wlPlanCell"><span>Invalidación</span><b>${isFinite(a.stop)?money(a.stop):'—'}</b><small>${isFinite(a.distStop)?pct(-a.distStop)+' de riesgo':'sin definir'}</small></div>
+      <div class="wlPlanCell"><span>R:R</span><b>${isFinite(a.rr)?a.rr.toFixed(2)+':1':'—'}</b><small>mínimo exigido ${Number(state.settings.minRR||2)}</small></div>
+    </div>
+    <div class="wlNextBox"><span>Próxima acción</span><b>${esc(a.nextAction)}</b></div>
+    <div class="wlDisclaimer">Score analítico de apoyo a la decisión, calculado sobre condiciones que tú definiste y datos de mercado públicos. No es asesoría financiera ni una predicción del precio.</div>
+  </div>
+
+  <div class="wlActions">
+    <button class="btn primary" onclick="wlFollowUpModal('${esc(sym)}')">+ FOLLOW UP</button>
+    <button class="btn" onclick="wlEntryModal('${esc(sym)}')">+ ENTRADA</button>
+    <button class="btn" onclick="wlGoalModal('${esc(sym)}')">EDITAR META</button>
+    <button class="btn" onclick="wlSetupModal('${esc(sym)}')">SETUP / TESIS</button>
+    <button class="btn" onclick="refreshOne('${esc(sym)}');wlEnsureTech('${esc(sym)}',true).then(renderWatch)">↻ DATOS</button>
+  </div>
+
+  <div class="wlChartCard">
+    <div class="wlTfRow">${WL_TF.map(t=>`<button class="wlTf ${wlTf===t.k?'on':''}" onclick="wlSetTf('${t.k}')">${t.lab}</button>`).join('')}</div>
+    <div class="wlChartWrap" id="wlChartWrap"><div class="wlChartMsg">Cargando datos…</div></div>
+    <div class="wlChartLegend">
+      <span><i style="background:var(--blue)"></i>SMA 50</span>
+      <span><i style="background:var(--violet)"></i>SMA 200</span>
+      <span><i style="background:var(--green)"></i>Target</span>
+      <span><i style="background:var(--red)"></i>Invalidación</span>
+      <span><i style="background:var(--gold)"></i>Setup</span>
+      <span>▲ entradas · línea punteada = precio actual</span>
+    </div>
+  </div>
+
+  <div class="wlDecide">
+    <div class="wlSubhead" style="margin-top:0">Condiciones de compra — ¿qué debe pasar para comprar?</div>
+    ${userCond(a.user.buy,'compra')}
+    <div class="wlSubhead">Condiciones de venta — ¿qué debe pasar para vender?</div>
+    ${userCond(a.user.sell,'venta')}
+    <button class="btn small" onclick="wlGoalModal('${esc(sym)}')" style="margin-top:6px">Editar condiciones</button>
+  </div>
+
+  <div class="wlDecide">
+    <div class="wlSubhead" style="margin-top:0">Línea de tiempo — la historia completa</div>
+    <div class="wlTimeline">
+      ${wlTimelineEvents(sym).map(e=>`<div class="wlEvent ${e.t} ${e.cls||''}">
+        ${e.id?`<button class="wlEventDel" onclick="wlDeleteEvent('${esc(sym)}','${e.t}','${e.id}')" title="Eliminar">×</button>`:''}
+        <div class="wlEventHead"><b>${e.title}</b><span>${wlShort(e.date)}${isFinite(+e.price)?' · '+money(+e.price):''}</span></div>
+        <div class="wlEventBody">${e.body}</div></div>`).join('')}
+      <div class="wlEvent" style="opacity:.85"><div class="wlEventHead"><b>AHORA</b><span>${wlShort(new Date())}${isFinite(a.price)?' · '+money(a.price):''}</span></div>
+        <div class="wlEventBody"><b>${a.status} · ${isFinite(a.score)?a.score+'/100':'sin datos'}</b> — ${esc(a.reasons.slice(0,3).join(' · ')||'sin condiciones confirmadas')}</div></div>
+    </div>
+  </div>
+
+  <div class="wlDecide">
+    <div class="wlSubhead" style="margin-top:0">Ficha</div>
+    <div class="wlPlan" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="wlPlanCell"><span>Setup</span><b>${d.setupPrice?money(d.setupPrice):'—'}</b><small>${wlShort(d.setupDate)}</small></div>
+      <div class="wlPlanCell"><span>Prioridad</span><b>${wlPrioIcon(wlPriority(sym,a))} ${wlPriority(sym,a).toUpperCase()}</b><small>${d.priority==='auto'?'automática':'manual'}</small></div>
+      <div class="wlPlanCell"><span>Tesis</span><b>${a.thesisStatus==='intact'?'Intacta':a.thesisStatus==='weakening'?'Débil':'Rota'}</b><small>${a.daysSinceReview}d sin revisar</small></div>
+    </div>
+    ${d.thesis?`<div class="wlNextBox" style="border-left-color:var(--violet)"><span>Tesis</span><b>${esc(d.thesis)}</b></div>`:''}
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+      <button class="btn small" onclick="openResearch('${esc(sym)}')">Research</button>
+      <button class="btn small" onclick="setActive('${esc(sym)}')">Hacer activo</button>
+      <button class="btn small" onclick="wlCyclePriority('${esc(sym)}')">Prioridad</button>
+      <button class="btn danger small" onclick="wlRemove('${esc(sym)}')">Quitar de watchlist</button>
+    </div>
+  </div>`;
+}
+window.wlSetTf=function(k){wlTf=k;if(wlOpenSym){wlRenderDetail(wlOpenSym);wlLoadChart(wlOpenSym)}};
+window.wlCyclePriority=function(sym){const d=wlD(sym),order=['auto','high','med','low'];
+  d.priority=order[(order.indexOf(d.priority||'auto')+1)%order.length];persist('Prioridad: '+d.priority)};
+window.wlRemove=function(sym){sym=clean(sym);if(!confirm(`¿Quitar ${sym} de la watchlist? Se borra su historial de seguimiento.`))return;
+  state.watch=state.watch.filter(s=>clean(s)!==sym);delete state.watchDetails[sym];wlClose();persist(sym+' eliminado.')};
+window.wlDeleteEvent=function(sym,type,id){event?.stopPropagation?.();
+  const d=wlD(sym);if(!confirm('¿Eliminar este registro del historial?'))return;
+  if(type==='entry')d.entries=d.entries.filter(e=>e.id!==id);
+  if(type==='follow')d.followUps=d.followUps.filter(f=>f.id!==id);
+  persist('Registro eliminado.')};
+
+/* ---------------------------------------------------------------- gráfico */
+window.wlLoadChart=async function(sym){
+  sym=clean(sym);const wrap=$('wlChartWrap');if(!wrap)return;
+  if(wlChartBusy)return;wlChartBusy=true;
+  try{
+    const {rows,times}=await wlFetchSeries(sym,wlTf);
+    if(wlOpenSym!==sym)return;
+    wrap.innerHTML=wlChartSvg(sym,rows,times);
+  }catch(e){wrap.innerHTML='<div class="wlChartMsg">No se pudieron cargar las velas para esta temporalidad. Intenta de nuevo o cambia el rango.</div>';console.warn(e)}
+  finally{wlChartBusy=false}
+};
+function wlChartSvg(sym,rows,times){
+  const arr=(rows||[]).filter(r=>Array.isArray(r)&&r.length>=4&&r.slice(0,4).every(x=>isFinite(+x)));
+  if(arr.length<4)return '<div class="wlChartMsg">Datos insuficientes para dibujar la temporalidad.</div>';
+  const d=wlD(sym),W=1000,H=440,PT=14,PB=300,VT=330,VB=418,RGT=64;
+  const IW=W-RGT;
+  const o=arr.map(r=>+r[0]),h=arr.map(r=>+r[1]),l=arr.map(r=>+r[2]),c=arr.map(r=>+r[3]),v=arr.map(r=>+r[4]||0);
+  const n=arr.length,w=IW/n,bw=Math.max(1.6,w*.62);
+  const smaOf=p=>c.map((_,i)=>i<p-1?null:c.slice(i-p+1,i+1).reduce((a,b)=>a+b,0)/p);
+  const s50=n>50?smaOf(50):[],s200=n>200?smaOf(200):[];
+  const price=wlPrice(sym),target=wlNum(d.target),stop=wlNum(d.stop),setup=wlNum(d.setupPrice);
+  const pos=wlPosition(sym);
+  const levels=[target,stop,setup,pos.avg,price].filter(x=>isFinite(x));
+  const vals=[...h,...l,...s50.filter(Number.isFinite),...s200.filter(Number.isFinite),...levels];
+  let pMax=Math.max(...vals),pMin=Math.min(...vals);
+  const pad=(pMax-pMin)*.07||pMax*.02||1;pMax+=pad;pMin-=pad;
+  const rng=(pMax-pMin)||1;
+  const y=val=>PB-((val-pMin)/rng)*(PB-PT);
+  const x=i=>i*w+w/2;
+  const grid=[0,.25,.5,.75,1].map(f=>{const yy=PB-f*(PB-PT);return{yy,p:pMin+f*rng}});
+  const gridSvg=grid.map(g=>`<line x1="0" y1="${g.yy.toFixed(1)}" x2="${IW}" y2="${g.yy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>
+    <text x="${IW+6}" y="${(g.yy+4).toFixed(1)}" fill="var(--dim)" font-size="13" font-weight="700">${money(g.p)}</text>`).join('');
+  const candles=arr.map((r,i)=>{const up=c[i]>=o[i],col=up?'var(--green)':'var(--red)';
+    const yo=y(o[i]),yc=y(c[i]);
+    return `<line x1="${x(i).toFixed(1)}" y1="${y(h[i]).toFixed(1)}" x2="${x(i).toFixed(1)}" y2="${y(l[i]).toFixed(1)}" stroke="${col}" stroke-width="1.2"/>`+
+      `<rect x="${(x(i)-bw/2).toFixed(1)}" y="${Math.min(yo,yc).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1.4,Math.abs(yc-yo)).toFixed(1)}" fill="${col}" rx=".6"/>`}).join('');
+  const line=(a2,col,wd)=>{const pts=a2.map((val,i)=>Number.isFinite(val)?`${x(i).toFixed(1)},${y(val).toFixed(1)}`:null).filter(Boolean).join(' ');
+    return pts?`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="${wd}" stroke-linecap="round" stroke-linejoin="round"/>`:''};
+  const vmax=Math.max(...v,1);
+  const vols=v.some(z=>z>0)?arr.map((r,i)=>{const up=c[i]>=o[i],hh=(v[i]/vmax)*(VB-VT);
+    return `<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(VB-hh).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(.6,hh).toFixed(1)}" fill="${up?'var(--green)':'var(--red)'}" opacity="${up?'.62':'.5'}" rx=".5"/>`}).join(''):'';
+  const hline=(val,col,dash,lab)=>isFinite(val)&&val>pMin&&val<pMax?
+    `<line x1="0" y1="${y(val).toFixed(1)}" x2="${IW}" y2="${y(val).toFixed(1)}" stroke="${col}" stroke-width="1.6" stroke-dasharray="${dash}"/>
+     <text x="4" y="${(y(val)-5).toFixed(1)}" fill="${col}" font-size="12" font-weight="900">${lab} ${money(val)}</text>`:'';
+  /* marcadores de entrada situados por fecha */
+  let marks='';
+  if(times&&times.length===n){
+    for(const [i,e] of (pos.entries||[]).entries()){
+      const ts=new Date(e.date).getTime()/1000;if(!isFinite(ts))continue;
+      let idx=-1;for(let k=0;k<n;k++){if(times[k]<=ts)idx=k;else break}
+      if(idx<0)continue;
+      const yy=y(+e.price);if(!isFinite(yy)||yy<PT||yy>PB)continue;
+      marks+=`<polygon points="${x(idx).toFixed(1)},${(yy+2).toFixed(1)} ${(x(idx)-6).toFixed(1)},${(yy+13).toFixed(1)} ${(x(idx)+6).toFixed(1)},${(yy+13).toFixed(1)}" fill="var(--blue)"/>
+        <text x="${x(idx).toFixed(1)}" y="${(yy+25).toFixed(1)}" fill="var(--blue)" font-size="11" font-weight="900" text-anchor="middle">E${i+1}</text>`;
+    }
+  }
+  const cur=isFinite(price)?`<line x1="0" y1="${y(price).toFixed(1)}" x2="${IW}" y2="${y(price).toFixed(1)}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>
+    <rect x="${IW+2}" y="${(y(price)-11).toFixed(1)}" width="60" height="22" rx="5" fill="var(--ink)"/>
+    <text x="${IW+32}" y="${(y(price)+4).toFixed(1)}" fill="var(--bg)" font-size="12" font-weight="900" text-anchor="middle">${money(price)}</text>`:'';
+  const idxs=[...new Set([0,Math.floor(n*.25),Math.floor(n*.5),Math.floor(n*.75),n-1])];
+  const tAxis=(times&&times.length===n)?idxs.map(i=>{const ts=times[i];if(!isFinite(ts))return'';
+    const dt=new Date(ts*1000),lab=/5m|4h/.test(wlTf)?dt.toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit'}):dt.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'});
+    return `<text x="${Math.min(IW-40,Math.max(24,x(i)))}" y="${H-4}" fill="var(--dim)" font-size="12" font-weight="700" text-anchor="middle">${lab}</text>`}).join(''):'';
+  return `<svg class="wlChartSvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    ${gridSvg}${vols}${candles}${line(s50,'var(--blue)',2.2)}${line(s200,'var(--violet)',2.2)}
+    ${hline(target,'var(--green)','6 4','TARGET')}
+    ${hline(stop,'var(--red)','6 4','INVALIDACIÓN')}
+    ${hline(setup,'var(--gold)','2 4','SETUP')}
+    ${hline(pos.avg,'var(--blue)','8 3','PROM. ENTRADA')}
+    ${marks}${cur}
+    <line x1="0" y1="${VT-6}" x2="${IW}" y2="${VT-6}" stroke="var(--line)" stroke-width="1"/>
+    <text x="4" y="${VT+8}" fill="var(--dim)" font-size="12" font-weight="800">VOLUMEN</text>
+    ${tAxis}</svg>`;
+}
+
+/* ---------------------------------------------------------------- modales */
+function wlModal(title,bodyHtml,onSave,saveLabel='Guardar'){
+  $('wlModalTitle').textContent=title;
+  $('wlModalBody').innerHTML=bodyHtml+`<button class="btn primary block" id="wlModalSave" style="margin-top:12px">${saveLabel}</button>`;
+  $('wlModalBack').classList.add('open');$('wlModalEl').classList.add('open');
+  $('wlModalSave').onclick=()=>{try{if(onSave()!==false)wlCloseModal()}catch(e){toast(e.message||'Revisa los datos.')}};
+}
+window.wlCloseModal=function(){$('wlModalBack').classList.remove('open');$('wlModalEl').classList.remove('open');wlModalCtx=null};
+
+window.wlSetupModal=function(sym){
+  sym=clean(sym);const d=wlD(sym);
+  wlModal(`${sym} · Setup y tesis`,`
+    <div class="wlTwo">
+      <div class="field"><label>Nombre de la empresa</label><input id="wlfName" value="${esc(d.companyName||wlName(sym))}" placeholder="NVIDIA Corp"></div>
+      <div class="field"><label>Fecha del setup</label><input id="wlfSetupDate" type="date" value="${esc((d.setupDate||todayIso()).slice(0,10))}"></div>
+    </div>
+    <div class="wlTwo">
+      <div class="field"><label>Precio del setup (baseline)</label><input id="wlfSetupPrice" type="number" step="0.000001" value="${d.setupPrice||''}" placeholder="0.00"></div>
+      <div class="field"><label>Estado de la tesis</label><select id="wlfThesisStatus">
+        <option value="intact"${d.thesisStatus==='intact'?' selected':''}>Intacta</option>
+        <option value="weakening"${d.thesisStatus==='weakening'?' selected':''}>Debilitándose</option>
+        <option value="invalidated"${d.thesisStatus==='invalidated'?' selected':''}>Invalidada</option>
+      </select></div>
+    </div>
+    <div class="field"><label>Tesis · ¿por qué lo estás vigilando?</label><textarea id="wlfThesis" rows="3" placeholder="Tendencia fuerte + confirmación de volumen…">${esc(d.thesis||'')}</textarea></div>
+    <div class="field"><label>Prioridad</label><select id="wlfPriority">
+      <option value="auto"${d.priority==='auto'?' selected':''}>Automática</option>
+      <option value="high"${d.priority==='high'?' selected':''}>🔥 Alta</option>
+      <option value="med"${d.priority==='med'?' selected':''}>👀 Media</option>
+      <option value="low"${d.priority==='low'?' selected':''}>📌 Baja</option>
+    </select></div>`,
+  ()=>{
+    d.companyName=$('wlfName').value.trim();
+    d.setupDate=$('wlfSetupDate').value||todayIso();
+    d.setupPrice=Number($('wlfSetupPrice').value)||'';
+    d.thesis=$('wlfThesis').value.trim();
+    d.thesisStatus=$('wlfThesisStatus').value;
+    d.priority=$('wlfPriority').value;
+    persist('Setup actualizado.');
+  });
+};
+
+function wlCondEditorHtml(kind,list){
+  return `<div class="wlCondEditor" id="wlCond_${kind}">
+    ${(list||[]).map((c,i)=>wlCondRowHtml(kind,c,i)).join('')}
+  </div>
+  <button class="btn small" onclick="wlAddCondRow('${kind}')" style="margin-top:5px">+ condición</button>`;
+}
+function wlCondRowHtml(kind,c,i){
+  const type=c?.type||'priceAbove';
+  const needsVal=WL_COND_TYPES.find(t=>t.t===type)?.needsVal;
+  return `<div class="wlCondRow" data-i="${i}">
+    <select class="wlcT" onchange="wlCondTypeChange(this)">${WL_COND_TYPES.map(t=>`<option value="${t.t}"${t.t===type?' selected':''}>${t.lab}</option>`).join('')}</select>
+    ${type==='manual'
+      ?`<input class="wlcV" placeholder="describe la condición" value="${esc(c?.text||'')}">`
+      :`<input class="wlcV" type="number" step="0.000001" placeholder="${needsVal?'valor':'—'}" value="${c?.value??''}" ${needsVal?'':'disabled'}>`}
+    <button class="xb" onclick="this.parentElement.remove()">×</button>
+  </div>`;
+}
+window.wlCondTypeChange=function(sel){
+  const row=sel.closest('.wlCondRow'),inp=row.querySelector('.wlcV'),t=sel.value;
+  const def=WL_COND_TYPES.find(x=>x.t===t);
+  if(t==='manual'){inp.type='text';inp.placeholder='describe la condición';inp.disabled=false}
+  else{inp.type='number';inp.placeholder=def.needsVal?'valor':'—';inp.disabled=!def.needsVal;if(!def.needsVal)inp.value=''}
+};
+window.wlAddCondRow=function(kind){
+  const box=$('wlCond_'+kind);box.insertAdjacentHTML('beforeend',wlCondRowHtml(kind,null,box.children.length));
+};
+function wlReadConds(kind){
+  const box=$('wlCond_'+kind);if(!box)return [];
+  return [...box.querySelectorAll('.wlCondRow')].map(r=>{
+    const type=r.querySelector('.wlcT').value,v=r.querySelector('.wlcV').value;
+    if(type==='manual')return v.trim()?{type,text:v.trim(),done:false}:null;
+    const def=WL_COND_TYPES.find(x=>x.t===type);
+    if(def.needsVal&&!isFinite(Number(v)))return null;
+    return {type,value:def.needsVal?Number(v):''};
+  }).filter(Boolean);
+}
+window.wlGoalModal=function(sym){
+  sym=clean(sym);const d=wlD(sym);
+  wlModal(`${sym} · Metas y condiciones`,`
+    <div class="wlTwo">
+      <div class="field"><label>Target</label><input id="wlfTarget" type="number" step="0.000001" value="${d.target||''}" placeholder="0.00"></div>
+      <div class="field"><label>Invalidación / stop</label><input id="wlfStop" type="number" step="0.000001" value="${d.stop||''}" placeholder="0.00"></div>
+    </div>
+    <div class="wlSubhead">¿Qué debe pasar antes de COMPRAR?</div>
+    ${wlCondEditorHtml('buy',d.buyConditions)}
+    <div class="wlSubhead">¿Qué debe pasar antes de VENDER?</div>
+    ${wlCondEditorHtml('sell',d.sellConditions)}
+    <div class="field" style="margin-top:10px"><label>Próxima acción (opcional, sobrescribe la sugerida)</label><input id="wlfNextAction" value="${esc(d.nextAction||'')}" placeholder="Esperar cierre sobre 184"></div>`,
+  ()=>{
+    d.target=Number($('wlfTarget').value)||'';
+    d.stop=Number($('wlfStop').value)||'';
+    d.buyConditions=wlReadConds('buy');
+    d.sellConditions=wlReadConds('sell');
+    d.nextAction=$('wlfNextAction').value.trim();
+    persist('Metas y condiciones guardadas.');
+  });
+};
+
+window.wlEntryModal=function(sym){
+  sym=clean(sym);const d=wlD(sym),price=wlPrice(sym);
+  wlModal(`${sym} · Nueva entrada`,`
+    <div class="wlThree">
+      <div class="field"><label>Fecha</label><input id="wlfEDate" type="date" value="${todayIso()}"></div>
+      <div class="field"><label>Precio</label><input id="wlfEPrice" type="number" step="0.000001" value="${isFinite(price)?price:''}"></div>
+      <div class="field"><label>Cantidad</label><input id="wlfEQty" type="number" step="0.000001" placeholder="10"></div>
+    </div>
+    <div class="field"><label>Inversión (se calcula si la dejas vacía)</label><input id="wlfEInv" type="number" step="0.01" placeholder="auto"></div>
+    <div class="field"><label>Razón de esta entrada</label><input id="wlfEReason" placeholder="Recuperó SMA 50 con volumen"></div>`,
+  ()=>{
+    const p=Number($('wlfEPrice').value),q=Number($('wlfEQty').value);
+    if(!isFinite(p)||p<=0||!isFinite(q)||q<=0){toast('Precio y cantidad válidos son obligatorios.');return false}
+    const inv=Number($('wlfEInv').value);
+    d.entries.push({id:uid(),date:$('wlfEDate').value||todayIso(),price:p,qty:q,
+      investment:isFinite(inv)&&inv>0?inv:p*q,reason:$('wlfEReason').value.trim()});
+    d.entries.sort((a,b)=>new Date(a.date)-new Date(b.date));
+    persist('Entrada registrada en la línea de tiempo.');
+  },'Registrar entrada');
+};
+
+window.wlFollowUpModal=function(sym){
+  sym=clean(sym);const d=wlD(sym),a=wlAssess(sym);
+  wlModalCtx={assessment:a.status};
+  wlModal(`${sym} · Follow-up`,`
+    <div class="wlTwo">
+      <div class="field"><label>Fecha</label><input id="wlfFDate" type="date" value="${todayIso()}"></div>
+      <div class="field"><label>Precio actual</label><input id="wlfFPrice" type="number" step="0.000001" value="${isFinite(a.price)?a.price:''}"></div>
+    </div>
+    <div class="field"><label>Evaluación</label>
+      <div class="wlSeg" id="wlfSeg">
+        ${['BUY','HOLD','WAIT','SELL'].map(s=>`<button type="button" class="${s} ${a.status===s?'on':''}" onclick="wlPickAssessment('${s}')">${s}</button>`).join('')}
+      </div>
+    </div>
+    <div class="field"><label>¿Qué cambió?</label><textarea id="wlfFChanged" rows="2" placeholder="Precio recuperó SMA 50 con volumen creciente">${''}</textarea></div>
+    <div class="wlTwo">
+      <div class="field"><label>Estado de la tesis</label><select id="wlfFThesis">
+        <option value="intact"${d.thesisStatus==='intact'?' selected':''}>Intacta</option>
+        <option value="weakening"${d.thesisStatus==='weakening'?' selected':''}>Debilitándose</option>
+        <option value="invalidated"${d.thesisStatus==='invalidated'?' selected':''}>Invalidada</option>
+      </select></div>
+      <div class="field"><label>Score del sistema</label><input value="${isFinite(a.score)?a.score+'/100 · '+a.status:'sin datos'}" disabled></div>
+    </div>
+    <div class="wlTwo">
+      <div class="field"><label>Target</label><input id="wlfFTarget" type="number" step="0.000001" value="${d.target||''}"></div>
+      <div class="field"><label>Invalidación</label><input id="wlfFStop" type="number" step="0.000001" value="${d.stop||''}"></div>
+    </div>
+    <div class="field"><label>Próxima acción</label><input id="wlfFNext" value="${esc(d.nextAction||'')}" placeholder="Esperar cierre sobre 184"></div>
+    <div class="field"><label>Nota opcional</label><textarea id="wlfFNote" rows="2"></textarea></div>`,
+  ()=>{
+    const p=Number($('wlfFPrice').value);
+    d.followUps.push({id:uid(),date:$('wlfFDate').value||todayIso(),price:isFinite(p)?p:'',
+      assessment:wlModalCtx?.assessment||a.status,score:isFinite(a.score)?a.score:'',
+      thesisStatus:$('wlfFThesis').value,whatChanged:$('wlfFChanged').value.trim(),
+      nextAction:$('wlfFNext').value.trim(),note:$('wlfFNote').value.trim()});
+    d.followUps.sort((x,y)=>new Date(x.date)-new Date(y.date));
+    d.thesisStatus=$('wlfFThesis').value;
+    d.target=Number($('wlfFTarget').value)||'';
+    d.stop=Number($('wlfFStop').value)||'';
+    d.nextAction=$('wlfFNext').value.trim();
+    persist('Follow-up agregado. El estado se recalculó.');
+  },'Guardar follow-up');
+};
+window.wlPickAssessment=function(s){
+  wlModalCtx=wlModalCtx||{};wlModalCtx.assessment=s;
+  [...$('wlfSeg').children].forEach(b=>b.classList.toggle('on',b.textContent.trim()===s));
+};
+
+/* ---------------------------------------------------------------- refresh masivo */
+window.wlRefreshAll=async function(){
+  const syms=(state.watch||[]).map(clean);
+  toast('Actualizando '+syms.length+' activos…');
+  for(const s of syms){try{await refreshOne(s)}catch(e){}try{await wlEnsureTech(s,true)}catch(e){}}
+  persist('Watchlist actualizada.');
+};
+
+/* ---------------------------------------------------------------- navegación */
+function switchTab(tab){
+  activeTab=tab;
+  ['home','research','watch','portfolio','records','data'].forEach(t=>{
+    $('tab-'+t)?.classList.toggle('hidden',t!==tab);
+    document.querySelector(`[data-tab="${t}"]`)?.setAttribute('aria-pressed',t===tab);
+  });
+  document.body.classList.toggle('wlWide',tab==='watch');
+  if(tab!=='watch')wlClose();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ---------------------------------------------------------------- arranque del módulo */
+function wlInit(){
+  wlEnsureState();
+  $('wlSort')?.addEventListener('change',e=>{wlSort=e.target.value;renderWatch()});
+  $('wlFilter')?.addEventListener('change',e=>{wlFilter=e.target.value;renderWatch()});
+  $('wlRefreshBtn')?.addEventListener('click',wlRefreshAll);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('wlModalEl')?.classList.contains('open'))wlCloseModal();else if(wlOpenSym)wlClose()}});
+  /* técnica en segundo plano para los primeros símbolos, sin bloquear la UI */
+  setTimeout(async()=>{for(const s of (state.watch||[]).map(clean).slice(0,12)){await wlEnsureTech(s);renderWatch()}},1200);
+}
+
+window.wlOpenSymbol=function(){return wlOpenSym};
 applyTheme();
 init();
+wlInit();
 </script>
 </body>
 </html>

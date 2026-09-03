@@ -797,6 +797,101 @@ body.wlWide .app{max-width:1180px}
   .wlToolbar{grid-template-columns:1fr 1fr}
 }
 
+/* ==========================================================================================
+   V3.1 — mini charts, menú del FAB, perfil de riesgo, curva semanal y pulido visual
+   ========================================================================================== */
+
+/* ---------- mini gráfico 5D en la watchlist ---------- */
+.wlMiniWrap{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--card2);
+  padding:4px 5px 2px;overflow:hidden}
+.wlMini{display:block;width:100%;height:56px}
+.wlMiniTag{position:absolute;left:7px;top:5px;font-size:.48rem;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dim)}
+.wlMiniVal{position:absolute;right:7px;top:5px;font-size:.55rem;font-weight:900;font-variant-numeric:tabular-nums}
+.wlMiniEmpty{display:flex;align-items:center;justify-content:center;height:56px;color:var(--dim);
+  font-size:.58rem;font-weight:800}
+
+/* ---------- menú del botón + ---------- */
+.fabMenuBack{position:fixed;inset:0;z-index:95;background:rgba(21,34,56,.42);opacity:0;pointer-events:none;transition:.18s}
+.fabMenuBack.open{opacity:1;pointer-events:auto}
+.fabMenu{position:fixed;right:16px;bottom:calc(var(--navh) + 76px);z-index:96;display:grid;gap:7px;
+  transform:translateY(10px) scale(.96);opacity:0;pointer-events:none;transition:.18s;transform-origin:bottom right}
+.fabMenu.open{transform:none;opacity:1;pointer-events:auto}
+.fabItem{display:grid;grid-template-columns:32px 1fr;gap:9px;align-items:center;text-align:left;
+  border:1px solid var(--line);background:var(--card);border-radius:14px;padding:9px 13px 9px 9px;
+  box-shadow:var(--shadow);min-width:216px}
+.fabItem i{font-style:normal;font-size:1rem;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
+  background:var(--card2)}
+.fabItem b{display:block;font-size:.76rem;font-weight:850}
+.fabItem span{display:block;color:var(--muted);font-size:.58rem;font-weight:700;line-height:1.25}
+.fab.open{transform:rotate(45deg)}
+
+/* ---------- perfil de riesgo simplificado ---------- */
+.rpProfiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.rpProfile{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 6px;text-align:center}
+.rpProfile b{display:block;font-size:.68rem;font-weight:900}
+.rpProfile span{display:block;color:var(--dim);font-size:.52rem;font-weight:800;margin-top:2px;line-height:1.25}
+.rpProfile.on{border-color:var(--blue);background:var(--blue2);box-shadow:inset 0 0 0 1px var(--blue)}
+.rpProfile.on b{color:var(--blue)}
+.rpSummary{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+.rpCell{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:5px 4px;text-align:center}
+.rpCell span{display:block;color:var(--dim);font-size:.46rem;font-weight:900;text-transform:uppercase;letter-spacing:.03em}
+.rpCell b{font-size:.74rem;font-weight:900;font-variant-numeric:tabular-nums}
+.rpAdvanced{margin-top:6px}
+.rpAdvanced>summary{cursor:pointer;color:var(--muted);font-size:.6rem;font-weight:850;
+  list-style:none;padding:6px 0}
+.rpAdvanced>summary::-webkit-details-marker{display:none}
+.rpAdvanced>summary:before{content:'▸ ';color:var(--dim)}
+.rpAdvanced[open]>summary:before{content:'▾ '}
+.rpAuto{display:grid;grid-template-columns:1fr;gap:5px;margin-bottom:8px}
+.rpAutoNote{color:var(--muted);font-size:.58rem;line-height:1.35;font-weight:700}
+
+/* ---------- curva de capital semanal, compacta ---------- */
+.equitySvg{height:auto!important;max-height:96px}
+.eqWeek{display:block;width:100%;height:auto}
+.eqStrip{display:flex;align-items:center;gap:8px;border:1px dashed var(--line);border-radius:11px;
+  padding:8px 10px;color:var(--dim);font-size:.62rem;font-weight:800}
+.eqLegend{display:flex;gap:9px;flex-wrap:wrap;margin-top:5px;font-size:.52rem;color:var(--dim);font-weight:850}
+.eqLegend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:3px;vertical-align:-1px}
+.equityChartWrap{padding:9px 10px}
+.equityChartHead{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:2px}
+.equityChartHead b{font-size:.74rem;font-weight:900}
+.equityChartHead span{color:var(--dim);font-size:.52rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+
+/* ---------- notas del diario ---------- */
+.noteCard{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;background:var(--card);
+  padding:9px 10px;margin-bottom:7px;position:relative}
+.noteCard b{font-size:.7rem;font-weight:900}
+.noteCard time{color:var(--dim);font-size:.55rem;font-weight:850;margin-left:6px}
+.noteCard p{margin:4px 0 0;font-size:.68rem;color:var(--muted);line-height:1.45;white-space:pre-wrap}
+.noteCard .xbtn{position:absolute;right:6px;top:6px}
+.notesHead{display:flex;justify-content:space-between;align-items:baseline;margin:2px 0 7px}
+.notesHead b{font-size:.78rem;font-weight:900}
+.notesHead span{color:var(--dim);font-size:.55rem;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+
+/* ---------- pulido general ---------- */
+.wlPrice,.wlDay,.wlScore,.wlMetric b,.wlStat b,.out b,.execCard b,.ledgerKpi b,.metricValue,.fact b,
+.rpCell b,.equityValue,.growthBadge{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.navBtn[aria-pressed="true"]{color:var(--blue);position:relative}
+.navBtn[aria-pressed="true"]:after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  width:20px;height:3px;border-radius:99px;background:var(--blue)}
+.card,.wlRow,.wlDecide,.wlChartCard,.wlReview{transition:border-color .15s,box-shadow .15s,transform .12s}
+.wlRow:hover{border-color:rgba(76,123,240,.35)}
+select{appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 15px) calc(50% + 1px),calc(100% - 10px) calc(50% + 1px);
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:28px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(76,123,240,.16)}
+.btn:focus-visible,.wlTf:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
+::-webkit-scrollbar-track{background:transparent}
+.section h2{letter-spacing:-.01em}
+.empty{background:var(--card2)}
+@media (min-width:700px){
+  .fabMenu{right:calc(50% - 280px + 16px)}
+}
+
 </style>
 </head>
 <body>
@@ -1016,6 +1111,7 @@ body.wlWide .app{max-width:1180px}
       <div class="calendarLegend"><span><i class="trade"></i>día en trade</span><span><i class="quarter"></i>inicio trimestre</span><span><i class="event"></i>earnings/evento</span></div>
     </div>
     <div class="patternGrid" id="patternStats"></div>
+    <div id="journalNotes"></div>
     <div class="field"><label>Buscar</label><input id="searchRecords" placeholder="Símbolo, nota, dirección…"></div>
     <div class="list" id="recordsList"></div>
   </div>
@@ -1065,7 +1161,13 @@ body.wlWide .app{max-width:1180px}
 </div>
 
 <!-- ============ FAB + BOTTOM NAV ============ -->
-<button class="fab" type="button" onclick="openTradeBuilder()" aria-label="Nueva operación">＋</button>
+<div class="fabMenuBack" id="fabMenuBack" onclick="mmFabToggle(false)"></div>
+<div class="fabMenu" id="fabMenu">
+  <button class="fabItem" type="button" onclick="mmFabPick('note')"><i>📝</i><div><b>Nota en el diario</b><span>Registra lo que viste y decidiste</span></div></button>
+  <button class="fabItem" type="button" onclick="mmFabPick('pos')"><i>📊</i><div><b>Agregar al portafolio</b><span>Alta rápida de una posición abierta</span></div></button>
+  <button class="fabItem" type="button" onclick="mmFabPick('trade')"><i>⚙</i><div><b>Nueva transacción</b><span>Trade builder con riesgo y tamaño</span></div></button>
+</div>
+<button class="fab" type="button" onclick="mmFabToggle()" aria-label="Acciones rápidas">＋</button>
 <nav class="bottomNav" aria-label="Navegación principal">
   <button class="navBtn" data-tab="home" type="button"><i>🏠</i>Inicio</button>
   <button class="navBtn" data-tab="research" type="button"><i>🔍</i>Research</button>
@@ -1119,13 +1221,21 @@ body.wlWide .app{max-width:1180px}
     </div>
     <div class="field"><label>% usado del capital disponible</label><input id="tradePct" type="number" min="0" max="100" step="0.1" placeholder="50"></div>
     <div class="riskPolicy">
-      <div class="riskPolicyHead"><b>Mandato de riesgo</b><span>límites del portafolio</span></div>
+      <div class="riskPolicyHead"><b>Mandato de riesgo</b><span>elige un perfil, no rellenes números</span></div>
+      <div class="rpProfiles" id="rpProfiles"></div>
+      <div class="rpSummary" id="rpSummary"></div>
+      <div class="rpAuto">
+        <button class="btn primary block" type="button" id="rpAutoBtn">⚡ Configurar automáticamente</button>
+        <div class="rpAutoNote" id="rpAutoNote">Toma el precio actual, calcula la invalidación con el ATR 14, deriva el target según tu R:R mínimo y ajusta la cantidad exacta que respeta el perfil. No tienes que llenar nada más.</div>
+      </div>
+      <details class="rpAdvanced"><summary>Ajuste avanzado (opcional)</summary>
       <div class="riskPolicyGrid">
         <div class="field"><label>Riesgo máx. por trade %</label><input id="riskPct" type="number" min="0.05" max="20" step="0.05" placeholder="1"></div>
         <div class="field"><label>Máximo por posición %</label><input id="maxPositionPct" type="number" min="1" max="100" step="1" placeholder="25"></div>
         <div class="field"><label>Reserva mínima %</label><input id="reservePct" type="number" min="0" max="95" step="1" placeholder="10"></div>
         <div class="field"><label>R:R mínimo exigido</label><input id="minRR" type="number" min="0.25" max="20" step="0.25" placeholder="2"><div class="fieldHint">Es una regla, no el resultado: el R:R real de tu trade se calcula solo abajo, desde Target y Stop.</div></div>
       </div>
+      </details>
     </div>
     <div class="calcOut institutionalOutputs">
       <div class="out"><span>Monto asignado</span><b id="exposureOut">—</b><em id="exposureHelp">Monto real / presupuesto</em></div>
@@ -2711,6 +2821,7 @@ function renderWatch(){
         <div class="wlMetric"><span>Último follow-up</span><b>${a.lastFollow?wlShort(a.lastFollow.date):'—'}</b></div>
         <div class="wlMetric"><span>Setup</span><b>${wlShort(d.setupDate)} · ${d.setupPrice?money(d.setupPrice):'—'}</b></div>
       </div>
+      ${wlMiniSvg(sym)}
       ${rail}
       ${flags.length?`<div class="wlFlags">${flags.join('')}</div>`:''}
       <div class="wlNext"><b>Siguiente:</b> ${esc(a.nextAction)}</div>
@@ -3127,9 +3238,284 @@ function wlInit(){
 }
 
 window.wlOpenSymbol=function(){return wlOpenSym};
+
+/* ============================ v3.1 ============================ */
+/* ==========================================================================================
+   V3.1 — mini gráficos 5D, menú del FAB, notas del diario, alta rápida al portafolio,
+   mandato de riesgo automático y curva de capital semanal compacta.
+   ========================================================================================== */
+
+/* ---------------------------------------------------------------- mini gráfico 5D + SMA 20 */
+function wlMiniPoints(sym){
+  sym=clean(sym);
+  const m=state.mini[sym]||{};
+  const a=(m.m15d5||[]).map(Number).filter(isFinite);
+  if(a.length>=8)return a;
+  const q=currentQuote(sym)||{};
+  const b=(q.points||[]).map(Number).filter(isFinite);
+  return b.length>=6?b:[];
+}
+function wlMiniSvg(sym){
+  const pts=wlMiniPoints(sym);
+  if(pts.length<6)return `<div class="wlMiniWrap"><div class="wlMiniEmpty">Sin velas de 5 días — pulsa ↻ Actualizar</div></div>`;
+  const W=300,H=56,PT=6,PB=50;
+  const arr=pts.slice(-140);
+  const sma=arr.map((_,i)=>i<19?null:arr.slice(i-19,i+1).reduce((a,b)=>a+b,0)/20);
+  const vals=[...arr,...sma.filter(Number.isFinite)];
+  const min=Math.min(...vals),max=Math.max(...vals),rng=(max-min)||1;
+  const x=i=>i/(arr.length-1)*W, y=v=>PB-((v-min)/rng)*(PB-PT);
+  const line=arr.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const smaLine=sma.map((v,i)=>Number.isFinite(v)?`${x(i).toFixed(1)},${y(v).toFixed(1)}`:null).filter(Boolean).join(' ');
+  const chg=arr[0]?(arr.at(-1)/arr[0]-1)*100:NaN;
+  const col=chg>=0?'var(--green)':'var(--red)';
+  const gid='g'+clean(sym).replace(/[^A-Z0-9]/g,'');
+  const base=y(arr[0]).toFixed(1);
+  return `<div class="wlMiniWrap">
+    <span class="wlMiniTag">5 días · 15 min · SMA 20</span>
+    <span class="wlMiniVal ${cls(chg)}">${isFinite(chg)?pct(chg):''}</span>
+    <svg class="wlMini" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${col}" stop-opacity=".26"/><stop offset="100%" stop-color="${col}" stop-opacity="0"/>
+      </linearGradient></defs>
+      <line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="var(--line)" stroke-dasharray="3 3" stroke-width="1"/>
+      <polygon points="0,${PB} ${line} ${W},${PB}" fill="url(#${gid})"/>
+      ${smaLine?`<polyline points="${smaLine}" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>`:''}
+      <polyline points="${line}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${x(arr.length-1).toFixed(1)}" cy="${y(arr.at(-1)).toFixed(1)}" r="2.6" fill="${col}"/>
+    </svg></div>`;
+}
+async function wlEnsureMini(sym){
+  sym=clean(sym);
+  if(wlMiniPoints(sym).length>=8)return;
+  try{await refreshOne(sym)}catch(e){}
+}
+
+/* ---------------------------------------------------------------- notas del diario */
+function mmNotes(){if(!Array.isArray(state.notes))state.notes=[];return state.notes}
+function renderJournalNotes(){
+  const box=$('journalNotes');if(!box)return;
+  const arr=mmNotes();
+  box.innerHTML=`<div class="notesHead"><b>📝 Notas del diario</b><span>${arr.length} nota${arr.length===1?'':'s'}</span></div>`+
+    (arr.length?arr.map(n=>`<div class="noteCard">
+      <button class="xbtn" onclick="mmDeleteNote('${n.id}')" title="Eliminar">×</button>
+      <b>${esc(n.symbol||'General')}</b><time>${new Date(n.date).toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'})}</time>
+      <p>${esc(n.text)}</p></div>`).join('')
+      :'<div class="empty">Sin notas todavía. Usa el botón ＋ para escribir la primera.</div>');
+}
+window.mmDeleteNote=function(id){state.notes=mmNotes().filter(n=>n.id!==id);persist('Nota eliminada.')};
+window.mmNoteModal=function(prefill){
+  const sym=clean(prefill||state.settings.activeSymbol||'');
+  wlModal('Nueva nota del diario',`
+    <div class="field"><label>Símbolo (opcional)</label><input id="mmNoteSym" value="${esc(sym)}" placeholder="NVDA · déjalo vacío para una nota general" style="text-transform:uppercase"></div>
+    <div class="field"><label>Nota</label><textarea id="mmNoteText" rows="5" placeholder="Qué viste, qué sentiste, qué decidiste y por qué."></textarea></div>
+    <div class="rpAutoNote">Las notas quedan en el Diario, junto al calendario y a tus operaciones. Nunca salen de este navegador.</div>`,
+  ()=>{
+    const t=$('mmNoteText').value.trim();
+    if(!t){toast('Escribe la nota antes de guardar.');return false}
+    mmNotes().unshift({id:uid(),date:new Date().toISOString(),symbol:clean($('mmNoteSym').value),text:t});
+    state.notes=mmNotes().slice(0,300);
+    persist('Nota guardada en el diario.');switchTab('records');
+  },'Guardar nota');
+};
+
+/* ---------------------------------------------------------------- alta rápida al portafolio */
+window.mmQuickPositionModal=function(prefill){
+  const sym=clean(prefill||state.settings.activeSymbol||''),q=currentQuote(sym)||{};
+  const d=sym?wlD(sym):null;
+  wlModal('Agregar al portafolio',`
+    <div class="wlTwo">
+      <div class="field"><label>Símbolo</label><input id="mmQpSym" value="${esc(sym)}" style="text-transform:uppercase" placeholder="NVDA"></div>
+      <div class="field"><label>Dirección</label><select id="mmQpDir"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select></div>
+    </div>
+    <div class="wlThree">
+      <div class="field"><label>Precio</label><input id="mmQpPrice" type="number" step="0.000001" value="${isFinite(q.price)?q.price:''}"></div>
+      <div class="field"><label>Cantidad</label><input id="mmQpQty" type="number" step="0.000001" placeholder="10"></div>
+      <div class="field"><label>Fecha</label><input id="mmQpDate" type="date" value="${todayIso()}"></div>
+    </div>
+    <div class="wlTwo">
+      <div class="field"><label>Target</label><input id="mmQpTarget" type="number" step="0.000001" value="${d?.target||''}"></div>
+      <div class="field"><label>Stop</label><input id="mmQpStop" type="number" step="0.000001" value="${d?.stop||''}"></div>
+    </div>
+    <div class="field"><label>Nota / razón</label><input id="mmQpNote" placeholder="Ruptura confirmada con volumen"></div>
+    <div class="rpAutoNote">Crea la posición abierta directamente en portafolio y diario, y la registra también como entrada en la watchlist si el símbolo está allí.</div>`,
+  ()=>{
+    const s=clean($('mmQpSym').value),p=Number($('mmQpPrice').value),qy=Number($('mmQpQty').value);
+    if(!s){toast('Falta el símbolo.');return false}
+    if(!isFinite(p)||p<=0||!isFinite(qy)||qy<=0){toast('Precio y cantidad deben ser mayores a cero.');return false}
+    const amount=p*qy, date=$('mmQpDate').value||todayIso();
+    const target=Number($('mmQpTarget').value)||'',stop=Number($('mmQpStop').value)||'';
+    state.records.unshift({id:uid(),symbol:s,direction:$('mmQpDir').value,entry:p,qty:qy,tradeAmount:amount,
+      entryTime:new Date(date+'T12:00:00').toISOString(),target,stop,note:$('mmQpNote').value.trim(),
+      capital:state.settings.capital,status:'OPEN',exitPrice:'',exitTime:'',createdAt:new Date().toISOString(),quickAdd:true});
+    if(!state.watch.map(clean).includes(s))state.watch.push(s);
+    const wd=wlD(s);
+    wd.entries.push({id:uid(),date,price:p,qty:qy,investment:amount,reason:$('mmQpNote').value.trim()||'Alta rápida'});
+    wd.entries.sort((a,b)=>new Date(a.date)-new Date(b.date));
+    if(!wd.setupPrice)wd.setupPrice=p;
+    if(target&&!wd.target)wd.target=target;
+    if(stop&&!wd.stop)wd.stop=stop;
+    persist('Posición agregada al portafolio y a la watchlist.');switchTab('portfolio');
+  },'Agregar posición');
+};
+
+/* ---------------------------------------------------------------- menú del FAB */
+window.mmFabToggle=function(force){
+  const menu=$('fabMenu'),back=$('fabMenuBack'),fab=document.querySelector('.fab');
+  const open=force!==undefined?force:!menu.classList.contains('open');
+  menu.classList.toggle('open',open);back.classList.toggle('open',open);fab?.classList.toggle('open',open);
+};
+window.mmFabPick=function(kind){
+  mmFabToggle(false);
+  if(kind==='note')return mmNoteModal();
+  if(kind==='pos')return mmQuickPositionModal();
+  return openTradeBuilder();
+};
+
+/* ---------------------------------------------------------------- mandato de riesgo simplificado */
+const MM_PROFILES={
+  conservador:{riskPct:.5,maxPositionPct:15,reservePct:25,minRR:2.5,desc:'Preserva capital'},
+  balanceado:{riskPct:1,maxPositionPct:25,reservePct:15,minRR:2,desc:'Estándar profesional'},
+  agresivo:{riskPct:2,maxPositionPct:35,reservePct:5,minRR:1.5,desc:'Más riesgo por trade'}
+};
+window.mmSetProfile=function(name,silent){
+  const p=MM_PROFILES[name];if(!p)return;
+  state.settings.riskProfile=name;
+  state.settings.riskPct=p.riskPct;state.settings.maxPositionPct=p.maxPositionPct;
+  state.settings.reservePct=p.reservePct;state.settings.minRR=p.minRR;
+  ['riskPct','maxPositionPct','reservePct','minRR'].forEach(id=>{if($(id))$(id).value=state.settings[id]});
+  mmRenderProfiles();renderCalculator();renderExecutiveStrip();
+  localStorage.setItem(KEY,JSON.stringify(state));
+  if(!silent)toast(`Perfil ${name}: riesgo ${p.riskPct}% · máx. ${p.maxPositionPct}% · reserva ${p.reservePct}% · R:R ${p.minRR}`);
+};
+function mmRenderProfiles(){
+  const box=$('rpProfiles');if(!box)return;
+  const cur=state.settings.riskProfile||mmDetectProfile();
+  box.innerHTML=Object.entries(MM_PROFILES).map(([k,p])=>`<button type="button" class="rpProfile ${k===cur?'on':''}" onclick="mmSetProfile('${k}')">
+    <b>${k[0].toUpperCase()+k.slice(1)}</b><span>${p.desc}<br>riesgo ${p.riskPct}% · R:R ${p.minRR}</span></button>`).join('');
+  const s=state.settings;
+  const sum=$('rpSummary');
+  if(sum)sum.innerHTML=[['Riesgo/trade',s.riskPct+'%'],['Máx. posición',s.maxPositionPct+'%'],
+    ['Reserva',s.reservePct+'%'],['R:R mínimo',Number(s.minRR).toFixed(2)]]
+    .map(c=>`<div class="rpCell"><span>${c[0]}</span><b>${c[1]}</b></div>`).join('');
+}
+function mmDetectProfile(){
+  const s=state.settings;
+  for(const [k,p] of Object.entries(MM_PROFILES))if(Number(s.riskPct)===p.riskPct&&Number(s.minRR)===p.minRR)return k;
+  return 'balanceado';
+}
+/* Autocompleta entrada, stop, target y cantidad con las mejores condiciones disponibles */
+window.mmAutoRisk=async function(){
+  const sym=clean($('symbol').value||state.settings.activeSymbol);
+  if(!sym){toast('Escribe primero el símbolo.');return}
+  if(!state.settings.riskProfile)mmSetProfile('balanceado',true);
+  let entry=Number($('entry').value);
+  if(!isFinite(entry)||entry<=0){
+    const q=currentQuote(sym);
+    if(!q||!isFinite(q.price)){toast('Actualizando precio…');try{await refreshOne(sym)}catch(e){}}
+    entry=firstFinite(currentQuote(sym)?.price,state.research?.[sym]?.price);
+    if(!isFinite(entry)){toast('No hay precio disponible para '+sym+'.');return}
+    $('entry').value=Number(entry.toFixed(6));
+  }
+  const dir=$('direction').value,long=dir!=='SHORT';
+  let t=state.wlTech[sym];
+  if(!t){toast('Calculando volatilidad…');t=await wlEnsureTech(sym)}
+  const atr=isFinite(t?.atr14)&&t.atr14>0?t.atr14:entry*0.03;
+  const minRR=Number(state.settings.minRR||2);
+  const wd=(state.watchDetails||{})[sym]||{};
+  /* la invalidación respeta la que ya definiste en la watchlist si es coherente */
+  let stop=Number($('stop').value);
+  if(!isFinite(stop)||stop<=0){
+    const fromWatch=Number(wd.stop);
+    stop=(isFinite(fromWatch)&&fromWatch>0&&(long?fromWatch<entry:fromWatch>entry))
+      ? fromWatch : (long?entry-1.5*atr:entry+1.5*atr);
+  }
+  let target=Number($('target').value);
+  if(!isFinite(target)||target<=0){
+    const fromWatch=Number(wd.target);
+    const risk=Math.abs(entry-stop);
+    target=(isFinite(fromWatch)&&fromWatch>0&&(long?fromWatch>entry:fromWatch<entry)&&Math.abs(fromWatch-entry)/risk>=minRR)
+      ? fromWatch : (long?entry+risk*minRR:entry-risk*minRR);
+  }
+  $('stop').value=Number(stop.toFixed(6));
+  $('target').value=Number(target.toFixed(6));
+  applySettingsFromInputs();renderCalculator();
+  applyRiskSizedPosition();
+  const m=currentTradeModel();
+  $('rpAutoNote').innerHTML=`⚡ <b>Configurado con las mejores condiciones disponibles.</b><br>
+    ATR 14 de ${sym}: ${money(atr)} · invalidación a 1.5 ATR (${money(stop)}) · target a ${minRR}R (${money(target)}) ·
+    cantidad limitada por riesgo ${state.settings.riskPct}%, máximo por posición ${state.settings.maxPositionPct}% y reserva ${state.settings.reservePct}%.
+    ${isFinite(m.levels.rr)?`R:R resultante ${m.levels.rr.toFixed(2)}:1.`:''}`;
+  toast('Riesgo, stop, target y cantidad calculados.');
+};
+
+/* ---------------------------------------------------------------- curva de capital semanal */
+function mmWeeklyBuckets(path){
+  const arr=(path||[]).filter(p=>isFinite(p.value)&&p.date instanceof Date&&!isNaN(p.date));
+  if(!arr.length)return [];
+  const map=new Map();
+  for(const p of arr){
+    const d=new Date(p.date),day=(d.getDay()+6)%7,ws=new Date(d.getFullYear(),d.getMonth(),d.getDate()-day);
+    map.set(localDateKey(ws),{date:ws,value:p.value});
+  }
+  return [...map.values()].sort((a,b)=>a.date-b.date).slice(-14);
+}
+/* Reemplaza la línea plana original: barras de variación semanal + línea de patrimonio */
+function equityPathSvg(points,initial){
+  const weeks=mmWeeklyBuckets(points);
+  if(weeks.length<2){
+    const last=(points||[]).filter(p=>isFinite(p.value)).at(-1)?.value;
+    return `<div class="eqStrip"><b style="color:var(--ink);font-size:.8rem">${money(isFinite(last)?last:initial)}</b>
+      <span>La curva semanal aparece con dos semanas de historial. Base ${money(initial)}.</span></div>`;
+  }
+  const W=300,H=88,PT=8,PB=58,VB=84,VT=64;
+  const vals=weeks.map(w=>w.value),min=Math.min(...vals,initial),max=Math.max(...vals,initial),rng=(max-min)||1;
+  const x=i=>weeks.length===1?W/2:i/(weeks.length-1)*W;
+  const y=v=>PB-((v-min)/rng)*(PB-PT);
+  const deltas=weeks.map((w,i)=>i?w.value-weeks[i-1].value:w.value-initial);
+  const dmax=Math.max(...deltas.map(Math.abs),1);
+  const bw=Math.max(3,W/weeks.length*.5);
+  const mid=(VT+VB)/2;
+  const bars=deltas.map((d,i)=>{const h=Math.abs(d)/dmax*((VB-VT)/2);
+    return `<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(d>=0?mid-h:mid).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,h).toFixed(1)}" rx="1" fill="${d>=0?'var(--green)':'var(--red)'}" opacity=".8"><title>${localDateKey(weeks[i].date)}: ${money(d)}</title></rect>`}).join('');
+  const line=weeks.map((w,i)=>`${x(i).toFixed(1)},${y(w.value).toFixed(1)}`).join(' ');
+  const positive=weeks.at(-1).value>=initial;
+  const col=positive?'var(--green)':'var(--red)';
+  const baseY=y(initial).toFixed(1);
+  const wins=deltas.filter(d=>d>0).length;
+  return `<svg class="eqWeek" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <line x1="0" y1="${baseY}" x2="${W}" y2="${baseY}" stroke="var(--line)" stroke-dasharray="3 3" stroke-width="1"/>
+    <polyline points="${line}" fill="none" stroke="${col}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${weeks.map((w,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(w.value).toFixed(1)}" r="1.8" fill="${col}"><title>${localDateKey(w.date)} · ${money(w.value)}</title></circle>`).join('')}
+    <line x1="0" y1="${mid}" x2="${W}" y2="${mid}" stroke="var(--line)" stroke-width="1"/>
+    ${bars}</svg>
+  <div class="eqLegend"><span><i style="background:${col}"></i>patrimonio semanal</span>
+    <span><i style="background:var(--green)"></i>semanas en verde: ${wins}/${deltas.length}</span>
+    <span>base ${money(initial)}</span></div>`;
+}
+
+/* ---------------------------------------------------------------- render maestro ampliado */
+function render(){
+  renderGreeting();renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();
+  renderCalculator();renderExecutiveStrip();renderHomeMoney();renderCharts();renderResearch();
+  renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();
+  renderJournalNotes();mmRenderProfiles();
+}
+
+/* ---------------------------------------------------------------- arranque v3.1 */
+function mmInit(){
+  if(!state.settings.riskProfile)state.settings.riskProfile=mmDetectProfile();
+  mmRenderProfiles();renderJournalNotes();
+  $('rpAutoBtn')?.addEventListener('click',mmAutoRisk);
+  setTimeout(async()=>{
+    for(const s of (state.watch||[]).map(clean).slice(0,10)){await wlEnsureMini(s)}
+    renderWatch();
+  },2400);
+}
+
 applyTheme();
 init();
 wlInit();
+mmInit();
 </script>
 </body>
 </html>

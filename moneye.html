@@ -1286,6 +1286,32 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 
   <!-- ============ SISTEMA ============ -->
   <div id="tab-data" class="pane hidden">
+    <div class="section"><h2>Análisis profundo</h2><span>a dónde se envía el prompt</span></div>
+    <div class="researchSection">
+      <div class="field">
+        <label for="deepTarget">Destino</label>
+        <select id="deepTarget" onchange="setDeepPref('deepTarget',this.value)">
+          <option value="chatgpt">ChatGPT</option>
+          <option value="claude">Claude</option>
+          <option value="perplexity">Perplexity</option>
+          <option value="custom">GPT / Proyecto propio</option>
+        </select>
+      </div>
+      <div class="field" id="deepCustomField" hidden>
+        <label for="deepCustomUrl">URL de tu GPT o proyecto</label>
+        <input id="deepCustomUrl" placeholder="https://chatgpt.com/g/g-xxxxxxxx-analista-senior" onchange="setDeepPref('deepCustomUrl',this.value)">
+        <div class="fieldHint">Guarda el marco de 14 secciones dentro del GPT o proyecto. La app enviará solo los datos del símbolo, que es lo que nunca se trunca.</div>
+      </div>
+      <div class="field">
+        <label for="deepMode">Qué viaja en el enlace</label>
+        <select id="deepMode" onchange="setDeepPref('deepMode',this.value)">
+          <option value="full">Prompt completo (14 secciones)</option>
+          <option value="short">Solo datos del símbolo</option>
+        </select>
+        <div class="fieldHint">El prompt completo ocupa ~2.900 caracteres. Algunos destinos lo recortan; si eso pasa, el texto íntegro ya quedó en tu portapapeles.</div>
+      </div>
+      <div class="fieldHint" id="deepPreview">—</div>
+    </div>
     <div class="section"><h2>Capital de la cuenta</h2><span>base de todos los cálculos</span></div>
     <div class="researchSection">
       <div class="field">
@@ -1457,7 +1483,7 @@ let lastClampNote=null;
 let calendarCursor=new Date();
 function $(id){return document.getElementById(id)}
 function emptyBrokerData(){return {fills:[],statements:[],accountSummary:{},equities:[],profitLoss:[],latestRaw:'',latestFileName:'',latestStatementTitle:'',importedAt:'',unmatchedCloses:0,reconciledBaseCapital:NaN}}
-function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:'',theme:'dark'},profile:{name:'',onboarded:false},watch:DEFAULT_WATCH.slice(),watchDetails:{},recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
+function emptyState(){return {settings:{capital:5000,tradeAmount:1250,tradePct:25,riskPct:1,maxPositionPct:25,reservePct:10,minRR:2,activeSymbol:'TQQQ',finnhubKey:'',corsProxy:'',theme:'dark',deepTarget:'chatgpt',deepCustomUrl:'',deepMode:'full'},profile:{name:'',onboarded:false},watch:DEFAULT_WATCH.slice(),watchDetails:{},recentSymbols:['TQQQ'],quotes:{},mini:{},records:[],research:{},researchSnapshots:[],calendarEvents:[],brokerData:emptyBrokerData(),dailyBaseline:null}}
 function loadState(){
   try{
     let raw=localStorage.getItem(KEY);
@@ -3850,18 +3876,72 @@ async function copyText(txt){
     ta.remove();return ok;
   }
 }
+window.setDeepPref=function(key,val){
+  state.settings[key]=String(val||'').trim();
+  localStorage.setItem(KEY,JSON.stringify(state));
+  renderDeepSettings();
+  toast('Destino del análisis actualizado.');
+};
+function renderDeepSettings(){
+  if(!$('deepTarget'))return;
+  const st=state.settings;
+  $('deepTarget').value=st.deepTarget||'chatgpt';
+  $('deepMode').value=st.deepMode||'full';
+  $('deepCustomUrl').value=st.deepCustomUrl||'';
+  $('deepCustomField').hidden=(st.deepTarget!=='custom');
+  const sym=clean(st.activeSymbol||'NVDA');
+  const txt=(st.deepMode==='short')?deepPayloadFor(sym):deepPromptFor(sym);
+  const url=deepUrlFor(txt);
+  $('deepPreview').textContent=url?`Enlace de ejemplo para ${sym}: ${url.length.toLocaleString('es-CO')} caracteres${url.length>6000?' — probablemente se recorte, el portapapeles queda como respaldo':''}.`
+    :'Sin destino configurado: el prompt solo se copiará al portapapeles.';
+}
+/* payload corto: los datos, sin el marco — para GPT o proyecto que ya tiene las instrucciones */
+function deepPayloadFor(sym,tf){
+  sym=clean(sym);
+  const q=currentQuote(sym)||{},r=(state.research||{})[sym]||{},d=(state.watchDetails||{})[sym]||{};
+  const price=firstFinite(q.price,r.price);
+  const dat=[];
+  if(isFinite(q.changePct))dat.push(`cambio del día ${pct(q.changePct)}`);
+  if(isFinite(r.sma50))dat.push(`SMA 50 ${money(r.sma50)}`);
+  if(isFinite(r.sma200))dat.push(`SMA 200 ${money(r.sma200)}`);
+  if(isFinite(r.high52))dat.push(`máx. 52S ${money(r.high52)}`);
+  if(isFinite(r.low52))dat.push(`mín. 52S ${money(r.low52)}`);
+  if(isFinite(r.volatility20))dat.push(`volatilidad 20D ${r.volatility20.toFixed(1)}%`);
+  if(isFinite(d.setupPrice))dat.push(`mi setup ${money(d.setupPrice)}`);
+  if(isFinite(+d.target))dat.push(`mi target ${money(+d.target)}`);
+  if(isFinite(+d.stop))dat.push(`mi invalidación ${money(+d.stop)}`);
+  if(d.thesis)dat.push(`mi tesis: ${d.thesis}`);
+  return `${sym} · gráfico ${tf||'1D con contexto semanal'} · precio de referencia ${isFinite(price)?money(price):'por confirmar'}`
+    + (dat.length?` · ${dat.join(' · ')}`:'')
+    + `. Dame el análisis integral completo con la estructura de 14 secciones.`;
+}
+function deepUrlFor(text){
+  const st=state.settings,enc=encodeURIComponent(text);
+  const base={chatgpt:'https://chatgpt.com/?q=',claude:'https://claude.ai/new?q=',
+              perplexity:'https://www.perplexity.ai/search?q='}[st.deepTarget||'chatgpt'];
+  if(base)return base+enc;
+  const custom=(st.deepCustomUrl||'').trim();
+  if(!custom)return '';
+  return custom + (custom.includes('?')?'&':'?') + 'q=' + enc;
+}
 window.deepAnalysis=async function(sym,tf){
   sym=clean(sym);
-  const prompt=deepPromptFor(sym,tf);
-  const ok=await copyText(prompt);
+  const full=deepPromptFor(sym,tf);
+  const short=deepPayloadFor(sym,tf);
+  const ok=await copyText(full);
   state.deepLast={symbol:sym,at:new Date().toISOString()};
   try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
-  if(ok){
-    toast(`Prompt de ${sym} copiado — pégalo en el chat que se abre.`);
-    setTimeout(()=>window.open('https://chatgpt.com/','_blank','noopener'),450);
-  }else{
-    deepShowFallback(sym,prompt);
+  let text=(state.settings.deepMode==='short')?short:full;
+  let url=deepUrlFor(text);
+  if(url&&url.length>7500){text=short;url=deepUrlFor(short);}
+  if(!url){
+    if(ok)toast(`Prompt de ${sym} copiado. Configura el destino en Sistema.`);
+    else deepShowFallback(sym,full);
+    return;
   }
+  toast(ok?`${sym} enviado — el prompt completo también quedó copiado.`:`${sym} enviado al chat.`);
+  setTimeout(()=>window.open(url,'_blank','noopener'),300);
+  if(!ok)deepShowFallback(sym,full);
 };
 function deepShowFallback(sym,prompt){
   const box=$('findBetterWorkspace')||$('researchWorkspace');if(!box)return;
@@ -3874,7 +3954,7 @@ function render(){
   renderGreeting();renderDate();renderSettings();renderActiveOptions();renderRecentSymbols();
   renderCalculator();renderExecutiveStrip();renderHomeMoney();renderCharts();renderResearch();
   renderWatch();renderPortfolio();renderRecords();renderStorage();renderResearchVault();
-  renderJournalNotes();mmRenderProfiles();renderHomeToday();
+  renderJournalNotes();mmRenderProfiles();renderHomeToday();renderDeepSettings();
 }
 
 /* ---------------------------------------------------------------- arranque v3.1 */

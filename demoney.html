@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0910">
+<title>Decision Lab · ProfGermandario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#0B0910; --plate:#14111C; --plate2:#1A1624; --plate3:#221D2E;
+  --line:#2C2639; --soft:#201B2B;
+  --text:#EDEAF2; --text2:#C3BCD2; --muted:#958CA8; --faint:#6B6380;
+  --purple:#8C6DFF; --purple2:#A48DFF; --purpleDim:rgba(140,109,255,.14);
+  --brass:#C8A45C; --brassDim:rgba(200,164,92,.13);
+  --pos:#3FCB82; --posDim:rgba(63,203,130,.13);
+  --neg:#F0625F; --negDim:rgba(240,98,95,.13);
+  --amber:#FFA23A; --amberDim:rgba(255,162,58,.13);
+  --f:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --m:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+  --r:10px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink);color:var(--text);font-family:var(--f);font-size:15px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;padding-bottom:calc(64px + env(safe-area-inset-bottom,0px));
+}
+h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--purple2)}
+:focus-visible{outline:2px solid var(--purple2);outline-offset:2px;border-radius:4px}
+.num,.n{font-family:var(--m);font-variant-numeric:tabular-nums}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .warn{color:var(--amber)} .mute{color:var(--muted)}
+
+/* ---------- layout ---------- */
+.top{
+  position:sticky;top:0;z-index:30;background:rgba(11,9,16,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.brand{display:flex;flex-direction:column;line-height:1.05}
+.brand b{font-size:15px;letter-spacing:-.01em}
+.brand span{font-family:var(--m);font-size:9px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+.wrap{padding:14px;max-width:1180px;margin:0 auto}
+.view{display:none} .view.on{display:block}
+
+.nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-auto-flow:column;
+  background:rgba(20,17,28,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  padding:7px 4px calc(7px + env(safe-area-inset-bottom,0px));
+}
+.nav button{
+  border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:4px 2px;font-size:9.5px;color:var(--faint);letter-spacing:.02em;
+}
+.nav button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current="true"]{color:var(--purple2);font-weight:600}
+
+/* ---------- atoms ---------- */
+.card{background:var(--plate);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.card + .card{margin-top:10px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.head h3{font-size:14px}
+.eyebrow{font-family:var(--m);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ro{display:flex;flex-direction:column;gap:1px;min-width:0}
+.ro .k{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ro .v{font-family:var(--m);font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:-.02em}
+.ro.lg .v{font-size:24px} .ro.sm .v{font-size:13px}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 14px;border-radius:8px;
+  border:1px solid var(--line);background:var(--plate2);font-size:13.5px;font-weight:500;transition:.15s}
+.btn:hover{border-color:var(--purple)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.p{background:var(--purple);border-color:var(--purple);color:#fff}
+.btn.p:hover{background:var(--purple2)}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn.g{background:transparent}
+.btn.dngr{color:var(--neg);border-color:var(--neg);background:var(--negDim)}
+.btn.blk{width:100%}
+
+.tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--m);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.buy{color:var(--pos);border-color:var(--pos);background:var(--posDim)}
+.tag.hold{color:var(--purple2);border-color:var(--purple);background:var(--purpleDim)}
+.tag.wait{color:var(--amber);border-color:var(--amber);background:var(--amberDim)}
+.tag.sell{color:var(--neg);border-color:var(--neg);background:var(--negDim)}
+.tag.watch{color:var(--brass);border-color:var(--brass);background:var(--brassDim)}
+.tag.avoid{color:var(--faint)}
+
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld label{font-size:11.5px;color:var(--muted);font-weight:500}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  background:var(--plate2);border:1px solid var(--line);border-radius:8px;padding:10px 11px;width:100%;
+  font-family:var(--m);font-size:14px}
+textarea{font-family:var(--f);resize:vertical;min-height:70px;line-height:1.5}
+input:focus,select:focus,textarea:focus{border-color:var(--purple);outline:none}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 10px;font-family:var(--m);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--purpleDim);color:var(--purple2)}
+
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:26px 16px;text-align:center;color:var(--muted);font-size:13px}
+.empty b{display:block;color:var(--text);font-size:14.5px;margin-bottom:5px}
+
+.bar{height:6px;background:var(--plate3);border-radius:3px;overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--purple);display:block}
+.bar i.pos{background:var(--pos)} .bar i.neg{background:var(--neg)} .bar i.amber{background:var(--amber)}
+
+/* ---------- watchlist rows ---------- */
+.wrow{display:grid;grid-template-columns:88px 1fr 76px 64px;gap:8px;align-items:center;
+  padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate);margin-bottom:6px;
+  cursor:pointer;transition:border-color .15s}
+.wrow:hover{border-color:var(--purple)}
+.wrow .sy{font-family:var(--m);font-size:14px;font-weight:600;letter-spacing:.01em}
+.wrow .nm{font-size:10.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow canvas{width:100%;height:34px;display:block}
+.wrow .px{font-family:var(--m);font-size:14px;text-align:right}
+.wrow .ch{font-family:var(--m);font-size:11.5px;text-align:right}
+.wrow .st{display:flex;justify-content:flex-end}
+
+/* ---------- conditions ---------- */
+.cond{display:grid;grid-template-columns:20px 1fr auto;gap:9px;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid var(--soft);font-size:13px}
+.cond:last-child{border-bottom:0}
+.cond .ic{font-size:13px;line-height:1.2}
+.cond .lb{color:var(--text2)}
+.cond .vl{font-family:var(--m);font-size:12px;color:var(--muted);white-space:nowrap}
+.cond.ok .lb{color:var(--text)}
+
+.score{display:flex;align-items:baseline;gap:7px}
+.score b{font-family:var(--m);font-size:42px;letter-spacing:-.045em;line-height:1;font-weight:500}
+.score span{font-family:var(--m);font-size:13px;color:var(--faint)}
+
+/* ---------- timeline ---------- */
+.tl{display:grid;grid-template-columns:62px 12px 1fr;gap:9px;padding-bottom:13px;position:relative}
+.tl .w{font-family:var(--m);font-size:10px;color:var(--faint);text-align:right;padding-top:2px}
+.tl .m{position:relative}
+.tl .m i{position:absolute;left:3px;top:4px;width:7px;height:7px;border-radius:50%;background:var(--purple)}
+.tl .m::before{content:"";position:absolute;left:6px;top:12px;bottom:-8px;width:1px;background:var(--line)}
+.tl:last-child .m::before{display:none}
+.tl .b{font-size:12.5px}
+.tl .b small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+
+/* ---------- chart ---------- */
+.chartbox{position:relative}
+.chartbox canvas{width:100%;display:block;border-radius:6px}
+
+/* ---------- table ---------- */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-family:var(--m);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--faint);font-weight:400;padding:0 8px 7px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px 9px 0;border-bottom:1px solid var(--soft);vertical-align:middle}
+tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ---------- sheet / modal ---------- */
+.sheetbg{position:fixed;inset:0;background:rgba(5,4,9,.72);backdrop-filter:blur(4px);z-index:60;
+  display:flex;align-items:flex-end;justify-content:center;overflow-y:auto}
+.sheet{background:var(--plate);border:1px solid var(--line);border-radius:16px 16px 0 0;width:100%;
+  max-width:720px;padding:16px 14px calc(22px + env(safe-area-inset-bottom,0px));max-height:94vh;overflow-y:auto}
+.sheet .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.sheet .hd h3{font-size:18px;letter-spacing:-.01em}
+.grab{width:34px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));
+  background:var(--plate);border:1px solid var(--purple);padding:10px 16px;border-radius:999px;
+  font-size:12.5px;z-index:90;max-width:90vw;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+
+.note{border:1px solid var(--brass);background:var(--brassDim);border-radius:8px;padding:10px 12px;
+  font-size:12px;color:var(--text2);line-height:1.5}
+.note b{color:var(--brass)}
+.note.bad{border-color:var(--neg);background:var(--negDim)} .note.bad b{color:var(--neg)}
+
+/* ---------- selector de modo ---------- */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.modes button{
+  border:1px solid var(--line);background:var(--plate2);border-radius:9px;padding:9px 6px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.modes button b{font-size:12.5px;font-weight:600}
+.modes button span{font-family:var(--m);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.modes button[aria-pressed=true]{border-color:var(--purple);background:var(--purpleDim)}
+.modes button[aria-pressed=true] span{color:var(--purple2)}
+
+/* ---------- término del glosario ---------- */
+.term{
+  border-bottom:1px dotted var(--brass);color:var(--brass);cursor:help;
+  font-style:italic;white-space:nowrap}
+.terms{display:flex;flex-direction:column;gap:9px}
+.terms div{font-size:12.5px;line-height:1.45;color:var(--text2)}
+.terms b{color:var(--brass);font-style:italic;font-weight:500}
+
+/* ---------- zonas de compra/venta ---------- */
+.zone{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:9px 11px;border-radius:8px;border:1px solid var(--line);margin-bottom:6px}
+.zone.buy{border-color:var(--pos);background:var(--posDim)}
+.zone.sell{border-color:var(--neg);background:var(--negDim)}
+.zone .lab{font-size:11.5px;color:var(--muted)}
+.zone .val{font-family:var(--m);font-size:13.5px}
+
+/* ---------- backtest ---------- */
+.window{border:1px solid var(--line);border-radius:9px;padding:12px;background:var(--plate2)}
+.window + .window{margin-top:8px}
+.window .wh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.window .wh b{font-size:13px}
+.warn{display:flex;gap:9px;padding:10px 11px;border-radius:8px;margin-bottom:7px;font-size:12.5px;line-height:1.45}
+.warn.bad{border:1px solid var(--neg);background:var(--negDim)}
+.warn.rev{border:1px solid var(--amber);background:var(--amberDim)}
+.warn.ok{border:1px solid var(--pos);background:var(--posDim)}
+.warn b{display:block;margin-bottom:3px}
+
+.legal{font-size:11px;color:var(--faint);line-height:1.5;text-align:center;padding:16px 4px 4px}
+.legal button{background:none;border:0;color:var(--brass);text-decoration:underline;font-size:11px;padding:0}
+
+.chk{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:var(--text2)}
+.chk input{width:auto;margin-top:2px;flex:none}
+
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--line);border-top-color:var(--purple);
+  border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+@media (min-width:760px){
+  .wrap{padding:20px}
+  .wrow{grid-template-columns:130px 1fr 110px 92px}
+  .g2s{grid-template-columns:1fr 1fr}
+}
+@media (max-width:420px){
+  .g4{grid-template-columns:1fr 1fr}
+  .wrow{grid-template-columns:76px 1fr 68px 56px;padding:10px;gap:6px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>Decision Lab</b><span id="brandsub">Simulacro · capital simulado</span></div>
+  <div class="row" style="gap:6px">
+    <button class="btn sm g" id="btnRefresh" title="Actualizar precios" aria-label="Actualizar precios">⟳</button>
+    <button class="btn sm g" id="btnSettings" title="Ajustes" aria-label="Ajustes">⚙</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view on" id="v-home" aria-label="Hoy"></section>
+  <section class="view" id="v-watch" aria-label="Watchlist"></section>
+  <section class="view" id="v-trade" aria-label="Operar"></section>
+  <section class="view" id="v-port" aria-label="Portafolio"></section>
+  <section class="view" id="v-diary" aria-label="Diario"></section>
+  <section class="view" id="v-asset" aria-label="Activo"></section>
+  <section class="view" id="v-backtest" aria-label="Backtest Lab"></section>
+</main>
+
+<nav class="nav" id="nav" aria-label="Navegación principal">
+  <button data-go="home" aria-current="true">
+    <svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>Hoy</span>
+  </button>
+  <button data-go="watch">
+    <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span>Watchlist</span>
+  </button>
+  <button data-go="trade" id="navTrade">
+    <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-8"/><path d="M14 7h6v6"/></svg><span>Operar</span>
+  </button>
+  <button data-go="port">
+    <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><span>Portafolio</span>
+  </button>
+  <button data-go="diary">
+    <svg viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 012 2v14H7a2 2 0 01-2-2z"/><path d="M9 8h7M9 12h7M9 16h4"/></svg><span>Diario</span>
+  </button>
+</nav>
+
+<script>
+/* ============================================================
+   DECISION LAB — simulacro de decisiones con mercado real
+   ProfGermandario · archivo único, local-first
+   Módulo 1/6 — estado, almacenamiento y utilidades
+   ============================================================ */
+"use strict";
+
+var DL = {};
+
+/* ---------- estado ---------- */
+DL.KEY = "dlab.v1";
+DL.S = {
+  profile: {
+    name: "", capital: 3000, maxDailyPct: 20, maxRiskPct: 2, proxy: "", setup: false,
+    accepted: false,            // aviso legal aceptado
+    mode: "swing",              // scalp | swing | backtest
+    minVolume: 5000000,         // scalping: liquidez mínima del día
+    intradayMin: 0.2,           // scalping: rango de variación buscado
+    intradayMax: 0.5,
+    maxHoldHours: 2             // scalping: cuánto puede durar una posición
+  },
+  watch: [],      // {sym,name,note,addedAt,goalBuy,goalSell}
+  pos: [],        // posiciones simuladas (abiertas y cerradas)
+  diary: [],      // {id,sym,t,kind,text,pxAt}
+  lastSync: 0
+};
+
+DL.load = function () {
+  try {
+    var raw = localStorage.getItem(DL.KEY);
+    if (raw) {
+      var d = JSON.parse(raw);
+      DL.S.profile = Object.assign(DL.S.profile, d.profile || {});
+      DL.S.watch = d.watch || [];
+      DL.S.pos = d.pos || [];
+      DL.S.diary = d.diary || [];
+      DL.S.lastSync = d.lastSync || 0;
+    }
+  } catch (e) { console.warn("load", e); }
+};
+DL.save = function () {
+  try { localStorage.setItem(DL.KEY, JSON.stringify(DL.S)); }
+  catch (e) { console.warn("save", e); }
+};
+DL.uid = function (p) {
+  return (p || "x") + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+};
+
+/* ---------- formato ---------- */
+DL.money = function (n, dp) {
+  if (n == null || isNaN(n)) return "—";
+  dp = dp == null ? 2 : dp;
+  var s = Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  return (n < 0 ? "-$" : "$") + s;
+};
+DL.sgn = function (n, dp) {
+  if (n == null || isNaN(n)) return "—";
+  return (n > 0 ? "+" : "") + DL.money(n, dp);
+};
+DL.pct = function (n, dp) {
+  if (n == null || isNaN(n)) return "—";
+  dp = dp == null ? 2 : dp;
+  return (n > 0 ? "+" : n < 0 ? "-" : "") + Math.abs(n).toFixed(dp) + "%";
+};
+DL.pctp = function (n, dp) { // porcentaje sin signo forzado
+  if (n == null || isNaN(n)) return "—";
+  return n.toFixed(dp == null ? 1 : dp) + "%";
+};
+DL.qty = function (n) {
+  if (n == null || isNaN(n)) return "—";
+  return n.toLocaleString("en-US", { maximumFractionDigits: 4 });
+};
+DL.tone = function (n) {
+  if (n == null || isNaN(n) || Math.abs(n) < 1e-9) return "";
+  return n > 0 ? "pos" : "neg";
+};
+DL.esc = function (s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+};
+DL.day = function (ts) {
+  return new Date(ts).toLocaleDateString("es", { day: "2-digit", month: "short" });
+};
+DL.ago = function (ts) {
+  if (!ts) return "—";
+  var d = Math.floor((Date.now() - ts) / 86400000);
+  return d <= 0 ? "hoy" : d === 1 ? "ayer" : "hace " + d + "d";
+};
+
+/* ---------- DOM ---------- */
+DL.el = function (html) {
+  var d = document.createElement("div");
+  d.innerHTML = html.trim();
+  return d.firstElementChild;
+};
+DL.$ = function (s, r) { return (r || document).querySelector(s); };
+DL.$$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+var toastT = null;
+DL.toast = function (msg) {
+  var old = DL.$(".toast"); if (old) old.remove();
+  var n = DL.el('<div class="toast" role="status">' + DL.esc(msg) + "</div>");
+  document.body.appendChild(n);
+  clearTimeout(toastT);
+  toastT = setTimeout(function () { n.remove(); }, 3000);
+};
+
+/* hoja inferior (bottom sheet) — el patrón de diálogo en móvil */
+DL.sheet = function (title, bodyNode, footNode) {
+  var bg = DL.el('<div class="sheetbg"></div>');
+  var sh = DL.el('<div class="sheet" role="dialog" aria-modal="true"></div>');
+  sh.appendChild(DL.el('<div class="grab"></div>'));
+  var hd = DL.el('<div class="hd"><h3></h3></div>');
+  hd.querySelector("h3").textContent = title;
+  var x = DL.el('<button class="btn sm g" type="button">Cerrar</button>');
+  x.onclick = close; hd.appendChild(x);
+  sh.appendChild(hd);
+  sh.appendChild(bodyNode);
+  if (footNode) sh.appendChild(footNode);
+  bg.appendChild(sh);
+  bg.addEventListener("mousedown", function (e) { if (e.target === bg) close(); });
+  document.addEventListener("keydown", onKey);
+  function onKey(e) { if (e.key === "Escape") close(); }
+  function close() { document.removeEventListener("keydown", onKey); bg.remove(); }
+  document.body.appendChild(bg);
+  return { close: close, node: sh };
+};
+
+DL.confirm = function (title, msg, onYes, yesLabel) {
+  var body = DL.el('<p style="font-size:13.5px;line-height:1.55;color:var(--text2)">' + DL.esc(msg) + "</p>");
+  var foot = DL.el('<div class="row" style="margin-top:16px;justify-content:flex-end"></div>');
+  var no = DL.el('<button class="btn">Cancelar</button>');
+  var yes = DL.el('<button class="btn p">' + DL.esc(yesLabel || "Confirmar") + "</button>");
+  no.onclick = function () { s.close(); };
+  yes.onclick = function () { s.close(); onYes(); };
+  foot.appendChild(no); foot.appendChild(yes);
+  var s = DL.sheet(title, body, foot);
+};
+
+/* ---------- átomos de render ---------- */
+DL.ro = function (k, v, cls, size) {
+  return '<div class="ro ' + (size || "") + '"><span class="k">' + DL.esc(k) +
+    '</span><span class="v ' + (cls || "") + '">' + DL.esc(v) + "</span></div>";
+};
+DL.tag = function (txt, cls) {
+  return '<span class="tag ' + (cls || "") + '">' + DL.esc(txt) + "</span>";
+};
+DL.empty = function (t, d) {
+  return '<div class="empty"><b>' + DL.esc(t) + "</b>" + DL.esc(d || "") + "</div>";
+};
+
+/* ---------- glosario mínimo: solo los términos del modo activo ----------
+   Sin glosario general. Un término se marca en el texto y al tocarlo
+   muestra su glosa en español. */
+DL.term = function (en) {
+  return '<span class="term" data-term="' + DL.esc(en) + '" role="button" tabindex="0">' + DL.esc(en) + "</span>";
+};
+DL.glossFor = function (en) {
+  var all = [];
+  Object.keys(DL.GLOSS || {}).forEach(function (k) { all = all.concat(DL.GLOSS[k]); });
+  var hit = all.filter(function (p) { return p[0].toLowerCase() === String(en).toLowerCase(); })[0];
+  return hit ? hit[1] : null;
+};
+document.addEventListener("click", function (e) {
+  var n = e.target.closest ? e.target.closest(".term") : null;
+  if (!n) return;
+  var g = DL.glossFor(n.dataset.term);
+  if (g) DL.toast(n.dataset.term + " — " + g);
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  var n = e.target && e.target.classList && e.target.classList.contains("term") ? e.target : null;
+  if (!n) return;
+  e.preventDefault();
+  var g = DL.glossFor(n.dataset.term);
+  if (g) DL.toast(n.dataset.term + " — " + g);
+});
+
+/* ---------- aviso legal ---------- */
+DL.LEGAL_SHORT = "Simulador educativo. No es asesoría financiera. Capital simulado, sin ejecución real.";
+DL.LEGAL = [
+  ["1 · Herramienta educativa",
+   "Decision Room es un simulador con fines exclusivamente educativos. No es una plataforma de inversión, no es un bróker, no es un asesor financiero y no está registrada ante ninguna autoridad de supervisión financiera."],
+  ["2 · Capital simulado",
+   "Todas las operaciones son simuladas. La aplicación no ejecuta órdenes reales, no se conecta a ninguna cuenta de bróker y no mueve dinero real en ningún momento."],
+  ["3 · No constituye asesoría",
+   "Nada de lo que muestra la aplicación — el Decision Score, las condiciones, los estados WATCH / WAIT / BUY / HOLD / SELL, los planes sugeridos o los resultados de backtest — constituye asesoría financiera, de inversión, legal, contable o tributaria, ni una recomendación de comprar o vender ningún instrumento. Son cálculos automáticos sobre datos públicos, presentados como material de práctica."],
+  ["4 · Datos de terceros",
+   "Los precios provienen de fuentes públicas de terceros (Yahoo Finance). Pueden estar retrasados, incompletos o contener errores. No se garantiza su exactitud, disponibilidad ni continuidad."],
+  ["5 · Resultados hipotéticos",
+   "Los resultados del Backtest Lab son hipotéticos y se calculan con el beneficio de la retrospectiva. No incluyen comisiones, impuestos, spread, slippage ni el impacto de la falta de liquidez. Los resultados hipotéticos tienen limitaciones conocidas y no representan operaciones reales."],
+  ["6 · Desempeño pasado",
+   "El desempeño pasado no predice ni garantiza el desempeño futuro."],
+  ["7 · Riesgo",
+   "Operar e invertir en mercados financieros implica riesgo de pérdida, que puede ser total. Nunca comprometas dinero que no puedas permitirte perder. Antes de tomar cualquier decisión con dinero real, consulta a un profesional debidamente autorizado en tu jurisdicción."],
+  ["8 · Sin garantías",
+   "La aplicación se entrega “tal cual”, sin garantía de ningún tipo. ProfGermandario y los autores no serán responsables por pérdidas, daños o perjuicios derivados del uso de esta herramienta ni de decisiones tomadas a partir de ella. El uso es bajo tu entera responsabilidad."],
+  ["9 · Tus datos",
+   "Toda tu información se guarda únicamente en el almacenamiento local de tu navegador. No se envía a ningún servidor de la aplicación."]
+];
+DL.legalSheet = function () {
+  var body = DL.el("<div></div>");
+  body.innerHTML = DL.LEGAL.map(function (p) {
+    return '<div style="margin-bottom:14px"><div class="eyebrow" style="margin-bottom:4px">' +
+      DL.esc(p[0]) + '</div><p style="font-size:12.5px;line-height:1.55;color:var(--text2)">' +
+      DL.esc(p[1]) + "</p></div>";
+  }).join("");
+  DL.sheet("Aviso legal", body);
+};
+/* ============================================================
+   Módulo 2/6 — capa de datos de mercado
+   Fuente: Yahoo Finance (pública, sin API key). El navegador del
+   estudiante hace la petición; si la red bloquea a Yahoo se intenta
+   con proxies CORS en cadena, incluido el que el usuario configure
+   en Ajustes con {url} como marcador.
+   Toda la capa está detrás de DL.MKT: cambiar de proveedor es
+   reescribir este módulo y nada más.
+   ============================================================ */
+
+DL.MKT = (function () {
+  var CKEY = "dlab.cache.v1";
+  var cache = {};
+  try { cache = JSON.parse(localStorage.getItem(CKEY) || "{}"); } catch (e) { cache = {}; }
+
+  function putCache(k, d) {
+    cache[k] = { t: Date.now(), d: d };
+    var keys = Object.keys(cache);
+    if (keys.length > 60) {  // poda: conserva lo más reciente
+      keys.sort(function (a, b) { return cache[a].t - cache[b].t; });
+      keys.slice(0, keys.length - 60).forEach(function (k2) { delete cache[k2]; });
+    }
+    try { localStorage.setItem(CKEY, JSON.stringify(cache)); } catch (e) {}
+  }
+  function getCache(k, ttl) {
+    var c = cache[k];
+    if (c && Date.now() - c.t < ttl) return c.d;
+    return null;
+  }
+  function staleCache(k) { return cache[k] ? cache[k].d : null; }
+
+  /* ---------- transporte ---------- */
+  function routes(url) {
+    var out = [];
+    var custom = (DL.S.profile.proxy || "").trim();
+    if (custom) {
+      out.push(custom.indexOf("{url}") >= 0
+        ? custom.replace("{url}", encodeURIComponent(url))
+        : custom + encodeURIComponent(url));
+    }
+    out.push(url);                                                   // directo
+    out.push("https://api.allorigins.win/raw?url=" + encodeURIComponent(url));
+    out.push("https://corsproxy.io/?url=" + encodeURIComponent(url));
+    out.push("https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url));
+    return out;
+  }
+
+  var lastError = null;
+  function getJSON(url, timeoutMs) {
+    var list = routes(url), i = 0;
+    function attempt() {
+      if (i >= list.length) return Promise.reject(lastError || new Error("sin_ruta"));
+      var target = list[i++];
+      var ctl = new AbortController();
+      var timer = setTimeout(function () { ctl.abort(); }, timeoutMs || 12000);
+      return fetch(target, { signal: ctl.signal, cache: "no-store", credentials: "omit" })
+        .then(function (r) {
+          clearTimeout(timer);
+          if (!r.ok) throw new Error("http_" + r.status);
+          return r.text();
+        })
+        .then(function (txt) {
+          var j = JSON.parse(txt);
+          if (j && j.chart && j.chart.error) throw new Error("yahoo_" + (j.chart.error.code || "error"));
+          return j;
+        })
+        .catch(function (e) { clearTimeout(timer); lastError = e; return attempt(); });
+    }
+    return attempt();
+  }
+  function lastFailure() { return lastError ? String(lastError.message || lastError) : null; }
+
+  /* ---------- parseo ---------- */
+  function parseChart(j) {
+    var r = j && j.chart && j.chart.result && j.chart.result[0];
+    if (!r || !r.timestamp || !r.indicators || !r.indicators.quote) return null;
+    var q = r.indicators.quote[0] || {};
+    var adj = r.indicators.adjclose && r.indicators.adjclose[0] ? r.indicators.adjclose[0].adjclose : null;
+    var bars = [];
+    for (var i = 0; i < r.timestamp.length; i++) {
+      var c = q.close ? q.close[i] : null;
+      if (c == null && adj) c = adj[i];
+      if (c == null) continue;                      // Yahoo deja huecos: se omiten
+      bars.push({
+        t: r.timestamp[i] * 1000,
+        o: q.open && q.open[i] != null ? q.open[i] : c,
+        h: q.high && q.high[i] != null ? q.high[i] : c,
+        l: q.low && q.low[i] != null ? q.low[i] : c,
+        c: c,
+        v: q.volume && q.volume[i] != null ? q.volume[i] : 0
+      });
+    }
+    if (!bars.length) return null;
+    var m = r.meta || {};
+    return {
+      symbol: (m.symbol || "").toUpperCase(),
+      name: m.longName || m.shortName || m.symbol || "",
+      currency: m.currency || "USD",
+      exchange: m.fullExchangeName || m.exchangeName || "",
+      price: m.regularMarketPrice != null ? m.regularMarketPrice : bars[bars.length - 1].c,
+      prevClose: m.chartPreviousClose != null ? m.chartPreviousClose
+        : (bars.length > 1 ? bars[bars.length - 2].c : bars[bars.length - 1].c),
+      marketState: m.marketState || "",
+      asOf: Date.now(),
+      bars: bars
+    };
+  }
+
+  /* ---------- API pública ---------- */
+  var TTL_DAILY = 10 * 60 * 1000;   // velas diarias: 10 min
+  var TTL_INTRA = 4 * 60 * 1000;    // intradía: 4 min
+
+  function daily(sym, force) {
+    sym = String(sym || "").trim().toUpperCase();
+    var k = "d:" + sym;
+    if (!force) { var hit = getCache(k, TTL_DAILY); if (hit) return Promise.resolve(hit); }
+    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" +
+      encodeURIComponent(sym) + "?range=1y&interval=1d&includePrePost=false";
+    return getJSON(url).then(function (j) {
+      var d = parseChart(j);
+      if (!d) throw new Error("sin_datos");
+      putCache(k, d);
+      return d;
+    }).catch(function (e) {
+      var s = staleCache(k);
+      if (s) { s.stale = true; return s; }
+      throw e;
+    });
+  }
+
+  function intraday(sym, force) {
+    sym = String(sym || "").trim().toUpperCase();
+    var k = "i:" + sym;
+    if (!force) { var hit = getCache(k, TTL_INTRA); if (hit) return Promise.resolve(hit); }
+    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" +
+      encodeURIComponent(sym) + "?range=5d&interval=30m&includePrePost=false";
+    return getJSON(url).then(function (j) {
+      var d = parseChart(j);
+      if (!d) throw new Error("sin_datos");
+      putCache(k, d);
+      return d;
+    }).catch(function (e) {
+      var s = staleCache(k);
+      if (s) { s.stale = true; return s; }
+      throw e;
+    });
+  }
+
+  /* histórico largo para el Backtest Lab — se cachea una hora */
+  function history(sym, range) {
+    sym = String(sym || "").trim().toUpperCase();
+    range = range || "5y";
+    var k = "h:" + sym + ":" + range;
+    var hit = getCache(k, 60 * 60 * 1000);
+    if (hit) return Promise.resolve(hit);
+    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" +
+      encodeURIComponent(sym) + "?range=" + range + "&interval=1d&includePrePost=false";
+    return getJSON(url, 20000).then(function (j) {
+      var d = parseChart(j);
+      if (!d) throw new Error("sin_datos");
+      putCache(k, d);
+      return d;
+    }).catch(function (e) {
+      var s = staleCache(k);
+      if (s) { s.stale = true; return s; }
+      throw e;
+    });
+  }
+
+  function search(q) {
+    var url = "https://query1.finance.yahoo.com/v1/finance/search?q=" +
+      encodeURIComponent(q) + "&quotesCount=8&newsCount=0&listsCount=0";
+    return getJSON(url, 9000).then(function (j) {
+      var rows = (j && j.quotes) || [];
+      return rows.filter(function (r) { return r.symbol; }).map(function (r) {
+        return {
+          symbol: r.symbol,
+          name: r.shortname || r.longname || r.symbol,
+          type: r.quoteType || "",
+          exchange: r.exchDisp || r.exchange || ""
+        };
+      });
+    });
+  }
+
+  /* refresca una lista de símbolos con concurrencia acotada */
+  function refresh(symbols, onEach) {
+    var list = symbols.slice(), running = 0, done = 0, out = {};
+    return new Promise(function (resolve) {
+      if (!list.length) return resolve(out);
+      function next() {
+        if (!list.length && running === 0) return resolve(out);
+        while (running < 3 && list.length) {
+          var sym = list.shift();
+          running++;
+          daily(sym, true).then(function (d) { out[d.symbol || sym] = d; })
+            .catch(function () { out[sym] = null; })
+            .then(function () {
+              running--; done++;
+              if (onEach) onEach(done, symbols.length);
+              next();
+            });
+        }
+      }
+      next();
+    });
+  }
+
+  return {
+    daily: daily, intraday: intraday, history: history, search: search, refresh: refresh,
+    lastFailure: lastFailure,
+    clearCache: function () { cache = {}; try { localStorage.removeItem(CKEY); } catch (e) {} }
+  };
+})();
+
+/* ============================================================
+   Indicadores — calculados aquí, nunca traídos de fuera
+   ============================================================ */
+DL.IND = (function () {
+  function sma(bars, n) {
+    var out = [], sum = 0;
+    for (var i = 0; i < bars.length; i++) {
+      sum += bars[i].c;
+      if (i >= n) sum -= bars[i - n].c;
+      out.push(i >= n - 1 ? sum / n : null);
+    }
+    return out;
+  }
+  function emaArr(vals, n) {
+    var k = 2 / (n + 1), prev = null, out = [];
+    for (var i = 0; i < vals.length; i++) {
+      var v = vals[i];
+      if (v == null) { out.push(null); continue; }
+      prev = prev == null ? v : v * k + prev * (1 - k);
+      out.push(prev);
+    }
+    return out;
+  }
+  function rsi(bars, n) {
+    n = n || 14;
+    var out = [null], g = 0, l = 0;
+    for (var i = 1; i < bars.length; i++) {
+      var d = bars[i].c - bars[i - 1].c;
+      var up = Math.max(d, 0), dn = Math.max(-d, 0);
+      if (i <= n) {
+        g += up; l += dn;
+        if (i === n) { g /= n; l /= n; out.push(100 - 100 / (1 + g / (l || 1e-9))); }
+        else out.push(null);
+      } else {
+        g = (g * (n - 1) + up) / n;
+        l = (l * (n - 1) + dn) / n;
+        out.push(100 - 100 / (1 + g / (l || 1e-9)));
+      }
+    }
+    return out;
+  }
+  function macd(bars) {
+    var c = bars.map(function (b) { return b.c; });
+    var e12 = emaArr(c, 12), e26 = emaArr(c, 26);
+    var line = c.map(function (_, i) { return e12[i] - e26[i]; });
+    var sig = emaArr(line, 9);
+    return { line: line, signal: sig, hist: line.map(function (v, i) { return v - sig[i]; }) };
+  }
+  function atr(bars, n) {
+    n = n || 14;
+    var out = [], trs = [];
+    for (var i = 0; i < bars.length; i++) {
+      var p = bars[i - 1] || bars[i];
+      trs.push(Math.max(bars[i].h - bars[i].l, Math.abs(bars[i].h - p.c), Math.abs(bars[i].l - p.c)));
+      if (i < n - 1) { out.push(null); continue; }
+      if (i === n - 1) {
+        var s = 0; for (var j = 0; j < n; j++) s += trs[j];
+        out.push(s / n);
+      } else out.push((out[i - 1] * (n - 1) + trs[i]) / n);
+    }
+    return out;
+  }
+  function last(a) { for (var i = a.length - 1; i >= 0; i--) if (a[i] != null && isFinite(a[i])) return a[i]; return null; }
+  function avgVol(bars, n) {
+    var s = bars.slice(-n), t = 0;
+    s.forEach(function (b) { t += b.v; });
+    return s.length ? t / s.length : 0;
+  }
+  return { sma: sma, ema: emaArr, rsi: rsi, macd: macd, atr: atr, last: last, avgVol: avgVol };
+})();
+/* ============================================================
+   Módulo 3/6 — modos de estrategia, decisión, riesgo y portafolio
+   El Decision Score NO es una caja negra: son 8 condiciones
+   verificables, cada una con su número real al lado. Lo que cambia
+   entre modos es CUÁLES son las 8 condiciones y qué stop se sugiere,
+   nunca los límites de riesgo globales.
+   ============================================================ */
+
+/* ---------- configuración de los modos ---------- */
+DL.MODES = {
+  scalp: {
+    id: "scalp", label: "Scalping", sub: "Intradía",
+    stopAtr: 0.6, targetR: 1.5,
+    desc: "Entradas y salidas dentro del mismo día. Stop muy cerca, foco en liquidez y velocidad."
+  },
+  swing: {
+    id: "swing", label: "Swing", sub: "Días a semanas",
+    stopAtr: 1.5, targetR: 3,
+    desc: "Posiciones de días o semanas. Foco en cruces de medias, soportes y resistencias."
+  },
+  backtest: {
+    id: "backtest", label: "Backtest Lab", sub: "Histórico",
+    desc: "Laboratorio aislado: pruebas una regla contra histórico real sin tocar tu portafolio."
+  }
+};
+
+/* ---------- glosario: SOLO los términos de cada modo ---------- */
+DL.GLOSS = {
+  scalp: [
+    ["tight stop", "stop muy cerca de la entrada: corta la pérdida rápido, a cambio de que el ruido normal te saque más seguido"],
+    ["execution speed", "velocidad de ejecución: en intradía, entrar o salir tarde cambia el resultado de la operación"],
+    ["liquidity", "liquidez: cuánto volumen se negocia. Sin liquidez no puedes salir al precio que ves"]
+  ],
+  swing: [
+    ["moving average crossover", "cruce de medias móviles: cuando una media corta cruza una larga, señala cambio de tendencia"],
+    ["breakout", "ruptura: el precio supera una resistencia que antes lo contenía"],
+    ["volume confirmation", "confirmación por volumen: una ruptura sin volumen suele ser falsa"]
+  ],
+  backtest: [
+    ["historical data", "datos históricos: precios pasados reales sobre los que pruebas una regla"],
+    ["RSI", "Relative Strength Index: indicador de 0 a 100 que mide si un activo viene subiendo o cayendo con fuerza"],
+    ["overfitting", "sobreajuste: tu regla quedó tan pegada al pasado que deja de funcionar con datos nuevos"],
+    ["parameter", "parámetro: el número que tú eliges dentro de la regla (por ejemplo, RSI menor a 30)"]
+  ]
+};
+
+DL.mode = function () {
+  return DL.MODES[DL.S.profile.mode] || DL.MODES.swing;
+};
+
+DL.ENG = (function () {
+
+  /* ---------- soportes y resistencias por pivotes ---------- */
+  function levels(bars, price) {
+    var n = bars.length, look = 4;
+    var highs = [], lows = [];
+    for (var i = look; i < n - look; i++) {
+      var isH = true, isL = true;
+      for (var j = i - look; j <= i + look; j++) {
+        if (bars[j].h > bars[i].h) isH = false;
+        if (bars[j].l < bars[i].l) isL = false;
+      }
+      if (isH) highs.push(bars[i].h);
+      if (isL) lows.push(bars[i].l);
+    }
+    var below = lows.concat(highs).filter(function (v) { return v < price * 0.995; });
+    var above = highs.concat(lows).filter(function (v) { return v > price * 1.005; });
+    return {
+      support: below.length ? Math.max.apply(null, below) : null,
+      resistance: above.length ? Math.min.apply(null, above) : null
+    };
+  }
+
+  /* ---------- análisis de un activo ---------- */
+  function analyze(d, bench, modeId) {
+    if (!d || !d.bars || d.bars.length < 30) return null;
+    var b = d.bars, I = DL.IND;
+    var mode = DL.MODES[modeId] || DL.MODES[DL.S.profile.mode] || DL.MODES.swing;
+    var px = d.price || b[b.length - 1].c;
+    var s20 = I.last(I.sma(b, 20)), s50 = I.last(I.sma(b, 50)), s200 = I.last(I.sma(b, 200));
+    var smaArr20 = I.sma(b, 20), smaArr50 = I.sma(b, 50);
+    var r = I.last(I.rsi(b, 14));
+    var m = I.macd(b);
+    var mLine = I.last(m.line), mSig = I.last(m.signal);
+    var a = I.last(I.atr(b, 14)) || px * 0.02;
+    var vol = b[b.length - 1].v, av = I.avgVol(b, 20);
+    var win = b.slice(-252);
+    var hi52 = Math.max.apply(null, win.map(function (x) { return x.h; }));
+    var lo52 = Math.min.apply(null, win.map(function (x) { return x.l; }));
+    var chgPct = d.prevClose ? ((px - d.prevClose) / d.prevClose) * 100 : 0;
+    var lv = levels(b, px);
+
+    var back = Math.min(63, b.length - 1);
+    var ret3 = ((px / b[b.length - 1 - back].c) - 1) * 100;
+    var bRet3 = null, bChg = null;
+    if (bench && bench.bars && bench.bars.length > back) {
+      var bb = bench.bars;
+      bRet3 = ((bb[bb.length - 1].c / bb[bb.length - 1 - back].c) - 1) * 100;
+      bChg = bench.prevClose ? ((bench.price - bench.prevClose) / bench.prevClose) * 100 : 0;
+    }
+    var rel = bRet3 == null ? null : ret3 - bRet3;
+
+    // ¿cruzó la SMA20 por encima de la SMA50 en las últimas 10 sesiones?
+    var crossed = false, crossAgo = null;
+    for (var k = b.length - 1; k > b.length - 11 && k > 1; k--) {
+      if (smaArr20[k] != null && smaArr50[k] != null && smaArr20[k - 1] != null && smaArr50[k - 1] != null) {
+        if (smaArr20[k] > smaArr50[k] && smaArr20[k - 1] <= smaArr50[k - 1]) {
+          crossed = true; crossAgo = b.length - 1 - k; break;
+        }
+      }
+    }
+
+    var C = [];
+    function add(label, ok, value) { C.push({ label: label, ok: !!ok, value: value }); }
+    var P = DL.S.profile;
+
+    if (mode.id === "scalp") {
+      var minVol = P.minVolume || 5000000;
+      var absChg = Math.abs(chgPct);
+
+      add("Liquidez suficiente para entrar y salir rápido",
+        vol >= minVol,
+        (vol / 1e6).toFixed(1) + "M vs " + (minVol / 1e6).toFixed(0) + "M mínimo");
+
+      add("Volumen del día sobre el promedio de 20 sesiones",
+        av > 0 && vol > av,
+        av > 0 ? (vol / av).toFixed(2) + "× promedio" : "—");
+
+      add("Variación del día dentro del rango de scalping (" +
+        (P.intradayMin || 0.2) + "%–" + (P.intradayMax || 0.5) + "%)",
+        absChg >= (P.intradayMin || 0.2) && absChg <= (P.intradayMax || 0.5),
+        DL.pctp(absChg, 2));
+
+      add("Precio por encima de la SMA 20 (tendencia inmediata)",
+        s20 != null && px > s20,
+        s20 == null ? "—" : px.toFixed(2) + " vs " + s20.toFixed(2));
+
+      add("RSI(14) entre 40 y 70 — con fuerza, sin sobrecompra",
+        r != null && r >= 40 && r <= 70,
+        r == null ? "—" : r.toFixed(1));
+
+      add("MACD por encima de su línea de señal",
+        mLine != null && mSig != null && mLine > mSig,
+        mLine == null ? "—" : mLine.toFixed(2) + " vs " + mSig.toFixed(2));
+
+      add("Volatilidad contenida: ATR(14) menor al 3% del precio",
+        (a / px) * 100 < 3,
+        DL.pctp((a / px) * 100, 2) + " del precio");
+
+      add("Más fuerte que el mercado hoy",
+        bChg != null && chgPct > bChg,
+        bChg == null ? "sin referencia" : DL.pct(chgPct, 2) + " vs " + DL.pct(bChg, 2));
+
+    } else {
+      add("Precio por encima de la SMA 50",
+        s50 != null && px > s50,
+        s50 == null ? "sin datos" : px.toFixed(2) + " vs " + s50.toFixed(2));
+
+      add("SMA 50 por encima de la SMA 200 (tendencia mayor)",
+        s50 != null && s200 != null && s50 > s200,
+        (s50 == null || s200 == null) ? "faltan 200 sesiones" : s50.toFixed(2) + " vs " + s200.toFixed(2));
+
+      add("Cruce reciente de la SMA 20 sobre la SMA 50",
+        crossed,
+        crossed ? "hace " + crossAgo + " sesiones" : "sin cruce en 10 sesiones");
+
+      add("MACD por encima de su línea de señal",
+        mLine != null && mSig != null && mLine > mSig,
+        mLine == null ? "—" : mLine.toFixed(2) + " vs " + mSig.toFixed(2));
+
+      add("Confirmación por volumen sobre el promedio de 20 sesiones",
+        av > 0 && vol > av,
+        av > 0 ? (vol / av).toFixed(2) + "× promedio" : "—");
+
+      add("Precio por encima del soporte más cercano",
+        lv.support != null && px > lv.support,
+        lv.support == null ? "sin soporte identificado"
+          : DL.money(lv.support) + " (" + DL.pctp(((px - lv.support) / px) * 100, 1) + " abajo)");
+
+      add("Más fuerte que el mercado en 3 meses",
+        rel != null && rel > 0,
+        rel == null ? "sin referencia" : DL.pct(ret3, 1) + " vs " + DL.pct(bRet3, 1));
+
+      add("Volatilidad manejable: ATR(14) menor al 5% del precio",
+        (a / px) * 100 < 5,
+        DL.pctp((a / px) * 100, 2) + " del precio");
+    }
+
+    var confirmed = C.filter(function (x) { return x.ok; }).length;
+    var score = Math.round((confirmed / C.length) * 100);
+    var state = score >= 75 ? "BUY" : score >= 50 ? "WAIT" : "AVOID";
+
+    return {
+      symbol: d.symbol, name: d.name, price: px, chgPct: chgPct, prevClose: d.prevClose,
+      currency: d.currency, exchange: d.exchange, stale: !!d.stale, asOf: d.asOf,
+      mode: mode.id,
+      sma20: s20, sma50: s50, sma200: s200, rsi: r,
+      macd: mLine, macdSignal: mSig, atr: a, atrPct: (a / px) * 100,
+      vol: vol, avgVol: av, hi52: hi52, lo52: lo52,
+      support: lv.support, resistance: lv.resistance, crossed: crossed,
+      ret3m: ret3, benchRet3m: bRet3, rel: rel,
+      conditions: C, confirmed: confirmed, total: C.length, score: score, state: state
+    };
+  }
+
+  /* ---------- plan sugerido según el modo ----------
+     Scalping propone un precio único y un tight stop.
+     Swing propone ZONAS, no precios exactos. */
+  function suggestPlan(an) {
+    if (!an) return null;
+    var mode = DL.MODES[an.mode] || DL.MODES.swing;
+    var px = an.price, atr = an.atr;
+
+    if (mode.id === "scalp") {
+      var stop = px - atr * mode.stopAtr;
+      return {
+        mode: "scalp",
+        entry: px, stop: stop, target: px + (px - stop) * mode.targetR,
+        buyZone: null, sellZone: null,
+        note: "Tight stop a " + mode.stopAtr + "× ATR. Objetivo " + mode.targetR + "R, mismo día."
+      };
+    }
+
+    // swing: si el precio está cerca del soporte es rebote; si superó resistencia, ruptura
+    var sup = an.support, res = an.resistance;
+    var nearSupport = sup != null && (px - sup) / px < 0.04;
+    var entry, stop, target, buyZone, sellZone, note;
+
+    if (nearSupport) {
+      buyZone = [sup, sup + atr * 0.5];
+      entry = sup + atr * 0.25;
+      stop = sup - atr * 0.8;
+      target = res != null && res > entry ? res : entry + (entry - stop) * mode.targetR;
+      note = "Rebote en soporte: compra dentro de la zona, con volumen. Stop debajo del soporte.";
+    } else if (res != null) {
+      buyZone = [res, res + atr * 0.5];
+      entry = res + atr * 0.25;
+      stop = sup != null ? Math.min(sup - atr * 0.3, entry - atr * mode.stopAtr) : entry - atr * mode.stopAtr;
+      target = entry + (entry - stop) * mode.targetR;
+      note = "Ruptura: compra sobre la resistencia solo con volumen fuerte (volume confirmation).";
+    } else {
+      entry = px;
+      stop = px - atr * mode.stopAtr;
+      target = px + (px - stop) * mode.targetR;
+      buyZone = [px - atr * 0.25, px + atr * 0.25];
+      note = "Sin niveles claros: entrada en zona amplia y stop por volatilidad.";
+    }
+    sellZone = [target, target + atr * 0.5];
+    return { mode: "swing", entry: entry, stop: stop, target: target, buyZone: buyZone, sellZone: sellZone, note: note };
+  }
+
+  /* ---------- estado de una posición abierta ---------- */
+  function positionState(p, an) {
+    var px = an ? an.price : p.entry;
+    var mode = DL.MODES[p.mode] || DL.MODES[DL.S.profile.mode] || DL.MODES.swing;
+
+    if (px <= p.stop) return { s: "SELL", why: "El precio tocó tu stop (" + DL.money(p.stop) + "). Tu tesis quedó invalidada." };
+    if (p.target && px >= p.target) return { s: "SELL", why: "El precio alcanzó tu target (" + DL.money(p.target) + "). El plan se cumplió." };
+
+    // scalping: la posición tiene fecha de vencimiento
+    if (mode.id === "scalp" && p.openedAt) {
+      var hrs = (Date.now() - p.openedAt) / 3600000;
+      var lim = DL.S.profile.maxHoldHours || 2;
+      if (hrs > lim) {
+        return {
+          s: "SELL",
+          why: "Llevas " + hrs.toFixed(1) + " h en una posición de scalping (límite: " + lim +
+               " h). Estás actuando como swing trader, no como scalper. Cierra o cambia de modo conscientemente."
+        };
+      }
+    }
+
+    var aged = p.openedAt && (Date.now() - p.openedAt) > 20 * 60 * 60 * 1000;
+    if (an && an.score < 40) {
+      return aged
+        ? { s: "SELL", why: "Solo " + an.confirmed + " de " + an.total + " condiciones siguen confirmadas. La estructura se deterioró." }
+        : { s: "HOLD", why: "Entraste con solo " + an.confirmed + " de " + an.total + " condiciones confirmadas. Vigila el stop en " + DL.money(p.stop) + " y anota por qué entraste igual." };
+    }
+    if (an && an.score < 60) return { s: "HOLD", why: "Condiciones debilitándose (" + an.confirmed + "/" + an.total + "). Vigila el stop, no agregues." };
+    return { s: "HOLD", why: "El plan sigue vigente. Stop en " + DL.money(p.stop) + ", target en " + (p.target ? DL.money(p.target) : "—") + "." };
+  }
+
+  /* ---------- riesgo de una operación ----------
+     Los límites globales (20% diario, riesgo máximo por operación) son
+     iguales en todos los modos. El modo nunca los relaja. */
+  function tradeRisk(inp) {
+    var o = {};
+    var price = num(inp.price), qty = num(inp.qty), stop = num(inp.stop), target = num(inp.target);
+    var equity = num(inp.equity), cash = num(inp.cash);
+    var maxDaily = num(inp.maxDailyPct) || 20, maxRisk = num(inp.maxRiskPct) || 2;
+    var deployedToday = num(inp.deployedToday);
+
+    o.cost = price * qty;
+    o.costPct = equity > 0 ? (o.cost / equity) * 100 : 0;
+    o.cash = cash;
+    o.cashAfter = cash - o.cost;
+    o.overCash = o.cost > cash + 1e-9;
+
+    o.dailyCeiling = equity * (maxDaily / 100);
+    o.deployedToday = deployedToday;
+    o.dayAfter = deployedToday + o.cost;
+    o.dayPct = equity > 0 ? (o.dayAfter / equity) * 100 : 0;
+    o.overDaily = o.dayAfter > o.dailyCeiling + 1e-9;
+    o.roomToday = Math.max(0, o.dailyCeiling - deployedToday);
+
+    o.stopValid = stop > 0 && stop < price;
+    o.riskPerShare = o.stopValid ? price - stop : 0;
+    o.riskAmount = o.riskPerShare * qty;
+    o.riskPct = equity > 0 ? (o.riskAmount / equity) * 100 : 0;
+    o.overRisk = o.riskPct > maxRisk + 1e-9;
+    o.stopDistPct = price > 0 && o.stopValid ? (o.riskPerShare / price) * 100 : 0;
+
+    o.targetValid = target > 0 && target > price;
+    o.rewardPerShare = o.targetValid ? target - price : 0;
+    o.rewardAmount = o.rewardPerShare * qty;
+    o.targetDistPct = price > 0 && o.targetValid ? (o.rewardPerShare / price) * 100 : 0;
+    o.rr = o.riskPerShare > 0 && o.rewardPerShare > 0 ? o.rewardPerShare / o.riskPerShare : 0;
+
+    var byRisk = o.riskPerShare > 0 ? Math.floor((equity * maxRisk / 100) / o.riskPerShare) : 0;
+    var byCash = price > 0 ? Math.floor(cash / price) : 0;
+    var byDay = price > 0 ? Math.floor(o.roomToday / price) : 0;
+    o.suggestedQty = Math.max(0, Math.min(byRisk || byCash, byCash, byDay));
+    o.limitedBy = o.suggestedQty === byRisk ? "riesgo" : o.suggestedQty === byDay ? "cupo diario" : "efectivo";
+
+    o.ok = qty > 0 && price > 0 && !o.overCash && !o.overDaily && !o.overRisk && o.stopValid;
+    return o;
+  }
+  function num(v) { var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+
+  /* ---------- portafolio ---------- */
+  function portfolio(prices) {
+    var P = DL.S.pos, cap = DL.S.profile.capital;
+    var open = P.filter(function (p) { return p.status === "open"; });
+    var closed = P.filter(function (p) { return p.status === "closed"; });
+
+    var invested = 0, mktValue = 0, openPL = 0, openRisk = 0;
+    open.forEach(function (p) {
+      var px = prices && prices[p.sym] != null ? prices[p.sym] : p.entry;
+      p._px = px;
+      p._cost = p.entry * p.qty;
+      p._value = px * p.qty;
+      p._pl = p._value - p._cost;
+      p._plPct = p._cost > 0 ? (p._pl / p._cost) * 100 : 0;
+      invested += p._cost;
+      mktValue += p._value;
+      openPL += p._pl;
+      openRisk += Math.max(0, (p.entry - p.stop)) * p.qty;
+    });
+
+    var realized = closed.reduce(function (s, p) { return s + (p.pl || 0); }, 0);
+    var cash = cap + realized - invested;
+    var equity = cash + mktValue;
+
+    var today = new Date().toDateString();
+    var deployedToday = 0, closedToday = 0, plToday = 0;
+    P.forEach(function (p) {
+      if (p.openedAt && new Date(p.openedAt).toDateString() === today) deployedToday += p.entry * p.qty;
+      if (p.status === "closed" && p.exitAt && new Date(p.exitAt).toDateString() === today) {
+        closedToday++; plToday += (p.pl || 0);
+      }
+    });
+
+    var wins = closed.filter(function (p) { return (p.pl || 0) > 0; });
+    var losses = closed.filter(function (p) { return (p.pl || 0) <= 0; });
+    var gw = wins.reduce(function (s, p) { return s + p.pl; }, 0);
+    var gl = Math.abs(losses.reduce(function (s, p) { return s + p.pl; }, 0));
+
+    var curve = closed.slice().sort(function (a, b) { return (a.exitAt || 0) - (b.exitAt || 0); });
+    var eq = cap, peak = cap, maxDD = 0;
+    curve.forEach(function (p) {
+      eq += (p.pl || 0);
+      if (eq > peak) peak = eq;
+      if (peak > 0) maxDD = Math.max(maxDD, ((peak - eq) / peak) * 100);
+    });
+    if (equity > peak) peak = equity;
+    var curDD = peak > 0 ? Math.max(0, ((peak - equity) / peak) * 100) : 0;
+    maxDD = Math.max(maxDD, curDD);
+
+    return {
+      capital: cap, cash: cash, invested: invested, mktValue: mktValue, equity: equity,
+      openPL: openPL, openPLPct: invested > 0 ? (openPL / invested) * 100 : 0,
+      realized: realized, totalPL: equity - cap,
+      returnPct: cap > 0 ? ((equity - cap) / cap) * 100 : 0,
+      exposurePct: equity > 0 ? (mktValue / equity) * 100 : 0,
+      openRisk: openRisk, openRiskPct: equity > 0 ? (openRisk / equity) * 100 : 0,
+      deployedToday: deployedToday, closedToday: closedToday, plToday: plToday,
+      dailyCeiling: equity * (DL.S.profile.maxDailyPct / 100),
+      roomToday: Math.max(0, equity * (DL.S.profile.maxDailyPct / 100) - deployedToday),
+      open: open, closed: closed,
+      winRate: closed.length ? (wins.length / closed.length) * 100 : null,
+      avgWin: wins.length ? gw / wins.length : null,
+      avgLoss: losses.length ? -gl / losses.length : null,
+      profitFactor: gl > 0 ? gw / gl : (gw > 0 ? Infinity : null),
+      maxDD: maxDD, drawdown: curDD
+    };
+  }
+
+  return {
+    analyze: analyze, levels: levels, suggestPlan: suggestPlan,
+    positionState: positionState, tradeRisk: tradeRisk, portfolio: portfolio
+  };
+})();
+/* ============================================================
+   Módulo 3b/6 — Backtest Lab
+   Sandbox aislado: corre una regla simple contra histórico REAL y
+   parte la serie en un periodo de AJUSTE y uno de PRUEBA
+   (out-of-sample validation). Nunca toca el portafolio en vivo.
+   ============================================================ */
+
+DL.BT = (function () {
+
+  /* señales de compra y venta según la regla elegida */
+  function signals(bars, rule) {
+    var I = DL.IND, buy = [], sell = [];
+    if (rule.type === "rsi") {
+      var r = I.rsi(bars, rule.period || 14);
+      for (var i = 1; i < bars.length; i++) {
+        buy.push(r[i] != null && r[i - 1] != null && r[i - 1] >= rule.buy && r[i] < rule.buy);
+        sell.push(r[i] != null && r[i - 1] != null && r[i - 1] <= rule.sell && r[i] > rule.sell);
+      }
+      buy.unshift(false); sell.unshift(false);
+    } else { // cruce de medias
+      var f = I.sma(bars, rule.fast || 20), s = I.sma(bars, rule.slow || 50);
+      for (var j = 0; j < bars.length; j++) {
+        var prevOk = j > 0 && f[j - 1] != null && s[j - 1] != null;
+        buy.push(prevOk && f[j] > s[j] && f[j - 1] <= s[j - 1]);
+        sell.push(prevOk && f[j] < s[j] && f[j - 1] >= s[j - 1]);
+      }
+    }
+    return { buy: buy, sell: sell };
+  }
+
+  /* simulación long-only sobre un rango [from, to) de barras */
+  function simulate(bars, sig, from, to) {
+    var trades = [], inPos = false, entry = 0, entryAt = null;
+    for (var i = from; i < to; i++) {
+      if (!inPos && sig.buy[i]) {
+        // se entra en la apertura de la sesión siguiente: nada de mirar el futuro
+        if (i + 1 < to) { inPos = true; entry = bars[i + 1].o; entryAt = bars[i + 1].t; }
+      } else if (inPos && sig.sell[i]) {
+        if (i + 1 < to) {
+          var exit = bars[i + 1].o;
+          trades.push({ entry: entry, exit: exit, pct: ((exit - entry) / entry) * 100, t: entryAt, tOut: bars[i + 1].t });
+          inPos = false;
+        }
+      }
+    }
+    if (inPos && to > from) {
+      var last = bars[to - 1].c;
+      trades.push({ entry: entry, exit: last, pct: ((last - entry) / entry) * 100, t: entryAt, tOut: bars[to - 1].t, open: true });
+    }
+    return stats(trades, bars, from, to);
+  }
+
+  function stats(trades, bars, from, to) {
+    var wins = trades.filter(function (t) { return t.pct > 0; });
+    var losses = trades.filter(function (t) { return t.pct <= 0; });
+    var gw = wins.reduce(function (s, t) { return s + t.pct; }, 0);
+    var gl = Math.abs(losses.reduce(function (s, t) { return s + t.pct; }, 0));
+
+    // retorno compuesto y drawdown de la curva de la estrategia
+    var eq = 100, peak = 100, maxDD = 0, curve = [100];
+    trades.forEach(function (t) {
+      eq = eq * (1 + t.pct / 100);
+      curve.push(eq);
+      if (eq > peak) peak = eq;
+      maxDD = Math.max(maxDD, ((peak - eq) / peak) * 100);
+    });
+
+    // comparación honesta: comprar y mantener en la misma ventana
+    var bh = (to - from) > 1 ? ((bars[to - 1].c / bars[from].c) - 1) * 100 : 0;
+
+    return {
+      trades: trades,
+      count: trades.length,
+      winRate: trades.length ? (wins.length / trades.length) * 100 : null,
+      avgWin: wins.length ? gw / wins.length : null,
+      avgLoss: losses.length ? -gl / losses.length : null,
+      profitFactor: gl > 0 ? gw / gl : (gw > 0 ? Infinity : null),
+      totalReturn: eq - 100,
+      maxDD: maxDD,
+      buyHold: bh,
+      curve: curve,
+      from: bars[from] ? bars[from].t : null,
+      to: bars[to - 1] ? bars[to - 1].t : null
+    };
+  }
+
+  function run(bars, rule) {
+    if (!bars || bars.length < 120) return null;
+    var sig = signals(bars, rule);
+    var splitPct = rule.splitPct || 60;
+    var split = Math.floor(bars.length * (splitPct / 100));
+
+    var inS = simulate(bars, sig, 0, split);
+    var outS = simulate(bars, sig, split, bars.length);
+
+    /* Alertas de sobreajuste — la parte educativa del laboratorio */
+    var warn = [];
+    if (inS.count < 10) {
+      warn.push({ lvl: "bad", t: "Muy pocas operaciones para concluir nada",
+        d: "Solo " + inS.count + " operaciones en el periodo de ajuste. Con menos de 10, cualquier resultado es casualidad." });
+    }
+    if (outS.count < 5) {
+      warn.push({ lvl: "bad", t: "El periodo de prueba casi no generó señales",
+        d: "Solo " + outS.count + " operaciones fuera de muestra. No alcanza para validar la regla." });
+    }
+    if (inS.winRate != null && inS.winRate >= 70 && outS.winRate != null && (inS.winRate - outS.winRate) >= 20) {
+      warn.push({ lvl: "bad", t: "Posible overfitting",
+        d: "La regla acertó " + DL.pctp(inS.winRate, 0) + " en ajuste y solo " + DL.pctp(outS.winRate, 0) +
+           " en prueba. Esa caída es la firma del sobreajuste: la regla aprendió el pasado, no el mercado." });
+    }
+    if (inS.totalReturn > 0 && outS.totalReturn < 0) {
+      warn.push({ lvl: "bad", t: "Ganó en el pasado, perdió con datos nuevos",
+        d: "Ganó " + DL.pct(inS.totalReturn, 1) + " en ajuste y perdió " + DL.pct(outS.totalReturn, 1) +
+           " en prueba. Si operaras esta regla hoy, estarías perdiendo dinero." });
+    }
+    if (outS.totalReturn != null && outS.buyHold != null && outS.totalReturn < outS.buyHold) {
+      warn.push({ lvl: "rev", t: "No le gana a comprar y mantener",
+        d: "En el periodo de prueba la regla dio " + DL.pct(outS.totalReturn, 1) +
+           " y simplemente comprar y esperar habría dado " + DL.pct(outS.buyHold, 1) + "." });
+    }
+    if (!warn.length) {
+      warn.push({ lvl: "ok", t: "La regla se sostuvo fuera de muestra",
+        d: "El resultado en prueba es consistente con el de ajuste. Eso no la hace rentable a futuro — solo significa que no está obviamente sobreajustada." });
+    }
+
+    return { inSample: inS, outSample: outS, warnings: warn, split: split, bars: bars, rule: rule };
+  }
+
+  return { run: run, signals: signals };
+})();
+/* ============================================================
+   Módulo 4/6 — gráficos en canvas
+   ============================================================ */
+
+DL.CH = (function () {
+  function tok(n) {
+    return getComputedStyle(document.documentElement).getPropertyValue(n).trim() || "#888";
+  }
+  function pal() {
+    return {
+      text: tok("--text"), muted: tok("--muted"), faint: tok("--faint"),
+      line: tok("--line"), soft: tok("--soft"), up: tok("--pos"), down: tok("--neg"),
+      purple: tok("--purple"), brass: tok("--brass"), amber: tok("--amber")
+    };
+  }
+  function setup(cv, h) {
+    var dpr = window.devicePixelRatio || 1;
+    var w = (cv.parentNode && cv.parentNode.clientWidth) || cv.clientWidth || 300;
+    cv.width = Math.max(1, Math.round(w * dpr));
+    cv.height = Math.max(1, Math.round(h * dpr));
+    cv.style.height = h + "px";
+    var x = cv.getContext("2d");
+    x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    x.clearRect(0, 0, w, h);
+    return { ctx: x, w: w, h: h };
+  }
+  function niceStep(range, ticks) {
+    var raw = range / ticks;
+    var mag = Math.pow(10, Math.floor(Math.log10(raw || 1)));
+    var norm = raw / mag;
+    return (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
+  }
+
+  /* mini gráfico de la watchlist: últimos 5 días + SMA 20 de referencia */
+  function spark(cv, bars, sma20, h) {
+    if (!bars || bars.length < 2) return;
+    var s = setup(cv, h || 34), c = s.ctx, C = pal();
+    var pts = bars.slice(-40);
+    var lo = Infinity, hi = -Infinity;
+    pts.forEach(function (b) { lo = Math.min(lo, b.c); hi = Math.max(hi, b.c); });
+    if (sma20 != null && isFinite(sma20)) { lo = Math.min(lo, sma20); hi = Math.max(hi, sma20); }
+    var pad = (hi - lo) * 0.14 || 0.5;
+    lo -= pad; hi += pad;
+    var X = function (i) { return (i / (pts.length - 1)) * (s.w - 2) + 1; };
+    var Y = function (v) { return s.h - 3 - ((v - lo) / (hi - lo)) * (s.h - 6); };
+    var rising = pts[pts.length - 1].c >= pts[0].c;
+    var col = rising ? C.up : C.down;
+
+    if (sma20 != null && isFinite(sma20)) {
+      c.strokeStyle = C.line; c.lineWidth = 1; c.setLineDash([3, 3]);
+      var y = Math.round(Y(sma20)) + 0.5;
+      c.beginPath(); c.moveTo(0, y); c.lineTo(s.w, y); c.stroke();
+      c.setLineDash([]);
+    }
+    // relleno bajo la línea
+    c.beginPath();
+    c.moveTo(X(0), Y(pts[0].c));
+    pts.forEach(function (b, i) { c.lineTo(X(i), Y(b.c)); });
+    c.lineTo(X(pts.length - 1), s.h); c.lineTo(X(0), s.h); c.closePath();
+    c.globalAlpha = 0.13; c.fillStyle = col; c.fill(); c.globalAlpha = 1;
+
+    c.beginPath();
+    pts.forEach(function (b, i) { i ? c.lineTo(X(i), Y(b.c)) : c.moveTo(X(i), Y(b.c)); });
+    c.strokeStyle = col; c.lineWidth = 1.5; c.lineJoin = "round"; c.stroke();
+
+    // punto final enfatizado
+    c.beginPath();
+    c.arc(X(pts.length - 1), Y(pts[pts.length - 1].c), 2.2, 0, Math.PI * 2);
+    c.fillStyle = col; c.fill();
+  }
+
+  /* gráfico principal: velas + SMA + volumen + niveles de la operación */
+  function candles(cv, opt) {
+    var bars = opt.bars || [];
+    if (bars.length < 2) return;
+    var h = opt.height || 260;
+    var s = setup(cv, h), c = s.ctx, C = pal();
+    c.font = '10px "IBM Plex Mono", monospace';
+
+    var show = Math.min(bars.length, opt.count || 90);
+    var vis = bars.slice(-show);
+    var padL = 6, padR = 52, padB = 18, padT = 8;
+    var volH = opt.volume === false ? 0 : 34;
+    var W = s.w - padL - padR;
+    var H = h - padT - padB - volH - (volH ? 6 : 0);
+
+    var lo = Infinity, hi = -Infinity;
+    vis.forEach(function (b) { lo = Math.min(lo, b.l); hi = Math.max(hi, b.h); });
+    var lv = opt.levels || null;
+    if (lv) [lv.entry, lv.stop, lv.target].forEach(function (v) {
+      if (v && isFinite(v) && v > 0) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+    });
+    var smas = {};
+    (opt.sma || []).forEach(function (n) {
+      var arr = DL.IND.sma(bars, n).slice(-show);
+      smas[n] = arr;
+      arr.forEach(function (v) { if (v != null) { lo = Math.min(lo, v); hi = Math.max(hi, v); } });
+    });
+    var pad = (hi - lo) * 0.06 || 1;
+    lo -= pad; hi += pad;
+
+    var Y = function (v) { return padT + H - ((v - lo) / (hi - lo)) * H; };
+    var slot = W / vis.length;
+    var X = function (i) { return padL + i * slot + slot / 2; };
+
+    // rejilla y eje derecho
+    var step = niceStep(hi - lo, 4);
+    c.strokeStyle = C.soft; c.lineWidth = 1;
+    c.fillStyle = C.faint; c.textAlign = "left"; c.textBaseline = "middle";
+    for (var g = Math.ceil(lo / step) * step; g <= hi; g += step) {
+      var y = Math.round(Y(g)) + 0.5;
+      c.beginPath(); c.moveTo(padL, y); c.lineTo(padL + W, y); c.stroke();
+      c.fillText(g >= 1000 ? g.toFixed(0) : g.toFixed(2), padL + W + 6, y);
+    }
+
+    // zonas de riesgo y recompensa
+    if (lv && lv.entry) {
+      if (lv.stop) {
+        c.fillStyle = C.down; c.globalAlpha = 0.10;
+        c.fillRect(padL, Math.min(Y(lv.entry), Y(lv.stop)), W, Math.abs(Y(lv.entry) - Y(lv.stop)));
+        c.globalAlpha = 1;
+      }
+      if (lv.target) {
+        c.fillStyle = C.up; c.globalAlpha = 0.08;
+        c.fillRect(padL, Math.min(Y(lv.entry), Y(lv.target)), W, Math.abs(Y(lv.entry) - Y(lv.target)));
+        c.globalAlpha = 1;
+      }
+    }
+
+    // medias móviles
+    var colors = { 20: C.amber, 50: C.purple, 200: C.brass };
+    Object.keys(smas).forEach(function (n) {
+      c.strokeStyle = colors[n] || C.muted; c.lineWidth = 1.3;
+      c.beginPath();
+      var started = false;
+      smas[n].forEach(function (v, i) {
+        if (v == null) return;
+        started ? c.lineTo(X(i), Y(v)) : (c.moveTo(X(i), Y(v)), started = true);
+      });
+      c.stroke();
+    });
+
+    // velas
+    var bw = Math.max(1.2, Math.min(8, slot * 0.6));
+    vis.forEach(function (b, i) {
+      var up = b.c >= b.o, col = up ? C.up : C.down, x = X(i);
+      c.strokeStyle = col; c.lineWidth = 1;
+      c.beginPath();
+      c.moveTo(Math.round(x) + 0.5, Y(b.h));
+      c.lineTo(Math.round(x) + 0.5, Y(b.l));
+      c.stroke();
+      var y0 = Y(Math.max(b.o, b.c)), y1 = Y(Math.min(b.o, b.c));
+      c.fillStyle = col;
+      c.fillRect(x - bw / 2, y0, bw, Math.max(1, y1 - y0));
+    });
+
+    // soporte y resistencia (modo swing)
+    if (opt.sr) {
+      [[opt.sr.support, C.up, "SOPORTE"], [opt.sr.resistance, C.down, "RESISTENCIA"]]
+        .forEach(function (m) {
+          if (!m[0] || !isFinite(m[0]) || m[0] <= 0) return;
+          var y = Math.round(Y(m[0])) + 0.5;
+          c.strokeStyle = m[1]; c.lineWidth = 1; c.globalAlpha = 0.6;
+          c.setLineDash([2, 4]);
+          c.beginPath(); c.moveTo(padL, y); c.lineTo(padL + W, y); c.stroke();
+          c.setLineDash([]); c.globalAlpha = 1;
+          c.fillStyle = m[1]; c.textAlign = "right"; c.textBaseline = "bottom";
+          c.fillText(m[2], padL + W - 2, y - 2);
+        });
+    }
+
+    // niveles
+    if (lv) {
+      [[lv.entry, C.text, "ENTRADA"], [lv.stop, C.down, "STOP"], [lv.target, C.up, "TARGET"]]
+        .forEach(function (m) {
+          if (!m[0] || !isFinite(m[0]) || m[0] <= 0) return;
+          var y = Math.round(Y(m[0])) + 0.5;
+          c.strokeStyle = m[1]; c.lineWidth = 1; c.setLineDash([4, 3]);
+          c.beginPath(); c.moveTo(padL, y); c.lineTo(padL + W, y); c.stroke();
+          c.setLineDash([]);
+          c.fillStyle = m[1]; c.textAlign = "left"; c.textBaseline = "bottom";
+          c.fillText(m[2], padL + 3, y - 2);
+        });
+    }
+
+    // volumen
+    if (volH) {
+      var vy = padT + H + 6;
+      var mv = Math.max.apply(null, vis.map(function (b) { return b.v; })) || 1;
+      vis.forEach(function (b, i) {
+        var bh = (b.v / mv) * (volH - 4);
+        c.fillStyle = b.c >= b.o ? C.up : C.down;
+        c.globalAlpha = 0.4;
+        c.fillRect(X(i) - bw / 2, vy + volH - bh, bw, bh);
+        c.globalAlpha = 1;
+      });
+    }
+
+    // eje temporal
+    c.fillStyle = C.faint; c.textBaseline = "top";
+    var every = Math.max(1, Math.floor(vis.length / 5));
+    vis.forEach(function (b, i) {
+      if (i % every !== 0) return;
+      var isFirst = i === 0, isLast = i > vis.length - every;
+      c.textAlign = isFirst ? "left" : isLast ? "right" : "center";
+      var x = isFirst ? padL : isLast ? padL + W : X(i);
+      c.fillText(new Date(b.t).toLocaleDateString("es", { day: "numeric", month: "short" }), x, h - padB + 4);
+    });
+
+    // leyenda de medias
+    c.textAlign = "left"; c.textBaseline = "top";
+    var lx = padL + 2;
+    Object.keys(smas).forEach(function (n) {
+      c.fillStyle = colors[n] || C.muted;
+      var lab = "SMA" + n;
+      c.fillText(lab, lx, padT);
+      lx += c.measureText(lab).width + 9;
+    });
+  }
+
+  /* curva de capital del portafolio */
+  function equityCurve(cv, points, h) {
+    if (!points || points.length < 2) return;
+    var s = setup(cv, h || 90), c = s.ctx, C = pal();
+    var lo = Math.min.apply(null, points), hi = Math.max.apply(null, points);
+    var pad = (hi - lo) * 0.12 || 1;
+    lo -= pad; hi += pad;
+    var X = function (i) { return (i / (points.length - 1)) * (s.w - 2) + 1; };
+    var Y = function (v) { return s.h - 4 - ((v - lo) / (hi - lo)) * (s.h - 8); };
+    var col = points[points.length - 1] >= points[0] ? C.up : C.down;
+    c.beginPath();
+    c.moveTo(X(0), Y(points[0]));
+    points.forEach(function (v, i) { c.lineTo(X(i), Y(v)); });
+    c.lineTo(X(points.length - 1), s.h); c.lineTo(X(0), s.h); c.closePath();
+    c.globalAlpha = 0.12; c.fillStyle = col; c.fill(); c.globalAlpha = 1;
+    c.beginPath();
+    points.forEach(function (v, i) { i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); });
+    c.strokeStyle = col; c.lineWidth = 1.6; c.stroke();
+    c.beginPath(); c.arc(X(points.length - 1), Y(points[points.length - 1]), 2.5, 0, Math.PI * 2);
+    c.fillStyle = col; c.fill();
+  }
+
+  return { spark: spark, candles: candles, equityCurve: equityCurve };
+})();
+/* ============================================================
+   Módulo 5/6 — vistas: Hoy, Watchlist y ficha del activo
+   ============================================================ */
+
+DL.data = { bySym: {}, an: {}, bench: null, loading: false, error: null };
+DL.BENCH = "SPY";
+
+DL.symbolsInUse = function () {
+  var set = {};
+  DL.S.watch.forEach(function (w) { set[w.sym] = 1; });
+  DL.S.pos.forEach(function (p) { if (p.status === "open") set[p.sym] = 1; });
+  return Object.keys(set);
+};
+
+DL.recompute = function () {
+  DL.data.an = {};
+  Object.keys(DL.data.bySym).forEach(function (s) {
+    var a = DL.ENG.analyze(DL.data.bySym[s], DL.data.bench);
+    if (a) DL.data.an[s] = a;
+  });
+};
+
+DL.prices = function () {
+  var out = {};
+  Object.keys(DL.data.bySym).forEach(function (s) {
+    if (DL.data.bySym[s]) out[s] = DL.data.bySym[s].price;
+  });
+  return out;
+};
+
+DL.sync = function (force, done) {
+  var syms = DL.symbolsInUse();
+  DL.data.loading = true; DL.data.error = null;
+  DL.render();
+  var jobs = [DL.MKT.daily(DL.BENCH, force).then(function (d) { DL.data.bench = d; }).catch(function () { DL.data.bench = null; })];
+  if (syms.length) {
+    jobs.push(DL.MKT.refresh(syms).then(function (map) {
+      Object.keys(map).forEach(function (s) { if (map[s]) DL.data.bySym[s] = map[s]; });
+    }));
+  }
+  Promise.all(jobs).then(function () {
+    DL.data.loading = false;
+    if (syms.length && !Object.keys(DL.data.bySym).length) {
+      DL.data.error = DL.MKT.lastFailure() || "sin_conexion";
+    }
+    DL.recompute();
+    DL.S.lastSync = Date.now(); DL.save();
+    DL.render();
+    if (done) done();
+  });
+};
+
+/* ============================================================
+   HOY
+   ============================================================ */
+DL.VIEW_home = function (root) {
+  var P = DL.ENG.portfolio(DL.prices());
+  var pr = DL.S.profile;
+
+  // el número del día: P/L de hoy sobre las posiciones abiertas
+  var dayPL = 0, dayBase = 0, haveDay = false;
+  P.open.forEach(function (p) {
+    var d = DL.data.bySym[p.sym];
+    if (!d) return;
+    haveDay = true;
+    dayPL += (d.price - d.prevClose) * p.qty;
+    dayBase += d.prevClose * p.qty;
+  });
+  var dayPct = dayBase > 0 ? (dayPL / dayBase) * 100 : 0;
+
+  var M = DL.mode();
+  var html = "";
+
+  /* --- selector global de modo --- */
+  html += '<section class="card"><div class="head"><h3>Modo de estrategia</h3>' +
+    DL.tag(M.sub, "watch") + "</div>" +
+    '<div class="modes" id="modeSel">' +
+    ["scalp", "swing", "backtest"].map(function (k) {
+      var m = DL.MODES[k];
+      return '<button type="button" data-mode="' + k + '" aria-pressed="' +
+        (M.id === k) + '"><b>' + DL.esc(m.label) + "</b><span>" + DL.esc(m.sub) + "</span></button>";
+    }).join("") + "</div>" +
+    '<p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5">' + DL.esc(M.desc) + "</p>" +
+    "</section>";
+
+  /* --- tarjeta principal: el número del día --- */
+  html += '<section class="card">' +
+    '<div class="head"><h3>Hoy</h3>' +
+    '<span class="eyebrow">' + (DL.S.lastSync ? "actualizado " + new Date(DL.S.lastSync).toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" }) : "sin sincronizar") + "</span></div>" +
+    '<div class="row" style="justify-content:space-between;align-items:flex-end;gap:14px">' +
+    '<div class="ro lg"><span class="k">Ganancia o pérdida del día</span><span class="v ' +
+    (haveDay ? DL.tone(dayPL) : "") + '">' + (haveDay ? DL.sgn(dayPL) : "$0.00") + "</span></div>" +
+    '<div class="ro" style="text-align:right"><span class="k">&nbsp;</span><span class="v ' +
+    (haveDay ? DL.tone(dayPct) : "") + '">' + (haveDay ? DL.pct(dayPct) : "—") + "</span></div>" +
+    "</div>" +
+    '<hr><div class="grid g3">' +
+    DL.ro("Equity", DL.money(P.equity), DL.tone(P.totalPL), "sm") +
+    DL.ro("Efectivo", DL.money(P.cash, 0), "", "sm") +
+    DL.ro("Retorno total", DL.pct(P.returnPct), DL.tone(P.returnPct), "sm") +
+    "</div>";
+
+  /* scalping: el hábito que se mide es cerrar, no abrir */
+  if (M.id === "scalp") {
+    html += '<hr><div class="grid g3">' +
+      DL.ro("Trades cerrados hoy", String(P.closedToday), P.closedToday > 0 ? "" : "warn", "sm") +
+      DL.ro("Resultado del día", DL.sgn(P.plToday), DL.tone(P.plToday), "sm") +
+      DL.ro("Abiertas ahora", String(P.open.length), "", "sm") +
+      "</div>" +
+      '<p style="margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.45">' +
+      "En scalping el número que importa no es cuánto abriste, es cuánto cerraste. " +
+      "Una posición que se queda abierta deja de ser scalping.</p>";
+  }
+
+  // efectivo vs invertido
+  var invPct = P.equity > 0 ? (P.mktValue / P.equity) * 100 : 0;
+  html += '<div style="margin-top:14px">' +
+    '<div class="row" style="justify-content:space-between;margin-bottom:5px">' +
+    '<span class="eyebrow">Dinero usado vs disponible</span>' +
+    '<span class="n" style="font-size:11px;color:var(--muted)">' + DL.money(P.mktValue, 0) + " de " + DL.money(P.equity, 0) + "</span></div>" +
+    '<div class="bar"><i class="' + (invPct > 80 ? "amber" : "") + '" style="width:' + Math.min(100, invPct).toFixed(1) + '%"></i></div>' +
+    '<div class="row" style="justify-content:space-between;margin-top:5px">' +
+    '<span class="n" style="font-size:10.5px;color:var(--faint)">' + DL.pctp(invPct, 1) + " invertido</span>" +
+    '<span class="n" style="font-size:10.5px;color:var(--faint)">P/L abierto ' + DL.pct(P.openPLPct) + "</span></div></div>";
+  html += "</section>";
+
+  /* --- qué hago hoy --- */
+  var actions = [];
+  P.open.forEach(function (p) {
+    var an = DL.data.an[p.sym];
+    var st = DL.ENG.positionState(p, an);
+    actions.push({ sym: p.sym, state: st.s, why: st.why, pos: p });
+  });
+  DL.S.watch.forEach(function (w) {
+    var an = DL.data.an[w.sym];
+    if (!an) return;
+    var held = P.open.some(function (p) { return p.sym === w.sym; });
+    if (held) return;
+    actions.push({
+      sym: w.sym, state: an.state,
+      why: an.confirmed + " de " + an.total + " condiciones confirmadas · score " + an.score + "/100"
+    });
+  });
+  var order = { SELL: 0, BUY: 1, HOLD: 2, WAIT: 3, WATCH: 4, AVOID: 5 };
+  actions.sort(function (a, b) { return (order[a.state] || 9) - (order[b.state] || 9); });
+
+  html += '<section class="card"><div class="head"><h3>¿Qué hago hoy?</h3>' +
+    '<span class="eyebrow">' + actions.length + " activos</span></div>";
+  if (!actions.length) {
+    html += DL.empty("Todavía no sigues ningún activo",
+      "Agrega símbolos reales a tu watchlist y aquí verás qué hacer con cada uno.");
+  } else {
+    html += '<div id="todayList"></div>';
+  }
+  html += "</section>";
+
+  /* --- pulso del mercado --- */
+  var ba = DL.data.bench ? DL.ENG.analyze(DL.data.bench, DL.data.bench) : null;
+  if (ba) {
+    html += '<section class="card"><div class="head"><h3>Mercado · ' + DL.esc(DL.BENCH) + "</h3>" +
+      DL.tag(ba.chgPct >= 0 ? "en verde" : "en rojo", ba.chgPct >= 0 ? "buy" : "sell") + "</div>" +
+      '<div class="grid g3">' +
+      DL.ro("Último", DL.money(ba.price), "", "sm") +
+      DL.ro("Cambio hoy", DL.pct(ba.chgPct), DL.tone(ba.chgPct), "sm") +
+      DL.ro("3 meses", DL.pct(ba.ret3m, 1), DL.tone(ba.ret3m), "sm") +
+      "</div>" +
+      '<div class="chartbox" style="margin-top:12px"><canvas id="benchChart"></canvas></div>' +
+      "</section>";
+  }
+
+  /* --- capital y límite del día --- */
+  html += '<section class="card"><div class="head"><h3>Capital y límite del día</h3>' +
+    DL.tag("tope " + pr.maxDailyPct + "%", "watch") + "</div>" +
+    '<div class="grid g3" style="margin-bottom:12px">' +
+    DL.ro("Capital inicial", DL.money(pr.capital, 0), "", "sm") +
+    DL.ro("Desplegado hoy", DL.money(P.deployedToday, 0), "", "sm") +
+    DL.ro("Cupo restante", DL.money(P.roomToday, 0), "", "sm") +
+    "</div>" +
+    '<div class="bar"><i class="' + (P.deployedToday > P.dailyCeiling ? "neg" : "pos") + '" style="width:' +
+    Math.min(100, P.dailyCeiling > 0 ? (P.deployedToday / P.dailyCeiling) * 100 : 0).toFixed(1) + '%"></i></div>' +
+    '<p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5">' +
+    "Puedes <b>desplegar</b> hasta " + DL.money(P.dailyCeiling, 0) + " hoy (" + pr.maxDailyPct + "% del equity). " +
+    "Eso no es lo que <b>arriesgas</b>: con el stop puesto, tu pérdida máxima planeada es " +
+    DL.money(P.openRisk) + " (" + DL.pctp(P.openRiskPct, 2) + " del equity).</p>" +
+    "</section>";
+
+  /* --- glosario del modo: solo lo pertinente --- */
+  var gl = DL.GLOSS[M.id] || [];
+  if (gl.length) {
+    html += '<section class="card"><div class="head"><h3>Términos de este modo</h3>' +
+      DL.tag("EN → ES", "gold") + "</div><div class=\"terms\">" +
+      gl.map(function (p) {
+        return "<div><b>" + DL.esc(p[0]) + "</b> — " + DL.esc(p[1]) + "</div>";
+      }).join("") + "</div></section>";
+  }
+
+  html += '<div class="legal">' + DL.esc(DL.LEGAL_SHORT) +
+    ' <button type="button" id="legalLink">Leer el aviso legal completo</button></div>';
+
+  root.innerHTML = html;
+
+  DL.$$("#modeSel button", root).forEach(function (b) {
+    b.onclick = function () {
+      DL.S.profile.mode = b.dataset.mode;
+      DL.save(); DL.recompute();
+      if (b.dataset.mode === "backtest") DL.go("backtest"); else DL.render();
+    };
+  });
+  var lk = DL.$("#legalLink", root);
+  if (lk) lk.onclick = DL.legalSheet;
+
+  // lista de acciones (con manejadores)
+  var list = DL.$("#todayList", root);
+  if (list) {
+    actions.forEach(function (a) {
+      var an = DL.data.an[a.sym];
+      var row = DL.el('<button type="button" style="display:block;width:100%;text-align:left;background:var(--plate2);' +
+        'border:1px solid var(--line);border-radius:8px;padding:11px 12px;margin-bottom:7px"></button>');
+      row.innerHTML =
+        '<div class="row" style="justify-content:space-between;margin-bottom:4px">' +
+        '<span class="n" style="font-size:13.5px;font-weight:600">' + DL.esc(a.sym) + "</span>" +
+        DL.tag(a.state, a.state.toLowerCase()) + "</div>" +
+        '<div style="font-size:12px;color:var(--muted);line-height:1.45">' + DL.esc(a.why) + "</div>" +
+        (an ? '<div class="row" style="margin-top:6px;gap:12px">' +
+          '<span class="n" style="font-size:12px">' + DL.money(an.price) + "</span>" +
+          '<span class="n ' + DL.tone(an.chgPct) + '" style="font-size:12px">' + DL.pct(an.chgPct) + "</span></div>" : "");
+      row.onclick = function () { DL.openAsset(a.sym); };
+      list.appendChild(row);
+    });
+  }
+
+  if (ba) {
+    var cv = DL.$("#benchChart", root);
+    if (cv) DL.CH.candles(cv, { bars: DL.data.bench.bars, sma: [50], count: 70, height: 140, volume: false });
+  }
+};
+
+/* ============================================================
+   WATCHLIST
+   ============================================================ */
+DL.VIEW_watch = function (root) {
+  var P = DL.ENG.portfolio(DL.prices());
+  var html = '<section class="card"><div class="head"><h3>Lista de seguimiento</h3>' +
+    '<span class="eyebrow">' + DL.S.watch.length + " activos</span></div>" +
+    '<div class="row" style="gap:7px"><input type="text" id="symIn" placeholder="AAPL, GOOG, SPY, BTC-USD…" ' +
+    'autocapitalize="characters" autocomplete="off" style="flex:1;min-width:140px">' +
+    '<button class="btn p" id="addSym">Agregar</button></div>' +
+    '<div id="searchOut" style="margin-top:10px"></div></section>';
+
+  if (DL.data.error && !DL.S.watch.length) {
+    html += '<div class="note bad" style="margin-top:10px"><b>No se pudo conectar al mercado.</b> ' +
+      "Prueba de nuevo, o abre Ajustes y configura un proxy CORS. Detalle: " + DL.esc(DL.data.error) + "</div>";
+  }
+
+  var M = DL.mode();
+  if (M.id === "scalp") {
+    html += '<section class="card" style="margin-top:10px"><div class="head" style="margin-bottom:8px">' +
+      "<h3>Filtro de scalping</h3>" + DL.tag("intradía", "watch") + "</div>" +
+      '<p style="font-size:12px;color:var(--muted);line-height:1.45;margin-bottom:10px">' +
+      "Resalta solo los activos con " + DL.term("liquidity") + " sobre " +
+      (DL.S.profile.minVolume / 1e6).toFixed(0) + "M y variación del día entre " +
+      DL.S.profile.intradayMin + "% y " + DL.S.profile.intradayMax + "%.</p>" +
+      '<label class="chk"><input type="checkbox" id="scalpOnly"' +
+      (DL.current.scalpOnly ? " checked" : "") + "> Mostrar solo candidatos</label></section>";
+  }
+
+  html += '<div id="wlist" style="margin-top:12px"></div>';
+  root.innerHTML = html;
+
+  var so = DL.$("#scalpOnly", root);
+  if (so) so.onchange = function () { DL.current.scalpOnly = so.checked; DL.render(); };
+
+  var listEl = DL.$("#wlist", root);
+  if (!DL.S.watch.length) {
+    listEl.innerHTML = DL.empty("Tu watchlist está vacía",
+      "Escribe un símbolo real arriba. El precio, el gráfico y las condiciones se cargan solos.");
+  } else {
+    var shown = 0;
+    DL.S.watch.forEach(function (w) {
+      var an = DL.data.an[w.sym];
+      var d = DL.data.bySym[w.sym];
+      var held = P.open.filter(function (p) { return p.sym === w.sym; })[0];
+      var state = held ? DL.ENG.positionState(held, an).s : (an ? an.state : "WATCH");
+
+      // candidato de scalping: liquidez y variación dentro del rango buscado
+      var pr = DL.S.profile, eligible = true;
+      if (M.id === "scalp") {
+        var abs = an ? Math.abs(an.chgPct) : 0;
+        eligible = !!an && an.vol >= pr.minVolume && abs >= pr.intradayMin && abs <= pr.intradayMax;
+        if (DL.current.scalpOnly && !eligible) return;
+      }
+      shown++;
+
+      var row = DL.el('<div class="wrow" role="button" tabindex="0"></div>');
+      if (M.id === "scalp") {
+        row.style.opacity = eligible ? "1" : "0.45";
+        if (eligible) row.style.borderColor = "var(--pos)";
+      }
+      row.innerHTML =
+        '<div><div class="sy">' + DL.esc(w.sym) + '</div><div class="nm">' +
+        DL.esc((d && d.name) || w.name || "—") + "</div></div>" +
+        '<div><canvas></canvas></div>' +
+        '<div><div class="px">' + (an ? DL.money(an.price) : "—") + '</div>' +
+        '<div class="ch ' + (an ? DL.tone(an.chgPct) : "") + '">' + (an ? DL.pct(an.chgPct) : "") + "</div></div>" +
+        '<div class="st">' + DL.tag(state, state.toLowerCase()) + "</div>";
+      row.onclick = function () { DL.openAsset(w.sym); };
+      row.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); DL.openAsset(w.sym); } };
+      listEl.appendChild(row);
+      if (d && d.bars) {
+        DL.CH.spark(row.querySelector("canvas"), d.bars.slice(-5).length >= 5 ? d.bars.slice(-30) : d.bars,
+          an ? an.sma20 : null, 34);
+      }
+    });
+    if (!shown) {
+      listEl.innerHTML = DL.empty("Ningún activo pasa el filtro de scalping hoy",
+        "Eso también es información: hoy no hay setup. Desactiva el filtro para ver toda la lista.");
+    }
+  }
+
+  var input = DL.$("#symIn", root);
+  var out = DL.$("#searchOut", root);
+  function addNow() {
+    var q = (input.value || "").trim().toUpperCase();
+    if (!q) return;
+    DL.addSymbol(q);
+  }
+  DL.$("#addSym", root).onclick = addNow;
+  input.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); addNow(); } };
+
+  var searchT = null;
+  input.oninput = function () {
+    clearTimeout(searchT);
+    var q = input.value.trim();
+    if (q.length < 2) { out.innerHTML = ""; return; }
+    searchT = setTimeout(function () {
+      out.innerHTML = '<span class="spin"></span> <span class="eyebrow">buscando…</span>';
+      DL.MKT.search(q).then(function (rows) {
+        if (!rows.length) { out.innerHTML = '<div class="eyebrow">Sin resultados</div>'; return; }
+        out.innerHTML = "";
+        rows.slice(0, 6).forEach(function (r) {
+          var b = DL.el('<button type="button" class="btn sm" style="display:block;width:100%;text-align:left;margin-bottom:5px"></button>');
+          b.innerHTML = '<span class="n" style="font-weight:600">' + DL.esc(r.symbol) + "</span> " +
+            '<span style="color:var(--muted);font-size:12px">' + DL.esc(r.name) + "</span> " +
+            '<span class="eyebrow">' + DL.esc(r.exchange) + "</span>";
+          b.onclick = function () { input.value = r.symbol; out.innerHTML = ""; DL.addSymbol(r.symbol, r.name); };
+          out.appendChild(b);
+        });
+      }).catch(function () { out.innerHTML = '<div class="eyebrow">Búsqueda no disponible — escribe el símbolo exacto</div>'; });
+    }, 420);
+  };
+};
+
+DL.addSymbol = function (sym, name) {
+  sym = String(sym).trim().toUpperCase();
+  if (!sym) return;
+  if (DL.S.watch.some(function (w) { return w.sym === sym; })) { DL.toast(sym + " ya está en tu watchlist"); return; }
+  DL.toast("Cargando " + sym + "…");
+  DL.MKT.daily(sym, true).then(function (d) {
+    DL.data.bySym[d.symbol || sym] = d;
+    DL.S.watch.push({
+      sym: d.symbol || sym, name: name || d.name || sym, note: "",
+      addedAt: Date.now(), goalBuy: null, goalSell: null
+    });
+    DL.addDiary(d.symbol || sym, "watch", "Agregado a la watchlist", d.price);
+    DL.save(); DL.recompute(); DL.render();
+    DL.toast(sym + " agregado");
+  }).catch(function (e) {
+    DL.toast("No se encontró " + sym + " (" + (e.message || "error") + ")");
+  });
+};
+/* ============================================================
+   Módulo 5b/6 — ficha del activo, trade builder, portafolio, diario
+   ============================================================ */
+
+DL.current = { sym: null, range: 90 };
+
+DL.openAsset = function (sym) {
+  DL.current.sym = sym;
+  DL.go("asset");
+  if (!DL.data.bySym[sym]) {
+    DL.MKT.daily(sym).then(function (d) {
+      DL.data.bySym[d.symbol || sym] = d; DL.recompute(); DL.render();
+    }).catch(function () { DL.render(); });
+  }
+};
+
+DL.addDiary = function (sym, kind, text, px) {
+  DL.S.diary.unshift({ id: DL.uid("j"), sym: sym, kind: kind, text: text, pxAt: px || null, t: Date.now() });
+  if (DL.S.diary.length > 400) DL.S.diary.length = 400;   // el historial no se sobrescribe, solo se acota
+  DL.save();
+};
+
+/* ============================================================
+   FICHA DEL ACTIVO
+   ============================================================ */
+DL.VIEW_asset = function (root) {
+  var sym = DL.current.sym;
+  if (!sym) { root.innerHTML = DL.empty("Ningún activo seleccionado", "Elige uno desde la watchlist."); return; }
+  var d = DL.data.bySym[sym], an = DL.data.an[sym];
+  var P = DL.ENG.portfolio(DL.prices());
+  var pos = P.open.filter(function (p) { return p.sym === sym; })[0];
+  var inWatch = DL.S.watch.some(function (w) { return w.sym === sym; });
+
+  if (!d) {
+    root.innerHTML = '<section class="card"><div class="head"><h3>' + DL.esc(sym) + "</h3></div>" +
+      '<p class="mute" style="font-size:13px"><span class="spin"></span> Cargando datos de mercado…</p></section>';
+    return;
+  }
+
+  var state = pos ? DL.ENG.positionState(pos, an) : null;
+  var html = "";
+
+  /* cabecera */
+  html += '<section class="card">' +
+    '<div class="head" style="margin-bottom:8px"><div>' +
+    '<h3 style="font-size:20px;font-family:var(--m);letter-spacing:-.01em">' + DL.esc(sym) + "</h3>" +
+    '<div class="eyebrow" style="margin-top:2px">' + DL.esc(d.name || "") + (d.exchange ? " · " + DL.esc(d.exchange) : "") + "</div></div>" +
+    (state ? DL.tag(state.s, state.s.toLowerCase()) : (an ? DL.tag(an.state, an.state.toLowerCase()) : "")) +
+    "</div>" +
+    '<div class="row" style="align-items:baseline;gap:12px">' +
+    '<span class="n" style="font-size:30px;letter-spacing:-.03em">' + DL.money(d.price) + "</span>" +
+    '<span class="n ' + DL.tone(an ? an.chgPct : 0) + '" style="font-size:15px">' + (an ? DL.pct(an.chgPct) : "") + "</span>" +
+    (d.stale ? '<span class="eyebrow">dato en caché</span>' : "") +
+    "</div>";
+
+  html += '<div class="row" style="margin-top:12px;gap:6px"><div class="seg" id="rangeSeg">' +
+    [["30", "1M"], ["90", "3M"], ["180", "6M"], ["250", "1A"]].map(function (r) {
+      return '<button data-r="' + r[0] + '" aria-pressed="' + (DL.current.range == r[0]) + '">' + r[1] + "</button>";
+    }).join("") + "</div></div>";
+  html += '<div class="chartbox" style="margin-top:10px"><canvas id="assetChart"></canvas></div>';
+  html += "</section>";
+
+  /* decision score con condiciones explícitas */
+  if (an) {
+    html += '<section class="card"><div class="head"><h3>Decision Score</h3>' +
+      DL.tag(an.state, an.state.toLowerCase()) + "</div>" +
+      '<div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:12px">' +
+      '<span class="score"><b>' + an.score + '</b><span>/100</span></span>' +
+      '<span class="n" style="font-size:12px;color:var(--muted)">' + an.confirmed + " de " + an.total + " condiciones confirmadas</span></div>" +
+      '<div class="bar" style="margin-bottom:14px"><i class="' +
+      (an.score >= 75 ? "pos" : an.score >= 50 ? "amber" : "neg") + '" style="width:' + an.score + '%"></i></div>' +
+      an.conditions.map(function (c) {
+        return '<div class="cond ' + (c.ok ? "ok" : "") + '">' +
+          '<span class="ic">' + (c.ok ? "✅" : "❌") + "</span>" +
+          '<span class="lb">' + DL.esc(c.label) + "</span>" +
+          '<span class="vl">' + DL.esc(c.value) + "</span></div>";
+      }).join("") +
+      '<p style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.5">' +
+      "El score es la cuenta de condiciones confirmadas — nada más. No predice el precio: describe el estado actual del activo con reglas que puedes verificar tú mismo en el gráfico.</p>" +
+      "</section>";
+  }
+
+  /* plan sugerido según el modo activo */
+  if (an && !pos) {
+    var plan = DL.ENG.suggestPlan(an);
+    var M = DL.mode();
+    if (plan) {
+      html += '<section class="card"><div class="head"><h3>Plan sugerido · ' + DL.esc(M.label) + "</h3>" +
+        DL.tag(M.sub, "watch") + "</div>";
+      if (plan.buyZone) {
+        html += '<div class="zone buy"><span class="lab">Zona de compra</span>' +
+          '<span class="val">' + DL.money(plan.buyZone[0]) + " – " + DL.money(plan.buyZone[1]) + "</span></div>" +
+          '<div class="zone"><span class="lab">Stop</span><span class="val neg">' + DL.money(plan.stop) + "</span></div>" +
+          '<div class="zone sell"><span class="lab">Zona de venta</span>' +
+          '<span class="val">' + DL.money(plan.sellZone[0]) + " – " + DL.money(plan.sellZone[1]) + "</span></div>";
+      } else {
+        html += '<div class="grid g3" style="margin-bottom:10px">' +
+          DL.ro("Entrada", DL.money(plan.entry), "", "sm") +
+          DL.ro("Stop", DL.money(plan.stop), "neg", "sm") +
+          DL.ro("Target", DL.money(plan.target), "pos", "sm") +
+          "</div>";
+      }
+      html += '<p style="margin-top:8px;font-size:12px;color:var(--muted);line-height:1.5">' +
+        DL.esc(plan.note) + "</p>" +
+        '<p style="margin-top:8px;font-size:12px;color:var(--muted);line-height:1.5">' +
+        (M.id === "scalp"
+          ? "Un " + DL.term("tight stop") + " te saca rápido cuando te equivocas, pero también te saca del ruido normal. En intradía la " + DL.term("execution speed") + " es parte del plan."
+          : "Una ruptura sin " + DL.term("volume confirmation") + " suele ser falsa. Si el precio está cerca del soporte, es rebote; si supera la resistencia, es " + DL.term("breakout") + ".") +
+        "</p></section>";
+    }
+  }
+
+  /* posición abierta */
+  if (pos) {
+    var plPct = pos._cost > 0 ? (pos._pl / pos._cost) * 100 : 0;
+    html += '<section class="card"><div class="head"><h3>Tu posición</h3>' + DL.tag(state.s, state.s.toLowerCase()) + "</div>" +
+      '<div class="note" style="margin-bottom:12px">' + DL.esc(state.why) + "</div>" +
+      '<div class="grid g3" style="margin-bottom:12px">' +
+      DL.ro("Cantidad", DL.qty(pos.qty), "", "sm") +
+      DL.ro("Precio de registro", DL.money(pos.entry), "", "sm") +
+      DL.ro("P/L", DL.sgn(pos._pl) + " (" + DL.pct(plPct) + ")", DL.tone(pos._pl), "sm") +
+      "</div>" +
+      '<div class="grid g3">' +
+      DL.ro("Stop", DL.money(pos.stop), "neg", "sm") +
+      DL.ro("Target", pos.target ? DL.money(pos.target) : "—", "pos", "sm") +
+      DL.ro("Invertido", DL.money(pos._cost, 0), "", "sm") +
+      "</div>" +
+      '<div class="row" style="margin-top:14px">' +
+      '<button class="btn sm" id="btnFollow">Registrar seguimiento</button>' +
+      '<button class="btn sm" id="btnMoveStop">Ajustar stop</button>' +
+      '<button class="btn sm dngr" id="btnClose">Cerrar posición</button>' +
+      "</div></section>";
+  }
+
+  /* línea de tiempo del activo */
+  var events = DL.S.diary.filter(function (e) { return e.sym === sym; });
+  html += '<section class="card"><div class="head"><h3>Línea de tiempo</h3>' +
+    '<span class="eyebrow">' + events.length + " registros</span></div>";
+  if (!events.length) html += DL.empty("Sin historial todavía", "Cada acción sobre este activo queda registrada aquí.");
+  else {
+    html += events.slice(0, 40).map(function (e) {
+      var pct = (e.pxAt && d.price) ? ((d.price - e.pxAt) / e.pxAt) * 100 : null;
+      return '<div class="tl"><div class="w">' + DL.day(e.t) + '</div><div class="m"><i></i></div>' +
+        '<div class="b">' + DL.esc(e.text) +
+        (e.pxAt ? "<small>en " + DL.money(e.pxAt) +
+          (pct != null ? ' · <span class="' + DL.tone(pct) + '">' + DL.pct(pct) + " desde entonces</span>" : "") + "</small>" : "") +
+        "</div></div>";
+    }).join("");
+  }
+  html += "</section>";
+
+  /* acciones */
+  html += '<section class="card"><div class="row">' +
+    (pos ? "" : '<button class="btn p" id="btnTrade">Operar ' + DL.esc(sym) + "</button>") +
+    '<button class="btn" id="btnNote">Nota al diario</button>' +
+    (inWatch
+      ? '<button class="btn g" id="btnUnwatch">Quitar de watchlist</button>'
+      : '<button class="btn" id="btnWatch">Agregar a watchlist</button>') +
+    "</div></section>";
+
+  root.innerHTML = html;
+
+  /* gráfico */
+  var cv = DL.$("#assetChart", root);
+  if (cv) {
+    DL.CH.candles(cv, {
+      bars: d.bars,
+      sma: DL.mode().id === "scalp" ? [20, 50] : [20, 50, 200],
+      count: DL.current.range, height: 250,
+      levels: pos ? { entry: pos.entry, stop: pos.stop, target: pos.target } : null,
+      sr: (an && DL.mode().id === "swing") ? { support: an.support, resistance: an.resistance } : null
+    });
+  }
+  DL.$$("#rangeSeg button", root).forEach(function (b) {
+    b.onclick = function () { DL.current.range = parseInt(b.dataset.r, 10); DL.render(); };
+  });
+
+  var bt;
+  if ((bt = DL.$("#btnTrade", root))) bt.onclick = function () { DL.tradeSym = sym; DL.go("trade"); };
+  if ((bt = DL.$("#btnWatch", root))) bt.onclick = function () { DL.addSymbol(sym, d.name); };
+  if ((bt = DL.$("#btnUnwatch", root))) bt.onclick = function () {
+    DL.S.watch = DL.S.watch.filter(function (w) { return w.sym !== sym; });
+    DL.save(); DL.toast(sym + " quitado de la watchlist"); DL.go("watch");
+  };
+  if ((bt = DL.$("#btnNote", root))) bt.onclick = function () { DL.noteSheet(sym, d.price); };
+  if ((bt = DL.$("#btnFollow", root))) bt.onclick = function () { DL.followSheet(pos, d.price); };
+  if ((bt = DL.$("#btnMoveStop", root))) bt.onclick = function () { DL.moveStopSheet(pos, d.price); };
+  if ((bt = DL.$("#btnClose", root))) bt.onclick = function () { DL.closeSheet(pos, d.price); };
+};
+
+/* ---------- hojas de acción sobre una posición ---------- */
+DL.noteSheet = function (sym, px) {
+  var body = DL.el('<div><div class="fld"><label for="ntx">Nota</label>' +
+    '<textarea id="ntx" placeholder="Qué observaste, qué esperas, qué te haría cambiar de opinión."></textarea></div></div>');
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+  var ok = DL.el('<button class="btn p">Guardar</button>');
+  ok.onclick = function () {
+    var v = body.querySelector("#ntx").value.trim();
+    if (!v) return;
+    DL.addDiary(sym, "note", v, px);
+    s.close(); DL.toast("Nota guardada"); DL.render();
+  };
+  foot.appendChild(ok);
+  var s = DL.sheet("Nota · " + sym, body, foot);
+};
+
+DL.followSheet = function (pos, px) {
+  var pct = ((px - pos.entry) / pos.entry) * 100;
+  var body = DL.el('<div><div class="grid g3" style="margin-bottom:14px">' +
+    DL.ro("Precio de registro", DL.money(pos.entry), "", "sm") +
+    DL.ro("Precio hoy", DL.money(px), "", "sm") +
+    DL.ro("Cambio", DL.pct(pct), DL.tone(pct), "sm") +
+    "</div><div class=\"fld\"><label for=\"ftx\">¿Qué está pasando con tu tesis?</label>" +
+    '<textarea id="ftx" placeholder="Sigue vigente / se debilitó / apareció algo nuevo."></textarea></div></div>');
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+  var ok = DL.el('<button class="btn p">Registrar seguimiento</button>');
+  ok.onclick = function () {
+    var v = body.querySelector("#ftx").value.trim() || "Seguimiento sin observaciones";
+    pos.events = (pos.events || []).concat([{ t: Date.now(), k: "follow", px: px, note: v }]);
+    DL.addDiary(pos.sym, "follow", "Seguimiento: " + v, px);
+    DL.save(); s.close(); DL.toast("Seguimiento registrado"); DL.render();
+  };
+  foot.appendChild(ok);
+  var s = DL.sheet("Seguimiento · " + pos.sym, body, foot);
+};
+
+DL.moveStopSheet = function (pos, px) {
+  var body = DL.el('<div><div class="fld"><label for="nst">Nuevo stop</label>' +
+    '<input type="number" step="0.01" id="nst" value="' + pos.stop.toFixed(2) + '"></div>' +
+    '<p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5">' +
+    "Subir el stop protege ganancia. Bajarlo para no perder es cambiar el plan a mitad de camino — queda registrado en la línea de tiempo.</p></div>");
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+  var ok = DL.el('<button class="btn p">Guardar</button>');
+  ok.onclick = function () {
+    var v = parseFloat(body.querySelector("#nst").value);
+    if (!v || v <= 0) return;
+    var dir = v > pos.stop ? "subido" : "bajado";
+    pos.events = (pos.events || []).concat([{ t: Date.now(), k: "stop", px: v, note: "stop " + dir }]);
+    DL.addDiary(pos.sym, "stop", "Stop " + dir + " de " + DL.money(pos.stop) + " a " + DL.money(v), px);
+    pos.stop = v;
+    DL.save(); s.close(); DL.toast("Stop actualizado"); DL.render();
+  };
+  foot.appendChild(ok);
+  var s = DL.sheet("Ajustar stop · " + pos.sym, body, foot);
+};
+
+DL.closeSheet = function (pos, px) {
+  var body = DL.el('<div><div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="cpx">Precio de cierre</label><input type="number" step="0.01" id="cpx" value="' + px.toFixed(2) + '"></div>' +
+    '<div class="fld"><label for="crs">Motivo</label><select id="crs">' +
+    '<option value="target">Target alcanzado</option>' +
+    '<option value="stop">Stop alcanzado</option>' +
+    '<option value="tesis">Tesis invalidada</option>' +
+    '<option value="manual">Decisión discrecional</option></select></div></div>' +
+    '<div id="cprev"></div>' +
+    '<div class="fld" style="margin-top:12px"><label for="clr">¿Qué aprendiste?</label>' +
+    '<textarea id="clr" placeholder="Qué esperabas, qué pasó, qué harías distinto."></textarea></div></div>');
+  function upd() {
+    var v = parseFloat(body.querySelector("#cpx").value) || 0;
+    var pl = (v - pos.entry) * pos.qty;
+    var r = Math.abs(pos.entry - pos.stop) * pos.qty;
+    body.querySelector("#cprev").innerHTML = '<div class="grid g2">' +
+      DL.ro("Resultado", DL.sgn(pl), DL.tone(pl)) +
+      DL.ro("Múltiplo R", r > 0 ? (pl / r >= 0 ? "+" : "") + (pl / r).toFixed(2) + "R" : "—") + "</div>";
+  }
+  body.querySelector("#cpx").oninput = upd; upd();
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+  var ok = DL.el('<button class="btn p">Cerrar posición</button>');
+  ok.onclick = function () {
+    var v = parseFloat(body.querySelector("#cpx").value);
+    if (!v || v <= 0) return;
+    var r = Math.abs(pos.entry - pos.stop) * pos.qty;
+    pos.status = "closed";
+    pos.exitPx = v; pos.exitAt = Date.now();
+    pos.exitReason = body.querySelector("#crs").value;
+    pos.pl = (v - pos.entry) * pos.qty;
+    pos.rMultiple = r > 0 ? pos.pl / r : 0;
+    pos.lesson = body.querySelector("#clr").value.trim();
+    pos.events = (pos.events || []).concat([{ t: Date.now(), k: "exit", px: v, note: pos.exitReason }]);
+    DL.addDiary(pos.sym, "exit", "Posición cerrada en " + DL.money(v) + " · " + DL.sgn(pos.pl) +
+      (pos.lesson ? " · " + pos.lesson : ""), v);
+    DL.save(); s.close(); DL.toast("Posición cerrada · " + DL.sgn(pos.pl)); DL.go("port");
+  };
+  foot.appendChild(ok);
+  var s = DL.sheet("Cerrar · " + pos.sym, body, foot);
+};
+
+/* ============================================================
+   TRADE BUILDER — jerarquía símbolo → precio → cantidad
+   ============================================================ */
+DL.tradeSym = null;
+DL.VIEW_trade = function (root) {
+  var P = DL.ENG.portfolio(DL.prices());
+  var pr = DL.S.profile;
+  var sym = DL.tradeSym || (DL.S.watch[0] && DL.S.watch[0].sym) || "";
+  var d = sym ? DL.data.bySym[sym] : null;
+  var an = sym ? DL.data.an[sym] : null;
+
+  var opts = DL.S.watch.map(function (w) { return w.sym; });
+  Object.keys(DL.data.bySym).forEach(function (s) { if (opts.indexOf(s) < 0) opts.push(s); });
+
+  var html = '<section class="card"><div class="head"><h3>Operar</h3>' +
+    DL.tag("simulado", "watch") + "</div>";
+
+  if (!opts.length) {
+    html += DL.empty("Primero agrega un activo", "Ve a Watchlist y escribe un símbolo real.");
+    root.innerHTML = html + "</section>";
+    return;
+  }
+
+  html += '<div class="fld" style="margin-bottom:12px"><label for="tsym">1 · Símbolo</label>' +
+    '<select id="tsym">' + opts.map(function (s) {
+      return '<option value="' + DL.esc(s) + '"' + (s === sym ? " selected" : "") + ">" + DL.esc(s) + "</option>";
+    }).join("") + "</select></div>";
+
+  if (an) {
+    var failed = an.conditions.filter(function (c) { return !c.ok; });
+    html += '<div class="note' + (an.score < 50 ? " bad" : "") + '" style="margin-bottom:12px">' +
+      "<b>" + an.score + "/100 — " + an.state + ", " + an.confirmed + " de " + an.total + " condiciones confirmadas.</b>" +
+      (failed.length ? "<br>Sin confirmar: " + DL.esc(failed.map(function (c) { return c.label.split(" —")[0].split(" (")[0]; }).join(" · ")) : "") +
+      (an.score < 50 ? "<br>Puedes operar igual — pero escribe en tu tesis por qué entras contra las condiciones." : "") +
+      "</div>";
+  }
+
+  html += '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="tpx">2 · Precio</label><input type="number" step="0.01" id="tpx" value="' +
+    (d ? d.price.toFixed(2) : "") + '"></div>' +
+    '<div class="fld"><label for="tqty">3 · Cantidad</label><input type="number" step="1" min="0" id="tqty" value=""></div>' +
+    "</div>";
+
+  html += '<div class="row" style="margin-bottom:12px;gap:6px">' +
+    '<button class="btn sm" id="qSug">Cantidad sugerida</button>' +
+    '<button class="btn sm" id="qMax">Máximo permitido</button></div>';
+
+  var plan = an ? DL.ENG.suggestPlan(an) : null;
+  var MD = DL.mode();
+
+  if (plan && plan.buyZone) {
+    html += '<div class="zone buy" style="margin-bottom:10px"><span class="lab">Zona de compra sugerida</span>' +
+      '<span class="val">' + DL.money(plan.buyZone[0]) + " – " + DL.money(plan.buyZone[1]) + "</span></div>";
+  }
+
+  html += '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="tstop">4 · Stop' +
+    (MD.id === "scalp" ? " (tight stop, " + MD.stopAtr + "× ATR)" : " (dónde tu idea queda invalidada)") + "</label>" +
+    '<input type="number" step="0.01" id="tstop" value="' + (plan ? plan.stop.toFixed(2) : "") + '"></div>' +
+    '<div class="fld"><label for="ttgt">5 · Target</label>' +
+    '<input type="number" step="0.01" id="ttgt" value="' + (plan ? plan.target.toFixed(2) : "") + '"></div>' +
+    "</div>";
+
+  html += '<div id="riskOut"></div>';
+  html += '<div class="fld" style="margin-top:12px"><label for="tthesis">Tu tesis en una frase</label>' +
+    '<textarea id="tthesis" placeholder="Qué crees que va a pasar y por qué."></textarea></div>';
+  html += '<button class="btn p blk" id="tgo" style="margin-top:12px">Registrar operación simulada</button>';
+  html += "</section>";
+
+  root.innerHTML = html;
+
+  var elSym = DL.$("#tsym", root), elPx = DL.$("#tpx", root), elQty = DL.$("#tqty", root),
+      elStop = DL.$("#tstop", root), elTgt = DL.$("#ttgt", root), out = DL.$("#riskOut", root),
+      go = DL.$("#tgo", root);
+
+  function calc() {
+    return DL.ENG.tradeRisk({
+      price: elPx.value, qty: elQty.value, stop: elStop.value, target: elTgt.value,
+      equity: P.equity, cash: P.cash, maxDailyPct: pr.maxDailyPct, maxRiskPct: pr.maxRiskPct,
+      deployedToday: P.deployedToday
+    });
+  }
+  function paint() {
+    var c = calc();
+    var warn = "";
+    if (c.overCash) warn += '<div class="note bad" style="margin-bottom:8px"><b>Excede tu efectivo.</b> Tienes ' +
+      DL.money(P.cash, 0) + " disponible y esta compra cuesta " + DL.money(c.cost, 0) + ".</div>";
+    if (c.overDaily) warn += '<div class="note bad" style="margin-bottom:8px"><b>Excede el límite diario.</b> Llegarías a ' +
+      DL.pctp(c.dayPct, 1) + " del equity y tu tope es " + pr.maxDailyPct + "%.</div>";
+    if (c.overRisk) warn += '<div class="note bad" style="margin-bottom:8px"><b>Excede tu riesgo por operación.</b> Arriesgas ' +
+      DL.pctp(c.riskPct, 2) + " y tu tope es " + pr.maxRiskPct + "%.</div>";
+    if (!c.stopValid) warn += '<div class="note" style="margin-bottom:8px"><b>Falta el stop.</b> ' +
+      "Sin stop no hay riesgo calculable: pon el precio por debajo de la entrada, donde tu idea quedaría invalidada.</div>";
+
+    out.innerHTML = warn +
+      '<div class="grid g3" style="margin-bottom:10px">' +
+      DL.ro("Costo total", DL.money(c.cost, 2)) +
+      DL.ro("% del capital", DL.pctp(c.costPct, 1), c.costPct > pr.maxDailyPct ? "neg" : "") +
+      DL.ro("Efectivo después", DL.money(c.cashAfter, 0), c.cashAfter < 0 ? "neg" : "") +
+      "</div>" +
+      '<div class="grid g3" style="margin-bottom:10px">' +
+      DL.ro("Pérdida en el stop", DL.money(c.riskAmount), "neg") +
+      DL.ro("Eso es del equity", DL.pctp(c.riskPct, 2), c.overRisk ? "neg" : "pos") +
+      DL.ro("Distancia al stop", DL.pctp(c.stopDistPct, 2)) +
+      "</div>" +
+      '<div class="grid g3">' +
+      DL.ro("Ganancia en el target", DL.money(c.rewardAmount), "pos") +
+      DL.ro("Reward / Risk", c.rr ? "1 : " + c.rr.toFixed(2) : "—", c.rr >= 2 ? "pos" : c.rr >= 1.5 ? "warn" : "neg") +
+      DL.ro("Distancia al target", DL.pctp(c.targetDistPct, 2)) +
+      "</div>" +
+      '<div class="note" style="margin-top:12px"><b>Desplegar no es arriesgar.</b> Pones ' +
+      DL.money(c.cost, 0) + " en el mercado (" + DL.pctp(c.costPct, 1) + " del capital), pero con el stop en " +
+      DL.money(parseFloat(elStop.value) || 0) + " tu pérdida máxima planeada es " + DL.money(c.riskAmount) +
+      " — " + DL.pctp(c.riskPct, 2) + " del equity.</div>";
+
+    go.disabled = !c.ok;
+    return c;
+  }
+
+  [elPx, elQty, elStop, elTgt].forEach(function (x) { x.oninput = paint; });
+  elSym.onchange = function () {
+    DL.tradeSym = elSym.value;
+    if (!DL.data.bySym[DL.tradeSym]) {
+      DL.MKT.daily(DL.tradeSym).then(function (dd) {
+        DL.data.bySym[dd.symbol || DL.tradeSym] = dd; DL.recompute(); DL.render();
+      });
+    } else DL.render();
+  };
+  DL.$("#qSug", root).onclick = function () { elQty.value = calc().suggestedQty; paint(); };
+  DL.$("#qMax", root).onclick = function () {
+    var c = calc();
+    var px = parseFloat(elPx.value) || 0;
+    elQty.value = px > 0 ? Math.floor(Math.min(P.cash, c.roomToday) / px) : 0;
+    paint();
+  };
+  paint();
+
+  go.onclick = function () {
+    var c = calc();
+    if (!c.ok) return;
+    var p = {
+      id: DL.uid("p"), sym: elSym.value, qty: parseFloat(elQty.value),
+      entry: parseFloat(elPx.value), stop: parseFloat(elStop.value),
+      target: parseFloat(elTgt.value) || null,
+      thesis: DL.$("#tthesis", root).value.trim(),
+      openedAt: Date.now(), status: "open",
+      mode: DL.S.profile.mode,
+      riskPct: c.riskPct, rr: c.rr, costPct: c.costPct,
+      events: [{ t: Date.now(), k: "entry", px: parseFloat(elPx.value), note: "Entrada registrada" }]
+    };
+    DL.S.pos.push(p);
+    DL.addDiary(p.sym, "entry", "Compra simulada: " + DL.qty(p.qty) + " a " + DL.money(p.entry) +
+      " · stop " + DL.money(p.stop) + (p.target ? " · target " + DL.money(p.target) : "") +
+      (p.thesis ? " · " + p.thesis : ""), p.entry);
+    if (!DL.S.watch.some(function (w) { return w.sym === p.sym; })) {
+      DL.S.watch.push({ sym: p.sym, name: (DL.data.bySym[p.sym] || {}).name || p.sym, note: "", addedAt: Date.now() });
+    }
+    DL.save(); DL.toast("Operación registrada"); DL.go("port");
+  };
+};
+/* ============================================================
+   Módulo 5c/6 — portafolio, diario, ajustes y alta inicial
+   ============================================================ */
+
+DL.VIEW_port = function (root) {
+  var P = DL.ENG.portfolio(DL.prices());
+  var html = "";
+
+  html += '<section class="card"><div class="head"><h3>Portafolio</h3>' +
+    DL.tag(DL.S.pos.filter(function (p) { return p.status === "open"; }).length + " abiertas", "hold") + "</div>" +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    DL.ro("Equity", DL.money(P.equity), DL.tone(P.totalPL), "lg") +
+    DL.ro("Retorno total", DL.pct(P.returnPct), DL.tone(P.returnPct), "lg") +
+    "</div>" +
+    '<div class="grid g3">' +
+    DL.ro("Efectivo", DL.money(P.cash, 0), "", "sm") +
+    DL.ro("Invertido", DL.money(P.mktValue, 0), "", "sm") +
+    DL.ro("Exposición", DL.pctp(P.exposurePct, 1), "", "sm") +
+    DL.ro("P/L abierto", DL.sgn(P.openPL), DL.tone(P.openPL), "sm") +
+    DL.ro("P/L realizado", DL.sgn(P.realized), DL.tone(P.realized), "sm") +
+    DL.ro("Riesgo abierto", DL.pctp(P.openRiskPct, 2), "", "sm") +
+    "</div>";
+
+  // curva de capital realizada (semanal si hay suficientes cierres)
+  if (P.closed.length >= 2) {
+    html += '<div style="margin-top:14px"><div class="eyebrow" style="margin-bottom:6px">Curva de capital</div>' +
+      '<div class="chartbox"><canvas id="eqCurve"></canvas></div></div>';
+  }
+  html += "</section>";
+
+  /* posiciones abiertas */
+  html += '<section class="card"><div class="head"><h3>Posiciones abiertas</h3></div>';
+  if (!P.open.length) {
+    html += DL.empty("Sin posiciones abiertas", "Desde Operar puedes registrar tu primera compra simulada.");
+  } else {
+    html += '<div id="openList"></div>';
+  }
+  html += "</section>";
+
+  /* cerradas */
+  html += '<section class="card"><div class="head"><h3>Historial</h3>' +
+    '<span class="eyebrow">' + P.closed.length + " cerradas</span></div>";
+  if (!P.closed.length) {
+    html += DL.empty("Todavía no cierras ninguna posición", "El historial no se sobrescribe nunca.");
+  } else {
+    html += '<div class="grid g4" style="margin-bottom:12px">' +
+      DL.ro("Aciertos", P.winRate == null ? "—" : DL.pctp(P.winRate, 0), "", "sm") +
+      DL.ro("Ganancia media", P.avgWin == null ? "—" : DL.money(P.avgWin), "pos", "sm") +
+      DL.ro("Pérdida media", P.avgLoss == null ? "—" : DL.money(P.avgLoss), "neg", "sm") +
+      DL.ro("Drawdown máx.", DL.pctp(P.maxDD, 1), "", "sm") +
+      "</div>";
+    html += '<div class="scroll"><table><thead><tr><th></th><th>Entrada</th><th>Salida</th><th>Resultado</th><th>R</th></tr></thead><tbody>' +
+      P.closed.slice().sort(function (a, b) { return b.exitAt - a.exitAt; }).map(function (p) {
+        return "<tr><td><b class='n'>" + DL.esc(p.sym) + "</b><br><span class='eyebrow'>" + DL.day(p.exitAt) + "</span></td>" +
+          "<td class='n'>" + DL.money(p.entry) + "</td>" +
+          "<td class='n'>" + DL.money(p.exitPx) + "</td>" +
+          "<td class='n " + DL.tone(p.pl) + "'>" + DL.sgn(p.pl) + "</td>" +
+          "<td class='n'>" + (p.rMultiple == null ? "—" : (p.rMultiple >= 0 ? "+" : "") + p.rMultiple.toFixed(2) + "R") + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+  html += "</section>";
+
+  root.innerHTML = html;
+
+  var list = DL.$("#openList", root);
+  if (list) {
+    P.open.forEach(function (p) {
+      var an = DL.data.an[p.sym];
+      var st = DL.ENG.positionState(p, an);
+      var card = DL.el('<button type="button" style="display:block;width:100%;text-align:left;background:var(--plate2);' +
+        'border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:8px"></button>');
+      card.innerHTML =
+        '<div class="row" style="justify-content:space-between;margin-bottom:8px">' +
+        '<span class="n" style="font-size:14px;font-weight:600">' + DL.esc(p.sym) + "</span>" +
+        DL.tag(st.s, st.s.toLowerCase()) + "</div>" +
+        '<div class="grid g4">' +
+        DL.ro("Cantidad", DL.qty(p.qty), "", "sm") +
+        DL.ro("Registro", DL.money(p.entry), "", "sm") +
+        DL.ro("Hoy", DL.money(p._px), "", "sm") +
+        DL.ro("P/L", DL.sgn(p._pl), DL.tone(p._pl), "sm") +
+        "</div>" +
+        '<div class="row" style="margin-top:8px;gap:10px">' +
+        '<span class="n" style="font-size:11px;color:var(--neg)">stop ' + DL.money(p.stop) + "</span>" +
+        '<span class="n" style="font-size:11px;color:var(--pos)">target ' + (p.target ? DL.money(p.target) : "—") + "</span>" +
+        '<span class="n" style="font-size:11px;color:var(--muted)">' + DL.pct(p._plPct) + "</span></div>";
+      card.onclick = function () { DL.openAsset(p.sym); };
+      list.appendChild(card);
+    });
+  }
+
+  var cv = DL.$("#eqCurve", root);
+  if (cv) {
+    var pts = [DL.S.profile.capital], eq = DL.S.profile.capital;
+    P.closed.slice().sort(function (a, b) { return a.exitAt - b.exitAt; })
+      .forEach(function (p) { eq += (p.pl || 0); pts.push(eq); });
+    pts.push(P.equity);
+    DL.CH.equityCurve(cv, pts, 90);
+  }
+};
+
+/* ============================================================
+   DIARIO
+   ============================================================ */
+DL.VIEW_diary = function (root) {
+  var html = '<section class="card"><div class="head"><h3>Diario</h3>' +
+    '<span class="eyebrow">' + DL.S.diary.length + " registros</span></div>";
+  if (!DL.S.diary.length) {
+    html += DL.empty("Tu diario está vacío",
+      "Cada activo agregado, cada compra, seguimiento y cierre queda registrado aquí automáticamente.");
+    root.innerHTML = html + "</section>";
+    return;
+  }
+  var KIND = {
+    watch: ["Watchlist", "watch"], entry: ["Compra", "buy"], follow: ["Seguimiento", "hold"],
+    stop: ["Stop", "wait"], exit: ["Cierre", "sell"], note: ["Nota", ""]
+  };
+  html += DL.S.diary.slice(0, 120).map(function (e) {
+    var d = DL.data.bySym[e.sym];
+    var pct = (e.pxAt && d) ? ((d.price - e.pxAt) / e.pxAt) * 100 : null;
+    var k = KIND[e.kind] || ["Registro", ""];
+    return '<div style="padding:12px 0;border-bottom:1px solid var(--soft)">' +
+      '<div class="row" style="justify-content:space-between;margin-bottom:5px">' +
+      '<span class="row" style="gap:7px"><b class="n" style="font-size:13px">' + DL.esc(e.sym) + "</b>" +
+      DL.tag(k[0], k[1]) + "</span>" +
+      '<span class="eyebrow">' + DL.day(e.t) + "</span></div>" +
+      '<div style="font-size:12.5px;color:var(--text2);line-height:1.45">' + DL.esc(e.text) + "</div>" +
+      (e.pxAt ? '<div class="row" style="margin-top:6px;gap:12px">' +
+        '<span class="n" style="font-size:11.5px;color:var(--muted)">registro ' + DL.money(e.pxAt) + "</span>" +
+        (pct != null ? '<span class="n ' + DL.tone(pct) + '" style="font-size:11.5px">' +
+          DL.pct(pct) + " hoy vs. ese precio</span>" : "") + "</div>" : "");
+  }).join("");
+  html += "</section>";
+  root.innerHTML = html;
+};
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+DL.settingsSheet = function () {
+  var pr = DL.S.profile;
+  var body = DL.el('<div>' +
+    '<div class="fld" style="margin-bottom:12px"><label for="sName">Tu nombre</label>' +
+    '<input type="text" id="sName" value="' + DL.esc(pr.name) + '"></div>' +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="sCap">Capital simulado (USD)</label>' +
+    '<input type="number" id="sCap" step="100" min="100" value="' + pr.capital + '"></div>' +
+    '<div class="fld"><label for="sDay">Despliegue máx. diario (%)</label>' +
+    '<input type="number" id="sDay" step="1" min="1" max="100" value="' + pr.maxDailyPct + '"></div></div>' +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="sRisk">Riesgo máx. por operación (%)</label>' +
+    '<input type="number" id="sRisk" step="0.1" min="0.1" max="10" value="' + pr.maxRiskPct + '"></div>' +
+    '<div class="fld"><label for="sBench">Índice de referencia</label>' +
+    '<input type="text" id="sBench" value="' + DL.esc(DL.BENCH) + '"></div></div>' +
+    '<div class="eyebrow" style="margin:16px 0 8px">Parámetros de scalping</div>' +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="sVol">Liquidez mínima del día (millones)</label>' +
+    '<input type="number" id="sVol" step="1" min="0" value="' + (pr.minVolume / 1e6) + '"></div>' +
+    '<div class="fld"><label for="sHold">Máximo en posición (horas)</label>' +
+    '<input type="number" id="sHold" step="0.5" min="0.5" value="' + pr.maxHoldHours + '"></div></div>' +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="sIMin">Variación mínima del día (%)</label>' +
+    '<input type="number" id="sIMin" step="0.1" min="0" value="' + pr.intradayMin + '"></div>' +
+    '<div class="fld"><label for="sIMax">Variación máxima del día (%)</label>' +
+    '<input type="number" id="sIMax" step="0.1" min="0" value="' + pr.intradayMax + '"></div></div>' +
+    '<div class="fld" style="margin-bottom:12px"><label for="sProxy">Proxy CORS (opcional, usa {url})</label>' +
+    '<input type="text" id="sProxy" placeholder="https://mi-proxy.com/?{url}" value="' + DL.esc(pr.proxy) + '"></div>' +
+    '<div class="note">Solo necesitas un proxy si tu red bloquea a Yahoo Finance. La app ya intenta varios ' +
+    "públicos por su cuenta antes de fallar.</div>" +
+    '<div id="sPrev" style="margin-top:12px"></div>' +
+    "</div>");
+
+  function prev() {
+    var cap = parseFloat(body.querySelector("#sCap").value) || 0;
+    var day = parseFloat(body.querySelector("#sDay").value) || 20;
+    var rk = parseFloat(body.querySelector("#sRisk").value) || 2;
+    body.querySelector("#sPrev").innerHTML = '<div class="note"><b>Con estos números:</b> puedes poner hasta ' +
+      DL.money(cap * day / 100, 0) + " en el mercado en un día (" + day + "%), y tu pérdida máxima planeada por operación es " +
+      DL.money(cap * rk / 100, 0) + " (" + rk + "%). Con un stop 5% abajo de tu entrada, desplegar el " + day +
+      "% completo solo arriesga " + (5 * day / 100).toFixed(1) + "% del capital.</div>";
+  }
+  ["#sCap", "#sDay", "#sRisk"].forEach(function (s) { body.querySelector(s).oninput = prev; });
+  prev();
+
+  var legalBtn = DL.el('<button class="btn sm g" style="margin-top:12px;width:100%">Leer el aviso legal</button>');
+  legalBtn.onclick = DL.legalSheet;
+  body.appendChild(legalBtn);
+
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:space-between"></div>');
+  var reset = DL.el('<button class="btn dngr sm">Borrar todo</button>');
+  reset.onclick = function () {
+    DL.confirm("Borrar todo", "Se eliminan watchlist, posiciones y diario de este navegador. No se puede deshacer.",
+      function () {
+        localStorage.removeItem(DL.KEY);
+        DL.MKT.clearCache();
+        location.reload();
+      }, "Borrar");
+  };
+  var ok = DL.el('<button class="btn p">Guardar</button>');
+  ok.onclick = function () {
+    pr.name = body.querySelector("#sName").value.trim() || pr.name;
+    pr.capital = Math.max(100, parseFloat(body.querySelector("#sCap").value) || 3000);
+    pr.maxDailyPct = Math.min(100, Math.max(1, parseFloat(body.querySelector("#sDay").value) || 20));
+    pr.maxRiskPct = Math.min(10, Math.max(0.1, parseFloat(body.querySelector("#sRisk").value) || 2));
+    pr.proxy = body.querySelector("#sProxy").value.trim();
+    pr.minVolume = Math.max(0, (parseFloat(body.querySelector("#sVol").value) || 5) * 1e6);
+    pr.maxHoldHours = Math.max(0.5, parseFloat(body.querySelector("#sHold").value) || 2);
+    pr.intradayMin = Math.max(0, parseFloat(body.querySelector("#sIMin").value) || 0.2);
+    pr.intradayMax = Math.max(pr.intradayMin, parseFloat(body.querySelector("#sIMax").value) || 0.5);
+    var b = body.querySelector("#sBench").value.trim().toUpperCase();
+    if (b) DL.BENCH = b;
+    DL.save(); s.close(); DL.toast("Ajustes guardados"); DL.sync(true);
+  };
+  foot.appendChild(reset); foot.appendChild(ok);
+  var s = DL.sheet("Ajustes", body, foot);
+};
+
+/* ============================================================
+   ALTA INICIAL
+   ============================================================ */
+DL.setupScreen = function (root) {
+  root.innerHTML =
+    '<section class="card" style="margin-top:24px">' +
+    '<div class="eyebrow">Simulacro de decisiones</div>' +
+    '<h2 style="font-size:26px;letter-spacing:-.02em;margin:6px 0 8px">Practica con el mercado real,<br>sin arriesgar dinero real.</h2>' +
+    '<p style="font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:18px">' +
+    "Precios reales de Yahoo Finance. Capital simulado. Sigues activos, decides qué hacer con cada uno, " +
+    "registras la operación y ves qué pasó — con todo el historial guardado en este navegador.</p>" +
+    '<div class="fld" style="margin-bottom:12px"><label for="uName">¿Cómo te llamas?</label>' +
+    '<input type="text" id="uName" placeholder="Tu nombre" autocomplete="name"></div>' +
+    '<div class="fld" style="margin-bottom:16px"><label for="uCap">Capital simulado</label>' +
+    '<select id="uCap">' +
+    [1000, 3000, 5000, 10000, 25000].map(function (v) {
+      return '<option value="' + v + '"' + (v === 3000 ? " selected" : "") + ">$" + v.toLocaleString("en-US") + "</option>";
+    }).join("") + "</select></div>" +
+    '<label class="chk" style="margin-bottom:16px"><input type="checkbox" id="uOk"> ' +
+    "Entiendo que esta es una herramienta educativa con capital simulado, que no ejecuta " +
+    "operaciones reales y que nada de lo que muestra es asesoría financiera.</label>" +
+    '<button class="btn p blk" id="uGo">Empezar</button>' +
+    '<div class="legal" style="margin-top:14px">' + DL.esc(DL.LEGAL_SHORT) +
+    ' <button type="button" id="uLegal">Leer el aviso legal completo</button></div>' +
+    "</section>";
+
+  var go = DL.$("#uGo", root);
+  var nm = DL.$("#uName", root);
+  DL.$("#uLegal", root).onclick = DL.legalSheet;
+  function start() {
+    var n = nm.value.trim();
+    if (!n) { nm.focus(); DL.toast("Escribe tu nombre"); return; }
+    if (!DL.$("#uOk", root).checked) { DL.toast("Debes aceptar el aviso para continuar"); return; }
+    DL.S.profile.accepted = true;
+    DL.S.profile.name = n;
+    DL.S.profile.capital = parseFloat(DL.$("#uCap", root).value) || 3000;
+    DL.S.profile.setup = true;
+    // watchlist inicial para que la app abra con algo vivo en pantalla
+    ["AAPL", "MSFT", "NVDA", "SPY"].forEach(function (s) {
+      DL.S.watch.push({ sym: s, name: s, note: "", addedAt: Date.now() });
+    });
+    DL.save();
+    DL.go("home");
+    DL.sync(true);
+  }
+  go.onclick = start;
+  nm.onkeydown = function (e) { if (e.key === "Enter") start(); };
+};
+/* ============================================================
+   Módulo 5d/6 — vista del Backtest Lab
+   Pestaña aislada: no lee ni escribe el portafolio en vivo.
+   ============================================================ */
+
+DL.bt = { sym: null, rule: { type: "rsi", period: 14, buy: 30, sell: 70, fast: 20, slow: 50, splitPct: 60 },
+          result: null, loading: false, error: null, bars: null };
+
+DL.VIEW_backtest = function (root) {
+  var R = DL.bt.rule;
+  var opts = DL.S.watch.map(function (w) { return w.sym; });
+  if (!DL.bt.sym) DL.bt.sym = opts[0] || "AAPL";
+  if (opts.indexOf(DL.bt.sym) < 0) opts.unshift(DL.bt.sym);
+
+  var html = '<section class="card"><div class="head"><h3>Backtest Lab</h3>' +
+    DL.tag("sandbox", "watch") + "</div>" +
+    '<p style="font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:12px">' +
+    "Defines una regla, se corre contra " + DL.term("historical data") + " real y se parte en dos: " +
+    "un periodo de <b>ajuste</b>, donde eliges tus " + DL.term("parameter") + "s, y uno de <b>prueba</b> " +
+    "que la regla nunca vio. Si solo funciona en el primero, tienes " + DL.term("overfitting") + ".</p>" +
+    '<div class="note" style="margin-bottom:12px"><b>Aislado del portafolio.</b> ' +
+    "Nada de lo que hagas aquí toca tu capital simulado ni tus posiciones abiertas.</div>";
+
+  html += '<div class="grid g2" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="btSym">Símbolo</label><select id="btSym">' +
+    opts.map(function (s) {
+      return '<option value="' + DL.esc(s) + '"' + (s === DL.bt.sym ? " selected" : "") + ">" + DL.esc(s) + "</option>";
+    }).join("") + "</select></div>" +
+    '<div class="fld"><label for="btType">Regla</label><select id="btType">' +
+    '<option value="rsi"' + (R.type === "rsi" ? " selected" : "") + ">RSI sobreventa / sobrecompra</option>" +
+    '<option value="sma"' + (R.type === "sma" ? " selected" : "") + ">Cruce de medias móviles</option>" +
+    "</select></div></div>";
+
+  if (R.type === "rsi") {
+    html += '<div class="grid g2" style="margin-bottom:12px">' +
+      '<div class="fld"><label for="btBuy">Comprar cuando ' + DL.term("RSI") + ' baje de</label>' +
+      '<input type="number" id="btBuy" step="1" min="5" max="50" value="' + R.buy + '"></div>' +
+      '<div class="fld"><label for="btSell">Vender cuando RSI suba de</label>' +
+      '<input type="number" id="btSell" step="1" min="50" max="95" value="' + R.sell + '"></div></div>';
+  } else {
+    html += '<div class="grid g2" style="margin-bottom:12px">' +
+      '<div class="fld"><label for="btFast">Media rápida (sesiones)</label>' +
+      '<input type="number" id="btFast" step="1" min="3" max="100" value="' + R.fast + '"></div>' +
+      '<div class="fld"><label for="btSlow">Media lenta (sesiones)</label>' +
+      '<input type="number" id="btSlow" step="1" min="10" max="250" value="' + R.slow + '"></div></div>';
+  }
+
+  html += '<div class="fld" style="margin-bottom:12px"><label for="btSplit">Porcentaje del histórico para ajuste' +
+    ' — el resto queda para la prueba</label>' +
+    '<input type="number" id="btSplit" step="5" min="40" max="80" value="' + R.splitPct + '"></div>';
+
+  html += '<button class="btn p blk" id="btRun"' + (DL.bt.loading ? " disabled" : "") + ">" +
+    (DL.bt.loading ? '<span class="spin"></span> Corriendo…' : "Correr el backtest") + "</button>";
+  html += "</section>";
+
+  html += '<div id="btOut"></div>';
+
+  /* glosario del modo */
+  var gl = DL.GLOSS.backtest;
+  html += '<section class="card"><div class="head"><h3>Términos de este modo</h3>' +
+    DL.tag("EN → ES", "gold") + '</div><div class="terms">' +
+    gl.map(function (p) { return "<div><b>" + DL.esc(p[0]) + "</b> — " + DL.esc(p[1]) + "</div>"; }).join("") +
+    "</div></section>";
+
+  html += '<div class="legal">Resultados hipotéticos. No incluyen comisiones, impuestos, spread ni slippage. ' +
+    'El desempeño pasado no predice el futuro. <button type="button" id="btLegal">Aviso legal</button></div>';
+
+  root.innerHTML = html;
+
+  DL.$("#btLegal", root).onclick = DL.legalSheet;
+  DL.$("#btSym", root).onchange = function (e) { DL.bt.sym = e.target.value; DL.bt.result = null; DL.render(); };
+  DL.$("#btType", root).onchange = function (e) { R.type = e.target.value; DL.bt.result = null; DL.render(); };
+  ["btBuy", "btSell", "btFast", "btSlow", "btSplit"].forEach(function (id) {
+    var n = DL.$("#" + id, root);
+    if (!n) return;
+    n.onchange = function () {
+      var v = parseFloat(n.value) || 0;
+      if (id === "btBuy") R.buy = v;
+      if (id === "btSell") R.sell = v;
+      if (id === "btFast") R.fast = v;
+      if (id === "btSlow") R.slow = v;
+      if (id === "btSplit") R.splitPct = Math.min(80, Math.max(40, v));
+    };
+  });
+
+  DL.$("#btRun", root).onclick = function () {
+    DL.bt.loading = true; DL.bt.error = null; DL.render();
+    DL.MKT.history(DL.bt.sym, "5y").then(function (d) {
+      DL.bt.bars = d.bars;
+      DL.bt.result = DL.BT.run(d.bars, R);
+      if (!DL.bt.result) DL.bt.error = "No hay suficiente histórico para este símbolo.";
+      DL.bt.loading = false; DL.render();
+    }).catch(function (e) {
+      DL.bt.loading = false;
+      DL.bt.error = "No se pudo traer el histórico (" + (e.message || "error") + "). Revisa el proxy en Ajustes.";
+      DL.render();
+    });
+  };
+
+  /* ---------- resultados ---------- */
+  var out = DL.$("#btOut", root);
+  if (DL.bt.error) {
+    out.innerHTML = '<div class="note bad"><b>Error.</b> ' + DL.esc(DL.bt.error) + "</div>";
+    return;
+  }
+  if (!DL.bt.result) return;
+
+  var res = DL.bt.result;
+  function win(w, title, sub, tone) {
+    return '<div class="window"><div class="wh"><b>' + DL.esc(title) + "</b>" +
+      '<span class="eyebrow">' + DL.esc(sub) + "</span></div>" +
+      '<div class="grid g3" style="margin-bottom:10px">' +
+      DL.ro("Operaciones", String(w.count), "", "sm") +
+      DL.ro("Aciertos", w.winRate == null ? "—" : DL.pctp(w.winRate, 0), "", "sm") +
+      DL.ro("Retorno", DL.pct(w.totalReturn, 1), DL.tone(w.totalReturn), "sm") +
+      "</div>" +
+      '<div class="grid g3">' +
+      DL.ro("Comprar y mantener", DL.pct(w.buyHold, 1), DL.tone(w.buyHold), "sm") +
+      DL.ro("Profit factor", w.profitFactor == null ? "—" :
+        (w.profitFactor === Infinity ? "∞" : w.profitFactor.toFixed(2)), "", "sm") +
+      DL.ro("Drawdown máx.", DL.pctp(w.maxDD, 1), "", "sm") +
+      "</div></div>";
+  }
+
+  var fmtRange = function (w) {
+    return w.from && w.to
+      ? new Date(w.from).toLocaleDateString("es", { month: "short", year: "numeric" }) + " → " +
+        new Date(w.to).toLocaleDateString("es", { month: "short", year: "numeric" })
+      : "—";
+  };
+
+  var h = '<section class="card"><div class="head"><h3>Resultado · ' + DL.esc(DL.bt.sym) + "</h3>" +
+    DL.tag(R.type === "rsi" ? "RSI " + R.buy + "/" + R.sell : "SMA " + R.fast + "/" + R.slow) + "</div>" +
+    win(res.inSample, "Periodo de ajuste", fmtRange(res.inSample)) +
+    win(res.outSample, "Periodo de prueba (out-of-sample)", fmtRange(res.outSample)) +
+    "</section>";
+
+  h += '<section class="card"><div class="head"><h3>Lectura</h3></div>' +
+    res.warnings.map(function (w) {
+      return '<div class="warn ' + w.lvl + '"><div><b>' + DL.esc(w.t) + "</b>" + DL.esc(w.d) + "</div></div>";
+    }).join("") +
+    '<p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5">' +
+    "El periodo de prueba es el único que dice algo. Ajustar los números hasta que el primer periodo se vea " +
+    "bien es exactamente lo que produce " + DL.term("overfitting") + ": una regla que explica el pasado " +
+    "y falla con dinero real.</p></section>";
+
+  out.innerHTML = h;
+};
+/* ============================================================
+   Módulo 6/6 — arranque y navegación
+   ============================================================ */
+
+DL.route = "home";
+
+DL.go = function (r) {
+  DL.route = r;
+  DL.render();
+  window.scrollTo(0, 0);
+};
+
+DL.render = function () {
+  var views = { home: "v-home", watch: "v-watch", trade: "v-trade", port: "v-port",
+                diary: "v-diary", asset: "v-asset", backtest: "v-backtest" };
+
+  /* la tercera pestaña es Operar en Scalping/Swing y Backtest Lab en modo backtest */
+  var nt = document.getElementById("navTrade");
+  if (nt) {
+    var bt = DL.S.profile.mode === "backtest";
+    nt.dataset.go = bt ? "backtest" : "trade";
+    nt.querySelector("span:last-child").textContent = bt ? "Backtest" : "Operar";
+    nt.onclick = function () { DL.go(nt.dataset.go); };
+  }
+  if (DL.route === "backtest" && DL.S.profile.mode !== "backtest") DL.route = "trade";
+  if (DL.route === "trade" && DL.S.profile.mode === "backtest") DL.route = "backtest";
+  Object.keys(views).forEach(function (k) {
+    var n = document.getElementById(views[k]);
+    if (n) n.classList.toggle("on", k === DL.route);
+  });
+  DL.$$("#nav button").forEach(function (b) {
+    b.setAttribute("aria-current", b.dataset.go === DL.route ? "true" : "false");
+  });
+
+  var root = document.getElementById(views[DL.route]);
+  if (!root) return;
+
+  if (!DL.S.profile.setup) {
+    document.getElementById("v-home").classList.add("on");
+    DL.setupScreen(document.getElementById("v-home"));
+    return;
+  }
+
+  var sub = document.getElementById("brandsub");
+  if (sub) {
+    sub.textContent = DL.S.profile.name
+      ? DL.S.profile.name + " · simulado"
+      : "Simulacro · capital simulado";
+  }
+
+  try {
+    if (DL.route === "home") DL.VIEW_home(root);
+    else if (DL.route === "watch") DL.VIEW_watch(root);
+    else if (DL.route === "trade") DL.VIEW_trade(root);
+    else if (DL.route === "port") DL.VIEW_port(root);
+    else if (DL.route === "diary") DL.VIEW_diary(root);
+    else if (DL.route === "asset") DL.VIEW_asset(root);
+    else if (DL.route === "backtest") DL.VIEW_backtest(root);
+  } catch (e) {
+    console.error(e);
+    root.innerHTML = '<div class="note bad"><b>Algo falló al dibujar esta pantalla.</b> ' +
+      DL.esc(e.message || e) + "</div>";
+  }
+
+  var rf = document.getElementById("btnRefresh");
+  if (rf) rf.innerHTML = DL.data.loading ? '<span class="spin"></span>' : "⟳";
+};
+
+/* ---------- arranque ---------- */
+(function boot() {
+  DL.load();
+
+  DL.$$("#nav button").forEach(function (b) {
+    b.onclick = function () { DL.go(b.dataset.go); };
+  });
+  document.getElementById("btnSettings").onclick = function () {
+    if (!DL.S.profile.setup) return;
+    DL.settingsSheet();
+  };
+  document.getElementById("btnRefresh").onclick = function () {
+    if (!DL.S.profile.setup || DL.data.loading) return;
+    DL.sync(true, function () { DL.toast("Precios actualizados"); });
+  };
+
+  // redibuja los gráficos cuando cambia el ancho (rotar el teléfono)
+  var rt = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { DL.render(); }, 220);
+  });
+
+  // al volver a la app, refresca si los datos ya envejecieron
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && DL.S.profile.setup &&
+        Date.now() - DL.S.lastSync > 5 * 60 * 1000 && !DL.data.loading) {
+      DL.sync(false);
+    }
+  });
+
+  DL.render();
+  if (DL.S.profile.setup) DL.sync(false);
+})();
+
+</script>
+</body>
+</html>

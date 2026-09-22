@@ -185,7 +185,7 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 .note.bad{border-color:var(--neg);background:var(--negDim)} .note.bad b{color:var(--neg)}
 
 /* ---------- selector de modo ---------- */
-.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .modes button{
   border:1px solid var(--line);background:var(--plate2);border-radius:9px;padding:9px 6px;
   display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
@@ -210,16 +210,28 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 .zone .lab{font-size:11.5px;color:var(--muted)}
 .zone .val{font-family:var(--m);font-size:13.5px}
 
-/* ---------- backtest ---------- */
+/* ---------- paneles y alertas ---------- */
 .window{border:1px solid var(--line);border-radius:9px;padding:12px;background:var(--plate2)}
 .window + .window{margin-top:8px}
 .window .wh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
 .window .wh b{font-size:13px}
-.warn{display:flex;gap:9px;padding:10px 11px;border-radius:8px;margin-bottom:7px;font-size:12.5px;line-height:1.45}
+.warn{display:flex;flex-direction:column;gap:2px;padding:10px 11px;border-radius:8px;margin-bottom:7px;font-size:12.5px;line-height:1.45}
 .warn.bad{border:1px solid var(--neg);background:var(--negDim)}
 .warn.rev{border:1px solid var(--amber);background:var(--amberDim)}
 .warn.ok{border:1px solid var(--pos);background:var(--posDim)}
 .warn b{display:block;margin-bottom:3px}
+
+/* ---------- radar: rotación sectorial y volumen ---------- */
+.sector-row{display:grid;grid-template-columns:96px 1fr 70px;gap:10px;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--soft);cursor:pointer}
+.sector-row:last-child{border-bottom:0}
+.sector-row .et{font-family:var(--m);font-size:13px;font-weight:600}
+.sector-row .nm{font-size:10px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sector-row .pc{font-family:var(--m);font-size:12.5px;text-align:right}
+.rsbar{height:6px;background:var(--plate3);border-radius:3px;position:relative;overflow:hidden}
+.rsbar i{position:absolute;top:0;bottom:0;border-radius:3px}
+.rsbar i.pos{background:var(--pos)} .rsbar i.neg{background:var(--neg)}
+.tag.spike{color:var(--amber);border-color:var(--amber);background:var(--amberDim)}
 
 .legal{font-size:11px;color:var(--faint);line-height:1.5;text-align:center;padding:16px 4px 4px}
 .legal button{background:none;border:0;color:var(--brass);text-decoration:underline;font-size:11px;padding:0}
@@ -240,6 +252,9 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 @media (max-width:420px){
   .g4{grid-template-columns:1fr 1fr}
   .wrow{grid-template-columns:76px 1fr 68px 56px;padding:10px;gap:6px}
+  .sector-row{grid-template-columns:66px 1fr 56px;gap:6px}
+  .nav button{font-size:8.6px}
+  .nav button svg{width:17px;height:17px}
 }
 </style>
 </head>
@@ -260,7 +275,7 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
   <section class="view" id="v-port" aria-label="Portafolio"></section>
   <section class="view" id="v-diary" aria-label="Diario"></section>
   <section class="view" id="v-asset" aria-label="Activo"></section>
-  <section class="view" id="v-backtest" aria-label="Backtest Lab"></section>
+  <section class="view" id="v-radar" aria-label="Radar"></section>
 </main>
 
 <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -270,7 +285,10 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
   <button data-go="watch">
     <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span>Watchlist</span>
   </button>
-  <button data-go="trade" id="navTrade">
+  <button data-go="radar">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg><span>Radar</span>
+  </button>
+  <button data-go="trade">
     <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-8"/><path d="M14 7h6v6"/></svg><span>Operar</span>
   </button>
   <button data-go="port">
@@ -299,7 +317,7 @@ DL.S = {
   profile: {
     name: "", capital: 3000, maxDailyPct: 20, maxRiskPct: 2, proxy: "", setup: false,
     accepted: false,            // aviso legal aceptado
-    mode: "swing",              // scalp | swing | backtest
+    mode: "swing",              // scalp | swing
     minVolume: 5000000,         // scalping: liquidez mínima del día
     intradayMin: 0.2,           // scalping: rango de variación buscado
     intradayMax: 0.5,
@@ -470,11 +488,11 @@ DL.LEGAL = [
   ["2 · Capital simulado",
    "Todas las operaciones son simuladas. La aplicación no ejecuta órdenes reales, no se conecta a ninguna cuenta de bróker y no mueve dinero real en ningún momento."],
   ["3 · No constituye asesoría",
-   "Nada de lo que muestra la aplicación — el Decision Score, las condiciones, los estados WATCH / WAIT / BUY / HOLD / SELL, los planes sugeridos o los resultados de backtest — constituye asesoría financiera, de inversión, legal, contable o tributaria, ni una recomendación de comprar o vender ningún instrumento. Son cálculos automáticos sobre datos públicos, presentados como material de práctica."],
+   "Nada de lo que muestra la aplicación — el Decision Score, las condiciones, los estados WATCH / WAIT / BUY / HOLD / SELL, los planes sugeridos, la rotación sectorial, las señales de volumen o los patrones del diario — constituye asesoría financiera, de inversión, legal, contable o tributaria, ni una recomendación de comprar o vender ningún instrumento. Son cálculos automáticos sobre datos públicos y sobre tu propio historial, presentados como material de práctica."],
   ["4 · Datos de terceros",
    "Los precios provienen de fuentes públicas de terceros (Yahoo Finance). Pueden estar retrasados, incompletos o contener errores. No se garantiza su exactitud, disponibilidad ni continuidad."],
-  ["5 · Resultados hipotéticos",
-   "Los resultados del Backtest Lab son hipotéticos y se calculan con el beneficio de la retrospectiva. No incluyen comisiones, impuestos, spread, slippage ni el impacto de la falta de liquidez. Los resultados hipotéticos tienen limitaciones conocidas y no representan operaciones reales."],
+  ["5 · Cálculos sobre datos limitados",
+   "El Decision Score, la rotación sectorial, las señales de volumen y los patrones del diario se calculan con datos históricos limitados y con el beneficio de la retrospectiva. No incluyen comisiones, impuestos, spread, slippage ni el impacto de la falta de liquidez, y no representan operaciones reales ni garantizan resultados futuros."],
   ["6 · Desempeño pasado",
    "El desempeño pasado no predice ni garantiza el desempeño futuro."],
   ["7 · Riesgo",
@@ -1007,7 +1025,7 @@ DL.MKT = (function () {
     });
   }
 
-  /* histórico largo para el Backtest Lab — se cachea una hora */
+  /* histórico largo (disponible para análisis futuros) — se cachea una hora */
   function history(sym, range) {
     sym = String(sym || "").trim().toUpperCase();
     range = range || "5y";
@@ -1163,10 +1181,6 @@ DL.MODES = {
     id: "swing", label: "Swing", sub: "Días a semanas",
     stopAtr: 1.5, targetR: 3,
     desc: "Posiciones de días o semanas. Foco en cruces de medias, soportes y resistencias."
-  },
-  backtest: {
-    id: "backtest", label: "Backtest Lab", sub: "Histórico",
-    desc: "Laboratorio aislado: pruebas una regla contra histórico real sin tocar tu portafolio."
   }
 };
 
@@ -1182,11 +1196,10 @@ DL.GLOSS = {
     ["breakout", "ruptura: el precio supera una resistencia que antes lo contenía"],
     ["volume confirmation", "confirmación por volumen: una ruptura sin volumen suele ser falsa"]
   ],
-  backtest: [
-    ["historical data", "datos históricos: precios pasados reales sobre los que pruebas una regla"],
-    ["RSI", "Relative Strength Index: indicador de 0 a 100 que mide si un activo viene subiendo o cayendo con fuerza"],
-    ["overfitting", "sobreajuste: tu regla quedó tan pegada al pasado que deja de funcionar con datos nuevos"],
-    ["parameter", "parámetro: el número que tú eliges dentro de la regla (por ejemplo, RSI menor a 30)"]
+  radar: [
+    ["sector rotation", "rotación sectorial: el dinero se mueve de unos sectores a otros según la etapa del ciclo económico"],
+    ["relative strength", "fuerza relativa: cuánto le gana (o le pierde) un activo al mercado en el mismo periodo"],
+    ["volume spike", "pico de volumen: el volumen de hoy supera varias veces su promedio — algo cambió"]
   ]
 };
 
@@ -1541,141 +1554,154 @@ DL.ENG = (function () {
     };
   }
 
+  /* ---------- patrones del diario ----------
+     Analiza TUS operaciones cerradas para encontrar reglas propias:
+     no predice nada nuevo, describe cómo has operado hasta ahora.
+     Exige un mínimo de operaciones por grupo para no confundir
+     casualidad con patrón — la misma lección que enseñaba el
+     Backtest Lab sobre el sobreajuste, aplicada a tu propio historial. */
+  var MIN_TRADES = 5, MIN_BUCKET = 3, MIN_GAP = 25;
+
+  function bucketize(closed, keyFn) {
+    var b = {};
+    closed.forEach(function (p) {
+      var k = keyFn(p);
+      if (k == null) return;
+      b[k] = b[k] || { n: 0, wins: 0, pl: 0 };
+      b[k].n++;
+      if ((p.pl || 0) > 0) b[k].wins++;
+      b[k].pl += (p.pl || 0);
+    });
+    return b;
+  }
+
+  function spread(buckets, minGap) {
+    var keys = Object.keys(buckets).filter(function (k) { return buckets[k].n >= MIN_BUCKET; });
+    if (keys.length < 2) return null;
+    keys.forEach(function (k) { buckets[k].wr = (buckets[k].wins / buckets[k].n) * 100; });
+    keys.sort(function (a, b) { return buckets[a].wr - buckets[b].wr; });
+    var worst = keys[0], best = keys[keys.length - 1];
+    if (buckets[best].wr - buckets[worst].wr < minGap) return null;
+    return { worst: worst, best: best, wWorst: buckets[worst], wBest: buckets[best] };
+  }
+
+  function journalInsights() {
+    var closed = DL.S.pos.filter(function (p) { return p.status === "closed"; });
+    if (closed.length < MIN_TRADES) return { ready: false, n: closed.length, need: MIN_TRADES - closed.length };
+
+    var out = [];
+
+    // 1 · tiempo en la posición vs. resultado
+    var holdB = bucketize(closed, function (p) {
+      if (!p.openedAt || !p.exitAt) return null;
+      var hrs = (p.exitAt - p.openedAt) / 3600000;
+      return hrs < 2 ? "menos de 2 h" : hrs < 24 ? "2–24 h" : hrs < 120 ? "1–5 días" : "más de 5 días";
+    });
+    var sHold = spread(holdB, MIN_GAP);
+    if (sHold) out.push({
+      tone: "bad",
+      text: "Cuando la operación dura " + sHold.worst + " aciertas solo " + sHold.wWorst.wr.toFixed(0) +
+        "% (" + sHold.wWorst.n + " operaciones), contra " + sHold.wBest.wr.toFixed(0) + "% cuando dura " + sHold.best + "."
+    });
+
+    // 2 · tamaño de la posición vs. resultado
+    var sizeB = bucketize(closed, function (p) {
+      if (p.costPct == null) return null;
+      return p.costPct < 5 ? "posiciones pequeñas (<5%)" : p.costPct < 12 ? "posiciones medianas (5–12%)" : "posiciones grandes (>12%)";
+    });
+    var sSize = spread(sizeB, MIN_GAP);
+    if (sSize) out.push({
+      tone: "bad",
+      text: "En " + sSize.worst + " aciertas " + sSize.wWorst.wr.toFixed(0) + "%, contra " +
+        sSize.wBest.wr.toFixed(0) + "% en " + sSize.best + "."
+    });
+
+    // 3 · modo (si hay operaciones mezcladas)
+    var modeB = bucketize(closed, function (p) { return p.mode || null; });
+    var sMode = spread(modeB, MIN_GAP);
+    if (sMode) out.push({
+      tone: "rev",
+      text: "En modo " + sMode.worst + " aciertas " + sMode.wWorst.wr.toFixed(0) + "% de tus operaciones, contra " +
+        sMode.wBest.wr.toFixed(0) + "% en " + sMode.best + "."
+    });
+
+    // 4 · salidas discrecionales (fuera del plan) vs. resultado
+    var reasonB = bucketize(closed, function (p) { return p.exitReason || null; });
+    if (reasonB.manual && reasonB.manual.n >= MIN_BUCKET && reasonB.manual.pl < 0) {
+      out.push({
+        tone: "bad",
+        text: "Tus " + reasonB.manual.n + " cierres discrecionales (antes de llegar al stop o al target) suman " +
+          DL.sgn(reasonB.manual.pl) + " — salir del plan antes de tiempo te está costando dinero."
+      });
+    }
+
+    // 5 · día de la semana en que cierras
+    var dowB = bucketize(closed, function (p) {
+      if (!p.exitAt) return null;
+      return ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"][new Date(p.exitAt).getDay()];
+    });
+    var sDow = spread(dowB, 30);
+    if (sDow) out.push({
+      tone: "rev",
+      text: "Los " + sDow.worst + " cierras con " + sDow.wWorst.wr.toFixed(0) + "% de aciertos (" +
+        sDow.wWorst.n + " operaciones) — tu peor día de la semana."
+    });
+
+    if (!out.length) out.push({
+      tone: "ok",
+      text: "Con " + closed.length + " operaciones cerradas todavía no aparece ningún patrón claro. Eso también es información: sigue registrando."
+    });
+
+    return { ready: true, n: closed.length, insights: out };
+  }
+
   return {
     analyze: analyze, levels: levels, suggestPlan: suggestPlan,
-    positionState: positionState, tradeRisk: tradeRisk, portfolio: portfolio
+    positionState: positionState, tradeRisk: tradeRisk, portfolio: portfolio,
+    journalInsights: journalInsights
   };
 })();
 /* ============================================================
-   Módulo 3b/6 — Backtest Lab
-   Sandbox aislado: corre una regla simple contra histórico REAL y
-   parte la serie en un periodo de AJUSTE y uno de PRUEBA
-   (out-of-sample validation). Nunca toca el portafolio en vivo.
+   Módulo 3b/6 — Radar: rotación sectorial y señales de volumen
+   Datos reales de Yahoo Finance (los 11 ETF sectoriales SPDR
+   estándar), igual que el resto de la app: nada inventado.
    ============================================================ */
 
-DL.BT = (function () {
+DL.SECTORS = [
+  ["XLK", "Tecnología"], ["XLF", "Financiero"], ["XLE", "Energía"],
+  ["XLV", "Salud"], ["XLY", "Consumo discrecional"], ["XLP", "Consumo básico"],
+  ["XLI", "Industrial"], ["XLB", "Materiales"], ["XLU", "Servicios públicos"],
+  ["XLRE", "Bienes raíces"], ["XLC", "Comunicaciones"]
+];
 
-  /* señales de compra y venta según la regla elegida */
-  function signals(bars, rule) {
-    var I = DL.IND, buy = [], sell = [];
-    if (rule.type === "rsi") {
-      var r = I.rsi(bars, rule.period || 14);
-      for (var i = 1; i < bars.length; i++) {
-        buy.push(r[i] != null && r[i - 1] != null && r[i - 1] >= rule.buy && r[i] < rule.buy);
-        sell.push(r[i] != null && r[i - 1] != null && r[i - 1] <= rule.sell && r[i] > rule.sell);
-      }
-      buy.unshift(false); sell.unshift(false);
-    } else { // cruce de medias
-      var f = I.sma(bars, rule.fast || 20), s = I.sma(bars, rule.slow || 50);
-      for (var j = 0; j < bars.length; j++) {
-        var prevOk = j > 0 && f[j - 1] != null && s[j - 1] != null;
-        buy.push(prevOk && f[j] > s[j] && f[j - 1] <= s[j - 1]);
-        sell.push(prevOk && f[j] < s[j] && f[j - 1] >= s[j - 1]);
-      }
-    }
-    return { buy: buy, sell: sell };
-  }
+DL.RADAR = { loading: false, data: {}, days: 21, spikeThreshold: 1.5 };
 
-  /* simulación long-only sobre un rango [from, to) de barras */
-  function simulate(bars, sig, from, to) {
-    var trades = [], inPos = false, entry = 0, entryAt = null;
-    for (var i = from; i < to; i++) {
-      if (!inPos && sig.buy[i]) {
-        // se entra en la apertura de la sesión siguiente: nada de mirar el futuro
-        if (i + 1 < to) { inPos = true; entry = bars[i + 1].o; entryAt = bars[i + 1].t; }
-      } else if (inPos && sig.sell[i]) {
-        if (i + 1 < to) {
-          var exit = bars[i + 1].o;
-          trades.push({ entry: entry, exit: exit, pct: ((exit - entry) / entry) * 100, t: entryAt, tOut: bars[i + 1].t });
-          inPos = false;
-        }
-      }
-    }
-    if (inPos && to > from) {
-      var last = bars[to - 1].c;
-      trades.push({ entry: entry, exit: last, pct: ((last - entry) / entry) * 100, t: entryAt, tOut: bars[to - 1].t, open: true });
-    }
-    return stats(trades, bars, from, to);
-  }
+DL.ENG.periodReturn = function (bars, days) {
+  if (!bars || bars.length < 2) return null;
+  var back = Math.min(days, bars.length - 1);
+  var a = bars[bars.length - 1].c, b0 = bars[bars.length - 1 - back].c;
+  return b0 ? ((a / b0) - 1) * 100 : null;
+};
 
-  function stats(trades, bars, from, to) {
-    var wins = trades.filter(function (t) { return t.pct > 0; });
-    var losses = trades.filter(function (t) { return t.pct <= 0; });
-    var gw = wins.reduce(function (s, t) { return s + t.pct; }, 0);
-    var gl = Math.abs(losses.reduce(function (s, t) { return s + t.pct; }, 0));
+DL.ENG.volRatio = function (vol, avgVol) {
+  if (!avgVol || avgVol <= 0) return null;
+  return vol / avgVol;
+};
 
-    // retorno compuesto y drawdown de la curva de la estrategia
-    var eq = 100, peak = 100, maxDD = 0, curve = [100];
-    trades.forEach(function (t) {
-      eq = eq * (1 + t.pct / 100);
-      curve.push(eq);
-      if (eq > peak) peak = eq;
-      maxDD = Math.max(maxDD, ((peak - eq) / peak) * 100);
-    });
-
-    // comparación honesta: comprar y mantener en la misma ventana
-    var bh = (to - from) > 1 ? ((bars[to - 1].c / bars[from].c) - 1) * 100 : 0;
-
-    return {
-      trades: trades,
-      count: trades.length,
-      winRate: trades.length ? (wins.length / trades.length) * 100 : null,
-      avgWin: wins.length ? gw / wins.length : null,
-      avgLoss: losses.length ? -gl / losses.length : null,
-      profitFactor: gl > 0 ? gw / gl : (gw > 0 ? Infinity : null),
-      totalReturn: eq - 100,
-      maxDD: maxDD,
-      buyHold: bh,
-      curve: curve,
-      from: bars[from] ? bars[from].t : null,
-      to: bars[to - 1] ? bars[to - 1].t : null
-    };
-  }
-
-  function run(bars, rule) {
-    if (!bars || bars.length < 120) return null;
-    var sig = signals(bars, rule);
-    var splitPct = rule.splitPct || 60;
-    var split = Math.floor(bars.length * (splitPct / 100));
-
-    var inS = simulate(bars, sig, 0, split);
-    var outS = simulate(bars, sig, split, bars.length);
-
-    /* Alertas de sobreajuste — la parte educativa del laboratorio */
-    var warn = [];
-    if (inS.count < 10) {
-      warn.push({ lvl: "bad", t: "Muy pocas operaciones para concluir nada",
-        d: "Solo " + inS.count + " operaciones en el periodo de ajuste. Con menos de 10, cualquier resultado es casualidad." });
-    }
-    if (outS.count < 5) {
-      warn.push({ lvl: "bad", t: "El periodo de prueba casi no generó señales",
-        d: "Solo " + outS.count + " operaciones fuera de muestra. No alcanza para validar la regla." });
-    }
-    if (inS.winRate != null && inS.winRate >= 70 && outS.winRate != null && (inS.winRate - outS.winRate) >= 20) {
-      warn.push({ lvl: "bad", t: "Posible overfitting",
-        d: "La regla acertó " + DL.pctp(inS.winRate, 0) + " en ajuste y solo " + DL.pctp(outS.winRate, 0) +
-           " en prueba. Esa caída es la firma del sobreajuste: la regla aprendió el pasado, no el mercado." });
-    }
-    if (inS.totalReturn > 0 && outS.totalReturn < 0) {
-      warn.push({ lvl: "bad", t: "Ganó en el pasado, perdió con datos nuevos",
-        d: "Ganó " + DL.pct(inS.totalReturn, 1) + " en ajuste y perdió " + DL.pct(outS.totalReturn, 1) +
-           " en prueba. Si operaras esta regla hoy, estarías perdiendo dinero." });
-    }
-    if (outS.totalReturn != null && outS.buyHold != null && outS.totalReturn < outS.buyHold) {
-      warn.push({ lvl: "rev", t: "No le gana a comprar y mantener",
-        d: "En el periodo de prueba la regla dio " + DL.pct(outS.totalReturn, 1) +
-           " y simplemente comprar y esperar habría dado " + DL.pct(outS.buyHold, 1) + "." });
-    }
-    if (!warn.length) {
-      warn.push({ lvl: "ok", t: "La regla se sostuvo fuera de muestra",
-        d: "El resultado en prueba es consistente con el de ajuste. Eso no la hace rentable a futuro — solo significa que no está obviamente sobreajustada." });
-    }
-
-    return { inSample: inS, outSample: outS, warnings: warn, split: split, bars: bars, rule: rule };
-  }
-
-  return { run: run, signals: signals };
-})();
+DL.loadRadar = function (force) {
+  if (DL.RADAR.loading) return;
+  var syms = DL.SECTORS.map(function (s) { return s[0]; });
+  if (syms.indexOf(DL.BENCH) < 0) syms.push(DL.BENCH);
+  DL.RADAR.loading = true;
+  DL.render();
+  return Promise.all(syms.map(function (sym) {
+    return DL.MKT.daily(sym, force).then(function (d) { DL.RADAR.data[sym] = d; })
+      .catch(function () { /* deja el dato anterior si lo hay */ });
+  })).then(function () {
+    DL.RADAR.loading = false;
+    DL.render();
+  });
+};
 /* ============================================================
    Módulo 4/6 — gráficos en canvas
    ============================================================ */
@@ -1896,6 +1922,88 @@ DL.CH = (function () {
     });
   }
 
+  /* panel RSI(14): línea 0–100 con referencias en 30 y 70 */
+  function rsiPanel(cv, bars, opt) {
+    opt = opt || {};
+    var h = opt.height || 84;
+    var s = setup(cv, h), c = s.ctx, C = pal();
+    c.font = '9px "IBM Plex Mono", monospace';
+    var show = Math.min(bars.length, opt.count || 90);
+    var arr = DL.IND.rsi(bars, 14).slice(-show);
+    var padL = 6, padR = 28, padT = 12, padB = 4;
+    var W = s.w - padL - padR, H = h - padT - padB;
+    var Y = function (v) { return padT + H - (v / 100) * H; };
+    var X = function (i) { return padL + (i / (arr.length - 1)) * W; };
+
+    [30, 70].forEach(function (v) {
+      var y = Math.round(Y(v)) + 0.5;
+      c.strokeStyle = C.line; c.lineWidth = 1; c.setLineDash([2, 3]);
+      c.beginPath(); c.moveTo(padL, y); c.lineTo(padL + W, y); c.stroke();
+      c.setLineDash([]);
+      c.fillStyle = C.faint; c.textAlign = "left"; c.textBaseline = "middle";
+      c.fillText(String(v), padL + W + 4, y);
+    });
+
+    c.beginPath();
+    var started = false;
+    arr.forEach(function (v, i) {
+      if (v == null) return;
+      started ? c.lineTo(X(i), Y(v)) : (c.moveTo(X(i), Y(v)), started = true);
+    });
+    c.strokeStyle = C.purple2; c.lineWidth = 1.4; c.stroke();
+
+    c.fillStyle = C.faint; c.textAlign = "left"; c.textBaseline = "top";
+    c.fillText("RSI(14)", padL + 2, 1);
+  }
+
+  /* panel MACD: histograma + línea + señal */
+  function macdPanel(cv, bars, opt) {
+    opt = opt || {};
+    var h = opt.height || 84;
+    var s = setup(cv, h), c = s.ctx, C = pal();
+    c.font = '9px "IBM Plex Mono", monospace';
+    var show = Math.min(bars.length, opt.count || 90);
+    var m = DL.IND.macd(bars);
+    var line = m.line.slice(-show), sig = m.signal.slice(-show), hist = m.hist.slice(-show);
+    var padL = 6, padR = 28, padT = 12, padB = 4;
+    var W = s.w - padL - padR, H = h - padT - padB;
+    var vals = line.concat(sig).filter(function (v) { return v != null; });
+    if (!vals.length) return;
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    var pad = (hi - lo) * 0.18 || Math.abs(hi) * 0.1 || 0.1;
+    lo -= pad; hi += pad;
+    var Y = function (v) { return padT + H - ((v - lo) / (hi - lo)) * H; };
+    var X = function (i) { return padL + (i / (line.length - 1)) * W; };
+    var slot = W / line.length, bw = Math.max(1, Math.min(5, slot * 0.6));
+
+    var y0 = Math.round(Y(0)) + 0.5;
+    c.strokeStyle = C.line; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(padL, y0); c.lineTo(padL + W, y0); c.stroke();
+
+    hist.forEach(function (v, i) {
+      if (v == null) return;
+      var y = Y(v);
+      c.fillStyle = v >= 0 ? C.up : C.down; c.globalAlpha = 0.45;
+      c.fillRect(X(i) - bw / 2, Math.min(y, y0), bw, Math.max(1, Math.abs(y - y0)));
+      c.globalAlpha = 1;
+    });
+
+    function drawLine(arr, color) {
+      c.beginPath();
+      var started = false;
+      arr.forEach(function (v, i) {
+        if (v == null) return;
+        started ? c.lineTo(X(i), Y(v)) : (c.moveTo(X(i), Y(v)), started = true);
+      });
+      c.strokeStyle = color; c.lineWidth = 1.3; c.stroke();
+    }
+    drawLine(line, C.purple2);
+    drawLine(sig, C.brass);
+
+    c.fillStyle = C.faint; c.textAlign = "left"; c.textBaseline = "top";
+    c.fillText("MACD", padL + 2, 1);
+  }
+
   /* curva de capital del portafolio */
   function equityCurve(cv, points, h) {
     if (!points || points.length < 2) return;
@@ -1918,7 +2026,7 @@ DL.CH = (function () {
     c.fillStyle = col; c.fill();
   }
 
-  return { spark: spark, candles: candles, equityCurve: equityCurve };
+  return { spark: spark, candles: candles, equityCurve: equityCurve, rsiPanel: rsiPanel, macdPanel: macdPanel };
 })();
 /* ============================================================
    Módulo 5/6 — vistas: Hoy, Watchlist y ficha del activo
@@ -1997,7 +2105,7 @@ DL.VIEW_home = function (root) {
   html += '<section class="card"><div class="head"><h3>Modo de estrategia</h3>' +
     DL.tag(M.sub, "watch") + "</div>" +
     '<div class="modes" id="modeSel">' +
-    ["scalp", "swing", "backtest"].map(function (k) {
+    ["scalp", "swing"].map(function (k) {
       var m = DL.MODES[k];
       return '<button type="button" data-mode="' + k + '" aria-pressed="' +
         (M.id === k) + '"><b>' + DL.esc(m.label) + "</b><span>" + DL.esc(m.sub) + "</span></button>";
@@ -2123,8 +2231,7 @@ DL.VIEW_home = function (root) {
   DL.$$("#modeSel button", root).forEach(function (b) {
     b.onclick = function () {
       DL.S.profile.mode = b.dataset.mode;
-      DL.save(); DL.recompute();
-      if (b.dataset.mode === "backtest") DL.go("backtest"); else DL.render();
+      DL.save(); DL.recompute(); DL.render();
     };
   });
   var lk = DL.$("#legalLink", root);
@@ -2351,6 +2458,39 @@ DL.VIEW_asset = function (root) {
   html += '<div class="chartbox" style="margin-top:10px"><canvas id="assetChart"></canvas></div>';
   html += "</section>";
 
+  /* análisis técnico detallado: los números detrás del Decision Score */
+  if (an) {
+    var rsiState = an.rsi == null ? "—" : an.rsi >= 70 ? "sobrecompra" : an.rsi <= 30 ? "sobreventa" : "neutral";
+    var macdState = (an.macd != null && an.macdSignal != null) ? (an.macd > an.macdSignal ? "alcista" : "bajista") : "—";
+    var volR = DL.ENG.volRatio(an.vol, an.avgVol);
+    var spike = volR != null && volR >= 1.5;
+    var rangePct = (an.hi52 != null && an.lo52 != null && an.hi52 > an.lo52)
+      ? ((an.price - an.lo52) / (an.hi52 - an.lo52)) * 100 : null;
+
+    html += '<section class="card"><div class="head"><h3>Análisis técnico detallado</h3>' +
+      (spike ? DL.tag(volR.toFixed(1) + "× volumen", "spike") : "") + "</div>" +
+      '<div class="grid g3" style="margin-bottom:12px">' +
+      DL.ro("RSI (14)", an.rsi == null ? "—" : an.rsi.toFixed(1) + " · " + rsiState,
+        an.rsi != null && an.rsi >= 70 ? "neg" : an.rsi != null && an.rsi <= 30 ? "pos" : "", "sm") +
+      DL.ro("MACD", macdState, macdState === "alcista" ? "pos" : macdState === "bajista" ? "neg" : "", "sm") +
+      DL.ro("ATR (14)", DL.pctp(an.atrPct, 2) + " del precio", "", "sm") +
+      "</div>" +
+      '<div class="grid g3" style="margin-bottom:12px">' +
+      DL.ro("Volumen hoy", (an.vol / 1e6).toFixed(1) + "M", "", "sm") +
+      DL.ro("Promedio 20 sesiones", an.avgVol > 0 ? (an.avgVol / 1e6).toFixed(1) + "M" : "—", "", "sm") +
+      DL.ro("Vs. promedio", volR == null ? "—" : volR.toFixed(2) + "×", spike ? "warn" : "", "sm") +
+      "</div>";
+    if (rangePct != null) {
+      html += '<div style="margin-bottom:4px"><div class="row" style="justify-content:space-between;margin-bottom:5px">' +
+        '<span class="eyebrow">Rango 52 semanas</span>' +
+        '<span class="n" style="font-size:11px;color:var(--muted)">' + DL.money(an.lo52) + " – " + DL.money(an.hi52) + "</span></div>" +
+        '<div class="bar"><i style="width:' + Math.min(100, Math.max(0, rangePct)).toFixed(1) + '%"></i></div></div>';
+    }
+    html += '<div class="chartbox" style="margin-top:14px"><canvas id="rsiChart"></canvas></div>' +
+      '<div class="chartbox" style="margin-top:8px"><canvas id="macdChart"></canvas></div>' +
+      "</section>";
+  }
+
   /* decision score con condiciones explícitas */
   if (an) {
     html += '<section class="card"><div class="head"><h3>Decision Score</h3>' +
@@ -2465,6 +2605,9 @@ DL.VIEW_asset = function (root) {
   DL.$$("#rangeSeg button", root).forEach(function (b) {
     b.onclick = function () { DL.current.range = parseInt(b.dataset.r, 10); DL.render(); };
   });
+  var rsiCv = DL.$("#rsiChart", root), macdCv = DL.$("#macdChart", root);
+  if (rsiCv) DL.CH.rsiPanel(rsiCv, d.bars, { count: DL.current.range });
+  if (macdCv) DL.CH.macdPanel(macdCv, d.bars, { count: DL.current.range });
 
   var bt;
   if ((bt = DL.$("#btnTrade", root))) bt.onclick = function () { DL.tradeSym = sym; DL.go("trade"); };
@@ -2689,7 +2832,11 @@ DL.VIEW_trade = function (root) {
       '<div class="note" style="margin-top:12px"><b>Desplegar no es arriesgar.</b> Pones ' +
       DL.money(c.cost, 0) + " en el mercado (" + DL.pctp(c.costPct, 1) + " del capital), pero con el stop en " +
       DL.money(parseFloat(elStop.value) || 0) + " tu pérdida máxima planeada es " + DL.money(c.riskAmount) +
-      " — " + DL.pctp(c.riskPct, 2) + " del equity.</div>";
+      " — " + DL.pctp(c.riskPct, 2) + " del equity.</div>" +
+      '<div class="note" style="margin-top:8px"><b>Cómo se calcula el tamaño de posición por riesgo:</b><br>' +
+      "(Equity × " + pr.maxRiskPct + "% de riesgo) ÷ distancia al stop por unidad = cantidad máxima que arriesga solo lo permitido.<br>" +
+      "(" + DL.money(P.equity, 0) + " × " + pr.maxRiskPct + "%) ÷ " + DL.money(c.riskPerShare || 0) +
+      " = <b>" + DL.qty(c.suggestedQty) + " unidades</b> (limitado por " + c.limitedBy + ").</div>";
 
     go.disabled = !c.ok;
     return c;
@@ -2840,7 +2987,26 @@ DL.VIEW_port = function (root) {
    DIARIO
    ============================================================ */
 DL.VIEW_diary = function (root) {
-  var html = '<section class="card"><div class="head"><h3>Diario</h3>' +
+  var J = DL.ENG.journalInsights();
+  var html = '<section class="card"><div class="head"><h3>Patrones en tus operaciones</h3>' +
+    DL.tag(J.ready ? J.n + " cerradas" : "faltan datos", "watch") + "</div>";
+  if (!J.ready) {
+    html += DL.empty("Necesitas más operaciones cerradas",
+      "Cierra al menos " + J.need + " operaciones más para que la app busque patrones reales en tu historial. " +
+      "Con pocas operaciones cualquier patrón sería casualidad, no una regla.");
+  } else {
+    html += J.insights.map(function (i) {
+      var cls = i.tone === "bad" ? "bad" : i.tone === "rev" ? "rev" : "ok";
+      var lab = i.tone === "bad" ? "Atención" : i.tone === "rev" ? "Fíjate" : "Nota";
+      return '<div class="warn ' + cls + '"><b>' + lab + "</b>" + DL.esc(i.text) + "</div>";
+    }).join("") +
+      '<p style="margin-top:8px;font-size:11.5px;color:var(--faint);line-height:1.5">' +
+      "Estos patrones salen de tus propias operaciones — no son garantía de nada. Con pocas operaciones un patrón " +
+      "puede ser casualidad; entre más operaciones cierres, más confiable se vuelve.</p>";
+  }
+  html += "</section>";
+
+  html += '<section class="card"><div class="head"><h3>Diario</h3>' +
     '<span class="eyebrow">' + DL.S.diary.length + " registros</span></div>";
   if (!DL.S.diary.length) {
     html += DL.empty("Tu diario está vacío",
@@ -3023,152 +3189,101 @@ DL.setupScreen = function (root) {
   nm.onkeydown = function (e) { if (e.key === "Enter") start(); };
 };
 /* ============================================================
-   Módulo 5d/6 — vista del Backtest Lab
-   Pestaña aislada: no lee ni escribe el portafolio en vivo.
+   Módulo 6b/6 — vista Radar: rotación sectorial y señales de volumen
    ============================================================ */
+DL.VIEW_radar = function (root) {
+  var html = "";
 
-DL.bt = { sym: null, rule: { type: "rsi", period: 14, buy: 30, sell: 70, fast: 20, slow: 50, splitPct: 60 },
-          result: null, loading: false, error: null, bars: null };
+  /* --- rotación sectorial --- */
+  html += '<section class="card"><div class="head"><h3>Rotación sectorial</h3>' +
+    '<div class="row" style="gap:6px">' +
+    '<div class="seg" id="secRange">' +
+    [[5, "1S"], [21, "1M"], [63, "3M"]].map(function (r) {
+      return '<button type="button" data-d="' + r[0] + '" aria-pressed="' + (DL.RADAR.days === r[0]) + '">' + r[1] + "</button>";
+    }).join("") + "</div>" +
+    '<button class="btn sm g" id="secRefresh" title="Actualizar sectores" aria-label="Actualizar sectores">' +
+    (DL.RADAR.loading ? '<span class="spin"></span>' : "⟳") + "</button></div></div>";
 
-DL.VIEW_backtest = function (root) {
-  var R = DL.bt.rule;
-  var opts = DL.S.watch.map(function (w) { return w.sym; });
-  if (!DL.bt.sym) DL.bt.sym = opts[0] || "AAPL";
-  if (opts.indexOf(DL.bt.sym) < 0) opts.unshift(DL.bt.sym);
-
-  var html = '<section class="card"><div class="head"><h3>Backtest Lab</h3>' +
-    DL.tag("sandbox", "watch") + "</div>" +
-    '<p style="font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:12px">' +
-    "Defines una regla, se corre contra " + DL.term("historical data") + " real y se parte en dos: " +
-    "un periodo de <b>ajuste</b>, donde eliges tus " + DL.term("parameter") + "s, y uno de <b>prueba</b> " +
-    "que la regla nunca vio. Si solo funciona en el primero, tienes " + DL.term("overfitting") + ".</p>" +
-    '<div class="note" style="margin-bottom:12px"><b>Aislado del portafolio.</b> ' +
-    "Nada de lo que hagas aquí toca tu capital simulado ni tus posiciones abiertas.</div>";
-
-  html += '<div class="grid g2" style="margin-bottom:12px">' +
-    '<div class="fld"><label for="btSym">Símbolo</label><select id="btSym">' +
-    opts.map(function (s) {
-      return '<option value="' + DL.esc(s) + '"' + (s === DL.bt.sym ? " selected" : "") + ">" + DL.esc(s) + "</option>";
-    }).join("") + "</select></div>" +
-    '<div class="fld"><label for="btType">Regla</label><select id="btType">' +
-    '<option value="rsi"' + (R.type === "rsi" ? " selected" : "") + ">RSI sobreventa / sobrecompra</option>" +
-    '<option value="sma"' + (R.type === "sma" ? " selected" : "") + ">Cruce de medias móviles</option>" +
-    "</select></div></div>";
-
-  if (R.type === "rsi") {
-    html += '<div class="grid g2" style="margin-bottom:12px">' +
-      '<div class="fld"><label for="btBuy">Comprar cuando ' + DL.term("RSI") + ' baje de</label>' +
-      '<input type="number" id="btBuy" step="1" min="5" max="50" value="' + R.buy + '"></div>' +
-      '<div class="fld"><label for="btSell">Vender cuando RSI suba de</label>' +
-      '<input type="number" id="btSell" step="1" min="50" max="95" value="' + R.sell + '"></div></div>';
+  var bench = DL.RADAR.data[DL.BENCH];
+  var rows = [];
+  if (!bench) {
+    html += DL.RADAR.loading
+      ? '<p class="mute" style="font-size:13px"><span class="spin"></span> Cargando los 11 sectores…</p>'
+      : DL.empty("No se pudo cargar el mercado de referencia", "Toca ⟳ para reintentar.");
   } else {
-    html += '<div class="grid g2" style="margin-bottom:12px">' +
-      '<div class="fld"><label for="btFast">Media rápida (sesiones)</label>' +
-      '<input type="number" id="btFast" step="1" min="3" max="100" value="' + R.fast + '"></div>' +
-      '<div class="fld"><label for="btSlow">Media lenta (sesiones)</label>' +
-      '<input type="number" id="btSlow" step="1" min="10" max="250" value="' + R.slow + '"></div></div>';
+    var bRet = DL.ENG.periodReturn(bench.bars, DL.RADAR.days);
+    rows = DL.SECTORS.map(function (s) {
+      var d = DL.RADAR.data[s[0]];
+      var ret = d ? DL.ENG.periodReturn(d.bars, DL.RADAR.days) : null;
+      return { sym: s[0], name: s[1], ret: ret, rel: (ret != null && bRet != null) ? ret - bRet : null };
+    }).filter(function (r) { return r.ret != null; })
+      .sort(function (a, b) { return b.ret - a.ret; });
+
+    if (!rows.length) {
+      html += DL.empty("Sin datos de sectores todavía", "Toca ⟳ para cargar los 11 ETF sectoriales.");
+    } else {
+      var maxAbs = Math.max.apply(null, rows.map(function (r) { return Math.abs(r.ret); }).concat([1]));
+      html += '<div id="secList">' + rows.map(function (r) {
+        var w = Math.min(100, (Math.abs(r.ret) / maxAbs) * 100);
+        var up = r.ret >= 0;
+        return '<div class="sector-row" data-sym="' + DL.esc(r.sym) + '">' +
+          '<div><div class="et">' + DL.esc(r.sym) + '</div><div class="nm">' + DL.esc(r.name) + "</div></div>" +
+          '<div class="rsbar"><i class="' + (up ? "pos" : "neg") + '" style="' +
+          (up ? "left:50%;" : "right:50%;") + "width:" + (w / 2).toFixed(1) + '%"></i></div>' +
+          '<div class="pc ' + DL.tone(r.ret) + '">' + DL.pct(r.ret, 1) + "</div>" +
+          "</div>";
+      }).join("") + "</div>";
+      html += '<p style="margin-top:10px;font-size:11.5px;color:var(--faint);line-height:1.5">' +
+        "Comparado contra " + DL.esc(DL.BENCH) + " (" + DL.pct(bRet, 1) + " en el mismo periodo). Los sectores arriba " +
+        "están liderando el mercado (" + DL.term("sector rotation") + "); los de abajo se están quedando atrás.</p>";
+    }
   }
-
-  html += '<div class="fld" style="margin-bottom:12px"><label for="btSplit">Porcentaje del histórico para ajuste' +
-    ' — el resto queda para la prueba</label>' +
-    '<input type="number" id="btSplit" step="5" min="40" max="80" value="' + R.splitPct + '"></div>';
-
-  html += '<button class="btn p blk" id="btRun"' + (DL.bt.loading ? " disabled" : "") + ">" +
-    (DL.bt.loading ? '<span class="spin"></span> Corriendo…' : "Correr el backtest") + "</button>";
   html += "</section>";
 
-  html += '<div id="btOut"></div>';
+  /* --- señales de volumen (sobre tu watchlist) --- */
+  var syms = DL.symbolsInUse();
+  var spikes = syms.map(function (s) {
+    var an = DL.data.an[s];
+    if (!an) return null;
+    var r = DL.ENG.volRatio(an.vol, an.avgVol);
+    return r != null ? { sym: s, ratio: r, chg: an.chgPct } : null;
+  }).filter(function (x) { return x && x.ratio >= DL.RADAR.spikeThreshold; })
+    .sort(function (a, b) { return b.ratio - a.ratio; });
 
-  /* glosario del modo */
-  var gl = DL.GLOSS.backtest;
-  html += '<section class="card"><div class="head"><h3>Términos de este modo</h3>' +
-    DL.tag("EN → ES", "gold") + '</div><div class="terms">' +
-    gl.map(function (p) { return "<div><b>" + DL.esc(p[0]) + "</b> — " + DL.esc(p[1]) + "</div>"; }).join("") +
-    "</div></section>";
-
-  html += '<div class="legal">Resultados hipotéticos. No incluyen comisiones, impuestos, spread ni slippage. ' +
-    'El desempeño pasado no predice el futuro. <button type="button" id="btLegal">Aviso legal</button></div>';
+  html += '<section class="card"><div class="head"><h3>Señales de volumen</h3>' +
+    '<span class="eyebrow">tu watchlist</span></div>';
+  if (!syms.length) {
+    html += DL.empty("Tu watchlist está vacía", "Agrega activos reales para que la app vigile su volumen.");
+  } else if (!spikes.length) {
+    html += DL.empty("Sin picos de volumen ahora mismo",
+      "Se marca un activo cuando su volumen de hoy supera " + DL.RADAR.spikeThreshold + "× su promedio de 20 sesiones.");
+  } else {
+    html += spikes.map(function (sp) {
+      return '<div class="sector-row" data-sym="' + DL.esc(sp.sym) + '">' +
+        '<div><div class="et">' + DL.esc(sp.sym) + '</div><div class="nm">' + DL.term("volume spike") + "</div></div>" +
+        "<div>" + DL.tag(sp.ratio.toFixed(1) + "× promedio", "spike") + "</div>" +
+        '<div class="pc ' + DL.tone(sp.chg) + '">' + DL.pct(sp.chg) + "</div>" +
+        "</div>";
+    }).join("") +
+      '<p style="margin-top:10px;font-size:11.5px;color:var(--faint);line-height:1.5">' +
+      "Un pico de volumen no dice si el precio va a subir o bajar — dice que algo cambió. La " +
+      DL.term("relative strength") + " del activo frente al mercado te ayuda a leer si el movimiento tiene fuerza real.</p>";
+  }
+  html += "</section>";
 
   root.innerHTML = html;
 
-  DL.$("#btLegal", root).onclick = DL.legalSheet;
-  DL.$("#btSym", root).onchange = function (e) { DL.bt.sym = e.target.value; DL.bt.result = null; DL.render(); };
-  DL.$("#btType", root).onchange = function (e) { R.type = e.target.value; DL.bt.result = null; DL.render(); };
-  ["btBuy", "btSell", "btFast", "btSlow", "btSplit"].forEach(function (id) {
-    var n = DL.$("#" + id, root);
-    if (!n) return;
-    n.onchange = function () {
-      var v = parseFloat(n.value) || 0;
-      if (id === "btBuy") R.buy = v;
-      if (id === "btSell") R.sell = v;
-      if (id === "btFast") R.fast = v;
-      if (id === "btSlow") R.slow = v;
-      if (id === "btSplit") R.splitPct = Math.min(80, Math.max(40, v));
-    };
+  DL.$$("#secRange button", root).forEach(function (b) {
+    b.onclick = function () { DL.RADAR.days = parseInt(b.dataset.d, 10); DL.render(); };
+  });
+  var rf = DL.$("#secRefresh", root);
+  if (rf) rf.onclick = function () { DL.loadRadar(true); };
+
+  DL.$$(".sector-row", root).forEach(function (row) {
+    row.onclick = function () { DL.openAsset(row.dataset.sym); };
   });
 
-  DL.$("#btRun", root).onclick = function () {
-    DL.bt.loading = true; DL.bt.error = null; DL.render();
-    DL.MKT.history(DL.bt.sym, "5y").then(function (d) {
-      DL.bt.bars = d.bars;
-      DL.bt.result = DL.BT.run(d.bars, R);
-      if (!DL.bt.result) DL.bt.error = "No hay suficiente histórico para este símbolo.";
-      DL.bt.loading = false; DL.render();
-    }).catch(function (e) {
-      DL.bt.loading = false;
-      DL.bt.error = "No se pudo traer el histórico (" + (e.message || "error") + "). Revisa el proxy en Ajustes.";
-      DL.render();
-    });
-  };
-
-  /* ---------- resultados ---------- */
-  var out = DL.$("#btOut", root);
-  if (DL.bt.error) {
-    out.innerHTML = '<div class="note bad"><b>Error.</b> ' + DL.esc(DL.bt.error) + "</div>";
-    return;
-  }
-  if (!DL.bt.result) return;
-
-  var res = DL.bt.result;
-  function win(w, title, sub, tone) {
-    return '<div class="window"><div class="wh"><b>' + DL.esc(title) + "</b>" +
-      '<span class="eyebrow">' + DL.esc(sub) + "</span></div>" +
-      '<div class="grid g3" style="margin-bottom:10px">' +
-      DL.ro("Operaciones", String(w.count), "", "sm") +
-      DL.ro("Aciertos", w.winRate == null ? "—" : DL.pctp(w.winRate, 0), "", "sm") +
-      DL.ro("Retorno", DL.pct(w.totalReturn, 1), DL.tone(w.totalReturn), "sm") +
-      "</div>" +
-      '<div class="grid g3">' +
-      DL.ro("Comprar y mantener", DL.pct(w.buyHold, 1), DL.tone(w.buyHold), "sm") +
-      DL.ro("Profit factor", w.profitFactor == null ? "—" :
-        (w.profitFactor === Infinity ? "∞" : w.profitFactor.toFixed(2)), "", "sm") +
-      DL.ro("Drawdown máx.", DL.pctp(w.maxDD, 1), "", "sm") +
-      "</div></div>";
-  }
-
-  var fmtRange = function (w) {
-    return w.from && w.to
-      ? new Date(w.from).toLocaleDateString("es", { month: "short", year: "numeric" }) + " → " +
-        new Date(w.to).toLocaleDateString("es", { month: "short", year: "numeric" })
-      : "—";
-  };
-
-  var h = '<section class="card"><div class="head"><h3>Resultado · ' + DL.esc(DL.bt.sym) + "</h3>" +
-    DL.tag(R.type === "rsi" ? "RSI " + R.buy + "/" + R.sell : "SMA " + R.fast + "/" + R.slow) + "</div>" +
-    win(res.inSample, "Periodo de ajuste", fmtRange(res.inSample)) +
-    win(res.outSample, "Periodo de prueba (out-of-sample)", fmtRange(res.outSample)) +
-    "</section>";
-
-  h += '<section class="card"><div class="head"><h3>Lectura</h3></div>' +
-    res.warnings.map(function (w) {
-      return '<div class="warn ' + w.lvl + '"><div><b>' + DL.esc(w.t) + "</b>" + DL.esc(w.d) + "</div></div>";
-    }).join("") +
-    '<p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5">' +
-    "El periodo de prueba es el único que dice algo. Ajustar los números hasta que el primer periodo se vea " +
-    "bien es exactamente lo que produce " + DL.term("overfitting") + ": una regla que explica el pasado " +
-    "y falla con dinero real.</p></section>";
-
-  out.innerHTML = h;
+  if (!bench && !DL.RADAR.loading) DL.loadRadar(false);
 };
 /* ============================================================
    Módulo 6/6 — arranque y navegación
@@ -3184,18 +3299,8 @@ DL.go = function (r) {
 
 DL.render = function () {
   var views = { home: "v-home", watch: "v-watch", trade: "v-trade", port: "v-port",
-                diary: "v-diary", asset: "v-asset", backtest: "v-backtest" };
+                diary: "v-diary", asset: "v-asset", radar: "v-radar" };
 
-  /* la tercera pestaña es Operar en Scalping/Swing y Backtest Lab en modo backtest */
-  var nt = document.getElementById("navTrade");
-  if (nt) {
-    var bt = DL.S.profile.mode === "backtest";
-    nt.dataset.go = bt ? "backtest" : "trade";
-    nt.querySelector("span:last-child").textContent = bt ? "Backtest" : "Operar";
-    nt.onclick = function () { DL.go(nt.dataset.go); };
-  }
-  if (DL.route === "backtest" && DL.S.profile.mode !== "backtest") DL.route = "trade";
-  if (DL.route === "trade" && DL.S.profile.mode === "backtest") DL.route = "backtest";
   Object.keys(views).forEach(function (k) {
     var n = document.getElementById(views[k]);
     if (n) n.classList.toggle("on", k === DL.route);
@@ -3227,7 +3332,7 @@ DL.render = function () {
     else if (DL.route === "port") DL.VIEW_port(root);
     else if (DL.route === "diary") DL.VIEW_diary(root);
     else if (DL.route === "asset") DL.VIEW_asset(root);
-    else if (DL.route === "backtest") DL.VIEW_backtest(root);
+    else if (DL.route === "radar") DL.VIEW_radar(root);
   } catch (e) {
     console.error(e);
     root.innerHTML = '<div class="note bad"><b>Algo falló al dibujar esta pantalla.</b> ' +

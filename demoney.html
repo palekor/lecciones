@@ -247,6 +247,7 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 <header class="top">
   <div class="brand"><b>Decision Lab</b><span id="brandsub">Simulacro · capital simulado</span></div>
   <div class="row" style="gap:6px">
+    <button class="btn sm g" id="btnCloud" title="Cuenta y sincronización" aria-label="Cuenta y sincronización" style="color:var(--faint)">☁</button>
     <button class="btn sm g" id="btnRefresh" title="Actualizar precios" aria-label="Actualizar precios">⟳</button>
     <button class="btn sm g" id="btnSettings" title="Ajustes" aria-label="Ajustes">⚙</button>
   </div>
@@ -280,6 +281,8 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
   </button>
 </nav>
 
+<!-- Cuenta compartida por todas las apps de palekor.github.io/lecciones -->
+<script src="palekor-sync.js"></script>
 <script>
 /* ============================================================
    DECISION LAB — simulacro de decisiones con mercado real
@@ -490,6 +493,372 @@ DL.legalSheet = function () {
   }).join("");
   DL.sheet("Aviso legal", body);
 };
+/* ============================================================
+   Módulo 1c — nube: la misma cuenta en todos tus dispositivos
+   Usa palekor-sync.js (compartido por todas las apps).
+   Si la nube no está disponible, la app sigue funcionando local.
+   ============================================================ */
+
+DL.CLOUD = (function () {
+  var APP = "demoney";
+  var META_KEY = "dlab.sync.v1";
+  var COLLS = {
+    watch: { id: function (x) { return x.sym; },  order: function (a, b) { return (a.addedAt || 0) - (b.addedAt || 0); } },
+    pos:   { id: function (x) { return x.id; },   order: function (a, b) { return (a.openedAt || 0) - (b.openedAt || 0); } },
+    diary: { id: function (x) { return x.id; },   order: function (a, b) { return (b.t || 0) - (a.t || 0); } }
+  };
+
+  var S = { status: "off", lastSync: 0, error: null };  // off | idle | syncing | pending | error
+  var meta = { tomb: { watch: {}, pos: {}, diary: {} }, dirty: {}, everPushed: false };
+  var shadow = { watch: {}, pos: {}, diary: {}, profile: null };
+  var pushT = null, pollT = null, applying = false;
+  // marca de versión para "pendiente de subir": siempre creciente, aun entre recargas
+  var seq = 0;
+  function nextSeq() { seq = Math.max(seq + 1, Date.now()); return seq; }
+
+  try {
+    var raw = localStorage.getItem(META_KEY);
+    if (raw) meta = Object.assign(meta, JSON.parse(raw));
+  } catch (e) {}
+  function saveMeta() { try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch (e) {} }
+
+  function PS() { return window.PalekorSync || null; }
+  function fp(o) { return PS() ? PS().fingerprint(o) : JSON.stringify(o); }
+
+  /* ---------- 1. detectar qué cambió desde el último guardado ---------- */
+  function naturalTime(coll, x) {
+    return coll === "watch" ? (x.addedAt || 1) : coll === "pos" ? (x.exitAt || x.openedAt || 1) : (x.t || 1);
+  }
+
+  // Primera vez: registra el estado actual sin marcarlo como "recién editado"
+  function primeShadow() {
+    Object.keys(COLLS).forEach(function (c) {
+      shadow[c] = {};
+      (DL.S[c] || []).forEach(function (x) {
+        if (!x._u) x._u = naturalTime(c, x);
+        shadow[c][COLLS[c].id(x)] = fp(x);
+      });
+    });
+    if (!DL.S.profile._u) DL.S.profile._u = DL.S.profile.setup ? 1 : 0;
+    shadow.profile = fp(DL.S.profile);
+    if (!meta.everPushed) { meta.dirty = { watch: 1, pos: 1, diary: 1, profile: 1 }; saveMeta(); }
+  }
+
+  function markChanges() {
+    var now = Date.now(), any = false;
+    Object.keys(COLLS).forEach(function (c) {
+      var seen = {};
+      (DL.S[c] || []).forEach(function (x) {
+        var id = COLLS[c].id(x), h = fp(x);
+        seen[id] = 1;
+        if (shadow[c][id] !== h) {
+          x._u = now; shadow[c][id] = h;
+          if (meta.tomb[c][id]) delete meta.tomb[c][id];   // se volvió a agregar
+          meta.dirty[c] = nextSeq(); any = true;
+        }
+      });
+      Object.keys(shadow[c]).forEach(function (id) {
+        if (!seen[id]) {                                    // se borró en este dispositivo
+          meta.tomb[c][id] = now; delete shadow[c][id];
+          meta.dirty[c] = nextSeq(); any = true;
+        }
+      });
+    });
+    var hp = fp(DL.S.profile);
+    if (hp !== shadow.profile) {
+      DL.S.profile._u = now; shadow.profile = hp;
+      meta.dirty.profile = nextSeq(); any = true;
+    }
+    if (any) saveMeta();
+    return any;
+  }
+
+  /* ---------- 2. subir lo pendiente ---------- */
+  function docFor(c) {
+    var items = {};
+    (DL.S[c] || []).forEach(function (x) { items[COLLS[c].id(x)] = PS().clean(x); });
+    return { items: items, tomb: meta.tomb[c] || {} };
+  }
+
+  function schedulePush() {
+    if (!signedIn()) { if (Object.keys(meta.dirty).length) setStatus("off"); return; }
+    setStatus("pending");
+    clearTimeout(pushT);
+    pushT = setTimeout(pushNow, 1500);
+  }
+
+  var pulledOnce = false;   // nunca se sube nada antes de haber traído lo de la nube:
+                            // subir primero reemplazaría datos de otros dispositivos
+  function pushNow() {
+    if (!signedIn() || !pulledOnce) return Promise.resolve();
+    var keys = Object.keys(meta.dirty);
+    if (!keys.length) { setStatus("idle"); return Promise.resolve(); }
+    setStatus("syncing");
+    var sent = {}, results = {};
+    return Promise.all(keys.map(function (k) {
+      sent[k] = meta.dirty[k];
+      var data = k === "profile" ? { v: PS().clean(DL.S.profile) } : docFor(k);
+      // fusión atómica en el servidor: devuelve lo combinado con otros dispositivos
+      return PS().merge(APP, k, data).then(function (merged) {
+        results[k] = { data: merged };
+        // solo se limpia si nadie editó esa lista mientras viajaba la petición
+        if (meta.dirty[k] === sent[k]) delete meta.dirty[k];
+      });
+    })).then(function () {
+      meta.everPushed = true;
+      var changed = applyRemote(results, false);
+      saveMeta();
+      S.lastSync = Date.now(); S.error = null;
+      if (changed && DL.recompute) { DL.recompute(); DL.render(); }
+      if (Object.keys(meta.dirty).length) schedulePush(); else setStatus("idle");
+    }).catch(function (e) {
+      saveMeta();
+      S.error = e.message || "error";
+      setStatus(navigator.onLine === false ? "pending" : "error");
+    });
+  }
+
+  /* ---------- 3. fusionar lo que llega de la nube ---------- */
+  function applyRemote(rows, isPull) {
+    applying = true;
+    var changed = false;
+
+    Object.keys(COLLS).forEach(function (c) {
+      if (!isPull && !rows[c]) return;               // al subir, solo se aplica lo que se subió
+      var local = docFor(c);
+      var remote = rows[c] ? rows[c].data : null;
+      var merged = PS().mergeCollection(local, remote);
+      var list = Object.keys(merged.items).map(function (id) { return merged.items[id]; }).sort(COLLS[c].order);
+
+      if (fp(list) !== fp(DL.S[c] || [])) changed = true;
+      DL.S[c] = list;
+      meta.tomb[c] = merged.tomb;
+
+      // si lo local tenía algo que la nube no tenía, hay que subirlo
+      if (!remote || fp(merged) !== fp(remote)) meta.dirty[c] = nextSeq();
+    });
+
+    if (isPull || rows.profile) {
+      var rp = rows.profile && rows.profile.data ? rows.profile.data.v : null;
+      // Primera sincronización de este dispositivo: si la cuenta ya tiene un
+      // perfil, manda el de la nube (tu capital, tu nombre, tus ajustes)
+      // aunque este dispositivo haya creado uno por defecto hace un minuto.
+      var mp = (isPull && !meta.everPushed && rp) ? rp : PS().mergeObject(DL.S.profile, rp);
+      if (mp !== DL.S.profile) {
+        if (fp(mp) !== fp(DL.S.profile)) changed = true;
+        DL.S.profile = Object.assign({}, DL.S.profile, mp);
+      } else if (!rp || fp(rp) !== fp(DL.S.profile)) {
+        meta.dirty.profile = nextSeq();
+      }
+    }
+
+    // reconstruir la sombra sin marcar nada como editado
+    Object.keys(COLLS).forEach(function (c) {
+      shadow[c] = {};
+      DL.S[c].forEach(function (x) { shadow[c][COLLS[c].id(x)] = fp(x); });
+    });
+    shadow.profile = fp(DL.S.profile);
+
+    rawSave();
+    applying = false;
+    return changed;
+  }
+
+  /* ---------- 4. traer lo de otros dispositivos ---------- */
+  function pullNow() {
+    if (!signedIn()) return Promise.resolve(false);
+    setStatus("syncing");
+    return PS().pull(APP).then(function (rows) {
+      var reset = false;
+
+      // Si en este dispositivo entra una cuenta DISTINTA a la anterior, lo local
+      // no se mezcla con la cuenta nueva: se reemplaza por lo que hay en la nube.
+      var uid = PS().user().id;
+      if (meta.owner && meta.owner !== uid) {
+        Object.keys(COLLS).forEach(function (c) { DL.S[c] = []; meta.tomb[c] = {}; });
+        DL.S.profile = Object.assign({}, DL.S.profile, { _u: 0, setup: false, name: "" });
+        meta.everPushed = false; meta.dirty = {};
+        reset = true;
+      }
+      meta.owner = uid;
+
+      var changed = applyRemote(rows, true) || reset;
+      saveMeta();
+      pulledOnce = true;
+      S.lastSync = Date.now(); S.error = null;
+
+      if (changed && DL.recompute) { DL.recompute(); DL.render(); }
+      return pushNow().then(function () { return changed; });
+    }).catch(function (e) {
+      applying = false;
+      S.error = e.message || "error";
+      setStatus("error");
+      return false;
+    });
+  }
+
+  var inflight = null;      // una sola sincronización a la vez
+  function syncNow() {
+    if (inflight) return inflight;
+    inflight = pullNow().then(function (r) { inflight = null; return r; },
+                              function (e) { inflight = null; throw e; });
+    return inflight;
+  }
+
+  /* ---------- 4. enganche con DL.save ---------- */
+  var rawSave = DL.save;
+  DL.save = function () {
+    rawSave();
+    if (applying) return;
+    if (markChanges()) schedulePush();
+  };
+
+  /* ---------- 5. estado visible ---------- */
+  function signedIn() { return !!(PS() && PS().user()); }
+
+  function setStatus(s) {
+    S.status = signedIn() ? s : "off";
+    var b = document.getElementById("btnCloud");
+    if (!b) return;
+    var map = {
+      off:     ["☁", "Sin cuenta — los datos viven solo en este dispositivo", "var(--faint)"],
+      idle:    ["☁", "Sincronizado", "var(--pos)"],
+      syncing: ['<span class="spin"></span>', "Sincronizando…", "var(--purple2)"],
+      pending: ["☁", "Cambios pendientes de subir", "var(--amber)"],
+      error:   ["☁", "No se pudo sincronizar — se reintentará", "var(--neg)"]
+    };
+    var m = map[S.status] || map.off;
+    b.innerHTML = m[0];
+    b.title = m[1];
+    b.setAttribute("aria-label", m[1]);
+    b.style.color = m[2];
+  }
+
+  /* ---------- 6. hoja de cuenta ---------- */
+  function accountSheet(onDone) {
+    var P = PS();
+    if (!P) { DL.toast("La sincronización no está disponible en esta página"); return; }
+    var body = DL.el("<div></div>");
+    var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+    var s = DL.sheet("Tu cuenta", body, foot);
+
+    function paintIn() {
+      var u = P.user();
+      body.innerHTML =
+        '<div class="grid g2" style="margin-bottom:12px">' +
+        DL.ro("Cuenta", u.email || "—", "", "sm") +
+        DL.ro("Última sincronización", S.lastSync ? new Date(S.lastSync).toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" }) : "—", "", "sm") +
+        "</div>" +
+        '<p style="font-size:12.5px;color:var(--muted);line-height:1.5">' +
+        "Tus datos se guardan en tu cuenta y aparecen igual en cualquier dispositivo donde entres con este correo. " +
+        "Esta misma cuenta sirve para todas las apps de ProfGermandario.</p>" +
+        (S.error ? '<div class="note bad" style="margin-top:10px"><b>Último error:</b> ' + DL.esc(S.error) + "</div>" : "");
+      foot.innerHTML = "";
+      var out = DL.el('<button class="btn g sm">Cerrar sesión</button>');
+      out.onclick = function () {
+        P.signOut().then(function () { setStatus("off"); s.close(); DL.toast("Sesión cerrada. Tus datos siguen en este dispositivo."); });
+      };
+      var now = DL.el('<button class="btn p">Sincronizar ahora</button>');
+      now.onclick = function () {
+        now.disabled = true;
+        syncNow().then(function () { paintIn(); DL.toast("Sincronizado"); });
+      };
+      foot.appendChild(out); foot.appendChild(now);
+    }
+
+    function paintEmail() {
+      body.innerHTML =
+        '<p style="font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:12px">' +
+        "Entra con tu correo para ver tu watchlist, tus operaciones y tu diario en todos tus dispositivos. " +
+        "Sin contraseña: te enviamos un código.</p>" +
+        '<div class="fld"><label for="acEmail">Correo</label>' +
+        '<input type="text" id="acEmail" inputmode="email" autocomplete="email" autocapitalize="off" placeholder="tu@correo.com"></div>';
+      foot.innerHTML = "";
+      var go = DL.el('<button class="btn p">Enviarme el código</button>');
+      var inp = body.querySelector("#acEmail");
+      function send() {
+        var em = inp.value.trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { DL.toast("Escribe un correo válido"); return; }
+        go.disabled = true; go.innerHTML = '<span class="spin"></span> Enviando…';
+        P.sendCode(em).then(function () { paintCode(em); })
+          .catch(function (e) {
+            go.disabled = false; go.textContent = "Enviarme el código";
+            DL.toast(/rate|limit|seconds/i.test(e.message) ? "Espera un minuto antes de pedir otro código" : "No se pudo enviar: " + e.message);
+          });
+      }
+      go.onclick = send;
+      inp.onkeydown = function (e) { if (e.key === "Enter") send(); };
+      foot.appendChild(go);
+      setTimeout(function () { inp.focus(); }, 50);
+    }
+
+    function paintCode(em) {
+      body.innerHTML =
+        '<p style="font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:12px">' +
+        "Te enviamos un correo a <b>" + DL.esc(em) + "</b>. Escribe aquí el código de 6 dígitos, " +
+        "o toca el enlace del correo desde este mismo navegador.</p>" +
+        '<div class="fld"><label for="acCode">Código</label>' +
+        '<input type="text" id="acCode" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="123456" style="letter-spacing:.3em;font-size:18px;text-align:center"></div>' +
+        '<p style="margin-top:10px;font-size:11.5px;color:var(--faint)">¿No llegó? Revisa spam. Puedes pedir otro en un minuto.</p>';
+      foot.innerHTML = "";
+      var back = DL.el('<button class="btn g sm">Cambiar correo</button>');
+      back.onclick = paintEmail;
+      var ok = DL.el('<button class="btn p">Entrar</button>');
+      var inp = body.querySelector("#acCode");
+      function verify() {
+        var code = inp.value.replace(/\D/g, "");
+        if (code.length < 6) { DL.toast("El código tiene 6 dígitos"); return; }
+        ok.disabled = true; ok.innerHTML = '<span class="spin"></span> Entrando…';
+        P.verifyCode(em, code).then(function () {
+          return syncNow();
+        }).then(function () {
+          s.close();
+          DL.toast("Listo — tus datos están sincronizados");
+          if (onDone) onDone(); else DL.render();
+        }).catch(function (e) {
+          ok.disabled = false; ok.textContent = "Entrar";
+          DL.toast(/expired|invalid/i.test(e.message) ? "Código incorrecto o vencido" : "No se pudo entrar: " + e.message);
+        });
+      }
+      ok.onclick = verify;
+      inp.onkeydown = function (e) { if (e.key === "Enter") verify(); };
+      foot.appendChild(back); foot.appendChild(ok);
+      setTimeout(function () { inp.focus(); }, 50);
+    }
+
+    if (P.user()) paintIn(); else paintEmail();
+  }
+
+  /* ---------- 7. arranque ---------- */
+  function start() {
+    primeShadow();
+    setStatus("off");
+    var P = PS();
+    if (!P) return;
+    P.onAuth(function (u) {
+      if (u) syncNow(); else { pulledOnce = false; setStatus("off"); }
+    });
+    P.ready().then(function () {
+      if (P.user()) syncNow(); else setStatus("off");
+    }).catch(function () { setStatus("off"); });
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible" && signedIn()) syncNow();
+    });
+    window.addEventListener("online", function () { if (signedIn()) syncNow(); });
+    clearInterval(pollT);
+    pollT = setInterval(function () {
+      if (document.visibilityState === "visible" && signedIn() && S.status !== "syncing") syncNow();
+    }, 60000);
+  }
+
+  return {
+    start: start, syncNow: syncNow, accountSheet: accountSheet,
+    signedIn: signedIn, state: S,
+    // expuesto para pruebas
+    _merge: pullNow, _mark: markChanges, _meta: function () { return meta; }
+  };
+})();
 /* ============================================================
    Módulo 2/6 — capa de datos de mercado
    Fuente: Yahoo Finance (pública, sin API key). El navegador del
@@ -2550,18 +2919,31 @@ DL.settingsSheet = function () {
   ["#sCap", "#sDay", "#sRisk"].forEach(function (s) { body.querySelector(s).oninput = prev; });
   prev();
 
-  var legalBtn = DL.el('<button class="btn sm g" style="margin-top:12px;width:100%">Leer el aviso legal</button>');
+  var acctBtn = DL.el('<button class="btn sm" style="margin-top:14px;width:100%">☁ ' +
+    (DL.CLOUD.signedIn() ? "Cuenta y sincronización" : "Entrar para sincronizar entre dispositivos") + "</button>");
+  acctBtn.onclick = function () { s.close(); DL.CLOUD.accountSheet(); };
+  body.appendChild(acctBtn);
+
+  var legalBtn = DL.el('<button class="btn sm g" style="margin-top:8px;width:100%">Leer el aviso legal</button>');
   legalBtn.onclick = DL.legalSheet;
   body.appendChild(legalBtn);
 
   var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:space-between"></div>');
   var reset = DL.el('<button class="btn dngr sm">Borrar todo</button>');
   reset.onclick = function () {
-    DL.confirm("Borrar todo", "Se eliminan watchlist, posiciones y diario de este navegador. No se puede deshacer.",
+    var synced = DL.CLOUD.signedIn();
+    DL.confirm("Borrar este dispositivo",
+      synced
+        ? "Se borran los datos guardados en este navegador y se cierra la sesión. Tu cuenta en la nube NO se toca: al volver a entrar, todo reaparece."
+        : "Se eliminan watchlist, posiciones y diario de este navegador. Como no tienes cuenta, no hay copia en la nube: no se puede deshacer.",
       function () {
-        localStorage.removeItem(DL.KEY);
-        DL.MKT.clearCache();
-        location.reload();
+        var done = function () {
+          localStorage.removeItem(DL.KEY);
+          localStorage.removeItem("dlab.sync.v1");
+          DL.MKT.clearCache();
+          location.reload();
+        };
+        if (synced && window.PalekorSync) window.PalekorSync.signOut().then(done, done); else done();
       }, "Borrar");
   };
   var ok = DL.el('<button class="btn p">Guardar</button>');
@@ -2605,6 +2987,9 @@ DL.setupScreen = function (root) {
     "Entiendo que esta es una herramienta educativa con capital simulado, que no ejecuta " +
     "operaciones reales y que nada de lo que muestra es asesoría financiera.</label>" +
     '<button class="btn p blk" id="uGo">Empezar</button>' +
+    '<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center">' +
+    '<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">¿Ya usas DEMONEY en otro dispositivo?</p>' +
+    '<button type="button" class="btn blk" id="uLogin">☁ Entrar con mi cuenta</button></div>' +
     '<div class="legal" style="margin-top:14px">' + DL.esc(DL.LEGAL_SHORT) +
     ' <button type="button" id="uLegal">Leer el aviso legal completo</button></div>' +
     "</section>";
@@ -2612,6 +2997,12 @@ DL.setupScreen = function (root) {
   var go = DL.$("#uGo", root);
   var nm = DL.$("#uName", root);
   DL.$("#uLegal", root).onclick = DL.legalSheet;
+  DL.$("#uLogin", root).onclick = function () {
+    DL.CLOUD.accountSheet(function () {
+      if (DL.S.profile.setup) { DL.go("home"); DL.sync(true); }
+      else { DL.render(); DL.toast("Tu cuenta aún no tiene datos: completa el alta y quedará guardada en la nube."); }
+    });
+  };
   function start() {
     var n = nm.value.trim();
     if (!n) { nm.focus(); DL.toast("Escribe tu nombre"); return; }
@@ -2850,6 +3241,9 @@ DL.render = function () {
 /* ---------- arranque ---------- */
 (function boot() {
   DL.load();
+  DL.CLOUD.start();
+
+  document.getElementById("btnCloud").onclick = function () { DL.CLOUD.accountSheet(); };
 
   DL.$$("#nav button").forEach(function (b) {
     b.onclick = function () { DL.go(b.dataset.go); };

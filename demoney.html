@@ -1674,6 +1674,58 @@ DL.SECTORS = [
   ["XLRE", "Bienes raíces"], ["XLC", "Comunicaciones"]
 ];
 
+/* candidatos de referencia por sector — de aquí salen los 3 líderes al tocar un sector */
+DL.SECTOR_LEADERS = {
+  XLK: ["AAPL", "MSFT", "NVDA", "AVGO", "CRM"],
+  XLF: ["JPM", "BAC", "WFC", "GS", "MS"],
+  XLE: ["XOM", "CVX", "COP", "SLB", "EOG"],
+  XLV: ["LLY", "UNH", "JNJ", "ABBV", "MRK"],
+  XLY: ["AMZN", "TSLA", "HD", "MCD", "NKE"],
+  XLP: ["PG", "KO", "PEP", "COST", "WMT"],
+  XLI: ["CAT", "HON", "UNP", "GE", "RTX"],
+  XLB: ["LIN", "SHW", "FCX", "ECL", "NEM"],
+  XLU: ["NEE", "SO", "DUK", "AEP", "D"],
+  XLRE: ["PLD", "AMT", "EQIX", "SPG", "PSA"],
+  XLC: ["META", "GOOGL", "NFLX", "DIS", "TMUS"]
+};
+
+DL.sectorLeadersSheet = function (etf) {
+  var meta = DL.SECTORS.filter(function (s) { return s[0] === etf; })[0];
+  var name = meta ? meta[1] : etf;
+  var cands = DL.SECTOR_LEADERS[etf] || [];
+  var body = DL.el('<div><p class="mute" style="font-size:12px"><span class="spin"></span> Buscando líderes del sector…</p></div>');
+  var foot = DL.el('<div class="row" style="margin-top:12px;justify-content:flex-end"></div>');
+  var seeEtf = DL.el('<button class="btn sm g">Ver ' + DL.esc(etf) + " (el ETF)</button>");
+  var s = DL.sheet("Líderes · " + name, body, foot);
+  seeEtf.onclick = function () { s.close(); DL.openAsset(etf); };
+  foot.appendChild(seeEtf);
+
+  Promise.all(cands.map(function (sym) {
+    return DL.MKT.daily(sym).then(function (d) {
+      if (!DL.data.bySym[sym]) DL.data.bySym[sym] = d;
+      var ret = DL.ENG.periodReturn(d.bars, DL.RADAR.days);
+      return { sym: sym, ret: ret };
+    }).catch(function () { return null; });
+  })).then(function (rows) {
+    rows = rows.filter(function (r) { return r && r.ret != null; })
+      .sort(function (a, b) { return b.ret - a.ret; }).slice(0, 3);
+    if (!rows.length) { body.innerHTML = DL.empty("Sin datos disponibles ahora", "Vuelve a intentar en unos segundos."); return; }
+    body.innerHTML = '<p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;line-height:1.45">' +
+      "Los que más se mueven dentro de " + DL.esc(name) + " en este periodo, de una lista de referencia — no es una lista exhaustiva del sector.</p>";
+    rows.forEach(function (r, i) {
+      var row = DL.el('<button type="button" style="display:flex;justify-content:space-between;align-items:center;' +
+        'width:100%;text-align:left;background:var(--plate2);border:1px solid var(--line);border-radius:8px;' +
+        'padding:10px 12px;margin-bottom:7px"></button>');
+      row.innerHTML =
+        '<span class="row" style="gap:9px"><span class="eyebrow">' + (i + 1) + '</span>' +
+        '<span class="n" style="font-weight:600">' + DL.esc(r.sym) + "</span></span>" +
+        '<span class="n ' + DL.tone(r.ret) + '">' + DL.pct(r.ret, 1) + "</span>";
+      row.onclick = function () { s.close(); DL.openAsset(r.sym); };
+      body.appendChild(row);
+    });
+  });
+};
+
 DL.RADAR = { loading: false, data: {}, days: 21, spikeThreshold: 1.5 };
 
 DL.ENG.periodReturn = function (bars, days) {
@@ -1908,7 +1960,10 @@ DL.CH = (function () {
       var isFirst = i === 0, isLast = i > vis.length - every;
       c.textAlign = isFirst ? "left" : isLast ? "right" : "center";
       var x = isFirst ? padL : isLast ? padL + W : X(i);
-      c.fillText(new Date(b.t).toLocaleDateString("es", { day: "numeric", month: "short" }), x, h - padB + 4);
+      var lbl = opt.intraday
+        ? new Date(b.t).toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" })
+        : new Date(b.t).toLocaleDateString("es", { day: "numeric", month: "short" });
+      c.fillText(lbl, x, h - padB + 4);
     });
 
     // leyenda de medias
@@ -2032,7 +2087,7 @@ DL.CH = (function () {
    Módulo 5/6 — vistas: Hoy, Watchlist y ficha del activo
    ============================================================ */
 
-DL.data = { bySym: {}, an: {}, bench: null, loading: false, error: null };
+DL.data = { bySym: {}, an: {}, bench: null, loading: false, error: null, intraBySym: {}, intraLoading: {} };
 DL.BENCH = "SPY";
 
 DL.symbolsInUse = function () {
@@ -2151,6 +2206,11 @@ DL.VIEW_home = function (root) {
     '<div class="row" style="justify-content:space-between;margin-top:5px">' +
     '<span class="n" style="font-size:10.5px;color:var(--faint)">' + DL.pctp(invPct, 1) + " invertido</span>" +
     '<span class="n" style="font-size:10.5px;color:var(--faint)">P/L abierto ' + DL.pct(P.openPLPct) + "</span></div></div>";
+
+  if (P.open.length) {
+    html += '<div style="margin-top:14px"><div class="eyebrow" style="margin-bottom:6px">Posiciones abiertas</div>' +
+      '<div id="homeOpenList"></div></div>';
+  }
   html += "</section>";
 
   /* --- qué hago hoy --- */
@@ -2254,6 +2314,22 @@ DL.VIEW_home = function (root) {
           '<span class="n ' + DL.tone(an.chgPct) + '" style="font-size:12px">' + DL.pct(an.chgPct) + "</span></div>" : "");
       row.onclick = function () { DL.openAsset(a.sym); };
       list.appendChild(row);
+    });
+  }
+
+  var openList = DL.$("#homeOpenList", root);
+  if (openList) {
+    P.open.forEach(function (p) {
+      var row = DL.el('<button type="button" style="display:flex;justify-content:space-between;align-items:center;' +
+        'width:100%;text-align:left;background:var(--plate2);border:1px solid var(--line);border-radius:8px;' +
+        'padding:9px 11px;margin-bottom:6px"></button>');
+      row.innerHTML =
+        '<span class="row" style="gap:8px"><span class="n" style="font-weight:600;font-size:12.5px">' + DL.esc(p.sym) + "</span>" +
+        '<span class="eyebrow">' + DL.qty(p.qty) + " · reg " + DL.money(p.entry) + "</span></span>" +
+        '<span class="row" style="gap:8px"><span class="n ' + DL.tone(p._pl) + '" style="font-size:12.5px">' + DL.sgn(p._pl) + "</span>" +
+        '<span class="eyebrow">explorar →</span></span>';
+      row.onclick = function () { DL.openAsset(p.sym); };
+      openList.appendChild(row);
     });
   }
 
@@ -2400,9 +2476,10 @@ DL.addSymbol = function (sym, name) {
    Módulo 5b/6 — ficha del activo, trade builder, portafolio, diario
    ============================================================ */
 
-DL.current = { sym: null, range: 90 };
+DL.current = { sym: null, range: "3M", from: null };
 
 DL.openAsset = function (sym) {
+  if (DL.route !== "asset") DL.current.from = DL.route;
   DL.current.sym = sym;
   DL.go("asset");
   if (!DL.data.bySym[sym]) {
@@ -2418,6 +2495,93 @@ DL.addDiary = function (sym, kind, text, px) {
   DL.save();
 };
 
+/* ---------- rangos del gráfico de la ficha: 1D y 1W usan velas intradía ---------- */
+DL.ASSET_RANGES = [
+  { key: "1D", label: "1D", intraday: true },
+  { key: "1W", label: "1W", intraday: true },
+  { key: "1M", label: "1M", days: 30 },
+  { key: "3M", label: "3M", days: 90 },
+  { key: "6M", label: "6M", days: 180 },
+  { key: "1A", label: "1A", days: 250 }
+];
+
+DL.lastSessionBars = function (bars) {
+  if (!bars || !bars.length) return [];
+  var lastDate = new Date(bars[bars.length - 1].t).toDateString();
+  var out = [];
+  for (var i = bars.length - 1; i >= 0; i--) {
+    if (new Date(bars[i].t).toDateString() === lastDate) out.unshift(bars[i]); else break;
+  }
+  return out.length ? out : bars.slice(-13);
+};
+
+/* cambio % correspondiente al rango elegido — nunca ambiguo sobre a qué periodo se refiere */
+DL.rangeChange = function (d, an, rdef) {
+  if (!d) return null;
+  if (rdef.key === "1D") return an ? an.chgPct : null;
+  if (rdef.key === "1W") return DL.ENG.periodReturn(d.bars, 5);
+  return DL.ENG.periodReturn(d.bars, rdef.days);
+};
+
+/* ---------- búsqueda profunda: prompt fijo de analista senior, 14 secciones ---------- */
+DL.deepSearchPrompt = function (sym, d, an) {
+  var L = [];
+  L.push("Actúa como analista financiero senior. Analiza " + sym + (d && d.name ? " (" + d.name + ")" : "") +
+    " con la información más reciente disponible y entrega un informe en español con exactamente estas 14 secciones, numeradas:");
+  L.push("1. Cuadro integral con semáforo (verde/amarillo/rojo) del estado general");
+  L.push("2. Cambio fundamental más relevante reciente");
+  L.push("3. Narrativa actual del mercado sobre la empresa");
+  L.push("4. Dato clave del trimestre más reciente");
+  L.push("5. Fundamentales calificados sobre 10, con justificación breve");
+  L.push("6. Principal peligro o riesgo a vigilar");
+  L.push("7. Estructura de capital (deuda, caja, dilución)");
+  L.push("8. Lectura técnica del gráfico actual");
+  L.push("9. Niveles clave de soporte y resistencia");
+  L.push("10. Escenarios bear / base / bull / super bull con precios objetivo aproximados");
+  L.push("11. Matriz de inversión (retorno potencial vs. riesgo)");
+  L.push("12. Estrategia de entrada por tramos");
+  L.push("13. Semáforo final de la tesis");
+  L.push("14. Cierre con una frase resumen accionable");
+  L.push("");
+  L.push("Datos de referencia desde mi app (pueden estar desactualizados — verifica con fuentes actuales):");
+  if (d) {
+    L.push("Precio actual: " + DL.money(d.price));
+    L.push("Cambio hoy: " + (an ? DL.pct(an.chgPct) : "—"));
+  }
+  if (an) {
+    L.push("RSI(14): " + (an.rsi == null ? "—" : an.rsi.toFixed(1)));
+    L.push("SMA50: " + (an.sma50 == null ? "—" : an.sma50.toFixed(2)) + " · SMA200: " + (an.sma200 == null ? "—" : an.sma200.toFixed(2)));
+    L.push("Rango 52 semanas: " + DL.money(an.lo52) + " – " + DL.money(an.hi52));
+  }
+  return L.join("\n");
+};
+
+DL.deepSearchSheet = function (sym) {
+  var d = DL.data.bySym[sym], an = DL.data.an[sym];
+  if (!d) { DL.toast("Todavía cargando datos de " + sym); return; }
+  var prompt = DL.deepSearchPrompt(sym, d, an);
+  var body = DL.el('<div><p style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px">' +
+    "Copia este prompt y pégalo en ChatGPT o Claude para un análisis profundo de 14 secciones. La app no lo envía por ti.</p>" +
+    '<textarea id="dspx" readonly style="min-height:220px;font-size:11.5px;line-height:1.5"></textarea></div>');
+  body.querySelector("#dspx").value = prompt;
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:flex-end"></div>');
+  var cp = DL.el('<button class="btn p">Copiar prompt</button>');
+  cp.onclick = function () {
+    var ta = body.querySelector("#dspx");
+    ta.focus(); ta.select();
+    function done() { DL.toast("Prompt copiado"); }
+    function fallback() {
+      try { document.execCommand("copy"); done(); }
+      catch (e) { DL.toast("No se pudo copiar — selecciona y copia manualmente"); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(prompt).then(done).catch(fallback);
+    } else { fallback(); }
+  };
+  foot.appendChild(cp);
+  DL.sheet("Búsqueda profunda · " + sym, body, foot);
+};
+
 /* ============================================================
    FICHA DEL ACTIVO
    ============================================================ */
@@ -2430,13 +2594,40 @@ DL.VIEW_asset = function (root) {
   var inWatch = DL.S.watch.some(function (w) { return w.sym === sym; });
 
   if (!d) {
-    root.innerHTML = '<section class="card"><div class="head"><h3>' + DL.esc(sym) + "</h3></div>" +
+    root.innerHTML = '<div class="row" style="margin-bottom:8px"><button type="button" class="btn sm g" id="btnBack">← Volver</button></div>' +
+      '<section class="card"><div class="head"><h3>' + DL.esc(sym) + "</h3></div>" +
       '<p class="mute" style="font-size:13px"><span class="spin"></span> Cargando datos de mercado…</p></section>';
+    var bkE = DL.$("#btnBack", root);
+    if (bkE) bkE.onclick = function () { DL.go(DL.current.from || "watch"); };
     return;
   }
 
   var state = pos ? DL.ENG.positionState(pos, an) : null;
+
+  /* rango elegido: 1D y 1W usan velas intradía (30m), el resto velas diarias */
+  var rdef = DL.ASSET_RANGES.filter(function (r) { return r.key === DL.current.range; })[0] || DL.ASSET_RANGES[3];
+  var isIntra = !!rdef.intraday;
+  var chartBars = null, chartCount = 90;
+  if (isIntra) {
+    var intra = DL.data.intraBySym[sym];
+    if (intra) {
+      chartBars = rdef.key === "1D" ? DL.lastSessionBars(intra.bars) : intra.bars;
+      chartCount = chartBars.length;
+    } else if (!DL.data.intraLoading[sym]) {
+      DL.data.intraLoading[sym] = true;
+      DL.MKT.intraday(sym).then(function (d2) {
+        DL.data.intraBySym[sym] = d2; DL.data.intraLoading[sym] = false; DL.render();
+      }).catch(function () { DL.data.intraLoading[sym] = false; DL.render(); });
+    }
+  } else {
+    chartBars = d.bars; chartCount = rdef.days;
+  }
+  var rngChg = DL.rangeChange(d, an, rdef);
+
   var html = "";
+
+  /* volver */
+  html += '<div class="row" style="margin-bottom:8px"><button type="button" class="btn sm g" id="btnBack">← Volver</button></div>';
 
   /* cabecera */
   html += '<section class="card">' +
@@ -2445,18 +2636,29 @@ DL.VIEW_asset = function (root) {
     '<div class="eyebrow" style="margin-top:2px">' + DL.esc(d.name || "") + (d.exchange ? " · " + DL.esc(d.exchange) : "") + "</div></div>" +
     (state ? DL.tag(state.s, state.s.toLowerCase()) : (an ? DL.tag(an.state, an.state.toLowerCase()) : "")) +
     "</div>" +
-    '<div class="row" style="align-items:baseline;gap:12px">' +
+    '<div class="row" style="align-items:baseline;gap:8px">' +
     '<span class="n" style="font-size:30px;letter-spacing:-.03em">' + DL.money(d.price) + "</span>" +
-    '<span class="n ' + DL.tone(an ? an.chgPct : 0) + '" style="font-size:15px">' + (an ? DL.pct(an.chgPct) : "") + "</span>" +
+    '<span class="n ' + DL.tone(rngChg) + '" style="font-size:15px">' + (rngChg == null ? "—" : DL.pct(rngChg)) + "</span>" +
+    '<span class="eyebrow">' + DL.esc(rdef.label) + "</span>" +
     (d.stale ? '<span class="eyebrow">dato en caché</span>' : "") +
     "</div>";
 
   html += '<div class="row" style="margin-top:12px;gap:6px"><div class="seg" id="rangeSeg">' +
-    [["30", "1M"], ["90", "3M"], ["180", "6M"], ["250", "1A"]].map(function (r) {
-      return '<button data-r="' + r[0] + '" aria-pressed="' + (DL.current.range == r[0]) + '">' + r[1] + "</button>";
+    DL.ASSET_RANGES.map(function (r) {
+      return '<button type="button" data-r="' + r.key + '" aria-pressed="' + (DL.current.range === r.key) + '">' + r.label + "</button>";
     }).join("") + "</div></div>";
   html += '<div class="chartbox" style="margin-top:10px"><canvas id="assetChart"></canvas></div>';
+  if (isIntra && !chartBars) {
+    html += '<p class="mute" style="font-size:11.5px;margin-top:6px"><span class="spin"></span> Cargando velas intradía…</p>';
+  }
   html += "</section>";
+
+  /* búsqueda profunda */
+  html += '<section class="card"><div class="row" style="justify-content:space-between;align-items:center">' +
+    '<div><h3 style="margin:0">Búsqueda profunda</h3>' +
+    '<p style="font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45">' +
+    "Prompt de analista senior con 14 secciones, listo para pegar en ChatGPT o Claude.</p></div>" +
+    '<button type="button" class="btn sm" id="btnDeep">Generar</button></div></section>';
 
   /* análisis técnico detallado: los números detrás del Decision Score */
   if (an) {
@@ -2593,23 +2795,27 @@ DL.VIEW_asset = function (root) {
 
   /* gráfico */
   var cv = DL.$("#assetChart", root);
-  if (cv) {
+  if (cv && chartBars && chartBars.length > 1) {
     DL.CH.candles(cv, {
-      bars: d.bars,
-      sma: DL.mode().id === "scalp" ? [20, 50] : [20, 50, 200],
-      count: DL.current.range, height: 250,
-      levels: pos ? { entry: pos.entry, stop: pos.stop, target: pos.target } : null,
-      sr: (an && DL.mode().id === "swing") ? { support: an.support, resistance: an.resistance } : null
+      bars: chartBars,
+      sma: isIntra ? [] : (DL.mode().id === "scalp" ? [20, 50] : [20, 50, 200]),
+      count: chartCount, height: 250,
+      levels: (!isIntra && pos) ? { entry: pos.entry, stop: pos.stop, target: pos.target } : null,
+      sr: (!isIntra && an && DL.mode().id === "swing") ? { support: an.support, resistance: an.resistance } : null,
+      intraday: isIntra
     });
   }
   DL.$$("#rangeSeg button", root).forEach(function (b) {
-    b.onclick = function () { DL.current.range = parseInt(b.dataset.r, 10); DL.render(); };
+    b.onclick = function () { DL.current.range = b.dataset.r; DL.render(); };
   });
+  var techCount = isIntra ? 30 : rdef.days;
   var rsiCv = DL.$("#rsiChart", root), macdCv = DL.$("#macdChart", root);
-  if (rsiCv) DL.CH.rsiPanel(rsiCv, d.bars, { count: DL.current.range });
-  if (macdCv) DL.CH.macdPanel(macdCv, d.bars, { count: DL.current.range });
+  if (rsiCv) DL.CH.rsiPanel(rsiCv, d.bars, { count: techCount });
+  if (macdCv) DL.CH.macdPanel(macdCv, d.bars, { count: techCount });
 
   var bt;
+  if ((bt = DL.$("#btnBack", root))) bt.onclick = function () { DL.go(DL.current.from || "watch"); };
+  if ((bt = DL.$("#btnDeep", root))) bt.onclick = function () { DL.deepSearchSheet(sym); };
   if ((bt = DL.$("#btnTrade", root))) bt.onclick = function () { DL.tradeSym = sym; DL.go("trade"); };
   if ((bt = DL.$("#btnWatch", root))) bt.onclick = function () { DL.addSymbol(sym, d.name); };
   if ((bt = DL.$("#btnUnwatch", root))) bt.onclick = function () {
@@ -2687,8 +2893,13 @@ DL.closeSheet = function (pos, px) {
     '<option value="tesis">Tesis invalidada</option>' +
     '<option value="manual">Decisión discrecional</option></select></div></div>' +
     '<div id="cprev"></div>' +
-    '<div class="fld" style="margin-top:12px"><label for="clr">¿Qué aprendiste?</label>' +
-    '<textarea id="clr" placeholder="Qué esperabas, qué pasó, qué harías distinto."></textarea></div></div>');
+    '<div style="margin-top:12px"><div class="eyebrow" style="margin-bottom:8px">3 cosas para cambiar o mejorar la próxima vez</div>' +
+    '<div class="fld" style="margin-bottom:8px"><input type="text" id="imp1" maxlength="140" ' +
+    'placeholder="1. Por ejemplo: esperar confirmación de volumen"></div>' +
+    '<div class="fld" style="margin-bottom:8px"><input type="text" id="imp2" maxlength="140" ' +
+    'placeholder="2. Por ejemplo: no mover el stop a mitad de camino"></div>' +
+    '<div class="fld"><input type="text" id="imp3" maxlength="140" ' +
+    'placeholder="3. Por ejemplo: respetar el tamaño de posición planeado"></div></div></div>');
   function upd() {
     var v = parseFloat(body.querySelector("#cpx").value) || 0;
     var pl = (v - pos.entry) * pos.qty;
@@ -2704,12 +2915,15 @@ DL.closeSheet = function (pos, px) {
     var v = parseFloat(body.querySelector("#cpx").value);
     if (!v || v <= 0) return;
     var r = Math.abs(pos.entry - pos.stop) * pos.qty;
+    var imps = [body.querySelector("#imp1").value.trim(), body.querySelector("#imp2").value.trim(), body.querySelector("#imp3").value.trim()]
+      .filter(function (t) { return t; });
     pos.status = "closed";
     pos.exitPx = v; pos.exitAt = Date.now();
     pos.exitReason = body.querySelector("#crs").value;
     pos.pl = (v - pos.entry) * pos.qty;
     pos.rMultiple = r > 0 ? pos.pl / r : 0;
-    pos.lesson = body.querySelector("#clr").value.trim();
+    pos.improvements = imps;
+    pos.lesson = imps.length ? imps.map(function (t, i) { return (i + 1) + ") " + t; }).join(" · ") : "";
     pos.events = (pos.events || []).concat([{ t: Date.now(), k: "exit", px: v, note: pos.exitReason }]);
     DL.addDiary(pos.sym, "exit", "Posición cerrada en " + DL.money(v) + " · " + DL.sgn(pos.pl) +
       (pos.lesson ? " · " + pos.lesson : ""), v);
@@ -3024,7 +3238,9 @@ DL.VIEW_diary = function (root) {
     var k = KIND[e.kind] || ["Registro", ""];
     return '<div style="padding:12px 0;border-bottom:1px solid var(--soft)">' +
       '<div class="row" style="justify-content:space-between;margin-bottom:5px">' +
-      '<span class="row" style="gap:7px"><b class="n" style="font-size:13px">' + DL.esc(e.sym) + "</b>" +
+      '<span class="row" style="gap:7px"><button type="button" class="diary-sym" data-sym="' + DL.esc(e.sym) +
+      '" style="background:none;border:0;padding:0;cursor:pointer;color:inherit">' +
+      '<b class="n" style="font-size:13px;text-decoration:underline;text-underline-offset:2px">' + DL.esc(e.sym) + "</b></button>" +
       DL.tag(k[0], k[1]) + "</span>" +
       '<span class="eyebrow">' + DL.day(e.t) + "</span></div>" +
       '<div style="font-size:12.5px;color:var(--text2);line-height:1.45">' + DL.esc(e.text) + "</div>" +
@@ -3035,6 +3251,9 @@ DL.VIEW_diary = function (root) {
   }).join("");
   html += "</section>";
   root.innerHTML = html;
+  DL.$$(".diary-sym", root).forEach(function (b) {
+    b.onclick = function () { DL.go("watch"); };
+  });
 };
 
 /* ============================================================
@@ -3198,7 +3417,7 @@ DL.VIEW_radar = function (root) {
   html += '<section class="card"><div class="head"><h3>Rotación sectorial</h3>' +
     '<div class="row" style="gap:6px">' +
     '<div class="seg" id="secRange">' +
-    [[5, "1S"], [21, "1M"], [63, "3M"]].map(function (r) {
+    [[5, "1S"], [21, "1M"], [63, "3M"], [126, "6M"], [252, "1A"]].map(function (r) {
       return '<button type="button" data-d="' + r[0] + '" aria-pressed="' + (DL.RADAR.days === r[0]) + '">' + r[1] + "</button>";
     }).join("") + "</div>" +
     '<button class="btn sm g" id="secRefresh" title="Actualizar sectores" aria-label="Actualizar sectores">' +
@@ -3280,7 +3499,10 @@ DL.VIEW_radar = function (root) {
   if (rf) rf.onclick = function () { DL.loadRadar(true); };
 
   DL.$$(".sector-row", root).forEach(function (row) {
-    row.onclick = function () { DL.openAsset(row.dataset.sym); };
+    row.onclick = function () {
+      var sym = row.dataset.sym;
+      if (DL.SECTOR_LEADERS[sym]) DL.sectorLeadersSheet(sym); else DL.openAsset(sym);
+    };
   });
 
   if (!bench && !DL.RADAR.loading) DL.loadRadar(false);

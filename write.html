@@ -1,0 +1,2685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Loom | ProfGermandario</title>
+<meta name="description" content="The Loom by ProfGermandario: a daily writing practice. Start by joining phrases with connectors, then build full arguments with an opener, a main argument and a close. Words are given at first and taken away as they become yours.">
+<meta name="theme-color" content="#0B0F14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0F14;
+  --onyx:#11161E;
+  --slate:#171E29;
+  --slate-2:#1E2734;
+  --hair:rgba(242,239,233,.09);
+  --hair-2:rgba(242,239,233,.17);
+  --ivory:#F2EFE9;
+  --mist:#A9B0B8;
+  --fog:#7C8591;
+  --gold:#D4A657;
+  --gold-hi:#EBCB8B;
+  --gold-lo:#8E6F3A;
+  --violet:#8B6FD9;
+  --coral:#E08670;
+  --sage:#8FBF8F;
+  --display:'Cinzel',serif;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Figtree',system-ui,-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;
+  background:radial-gradient(1100px 520px at 50% -8%,rgba(212,166,87,.075),transparent 62%),var(--ink);
+  color:var(--ivory);font:400 15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.045;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:500}
+p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:3px;padding:14px 26px;font-size:14px;font-weight:600;letter-spacing:.02em;border:1px solid transparent;text-decoration:none;transition:background .2s,border-color .2s,color .2s,transform .12s}
+.btn:active{transform:translateY(1px)}
+.btn.gold{background:linear-gradient(180deg,#DDB265,#C99A4B);color:#15120C;border-color:#D9AE62}
+.btn.gold:hover{background:linear-gradient(180deg,#E7BF74,#D2A457)}
+.btn.ghost{background:transparent;color:var(--ivory);border-color:var(--hair-2)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold-hi)}
+.btn.quiet{background:none;border:0;padding:8px 0;color:var(--mist);font-weight:500}
+.btn.quiet:hover{color:var(--gold-hi)}
+.btn:disabled{opacity:.4;cursor:default}
+.chip{background:none;border:1px solid var(--hair-2);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--mist);transition:border-color .2s,color .2s}
+.chip:hover:not(:disabled){border-color:var(--gold);color:var(--gold-hi)}
+.chip:disabled{opacity:.35;cursor:default}
+.icon-btn{background:none;border:1px solid transparent;border-radius:50%;width:38px;height:38px;display:grid;place-items:center;color:var(--mist)}
+.icon-btn:hover{color:var(--gold-hi);border-color:var(--hair-2)}
+.icon-btn svg{width:18px;height:18px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.tb-inner{max-width:1120px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
+.brand svg{width:30px;height:30px}
+.brand-name{font-family:var(--display);font-size:15px;letter-spacing:.08em;color:var(--ivory)}
+.tabs{flex:1;display:flex;justify-content:center;gap:6px}
+.tab{position:relative;background:none;border:0;padding:10px 14px;font-size:13.5px;color:var(--mist);letter-spacing:.01em;display:flex;align-items:center;gap:8px}
+.tab:hover{color:var(--ivory)}
+.tab[aria-current="page"]{color:var(--ivory)}
+.tab[aria-current="page"]::after{content:'';position:absolute;left:14px;right:14px;bottom:2px;height:1px;background:var(--gold)}
+.tab svg{display:none;width:20px;height:20px}
+.tab-badge{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--ink);font-size:11px;font-weight:600;display:inline-grid;place-items:center;line-height:1}
+.tb-right{display:flex;align-items:center;gap:18px;flex:none}
+.streak-chip{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:15px;color:var(--gold-hi)}
+.streak-chip svg{width:15px;height:15px}
+.streak-chip.cold{color:var(--fog)}
+.rank-chip{text-align:right;line-height:1.15}
+.rank-chip b{display:block;font-family:var(--serif);font-style:italic;font-weight:500;font-size:17px;color:var(--ivory)}
+.rank-chip span{font-size:11.5px;color:var(--mist)}
+
+/* ---------- layout ---------- */
+.app{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:60px 28px 90px}
+.view-head{max-width:720px;margin-bottom:52px}
+.view-head h1{font-family:var(--display);font-size:clamp(30px,4vw,42px);letter-spacing:.02em;line-height:1.15}
+.view-head p{font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--mist);margin-top:14px}
+.label{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--mist)}
+
+/* ---------- dial ---------- */
+.dial{position:relative;width:300px;height:300px;flex:none}
+.dial-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tick{stroke:var(--hair-2);stroke-width:1}
+.tick.major{stroke-width:1.6;stroke:rgba(242,239,233,.28)}
+.tick.lit{stroke:var(--gold)}
+.tick.lit.major{stroke:var(--gold-hi)}
+.dial-track{fill:none;stroke:var(--hair);stroke-width:1}
+.dial-arc{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1)}
+.dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.dial-center b{font-family:var(--display);font-weight:500;font-size:46px;line-height:1;color:var(--ivory)}
+.dial-center span{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--mist);margin-top:8px}
+.dial-core{position:absolute;left:50%;top:50%;width:158px;height:158px;transform:translate(-50%,-50%);border-radius:50%;
+  border:1px solid var(--hair-2);
+  background:radial-gradient(circle at 50% 28%,#232D3B 0%,#131A23 60%,#0D1218 100%);
+  box-shadow:0 26px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--gold-hi);transition:border-color .25s}
+.dial-core svg{width:30px;height:30px;margin-left:4px}
+.dial-core span{font-size:12.5px;letter-spacing:.06em;color:var(--mist)}
+.dial-core:hover:not(:disabled){border-color:rgba(212,166,87,.55)}
+.dial-core:disabled{cursor:default}
+.dial-core:disabled svg{opacity:.35}
+.rings i{position:absolute;left:50%;top:50%;width:236px;height:236px;margin:-118px 0 0 -118px;border-radius:50%;border:1px solid var(--gold);opacity:0;pointer-events:none}
+.dial.speaking .rings i{animation:emanate 2.4s cubic-bezier(.2,.6,.3,1) infinite}
+.dial.speaking .rings i:nth-child(2){animation-delay:.8s}
+.dial.speaking .rings i:nth-child(3){animation-delay:1.6s}
+.dial.speaking .dial-core{border-color:rgba(212,166,87,.6)}
+@keyframes emanate{0%{transform:scale(.64);opacity:.55}100%{transform:scale(1.02);opacity:0}}
+
+/* ---------- home ---------- */
+.home{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:72px;align-items:start}
+.greet{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.4vw,60px);line-height:1.04;letter-spacing:-.005em}
+.rank-line{margin-top:18px;font-size:15.5px;color:var(--mist);max-width:520px}
+.rank-line b{color:var(--ivory);font-weight:500}
+.xpbar{margin-top:16px;max-width:440px}
+.xpbar .track{height:2px;background:var(--hair);position:relative}
+.xpbar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.xpbar .ends{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--fog)}
+.continue{margin-top:52px;padding-top:40px;border-top:1px solid var(--hair);display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start}
+.numeral{font-family:var(--display);font-size:118px;line-height:.78;color:transparent;-webkit-text-stroke:1px var(--gold);min-width:90px}
+.continue h2{font-family:var(--display);font-size:clamp(24px,2.6vw,31px);letter-spacing:.01em;margin:6px 0 10px;line-height:1.2}
+.cont-desc{font-family:var(--serif);font-size:19px;line-height:1.45;color:var(--mist);max-width:440px}
+.cont-meta{font-size:13.5px;color:var(--fog);margin:14px 0 26px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cont-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.vault-row{margin-top:44px;padding-top:30px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.vault-row h3{font-family:var(--display);font-size:17px;letter-spacing:.03em}
+.vault-row p{color:var(--mist);font-size:14.5px;margin-top:4px;max-width:420px}
+.ledger{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.ledger div{padding:20px 0 18px}
+.ledger div+div{padding-left:24px;border-left:1px solid var(--hair)}
+.ledger b{display:block;font-family:var(--display);font-weight:500;font-size:28px;line-height:1.1}
+.ledger b small{font-size:15px;color:var(--fog);margin-left:3px}
+.ledger span{font-size:12.5px;color:var(--mist)}
+.home-side{display:flex;flex-direction:column;align-items:center;padding-top:6px}
+.side-title{margin-top:26px;text-align:center}
+.side-title h3{font-family:var(--display);font-size:16px;letter-spacing:.05em}
+.side-title p{font-size:13.5px;color:var(--mist);margin-top:4px}
+.week{list-style:none;margin:28px 0 0;padding:0;display:flex;gap:14px}
+.week li{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11.5px;color:var(--fog)}
+.week i{width:14px;height:14px;border-radius:50%;border:1px solid var(--hair-2);display:block}
+.week li.on i{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px rgba(212,166,87,.45)}
+.week li.today span{color:var(--ivory)}
+.week li.today:not(.on) i{border-color:var(--gold)}
+
+/* ---------- path ---------- */
+.path-sum{display:flex;gap:28px;margin-top:22px;font-size:13.5px;color:var(--mist);flex-wrap:wrap}
+.path-sum b{font-family:var(--display);font-weight:500;color:var(--ivory);font-size:17px;margin-right:4px}
+.chamber{display:grid;grid-template-columns:230px 1fr;gap:56px;padding:52px 0;border-top:1px solid var(--hair)}
+.ch-num{font-family:var(--display);font-size:100px;line-height:.82;color:transparent;-webkit-text-stroke:1px var(--gold)}
+.chamber.locked .ch-num{-webkit-text-stroke-color:var(--fog);opacity:.6}
+.ch-name{font-family:var(--display);font-size:22px;margin-top:18px;letter-spacing:.03em}
+.ch-desc{font-family:var(--serif);font-size:17.5px;line-height:1.45;color:var(--mist);margin-top:8px}
+.ch-stars{display:flex;align-items:center;gap:7px;margin-top:16px;font-size:13px;color:var(--mist)}
+.ch-stars svg{width:14px;height:14px}
+.seal{display:inline-block;margin-top:14px;padding:4px 12px;border:1px solid var(--gold);border-radius:999px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold-hi)}
+.nodes{list-style:none;margin:0;padding:0;position:relative}
+.nodes::before{content:'';position:absolute;left:28px;top:34px;bottom:34px;width:1px;background:var(--hair-2)}
+.node{position:relative;width:100%;display:grid;grid-template-columns:56px 1fr auto;gap:22px;align-items:center;padding:10px 12px 10px 0;background:none;border:0;text-align:left;border-radius:4px;transition:background .2s}
+button.node:hover{background:rgba(242,239,233,.025)}
+button.node:hover .node-dot{border-color:var(--gold)}
+.node-dot{width:56px;height:56px;border-radius:50%;border:1px solid var(--hair-2);background:var(--onyx);font-family:var(--display);font-size:17px;color:var(--mist);display:grid;place-items:center;position:relative;z-index:1;transition:border-color .2s}
+.node-dot svg{width:16px;height:16px}
+.node.done .node-dot{border-color:var(--gold-lo);color:var(--gold-hi)}
+.node.next .node-dot{background:var(--gold);border-color:var(--gold);color:#15120C;box-shadow:0 0 0 7px rgba(212,166,87,.12)}
+.node.locked{cursor:not-allowed}
+.node.locked .node-dot{color:var(--fog);background:var(--ink)}
+.node-title{font-size:16px;color:var(--ivory)}
+.node.locked .node-title{color:var(--fog)}
+.node-sub{font-size:13px;color:var(--mist)}
+.node.locked .node-sub{color:var(--fog)}
+.node-stars{display:flex;gap:4px;align-items:center}
+.node-stars svg{width:15px;height:15px}
+.node-go{font-size:12.5px;font-weight:600;color:var(--gold-hi);letter-spacing:.02em;margin-left:14px}
+.star-on{fill:var(--gold)}
+.star-off{fill:none;stroke:var(--hair-2);stroke-width:1.2}
+
+/* ---------- vault ---------- */
+.vault-top{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px}
+.boxes{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-bottom:44px}
+.boxes div{padding:20px 0 18px 18px;border-left:1px solid var(--hair)}
+.boxes div:first-child{border-left:0;padding-left:0}
+.boxes b{display:block;font-family:var(--display);font-weight:500;font-size:28px;line-height:1.1}
+.boxes span{font-size:12.5px;color:var(--mist)}
+.boxes .gold b{color:var(--gold-hi)}
+.wordlist{list-style:none;margin:0;padding:0}
+.wordlist li{display:grid;grid-template-columns:44px minmax(140px,1fr) 2fr auto;gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid var(--hair)}
+.wordlist .w-word{font-family:var(--serif);font-size:24px;line-height:1.2}
+.wordlist .w-ctx{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mist);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wordlist .w-meta{font-size:12.5px;color:var(--mist);text-align:right;white-space:nowrap}
+.wordlist .w-meta b{color:var(--gold-hi);font-weight:500}
+.say-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--hair-2);background:none;display:grid;place-items:center;color:var(--gold-hi)}
+.say-btn:hover{border-color:var(--gold)}
+.say-btn svg{width:13px;height:13px;margin-left:2px}
+.empty{padding:48px 0;font-family:var(--serif);font-size:21px;line-height:1.5;color:var(--mist);max-width:560px}
+
+/* ---------- progress ---------- */
+.ledger.wide{grid-template-columns:repeat(5,1fr);margin:0 0 56px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:64px;margin-bottom:60px}
+.block h3{font-family:var(--display);font-size:16px;letter-spacing:.04em;margin-bottom:6px}
+.block .sub{font-size:13.5px;color:var(--mist);margin-bottom:22px}
+.hm{rx:2px}
+.hm0{fill:var(--slate)}.hm1{fill:#3B3325}.hm2{fill:#66512F}.hm3{fill:#9C7B42}.hm4{fill:#D4A657}
+.axis-t{fill:var(--fog);font:11px var(--sans)}
+.hm-legend{display:flex;align-items:center;gap:5px;margin-top:12px;font-size:11.5px;color:var(--fog)}
+.hm-legend i{width:11px;height:11px;border-radius:2px;display:block}
+.bars .row{display:grid;grid-template-columns:150px 1fr 70px;gap:16px;align-items:center;padding:9px 0}
+.bars .name{font-size:14px;color:var(--ivory)}
+.bars .name small{display:block;font-size:12px;color:var(--mist)}
+.bars .bar{height:6px;background:var(--slate);border-radius:0 3px 3px 0;position:relative}
+.bars .bar span{position:absolute;left:0;top:0;bottom:0;background:var(--gold);border-radius:0 3px 3px 0}
+.bars .val{font-size:13px;color:var(--mist);text-align:right}
+.chart-wrap{position:relative}
+.grid-l{stroke:var(--hair);stroke-width:1}
+.line{fill:none;stroke:var(--gold);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.dot{fill:var(--gold);stroke:var(--ink);stroke-width:2}
+.hit{fill:transparent;cursor:default}
+.lbl-v{fill:var(--ivory);font:600 12px var(--sans)}
+.medals{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:34px 20px}
+.medal{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.medal .coin{width:68px;height:68px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:22px;color:var(--gold-hi);
+  background:radial-gradient(circle at 50% 30%,rgba(212,166,87,.18),rgba(212,166,87,.02) 70%);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 5px rgba(212,166,87,.35)}
+.medal b{font-size:13.5px;font-weight:500}
+.medal span{font-size:12px;color:var(--mist);line-height:1.4}
+.medal.locked .coin{border-color:var(--hair-2);color:var(--fog);background:none;box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 5px var(--hair)}
+.medal.locked b{color:var(--mist)}
+
+/* ---------- session ---------- */
+.session{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;overflow-y:auto;
+  background:radial-gradient(900px 620px at 50% 26%,rgba(212,166,87,.065),transparent 66%),var(--ink)}
+.s-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:16px 28px;position:relative;z-index:2}
+.s-close{justify-self:start;display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--mist);font-size:13px;padding:8px 0}
+.s-close svg{width:16px;height:16px}
+.s-close:hover{color:var(--ivory)}
+.s-close.confirm{color:var(--coral)}
+.s-title{text-align:center}
+.s-kicker{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mist);line-height:1.2}
+.s-name{font-family:var(--display);font-size:16px;letter-spacing:.05em;margin-top:2px}
+.s-count{justify-self:end;font-family:var(--display);font-size:15px;color:var(--mist)}
+.s-count b{color:var(--ivory);font-weight:500}
+.s-progress{height:1px;background:var(--hair);margin:0 28px;position:relative;z-index:2}
+.s-progress span{display:block;height:1px;background:var(--gold);width:0;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.s-stage{flex:1;display:flex;justify-content:center;padding:36px 24px 72px;position:relative;z-index:2}
+.s-item{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:center}
+.dial{transition:transform .5s cubic-bezier(.2,.7,.2,1),margin .5s cubic-bezier(.2,.7,.2,1)}
+.s-item.checked .dial{transform:scale(.56);margin:-66px 0}
+.listen-row{display:flex;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+.tokens{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mist)}
+.tok{width:8px;height:8px;border-radius:50%;background:var(--gold);display:block}
+.tok.used{background:transparent;border:1px solid var(--hair-2)}
+.sent-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px;font-size:12.5px;color:var(--fog)}
+.sent-chips .chip{padding:4px 11px;min-width:32px}
+.transcript{width:100%;margin-top:34px;background:transparent;border:0;border-bottom:1px solid var(--hair-2);color:var(--ivory);
+  font-family:var(--serif);font-size:32px;line-height:1.35;padding:10px 4px 14px;resize:none;outline:none;overflow:hidden;transition:border-color .25s}
+.transcript.center{text-align:center}
+.transcript.long{font-size:24px;line-height:1.55}
+.transcript:focus{border-bottom-color:var(--gold)}
+.transcript::placeholder{color:var(--fog);font-style:italic}
+.transcript[readonly]{color:var(--mist)}
+.transcript.shake{animation:shake .38s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.s-hint{font-size:12.5px;color:var(--fog);margin-top:12px;text-align:center;min-height:20px}
+.s-hint kbd{font:inherit;border:1px solid var(--hair-2);border-radius:3px;padding:0 5px;color:var(--mist)}
+@media (hover:none){.kb-only{display:none}}
+.s-actions{margin-top:22px;display:flex;gap:14px;justify-content:center}
+.feedback{width:100%;margin-top:34px;padding-top:30px;border-top:1px solid var(--hair)}
+.verdict{display:flex;align-items:center;gap:24px;margin-bottom:22px}
+.v-score{font-family:var(--display);font-size:54px;line-height:1;color:var(--gold-hi);min-width:120px}
+.v-score small{font-size:22px;color:var(--mist);margin-left:2px}
+.v-word{font-family:var(--serif);font-style:italic;font-size:28px;line-height:1.1}
+.v-detail{font-size:13.5px;color:var(--mist);margin-top:6px}
+.diff{font-family:var(--serif);font-size:27px;line-height:2}
+.diff.long{font-size:22px;line-height:2.05}
+.w{white-space:nowrap}
+.w.ok{color:var(--ivory)}
+.w.slip,.w.miss{position:relative;display:inline-block;line-height:1.2}
+.w small{position:absolute;left:50%;bottom:100%;transform:translate(-50%,2px);font-family:var(--sans);font-size:11.5px;line-height:1;font-style:normal;color:var(--mist);text-decoration:line-through;text-decoration-color:var(--coral);white-space:nowrap}
+.legend .w small{display:none}
+.w.slip span{color:var(--gold-hi);text-decoration:underline wavy var(--gold);text-underline-offset:5px;text-decoration-thickness:1px}
+.w.miss span{color:var(--coral);text-decoration:underline var(--coral);text-underline-offset:5px;text-decoration-thickness:1px}
+.w.gap{color:var(--coral);font-style:italic;opacity:.85;text-decoration:underline dotted var(--coral);text-underline-offset:5px}
+.w.extra{color:var(--fog);text-decoration:line-through;text-decoration-color:var(--coral)}
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px;font-size:12.5px;color:var(--mist)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{font-family:var(--serif);font-size:17px;font-style:normal}
+.act{margin-top:34px;padding:26px 28px;border:1px solid rgba(212,166,87,.3);background:rgba(212,166,87,.035)}
+.act h3{font-family:var(--display);font-size:18px;letter-spacing:.04em}
+.act p{font-size:14px;color:var(--mist);margin-top:4px}
+.act ul{list-style:none;margin:18px 0 0;padding:0}
+.act li label{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--hair);cursor:pointer;font-size:15px}
+.act input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin:1px 0 0;border:1px solid var(--hair-2);border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.act input:checked{background:var(--gold);border-color:var(--gold)}
+.act input:checked::after{content:'';width:6px;height:10px;border:solid #15120C;border-width:0 2px 2px 0;transform:translate(0,-1px) rotate(45deg)}
+.act input:checked + span{color:var(--mist);text-decoration:line-through;text-decoration-color:var(--gold)}
+
+/* ---------- results ---------- */
+.results{width:100%;max-width:680px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.r-kicker{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--mist)}
+.r-title{font-family:var(--display);font-size:clamp(34px,5vw,50px);letter-spacing:.02em;margin-top:6px}
+.r-stars{display:flex;gap:18px;margin:34px 0 10px}
+.r-stars svg{width:60px;height:60px;transition:transform .5s cubic-bezier(.2,1.6,.4,1)}
+.r-stars svg .s-fill{fill:var(--gold);opacity:0;transition:opacity .35s}
+.r-stars svg .s-line{fill:none;stroke:var(--hair-2);stroke-width:1}
+.r-stars svg.on{transform:scale(1.08)}
+.r-stars svg.on .s-fill{opacity:1}
+.r-stars svg.on .s-line{stroke:var(--gold-hi)}
+.r-sub{font-size:15px;color:var(--mist);max-width:460px;margin-top:10px}
+.r-stats{display:grid;grid-template-columns:repeat(3,1fr);width:100%;margin:40px 0 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.r-stats div{padding:20px 0}
+.r-stats div+div{border-left:1px solid var(--hair)}
+.r-stats dt{font-size:12.5px;color:var(--mist)}
+.r-stats dd{margin:4px 0 0;font-family:var(--display);font-size:30px}
+.r-ear{width:100%;margin-top:34px;text-align:left}
+.r-ear h3,.r-vault h3,.r-badges h3{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--mist);margin-bottom:12px;font-weight:400}
+.r-vault,.r-badges{width:100%;margin-top:30px;text-align:left}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills span{font-family:var(--serif);font-size:19px;padding:3px 14px;border:1px solid var(--hair-2);border-radius:999px}
+.r-badges .medals{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+.r-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:44px}
+
+/* ---------- dialogs, toasts, tip ---------- */
+dialog.modal{border:1px solid var(--hair-2);background:var(--onyx);color:var(--ivory);padding:0;width:calc(100% - 32px);max-width:540px;max-height:calc(100vh - 40px)}
+dialog.modal::backdrop{background:rgba(5,7,10,.74);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.modal-body{padding:40px 42px 36px}
+.modal-body h2{font-family:var(--display);font-size:28px;letter-spacing:.03em}
+.ob-dial{width:84px;height:84px;margin-bottom:22px}
+.ob-lede{font-family:var(--serif);font-size:20px;line-height:1.45;color:var(--mist);margin-top:12px}
+.ob-rules{margin:26px 0 0;padding:0;list-style:none;counter-reset:r}
+.ob-rules li{counter-increment:r;display:grid;grid-template-columns:34px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--hair);font-size:14.5px;color:var(--mist)}
+.ob-rules li::before{content:counter(r,upper-roman);font-family:var(--display);color:var(--gold-hi);font-size:15px}
+.ob-rules b{color:var(--ivory);font-weight:500}
+.field{display:block;margin-top:24px}
+.field>span{display:block;font-size:13px;color:var(--mist);margin-bottom:8px}
+.field input[type=text],.field select{width:100%;background:var(--slate);border:1px solid var(--hair-2);color:var(--ivory);padding:12px 14px;font:16px var(--sans);border-radius:3px;outline:none}
+.field input[type=text]:focus,.field select:focus{border-color:var(--gold)}
+.field input[type=range]{width:100%;accent-color:var(--gold)}
+.row-inline{display:flex;gap:10px;align-items:center}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair-2);border-radius:3px;overflow:hidden}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.seg span{display:block;text-align:center;padding:10px 6px;font-size:13px;color:var(--mist)}
+.seg span b{display:block;font-family:var(--display);font-weight:500;font-size:16px;color:var(--ivory)}
+.seg label+label span{border-left:1px solid var(--hair-2)}
+.seg input:checked+span{background:rgba(212,166,87,.14);color:var(--gold-hi)}
+.seg input:focus-visible+span{outline:2px solid var(--gold);outline-offset:-2px}
+.toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid var(--hair);font-size:14.5px;cursor:pointer}
+.toggle input{appearance:none;-webkit-appearance:none;width:40px;height:22px;border-radius:11px;background:var(--slate-2);border:1px solid var(--hair-2);position:relative;cursor:pointer;transition:background .2s}
+.toggle input::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--mist);transition:transform .2s,background .2s}
+.toggle input:checked{background:rgba(212,166,87,.3);border-color:var(--gold)}
+.toggle input:checked::after{transform:translateX(18px);background:var(--gold-hi)}
+.modal-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap}
+.danger{background:none;border:0;color:var(--fog);font-size:13px;text-decoration:underline;padding:0}
+.danger.armed{color:var(--coral)}
+.toasts{position:fixed;bottom:24px;right:24px;z-index:80;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{pointer-events:none;background:var(--slate);border:1px solid rgba(212,166,87,.4);padding:14px 18px;width:320px;max-width:calc(100vw - 48px);display:flex;gap:14px;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:toastIn .5s cubic-bezier(.2,.7,.2,1)}
+.toast .coin{width:42px;height:42px;flex:none;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--display);color:var(--gold-hi);font-size:15px}
+.toast b{display:block;font-size:14px;font-weight:600}
+.toast span{font-size:12.5px;color:var(--mist)}
+.toast.out{opacity:0;transform:translateY(-8px);transition:all .35s}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.tip{position:fixed;z-index:90;background:var(--slate-2);border:1px solid var(--hair-2);padding:6px 10px;font-size:12.5px;color:var(--ivory);pointer-events:none;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+
+/* ---------- footer ---------- */
+.foot{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:30px 28px 50px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--fog)}
+.foot a{color:var(--mist);text-decoration:none;border-bottom:1px solid var(--hair-2)}
+.foot a:hover{color:var(--gold-hi);border-color:var(--gold)}
+.foot nav{display:flex;gap:20px;flex-wrap:wrap}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .home{grid-template-columns:1fr;gap:56px}
+  .pgrid{grid-template-columns:1fr}
+  .chamber{grid-template-columns:1fr;gap:28px}
+  .ch-num{font-size:80px}
+}
+@media (max-width:760px){
+  body{padding-bottom:74px}
+  .tb-inner{padding:0 18px;height:60px;gap:14px}
+  .brand-name{font-size:13.5px}
+  .rank-chip{display:none}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;height:66px;padding:0 0 env(safe-area-inset-bottom);background:rgba(11,15,20,.96);border-top:1px solid var(--hair);justify-content:space-around;gap:0;backdrop-filter:blur(12px)}
+  .tab{flex-direction:column;gap:4px;font-size:11.5px;padding:8px 10px;position:relative}
+  .tab svg{display:block}
+  .tab[aria-current="page"]{color:var(--gold-hi)}
+  .tab[aria-current="page"]::after{display:none}
+  .tab-badge{position:absolute;top:4px;right:6px;min-width:16px;height:16px;font-size:10px}
+  .app{padding:40px 18px 60px}
+  .continue{grid-template-columns:1fr;gap:10px}
+  .numeral{font-size:84px}
+  .ledger{grid-template-columns:repeat(3,1fr)}
+  .ledger b{font-size:22px}
+  .ledger.wide{grid-template-columns:repeat(2,1fr)}
+  .ledger.wide div{border-left:0!important;padding-left:0!important;border-bottom:1px solid var(--hair)}
+  .boxes{grid-template-columns:repeat(3,1fr)}
+  .boxes div{padding-left:14px}
+  .boxes div:nth-child(4){border-left:0;padding-left:0}
+  .boxes div:nth-child(-n+3){border-bottom:1px solid var(--hair)}
+  .wordlist li{grid-template-columns:40px 1fr auto;gap:14px}
+  .wordlist .w-ctx{display:none}
+  .dial{width:250px;height:250px}
+  .dial-core{width:132px;height:132px}
+  .rings i{width:196px;height:196px;margin:-98px 0 0 -98px}
+  .dial-center b{font-size:38px}
+  .s-top{padding:12px 16px;grid-template-columns:auto 1fr auto}
+  .s-close span{display:none}
+  .s-progress{margin:0 16px}
+  .s-stage{padding:24px 18px 60px}
+  .transcript{font-size:26px}
+  .transcript.long{font-size:21px}
+  .diff{font-size:23px}
+  .diff.long{font-size:19px}
+  .verdict{gap:16px}
+  .v-score{font-size:42px;min-width:92px}
+  .v-word{font-size:23px}
+  .act{padding:20px 18px}
+  .r-stars svg{width:48px;height:48px}
+  .r-stats dd{font-size:24px}
+  .bars .row{grid-template-columns:110px 1fr 56px;gap:12px}
+  .modal-body{padding:30px 24px 26px}
+  .toasts{top:auto;bottom:84px;right:12px;left:12px;align-items:center}
+  .foot{padding:26px 18px 30px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .dial.speaking .rings i{animation:none!important;opacity:.35;transform:scale(.86)}
+}
+
+/* =========================================================
+   The Loom: additions
+   ========================================================= */
+.tab{padding:10px 12px}
+.dial-core.static{cursor:default}
+
+/* brand weave */
+.weave-mark{width:84px;height:84px;margin-bottom:22px}
+
+/* ---------- pick mode ---------- */
+.pick{width:100%;display:flex;flex-direction:column;align-items:center}
+.pick-label{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mist);text-align:center}
+.pick-sentence{margin-top:26px;font-family:var(--serif);font-size:clamp(28px,4.4vw,40px);line-height:1.45;text-align:center;max-width:760px}
+.slot-gap{display:inline-block;min-width:150px;padding:0 10px;border-bottom:1px solid var(--gold);color:var(--gold-hi);font-style:italic;transition:color .3s,border-color .3s}
+.slot-gap.empty{color:transparent;animation:pulseLine 2.2s ease-in-out infinite}
+.slot-gap.bad{color:var(--coral);border-color:var(--coral);text-decoration:line-through}
+@keyframes pulseLine{50%{border-bottom-color:rgba(212,166,87,.3)}}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px;width:100%;max-width:640px}
+.opt{position:relative;display:flex;align-items:center;gap:14px;text-align:left;background:var(--onyx);border:1px solid var(--hair-2);border-radius:3px;padding:16px 20px;font-family:var(--serif);font-size:24px;line-height:1.2;transition:border-color .2s,background .2s,opacity .3s}
+.opt kbd{font:600 11px var(--sans);color:var(--fog);border:1px solid var(--hair-2);border-radius:3px;padding:1px 6px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--gold);background:var(--slate)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--gold);background:rgba(212,166,87,.12);color:var(--gold-hi)}
+.opt.wrong{border-color:var(--coral);color:var(--coral);background:rgba(224,134,112,.06)}
+.opt.dim{opacity:.35}
+.pick .feedback{max-width:640px}
+.why{font-family:var(--serif);font-size:22px;line-height:1.45;color:var(--ivory)}
+.why b{color:var(--gold-hi);font-weight:500;font-style:italic}
+.why-sub{font-size:13.5px;color:var(--mist);margin-top:8px}
+.hear{display:inline-flex;align-items:center;gap:10px;background:none;border:0;color:var(--mist);font-size:13px;padding:6px 0;margin-top:14px}
+.hear:hover{color:var(--gold-hi)}
+.hear svg{width:13px;height:13px}
+
+/* ---------- writing stage (join / bridge / frame) ---------- */
+.writing{width:100%;max-width:780px;display:flex;flex-direction:column;align-items:stretch}
+.task-head{text-align:center}
+.fn-tag{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(212,166,87,.45);border-radius:999px;padding:5px 16px;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--gold-hi)}
+.fn-tag.plain{border-color:var(--hair-2);color:var(--mist)}
+.task-help{font-size:14px;color:var(--mist);margin-top:12px}
+.phrases{position:relative;margin:28px auto 0;width:100%;max-width:640px;display:grid;grid-template-columns:1fr;gap:0}
+.phr{display:grid;grid-template-columns:38px 1fr;align-items:baseline;gap:10px;padding:16px 0 16px 6px}
+.phr i{font-family:var(--display);font-style:normal;font-size:15px;color:var(--gold-hi)}
+.phr span{font-family:var(--serif);font-size:clamp(26px,3.6vw,34px);line-height:1.25}
+.thread{position:relative;height:54px;margin-left:6px}
+.thread svg{position:absolute;left:0;top:0;width:60px;height:54px;overflow:visible}
+.thread path{fill:none;stroke:var(--gold);stroke-width:1.4;stroke-linecap:round;stroke-dasharray:4 7;transition:stroke-dasharray .6s,stroke-width .3s}
+.thread circle{fill:var(--ink);stroke:var(--gold);stroke-width:1.2}
+.thread.tied path{stroke-dasharray:none;stroke-width:2;filter:drop-shadow(0 0 6px rgba(212,166,87,.5))}
+.thread.tied circle{fill:var(--gold)}
+.patterns{margin-top:22px;text-align:center;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mist);line-height:1.8}
+.patterns b{font-weight:500;color:var(--ivory);font-style:normal;margin:0 2px}
+.patterns span{display:inline-block;margin:0 12px;white-space:nowrap}
+
+.bank{margin-top:26px;border-top:1px solid var(--hair);padding-top:16px}
+.bank-g{display:grid;grid-template-columns:118px 1fr;gap:14px;align-items:baseline;padding:7px 0}
+.bank-g h4{margin:0;font-weight:400;font-family:var(--serif);font-style:italic;font-size:16px;color:var(--fog)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip.ins{font-family:var(--serif);font-size:17px;padding:3px 13px;color:var(--ivory);border-color:rgba(242,239,233,.2)}
+.chip.ins:hover{border-color:var(--gold);color:var(--gold-hi);background:rgba(212,166,87,.06)}
+.chip.ins.used{border-color:var(--gold-lo);color:var(--gold-hi)}
+.drawer-toggle{margin-top:20px;align-self:center;background:none;border:0;color:var(--mist);font-size:13.5px;display:flex;gap:10px;align-items:center;padding:6px 0}
+.drawer-toggle:hover{color:var(--gold-hi)}
+.drawer-toggle svg{width:15px;height:15px}
+.drawer-note{font-size:12.5px;color:var(--fog);text-align:center;margin-top:2px}
+.bank-none{margin-top:20px;text-align:center;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--fog)}
+
+.writer{width:100%;margin-top:22px;background:transparent;border:0;border-bottom:1px solid var(--hair-2);color:var(--ivory);
+  font-family:var(--serif);font-size:26px;line-height:1.45;padding:10px 4px 14px;resize:none;outline:none;overflow:hidden;transition:border-color .25s}
+.writer.long{font-size:23px;line-height:1.6}
+.writer:focus{border-bottom-color:var(--gold)}
+.writer::placeholder{color:var(--fog);font-style:italic}
+.writer[readonly]{color:var(--mist)}
+.writer.shake{animation:shake .38s}
+.wc{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--fog);margin-top:8px}
+.wc b{color:var(--mist);font-weight:500}
+.wc .ok{color:var(--gold-hi)}
+
+/* bridge */
+.ideas-list{list-style:none;margin:26px auto 0;padding:0;width:100%;max-width:640px}
+.idea{display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:baseline;padding:8px 0 8px 6px}
+.idea i{font-family:var(--display);font-style:normal;font-size:15px;color:var(--gold-hi)}
+.idea span{font-family:var(--serif);font-size:clamp(23px,3.2vw,28px);line-height:1.3}
+.rel{margin:0 0 0 54px;padding:2px 0 6px;font-size:12.5px;color:var(--violet);display:flex;align-items:center;gap:10px}
+.rel::before{content:'';width:22px;height:1px;background:var(--violet);opacity:.6}
+
+/* frame */
+.prompt-q{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.6vw,44px);line-height:1.15;text-align:center;margin-top:16px}
+.seeds{margin:26px auto 0;max-width:640px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.seeds div{padding:14px 0 14px 0}
+.seeds div+div{padding-left:22px;border-left:1px solid var(--hair)}
+.seeds h4{margin:0 0 6px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:16px;color:var(--fog)}
+.seeds ul{margin:0;padding:0;list-style:none;font-size:14px;color:var(--mist)}
+.seeds li{padding:2px 0}
+.spine{position:relative;margin-top:22px}
+.spine::before{content:'';position:absolute;left:19px;top:40px;bottom:40px;width:1px;background:var(--hair-2)}
+.slot{position:relative;padding:22px 0 14px 66px}
+.knot{position:absolute;left:0;top:22px;width:40px;height:40px}
+.knot svg{width:40px;height:40px}
+.knot .k-bg{fill:var(--ink);stroke:var(--hair-2);stroke-width:1}
+.knot .k-arc{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.2,.7,.2,1)}
+.knot .k-t{fill:var(--gold-hi);font:500 13px var(--display);text-anchor:middle;dominant-baseline:central}
+.slot-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.slot-head h3{font-family:var(--display);font-size:19px;letter-spacing:.04em}
+.slot-head span{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--mist)}
+.starters{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.starters .chip{font-family:var(--serif);font-size:16px;font-style:italic;padding:4px 14px;text-align:left}
+.slot .writer{margin-top:8px}
+.slot .bank{margin-top:10px;border-top:0;padding-top:0}
+.slot .bank-g{grid-template-columns:96px 1fr}
+.slot-score{margin-top:10px;font-size:13px;color:var(--mist)}
+.slot-score b{font-family:var(--display);font-weight:500;color:var(--gold-hi);font-size:16px;margin-right:6px}
+
+/* rubric */
+.rubric{list-style:none;margin:18px 0 0;padding:0}
+.rubric li{display:grid;grid-template-columns:26px 1fr auto;gap:14px;align-items:start;padding:11px 0;border-top:1px solid var(--hair)}
+.rubric li:last-child{border-bottom:1px solid var(--hair)}
+.rb-mark{width:20px;height:20px;border-radius:50%;border:1px solid var(--hair-2);display:grid;place-items:center;margin-top:2px;font-size:11px;color:var(--fog)}
+.rb-mark.ok{background:var(--gold);border-color:var(--gold);color:#15120C}
+.rb-mark.part{border-color:var(--gold);color:var(--gold-hi)}
+.rb-mark.no{border-color:var(--coral);color:var(--coral)}
+.rb-t{font-size:15px;color:var(--ivory)}
+.rb-n{display:block;font-size:13.5px;color:var(--mist);margin-top:2px}
+.rb-p{font-size:12.5px;color:var(--fog);white-space:nowrap;margin-top:3px}
+.rb-sub{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--mist);margin:30px 0 -6px}
+.written{font-family:var(--serif);font-size:24px;line-height:1.65;white-space:pre-wrap;margin-top:14px}
+.written.sm{font-size:21px}
+.hl-c{color:var(--gold-hi);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:5px;text-decoration-thickness:1px}
+.hl-f{color:#B7A4EE;text-decoration:underline dotted var(--violet);text-underline-offset:5px;text-decoration-thickness:1px}
+.hl-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--mist)}
+.hl-legend i{font-family:var(--serif);font-size:17px;font-style:normal}
+.model{margin-top:26px;padding:4px 0 4px 20px;border-left:2px solid var(--gold-lo)}
+.model h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:17px;color:var(--mist)}
+.model p{font-family:var(--serif);font-size:23px;line-height:1.5;margin-top:6px}
+.revise-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:22px}
+
+/* ---------- lexicon ---------- */
+.lex-top{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:36px}
+.lex-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:38px}
+.lex-filter .chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-hi);background:rgba(212,166,87,.08)}
+.lex-sec{margin-bottom:54px}
+.lex-sec>h2{font-family:var(--display);font-size:22px;letter-spacing:.03em}
+.lex-sec>p{font-family:var(--serif);font-size:18px;color:var(--mist);margin:6px 0 10px;max-width:640px}
+.lex-g{padding-top:26px}
+.lex-g h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px;color:var(--gold-hi);display:flex;align-items:baseline;gap:14px}
+.lex-g h3 small{font-family:var(--sans);font-style:normal;font-size:12.5px;color:var(--fog)}
+.lex-list{list-style:none;margin:8px 0 0;padding:0}
+.lex-list li{display:grid;grid-template-columns:minmax(150px,230px) 1fr 128px 36px;gap:18px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair)}
+.lex-list .ph-w{font-family:var(--serif);font-size:23px;line-height:1.2}
+.lex-list .ph-ex{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--mist);line-height:1.35}
+.lex-list .ph-st{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mist);justify-content:flex-end;white-space:nowrap}
+.pips{display:flex;gap:4px}
+.pips i{width:8px;height:8px;border-radius:50%;border:1px solid var(--hair-2);display:block}
+.pips i.on{background:var(--gold);border-color:var(--gold)}
+.ph-st.yours{color:var(--gold-hi)}
+.due-tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--coral);margin-left:8px;font-family:var(--sans)}
+
+/* ---------- folio ---------- */
+.folio-list{display:grid;gap:0}
+.piece{padding:34px 0;border-top:1px solid var(--hair);display:grid;grid-template-columns:200px 1fr;gap:44px}
+.piece:last-child{border-bottom:1px solid var(--hair)}
+.piece-meta .score{font-family:var(--display);font-size:38px;color:var(--gold-hi);line-height:1}
+.piece-meta .score small{font-size:17px;color:var(--mist)}
+.piece-meta p{font-size:13px;color:var(--mist);margin-top:8px}
+.piece-meta b{display:block;color:var(--ivory);font-weight:500;font-size:14px;margin-top:2px}
+.piece-body .q{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--mist)}
+.piece-body .written{margin-top:10px}
+.piece-actions{display:flex;gap:18px;margin-top:14px}
+
+/* ---------- home extras ---------- */
+.potd{margin-top:44px;padding:26px 28px;border:1px solid rgba(212,166,87,.3);background:rgba(212,166,87,.03);display:grid;grid-template-columns:1fr auto;gap:18px 28px;align-items:center}
+.potd .label{font-size:16px}
+.potd h3{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;margin:4px 0 6px}
+.potd .ex{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--mist);max-width:480px}
+.potd.done h3{color:var(--gold-hi)}
+.potd-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.yours-line{margin-top:10px;font-size:13.5px;color:var(--mist)}
+
+.folio-empty{font-family:var(--serif);font-size:21px;color:var(--mist);padding:40px 0;max-width:540px;line-height:1.5}
+
+/* ---------- responsive additions ---------- */
+@media (max-width:980px){
+  .piece{grid-template-columns:1fr;gap:16px}
+  .lex-list li{grid-template-columns:minmax(120px,190px) 1fr 116px 36px}
+}
+@media (max-width:760px){
+  .opts{grid-template-columns:1fr}
+  .opt{font-size:22px}
+  .pick-sentence{font-size:28px}
+  .bank-g{grid-template-columns:1fr;gap:4px}
+  .slot .bank-g{grid-template-columns:1fr}
+  .spine::before{left:15px}
+  .slot{padding-left:50px}
+  .knot{width:32px;height:32px}
+  .knot svg{width:32px;height:32px}
+  .seeds{grid-template-columns:1fr}
+  .seeds div+div{padding-left:0;border-left:0;border-top:1px solid var(--hair)}
+  .writer{font-size:22px}
+  .writer.long{font-size:20px}
+  .patterns span{display:block;margin:2px 0}
+  .lex-list li{grid-template-columns:1fr 36px;gap:6px 12px}
+  .lex-list .ph-ex{grid-column:1 / 2;grid-row:2}
+  .lex-list .ph-st{grid-column:1 / 2;grid-row:3;justify-content:flex-start}
+  .lex-list .say-btn{grid-column:2;grid-row:1}
+  .potd{grid-template-columns:1fr;padding:20px 18px}
+  .rubric li{grid-template-columns:26px 1fr}
+  .rb-p{grid-column:2}
+  .written{font-size:21px}
+  .tab{font-size:11px;padding:8px 6px}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="tb-inner">
+    <a class="brand" href="#home" aria-label="The Loom, home">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" fill="none" stroke="#D4A657" stroke-width="1"/>
+        <g stroke="#7C8591" stroke-width="1" stroke-linecap="round"><line x1="9" y1="6" x2="9" y2="26"/><line x1="13.5" y1="4.5" x2="13.5" y2="27.5"/><line x1="18.5" y1="4.5" x2="18.5" y2="27.5"/><line x1="23" y1="6" x2="23" y2="26"/></g>
+        <path d="M4 18c4 -8 7 6 12 -2s8 4 12 -4" fill="none" stroke="#EBCB8B" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">The Loom</span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab" data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.5"/></svg>Home</button>
+      <button class="tab" data-go="path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="4.5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19.5" r="2"/><path d="M12 6.5v3.5M12 14v3.5"/></svg>Path</button>
+      <button class="tab" data-go="lexicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 4.5h10.5a3 3 0 0 1 3 3V19.5H8a3 3 0 0 1-3-3z"/><path d="M8 16.5h10.5M9 8.5h6"/></svg>Words<span class="tab-badge" id="vaultBadge" hidden></span></button>
+      <button class="tab" data-go="folio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3.5h9l3.5 3.5v13.5H6z"/><path d="M14.5 3.5V7H18.5M9 12h6M9 15.5h6"/></svg>Folio</button>
+      <button class="tab" data-go="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 19h16M6.5 16v-4M11 16V8M15.5 16v-6M20 16V5"/></svg>Progress</button>
+    </nav>
+    <div class="tb-right">
+      <div class="streak-chip" id="streakChip"></div>
+      <div class="rank-chip" id="rankChip"></div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="app" id="app">
+  <section class="view" id="view-home" aria-label="Home"></section>
+  <section class="view" id="view-path" aria-label="Path" hidden></section>
+  <section class="view" id="view-lexicon" aria-label="Words" hidden></section>
+  <section class="view" id="view-folio" aria-label="Folio" hidden></section>
+  <section class="view" id="view-progress" aria-label="Progress" hidden></section>
+</main>
+
+<footer class="foot">
+  <p>The Loom by ProfGermandario. Your progress and your writing are saved in this browser.</p>
+  <nav aria-label="More from the lab">
+    <a href="listening.html">The Tuning Room</a>
+    <a href="paraphrase.html">The Paraphrase Gym</a>
+    <a href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%27m%20practicing%20in%20The%20Loom." target="_blank" rel="noopener">Write to Prof. Germandario</a>
+  </nav>
+</footer>
+
+<div class="session" id="session" role="dialog" aria-modal="true" aria-labelledby="sName" hidden>
+  <header class="s-top">
+    <button class="s-close" id="sClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span id="sCloseLabel">Leave</span></button>
+    <div class="s-title"><p class="s-kicker" id="sKicker"></p><p class="s-name" id="sName"></p></div>
+    <div class="s-count" id="sCount"></div>
+  </header>
+  <div class="s-progress"><span id="sBar"></span></div>
+  <div class="s-stage" id="sStage"></div>
+</div>
+
+<dialog class="modal" id="onboard" aria-labelledby="obTitle">
+  <form method="dialog" class="modal-body" id="obForm">
+    <svg class="weave-mark" viewBox="0 0 84 84" aria-hidden="true">
+      <circle cx="42" cy="42" r="40" fill="none" stroke="#D4A657" stroke-width="1"/>
+      <g stroke="#7C8591" stroke-width="1" stroke-linecap="round"><line x1="24" y1="16" x2="24" y2="68"/><line x1="36" y1="12" x2="36" y2="72"/><line x1="48" y1="12" x2="48" y2="72"/><line x1="60" y1="16" x2="60" y2="68"/></g>
+      <path d="M10 48c10 -22 18 16 32 -6s22 12 32 -10" fill="none" stroke="#EBCB8B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <h2 id="obTitle">The Loom</h2>
+    <p class="ob-lede">A daily writing practice. You begin by joining two phrases with one connector, and end by building a full argument with an opener, a main argument and a close.</p>
+    <ol class="ob-rules">
+      <li><span><b>The words are given first.</b> Every level shows the phrases you need. As you improve, they are tucked away, then removed.</span></li>
+      <li><span><b>The room reads your writing.</b> It checks the connector, the ideas, the structure and the punctuation, and shows exactly what earned points.</span></li>
+      <li><span><b>A phrase is yours when you write it from memory.</b> Three times without help, and it moves from your toolbox to your own voice.</span></li>
+    </ol>
+    <label class="field"><span>What should the room call you?</span><input type="text" id="obName" maxlength="24" autocomplete="given-name" placeholder="Your first name"></label>
+    <div class="modal-foot"><span></span><button class="btn gold" value="enter">Enter the loom</button></div>
+  </form>
+</dialog>
+
+<dialog class="modal" id="settings" aria-labelledby="stTitle">
+  <form method="dialog" class="modal-body" id="stForm">
+    <h2 id="stTitle">Settings</h2>
+    <label class="field"><span>Your name</span><input type="text" id="stName" maxlength="24" autocomplete="given-name"></label>
+    <div class="field"><span>Daily goal</span>
+      <div class="seg" role="radiogroup" aria-label="Daily goal">
+        <label><input type="radio" name="goal" value="50"><span><b>50 XP</b>Light</span></label>
+        <label><input type="radio" name="goal" value="100"><span><b>100 XP</b>Steady</span></label>
+        <label><input type="radio" name="goal" value="150"><span><b>150 XP</b>Intense</span></label>
+      </div>
+    </div>
+    <label class="field"><span>Voice for “Hear it”</span>
+      <span class="row-inline"><select id="stVoice"></select><button type="button" class="chip" id="stTest">Test</button></span>
+    </label>
+    <div class="field">
+      <label class="toggle"><span>Sound effects</span><input type="checkbox" id="stSfx"></label>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="danger" id="stReset">Reset all progress</button>
+      <button class="btn gold" value="done">Done</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script>
+'use strict';
+/* =========================================================
+   Utilities
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function ymd(d = new Date()){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function parseYmd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(s, n){ const d = parseYmd(s); d.setDate(d.getDate()+n); return ymd(d); }
+function diffDays(a, b){ const A = parseYmd(a), B = parseYmd(b); return Math.round((Date.UTC(B.getFullYear(),B.getMonth(),B.getDate()) - Date.UTC(A.getFullYear(),A.getMonth(),A.getDate()))/86400000); }
+const today = () => ymd();
+const fmtDate = (s, o = {month:'short', day:'numeric'}) => parseYmd(s).toLocaleDateString('en-US', o);
+function shuffle(a){ const b = a.slice(); for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; }
+function greeting(){ const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; }
+const plural = (n, one, many) => `${n} ${n === 1 ? one : (many || one + 's')}`;
+const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+function hashStr(s){ let h = 0; for(let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) >>> 0; return h; }
+
+/* =========================================================
+   The toolbox: every phrase the Loom teaches
+   ========================================================= */
+const FN = [
+  {key:'add',      name:'Adding',   axis:'Adding',   does:'adds another idea in the same direction', need:'an added idea',
+   blurb:'Stack one more idea on top of the last one.', patterns:['A, and B','A. In addition, B','A; moreover, B']},
+  {key:'contrast', name:'Contrast', axis:'Contrast', does:'shows that two ideas pull in opposite directions', need:'contrast',
+   blurb:'Show that two ideas pull in opposite directions.', patterns:['A, but B','A. However, B','Although A, B','A, whereas B']},
+  {key:'reason',   name:'Reasons',  axis:'Reasons',  does:'gives the reason for something', need:'a reason',
+   blurb:'Explain why something is true or why it happened.', patterns:['A because B','Since B, A','A because of / due to + noun']},
+  {key:'result',   name:'Results',  axis:'Results',  does:'shows what happened as a result', need:'a result',
+   blurb:'Show what follows from something.', patterns:['A, so B','A. Therefore, B','A; as a result, B']},
+  {key:'order',    name:'Sequence', axis:'Sequence', does:'puts ideas in time order', need:'a time order',
+   blurb:'Put ideas in the order they happen.', patterns:['First, A. Then B','A. After that, B','After A, B','A before B']}
+];
+const FN_KEYS = FN.map(f => f.key);
+const FNBY = Object.fromEntries(FN.map(f => [f.key, f]));
+
+/* type: co = joins clauses (comma before but/so/yet), adv = sentence adverb (full stop or semicolon before, comma after),
+   sq = sequencer (comma after when it opens a sentence), sub = subordinator (comma after an opening clause), free = no rule */
+const CONN = {
+  add:[
+    ['and','co','Maria speaks Spanish and French.'],
+    ['also','sq','He also plays the guitar.'],
+    ['in addition','adv','The hotel is cheap. In addition, it is clean.'],
+    ['moreover','adv','The phone is fast. Moreover, it has a great camera.'],
+    ['furthermore','adv','The gym is open late. Furthermore, it offers free classes.'],
+    ['besides','adv',"I am too tired to go out. Besides, it is late."],
+    ['what is more','adv','The course is free. What is more, it is online.']
+  ],
+  contrast:[
+    ['but','co','The food was cheap, but the service was slow.'],
+    ['yet','co','The plan sounded perfect, yet it failed.'],
+    ['however','adv','I like the city. However, it is very noisy.'],
+    ['although','sub','Although it was raining, we went for a walk.'],
+    ['though','sub','Though he was tired, he kept working.'],
+    ['even though','sub','Even though it was late, she answered the call.'],
+    ['while','sub','My brother loves football, while I prefer tennis.'],
+    ['whereas','sub','He saves every month, whereas she spends everything.'],
+    ['nevertheless','adv','The exam was hard. Nevertheless, I passed.'],
+    ['on the other hand','adv','Online classes are flexible. On the other hand, face-to-face classes are more social.'],
+    ['in contrast','adv','Tom is shy. In contrast, his sister is outgoing.'],
+    ['despite','sub','Despite the rain, we went to the beach.'],
+    ['in spite of','sub','In spite of the noise, I slept well.']
+  ],
+  reason:[
+    ['because','sub','I stayed home because I was sick.'],
+    ['since','sub','Since it was late, we took a taxi.'],
+    ['because of','sub','We cancelled the picnic because of the rain.'],
+    ['due to','sub','The flight was delayed due to bad weather.'],
+    ['owing to','sub','The shop closed owing to a lack of customers.'],
+    ['thanks to','sub','Thanks to her English, she got the job.']
+  ],
+  result:[
+    ['so','co',"It was raining, so we stayed inside."],
+    ['therefore','adv','The road was closed. Therefore, we took another route.'],
+    ['as a result','adv','He did not study. As a result, he failed the test.'],
+    ['consequently','adv','The company lost money. Consequently, it closed three offices.'],
+    ['thus','sq','Sales rose; thus, we hired more staff.'],
+    ['hence','sq','The roads are icy; hence the delays.'],
+    ['that is why|that’s why','free','She speaks four languages. That is why she works as a translator.'],
+    ['for this reason','adv','The app is free. For this reason, millions use it.'],
+    ['which is why','free','He forgot his passport, which is why he missed the flight.'],
+    ['as a consequence','adv','Prices rose. As a consequence, families spent less.']
+  ],
+  order:[
+    ['first','sq','First, preheat the oven.'],
+    ['first of all','sq','First of all, let me thank you for coming.'],
+    ['to begin with','sq','To begin with, we need to define the problem.'],
+    ['firstly','sq','Firstly, the price is fair.'],
+    ['secondly','sq','Secondly, the location is perfect.'],
+    ['then','sq','Mix the flour and eggs. Then add the milk.'],
+    ['next','sq','We booked the tickets. Next, we packed our bags.'],
+    ['after that','sq','We had dinner. After that, we watched a film.'],
+    ['afterwards','sq','We had dinner. Afterwards, we went for a walk.'],
+    ['meanwhile','sq','I cooked. Meanwhile, my brother set the table.'],
+    ['finally','sq','Finally, we chose a date.'],
+    ['lastly','sq','Lastly, remember to save your work.'],
+    ['in the end','sq','In the end, we took the train.'],
+    ['eventually','sq','Eventually, the rain stopped.'],
+    ['before','sub','Turn off the lights before you leave.'],
+    ['after','sub','After I finish work, I go to the gym.'],
+    ['once','sub','Once you sign the contract, you can start.'],
+    ['until','sub','We waited until the doors opened.'],
+    ['as soon as','sub','Call me as soon as you arrive.']
+  ]
+};
+/* argument phrases: [phrase, example] */
+const FRAME = {
+  hook:[
+    ['nowadays','Nowadays, almost every child has a phone.'],
+    ['today','Today, more people work from home than ever.'],
+    ['imagine that','Imagine that your commute took no time at all.'],
+    ['have you ever wondered','Have you ever wondered why homework exists?'],
+    ['what if','What if every city centre were free of cars?'],
+    ['think about','Think about the last time you ate dinner alone.'],
+    ['it is often said that','It is often said that money cannot buy happiness.'],
+    ['some people say that','Some people say that uniforms limit freedom.'],
+    ['many people think that','Many people think that online study is easier.']
+  ],
+  stance:[
+    ['in my opinion','In my opinion, schools should require uniforms.'],
+    ['in my view','In my view, free university would help everyone.'],
+    ['i believe that','I believe that children need free time.'],
+    ['i think','I think remote work is the future.'],
+    ['i strongly believe that','I strongly believe that cities need fewer cars.'],
+    ['i would argue that','I would argue that homework is often useless.'],
+    ['i agree','I agree with the idea of a four-day week.'],
+    ['i disagree','I disagree with banning phones completely.'],
+    ['personally','Personally, I prefer cooking at home.'],
+    ['there is no doubt that','There is no doubt that technology has changed work.'],
+    ['it is clear that','It is clear that public transport saves money.'],
+    ['we should','We should ban plastic bags.'],
+    ['we must','We must protect our city centres.'],
+    ['we need to','We need to rethink how we use phones.'],
+    ['should','Schools should teach coding.'],
+    ['must','Companies must respect workers’ time.']
+  ],
+  reasonM:[
+    ['the main reason is that','The main reason is that people feel less stressed.'],
+    ['the most important reason is that','The most important reason is that it saves money.'],
+    ['one reason is that','One reason is that teachers can give feedback at once.'],
+    ['another reason is that','Another reason is that it builds independence.'],
+    ['this is because','This is because the commute takes hours.']
+  ],
+  example:[
+    ['for example','For example, a short walk can clear your mind.'],
+    ['for instance','For instance, my sister saves two hours every day.'],
+    ['such as','Many benefits, such as lower costs, appear quickly.'],
+    ['to illustrate','To illustrate, consider a small town with no bus.'],
+    ['in fact','In fact, most students finish faster at home.'],
+    ['research shows that','Research shows that short breaks improve focus.'],
+    ['according to','According to a recent survey, most workers prefer it.']
+  ],
+  consequence:[
+    ['this means that','This means that families have more time together.'],
+    ['this leads to','This leads to fewer accidents on the road.'],
+    ['which means that','Fares are low, which means that more people travel.']
+  ],
+  concession:[
+    ['some people argue that','Some people argue that it costs too much.'],
+    ['it is true that','It is true that online classes can feel lonely.'],
+    ['admittedly','Admittedly, the first weeks are difficult.'],
+    ['of course','Of course, not everyone agrees.'],
+    ['granted','Granted, cars are convenient.'],
+    ['many people believe that','Many people believe that cash is safer.']
+  ],
+  wrap:[
+    ['in conclusion','In conclusion, the benefits clearly outweigh the costs.'],
+    ['to sum up','To sum up, both sides have a point, but one is stronger.'],
+    ['to conclude','To conclude, I believe the change is worth it.'],
+    ['overall','Overall, I think the idea is sound.'],
+    ['all in all','All in all, it is a step in the right direction.'],
+    ['in short','In short, less is more.'],
+    ['for these reasons','For these reasons, I support the idea.'],
+    ['ultimately','Ultimately, the choice belongs to each family.']
+  ],
+  action:[
+    ['we should','We should start with a trial this year.'],
+    ['we must','We must act before it is too late.'],
+    ['we need to','We need to listen to young people.'],
+    ['it is time to','It is time to try something new.'],
+    ['let us|let’s','Let us give it a chance.'],
+    ['i encourage you to','I encourage you to try it for one week.'],
+    ['i urge','I urge our leaders to decide now.'],
+    ['it is important to','It is important to keep both sides in mind.'],
+    ['i recommend','I recommend starting small.']
+  ]
+};
+/* extra group memberships for phrases that live in the connector lists */
+const EXTRA = {
+  'because':['reasonM'], 'since':['reasonM'],
+  'so':['consequence'], 'therefore':['consequence','wrap'], 'as a result':['consequence'], 'consequently':['consequence'],
+  'that is why':['consequence','wrap'], 'for this reason':['consequence','wrap'], 'thus':['consequence'], 'hence':['consequence'],
+  'although':['concession'], 'even though':['concession'], 'while':['concession'], 'whereas':['concession'],
+  'however':['concession'], 'despite':['concession'], 'in spite of':['concession'],
+  'in the end':['wrap'], 'to begin with':['reasonM'], 'first of all':['reasonM'],
+  'some people say that':['concession'], 'many people think that':['concession']
+};
+const GROUPS = {
+  hook:{name:'Hooks',part:'open'}, stance:{name:'Positions',part:'open'},
+  reasonM:{name:'Reasons',part:'main'}, example:{name:'Examples',part:'main'}, consequence:{name:'Consequences',part:'main'}, concession:{name:'Concessions',part:'main'},
+  wrap:{name:'Wrap-ups',part:'close'}, action:{name:'Calls to action',part:'close'}
+};
+const LEX = [], LEXMAP = {};
+function lexAdd(p, group, t, ex){
+  const parts = p.split('|'), canon = parts[0];
+  let e = LEXMAP[canon];
+  if(!e){ e = { p:canon, alts:parts.map(x => x.replace(/’/g, "'")), g:[], t:t || 'free', ex:ex || '' }; LEXMAP[canon] = e; LEX.push(e); }
+  if(!e.g.includes(group)) e.g.push(group);
+  if(t && e.t === 'free') e.t = t;
+  if(ex && !e.ex) e.ex = ex;
+}
+FN_KEYS.forEach(k => CONN[k].forEach(([p, t, ex]) => lexAdd(p, k, t, ex)));
+Object.entries(FRAME).forEach(([g, list]) => list.forEach(([p, ex]) => lexAdd(p, g, null, ex)));
+Object.entries(EXTRA).forEach(([p, gs]) => gs.forEach(g => { if(LEXMAP[p]) lexAdd(p, g); else lexAdd(p, g); }));
+const ALTS = [];
+LEX.forEach(e => e.alts.forEach(a => ALTS.push({ a, e })));
+ALTS.sort((x, y) => y.a.length - x.a.length);
+const isConn = e => e.g.some(g => FN_KEYS.includes(g));
+const connFn = e => e.g.find(g => FN_KEYS.includes(g)) || null;
+const inGroup = g => LEX.filter(e => e.g.includes(g));
+const CONN_COUNT = LEX.filter(isConn).length;
+
+/* =========================================================
+   Curriculum: 5 stages x 6 levels
+   ========================================================= */
+const THEMES = [
+  {key:'daily', name:'Daily life'}, {key:'work', name:'Work'}, {key:'study', name:'Study'},
+  {key:'tech', name:'Technology'}, {key:'society', name:'Society'}
+];
+const CHAMBERS = [
+ { id:'I',   name:'Threads', mode:'pick',   axis:'fn',    per:8, minutes:4, xp:6,  unit:'sentences', one:'sentence',
+   desc:'Choose the connector that fits. Four options, one gap, and the reason it works.' },
+ { id:'II',  name:'Weave',   mode:'join',   axis:'fn',    per:5, minutes:6, xp:14, unit:'joins', one:'join',
+   desc:'Two phrases, one sentence. You write the join yourself, with the connectors beside you.' },
+ { id:'III', name:'Bridges', mode:'bridge', axis:'theme', per:3, minutes:8, xp:25, unit:'paragraphs', one:'paragraph',
+   desc:'Three ideas become a short paragraph. Link them with connectors that show how they relate.' },
+ { id:'IV',  name:'Frames',  mode:'frame',  axis:'theme', per:2, minutes:12, xp:45, unit:'arguments', one:'argument',
+   desc:'An opener, a main argument and a close. The starters and word banks fade as you climb.' },
+ { id:'V',   name:'Voice',   mode:'voice',  axis:'theme', per:1, minutes:12, xp:90, unit:'arguments', one:'argument',
+   desc:'A full argument in your own voice. The drawer is there if you need it, and it is noted.' }
+];
+const LEVELS = 30;
+function levelMeta(k){
+  const c = Math.floor(k/6), t = k % 6, ch = CHAMBERS[c];
+  const axis = ch.axis === 'fn' ? FN : THEMES;
+  return { k, c, t, ch, id:`${ch.id}-${t+1}`, theme: t < 5 ? axis[t].name : 'Mixed round', themeKey: t < 5 ? axis[t].key : null };
+}
+
+/* ---------- Chamber I: pick the connector [sentence, answer, 'wrong|wrong|wrong'] ---------- */
+const PICK = {
+add:[
+ ["Maria speaks Spanish, _ she speaks French.","and","but|so|unless"],
+ ["The hotel is cheap. _, it is ten minutes from the beach.","Moreover","However|Therefore|Because"],
+ ["We cooked dinner _ washed the dishes together.","and","but|although|because"],
+ ["The course is useful. _, it is free.","In addition","However|As a result|On the other hand"],
+ ["He is a great teacher. _, he is very patient.","Furthermore","Nevertheless|Therefore|In contrast"],
+ ["She works full time _ studies at night.","and","although|because|however"],
+ ["The phone has a great camera. It _ has a long battery life.","also","but|so|because"],
+ ["The report is too long. _, it is full of mistakes.","Besides","Therefore|However|Although"],
+ ["The team needs more time _ more money.","and","but|so|because"],
+ ["I don't want to go out tonight. _, I have an early meeting tomorrow.","Besides","However|Therefore|For example"],
+ ["The city is beautiful. _, it is very safe.","In addition","However|Therefore|Nevertheless"],
+ ["You should eat well. You should _ sleep enough.","also","but|although|because"]
+],
+contrast:[
+ ["I like coffee, _ I don't drink it at night.","but","and|so|because"],
+ ["The test was difficult. _, I passed it.","However","Therefore|Moreover|In addition"],
+ ["_ it was raining, we went for a walk.","Although","Because|So|Moreover"],
+ ["He studied hard, _ he failed the exam.","yet","so|because|moreover"],
+ ["My brother loves football, _ I prefer tennis.","while","because|so|therefore"],
+ ["The flat is small. _, the rent is very low.","However","Therefore|Moreover|Because"],
+ ["_ she was tired, she finished the project.","Even though","Because|Since|So"],
+ ["The first option is cheap. _, the second one is more reliable.","On the other hand","Therefore|In addition|As a result"],
+ ["I wanted to call you, _ I had no signal.","but","so|and|because"],
+ ["Tom is very shy. _, his sister is extremely outgoing.","In contrast","Therefore|Moreover|Because"],
+ ["The app is free, _ it has a lot of ads.","but","so|because|therefore"],
+ ["_ the price went up, people kept buying it.","Although","Because|Therefore|Since"]
+],
+reason:[
+ ["I stayed home _ I was sick.","because","but|so|although"],
+ ["We cancelled the picnic _ the rain.","because of","because|so|but"],
+ ["_ it was late, we took a taxi.","Since","Although|However|So"],
+ ["She got the job _ her excellent English.","thanks to","because|so|although"],
+ ["The flight was delayed _ bad weather.","due to","because|so|but"],
+ ["He is tired _ he worked all night.","because","so|but|however"],
+ ["_ the rent is expensive, many people share flats.","Because","However|So|Although"],
+ ["The match was cancelled _ the storm.","because of","because|so|although"],
+ ["I can't come _ I have to work.","because","so|but|although"],
+ ["_ you are a beginner, I will explain it slowly.","Since","Although|However|Therefore"],
+ ["Sales dropped _ the new competitor.","due to","because|so|however"],
+ ["They moved to the city _ they wanted better jobs.","because","so|but|although"]
+],
+result:[
+ ["It was raining, _ we stayed inside.","so","because|but|although"],
+ ["The road was closed. _, we took another route.","Therefore","However|Because|Although"],
+ ["He didn't study. _, he failed the test.","As a result","However|In addition|Because"],
+ ["I was very hungry, _ I ordered two pizzas.","so","because|but|although"],
+ ["The company lost money. _, it closed three offices.","Consequently","However|Although|Because"],
+ ["She speaks four languages. That is _ she works as a translator.","why","because|so|but"],
+ ["The battery died, _ I couldn't call you.","so","because|but|although"],
+ ["Prices are rising. _, many families are spending less.","As a result","However|In contrast|Because"],
+ ["The food was terrible, _ we never went back.","so","because|although|whereas"],
+ ["We trained every day. _, we won the final.","Therefore","However|Although|Because"],
+ ["He forgot his passport, _ he missed the flight.","so","because|but|although"],
+ ["The app is easy to use. _, more people download it.","Consequently","However|Because|Although"]
+],
+order:[
+ ["_, preheat the oven. Then mix the flour and the sugar.","First","Finally|However|Because"],
+ ["Mix the ingredients. _, pour them into a pan.","Then","However|Because|Although"],
+ ["We had dinner. _, we watched a movie.","After that","However|Because|Therefore"],
+ ["_ you leave, please turn off the lights.","Before","Although|Because|However"],
+ ["Put the pasta in the water. _ it is ready, drain it.","Once","Although|Because|However"],
+ ["First we booked the tickets. _, we packed our bags.","Next","However|Because|Although"],
+ ["We waited _ the doors opened.","until","because|although|but"],
+ ["We discussed the budget and the schedule. _, we chose a date.","Finally","Because|However|Although"],
+ ["I brush my teeth _ I go to bed.","before","although|because|however"],
+ ["_ the meeting, everyone went to lunch.","After","Although|Because|However"],
+ ["_, we need to define the problem. Then we can look for solutions.","To begin with","Finally|However|Therefore"],
+ ["Wash the vegetables. _, cut them into small pieces.","Afterwards","However|Because|Although"]
+]};
+
+/* ---------- Chamber II: join two phrases [a, b, model] ---------- */
+const JOIN = {
+add:[
+ ["The hotel is comfortable","It has a great breakfast","The hotel is comfortable, and it has a great breakfast."],
+ ["Sara studies law","She works at a cafe on weekends","Sara studies law; in addition, she works at a cafe on weekends."],
+ ["The new phone is fast","It has an excellent camera","The new phone is fast. Moreover, it has an excellent camera."],
+ ["Our team is experienced","Our team is very creative","Our team is experienced and very creative."],
+ ["I don't feel like cooking","I'm too tired to go out","I don't feel like cooking. Besides, I'm too tired to go out."],
+ ["The gym is open late","The gym has free classes","The gym is open late. Furthermore, it has free classes."],
+ ["He plays the guitar","He sings in a choir","He plays the guitar and also sings in a choir."],
+ ["The museum is free on Sundays","It offers guided tours in English","The museum is free on Sundays. In addition, it offers guided tours in English."]
+],
+contrast:[
+ ["The food was cheap","The service was slow","The food was cheap, but the service was slow."],
+ ["I like living in the city","It is very noisy","I like living in the city. However, it is very noisy."],
+ ["It was raining","We went to the beach","Although it was raining, we went to the beach."],
+ ["My sister loves spicy food","I can't stand it","My sister loves spicy food, whereas I can't stand it."],
+ ["The job pays well","The hours are long","The job pays well; however, the hours are long."],
+ ["He was very tired","He kept working","Even though he was very tired, he kept working."],
+ ["Online classes are flexible","Face-to-face classes are more social","Online classes are flexible. On the other hand, face-to-face classes are more social."],
+ ["The plan sounded perfect","It failed","The plan sounded perfect, yet it failed."]
+],
+reason:[
+ ["We stayed at home","It was raining heavily","We stayed at home because it was raining heavily."],
+ ["The flight was cancelled","A storm hit the city","The flight was cancelled due to a storm."],
+ ["Many people work from home","They save time on the commute","Many people work from home because they save time on the commute."],
+ ["She got a promotion","She worked very hard","She got a promotion because she worked very hard."],
+ ["The shop closed","There were too few customers","The shop closed because there were too few customers."],
+ ["I'm learning English","I want a better job","I'm learning English because I want a better job."],
+ ["The bus was late","There was heavy traffic","The bus was late because of the heavy traffic."],
+ ["He can't drive","He broke his arm","He can't drive since he broke his arm."]
+],
+result:[
+ ["The road was closed","We took a different route","The road was closed, so we took a different route."],
+ ["He didn't prepare for the interview","He didn't get the job","He didn't prepare for the interview. As a result, he didn't get the job."],
+ ["Sales increased by 20 percent","The company hired more staff","Sales increased by 20 percent; therefore, the company hired more staff."],
+ ["The battery died","I couldn't call you","The battery died, so I couldn't call you."],
+ ["Rents are rising","Many young people live with their parents","Rents are rising. Consequently, many young people live with their parents."],
+ ["She speaks four languages","She works as a translator","She speaks four languages, so she works as a translator."],
+ ["The app is free","Millions of people use it","The app is free. As a result, millions of people use it."],
+ ["We trained every day","We won the final","We trained every day; therefore, we won the final."]
+],
+order:[
+ ["We booked the tickets","We packed our bags","First, we booked the tickets. Then we packed our bags."],
+ ["Mix the flour and the eggs","Pour the batter into a pan","Mix the flour and the eggs. Next, pour the batter into a pan."],
+ ["I finish work","I go to the gym","After I finish work, I go to the gym."],
+ ["You sign the contract","You can start on Monday","Once you sign the contract, you can start on Monday."],
+ ["She checked the data","She wrote the report","First, she checked the data. After that, she wrote the report."],
+ ["We had dinner","We watched a film","We had dinner. Afterwards, we watched a film."],
+ ["Turn off the lights","Leave the office","Turn off the lights before you leave the office."],
+ ["The team discussed the budget","They chose a date","The team discussed the budget. Finally, they chose a date."]
+]};
+
+/* ---------- Chamber III: bridge three ideas {ideas, plan, model} ---------- */
+const BRIDGE = {
+daily:[
+ {i:["I missed the bus this morning","I was twenty minutes late","I didn't get into trouble"], p:['result','contrast'], m:"I missed the bus this morning, so I was twenty minutes late. However, I didn't get into trouble."},
+ {i:["Our flat is small","It is very close to the station","We are happy here"], p:['contrast','result'], m:"Our flat is small, but it is very close to the station. As a result, we are happy here."},
+ {i:["I wanted to cook dinner","The fridge was empty","We ordered pizza"], p:['contrast','result'], m:"I wanted to cook dinner, but the fridge was empty, so we ordered pizza."},
+ {i:["I wake up at six","I make breakfast","I take the kids to school"], p:['order','order'], m:"First, I wake up at six. Then I make breakfast, and after that I take the kids to school."},
+ {i:["My neighbour plays loud music","I can't sleep","I talked to him yesterday"], p:['result','order'], m:"My neighbour plays loud music, so I can't sleep. Finally, I talked to him yesterday."}
+],
+work:[
+ {i:["The project was late","The team worked on the weekend","The client was still happy"], p:['result','contrast'], m:"The project was late, so the team worked on the weekend. Nevertheless, the client was still happy."},
+ {i:["Remote work saves time","It reduces office costs","Some employees feel lonely"], p:['add','contrast'], m:"Remote work saves time. In addition, it reduces office costs. However, some employees feel lonely."},
+ {i:["I sent the report","My manager replied","We scheduled a meeting"], p:['order','order'], m:"First, I sent the report. Then my manager replied, and after that we scheduled a meeting."},
+ {i:["Our sales dropped in March","A competitor launched a cheaper product","We changed our prices"], p:['reason','result'], m:"Our sales dropped in March because a competitor launched a cheaper product. As a result, we changed our prices."},
+ {i:["I was nervous at the beginning","The interview went well","I got the job"], p:['contrast','result'], m:"Although I was nervous at the beginning, the interview went well, so I got the job."}
+],
+study:[
+ {i:["I failed the first test","I changed my study method","My grades improved"], p:['result','order'], m:"I failed the first test, so I changed my study method. Afterwards, my grades improved."},
+ {i:["Online courses are flexible","They can be lonely","Study groups help"], p:['contrast','result'], m:"Online courses are flexible; however, they can be lonely. Therefore, study groups help."},
+ {i:["I read the text twice","I underlined the key ideas","I wrote a short summary"], p:['order','order'], m:"First, I read the text twice. Next, I underlined the key ideas. Finally, I wrote a short summary."},
+ {i:["The exam was difficult","I studied for weeks","I passed with a high mark"], p:['contrast','result'], m:"Although the exam was difficult, I had studied for weeks, so I passed with a high mark."},
+ {i:["Languages open doors","They help you understand other cultures","I study English every day"], p:['add','result'], m:"Languages open doors. Moreover, they help you understand other cultures. That is why I study English every day."}
+],
+tech:[
+ {i:["Smartphones connect us","They distract us","I put mine away at dinner"], p:['contrast','result'], m:"Smartphones connect us; however, they distract us. Therefore, I put mine away at dinner."},
+ {i:["The app saves time","It is free","Millions of people use it"], p:['add','result'], m:"The app saves time. Moreover, it is free. As a result, millions of people use it."},
+ {i:["I downloaded the update","The phone restarted","Everything worked again"], p:['order','order'], m:"First, I downloaded the update. Then the phone restarted, and after that everything worked again."},
+ {i:["Online shopping is convenient","Returning products can be difficult","I still use it every week"], p:['contrast','contrast'], m:"Online shopping is convenient. However, returning products can be difficult. Nevertheless, I still use it every week."},
+ {i:["Many jobs are becoming automated","Workers need new skills","Training programmes are growing"], p:['result','add'], m:"Many jobs are becoming automated, so workers need new skills. In addition, training programmes are growing."}
+],
+society:[
+ {i:["Public transport is cheap","It reduces pollution","More people should use it"], p:['add','result'], m:"Public transport is cheap. Moreover, it reduces pollution. Therefore, more people should use it."},
+ {i:["Cities are growing fast","Housing is becoming expensive","Many families move to the suburbs"], p:['result','result'], m:"Cities are growing fast, so housing is becoming expensive. As a result, many families move to the suburbs."},
+ {i:["Volunteering takes time","It gives people a sense of purpose","I volunteer every Saturday"], p:['contrast','result'], m:"Volunteering takes time, but it gives people a sense of purpose. That is why I volunteer every Saturday."},
+ {i:["Social media spreads news quickly","Fake stories spread too","We must check our sources"], p:['add','result'], m:"Social media spreads news quickly. Furthermore, fake stories spread too. Therefore, we must check our sources."},
+ {i:["The town built a new library","Children now have a quiet place to study","Reading levels are rising"], p:['result','add'], m:"The town built a new library, so children now have a quiet place to study. In addition, reading levels are rising."}
+]};
+
+/* ---------- Chambers IV and V: arguments ---------- */
+const FRAMES = {
+daily:[
+ {q:"Should children have their own phones?", kw:["phone","children"], s:[["they can call their parents in an emergency","they learn to be independent"],["phones distract them from sleep and play","they may see unsafe content"]]},
+ {q:"Is it better to live in a big city or a small town?", kw:["city","town"], s:[["a city has more jobs and culture","transport is faster and cheaper"],["a town is quieter and safer","life costs less in a small town"]]},
+ {q:"Should families eat dinner together every night?", kw:["dinner","family"], s:[["it builds stronger relationships","it encourages healthier food choices"],["schedules make it hard","forcing it can create tension"]]},
+ {q:"Is cooking at home better than eating out?", kw:["cooking","home"], s:[["it is cheaper and healthier","you control what goes in the food"],["it takes time after a long day","restaurants offer variety"]]}
+],
+work:[
+ {q:"Should companies offer a four-day work week?", kw:["four","week"], s:[["people are more rested and productive","work-life balance improves"],["some services need five days","days may become too long"]]},
+ {q:"Is working from home better than working in an office?", kw:["home","office"], s:[["no commute saves time and money","people can focus in quiet"],["teams communicate better face to face","home can feel isolating"]]},
+ {q:"Should employees be paid more for overtime?", kw:["overtime","employees"], s:[["extra hours cost personal time","it rewards commitment"],["salaries already include flexibility","companies may cut jobs"]]},
+ {q:"Do job interviews show who the best candidate is?", kw:["interview","candidate"], s:[["they show communication skills","you can judge attitude in person"],["nervous people do badly","tests show real ability better"]]}
+],
+study:[
+ {q:"Should schools require uniforms?", kw:["uniform","school"], s:[["uniforms reduce social pressure","they save parents time"],["students lose self-expression","uniforms cost extra money"]]},
+ {q:"Is homework useful for students?", kw:["homework","students"], s:[["it builds good study habits","it helps students review lessons"],["it causes stress and tiredness","children need free time"]]},
+ {q:"Should university be free for everyone?", kw:["university","free"], s:[["education opens equal opportunities","society gains skilled workers"],["taxpayers would carry the cost","free places may lower quality"]]},
+ {q:"Is learning online as effective as learning in a classroom?", kw:["online","classroom"], s:[["you can learn at your own pace","lessons can be repeated"],["teachers give instant feedback","it is easy to get distracted"]]}
+],
+tech:[
+ {q:"Should social media be banned for under-16s?", kw:["social","media"], s:[["it can harm sleep and self-esteem","young people face online bullying"],["teenagers learn digital skills","it keeps friends connected"]]},
+ {q:"Will robots take too many jobs?", kw:["robots","jobs"], s:[["factories already use fewer workers","machines never get tired"],["new kinds of jobs appear","people do creative work robots cannot"]]},
+ {q:"Is paying with your phone better than paying with cash?", kw:["phone","cash"], s:[["it is faster and easier to track","you do not need to carry money"],["batteries die at the worst moment","cash is private and always works"]]},
+ {q:"Should schools allow phones in the classroom?", kw:["phones","classroom"], s:[["they are useful for research","students can look up words quickly"],["they distract the whole class","cheating becomes easier"]]}
+],
+society:[
+ {q:"Should cities ban cars from the centre?", kw:["cars","centre"], s:[["air gets cleaner and streets safer","people walk and shop more"],["deliveries become difficult","some people cannot walk far"]]},
+ {q:"Should everyone volunteer for a month each year?", kw:["volunteer","month"], s:[["it builds community spirit","people learn new skills"],["people have jobs and families","forced help is not real help"]]},
+ {q:"Should tourists pay higher prices than locals?", kw:["tourists","prices"], s:[["tourism puts pressure on local services","locals earn less than visitors"],["it feels unfair and unwelcoming","tourists already spend a lot"]]},
+ {q:"Should plastic bags be banned?", kw:["plastic","bags"], s:[["plastic pollutes oceans for centuries","reusable bags are easy to use"],["alternatives also harm nature","small shops would pay more"]]}
+]};
+const VOICES = {
+daily:[
+ {q:"Mornings are the best part of the day.", kw:["morning","day"]},
+ {q:"Everyone should learn to cook.", kw:["cook"]},
+ {q:"Living alone is better than sharing a home.", kw:["alone","share"]}
+],
+work:[
+ {q:"A high salary matters more than a happy workplace.", kw:["salary","workplace"]},
+ {q:"Meetings waste more time than they save.", kw:["meeting","time"]},
+ {q:"Everyone should change careers at least once.", kw:["career"]}
+],
+study:[
+ {q:"Students learn more from mistakes than from success.", kw:["mistake","success"]},
+ {q:"Exams are an unfair way to measure ability.", kw:["exam","ability"]},
+ {q:"Every student should study a foreign language.", kw:["foreign","language"]}
+],
+tech:[
+ {q:"Technology makes people lonelier.", kw:["technology","lonely"]},
+ {q:"Children should learn to code at school.", kw:["code","school"]},
+ {q:"Artificial intelligence will improve education.", kw:["artificial","education"]}
+],
+society:[
+ {q:"Cities should invest in public transport before roads.", kw:["public","transport"]},
+ {q:"Museums should always be free.", kw:["museum","free"]},
+ {q:"Young people should vote more than they do.", kw:["vote","young"]}
+]};
+
+const SLOTS = [
+  {key:'open',  name:'Opener',        job:'Hook the reader, then state your position.', ph:'Start with a hook, then say what you believe.',
+   groups:['hook','stance'], starters:['In my opinion, ','Many people say that …, but I believe that ','Nowadays, … I strongly believe that '], prefill:'In my opinion, '},
+  {key:'main',  name:'Main argument', job:'Give a reason, prove it with an example, show what follows.', ph:'Give your strongest reason, an example, and what it leads to.',
+   groups:['reasonM','example','consequence','concession','add','contrast'], starters:['The main reason is that … For example, … As a result, …','One reason is that … For instance, … This means that …'], prefill:'The main reason is that '},
+  {key:'close', name:'Close',         job:'Wrap up, then tell the reader what to do or think.', ph:'Wrap up, then say what should happen next.',
+   groups:['wrap','action'], starters:['In conclusion, … For these reasons, we should ','To sum up, … That is why we must '], prefill:'In conclusion, '}
+];
+const BANK_TITLES = Object.assign({ add:'Adding', contrast:'Contrast', reason:'Reasons', result:'Results', order:'Sequence' },
+  Object.fromEntries(Object.entries(GROUPS).map(([k, v]) => [k, v.name])));
+
+/* =========================================================
+   State (localStorage)
+   ========================================================= */
+const KEY = 'loom.v1';
+function freshState(){
+  return {
+    v:1, name:'', onboarded:false,
+    settings:{ voiceURI:'', rate:0.95, goal:100, sounds:true },
+    xp:0, levels:{}, lastDraw:{}, days:{},
+    streak:{ current:0, best:0, last:null },
+    vault:{}, mastered:0, ach:{},
+    lex:{},            // phrase -> {u: uses, f: uses from memory, last}
+    folio:[],          // saved pieces, newest first
+    daily:{},          // date -> {p, acc, done}
+    modes:{ pick:{n:0,sum:0}, join:{n:0,sum:0}, bridge:{n:0,sum:0}, frame:{n:0,sum:0}, voice:{n:0,sum:0} },
+    stats:{ items:0, sessions:0, words:0, conns:0, unaided:0, bestArg:0 }
+  };
+}
+function loadState(){
+  const base = freshState();
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){
+      const d = JSON.parse(raw);
+      for(const k in base){
+        if(d[k] === undefined) continue;
+        if(base[k] && typeof base[k] === 'object' && !Array.isArray(base[k]) && d[k] && typeof d[k] === 'object') base[k] = Object.assign(base[k], d[k]);
+        else base[k] = d[k];
+      }
+    }
+  }catch(e){}
+  return base;
+}
+let S = loadState();
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function dayRec(d = today()){ return S.days[d] || (S.days[d] = { xp:0, items:0, accSum:0, accN:0, sessions:0, goalHit:false, words:0, conns:0 }); }
+
+/* =========================================================
+   Progression rules
+   ========================================================= */
+const RANKS = [
+  {at:0, name:'Apprentice scribe'}, {at:200, name:'Joiner'}, {at:500, name:'Linker'}, {at:1000, name:'Weaver'},
+  {at:1800, name:'Builder'}, {at:2800, name:'Composer'}, {at:4000, name:'Orator'}, {at:6000, name:'Master weaver'}
+];
+function rankOf(xp){ let i = 0; while(i+1 < RANKS.length && xp >= RANKS[i+1].at) i++; return { i, cur:RANKS[i], next:RANKS[i+1] || null }; }
+const starsFor = acc => acc >= .92 ? 3 : acc >= .8 ? 2 : acc >= .6 ? 1 : 0;
+const lvRec = k => S.levels[levelMeta(k).id] || null;
+const lvStars = k => (lvRec(k) || {}).stars || 0;
+const isUnlocked = k => k === 0 || lvStars(k-1) >= 1;
+const totalStars = () => { let s = 0; for(let k=0;k<LEVELS;k++) s += lvStars(k); return s; };
+const completedLevels = () => { let s = 0; for(let k=0;k<LEVELS;k++) if(lvStars(k) > 0) s++; return s; };
+const chamberStars = c => { let s = 0; for(let t=0;t<6;t++) s += lvStars(c*6+t); return s; };
+const chamberDone = c => { for(let t=0;t<6;t++) if(lvStars(c*6+t) === 0) return false; return true; };
+function nextLevel(){
+  for(let k=0;k<LEVELS;k++) if(isUnlocked(k) && lvStars(k) === 0) return k;
+  for(let k=0;k<LEVELS;k++) if(lvStars(k) < 3) return k;
+  return LEVELS-1;
+}
+function displayStreak(){ const st = S.streak; if(!st.last) return 0; return diffDays(st.last, today()) <= 1 ? st.current : 0; }
+function markActiveDay(){
+  const t = today(), st = S.streak;
+  if(st.last === t) return;
+  st.current = (st.last && diffDays(st.last, t) === 1) ? st.current + 1 : 1;
+  st.last = t; st.best = Math.max(st.best, st.current);
+}
+function addXP(n){
+  if(!n) return;
+  S.xp += n;
+  const d = dayRec(); d.xp += n;
+  if(!d.goalHit && d.xp >= S.settings.goal){
+    d.goalHit = true;
+    setTimeout(() => { toast('◎', 'Daily weave complete', `${S.settings.goal} XP today. The streak is safe.`); SFX.chord(); }, 700);
+  }
+}
+
+/* Phrase ownership: a phrase becomes "yours" after three uses from memory */
+const OWN_AT = 3;
+const lexRec = p => S.lex[p] || { u:0, f:0, last:'' };
+const lexStage = p => { const r = lexRec(p); return r.f >= OWN_AT ? 3 : r.u >= 3 ? 2 : r.u >= 1 ? 1 : 0; };
+const STAGE_NAMES = ['New', 'Seen', 'Practised', 'Yours'];
+const yoursCount = () => LEX.filter(e => lexRec(e.p).f >= OWN_AT).length;
+const usedCount = () => LEX.filter(e => lexRec(e.p).u >= 1).length;
+function recordUsage(found, free){
+  const newly = [], seen = new Set();
+  found.forEach(f => {
+    if(seen.has(f.e.p)) return; seen.add(f.e.p);
+    const r = S.lex[f.e.p] || (S.lex[f.e.p] = { u:0, f:0, last:'' });
+    const before = r.f;
+    r.u++; if(free) r.f++; r.last = today();
+    if(before < OWN_AT && r.f >= OWN_AT) newly.push(f.e.p);
+  });
+  return newly;
+}
+
+/* Vault: connectors you missed or misused come back (Leitner boxes) */
+const BOX_DAYS = [0, 1, 3, 7, 14];
+const BOX_NAMES = ['New', 'One day', 'Three days', 'One week', 'Two weeks'];
+function vaultAdd(p, ctx){
+  const e = LEXMAP[p]; if(!e || !isConn(e)) return null;
+  const v = S.vault[p];
+  if(v){ v.miss++; v.box = 0; v.due = today(); if(ctx) v.ctx = ctx; }
+  else S.vault[p] = { box:0, due:today(), miss:1, hit:0, ctx:ctx || e.ex, added:today() };
+  return p;
+}
+function vaultDue(){
+  const t = today();
+  return Object.entries(S.vault).filter(([,e]) => e.due <= t).map(([k,e]) => ({ key:k, ...e }))
+    .sort((a,b) => a.box - b.box || (a.due < b.due ? -1 : a.due > b.due ? 1 : 0));
+}
+function nextVaultDate(){ const ds = Object.values(S.vault).map(e => e.due).sort(); return ds[0] || null; }
+
+/* Honours */
+const ACH = [
+  {id:'first_level', g:'I',  name:'First thread', desc:'Complete your first level.', test:() => completedLevels() >= 1},
+  {id:'sharp',       g:'◉', name:'Sharp eye', desc:'Answer a whole level of connector choices without an error.', test:() => Object.entries(S.levels).some(([id,l]) => id.startsWith('I-') && l.best >= .999)},
+  {id:'flawless',    g:'★', name:'Flawless', desc:'Earn three stars on a level.', test:() => Object.values(S.levels).some(l => l.stars === 3)},
+  {id:'yours1',      g:'1',  name:'First phrase of your own', desc:'Write one phrase from memory three times.', test:() => yoursCount() >= 1},
+  {id:'yours10',     g:'X',  name:'Ten in your own voice', desc:'Make ten phrases yours.', test:() => yoursCount() >= 10},
+  {id:'yours30',     g:'XXX', name:'A natural writer', desc:'Make thirty phrases yours.', test:() => yoursCount() >= 30},
+  {id:'streak3',     g:'3',  name:'Three-day ritual', desc:'Write three days in a row.', test:() => S.streak.best >= 3},
+  {id:'streak7',     g:'7',  name:'Seven days of writing', desc:'Write seven days in a row.', test:() => S.streak.best >= 7},
+  {id:'unaided',     g:'∅', name:'Unaided', desc:'Write a full argument at 80% or more without opening the drawer.', test:() => S.stats.unaided >= 1},
+  {id:'argument',    g:'¶', name:'A strong case', desc:'Score 90% or more on an argument.', test:() => S.stats.bestArg >= .9},
+  {id:'words1000',   g:'M',  name:'A thousand words', desc:'Write 1,000 words in the Loom.', test:() => S.stats.words >= 1000},
+  {id:'folio10',     g:'F',  name:'A folio of ten', desc:'Keep ten pieces in your folio.', test:() => S.folio.length >= 10},
+  {id:'range15',     g:'15', name:'Wide range', desc:'Use fifteen different connectors in your writing.', test:() => LEX.filter(e => isConn(e) && lexRec(e.p).u >= 1).length >= 15},
+  {id:'xp1000',      g:'K',  name:'A thousand XP', desc:'Earn 1,000 XP.', test:() => S.xp >= 1000},
+  ...CHAMBERS.map((ch, c) => ({ id:'seal_'+ch.id, g:ch.id, name:`Seal of ${ch.name}`, desc:`Complete every level in Stage ${ch.id}.`, test:() => chamberDone(c) })),
+  {id:'grand',       g:'∞', name:'Master weaver', desc:'Earn all 90 stars.', test:() => totalStars() === 90}
+];
+function checkAchievements(){
+  const got = [];
+  ACH.forEach(a => { if(!S.ach[a.id] && a.test()){ S.ach[a.id] = today(); got.push(a); } });
+  return got;
+}
+
+/* =========================================================
+   Voice (for "Hear it") and sound
+   ========================================================= */
+const TTS = {
+  voices:[],
+  supported: 'speechSynthesis' in window,
+  load(){ if(!this.supported) return; const v = speechSynthesis.getVoices(); if(v.length) this.voices = v.filter(x => /^en([-_]|$)/i.test(x.lang)); },
+  pick(){
+    const pref = this.voices.find(x => x.voiceURI === S.settings.voiceURI);
+    if(pref) return pref;
+    const score = x => (/natural|neural|online|premium|enhanced/i.test(x.name) ? 4 : 0) + (/en[-_]US/i.test(x.lang) ? 2 : 0) + (/google|samantha|aria|jenny|guy|daniel|serena|ava|allison/i.test(x.name) ? 1 : 0);
+    return this.voices.slice().sort((a,b) => score(b) - score(a))[0] || null;
+  },
+  stop(){ if(this.supported) speechSynthesis.cancel(); },
+  speak(text, rate){
+    return new Promise(res => {
+      if(!this.supported){ res(); return; }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      const v = this.pick();
+      if(v){ u.voice = v; u.lang = v.lang; } else u.lang = 'en-US';
+      u.rate = rate || S.settings.rate;
+      let done = false;
+      const fin = () => { if(done) return; done = true; clearTimeout(tm); res(); };
+      u.onend = fin; u.onerror = fin;
+      const tm = setTimeout(fin, (text.split(/\s+/).length * 0.45 + 2) * 1000);
+      setTimeout(() => { try{ speechSynthesis.speak(u); }catch(e){ fin(); } }, 60);
+    });
+  }
+};
+if(TTS.supported){ TTS.load(); speechSynthesis.addEventListener('voiceschanged', () => TTS.load()); }
+
+const SFX = {
+  ctx:null,
+  ensure(){
+    if(!this.ctx){ const AC = window.AudioContext || window.webkitAudioContext; if(AC) this.ctx = new AC(); }
+    if(this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+    return this.ctx;
+  },
+  tone(freq, start, dur, gain = .05, type = 'sine'){
+    const c = this.ctx, t0 = c.currentTime + start;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain, t0 + .015);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+    o.connect(g).connect(c.destination); o.start(t0); o.stop(t0 + dur + .05);
+  },
+  on(){ return S.settings.sounds && this.ensure(); },
+  perfect(){ if(!this.on()) return; this.tone(880, 0, 1.8, .045); this.tone(1318.5, .05, 1.5, .018); },
+  good(){ if(!this.on()) return; this.tone(659.25, 0, 1.1, .04); },
+  miss(){ if(!this.on()) return; this.tone(196, 0, .8, .045, 'triangle'); },
+  tie(){ if(!this.on()) return; this.tone(523.25, 0, .5, .04); this.tone(783.99, .09, 1.1, .035); },
+  star(i){ if(!this.on()) return; const n = [659.25, 783.99, 987.77][i] || 987.77; this.tone(n, 0, 1.4, .045); this.tone(n*2, .02, .9, .012); },
+  chord(){ if(!this.on()) return; [523.25, 659.25, 783.99, 1046.5].forEach((f,i) => this.tone(f, i*.09, 1.8, .03)); }
+};
+
+/* =========================================================
+   Text engine: find phrases, check punctuation, score writing
+   ========================================================= */
+const STOP = new Set(('a an the to of in on at is it for and or but i you he she we they my your his her our their me him us them be am are was were do does did so if as by up with this that from not no have has had will can could would should just all some any there here what when how then than too very get got its into out off one two been being also only even still because although since while yes like made make more most much many each every about over such these those who whom which where why').split(' '));
+const stemW = w => { w = w.replace(/s$/, ''); return w.length > 4 ? w.slice(0, 4) : w; };
+function stems(text){
+  const ws = String(text).toLowerCase().replace(/[’‘`']/g, '').match(/[a-z0-9]+/g) || [];
+  return ws.filter(w => !STOP.has(w) && (w.length >= 3 || /\d/.test(w))).map(stemW);
+}
+const countWords = t => (String(t).match(/[A-Za-z0-9’']+/g) || []).length;
+const sentList = t => (String(t).match(/[^.!?\n]+[.!?]*/g) || []).map(s => s.trim()).filter(s => /[A-Za-z0-9]/.test(s));
+const CLAUSE_NEXT = /^\s*(i|we|you|he|she|they|it|the|a|an|my|our|your|his|her|their|this|there|i'm|i'll|i've|we're|we'll|it's|he's|she's|they're|people|everyone|many|some)\b/;
+const SO_NEXT = /^\s*(i|we|you|he|she|they|it|the|a|an|my|our|your|his|her|their|this|there|i'm|i'll|we're|we'll|it's|he's|she's|they're|people|everyone)\b/;
+const CTX_WORDS = new Set(['first','next','then','finally']);
+
+function findPhrases(text){
+  const low = String(text).toLowerCase().replace(/[’‘`´]/g, "'");
+  const used = new Uint8Array(low.length);
+  const out = [];
+  const isL = ch => /[a-z0-9']/.test(ch || '');
+  ALTS.forEach(({ a, e }) => {
+    let from = 0, i;
+    while((i = low.indexOf(a, from)) >= 0){
+      from = i + 1;
+      const end = i + a.length;
+      if(isL(low[i-1]) || (/[a-z0-9]/.test(low[end] || ''))) continue;
+      let clash = false; for(let j=i;j<end;j++) if(used[j]){ clash = true; break; }
+      if(clash) continue;
+      const after = low.slice(end);
+      if((a === 'in addition' || a === 'besides') && /^\s+to\b/.test(after)) continue;
+      if(a === 'as a result' && /^\s+of\b/.test(after)) continue;
+      if(a === 'so' && !SO_NEXT.test(after) && low.slice(0, i).replace(/\s+$/, '').slice(-1) !== ',') continue;
+      if(CTX_WORDS.has(a)){
+        const before = low.slice(0, i).replace(/\s+$/, '');
+        const pc = before.slice(-1);
+        const prevWord = (before.match(/([a-z']+)$/) || [])[1];
+        const ok = pc === '' || /[.!?,;:\n]/.test(pc) || prevWord === 'and' || prevWord === 'but';
+        if(!ok) continue;
+      }
+      for(let j=i;j<end;j++) used[j] = 1;
+      out.push({ e, start:i, end, p:e.p });
+    }
+  });
+  return out.sort((x, y) => x.start - y.start);
+}
+
+function connIssues(text, found){
+  const low = String(text).toLowerCase().replace(/[’‘`´]/g, "'");
+  const msgs = [];
+  found.forEach(f => {
+    const t = f.e.t;
+    if(!['adv','sq','co','sub'].includes(t)) return;
+    const before = text.slice(0, f.start).replace(/\s+$/, '');
+    const pc = before.slice(-1);
+    const after = text.slice(f.end);
+    const isStart = pc === '' || /[.!?\n]/.test(pc);
+    const nextComma = after.charAt(0) === ',';
+    const w = f.e.p;
+    if(t === 'adv'){
+      if(isStart || pc === ';'){ if(!nextComma) msgs.push(`Put a comma after “${w}”.`); }
+      else if(pc === ','){ if(!nextComma) msgs.push(`A comma alone cannot join two sentences before “${w}”. Use a full stop or a semicolon, then a comma after it.`); }
+      else msgs.push(`Start a new sentence (or use a semicolon) before “${w}”, and put a comma after it.`);
+    } else if(t === 'sq'){
+      if(isStart && !['then','also','thus','hence'].includes(w) && !nextComma) msgs.push(`Put a comma after “${w}”.`);
+    } else if(t === 'co'){
+      if(!isStart && w !== 'and' && pc !== ',' && CLAUSE_NEXT.test(low.slice(f.end))) msgs.push(`Put a comma before “${w}” when it joins two full clauses.`);
+    } else if(t === 'sub'){
+      if(isStart){
+        const m = after.search(/[.!?]/), seg = m < 0 ? after : after.slice(0, m);
+        if(!seg.includes(',')) msgs.push(`After an opening “${cap1(w)} …” clause, add a comma before the main clause.`);
+      }
+    }
+  });
+  return [...new Set(msgs)];
+}
+function formCheck(text, found){
+  const sents = sentList(text);
+  let capBad = 0, endBad = 0;
+  sents.forEach(s => { if(/^[a-z]/.test(s)) capBad++; if(!/[.!?]["”']?$/.test(s)) endBad++; });
+  const lowerI = /(^|[\s(])i(?=[\s',.!?;]|$)/.test(text);
+  const capEnd = [];
+  if(capBad) capEnd.push('Start every sentence with a capital letter.');
+  if(endBad) capEnd.push('End every sentence with a full stop, question mark or exclamation mark.');
+  if(lowerI) capEnd.push('Write “I” with a capital letter.');
+  return { capEnd, conn: connIssues(text, found) };
+}
+
+/* ---------- rubric helpers ---------- */
+const R = (label, got, max, note) => ({ label, got:Math.round(got), max, note, state: got >= max - .5 ? 'ok' : got > 0 ? 'part' : 'no' });
+function stemCover(text, list){
+  const have = new Set(stems(text));
+  const need = [...new Set(list)];
+  if(!need.length) return { frac:1, missing:[] };
+  const miss = need.filter(s => !have.has(s));
+  return { frac:(need.length - miss.length) / need.length, missing:miss };
+}
+function missingWords(srcTexts, missStems){
+  const words = [];
+  srcTexts.forEach(t => (String(t).toLowerCase().replace(/[’']/g,'').match(/[a-z0-9]+/g) || []).forEach(w => { if(!STOP.has(w) && missStems.includes(stemW(w)) && !words.includes(w)) words.push(w); }));
+  return words.slice(0, 4);
+}
+const hasG = (found, g) => found.some(f => f.e.g.includes(g));
+const firstG = (found, g) => found.find(f => f.e.g.includes(g));
+const phraseList = (g, n = 3) => inGroup(g).slice(0, n).map(e => e.p).join(', ');
+
+/* Chamber II: join two phrases. need = function key, or an exact phrase when exact = true */
+function scoreJoin(text, item, need, exact){
+  const found = findPhrases(text), conns = found.filter(f => isConn(f.e));
+  const hit = exact ? conns.filter(f => f.e.p === need) : conns.filter(f => f.e.g.includes(need));
+  const words = countWords(text);
+  const rows = [];
+  let cPts = hit.length ? 40 : (conns.length ? 12 : 0);
+  const fnName = exact ? null : FNBY[need];
+  if(hit.length) rows.push(R('The right connector', 40, 40, `“${hit[0].e.p}” ${exact ? 'is the word you were asked to use.' : FNBY[need].does + '.'}`));
+  else if(conns.length) rows.push(R('The right connector', 12, 40, `“${conns[0].e.p}” is a connector, but it ${FNBY[connFn(conns[0].e)] ? FNBY[connFn(conns[0].e)].does : 'does a different job'}. ${exact ? `Use “${need}”.` : `These two ideas need ${fnName.need}. Try: ${phraseList(need, 3)}.`}`));
+  else rows.push(R('The right connector', 0, 40, exact ? `Use “${need}” to join the two phrases.` : `No connector found. These ideas need ${fnName.need}. Try: ${phraseList(need, 3)}.`));
+  const cov = [ stemCover(text, stems(item.a)), stemCover(text, stems(item.b)) ];
+  const frac = (cov[0].frac + cov[1].frac) / 2;
+  const iPts = 35 * Math.min(1, frac / 0.7);
+  const miss = missingWords([item.a, item.b], [...cov[0].missing, ...cov[1].missing]);
+  rows.push(R('Both ideas kept', iPts, 35, iPts >= 34.5 ? 'Both phrases are in your sentence.' : `Keep the meaning of both phrases${miss.length ? `. Missing: ${miss.join(', ')}` : ''}.`));
+  const fc = formCheck(text, found);
+  const capPts = fc.capEnd.length ? 0 : 10;
+  rows.push(R('Capital letter and full stop', capPts, 10, capPts ? 'Clean.' : fc.capEnd[0]));
+  const punPts = (conns.length && !fc.conn.length) ? 15 : 0;
+  rows.push(R('Punctuation around the connector', punPts, 15, punPts ? 'Commas and full stops are where they belong.' : fc.conn.length ? fc.conn[0] : 'Add a connector first; then its punctuation can be checked.'));
+  let total = cPts + iPts + capPts + punPts;
+  if(words < 5) total = Math.min(total, 20);
+  return { acc:Math.max(0, Math.min(1, total / 100)), rows, found, conns, words, hit, issues:[...fc.capEnd, ...fc.conn] };
+}
+
+/* Chamber III: bridge three ideas into a paragraph */
+function scoreBridge(text, set){
+  const found = findPhrases(text), conns = found.filter(f => isConn(f.e));
+  const words = countWords(text);
+  const rows = [];
+  const covs = set.i.map(x => stemCover(text, stems(x)));
+  const iPts = 30 * covs.reduce((a, c) => a + Math.min(1, c.frac / 0.7), 0) / covs.length;
+  const missIdx = covs.map((c, i) => c.frac < .5 ? i + 1 : 0).filter(Boolean);
+  rows.push(R('All three ideas', iPts, 30, iPts >= 29.5 ? 'Every idea is in your paragraph.' : missIdx.length ? `Idea ${missIdx.join(' and ')} is missing or too thin.` : 'Keep a little more of each idea’s wording.'));
+  const pool = conns.slice(); let lPts = 0; const linkNotes = [];
+  set.p.forEach((fn, n) => {
+    const idx = pool.findIndex(f => f.e.g.includes(fn));
+    if(idx >= 0){ lPts += 20; linkNotes.push(`“${pool[idx].e.p}” (${FNBY[fn].name.toLowerCase()})`); pool.splice(idx, 1); }
+    else if(pool.length){ lPts += 10; linkNotes.push(`“${pool[0].e.p}” does not show ${FNBY[fn].need}`); pool.shift(); }
+    else linkNotes.push(`no connector for ${FNBY[fn].need}`);
+  });
+  rows.push(R('Links that fit the ideas', lPts, 40, `Ideas 1→2 and 2→3 need ${set.p.map(f => FNBY[f].need).join(' and then ')}. You used: ${linkNotes.join('; ')}.`));
+  const distinct = new Set(conns.map(f => f.e.p)).size, total = conns.length;
+  const vPts = total >= 2 && distinct === total ? 15 : total >= 2 ? 8 : total === 1 ? 4 : 0;
+  rows.push(R('Variety', vPts, 15, vPts === 15 ? `${total} different connectors, none repeated.` : total >= 2 ? 'You repeated a connector. Use a different one each time.' : 'Use at least two connectors.'));
+  const fc = formCheck(text, found);
+  const capPts = fc.capEnd.length ? 0 : 8, punPts = (conns.length && !fc.conn.length) ? 7 : 0;
+  rows.push(R('Capitals, full stops and commas', capPts + punPts, 15, (capPts + punPts === 15) ? 'Clean.' : (fc.capEnd[0] || fc.conn[0] || 'Add connectors so their punctuation can be checked.')));
+  let tot = iPts + lPts + vPts + capPts + punPts;
+  if(words < 10) tot = Math.min(tot, 25);
+  return { acc:Math.max(0, Math.min(1, tot / 100)), rows, found, conns, words, issues:[...fc.capEnd, ...fc.conn] };
+}
+
+/* Chambers IV and V: one slot at a time */
+function penaltyOf(issues){ return Math.min(15, 5 * issues.length); }
+function slotOpener(text, kw){
+  const found = findPhrases(text), words = countWords(text), rows = [];
+  const stance = hasG(found, 'stance');
+  rows.push(R('States a position', stance ? 40 : 0, 40, stance ? `“${firstG(found, 'stance').e.p}” makes your position clear.` : `Say what you believe. Try: ${phraseList('stance', 3)}.`));
+  const cov = stemCover(text, kw.map(stemW)), tPts = 20 * Math.min(1, cov.frac / .5);
+  rows.push(R('Names the topic', tPts, 20, tPts >= 19.5 ? 'The topic is named.' : 'Name the topic in your own words.'));
+  const ctx = hasG(found, 'hook') || /\?/.test(text) || sentList(text).length >= 2;
+  rows.push(R('A hook or context', ctx ? 20 : 0, 20, ctx ? 'You give the reader a way in.' : `Open with a hook before your position. Try: ${phraseList('hook', 3)}.`));
+  const lPts = words >= 10 ? 20 : words >= 6 ? 10 : 0;
+  rows.push(R('Full enough', lPts, 20, lPts === 20 ? `${words} words.` : 'Write at least ten words.'));
+  const fc = formCheck(text, found), issues = [...fc.capEnd, ...fc.conn], pen = penaltyOf(issues);
+  const raw = rows.reduce((a, r) => a + r.got, 0);
+  return { score:Math.max(0, raw - pen), rows, found, words, issues, pen };
+}
+function slotMain(text, opts){
+  const found = findPhrases(text), words = countWords(text), rows = [];
+  const conc = !!opts.concession;
+  const W = conc ? {r:20, e:20, c:15, k:15, l:15, v:15} : {r:25, e:25, c:20, k:0, l:15, v:15};
+  const r1 = hasG(found, 'reasonM');
+  rows.push(R('A clear reason', r1 ? W.r : 0, W.r, r1 ? `“${firstG(found, 'reasonM').e.p}” introduces your reason.` : `Give a reason. Try: ${phraseList('reasonM', 3)}.`));
+  const ex = hasG(found, 'example');
+  rows.push(R('An example', ex ? W.e : 0, W.e, ex ? `“${firstG(found, 'example').e.p}” introduces your example.` : `Prove it with an example. Try: ${phraseList('example', 3)}.`));
+  const cs = hasG(found, 'consequence');
+  rows.push(R('What follows', cs ? W.c : 0, W.c, cs ? `“${firstG(found, 'consequence').e.p}” shows the result.` : `Show what it leads to. Try: ${phraseList('consequence', 3)}.`));
+  if(conc){
+    const cc = hasG(found, 'concession');
+    rows.push(R('The other side', cc ? W.k : 0, W.k, cc ? `“${firstG(found, 'concession').e.p}” acknowledges a different view.` : `Acknowledge the other side. Try: ${phraseList('concession', 3)}.`));
+  }
+  const min = opts.minWords || 25;
+  const lp = words >= min ? W.l : words >= min * .6 ? W.l / 2 : 0;
+  rows.push(R('Developed enough', lp, W.l, lp === W.l ? `${words} words.` : `Write at least ${min} words. You have ${words}.`));
+  const dist = new Set(found.filter(f => isConn(f.e)).map(f => f.e.p)).size;
+  const vp = dist >= 3 ? W.v : dist === 2 ? W.v * .6 : dist === 1 ? W.v * .3 : 0;
+  rows.push(R('Variety of connectors', vp, W.v, dist >= 3 ? `${dist} different connectors.` : `Use at least three different connectors. You used ${dist}.`));
+  const fc = formCheck(text, found), issues = [...fc.capEnd, ...fc.conn], pen = penaltyOf(issues);
+  const raw = rows.reduce((a, r) => a + r.got, 0);
+  return { score:Math.max(0, raw - pen), rows, found, words, issues, pen };
+}
+function slotClose(text, kw){
+  const found = findPhrases(text), words = countWords(text), rows = [];
+  const w = hasG(found, 'wrap');
+  rows.push(R('Wraps up', w ? 35 : 0, 35, w ? `“${firstG(found, 'wrap').e.p}” signals the ending.` : `Signal the ending. Try: ${phraseList('wrap', 3)}.`));
+  const a = hasG(found, 'action');
+  rows.push(R('Tells the reader what next', a ? 30 : 0, 30, a ? `“${firstG(found, 'action').e.p}” points forward.` : `End with a recommendation. Try: ${phraseList('action', 3)}.`));
+  const cov = stemCover(text, kw.map(stemW)), tp = cov.frac > 0 ? 15 : 0;
+  rows.push(R('Returns to the topic', tp, 15, tp ? 'The close echoes the topic.' : 'Echo the topic so the argument feels complete.'));
+  const lp = words >= 10 ? 20 : words >= 6 ? 10 : 0;
+  rows.push(R('Full enough', lp, 20, lp === 20 ? `${words} words.` : 'Write at least ten words.'));
+  const fc = formCheck(text, found), issues = [...fc.capEnd, ...fc.conn], pen = penaltyOf(issues);
+  const raw = rows.reduce((x, r) => x + r.got, 0);
+  return { score:Math.max(0, raw - pen), rows, found, words, issues, pen };
+}
+
+/* ---------- highlight a piece of writing ---------- */
+function highlight(text, found){
+  let out = '', pos = 0;
+  found.forEach(f => {
+    if(f.start < pos) return;
+    out += esc(text.slice(pos, f.start));
+    out += `<span class="${isConn(f.e) ? 'hl-c' : 'hl-f'}">${esc(text.slice(f.start, f.end))}</span>`;
+    pos = f.end;
+  });
+  return out + esc(text.slice(pos));
+}
+
+/* =========================================================
+   Visual components
+   ========================================================= */
+function dialSVG(value){
+  const v = Math.max(0, Math.min(1, value || 0));
+  const ticks = 60, lit = Math.round(v * ticks);
+  let t = '';
+  for(let i=0;i<ticks;i++){
+    const a = (i/ticks) * Math.PI * 2 - Math.PI/2, major = i % 5 === 0, ri = major ? 130 : 137;
+    const x1 = 150 + Math.cos(a)*ri, y1 = 150 + Math.sin(a)*ri, x2 = 150 + Math.cos(a)*146, y2 = 150 + Math.sin(a)*146;
+    t += `<line class="tick${major ? ' major' : ''}${i < lit ? ' lit' : ''}" x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}"/>`;
+  }
+  const Rr = 118, C = 2 * Math.PI * Rr;
+  return `<svg class="dial-svg" viewBox="0 0 300 300" aria-hidden="true">
+    <circle class="dial-track" cx="150" cy="150" r="${Rr}"/>
+    <circle class="dial-arc" cx="150" cy="150" r="${Rr}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C*(1-v)).toFixed(2)}" transform="rotate(-90 150 150)" ${v === 0 ? 'opacity="0"' : ''}/>
+    ${t}</svg>`;
+}
+const STAR_PATH = 'M12 2.6l2.83 6.07 6.64.73-4.95 4.5 1.38 6.54L12 17.1l-5.9 3.34 1.38-6.54-4.95-4.5 6.64-.73z';
+const starIcon = on => `<svg viewBox="0 0 24 24" aria-hidden="true"><path class="${on ? 'star-on' : 'star-off'}" d="${STAR_PATH}"/></svg>`;
+const starsRow = n => [0,1,2].map(i => starIcon(i < n)).join('');
+const ICON = {
+  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4.8v14.4L19.5 12z" fill="currentColor"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9.5" rx="1.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5c1 3.6 5.5 5.6 5.5 10.6a5.5 5.5 0 0 1-11 0c0-2.6 1.4-4.2 2.6-5.4.2 1.8 1.1 2.9 2.3 3.3C12 8.2 12.5 5.2 12 2.5z"/></svg>',
+  drawer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="4" y="6" width="16" height="13" rx="1.5"/><path d="M4 11h16M10.5 14.5h3"/></svg>'
+};
+function knotSVG(label, score){
+  const C = 2 * Math.PI * 17, v = score == null ? 0 : Math.max(0, Math.min(1, score));
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="k-bg" cx="20" cy="20" r="19"/>
+    <circle class="k-arc" cx="20" cy="20" r="17" transform="rotate(-90 20 20)" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - v)).toFixed(1)}" ${v ? '' : 'opacity="0"'}/>
+    <text class="k-t" x="20" y="20.5">${label}</text></svg>`;
+}
+
+/* =========================================================
+   Chrome (top bar)
+   ========================================================= */
+function refreshChrome(){
+  const st = displayStreak();
+  const sc = $('#streakChip');
+  sc.className = 'streak-chip' + (st ? '' : ' cold');
+  sc.innerHTML = `${ICON.flame}<span>${st}</span>`;
+  sc.dataset.tip = st ? `${plural(st, 'day')} in a row` : 'Finish a level today to start a streak';
+  const r = rankOf(S.xp);
+  $('#rankChip').innerHTML = `<b>${esc(r.cur.name)}</b><span>${S.xp.toLocaleString('en-US')} XP</span>`;
+  const due = vaultDue().length, vb = $('#vaultBadge');
+  vb.hidden = !due; vb.textContent = due;
+}
+
+/* =========================================================
+   Views
+   ========================================================= */
+const VIEWS = ['home','path','lexicon','folio','progress'];
+let VIEW = 'home';
+function go(view){
+  if(!VIEWS.includes(view)) view = 'home';
+  VIEW = view;
+  $$('.view').forEach(v => v.hidden = v.id !== 'view-' + view);
+  $$('.tab').forEach(t => { if(t.dataset.go === view) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current'); });
+  if(location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
+  render();
+  window.scrollTo(0, 0);
+}
+function render(){
+  refreshChrome();
+  if(VIEW === 'home') renderHome();
+  else if(VIEW === 'path') renderPath();
+  else if(VIEW === 'lexicon') renderLexicon();
+  else if(VIEW === 'folio') renderFolio();
+  else renderProgress();
+}
+
+function scafLabel(m){
+  const t = m.t, mode = m.ch.mode;
+  if(mode === 'pick') return 'Four options each';
+  if(mode === 'join') return t <= 1 ? 'Bank and patterns shown' : t <= 3 ? 'Bank shown' : t === 4 ? 'Drawer only' : 'Mixed, drawer only';
+  if(mode === 'bridge') return t <= 1 ? 'Bank and relationships shown' : t <= 3 ? 'Bank shown' : t === 4 ? 'Drawer only' : 'Mixed, drawer only';
+  if(mode === 'frame') return ['Starters filled in','Starter chips and bank','Chips on opener and close','Word bank only','Drawer only','Drawer only, other side required'][t];
+  return `Drawer only, ${voiceMin(m)}+ words`;
+}
+const voiceMin = m => [60, 70, 80, 90, 100, 110][m.t];
+
+function connectorOfDay(){
+  const list = LEX.filter(isConn), n = list.length;
+  let i = hashStr(today()) % n;
+  for(let s=0;s<n;s++){ const e = list[(i + s) % n]; if(lexRec(e.p).f < OWN_AT) return e; }
+  return list[i];
+}
+
+function renderHome(){
+  const k = nextLevel(), m = levelMeta(k), st = lvStars(k);
+  const r = rankOf(S.xp), d = S.days[today()] || { xp:0 }, goal = S.settings.goal;
+  const due = vaultDue(), streak = displayStreak();
+  const nm = S.name ? `, ${esc(S.name)}` : '';
+  const first = S.stats.items === 0;
+  const pct = r.next ? Math.round(100 * (S.xp - r.cur.at) / (r.next.at - r.cur.at)) : 100;
+  const rankLine = r.next
+    ? `You write as a <b>${esc(r.cur.name)}</b>. ${(r.next.at - S.xp).toLocaleString('en-US')} XP to ${esc(r.next.name)}.`
+    : `You write as a <b>${esc(r.cur.name)}</b>, the highest rank in the loom.`;
+  let week = '';
+  for(let i=6;i>=0;i--){
+    const ds = addDays(today(), -i), rec = S.days[ds], on = rec && rec.sessions > 0;
+    const tip = `${fmtDate(ds, {weekday:'long', month:'short', day:'numeric'})}: ${rec && rec.xp ? rec.xp + ' XP' : 'no practice'}`;
+    week += `<li class="${on ? 'on' : ''}${i === 0 ? ' today' : ''}" data-tip="${esc(tip)}"><span>${parseYmd(ds).toLocaleDateString('en-US', {weekday:'narrow'})}</span><i></i></li>`;
+  }
+  const nextDue = nextVaultDate();
+  const vaultCopy = due.length
+    ? `<div><h3>Connectors to revisit</h3><p>${plural(due.length, 'connector')} ${due.length === 1 ? 'is' : 'are'} due today. Each one slipped in a level; write it again now, before it fades.</p></div>
+       <button class="btn ghost" data-vault-review>Review ${plural(due.length, 'connector')}</button>`
+    : `<div><h3>Connectors to revisit</h3><p>${Object.keys(S.vault).length ? `Nothing is due today. The next one returns on ${fmtDate(nextDue, {weekday:'long', month:'short', day:'numeric'})}.` : 'Empty for now. Any connector you miss or misuse is kept here and brought back at the right moment.'}</p></div>
+       <button class="btn quiet" data-go="lexicon">Open the words</button>`;
+  const allDone = completedLevels() === LEVELS;
+  const cod = connectorOfDay(), dRec = S.daily[today()];
+  const fnk = connFn(cod), yours = lexRec(cod.p).f >= OWN_AT;
+  const potd = `<div class="potd${dRec && dRec.done ? ' done' : ''}">
+      <div><p class="label">Connector of the day${fnk ? `: ${esc(FNBY[fnk].name.toLowerCase())}` : ''}</p>
+        <h3>${esc(cod.p)}</h3><p class="ex">${esc(cod.ex)}</p>
+        ${yours ? '<p class="yours-line">Already yours. Keep it sharp.</p>' : ''}
+      </div>
+      <div class="potd-actions">
+        <button class="say-btn" data-say="${esc(cod.ex)}" aria-label="Hear the example">${ICON.play}</button>
+        ${dRec && dRec.done ? `<span class="label">Done today, ${Math.round(dRec.acc * 100)}%</span>` : `<button class="btn ghost" data-daily="${esc(cod.p)}">Use it in a sentence</button>`}
+      </div>
+    </div>`;
+
+  $('#view-home').innerHTML = `
+  <div class="home">
+    <div class="home-main">
+      <h1 class="greet">${first ? `Welcome${nm}.` : `${greeting()}${nm}.`}</h1>
+      <p class="rank-line">${first ? 'Thirty levels in five stages. Begin by joining two phrases with one connector; finish by building a full argument in your own voice.' : rankLine}</p>
+      ${first ? '' : `<div class="xpbar"><div class="track"><div class="fill" style="width:${pct}%"></div></div><div class="ends"><span>${esc(r.cur.name)}</span><span>${r.next ? esc(r.next.name) : ''}</span></div></div>`}
+      <div class="continue">
+        <div class="numeral" aria-hidden="true">${m.ch.id}</div>
+        <div>
+          <p class="label">${allDone ? 'Polish a level' : first ? 'Where you begin' : 'Next on your path'}: Stage ${m.ch.id}, ${m.ch.name}</p>
+          <h2>Level ${k+1}: ${esc(m.theme)}</h2>
+          <p class="cont-desc">${esc(m.ch.desc)}</p>
+          <p class="cont-meta"><span>${plural(m.ch.per, m.ch.one, m.ch.unit)}, about ${m.ch.minutes} minutes</span><span>${esc(scafLabel(m))}</span>${st ? `<span class="node-stars">${starsRow(st)}</span>` : ''}</p>
+          <div class="cont-actions">
+            <button class="btn gold" data-start="${k}">${st ? `Replay level ${k+1}` : `Begin level ${k+1}`}</button>
+            <button class="btn quiet" data-go="path">See the full path</button>
+          </div>
+        </div>
+      </div>
+      ${potd}
+      <div class="vault-row">${vaultCopy}</div>
+      <div class="ledger">
+        <div><b>${totalStars()}<small>/ 90</small></b><span>Stars</span></div>
+        <div><b>${completedLevels()}<small>/ 30</small></b><span>Levels complete</span></div>
+        <div><b>${yoursCount()}<small>/ ${LEX.length}</small></b><span>Phrases yours</span></div>
+      </div>
+    </div>
+    <aside class="home-side" aria-label="Today">
+      <div class="dial">
+        ${dialSVG(d.xp / goal)}
+        <div class="dial-center"><b>${d.xp}</b><span>of ${goal} XP today</span></div>
+      </div>
+      <div class="side-title">
+        <h3>Daily weave</h3>
+        <p>${streak ? `${plural(streak, 'day')} in a row. Best: ${plural(S.streak.best, 'day')}.` : S.streak.best ? `Start a new streak today. Best: ${plural(S.streak.best, 'day')}.` : 'Finish one level today to light the first day.'}</p>
+      </div>
+      <ul class="week" aria-label="Last seven days">${week}</ul>
+    </aside>
+  </div>`;
+}
+
+function renderPath(){
+  let html = `<div class="view-head"><h1>The path</h1>
+    <p>Thirty levels in five stages, in order. One star opens the next level. The words you are given at the start are taken away, step by step, until you are writing on your own.</p>
+    <div class="path-sum"><span><b>${completedLevels()}</b>of 30 levels</span><span><b>${totalStars()}</b>of 90 stars</span><span><b>${Object.keys(S.ach).length}</b>of ${ACH.length} honours</span></div></div>`;
+  const nxt = nextLevel();
+  CHAMBERS.forEach((ch, c) => {
+    const locked = !isUnlocked(c*6);
+    let nodes = '';
+    for(let t=0;t<6;t++){
+      const k = c*6+t, m = levelMeta(k), s = lvStars(k), un = isUnlocked(k), rec = lvRec(k);
+      const state = !un ? 'locked' : (k === nxt && s === 0) ? 'next' : s > 0 ? 'done' : 'open';
+      const sub = `${scafLabel(m)}${rec && rec.best ? `, best ${Math.round(rec.best*100)}%` : ''}`;
+      const inner = `<span class="node-dot">${un ? k+1 : ICON.lock}</span>
+        <span><span class="node-title">Level ${k+1}: ${esc(m.theme)}</span><br><span class="node-sub">${esc(sub)}</span></span>
+        <span class="node-stars">${un ? starsRow(s) : ''}${state === 'next' ? '<span class="node-go">Begin</span>' : ''}</span>`;
+      nodes += `<li>${un ? `<button class="node ${state}" data-start="${k}" aria-label="Level ${k+1}, ${esc(m.theme)}, ${s} of 3 stars">${inner}</button>`
+                         : `<div class="node locked" aria-label="Level ${k+1}, locked">${inner}</div>`}</li>`;
+    }
+    html += `<section class="chamber${locked ? ' locked' : ''}">
+      <header>
+        <div class="ch-num" aria-hidden="true">${ch.id}</div>
+        <h2 class="ch-name">Stage ${ch.id}: ${ch.name}</h2>
+        <p class="ch-desc">${esc(ch.desc)}</p>
+        <p class="ch-stars">${starIcon(true)}<span>${chamberStars(c)} of 18 stars</span></p>
+        ${chamberDone(c) ? `<span class="seal">Sealed</span>` : ''}
+      </header>
+      <ol class="nodes">${nodes}</ol>
+    </section>`;
+  });
+  $('#view-path').innerHTML = html;
+}
+
+/* ---------- Words: the toolbox and the review queue ---------- */
+let LEXFILTER = 'all';
+const LEX_SECTIONS = [
+  {id:'conn',  title:'Connectors', lede:'Words that join two phrases. Start here.', groups:FN_KEYS},
+  {id:'open',  title:'Openers',    lede:'Hook the reader, then take a side.', groups:['hook','stance']},
+  {id:'main',  title:'Main argument', lede:'A reason, an example, and what follows.', groups:['reasonM','example','consequence','concession']},
+  {id:'close', title:'Closers',    lede:'Wrap up and point forward.', groups:['wrap','action']}
+];
+function renderLexicon(){
+  const due = vaultDue(), dueSet = new Set(due.map(e => e.key));
+  const entries = Object.entries(S.vault);
+  const counts = [0,0,0,0,0]; entries.forEach(([,e]) => counts[Math.min(4, e.box)]++);
+  const secs = LEX_SECTIONS.filter(s => LEXFILTER === 'all' || LEXFILTER === s.id);
+  const body = secs.map(sec => {
+    const gs = sec.groups.map(g => {
+      const items = inGroup(g);
+      const y = items.filter(e => lexRec(e.p).f >= OWN_AT).length;
+      const fnm = FNBY[g];
+      return `<div class="lex-g"><h3>${esc(fnm ? fnm.name : GROUPS[g].name)}<small>${fnm ? esc(fnm.blurb) : ''} ${y} of ${items.length} yours</small></h3>
+        <ul class="lex-list">${items.map(e => {
+          const st = lexStage(e.p), r = lexRec(e.p);
+          return `<li><span class="ph-w">${esc(e.p)}${dueSet.has(e.p) ? '<span class="due-tag">due</span>' : ''}</span>
+            <span class="ph-ex">${esc(e.ex)}</span>
+            <span class="ph-st${st === 3 ? ' yours' : ''}" data-tip="${r.u} uses, ${r.f} from memory. Three from memory makes it yours."><span class="pips">${[0,1,2].map(i => `<i class="${i < Math.min(3, r.f) ? 'on' : ''}"></i>`).join('')}</span>${STAGE_NAMES[st]}</span>
+            <button class="say-btn" data-say="${esc(e.ex)}" aria-label="Hear an example with ${esc(e.p)}">${ICON.play}</button></li>`;
+        }).join('')}</ul></div>`;
+    }).join('');
+    return `<section class="lex-sec"><h2>${sec.title}</h2><p>${sec.lede}</p>${gs}</section>`;
+  }).join('');
+  $('#view-lexicon').innerHTML = `
+    <div class="lex-top">
+      <div class="view-head" style="margin-bottom:0"><h1>Words</h1>
+        <p>Everything the Loom teaches, in one place. A phrase becomes yours when you write it from memory three times. Connectors you miss come back on a schedule.</p></div>
+      ${due.length ? `<button class="btn gold" data-vault-review>Review ${plural(due.length, 'due connector')}</button>` : ''}
+    </div>
+    <div class="boxes">
+      ${counts.map((n,i) => `<div><b>${n}</b><span>${BOX_NAMES[i]}</span></div>`).join('')}
+      <div class="gold"><b>${S.mastered}</b><span>Mastered</span></div>
+    </div>
+    <div class="lex-filter" role="group" aria-label="Show">
+      ${[['all','Everything'],['conn','Connectors'],['open','Openers'],['main','Main argument'],['close','Closers']].map(([id, n]) => `<button class="chip" data-lexf="${id}" aria-pressed="${LEXFILTER === id}">${n}</button>`).join('')}
+    </div>
+    ${body}`;
+}
+
+/* ---------- Folio ---------- */
+function renderFolio(){
+  const list = S.folio.length ? `<div class="folio-list">${S.folio.map((p, i) => {
+    const fnd = findPhrases(p.text);
+    return `<article class="piece">
+      <div class="piece-meta"><div class="score">${Math.round(p.score * 100)}<small>%</small></div>
+        <p>${esc(fmtDate(p.d, {weekday:'short', month:'short', day:'numeric'}))}<b>${esc(p.lv)}</b></p></div>
+      <div class="piece-body"><p class="q">${esc(p.q)}</p><div class="written">${highlight(p.text, fnd)}</div>
+        <div class="piece-actions"><button class="hear" data-hear-piece="${i}">${ICON.play}Hear it</button><button class="hear" data-copy-piece="${i}">Copy</button></div></div>
+    </article>`;
+  }).join('')}</div>`
+  : `<p class="folio-empty">Your folio is empty. Every paragraph and argument you write in Stages III to V is kept here, with its score, so you can read how your writing changes from week to week.</p>`;
+  $('#view-folio').innerHTML = `<div class="view-head"><h1>Folio</h1>
+    <p>Your paragraphs and arguments, newest first. Connectors are underlined in gold, argument phrases in violet. The last ${60} pieces are kept.</p></div>${list}`;
+}
+
+/* ---------- Progress ---------- */
+function heatmapSVG(){
+  const weeks = 13, cell = 18, gap = 4, left = 34, top = 22;
+  const dow = (new Date().getDay() + 6) % 7;
+  const start = addDays(today(), -(dow + (weeks-1)*7));
+  let rects = '', months = '', lastMonth = -1;
+  for(let w=0;w<weeks;w++){
+    const colDate = addDays(start, w*7), mo = parseYmd(colDate).getMonth();
+    if(mo !== lastMonth){ months += `<text class="axis-t" x="${left + w*(cell+gap)}" y="12">${parseYmd(colDate).toLocaleDateString('en-US', {month:'short'})}</text>`; lastMonth = mo; }
+    for(let d=0;d<7;d++){
+      const ds = addDays(start, w*7 + d); if(ds > today()) continue;
+      const xp = (S.days[ds] || {}).xp || 0, lvl = xp === 0 ? 0 : xp < 40 ? 1 : xp < 80 ? 2 : xp < 140 ? 3 : 4;
+      rects += `<rect class="hm hm${lvl}" x="${left + w*(cell+gap)}" y="${top + d*(cell+gap)}" width="${cell}" height="${cell}" rx="2" data-tip="${esc(fmtDate(ds, {weekday:'short', month:'short', day:'numeric'}))}: ${xp} XP"/>`;
+    }
+  }
+  const labels = ['Mon','Wed','Fri'].map((l,i) => `<text class="axis-t" x="0" y="${top + (i*2)*(cell+gap) + 13}">${l}</text>`).join('');
+  const W = left + weeks*(cell+gap), H = top + 7*(cell+gap);
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" style="max-width:100%;height:auto" role="img" aria-label="Daily XP over the last ${weeks} weeks">${months}${labels}${rects}</svg>
+    <div class="hm-legend"><span>Less</span>${[0,1,2,3,4].map(i => `<i class="hm${i}" style="background:${['var(--slate)','#3B3325','#66512F','#9C7B42','#D4A657'][i]}"></i>`).join('')}<span>More</span></div>`;
+}
+function lineSVG(pts, o){
+  if(pts.length < 2) return `<p class="empty" style="padding:24px 0;font-size:19px">${pts.length ? `One day recorded so far: ${o.fmt(pts[0].v)} on ${fmtDate(pts[0].d)}. Write on a second day to draw your first line.` : o.empty}</p>`;
+  const W = 1060, H = 250, pl = 40, pr = 40, pt = 18, pb = 30;
+  const max = o.max, x = i => pl + i * (W - pl - pr) / (pts.length - 1), y = v => pt + (max - v) / max * (H - pt - pb);
+  let g = '';
+  o.ticks.forEach(v => { g += `<line class="grid-l" x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}"/><text class="axis-t" x="${pl-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`; });
+  const path = pts.map((p,i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(' ');
+  const dots = pts.map((p,i) => `<circle class="dot" cx="${x(i)}" cy="${y(p.v)}" r="4.5"/><circle class="hit" cx="${x(i)}" cy="${y(p.v)}" r="14" data-tip="${esc(fmtDate(p.d, {weekday:'short', month:'short', day:'numeric'}))}: ${esc(o.fmt(p.v))}${p.note ? ' ' + esc(p.note) : ''}"/>`).join('');
+  const L = pts[pts.length-1];
+  const xl = [0, Math.floor((pts.length-1)/2), pts.length-1].filter((v,i,a) => a.indexOf(v) === i)
+    .map(i => `<text class="axis-t" x="${x(i)}" y="${H-8}" text-anchor="${i === 0 ? 'start' : i === pts.length-1 ? 'end' : 'middle'}">${fmtDate(pts[i].d)}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(o.aria)}">${g}<path class="line" d="${path}"/>${dots}
+    <text class="lbl-v" x="${x(pts.length-1)}" y="${y(L.v)-12}" text-anchor="end">${esc(o.fmt(L.v))}</text>${xl}</svg>`;
+}
+function renderProgress(){
+  const dayKeys = Object.keys(S.days).sort();
+  const last7 = dayKeys.filter(d => diffDays(d, today()) < 7 && S.days[d].accN > 0);
+  const acc7 = last7.length ? Math.round(100 * last7.reduce((a,d) => a + S.days[d].accSum, 0) / last7.reduce((a,d) => a + S.days[d].accN, 0)) : null;
+  const chamberRows = CHAMBERS.map((ch, c) => { const s = chamberStars(c); return `<div class="row"><span class="name">Stage ${ch.id}<small>${ch.name}</small></span><span class="bar"><span style="width:${(s/18*100).toFixed(1)}%"></span></span><span class="val">${s} / 18</span></div>`; }).join('');
+  const MODE_NAMES = {pick:['Choosing connectors','Stage I'], join:['Joining phrases','Stage II'], bridge:['Linking ideas','Stage III'], frame:['Building arguments','Stage IV'], voice:['Writing freely','Stage V']};
+  const skillRows = Object.keys(MODE_NAMES).map(m => { const r = S.modes[m], a = r.n ? r.sum / r.n : 0; return `<div class="row"><span class="name">${MODE_NAMES[m][0]}<small>${MODE_NAMES[m][1]}${r.n ? `, ${plural(r.n, 'piece')}` : ''}</small></span><span class="bar"><span style="width:${(a*100).toFixed(1)}%"></span></span><span class="val">${r.n ? Math.round(a*100) + '%' : '—'}</span></div>`; }).join('');
+  const own = (gs) => { const all = [...new Set(gs.flatMap(g => inGroup(g)))]; const y = all.filter(e => lexRec(e.p).f >= OWN_AT).length, u = all.filter(e => lexRec(e.p).u >= 1).length; return { y, u, n:all.length }; };
+  const ownRows = LEX_SECTIONS.map(sec => { const o = own(sec.groups); return `<div class="row"><span class="name">${sec.title}<small>${o.u} used, ${o.y} yours</small></span><span class="bar"><span style="width:${(o.y/o.n*100).toFixed(1)}%"></span></span><span class="val">${o.y} / ${o.n}</span></div>`; }).join('');
+  const accPts = dayKeys.filter(d => S.days[d].accN > 0).slice(-14).map(d => ({ d, v:Math.round(100 * S.days[d].accSum / S.days[d].accN), note:`over ${plural(S.days[d].accN, 'item')}` }));
+  const denPts = dayKeys.filter(d => (S.days[d].words || 0) >= 20).slice(-14).map(d => ({ d, v:Math.round(1000 * S.days[d].conns / S.days[d].words) / 10, note:`in ${S.days[d].words} words` }));
+  const denMax = Math.max(20, Math.ceil(Math.max(0, ...denPts.map(p => p.v)) / 5) * 5);
+  $('#view-progress').innerHTML = `
+    <div class="view-head"><h1>Progress</h1><p>What your writing has done, day by day. Every piece is scored on connectors, ideas, structure and punctuation.</p></div>
+    <div class="ledger wide">
+      <div><b>${S.xp.toLocaleString('en-US')}</b><span>Total XP</span></div>
+      <div><b>${acc7 === null ? '—' : acc7 + '%'}</b><span>Score, last 7 days</span></div>
+      <div><b>${displayStreak()}</b><span>Current streak</span></div>
+      <div><b>${S.stats.words.toLocaleString('en-US')}</b><span>Words written</span></div>
+      <div><b>${yoursCount()}</b><span>Phrases yours</span></div>
+    </div>
+    <div class="pgrid">
+      <div class="block"><h3>Practice calendar</h3><p class="sub">XP earned each day, last thirteen weeks.</p>${heatmapSVG()}</div>
+      <div class="block"><h3>Stages</h3><p class="sub">Stars earned in each stage.</p><div class="bars">${chamberRows}</div></div>
+    </div>
+    <div class="block" style="margin-bottom:60px"><h3>Score</h3><p class="sub">Average score on each practice day.</p><div class="chart-wrap">${lineSVG(accPts, {max:100, ticks:[0,25,50,75,100], fmt:v => v + '%', empty:'Your score line appears after your first two days of practice.', aria:`Average score per practice day, last ${accPts.length} days`})}</div></div>
+    <div class="block" style="margin-bottom:60px"><h3>Connector density</h3><p class="sub">Connectors per 100 words written. Natural writing links its ideas; a rising line means the links are becoming a habit.</p><div class="chart-wrap">${lineSVG(denPts, {max:denMax, ticks:[0, denMax/4, denMax/2, denMax*3/4, denMax].map(v => Math.round(v*10)/10), fmt:v => v + ' per 100', empty:'This line appears once you have written on two different days.', aria:'Connectors per 100 words, by day'})}</div></div>
+    <div class="pgrid">
+      <div class="block"><h3>Skill profile</h3><p class="sub">Average score in each kind of writing.</p><div class="bars">${skillRows}</div></div>
+      <div class="block"><h3>Your own voice</h3><p class="sub">Phrases you have used, and those you now write from memory.</p><div class="bars">${ownRows}</div></div>
+    </div>
+    <div class="block"><h3>Honours</h3><p class="sub">${Object.keys(S.ach).length} of ${ACH.length} earned.</p>
+      <div class="medals">${ACH.map(a => `<div class="medal${S.ach[a.id] ? '' : ' locked'}" data-tip="${S.ach[a.id] ? 'Earned ' + esc(fmtDate(S.ach[a.id])) : 'Not yet earned'}"><div class="coin">${a.g}</div><b>${esc(a.name)}</b><span>${esc(a.desc)}</span></div>`).join('')}</div>
+    </div>`;
+}
+
+/* =========================================================
+   Toasts and tooltip
+   ========================================================= */
+function toast(glyph, title, body){
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<div class="coin">${esc(glyph)}</div><div><b>${esc(title)}</b><span>${esc(body)}</span></div>`;
+  $('#toasts').appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, 4800);
+}
+const tip = $('#tip');
+function showTip(el, x, y){
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let left = x - r.width/2, top = y - r.height - 14;
+  left = Math.max(8, Math.min(window.innerWidth - r.width - 8, left));
+  if(top < 8) top = y + 18;
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+document.addEventListener('mouseover', e => { const el = e.target.closest && e.target.closest('[data-tip]'); if(el) showTip(el, e.clientX, e.clientY); else tip.hidden = true; });
+document.addEventListener('mousemove', e => { if(!tip.hidden){ const el = e.target.closest && e.target.closest('[data-tip]'); if(el) showTip(el, e.clientX, e.clientY); } });
+document.addEventListener('touchstart', e => { const el = e.target.closest && e.target.closest('[data-tip]'); if(el){ const t = e.touches[0]; showTip(el, t.clientX, t.clientY); setTimeout(() => tip.hidden = true, 1800); } }, { passive:true });
+
+/* =========================================================
+   Session: drawing items
+   ========================================================= */
+const BANKS = { pick:PICK, join:JOIN, bridge:BRIDGE, frame:FRAMES, voice:VOICES };
+const keyOfItem = (mode, it) => mode === 'pick' ? it[0] : mode === 'join' ? it[0] + '|' + it[1] : mode === 'bridge' ? it.i[0] : it.q;
+function buildItem(mode, k, it){
+  if(mode === 'pick') return { mode, s:it[0], ans:it[1], opts:shuffle([it[1], ...it[2].split('|')]), fn:k };
+  if(mode === 'join') return { mode, a:it[0], b:it[1], model:it[2], fn:k };
+  if(mode === 'bridge') return { mode, ideas:it.i, plan:it.p, model:it.m };
+  if(mode === 'frame') return { mode, q:it.q, kw:it.kw, sides:it.s };
+  return { mode, q:it.q, kw:it.kw };
+}
+function drawItems(m){
+  const mode = m.ch.mode, bank = BANKS[mode];
+  const keys = m.themeKey ? [m.themeKey] : Object.keys(bank);
+  const pool = []; keys.forEach(k => bank[k].forEach(it => pool.push({ k, it })));
+  const kf = x => keyOfItem(mode, x.it);
+  const last = new Set(S.lastDraw[m.id] || []);
+  const pick = shuffle(pool.filter(x => !last.has(kf(x)))).concat(shuffle(pool.filter(x => last.has(kf(x))))).slice(0, m.ch.per);
+  S.lastDraw[m.id] = pick.map(kf); save();
+  return pick.map(x => buildItem(mode, x.k, x.it));
+}
+/* how much help a level gives */
+function scaf(m){
+  const t = m.t, mode = m.ch.mode;
+  if(mode === 'join') return { bank:t <= 3, patterns:t <= 1 };
+  if(mode === 'bridge') return { bank:t <= 3, rel:t <= 1, all:t >= 2 };
+  if(mode === 'frame') return { prefill:t === 0, chips:t <= 1 ? ['open','main','close'] : t === 2 ? ['open','close'] : [], bank:t <= 3, seeds:t <= 2, concession:t === 5, minMain:[25,28,32,36,40,45][t] };
+  if(mode === 'voice') return { bank:false, chips:[], seeds:false, concession:t >= 2, minMain:voiceMin(m) - 25 };
+  return {};
+}
+
+/* =========================================================
+   Session: lifecycle
+   ========================================================= */
+let SES = null;
+function startLevel(k){
+  if(!isUnlocked(k)) return;
+  SFX.ensure();
+  const m = levelMeta(k);
+  SES = { type:'level', m, sc:scaf(m), items:drawItems(m), i:0, results:[], xp0:S.xp, added:[], newYours:[], texts:[] };
+  openSession();
+}
+function reviewItem(p){
+  const e = LEXMAP[p], fn = connFn(e), pool = JOIN[fn];
+  const it = pool[Math.floor(Math.random() * pool.length)];
+  return { mode:'join', a:it[0], b:it[1], model:it[2], fn, need:p, exact:true, example:e.ex };
+}
+function startVault(){
+  const due = vaultDue().slice(0, 8);
+  if(!due.length) return;
+  SFX.ensure();
+  SES = { type:'vault', sc:{ bank:false, patterns:false }, items:due.map(e => reviewItem(e.key)), i:0, results:[], xp0:S.xp, out:{ up:0, mastered:0, reset:0, keep:0 }, added:[], newYours:[], texts:[] };
+  openSession();
+}
+function startDaily(p){
+  if(!LEXMAP[p]) return;
+  SFX.ensure();
+  SES = { type:'daily', sc:{ bank:false, patterns:false }, items:[reviewItem(p)], i:0, results:[], xp0:S.xp, added:[], newYours:[], texts:[] };
+  openSession();
+}
+function openSession(){
+  $('#session').hidden = false;
+  document.body.style.overflow = 'hidden';
+  if(SES.type === 'level'){
+    $('#sKicker').textContent = `Stage ${SES.m.ch.id}, ${SES.m.ch.name}`;
+    $('#sName').textContent = `Level ${SES.m.k+1}: ${SES.m.theme}`;
+  } else {
+    $('#sKicker').textContent = SES.type === 'vault' ? 'Connectors to revisit' : 'Connector of the day';
+    $('#sName').textContent = SES.type === 'vault' ? 'Review' : 'One sentence';
+  }
+  resetClose();
+  renderItem();
+}
+function closeSession(){
+  TTS.stop();
+  SES = null;
+  $('#session').hidden = true;
+  document.body.style.overflow = '';
+  render();
+}
+let closeTimer = null;
+function resetClose(){ clearTimeout(closeTimer); const b = $('#sClose'); b.classList.remove('confirm'); $('#sCloseLabel').textContent = 'Leave'; }
+function onClose(){
+  const b = $('#sClose');
+  if(!SES || SES.done || b.classList.contains('confirm')) return closeSession();
+  b.classList.add('confirm');
+  $('#sCloseLabel').textContent = 'Leave? XP stays, stars need a full round';
+  closeTimer = setTimeout(resetClose, 3500);
+}
+function setBar(){
+  const n = SES.items.length, done = SES.i + (SES.cur && SES.cur.checked ? 1 : 0);
+  $('#sBar').style.width = (100 * done / n) + '%';
+  $('#sCount').innerHTML = SES.done ? '' : `<b>${Math.min(SES.i+1, n)}</b> of ${n}`;
+}
+const cfgXP = () => SES.type === 'vault' ? 10 : SES.type === 'daily' ? 20 : SES.m.ch.xp;
+function hint(msg){ const h = $('#sHint'); if(h) h.textContent = msg; }
+function autoGrow(ta){ ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+function bankHTML(groups, hidden){
+  return `<div class="bank"${hidden ? ' hidden' : ''}>${groups.map(g => `<div class="bank-g"><h4>${esc(BANK_TITLES[g])}</h4><div class="chips">${inGroup(g).map(e => `<button type="button" class="chip ins" data-ins="${esc(e.p)}" data-tip="${esc(e.ex)}">${esc(e.p)}</button>`).join('')}</div></div>`).join('')}</div>`;
+}
+function insertAt(ta, phrase){
+  if(!ta || ta.readOnly) return;
+  const pos = ta.selectionStart == null ? ta.value.length : ta.selectionStart;
+  const before = ta.value.slice(0, pos), after = ta.value.slice(ta.selectionEnd == null ? pos : ta.selectionEnd);
+  const atStart = /^\s*$/.test(before) || /[.!?]\s*$/.test(before);
+  const word = atStart ? cap1(phrase) : phrase;
+  const pre = before && !/\s$/.test(before) ? ' ' : '';
+  const ins = pre + word + ' ';
+  ta.value = before + ins + after.replace(/^\s+/, '');
+  const c = (before + ins).length; ta.setSelectionRange(c, c);
+  ta.dispatchEvent(new Event('input')); ta.focus({ preventScroll:true });
+}
+
+/* =========================================================
+   Session: rendering an item
+   ========================================================= */
+function renderItem(){
+  const it = SES.items[SES.i];
+  SES.cur = { checked:false, attempts:0, res:null, peek:false, ta:null };
+  if(it.mode === 'pick') renderPick(it);
+  else if(it.mode === 'join') renderJoin(it);
+  else if(it.mode === 'bridge') renderBridge(it);
+  else renderFrame(it);
+  setBar();
+  $('#session').scrollTop = 0;
+}
+function wireWriter(ta, onEnter){
+  ta.addEventListener('input', () => { autoGrow(ta); updateWC(); });
+  ta.addEventListener('focus', () => { SES.cur.ta = ta; });
+  ta.addEventListener('keydown', e => { if(onEnter(e)){ e.preventDefault(); e.stopPropagation(); check(); } });
+  autoGrow(ta);
+}
+function updateWC(){
+  $$('[data-wc]').forEach(el => {
+    const ta = $('#' + el.dataset.wc); if(!ta) return;
+    const n = countWords(ta.value), goal = +el.dataset.goal || 0;
+    el.innerHTML = `<span><b${goal && n >= goal ? ' class="ok"' : ''}>${n}</b> ${n === 1 ? 'word' : 'words'}${goal ? ` · aim for ${goal}+` : ''}</span>`;
+  });
+}
+function drawerBlock(groupsHtml){
+  return `<button type="button" class="drawer-toggle" id="drawerBtn">${ICON.drawer}<span>Open the drawer of words</span></button>
+    <p class="drawer-note">Opening it is fine. Phrases you take from it will not count as written from memory.</p>
+    <div id="drawerBank" hidden>${groupsHtml}</div>`;
+}
+
+/* ---------- Stage I: pick the connector ---------- */
+function renderPick(it){
+  const [pre, post] = it.s.split('_');
+  $('#sStage').innerHTML = `
+  <div class="pick">
+    <p class="pick-label">Choose the connector that fits.</p>
+    <p class="pick-sentence">${esc(pre)}<span class="slot-gap empty" id="pGap">&nbsp;</span>${esc(post)}</p>
+    <div class="opts" id="pOpts">${it.opts.map((o, i) => `<button class="opt" data-opt="${i}"><kbd class="kb-only">${i+1}</kbd><span>${esc(o)}</span></button>`).join('')}</div>
+    <p class="s-hint" id="sHint">Tap an option.<span class="kb-only"> Or press <kbd>1</kbd> to <kbd>4</kbd>.</span></p>
+    <div class="feedback" id="sFeedback" hidden></div>
+    <div class="s-actions" id="sActs" hidden><button class="btn gold" id="sCheck"></button></div>
+  </div>`;
+  $$('#pOpts .opt').forEach(b => b.addEventListener('click', () => choosePick(+b.dataset.opt)));
+  $('#sCheck').addEventListener('click', check);
+}
+function choosePick(i){
+  if(!SES || !SES.cur || SES.cur.checked || SES.done) return;
+  const it = SES.items[SES.i], cur = SES.cur, opt = it.opts[i];
+  if(opt === undefined) return;
+  cur.checked = true;
+  const ok = opt === it.ans;
+  const key = it.ans === 'why' ? 'that is why' : it.ans.toLowerCase();
+  const full = it.s.replace('_', it.ans);
+  const gap = $('#pGap'); gap.classList.remove('empty'); gap.textContent = it.ans; gap.style.minWidth = '0'; gap.style.padding = '0 3px';
+  $$('#pOpts .opt').forEach((b, j) => { b.disabled = true; if(it.opts[j] === it.ans) b.classList.add('right'); else if(j === i) b.classList.add('wrong'); else b.classList.add('dim'); });
+  const xp = ok ? cfgXP() : 0;
+  addXP(xp);
+  const d = dayRec(); d.items++; d.accSum += ok ? 1 : 0; d.accN++;
+  S.stats.items++; S.modes.pick.n++; S.modes.pick.sum += ok ? 1 : 0;
+  cur.res = { acc:ok ? 1 : 0, xp, words:0, conns:0 };
+  SES.results.push(cur.res);
+  let why;
+  const fnA = FNBY[it.fn] || FNBY[connFn(LEXMAP[key]) || 'add'];
+  if(ok) why = `<b>${esc(it.ans)}</b> ${esc(fnA.does)}.`;
+  else {
+    const ce = LEXMAP[opt.toLowerCase()], cfn = ce && connFn(ce);
+    why = cfn && FNBY[cfn]
+      ? `“${esc(opt)}” ${esc(FNBY[cfn].does)}. Here the ideas need <b>${esc(fnA.need)}</b>, so the answer is <b>${esc(it.ans)}</b>.`
+      : `“${esc(opt)}” does not join these two ideas. The answer is <b>${esc(it.ans)}</b>, which ${esc(fnA.does)}.`;
+    const added = vaultAdd(key, full);
+    if(added && !SES.added.includes(added)) SES.added.push(added);
+  }
+  if(ok) SFX.good(); else SFX.miss();
+  const fb = $('#sFeedback'); fb.hidden = false;
+  fb.innerHTML = `<p class="why">${why}</p><p class="why-sub">${ok ? `+${xp} XP.` : 'No XP this time; the connector is kept in your review queue.'}</p>
+    <button class="hear" data-say="${esc(full)}">${ICON.play}Hear the sentence</button>`;
+  const go_ = $('#sActs'); go_.hidden = false;
+  $('#sCheck').textContent = SES.i === SES.items.length - 1 ? 'See results' : 'Continue';
+  hint('Press Enter to continue.');
+  save(); setBar();
+  setTimeout(() => { const b = $('#sCheck'); if(b) b.focus({ preventScroll:true }); }, 60);
+  setTimeout(() => { if(fb.isConnected) fb.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 200);
+}
+
+/* ---------- Stage II: join two phrases ---------- */
+function threadSVG(){ return `<div class="thread" id="thread"><svg viewBox="0 0 60 54" aria-hidden="true"><path d="M22 0C44 14 2 40 22 54"/><circle cx="22" cy="27" r="4.5"/></svg></div>`; }
+function renderJoin(it){
+  const sc = SES.sc, fn = FNBY[it.fn];
+  const tag = it.exact ? `Use “${esc(it.need)}”` : `Join with: ${esc(fn.name.toLowerCase())}`;
+  const help = it.exact ? 'Write one sentence that joins the two phrases using exactly this connector.' : `${esc(fn.blurb)} Write one sentence, or two, that joins the phrases.`;
+  const allGroups = SES.type === 'level' && SES.m.t === 5;
+  const bankGroups = allGroups ? FN_KEYS : [it.fn];
+  const bankBlock = SES.type !== 'level' ? `<button type="button" class="drawer-toggle" id="drawerBtn">${ICON.drawer}<span>Show an example</span></button><div id="drawerBank" hidden><p class="bank-none" style="margin-top:8px">${esc(it.example)}</p></div>`
+    : sc.bank ? bankHTML(bankGroups) : drawerBlock(bankHTML(bankGroups));
+  $('#sStage').innerHTML = `
+  <div class="writing">
+    <div class="task-head"><span class="fn-tag">${tag}</span><p class="task-help">${help}</p></div>
+    <div class="phrases">
+      <div class="phr"><i>A</i><span>${esc(it.a)}</span></div>
+      ${threadSVG()}
+      <div class="phr"><i>B</i><span>${esc(it.b)}</span></div>
+    </div>
+    ${sc.patterns && !it.exact ? `<p class="patterns">${fn.patterns.map(p => `<span>${esc(p)}</span>`).join('')}</p>` : ''}
+    ${bankBlock}
+    <label class="sr" for="wIn">Your sentence</label>
+    <textarea id="wIn" class="writer" rows="1" placeholder="Write the joined sentence" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences"></textarea>
+    <div class="wc" data-wc="wIn"></div>
+    <p class="s-hint" id="sHint">Press <kbd>Enter</kbd> to check.</p>
+    <div class="s-actions"><button class="btn gold" id="sCheck">Check</button><button class="btn ghost" id="sRevise" hidden>Revise</button></div>
+    <div class="feedback" id="sFeedback" hidden></div>
+  </div>`;
+  wireWriter($('#wIn'), e => e.key === 'Enter' && !e.shiftKey);
+  wireCommon();
+  updateWC();
+  setTimeout(() => $('#wIn').focus({ preventScroll:true }), 60);
+}
+function wireCommon(){
+  $('#sCheck').addEventListener('click', check);
+  const rv = $('#sRevise'); if(rv) rv.addEventListener('click', revise);
+  const db = $('#drawerBtn');
+  if(db) db.addEventListener('click', () => {
+    const box = $('#drawerBank'); const open = box.hidden;
+    box.hidden = !open; SES.cur.peek = SES.cur.peek || open;
+    $$('#sStage .slot .bank').forEach(b => b.hidden = !open);
+    db.querySelector('span').textContent = open ? 'Close the drawer' : (SES.type === 'level' ? 'Open the drawer of words' : 'Show an example');
+  });
+  $$('#sStage [data-ins]').forEach(b => b.addEventListener('click', () => {
+    const slot = b.closest('.slot'), ta = slot ? slot.querySelector('textarea') : $('#sStage textarea');
+    insertAt(ta, b.dataset.ins);
+  }));
+  $$('#sStage [data-starter]').forEach(b => b.addEventListener('click', () => {
+    const ta = b.closest('.slot').querySelector('textarea'); if(ta.readOnly) return;
+    const add = b.dataset.starter;
+    ta.value = (ta.value.trim() ? ta.value.replace(/\s*$/, ' ') : '') + add;
+    ta.dispatchEvent(new Event('input')); ta.focus({ preventScroll:true });
+    const at = ta.value.lastIndexOf('\u2026', ta.value.length);
+    const first = ta.value.length - add.length + add.indexOf('\u2026');
+    if(add.indexOf('\u2026') >= 0) ta.setSelectionRange(first, first + 1); else ta.setSelectionRange(ta.value.length, ta.value.length);
+  }));
+}
+
+/* ---------- Stage III: bridge three ideas ---------- */
+function renderBridge(it){
+  const sc = SES.sc;
+  const plan = [...new Set(it.plan)];
+  const groups = sc.all ? FN_KEYS : plan;
+  const bankBlock = sc.bank ? bankHTML(groups) : drawerBlock(bankHTML(FN_KEYS));
+  const list = it.ideas.map((x, i) => `<li class="idea"><i>${i+1}</i><span>${esc(x)}</span></li>${i < 2 && sc.rel ? `<li class="rel" aria-hidden="true">${esc(FNBY[it.plan[i]].need)}</li>` : ''}`).join('');
+  $('#sStage').innerHTML = `
+  <div class="writing">
+    <div class="task-head"><span class="fn-tag plain">Three ideas, one paragraph</span>
+      <p class="task-help">Write two to four sentences that keep all three ideas and link them with connectors${sc.rel ? '. The labels show how each idea relates to the next' : ''}.</p></div>
+    <ol class="ideas-list">${list}</ol>
+    ${bankBlock}
+    <label class="sr" for="wIn">Your paragraph</label>
+    <textarea id="wIn" class="writer long" rows="3" placeholder="Write your paragraph" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences"></textarea>
+    <div class="wc" data-wc="wIn" data-goal="20"></div>
+    <p class="s-hint" id="sHint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to check.</p>
+    <div class="s-actions"><button class="btn gold" id="sCheck">Check</button><button class="btn ghost" id="sRevise" hidden>Revise</button></div>
+    <div class="feedback" id="sFeedback" hidden></div>
+  </div>`;
+  wireWriter($('#wIn'), e => e.key === 'Enter' && (e.ctrlKey || e.metaKey));
+  wireCommon(); updateWC();
+  setTimeout(() => $('#wIn').focus({ preventScroll:true }), 60);
+}
+
+/* ---------- Stages IV and V: opener, main argument, close ---------- */
+function renderFrame(it){
+  const sc = SES.sc, voice = it.mode === 'voice', m = SES.m;
+  const seeds = !voice && sc.seeds ? `<div class="seeds" aria-label="Ideas you can use"><div><h4>Ideas for one side</h4><ul>${it.sides[0].map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Ideas for the other side</h4><ul>${it.sides[1].map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>` : '';
+  const goals = { open:10, main:sc.minMain, close:10 };
+  const rows = { open:2, main:4, close:2 };
+  const slots = SLOTS.map((s, i) => {
+    const chips = sc.chips.includes(s.key) ? `<div class="starters" aria-label="Starters">${s.starters.map(x => `<button type="button" class="chip" data-starter="${esc(x)}">${esc(x.replace(/… ?/g, '…'))}</button>`).join('')}</div>` : '';
+    return `<section class="slot" data-slot="${s.key}">
+      <div class="knot" id="knot-${s.key}">${knotSVG(i + 1, null)}</div>
+      <div class="slot-head"><h3>${s.name}</h3><span>${esc(s.job)}</span></div>
+      ${chips}
+      <label class="sr" for="w-${s.key}">${s.name}</label>
+      <textarea id="w-${s.key}" class="writer long" rows="${rows[s.key]}" placeholder="${esc(s.ph)}" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences">${sc.prefill ? esc(s.prefill) : ''}</textarea>
+      <div class="wc" data-wc="w-${s.key}" data-goal="${goals[s.key]}"></div>
+      ${voice || !sc.bank ? bankHTML(s.groups, true) : bankHTML(s.groups, false)}
+      <div class="slot-fb" id="fb-${s.key}" hidden></div>
+    </section>`;
+  }).join('');
+  $('#sStage').innerHTML = `
+  <div class="writing">
+    <div class="task-head"><span class="fn-tag plain">${voice ? `Your own voice · ${voiceMin(m)}+ words` : 'Build an argument'}</span>
+      <h2 class="prompt-q">${esc(it.q)}</h2>
+      <p class="task-help">${voice ? 'Take a side and argue it. Either side is fine; the room measures how you build the case.' : 'Take a side. Either is fine; the room measures how you build the case.'}</p></div>
+    ${seeds}
+    <div class="spine">${slots}</div>
+    ${sc.bank && !voice ? '' : `<button type="button" class="drawer-toggle" id="drawerBtn">${ICON.drawer}<span>Open the drawer of words</span></button><p class="drawer-note">Opening it is fine. Phrases you take from it will not count as written from memory.</p><div id="drawerBank" hidden></div>`}
+    <p class="s-hint" id="sHint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to check the whole argument.</p>
+    <div class="s-actions"><button class="btn gold" id="sCheck">Check my argument</button><button class="btn ghost" id="sRevise" hidden>Revise</button></div>
+    <div class="feedback" id="sFeedback" hidden></div>
+  </div>`;
+  SLOTS.forEach(s => wireWriter($('#w-' + s.key), e => e.key === 'Enter' && (e.ctrlKey || e.metaKey)));
+  wireCommon(); updateWC();
+  setTimeout(() => { const ta = $('#w-open'); ta.focus({ preventScroll:true }); const c = ta.value.length; ta.setSelectionRange(c, c); }, 60);
+}
+
+/* =========================================================
+   Session: checking
+   ========================================================= */
+function check(){
+  if(!SES || !SES.cur || SES.done) return;
+  const cur = SES.cur;
+  if(cur.checked) return next();
+  const it = SES.items[SES.i];
+  if(it.mode === 'join') checkJoin(it);
+  else if(it.mode === 'bridge') checkBridge(it);
+  else if(it.mode === 'frame' || it.mode === 'voice') checkFrame(it);
+}
+function isFree(){
+  const sc = SES.sc, it = SES.items[SES.i], cur = SES.cur;
+  if(cur.peek) return false;
+  if(SES.type !== 'level') return true;
+  if(it.mode === 'join' || it.mode === 'bridge') return !sc.bank;
+  if(it.mode === 'frame') return !sc.bank && !sc.prefill && !sc.chips.length;
+  return true;
+}
+function modeKey(it){ return it.mode; }
+function xpFor(acc, free){
+  let xp = Math.round(cfgXP() * acc);
+  if(free && acc >= .85 && SES.type === 'level') xp += Math.ceil(cfgXP() * .2);
+  return xp;
+}
+/* record a fresh result, or improve a revised one */
+function commit(it, res, info){
+  const cur = SES.cur, free = isFree();
+  if(cur.attempts === 0){
+    const xp = xpFor(res.acc, free);
+    addXP(xp);
+    const d = dayRec(); d.items++; d.accSum += res.acc; d.accN++; d.words += info.words; d.conns += info.conns;
+    S.stats.items++; S.stats.words += info.words; S.stats.conns += info.conns;
+    const mk = modeKey(it); S.modes[mk].n++; S.modes[mk].sum += res.acc;
+    const newly = recordUsage(info.found, free);
+    newly.forEach(p => { SES.newYours.push(p); setTimeout(() => toast('✦', `“${p}” is now yours`, 'You wrote it from memory three times.'), 900); });
+    cur.res = { acc:res.acc, xp, words:info.words, conns:info.conns, free };
+    cur.first = res.acc;
+    SES.results.push(cur.res);
+    return { xp, delta:0, improved:false, free };
+  }
+  const old = cur.res;
+  if(res.acc > old.acc){
+    const newXp = xpFor(res.acc, free), delta = Math.max(0, newXp - old.xp);
+    addXP(delta);
+    const d = dayRec(); d.accSum += res.acc - old.acc;
+    const mk = modeKey(it); S.modes[mk].sum += res.acc - old.acc;
+    old.xp += delta; old.acc = res.acc;
+    return { xp:old.xp, delta, improved:true, free };
+  }
+  return { xp:old.xp, delta:0, improved:false, free };
+}
+function verdictWord(acc){ return acc >= .96 ? 'Beautifully built' : acc >= .85 ? 'Strong' : acc >= .7 ? 'Getting there' : acc >= .5 ? 'Half built' : 'Not yet linked'; }
+function rubricHTML(rows){
+  return `<ul class="rubric">${rows.map(r => `<li><span class="rb-mark ${r.state}">${r.state === 'ok' ? '✓' : r.state === 'part' ? '◐' : '✕'}</span><span><span class="rb-t">${esc(r.label)}</span><span class="rb-n">${esc(r.note)}</span></span><span class="rb-p">${r.got} / ${r.max}</span></li>`).join('')}</ul>`;
+}
+const HL_LEGEND = `<div class="hl-legend"><span><i class="hl-c">connector</i></span><span><i class="hl-f">argument phrase</i></span></div>`;
+function afterCheck(ta, acc, xpInfo, extraHint){
+  const cur = SES.cur;
+  cur.checked = true; cur.attempts++;
+  (Array.isArray(ta) ? ta : [ta]).forEach(t => { t.readOnly = true; });
+  const last = SES.i === SES.items.length - 1;
+  $('#sCheck').textContent = last ? 'See results' : 'Continue';
+  const rv = $('#sRevise'); if(rv) rv.hidden = !(cur.attempts === 1 && cur.res.acc < .98);
+  hint(extraHint || 'Press Enter to continue.' + (rv && !rv.hidden ? ' Or revise once to raise your score.' : ''));
+  if(acc >= .92) SFX.perfect(); else if(acc >= .6) SFX.good(); else SFX.miss();
+  setBar(); save();
+  setTimeout(() => { const fb = $('#sFeedback'); if(fb && fb.isConnected) fb.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 200);
+}
+function xpLine(info, acc){
+  const cur = SES.cur;
+  if(cur.attempts >= 1 && cur.first !== undefined && cur.res){
+    if(info.improved) return `Improved from ${Math.round(cur.first * 100)}% to ${Math.round(info.xp !== undefined ? cur.res.acc * 100 : acc * 100)}%. +${info.delta} XP for the revision.`;
+    return `Your first score of ${Math.round(cur.first * 100)}% stands.`;
+  }
+  return `+${info.xp} XP${info.free && info.xp > Math.round(cfgXP() * acc) ? ', including the unaided bonus' : ''}.`;
+}
+function verdictBlock(acc, detail){
+  return `<div class="verdict"><div class="v-score">${Math.round(acc*100)}<small>%</small></div><div><p class="v-word">${verdictWord(acc)}</p><p class="v-detail">${detail}</p></div></div>`;
+}
+
+function checkJoin(it){
+  const ta = $('#wIn'), text = ta.value.trim();
+  if(!text){ shake(ta); hint('Write your sentence first.'); return; }
+  const cur = SES.cur, first = cur.attempts === 0;
+  const need = it.exact ? it.need : it.fn;
+  const res = scoreJoin(text, it, need, it.exact);
+  const info = commit(it, res, { words:res.words, conns:res.conns.length, found:res.found });
+  const tied = res.hit.length > 0;
+  const th = $('#thread'); if(th) th.classList.toggle('tied', tied);
+  if(tied) SFX.tie();
+  if(first){
+    // connectors to revisit
+    let add = null;
+    if(!tied){ const mc = findPhrases(it.model).find(f => isConn(f.e) && (it.exact ? f.e.p === it.need : f.e.g.includes(it.fn))); add = it.exact ? it.need : (mc ? mc.e.p : null); }
+    else if(res.issues.length && res.hit[0] && !it.exact) add = res.hit[0].e.p;
+    else if(it.exact && res.acc < .8) add = it.need;
+    if(add && !(SES.type === 'vault')){ const a = vaultAdd(add, it.model); if(a && !SES.added.includes(a)) SES.added.push(a); }
+    if(SES.type === 'vault'){
+      const v = S.vault[it.need];
+      if(v){
+        if(tied && res.acc >= .8){ v.hit++; v.box++; if(v.box >= 5){ delete S.vault[it.need]; S.mastered++; SES.out.mastered++; addXP(10); } else { v.due = addDays(today(), BOX_DAYS[v.box]); SES.out.up++; } }
+        else if(tied){ v.due = addDays(today(), 1); SES.out.keep++; }
+        else { v.box = 0; v.miss++; v.due = addDays(today(), 1); SES.out.reset++; }
+      }
+    }
+    if(SES.type === 'daily'){ S.daily[today()] = { p:it.need, acc:res.acc, done:true }; }
+    SES.texts.push({ q:`${it.a} + ${it.b}`, text });
+  }
+  const fb = $('#sFeedback'); fb.hidden = false;
+  const detail = xpLine(info, res.acc);
+  fb.innerHTML = `${verdictBlock(cur.res.acc, detail)}
+    <p class="written">${highlight(text, res.found)}</p>${HL_LEGEND}
+    ${rubricHTML(res.rows)}
+    <div class="model"><h3>One way to write it</h3><p>${highlight(it.model, findPhrases(it.model))}</p><button class="hear" data-say="${esc(it.model)}">${ICON.play}Hear it</button></div>`;
+  afterCheck(ta, res.acc, info);
+}
+function checkBridge(it){
+  const ta = $('#wIn'), text = ta.value.trim();
+  if(!text){ shake(ta); hint('Write your paragraph first.'); return; }
+  const cur = SES.cur, first = cur.attempts === 0;
+  const res = scoreBridge(text, { i:it.ideas, p:it.plan });
+  const info = commit(it, res, { words:res.words, conns:res.conns.length, found:res.found });
+  if(first){
+    // connectors the plan needed but the student did not use
+    const used = res.conns.map(f => f.e.p);
+    const mConns = findPhrases(it.model).filter(f => isConn(f.e)).map(f => f.e.p);
+    const miss = mConns.find(p => !used.includes(p) && it.plan.includes(connFn(LEXMAP[p])) && !res.conns.some(f => f.e.g.includes(connFn(LEXMAP[p]))));
+    if(miss){ const a = vaultAdd(miss, it.model); if(a && !SES.added.includes(a)) SES.added.push(a); }
+    const piece = { d:today(), lv:`Level ${SES.m.k+1}, ${SES.m.theme}`, q:it.ideas.join(' / '), text, score:res.acc };
+    S.folio.unshift(piece); S.folio.length = Math.min(S.folio.length, 60); cur.piece = piece;
+    SES.texts.push({ q:it.ideas[0] + ' …', text });
+  } else if(cur.piece && info.improved){ cur.piece.text = text; cur.piece.score = cur.res.acc; }
+  const fb = $('#sFeedback'); fb.hidden = false;
+  fb.innerHTML = `${verdictBlock(cur.res.acc, xpLine(info, res.acc))}
+    <div class="written">${highlight(text, res.found)}</div>${HL_LEGEND}
+    ${rubricHTML(res.rows)}
+    <div class="model"><h3>One way to write it</h3><p>${highlight(it.model, findPhrases(it.model))}</p><button class="hear" data-say="${esc(it.model)}">${ICON.play}Hear it</button></div>`;
+  afterCheck(ta, res.acc, info);
+}
+function checkFrame(it){
+  const tas = Object.fromEntries(SLOTS.map(s => [s.key, $('#w-' + s.key)]));
+  const txt = Object.fromEntries(SLOTS.map(s => [s.key, tas[s.key].value.trim()]));
+  const empty = SLOTS.filter(s => countWords(txt[s.key]) < 2);
+  if(empty.length){ empty.forEach(s => shake(tas[s.key])); hint(`Write all three parts first: ${empty.map(s => s.name.toLowerCase()).join(' and ')} still needs words.`); tas[empty[0].key].focus(); return; }
+  const cur = SES.cur, first = cur.attempts === 0, sc = SES.sc;
+  const rs = { open:slotOpener(txt.open, it.kw), main:slotMain(txt.main, { concession:sc.concession, minWords:sc.minMain }), close:slotClose(txt.close, it.kw) };
+  const acc = (rs.open.score * .25 + rs.main.score * .5 + rs.close.score * .25) / 100;
+  const found = [...rs.open.found, ...rs.main.found, ...rs.close.found];
+  const words = rs.open.words + rs.main.words + rs.close.words;
+  const res = { acc };
+  const info = commit(it, res, { words, conns:found.filter(f => isConn(f.e)).length, found });
+  const whole = SLOTS.map(s => txt[s.key]).join('\n\n');
+  if(first){
+    const piece = { d:today(), lv:`Level ${SES.m.k+1}, ${SES.m.theme}`, q:it.q, text:whole, score:acc };
+    S.folio.unshift(piece); S.folio.length = Math.min(S.folio.length, 60); cur.piece = piece;
+    SES.texts.push({ q:it.q, text:whole });
+    if(acc >= .8 && cur.res.free) S.stats.unaided++;
+    S.stats.bestArg = Math.max(S.stats.bestArg, acc);
+  } else if(cur.piece && info.improved){ cur.piece.text = whole; cur.piece.score = cur.res.acc; S.stats.bestArg = Math.max(S.stats.bestArg, cur.res.acc); }
+  SLOTS.forEach((s, i) => {
+    const r = rs[s.key], box = $('#fb-' + s.key);
+    box.hidden = false;
+    box.innerHTML = `<p class="slot-score"><b>${Math.round(r.score)}</b>out of 100 for the ${s.name.toLowerCase()}</p>
+      <div class="written sm">${highlight(txt[s.key], r.found)}</div>
+      ${rubricHTML(r.rows)}
+      ${r.pen ? `<ul class="rubric"><li><span class="rb-mark no">✕</span><span><span class="rb-t">Punctuation</span><span class="rb-n">${esc(r.issues.join(' '))}</span></span><span class="rb-p">−${r.pen}</span></li></ul>` : ''}`;
+    const kn = $('#knot-' + s.key); if(kn) setTimeout(() => { kn.innerHTML = knotSVG(i + 1, r.score / 100); }, 80 + i * 200);
+    $$('.bank', box.parentElement).forEach(b => b.hidden = true);
+  });
+  const fb = $('#sFeedback'); fb.hidden = false;
+  fb.innerHTML = `${verdictBlock(cur.res.acc, xpLine(info, acc) + (cur.res.free && SES.type === 'level' && acc >= .8 ? ' Written without the drawer.' : ''))}${HL_LEGEND}
+    <div class="model"><h3>Your argument, read aloud</h3><button class="hear" data-say="${esc(whole.replace(/\n+/g, ' '))}">${ICON.play}Hear it</button></div>`;
+  afterCheck(SLOTS.map(s => tas[s.key]), acc, info);
+  setTimeout(() => { const f = $('#fb-open'); if(f && f.isConnected) f.scrollIntoView({ behavior:'smooth', block:'start' }); }, 260);
+}
+function revise(){
+  const cur = SES && SES.cur; if(!cur || !cur.checked || cur.attempts !== 1) return;
+  cur.checked = false;
+  $$('#sStage textarea').forEach(t => { t.readOnly = false; });
+  $('#sFeedback').hidden = true;
+  $$('.slot-fb').forEach(b => b.hidden = true);
+  const th = $('#thread'); if(th) th.classList.remove('tied');
+  $('#sRevise').hidden = true;
+  $('#sCheck').textContent = SES.items[SES.i].mode === 'frame' || SES.items[SES.i].mode === 'voice' ? 'Check again' : 'Check again';
+  hint('One revision is allowed. Your score only goes up.');
+  const ta = $('#sStage textarea'); if(ta) ta.focus();
+}
+function next(){
+  const cur = SES.cur;
+  if(!cur.checked) return;
+  SES.i++;
+  if(SES.i >= SES.items.length) finish(); else renderItem();
+}
+
+/* =========================================================
+   Session: finishing
+   ========================================================= */
+function finish(){
+  SES.done = true;
+  const Rr = SES.results, acc = Rr.reduce((a,r) => a + r.acc, 0) / Rr.length;
+  const d = dayRec(); d.sessions++; S.stats.sessions++;
+  let starsNow = 0, prev = 0;
+  if(SES.type === 'level'){
+    const id = SES.m.id, rec = S.levels[id] || (S.levels[id] = { stars:0, best:0, plays:0 });
+    prev = rec.stars; starsNow = starsFor(acc); rec.plays++; rec.best = Math.max(rec.best, acc);
+    let bonus = 0;
+    if(starsNow > prev){ bonus += 15 * (starsNow - prev); rec.stars = starsNow; }
+    if(starsNow > 0) bonus += 10;
+    addXP(bonus);
+  }
+  markActiveDay();
+  const newAch = checkAchievements();
+  save();
+  renderResults({ acc, starsNow, prev, newAch });
+  newAch.forEach((a, i) => setTimeout(() => toast(a.g, a.name, a.desc), 1600 + i*700));
+  refreshChrome();
+}
+function renderResults({ acc, starsNow, prev, newAch }){
+  const Rr = SES.results, xp = S.xp - SES.xp0;
+  setBar(); $('#sBar').style.width = '100%';
+  const unaided = Rr.filter(r => r.free && r.acc >= .85).length;
+  const badges = newAch.length ? `<div class="r-badges"><h3>Honours earned</h3><div class="medals">${newAch.map(a => `<div class="medal"><div class="coin">${a.g}</div><b>${esc(a.name)}</b><span>${esc(a.desc)}</span></div>`).join('')}</div></div>` : '';
+  const yours = SES.newYours.length ? `<div class="r-vault"><h3>Now yours</h3><div class="pills">${[...new Set(SES.newYours)].map(w => `<span>${esc(w)}</span>`).join('')}</div></div>` : '';
+  const added = SES.added.length ? `<div class="r-vault"><h3>Kept for review</h3><div class="pills">${SES.added.map(w => `<span>${esc(w)}</span>`).join('')}</div></div>` : '';
+  const written = SES.texts.length && SES.type !== 'level' || (SES.type === 'level' && SES.m.ch.mode !== 'pick' && SES.texts.length)
+    ? `<div class="r-ear"><h3>What you wrote</h3>${SES.texts.map(t => `<div class="written sm" style="margin:0 0 18px">${highlight(t.text, findPhrases(t.text))}</div>`).join('')}</div>` : '';
+  let html;
+  if(SES.type === 'level'){
+    const k = SES.m.k, passed = starsNow > 0, canNext = passed && k < LEVELS-1, pick = SES.m.ch.mode === 'pick';
+    const title = starsNow === 3 ? 'Beautifully woven.' : passed ? 'Well linked.' : 'Not yet.';
+    const sub = !passed ? `You reached ${Math.round(acc*100)}%. One star needs 60%. Play again: the room will draw a fresh set.`
+      : starsNow > prev && prev > 0 ? `A new best on this level. ${k < LEVELS-1 ? `Level ${k+2} is open.` : ''}`
+      : starsNow < 3 ? `Two stars at 80%, three at 92%. ${canNext ? `Level ${k+2} is open.` : ''}`
+      : k < LEVELS-1 ? `Level ${k+2} is open.` : 'You have reached the end of the path.';
+    const right = pick ? Rr.filter(r => r.acc === 1).length : 0;
+    html = `<div class="results">
+      <p class="r-kicker">Stage ${SES.m.ch.id}, Level ${k+1}: ${esc(SES.m.theme)}</p>
+      <h2 class="r-title">${title}</h2>
+      <div class="r-stars" aria-label="${starsNow} of 3 stars">${[0,1,2].map(i => `<svg viewBox="0 0 24 24" data-i="${i}"><path class="s-fill" d="${STAR_PATH}"/><path class="s-line" d="${STAR_PATH}"/></svg>`).join('')}</div>
+      <p class="r-sub">${sub}</p>
+      <dl class="r-stats"><div><dt>Score</dt><dd>${Math.round(acc*100)}%</dd></div><div><dt>XP earned</dt><dd>+${xp}</dd></div><div><dt>${pick ? 'Right choices' : 'Unaided pieces'}</dt><dd>${pick ? right + ' of ' + Rr.length : unaided}</dd></div></dl>
+      ${written}${yours}${added}${badges}
+      <div class="r-actions">
+        ${canNext ? `<button class="btn gold" data-start="${k+1}">Continue to level ${k+2}</button>` : ''}
+        <button class="btn ${canNext ? 'ghost' : 'gold'}" data-start="${k}">Play again with a new draw</button>
+        <button class="btn quiet" data-exit="path">Back to the path</button>
+      </div></div>`;
+  } else if(SES.type === 'vault'){
+    const o = SES.out;
+    html = `<div class="results">
+      <p class="r-kicker">Connectors to revisit</p>
+      <h2 class="r-title">Review complete.</h2>
+      <p class="r-sub" style="margin-top:18px">Connectors you used correctly move further away. The others return tomorrow.</p>
+      <dl class="r-stats"><div><dt>Moved forward</dt><dd>${o.up}</dd></div><div><dt>Mastered</dt><dd>${o.mastered}</dd></div><div><dt>Back soon</dt><dd>${o.reset + o.keep}</dd></div></dl>
+      ${written}${yours}${badges}
+      <div class="r-actions">
+        ${vaultDue().length ? `<button class="btn gold" data-vault-review>Review the remaining ${plural(vaultDue().length, 'connector')}</button>` : ''}
+        <button class="btn ${vaultDue().length ? 'ghost' : 'gold'}" data-exit="home">Back home</button>
+      </div></div>`;
+  } else {
+    html = `<div class="results">
+      <p class="r-kicker">Connector of the day</p>
+      <h2 class="r-title">${acc >= .8 ? 'Used well.' : 'Noted.'}</h2>
+      <p class="r-sub" style="margin-top:18px">${acc >= .8 ? `You scored ${Math.round(acc*100)}%. Use it again in your own writing today.` : `You scored ${Math.round(acc*100)}%. It is still worth a second look in the Words tab.`}</p>
+      <dl class="r-stats"><div><dt>Score</dt><dd>${Math.round(acc*100)}%</dd></div><div><dt>XP earned</dt><dd>+${xp}</dd></div><div><dt>Streak</dt><dd>${displayStreak()}</dd></div></dl>
+      ${written}${yours}${badges}
+      <div class="r-actions"><button class="btn gold" data-exit="home">Back home</button></div></div>`;
+  }
+  $('#sStage').innerHTML = html;
+  $('#sCount').innerHTML = '';
+  $('#sStage').scrollTop = 0; $('#session').scrollTop = 0;
+  if(SES.type === 'level') for(let i=0;i<starsNow;i++) setTimeout(() => { const s = $(`.r-stars svg[data-i="${i}"]`); if(s){ s.classList.add('on'); SFX.star(i); } }, 450 + i*420);
+  else SFX.chord();
+  setTimeout(() => { const b = $('.r-actions .btn'); if(b) b.focus({ preventScroll:true }); }, 100);
+}
+
+/* =========================================================
+   Dialogs
+   ========================================================= */
+function openOnboard(){
+  $('#obName').value = S.name || '';
+  $('#onboard').showModal();
+}
+$('#onboard').addEventListener('close', () => {
+  const v = $('#obName').value.trim().slice(0, 24);
+  if(v) S.name = v;
+  S.onboarded = true; save(); SFX.ensure(); render();
+});
+function openSettings(){
+  $('#stName').value = S.name || '';
+  const sel = $('#stVoice'); TTS.load();
+  const cur = TTS.pick();
+  sel.innerHTML = TTS.voices.length
+    ? TTS.voices.map(v => `<option value="${esc(v.voiceURI)}"${cur && cur.voiceURI === v.voiceURI ? ' selected' : ''}>${esc(v.name)} (${esc(v.lang)})</option>`).join('')
+    : '<option value="">Default English voice</option>';
+  $$('#stForm input[name=goal]').forEach(r => r.checked = +r.value === S.settings.goal);
+  $('#stSfx').checked = S.settings.sounds;
+  const rb = $('#stReset'); rb.classList.remove('armed'); rb.textContent = 'Reset all progress';
+  $('#settings').showModal();
+}
+$('#stName').addEventListener('input', e => { S.name = e.target.value.trim().slice(0, 24); save(); });
+$('#stVoice').addEventListener('change', e => { S.settings.voiceURI = e.target.value; save(); });
+$('#stTest').addEventListener('click', () => TTS.speak('Welcome to the Loom. Write a little every day, and the words become yours.', S.settings.rate));
+$$('#stForm input[name=goal]').forEach(r => r.addEventListener('change', () => { S.settings.goal = +r.value; const d = S.days[today()]; if(d) d.goalHit = d.xp >= S.settings.goal; save(); }));
+$('#stSfx').addEventListener('change', e => { S.settings.sounds = e.target.checked; save(); if(e.target.checked) SFX.good(); });
+$('#stReset').addEventListener('click', e => {
+  const b = e.currentTarget;
+  if(!b.classList.contains('armed')){ b.classList.add('armed'); b.textContent = 'Click again to erase everything'; return; }
+  const keep = { name:S.name, settings:S.settings };
+  S = freshState(); S.name = keep.name; S.settings = keep.settings; S.onboarded = true; save();
+  $('#settings').close(); render();
+});
+$('#settings').addEventListener('close', () => render());
+
+/* =========================================================
+   Global events
+   ========================================================= */
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]'); if(g){ e.preventDefault(); if(SES) closeSession(); go(g.dataset.go); return; }
+  const s = e.target.closest('[data-start]'); if(s){ const k = +s.dataset.start; if(SES) SES = null; startLevel(k); return; }
+  const v = e.target.closest('[data-vault-review]'); if(v){ if(SES) SES = null; startVault(); return; }
+  const dl = e.target.closest('[data-daily]'); if(dl){ startDaily(dl.dataset.daily); return; }
+  const x = e.target.closest('[data-exit]'); if(x){ const to = x.dataset.exit; closeSession(); go(to); return; }
+  const say = e.target.closest('[data-say]'); if(say){ TTS.speak(say.dataset.say, S.settings.rate); return; }
+  const lf = e.target.closest('[data-lexf]'); if(lf){ LEXFILTER = lf.dataset.lexf; renderLexicon(); return; }
+  const hp = e.target.closest('[data-hear-piece]'); if(hp){ const p = S.folio[+hp.dataset.hearPiece]; if(p) TTS.speak(p.text.replace(/\n+/g, ' '), S.settings.rate); return; }
+  const cp = e.target.closest('[data-copy-piece]'); if(cp){
+    const p = S.folio[+cp.dataset.copyPiece];
+    if(p){ try{ navigator.clipboard.writeText(p.text); cp.textContent = 'Copied'; setTimeout(() => { cp.textContent = 'Copy'; }, 1600); }catch(err){} }
+    return;
+  }
+});
+$('#sClose').addEventListener('click', onClose);
+$('#settingsBtn').addEventListener('click', openSettings);
+$('.brand').addEventListener('click', e => { e.preventDefault(); if(SES) closeSession(); go('home'); });
+document.addEventListener('keydown', e => {
+  if(!SES || $('#session').hidden) return;
+  const it = SES.items[SES.i];
+  if(SES.cur && !SES.done && it && it.mode === 'pick' && !SES.cur.checked && /^[1-4]$/.test(e.key)){ e.preventDefault(); choosePick(+e.key - 1); return; }
+  if(e.key === 'Enter' && SES.cur && SES.cur.checked && !SES.done && document.activeElement && document.activeElement.tagName !== 'BUTTON'){ e.preventDefault(); next(); return; }
+  if(e.key === 'Escape'){ e.preventDefault(); onClose(); }
+});
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if(h && h !== VIEW) go(h); });
+
+/* =========================================================
+   Init
+   ========================================================= */
+go((location.hash || '#home').slice(1));
+if(!S.onboarded) setTimeout(openOnboard, 250);
+</script>
+</body>
+</html>

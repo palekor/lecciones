@@ -121,23 +121,85 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .bar i.pos{background:var(--pos)} .bar i.neg{background:var(--neg)} .bar i.amber{background:var(--amber)}
 
 /* ---------- watchlist rows ---------- */
-.wrow{padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate);
+.wrow{padding:9px 11px 8px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate);
   margin-bottom:6px;cursor:pointer;transition:border-color .15s}
 .wrow:hover{border-color:var(--purple)}
-.wrow .wtop{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:7px}
-.wrow .idblk{min-width:0}
-.wrow .sy{font-family:var(--m);font-size:16.5px;font-weight:600;letter-spacing:.01em;display:block}
-.wrow .nm{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:60vw}
-.wrow .st{display:flex;justify-content:flex-end;flex:none}
-.wrow .chart{margin-bottom:7px}
-.wrow .chart canvas{width:100%;height:58px;display:block}
-.wrow .bottom{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.wrow .px{font-family:var(--m);font-size:19px;font-weight:600;letter-spacing:-.02em}
-.wrow .chg{font-family:var(--m);font-size:15px;font-weight:500}
-.wrow .pct{font-family:var(--m);font-size:15px;font-weight:600;margin-left:auto;
-  padding:3px 9px;border-radius:7px;background:var(--plate3)}
-.wrow .pct.pos{background:var(--posDim)} .wrow .pct.neg{background:var(--negDim)}
-.wrow .pct small{font-size:9.5px;font-weight:400;margin-left:5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.wrow .wa{display:flex;align-items:baseline;gap:8px;min-width:0}
+.wrow .sy{font-family:var(--m);font-size:15px;font-weight:600;letter-spacing:.01em}
+.wrow .evi{font-size:12px;line-height:1}
+.wrow .px{font-family:var(--m);font-size:15px;font-weight:500;margin-left:auto}
+.wrow .pct{font-family:var(--m);font-size:13px;font-weight:600;min-width:62px;text-align:right}
+.wrow .wb{display:flex;justify-content:space-between;gap:8px;margin-top:1px}
+.wrow .nm{font-size:10.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.wrow .chg{font-family:var(--m);font-size:10.5px;white-space:nowrap}
+.wrow .chart{margin:5px 0 4px}
+.wrow .chart canvas{width:100%;height:46px;display:block}
+.wrow .wc{display:flex;align-items:center;gap:10px;font-family:var(--m);font-size:10.5px;color:var(--muted);flex-wrap:nowrap}
+.wrow .wc .st{margin-left:auto;flex:none}
+.wrow .wc .st .tag{padding:2px 7px;font-size:9px}
+.wrow .wn{font-family:var(--m);font-size:10.5px;color:var(--faint);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- eventos ---------- */
+.sev{display:inline-flex;align-items:center;font-family:var(--m);font-size:8.5px;letter-spacing:.1em;padding:2px 6px;
+  border-radius:4px;border:1px solid var(--line);color:var(--muted);white-space:nowrap;vertical-align:1px}
+.sev.critical{color:var(--neg);border-color:var(--neg);background:var(--negDim)}
+.sev.important{color:var(--amber);border-color:var(--amber);background:var(--amberDim)}
+.sev.watch{color:var(--brass);border-color:var(--brass);background:var(--brassDim)}
+.sev.info{color:var(--muted)}
+.evlist{display:flex;flex-direction:column}
+.evrow{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:start;width:100%;text-align:left;
+  background:transparent;border:0;border-left:2px solid var(--line);border-bottom:1px solid var(--soft);padding:8px 2px 8px 8px}
+.evrow.s-critical{border-left-color:var(--neg)} .evrow.s-important{border-left-color:var(--amber)}
+.evrow.s-watch{border-left-color:var(--brass)}
+.evrow .t{font-size:10.5px;color:var(--faint);padding-top:2px}
+.evrow .b{display:flex;flex-direction:column;gap:2px;min-width:0}
+.evrow .h{font-size:12.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.evrow .ic{font-size:12px}
+.evrow .tt{font-size:12.5px;color:var(--text)}
+.evrow .ac{font-size:11.5px;color:var(--muted)}
+.evrow .go{font-family:var(--m);font-size:9.5px;letter-spacing:.1em;color:var(--purple2);padding-top:3px}
+.evrow:not(.new) .tt{color:var(--text2)}
+.evrow.new .t::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--purple2);margin-right:4px;vertical-align:1px}
+.regime{padding:10px 12px}
+.rgline{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;margin-top:7px;color:var(--text2)}
+.rgline b{font-weight:600}
+.estrip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px}
+.estrip::-webkit-scrollbar{display:none}
+.echip{flex:none;border:1px solid var(--line);background:var(--plate2);border-radius:999px;padding:5px 10px;font-size:11px;white-space:nowrap}
+.echip.s-critical{border-color:var(--neg)} .echip.s-important{border-color:var(--amber)} .echip.s-watch{border-color:var(--brass)}
+.dscore{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.dscore .sc{display:flex;flex-direction:column;gap:2px}
+.dscore .score b{font-size:34px}
+.dscore .bd{display:flex;flex-direction:column;gap:4px}
+.dscore .br{display:grid;grid-template-columns:78px 1fr 26px;gap:7px;align-items:center;font-family:var(--m);font-size:9.5px;letter-spacing:.06em;color:var(--muted)}
+.dscore .br b{font-size:11px;color:var(--text);text-align:right;font-weight:500}
+.dscore .bar{height:4px}
+.nextev{margin-bottom:12px}
+.nextev .ne{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.nextev .ne b:first-child{font-size:14px}
+.nextev .ne span{font-size:11.5px;color:var(--text2)}
+.nl{font-size:11px;color:var(--faint);margin-top:4px;line-height:1.5}
+.etrack{margin-bottom:12px;padding-top:10px;border-top:1px solid var(--soft)}
+.tk{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.tk::-webkit-scrollbar{display:none}
+.tp{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:46px;text-align:center}
+.tp i{font-style:normal;font-size:12px;line-height:1;color:var(--faint)}
+.tp b{font-family:var(--m);font-size:9.5px;letter-spacing:.05em;color:var(--muted);font-weight:500}
+.tp small{font-size:9.5px;color:var(--faint)}
+.tp.done i,.tp.done b{color:var(--pos)}
+.tp.next i,.tp.near i{color:var(--purple2)} .tp.next b{color:var(--text)}
+.tp.hit i,.tp.hit b,.tp.k-stop b{color:var(--neg)}
+.tp.k-target b{color:var(--pos)}
+.tl-l{flex:1 0 8px;height:1px;background:var(--line);margin:0 2px 18px}
+.why{padding-top:10px;border-top:1px solid var(--soft);margin-bottom:10px}
+.why .wl{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--text2);margin:5px 0 6px}
+.why .wc{font-size:12px;color:var(--text);line-height:1.45}
+.why .wc b{color:var(--brass);font-weight:500}
+.sig{padding-top:10px;border-top:1px solid var(--soft)}
+.sig .sn{display:grid;grid-template-columns:1fr auto;font-family:var(--m);font-size:11px;color:var(--muted);padding:2px 0}
+.sig .sn b{font-weight:500}
+.decs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.decs .btn{padding:8px 4px;font-family:var(--m);font-size:10.5px;letter-spacing:.05em}
 
 /* ---------- listas con nombre de la watchlist ---------- */
 .pills{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -600,9 +662,9 @@ DL.LEGAL = [
    ["2 · Simulated capital",
     "Every trade is simulated. The app never places real orders, never connects to a brokerage account and never moves real money."]],
   [["3 · No constituye asesoría",
-    "Nada de lo que muestra la aplicación — el Decision Score, las condiciones, los estados WATCH / WAIT / BUY / HOLD / SELL, los planes sugeridos, la rotación sectorial, los movimientos del mercado, las señales de volumen o los patrones del diario — constituye asesoría financiera, de inversión, legal, contable o tributaria, ni una recomendación de comprar o vender ningún instrumento. Son cálculos automáticos sobre datos públicos y sobre tu propio historial, presentados como material de práctica."],
+    "Nada de lo que muestra la aplicación — el Decision Score, las condiciones, los estados WATCH / WAIT / BUY / HOLD / SELL, los planes sugeridos, la rotación sectorial, los movimientos del mercado, las señales de volumen, los eventos y alertas o los patrones del diario — constituye asesoría financiera, de inversión, legal, contable o tributaria, ni una recomendación de comprar o vender ningún instrumento. Son cálculos automáticos sobre datos públicos y sobre tu propio historial, presentados como material de práctica."],
    ["3 · Not advice",
-    "Nothing the app shows — the Decision Score, the conditions, the WATCH / WAIT / BUY / HOLD / SELL states, the suggested plans, sector rotation, market movers, volume signals or journal patterns — is financial, investment, legal, accounting or tax advice, or a recommendation to buy or sell any instrument. They are automatic calculations on public data and on your own history, presented as practice material."]],
+    "Nothing the app shows — the Decision Score, the conditions, the WATCH / WAIT / BUY / HOLD / SELL states, the suggested plans, sector rotation, market movers, volume signals, events and alerts or journal patterns — is financial, investment, legal, accounting or tax advice, or a recommendation to buy or sell any instrument. They are automatic calculations on public data and on your own history, presented as practice material."]],
   [["4 · Datos de terceros",
     "Los precios provienen de fuentes públicas de terceros (Yahoo Finance). Pueden estar retrasados, incompletos o contener errores. No se garantiza su exactitud, disponibilidad ni continuidad."],
    ["4 · Third-party data",
@@ -2858,6 +2920,7 @@ DL.recompute = function () {
 DL.recomputeOne = function (s) {
   var a = DL.ENG.analyze(DL.data.bySym[s], DL.data.bench);
   if (a) DL.data.an[s] = a; else delete DL.data.an[s];
+  if (DL.EVENTS) DL.EVENTS.detectSoon();      // eventos: sobre los datos que ya llegaron, sin pedir nada más
 };
 
 DL.prices = function () {
@@ -2929,6 +2992,7 @@ DL.sync = function (force, done) {
     }, force));
   }
   if (DL.modeId === "market") jobs.push(DL.loadMovers(force));
+  else if (DL.loadContext) jobs.push(DL.loadContext(force));   // SPY / QQQ / VIX + sectores, en una sola petición
   if (DL.route === "radar") jobs.push(DL.loadRadar(force));
   Promise.all(jobs).then(function () {
     DL.data.loading = false;
@@ -2997,6 +3061,34 @@ DL.trendTag = function (an) {
     : an.trend === "down" ? DL.tag(T("Bajista", "Downtrend"), "sell")
     : DL.tag(T("Mixta", "Mixed"), "wait");
 };
+/* dirección de las medias (pendiente de 5 sesiones) — color: precio sobre/bajo la media */
+DL.smaDir = function (d, an) {
+  if (!d || !d.bars || d.bars.length < 60) return '<span class="mute">—</span>';
+  var out = [50, 200].map(function (n) {
+    var a = DL.IND.sma(d.bars, n), v = a[a.length - 1], v5 = a[a.length - 6];
+    if (v == null || v5 == null) return '<span class="mute">SMA' + n + " —</span>";
+    var arrow = v > v5 ? "↑" : v < v5 ? "↓" : "→";
+    var cls = an && an.price != null ? (an.price > v ? "pos" : "neg") : "";
+    return '<span class="' + cls + '">SMA' + n + " " + arrow + "</span>";
+  });
+  var vr = an ? DL.ENG.volRatio(an.vol, an.avgVol) : null;
+  out.push('<span class="' + (vr != null && vr >= 1.5 ? "warn" : "") + '">VOL ' + (vr == null ? "—" : vr.toFixed(1) + "×") + "</span>");
+  return out.join("");
+};
+/* ícono del evento abierto más reciente (24 h) */
+DL.evIndicator = function (sym) {
+  if (!DL.EVENTS) return "";
+  var e = DL.EVENTS.forSymbol(sym, 24).filter(function (x) { return x.status !== "RESOLVED"; })[0];
+  return e ? '<span class="evi" title="' + DL.esc(DL.EVENTS.L(e.title)) + '">' + e.icon + "</span>" : "";
+};
+DL.nextMini = function (sym) {
+  if (!DL.EVENTS) return "";
+  var x = DL.EVENTS.next(sym);
+  if (!x) return "";
+  return '<div class="wn">' + DL.esc(T("Próx: ", "Next: ") + DL.EVENTS.L(x.label)) + " · " + DL.money(x.level) +
+    ' · <span class="' + DL.tone(x.dist) + '">' + DL.pct(x.dist, 1) + "</span></div>";
+};
+
 DL.smaKey = function () {
   return '<span class="smakey"><i style="background:var(--amber)"></i>SMA 20<i style="background:var(--purple2)"></i>SMA 50' +
     '<i style="background:var(--sky)"></i>SMA 200</span>';
@@ -3147,7 +3239,7 @@ DL.VIEW_home = function (root) {
   var dayPct = dayBase > 0 ? (dayPL / dayBase) * 100 : 0;
   var clock = DL.MKT.clock();
 
-  var html = DL.modeCard(M);
+  var html = DL.regimeCard() + DL.eventRadarCard(5) + DL.modeCard(M);
   if (market) html += DL.marketCards();
 
   /* --- tarjeta de portafolio --- */
@@ -3289,6 +3381,7 @@ DL.VIEW_home = function (root) {
   DL.$$("#modeSel button", root).forEach(function (b) {
     b.onclick = function () { DL.setMode(b.dataset.mode); };
   });
+  DL.bindEventRadar(root);
   var lk = DL.$("#legalLink", root);
   if (lk) lk.onclick = DL.legalSheet;
   DL.$$(".idx, .mv", root).forEach(function (b) { b.onclick = function () { DL.openAsset(b.dataset.sym); }; });
@@ -3314,7 +3407,7 @@ DL.VIEW_home = function (root) {
         (an ? '<div class="row" style="margin-top:6px;gap:12px">' +
           '<span class="n" style="font-size:12px">' + DL.money(an.price) + "</span>" +
           '<span class="n ' + DL.tone(an.chgPct) + '" style="font-size:12px">' + DL.pct(an.chgPct) + "</span>" +
-          '<span class="eyebrow">' + DL.esc(DL.sess(d).short) + "</span></div>"
+          '<span class="eyebrow">' + DL.esc(DL.sess(d).short) + "</span></div>" + DL.nextMini(a.sym)
           : '<div class="row" style="margin-top:6px"><span class="spin"></span></div>');
       row.onclick = function () { DL.openAsset(a.sym); };
       list.appendChild(row);
@@ -3435,17 +3528,17 @@ DL.VIEW_watch = function (root) {
       var chgAmt = (px != null && pc) ? px - pc : null;
       var chgPct = an ? an.chgPct : (chgAmt != null ? (chgAmt / pc) * 100 : null);
       row.innerHTML =
-        '<div class="wtop"><div class="idblk"><span class="sy">' + DL.esc(w.sym) + '</span><span class="nm">' +
-        DL.esc((d && d.name) || w.name || "—") + "</span></div>" + '<div class="st">' + tag + "</div></div>" +
+        '<div class="wa"><span class="sy">' + DL.esc(w.sym) + "</span>" + DL.evIndicator(w.sym) +
+        '<span class="px">' + (px != null ? DL.money(px) : '<span class="spin"></span>') + "</span>" +
+        '<span class="pct ' + DL.tone(chgPct) + '">' + (chgPct != null ? DL.pct(chgPct) : "") + "</span></div>" +
+        '<div class="wb"><span class="nm">' + DL.esc((d && d.name) || w.name || "—") + "</span>" +
+        (chgAmt != null ? '<span class="chg ' + DL.tone(chgPct) + '">' + DL.sgn(chgAmt) + ' <span class="mute">' + DL.esc(d ? DL.sess(d).tiny : "") + "</span></span>" : "") + "</div>" +
         '<div class="chart"><canvas></canvas></div>' +
-        '<div class="bottom"><span class="px">' + (px != null ? DL.money(px) : '<span class="spin"></span>') + "</span>" +
-        (chgAmt != null ? '<span class="chg ' + DL.tone(chgPct) + '">' + DL.sgn(chgAmt) + "</span>" +
-          '<span class="pct ' + DL.tone(chgPct) + '">' + DL.pct(chgPct) + "<small>" + DL.esc(d ? DL.sess(d).tiny : "") + "</small></span>" : "") +
-        "</div>";
+        '<div class="wc">' + DL.smaDir(d, an) + '<div class="st">' + tag + "</div></div>" + DL.nextMini(w.sym);
       row.onclick = function () { DL.openAsset(w.sym); };
       row.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); DL.openAsset(w.sym); } };
       listEl.appendChild(row);
-      if (d && d.bars) DL.CH.spark(row.querySelector("canvas"), d.bars, 58, 30);
+      if (d && d.bars) DL.CH.spark(row.querySelector("canvas"), d.bars, 46, 30);
     });
     if (!shown) {
       listEl.innerHTML = DL.empty(T("Ningún activo pasa el filtro de scalping hoy", "No asset passes the scalping filter today"),
@@ -3710,26 +3803,51 @@ DL.VIEW_asset = function (root) {
   var sess = DL.sess(d);
 
   var html = backBtn;
+  var LL = DL.EVENTS.L;
+  var symEvents = DL.EVENTS.forSymbol(sym, 72);
+  var dayChg = an ? an.chgPct : DL.ENG.dayChange(d);   // la cabecera SIEMPRE muestra el día; el rango va junto al gráfico
+  var nowCtx = an ? DL.EVENTS.ctxOf(sym, an, d) : null;
 
-  /* cabecera */
+  /* 1-4 · QUÉ ESTÁ PASANDO: precio, estado, score explicable y franja de eventos */
   html += '<section class="card">' +
-    '<div class="head" style="margin-bottom:8px"><div>' +
+    '<div class="head" style="margin-bottom:6px"><div>' +
     '<h3 style="font-size:20px;font-family:var(--m);letter-spacing:-.01em">' + DL.esc(sym) + "</h3>" +
     '<div class="eyebrow" style="margin-top:2px">' + DL.esc(d.name || "") + (d.exchange ? " · " + DL.esc(d.exchange) : "") + "</div></div>" +
     (state ? DL.tag(state.s, state.s.toLowerCase()) : (an ? (M.id === "market" ? DL.trendTag(an) : DL.tag(an.state, an.state.toLowerCase())) : "")) +
     "</div>" +
     '<div class="row" style="align-items:baseline;gap:8px">' +
-    '<span class="n" style="font-size:30px;letter-spacing:-.03em">' + DL.money(d.price) + "</span>" +
-    '<span class="n ' + DL.tone(rngChg) + '" style="font-size:15px">' + (rngChg == null ? "—" : DL.pct(rngChg)) + "</span>" +
-    '<span class="eyebrow">' + DL.esc(rdef.key === "1D" ? sess.short : DL.rangeLabel(rdef)) + "</span>" +
-    (d.stale || d.cachedAt ? '<span class="eyebrow">' + DL.esc(T("dato en caché", "cached data")) + "</span>" : "") +
+    '<span class="n" style="font-size:28px;letter-spacing:-.03em">' + DL.money(d.price) + "</span>" +
+    '<span class="n ' + DL.tone(dayChg) + '" style="font-size:15px">' + (dayChg == null ? "—" : DL.pct(dayChg)) + "</span>" +
+    (d.prevClose ? '<span class="n ' + DL.tone(dayChg) + '" style="font-size:12px">' + DL.sgn(d.price - d.prevClose) + "</span>" : "") +
+    '<span class="eyebrow">' + DL.esc(sess.short) + "</span>" +
+    (d.stale || d.cachedAt ? '<span class="eyebrow" style="color:var(--amber)">' + DL.esc(T("dato en caché", "cached data")) + "</span>" : "") +
     "</div>";
+  if (an) {
+    html += DL.scoreBlock(an) +
+      '<p style="font-size:10.5px;color:var(--faint);margin-top:6px">' +
+      DL.esc(an.mode === "market"
+        ? T("Describe las condiciones actuales con reglas explícitas. Sin estrategia no hay señal de compra o venta. No predice el precio.",
+            "Describes current conditions with explicit rules. Without a strategy there's no buy or sell signal. It doesn't predict price.")
+        : T("Describe las condiciones actuales con reglas explícitas. No predice el precio.",
+            "Describes current conditions with explicit rules. It doesn't predict price.")) + "</p>";
+  }
+  html += '<div class="estrip">' + (symEvents.length
+    ? symEvents.slice(0, 6).map(function (e) {
+        return '<button type="button" class="echip s-' + e.severity.toLowerCase() + '" data-ev="' + e.id + '">' + e.icon + " " +
+          DL.esc(LL(e.title)) + ' <span class="mute n">' + DL.esc(DL.evTime(e.timestamp)) + "</span></button>";
+      }).join("")
+    : '<span class="eyebrow">' + DL.esc(T("Sin eventos en las últimas 72 h", "No events in the last 72 h")) + "</span>") + "</div>";
+  html += "</section>";
 
-  html += '<div class="row" style="margin-top:12px;gap:6px;justify-content:space-between"><div class="seg" id="rangeSeg">' +
+  /* 5 · gráfico compacto */
+  html += '<section class="card">' +
+    '<div class="row" style="gap:6px;justify-content:space-between"><div class="seg" id="rangeSeg">' +
     DL.ASSET_RANGES.map(function (r) {
       return '<button type="button" data-r="' + r.key + '" aria-pressed="' + (DL.current.range === r.key) + '">' + DL.esc(DL.rangeLabel(r)) + "</button>";
-    }).join("") + "</div>" + DL.smaKey() + "</div>";
-  html += '<div class="chartbox" style="margin-top:10px"><canvas id="assetChart"></canvas></div>';
+    }).join("") + "</div>" +
+    '<span class="n ' + DL.tone(rngChg) + '" style="font-size:12px">' + DL.esc(DL.rangeLabel(rdef)) + " " + (rngChg == null ? "—" : DL.pct(rngChg)) + "</span></div>" +
+    '<div style="margin-top:6px">' + DL.smaKey() + "</div>";
+  html += '<div class="chartbox" style="margin-top:8px"><canvas id="assetChart"></canvas></div>';
   if (isIntra && !chartBars) {
     html += '<p class="mute" style="font-size:11.5px;margin-top:6px"><span class="spin"></span> ' + DL.esc(T("Cargando velas intradía…", "Loading intraday candles…")) + "</p>";
   } else if (isIntra) {
@@ -3741,85 +3859,25 @@ DL.VIEW_asset = function (root) {
   }
   html += "</section>";
 
-  /* medias móviles: siempre las tres, con la distancia del precio a cada una */
+  /* 6-7 · QUÉ SIGUE Y POR QUÉ: próximo evento, trayecto, por qué ahora, señal vs ruido */
   if (an) {
-    var smaRo = function (n, v) {
-      var dist = v ? ((an.price / v) - 1) * 100 : null;
-      return DL.ro("SMA " + n, v == null ? "—" : DL.px(v) + " · " + DL.pct(dist, 1), dist == null ? "" : DL.tone(dist), "sm");
-    };
-    html += '<section class="card"><div class="head"><h3>' + DL.esc(T("Medias móviles", "Moving averages")) + "</h3>" +
-      DL.trendTag(an) + "</div>" +
-      '<div class="grid g3">' + smaRo(20, an.sma20) + smaRo(50, an.sma50) + smaRo(200, an.sma200) + "</div>" +
-      '<p style="margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.5">' +
-      DL.esc(T("El % es la distancia del precio a cada media. Alcista = precio sobre la SMA 50 y la SMA 50 sobre la SMA 200; bajista = al revés; mixta = cualquier otra combinación.",
-               "The % is the price's distance to each average. Uptrend = price above SMA 50 and SMA 50 above SMA 200; downtrend = the reverse; mixed = anything else.")) +
-      "</p></section>";
+    html += '<section class="card">' + DL.nextBlock(sym, true) + DL.trackBlock(sym) + DL.whyBlock(nowCtx) + DL.signalBlock(nowCtx) + "</section>";
   }
 
-  /* búsqueda profunda */
-  html += '<section class="card"><div class="row" style="justify-content:space-between;align-items:center">' +
-    '<div><h3 style="margin:0">' + DL.esc(T("Búsqueda profunda", "Deep research")) + "</h3>" +
-    '<p style="font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45">' +
-    DL.esc(T("Prompt de analista senior con 14 secciones, listo para pegar en ChatGPT o Claude.",
-             "Senior-analyst prompt with 14 sections, ready to paste into ChatGPT or Claude.")) + "</p></div>" +
-    '<button type="button" class="btn sm" id="btnDeep">' + DL.esc(T("Generar", "Generate")) + "</button></div></section>";
-
-  /* análisis técnico detallado: los números detrás del score */
-  if (an) {
-    var rsiState = an.rsi == null ? "—" : an.rsi >= 70 ? T("sobrecompra", "overbought") : an.rsi <= 30 ? T("sobreventa", "oversold") : "neutral";
-    var bull = an.macd != null && an.macdSignal != null && an.macd > an.macdSignal;
-    var macdState = (an.macd != null && an.macdSignal != null) ? (bull ? T("alcista", "bullish") : T("bajista", "bearish")) : "—";
-    var volR = DL.ENG.volRatio(an.vol, an.avgVol);
-    var spike = volR != null && volR >= 1.5;
-    var rangePct = (an.hi52 != null && an.lo52 != null && an.hi52 > an.lo52)
-      ? ((an.price - an.lo52) / (an.hi52 - an.lo52)) * 100 : null;
-
-    html += '<section class="card"><div class="head"><h3>' + DL.esc(T("Análisis técnico detallado", "Detailed technical analysis")) + "</h3>" +
-      (spike ? DL.tag(volR.toFixed(1) + T("× volumen", "× volume"), "spike") : "") + "</div>" +
-      '<div class="grid g3" style="margin-bottom:12px">' +
-      DL.ro("RSI (14)", an.rsi == null ? "—" : an.rsi.toFixed(1) + " · " + rsiState,
-        an.rsi != null && an.rsi >= 70 ? "neg" : an.rsi != null && an.rsi <= 30 ? "pos" : "", "sm") +
-      DL.ro("MACD", macdState, macdState === "—" ? "" : bull ? "pos" : "neg", "sm") +
-      DL.ro("ATR (14)", DL.pctp(an.atrPct, 2) + T(" del precio", " of price"), "", "sm") +
-      "</div>" +
-      '<div class="grid g3" style="margin-bottom:12px">' +
-      DL.ro(T("Volumen · ", "Volume · ") + sess.short, DL.vol(an.vol), "", "sm") +
-      DL.ro(T("Promedio 20 sesiones", "20-session average"), an.avgVol > 0 ? DL.vol(an.avgVol) : "—", "", "sm") +
-      DL.ro(T("Vs. promedio", "Vs. average"), volR == null ? "—" : volR.toFixed(2) + "×", spike ? "warn" : "", "sm") +
-      "</div>";
-    if (rangePct != null) {
-      html += '<div style="margin-bottom:4px"><div class="row" style="justify-content:space-between;margin-bottom:5px">' +
-        '<span class="eyebrow">' + DL.esc(T("Rango 52 semanas", "52-week range")) + "</span>" +
-        '<span class="n" style="font-size:11px;color:var(--muted)">' + DL.money(an.lo52) + " – " + DL.money(an.hi52) + "</span></div>" +
-        '<div class="bar"><i style="width:' + Math.min(100, Math.max(0, rangePct)).toFixed(1) + '%"></i></div></div>';
-    }
-    html += '<div class="chartbox" style="margin-top:14px"><canvas id="rsiChart"></canvas></div>' +
-      '<div class="chartbox" style="margin-top:8px"><canvas id="macdChart"></canvas></div>' +
-      "</section>";
-  }
-
-  /* score con condiciones explícitas (con estrategia) o contexto técnico (sin estrategia) */
+  /* 8 · condiciones explícitas detrás del score */
   if (an) {
     var marketMode = an.mode === "market";
     html += '<section class="card"><div class="head"><h3>' +
-      DL.esc(marketMode ? T("Contexto técnico", "Technical context") : "Decision Score") + "</h3>" +
-      (marketMode ? DL.trendTag(an) : DL.tag(an.state, an.state.toLowerCase())) + "</div>" +
-      '<div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:12px">' +
-      (marketMode
-        ? '<span class="score"><b>' + an.confirmed + "</b><span>/" + an.total + "</span></span>"
-        : '<span class="score"><b>' + an.score + "</b><span>/100</span></span>") +
-      '<span class="n" style="font-size:12px;color:var(--muted)">' +
-      DL.esc(marketMode ? T("señales a favor de la tendencia", "signals in favour of the trend")
-        : T(an.confirmed + " de " + an.total + " condiciones confirmadas", an.confirmed + " of " + an.total + " conditions confirmed")) + "</span></div>" +
-      '<div class="bar" style="margin-bottom:14px"><i class="' +
-      (an.score >= 75 ? "pos" : an.score >= 50 ? "amber" : "neg") + '" style="width:' + an.score + '%"></i></div>' +
+      DL.esc(marketMode ? T("Contexto técnico", "Technical context") : T("Condiciones del score", "Score conditions")) + "</h3>" +
+      '<span class="eyebrow">' + DL.esc(marketMode ? T(an.confirmed + " de " + an.total + " a favor de la tendencia", an.confirmed + " of " + an.total + " in favour of the trend")
+        : T(an.confirmed + " de " + an.total + " confirmadas", an.confirmed + " of " + an.total + " confirmed")) + "</span></div>" +
       an.conditions.map(function (c) {
         return '<div class="cond ' + (c.ok ? "ok" : "") + '">' +
           '<span class="ic">' + (marketMode ? (c.ok ? '<span class="pos">●</span>' : '<span class="mute">○</span>') : (c.ok ? "✅" : "❌")) + "</span>" +
           '<span class="lb">' + DL.esc(c.label) + "</span>" +
           '<span class="vl">' + DL.esc(c.value) + "</span></div>";
       }).join("") +
-      '<p style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.5">' +
+      '<p style="margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.5">' +
       DL.esc(marketMode
         ? T("Sin estrategia no hay señal de compra o venta: solo hechos del gráfico que puedes verificar tú mismo.",
             "Without a strategy there's no buy or sell signal: only chart facts you can verify yourself.")
@@ -3864,6 +3922,56 @@ DL.VIEW_asset = function (root) {
               "A breakout without " + DL.term("volume confirmation") + " is often false. Near support it's a bounce; above resistance it's a " + DL.term("breakout") + ".")) +
         "</p></section>";
     }
+  }
+
+  /* 10 · detalles técnicos */
+  /* medias móviles: siempre las tres, con la distancia del precio a cada una */
+  if (an) {
+    var smaRo = function (n, v) {
+      var dist = v ? ((an.price / v) - 1) * 100 : null;
+      return DL.ro("SMA " + n, v == null ? "—" : DL.px(v) + " · " + DL.pct(dist, 1), dist == null ? "" : DL.tone(dist), "sm");
+    };
+    html += '<section class="card"><div class="head"><h3>' + DL.esc(T("Medias móviles", "Moving averages")) + "</h3>" +
+      DL.trendTag(an) + "</div>" +
+      '<div class="grid g3">' + smaRo(20, an.sma20) + smaRo(50, an.sma50) + smaRo(200, an.sma200) + "</div>" +
+      '<p style="margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.5">' +
+      DL.esc(T("El % es la distancia del precio a cada media. Alcista = precio sobre la SMA 50 y la SMA 50 sobre la SMA 200; bajista = al revés; mixta = cualquier otra combinación.",
+               "The % is the price's distance to each average. Uptrend = price above SMA 50 and SMA 50 above SMA 200; downtrend = the reverse; mixed = anything else.")) +
+      "</p></section>";
+  }
+
+  /* análisis técnico detallado: los números detrás del score */
+  if (an) {
+    var rsiState = an.rsi == null ? "—" : an.rsi >= 70 ? T("sobrecompra", "overbought") : an.rsi <= 30 ? T("sobreventa", "oversold") : "neutral";
+    var bull = an.macd != null && an.macdSignal != null && an.macd > an.macdSignal;
+    var macdState = (an.macd != null && an.macdSignal != null) ? (bull ? T("alcista", "bullish") : T("bajista", "bearish")) : "—";
+    var volR = DL.ENG.volRatio(an.vol, an.avgVol);
+    var spike = volR != null && volR >= 1.5;
+    var rangePct = (an.hi52 != null && an.lo52 != null && an.hi52 > an.lo52)
+      ? ((an.price - an.lo52) / (an.hi52 - an.lo52)) * 100 : null;
+
+    html += '<section class="card"><div class="head"><h3>' + DL.esc(T("Análisis técnico detallado", "Detailed technical analysis")) + "</h3>" +
+      (spike ? DL.tag(volR.toFixed(1) + T("× volumen", "× volume"), "spike") : "") + "</div>" +
+      '<div class="grid g3" style="margin-bottom:12px">' +
+      DL.ro("RSI (14)", an.rsi == null ? "—" : an.rsi.toFixed(1) + " · " + rsiState,
+        an.rsi != null && an.rsi >= 70 ? "neg" : an.rsi != null && an.rsi <= 30 ? "pos" : "", "sm") +
+      DL.ro("MACD", macdState, macdState === "—" ? "" : bull ? "pos" : "neg", "sm") +
+      DL.ro("ATR (14)", DL.pctp(an.atrPct, 2) + T(" del precio", " of price"), "", "sm") +
+      "</div>" +
+      '<div class="grid g3" style="margin-bottom:12px">' +
+      DL.ro(T("Volumen · ", "Volume · ") + sess.short, DL.vol(an.vol), "", "sm") +
+      DL.ro(T("Promedio 20 sesiones", "20-session average"), an.avgVol > 0 ? DL.vol(an.avgVol) : "—", "", "sm") +
+      DL.ro(T("Vs. promedio", "Vs. average"), volR == null ? "—" : volR.toFixed(2) + "×", spike ? "warn" : "", "sm") +
+      "</div>";
+    if (rangePct != null) {
+      html += '<div style="margin-bottom:4px"><div class="row" style="justify-content:space-between;margin-bottom:5px">' +
+        '<span class="eyebrow">' + DL.esc(T("Rango 52 semanas", "52-week range")) + "</span>" +
+        '<span class="n" style="font-size:11px;color:var(--muted)">' + DL.money(an.lo52) + " – " + DL.money(an.hi52) + "</span></div>" +
+        '<div class="bar"><i style="width:' + Math.min(100, Math.max(0, rangePct)).toFixed(1) + '%"></i></div></div>';
+    }
+    html += '<div class="chartbox" style="margin-top:14px"><canvas id="rsiChart"></canvas></div>' +
+      '<div class="chartbox" style="margin-top:8px"><canvas id="macdChart"></canvas></div>' +
+      "</section>";
   }
 
   /* posición abierta */
@@ -3915,6 +4023,14 @@ DL.VIEW_asset = function (root) {
       : '<button class="btn" id="btnWatch">' + DL.esc(T("Agregar a watchlist", "Add to watchlist")) + "</button>") +
     "</div></section>";
 
+  /* búsqueda profunda */
+  html += '<section class="card"><div class="row" style="justify-content:space-between;align-items:center">' +
+    '<div><h3 style="margin:0">' + DL.esc(T("Búsqueda profunda", "Deep research")) + "</h3>" +
+    '<p style="font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45">' +
+    DL.esc(T("Prompt de analista senior con 14 secciones, listo para pegar en ChatGPT o Claude.",
+             "Senior-analyst prompt with 14 sections, ready to paste into ChatGPT or Claude.")) + "</p></div>" +
+    '<button type="button" class="btn sm" id="btnDeep">' + DL.esc(T("Generar", "Generate")) + "</button></div></section>";
+
   root.innerHTML = html;
 
   /* gráfico: SMA 20 / 50 / 200 en TODOS los rangos */
@@ -3924,7 +4040,7 @@ DL.VIEW_asset = function (root) {
       bars: chartBars,
       sma: isIntra ? null : [20, 50, 200],
       smaLevels: isIntra && an ? { 20: an.sma20, 50: an.sma50, 200: an.sma200 } : null,
-      count: chartCount, height: 260,
+      count: chartCount, height: 210,
       levels: (!isIntra && pos) ? { entry: pos.entry, stop: pos.stop, target: pos.target } : null,
       sr: (!isIntra && an && M.id === "swing") ? { support: an.support, resistance: an.resistance } : null,
       intraday: isIntra
@@ -3942,6 +4058,7 @@ DL.VIEW_asset = function (root) {
   var bt;
   if ((bt = DL.$("#btnBack", root))) bt.onclick = function () { DL.go(DL.current.from || "watch"); };
   if ((bt = DL.$("#btnDeep", root))) bt.onclick = function () { DL.deepSearchSheet(sym); };
+  DL.$$(".echip[data-ev]", root).forEach(function (b) { b.onclick = function () { DL.eventSheet(b.dataset.ev); }; });
   if ((bt = DL.$("#btnTrade", root))) bt.onclick = function () { DL.tradeSym = sym; DL.go("trade"); };
   if ((bt = DL.$("#btnWatch", root))) bt.onclick = function () { DL.addSymbol(sym, d.name); };
   if ((bt = DL.$("#btnMoveList", root))) bt.onclick = function () { DL.moveListSheet(sym); };
@@ -4388,7 +4505,8 @@ DL.VIEW_diary = function (root) {
   }
   var KIND = {
     watch: ["Watchlist", "watch"], entry: [T("Compra", "Buy"), "buy"], follow: [T("Seguimiento", "Follow-up"), "hold"],
-    stop: ["Stop", "wait"], exit: [T("Cierre", "Exit"), "sell"], note: [T("Nota", "Note"), ""]
+    stop: ["Stop", "wait"], exit: [T("Cierre", "Exit"), "sell"], note: [T("Nota", "Note"), ""],
+    event: [T("Evento", "Event"), "spike"]
   };
   html += DL.S.diary.slice(0, 120).map(function (e) {
     var d = DL.data.bySym[e.sym];
@@ -4411,7 +4529,7 @@ DL.VIEW_diary = function (root) {
   html += "</section>";
   root.innerHTML = html;
   DL.$$(".diary-sym", root).forEach(function (b) {
-    b.onclick = function () { DL.openAsset(b.dataset.sym); };
+    b.onclick = function () { if (b.dataset.sym === "PORT") DL.go("port"); else DL.openAsset(b.dataset.sym); };
   });
 };
 
@@ -4589,7 +4707,12 @@ DL.settingsSheet = function () {
   ["#sCap", "#sDay", "#sRisk"].forEach(function (s) { body.querySelector(s).oninput = prev; });
   prev();
 
-  var acctBtn = DL.el('<button class="btn sm" style="margin-top:14px;width:100%"></button>');
+  var alrtBtn = DL.el('<button class="btn sm" style="margin-top:14px;width:100%"></button>');
+  alrtBtn.textContent = "⚑ " + T("Alertas y eventos", "Alerts and events");
+  alrtBtn.onclick = function () { s.close(); DL.alertsSheet(); };
+  body.appendChild(alrtBtn);
+
+  var acctBtn = DL.el('<button class="btn sm" style="margin-top:8px;width:100%"></button>');
   acctBtn.textContent = "☁ " + (DL.CLOUD.signedIn() ? T("Cuenta y sincronización", "Account and sync") : T("Entrar para sincronizar entre dispositivos", "Sign in to sync across devices"));
   acctBtn.onclick = function () { s.close(); DL.CLOUD.accountSheet(); };
   body.appendChild(acctBtn);
@@ -4817,6 +4940,775 @@ DL.VIEW_radar = function (root) {
 /* ============================================================
    Módulo 6/6 — arranque, idioma y navegación
    ============================================================ */
+
+/* ============================================================
+   EVENT ENGINE — DL.EVENTS
+   Convierte los datos que la app YA cargó en eventos: un umbral
+   CRUZADO (la observación anterior estaba del otro lado), nunca
+   "sigue siendo cierto". Sin peticiones nuevas por indicador.
+   Persistencia: localStorage (dlab.events.v1). Los ajustes de
+   alertas viven en el perfil, así que viajan con la cuenta.
+   ============================================================ */
+DL.EVENTS = (function () {
+  var KEY = "dlab.events.v1", MAX = 300;
+  var st = { list: [], fired: {}, snap: {} };
+  try { var raw = localStorage.getItem(KEY); if (raw) st = Object.assign(st, JSON.parse(raw)); } catch (e) {}
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  var DEF = {
+    pct: [3, 5, 8], custom: null,
+    sma20: true, sma50: true, sma200: true, rsi: true, macd: true, vol: true, hl52: true,
+    stop: true, target: true, pl: true, plPct: 10, dd: true, ddPct: 5, cooldown: 60
+  };
+  function settings() {
+    var a = DL.S.profile.alerts || {}, o = {};
+    Object.keys(DEF).forEach(function (k) { o[k] = a[k] !== undefined ? a[k] : DEF[k]; });
+    return o;
+  }
+  function setSettings(o) { DL.S.profile.alerts = o; DL.save(); }
+
+  var RANK = { CRITICAL: 4, IMPORTANT: 3, WATCH: 2, INFO: 1 };
+  function L(x) { return Array.isArray(x) ? T(x[0], x[1]) : (x == null ? "" : String(x)); }
+
+  /* ---------- utilidades ---------- */
+  function sessKey(d) {
+    var s = DL.sess(d);
+    if (s && s.ymd) return s.ymd;
+    return new Date(d.sessionT || d.asOf || Date.now()).toISOString().slice(0, 10);
+  }
+  /* serie con el precio actual como última observación y el cierre anterior
+     como penúltima — así "cruzar" compara dos observaciones reales */
+  function series(d) {
+    var b = d.bars, n = b.length;
+    var lastIsPrev = d.prevClose != null && Math.abs(b[n - 1].c - d.prevClose) < 1e-9 && n > 1 &&
+      Math.abs(b[n - 1].c - d.price) > 1e-9;
+    var bx = b.slice();
+    if (lastIsPrev) bx.push({ t: d.sessionT || Date.now(), o: d.price, h: d.price, l: d.price, c: d.price, v: 0 });
+    else bx[bx.length - 1] = Object.assign({}, bx[bx.length - 1], { c: d.price });
+    return bx;
+  }
+  function slope(arr, k) {
+    var n = arr.length, a = arr[n - 1], b = arr[n - 1 - (k || 5)];
+    return (a == null || b == null) ? 0 : a > b ? 1 : a < b ? -1 : 0;
+  }
+  function side(v, ref) { return (v == null || ref == null) ? 0 : v > ref ? 1 : v < ref ? -1 : 0; }
+
+  /* ---------- contexto: mercado, sector, régimen ---------- */
+  function ctxData(sym) {
+    return DL.MOVERS.data[sym] || DL.RADAR.data[sym] || (sym === DL.BENCH ? DL.data.bench : null) || DL.data.bySym[sym] || null;
+  }
+  function regime() {
+    var spy = DL.ENG.dayChange(ctxData("SPY") || DL.data.bench);
+    var qqq = DL.ENG.dayChange(ctxData("QQQ"));
+    var vixD = ctxData("^VIX"), vix = vixD ? vixD.price : null, vixChg = DL.ENG.dayChange(vixD);
+    if (spy == null) return null;
+    var state = "MIXED";
+    if (spy <= -1.5 || (vix != null && vix >= 28) ||
+        (spy < 0 && (qqq == null || qqq < 0) && ((vix != null && vix >= 22) || (vixChg != null && vixChg >= 5)))) state = "OFF";
+    else if (spy >= 0 && (qqq == null || qqq >= 0) && (vix == null || vix < 20) && (vixChg == null || vixChg <= 5)) state = "ON";
+    return { state: state, spy: spy, qqq: qqq, vix: vix, vixChg: vixChg,
+      stale: !!((ctxData("SPY") || {}).stale) };
+  }
+  function signal(sym, an) {
+    if (!an) return null;
+    var mkt = DL.ENG.dayChange(ctxData(DL.BENCH) || DL.data.bench);
+    var etf = DL.sectorOf(sym);
+    var sec = etf ? DL.ENG.dayChange(ctxData(etf)) : null;
+    var volR = DL.ENG.volRatio(an.vol, an.avgVol);
+    var rel = mkt == null ? null : an.chgPct - mkt;
+    var pts = 0;
+    if (rel != null) pts += Math.abs(rel) >= 2 ? 2 : Math.abs(rel) >= 1 ? 1 : 0;
+    if (volR != null) pts += volR >= 2 ? 2 : volR >= 1.5 ? 1 : 0;
+    if (sec != null && Math.abs(an.chgPct - sec) >= 1.5) pts += 1;
+    var strength = Math.abs(an.chgPct) < 1 ? "LOW" : pts >= 3 ? "HIGH" : pts >= 2 ? "MEDIUM" : "LOW";
+    return { stock: an.chgPct, sector: sec, sectorEtf: etf, market: mkt, rel: rel, volR: volR, strength: strength };
+  }
+
+  /* ---------- "por qué ahora": hechos + conclusión ---------- */
+  function ctxOf(sym, an, d) {
+    if (!an) return null;
+    var sg = signal(sym, an);
+    return {
+      chg: an.chgPct, sess: d ? DL.sess(d).short : "", volR: DL.ENG.volRatio(an.vol, an.avgVol),
+      s20: side(an.price, an.sma20), s50: side(an.price, an.sma50), s200: side(an.price, an.sma200),
+      macd: (an.macd != null && an.macdSignal != null) ? (an.macd > an.macdSignal ? 1 : -1) : 0,
+      rsi: an.rsi, score: an.score, trend: an.trend,
+      market: sg ? sg.market : null, sector: sg ? sg.sector : null, sectorEtf: sg ? sg.sectorEtf : null,
+      rel: sg ? sg.rel : null, strength: sg ? sg.strength : null
+    };
+  }
+  function why(c) {
+    if (!c) return { lines: [], conclusion: "" };
+    var lines = [];
+    lines.push(DL.pct(c.chg) + " " + (c.sess || T("hoy", "today")));
+    if (c.volR != null) lines.push(T("Volumen ", "Volume ") + c.volR.toFixed(1) + T("× el promedio", "× average"));
+    var sm = [["20", c.s20], ["50", c.s50], ["200", c.s200]].filter(function (x) { return x[1] !== 0; });
+    var above = sm.filter(function (x) { return x[1] > 0; }).map(function (x) { return "SMA" + x[0]; });
+    var below = sm.filter(function (x) { return x[1] < 0; }).map(function (x) { return "SMA" + x[0]; });
+    if (above.length) lines.push(T("Sobre ", "Above ") + above.join(" / "));
+    if (below.length) lines.push(T("Bajo ", "Below ") + below.join(" / "));
+    if (c.macd) lines.push("MACD " + (c.macd > 0 ? T("alcista", "bullish") : T("bajista", "bearish")));
+    if (c.rsi != null) lines.push("RSI " + c.rsi.toFixed(0) + (c.rsi >= 70 ? T(" · elevado", " · elevated") : c.rsi <= 30 ? T(" · sobreventa", " · oversold") : ""));
+
+    var up = c.chg > 0, vol = c.volR || 0, big = Math.abs(c.chg) >= 1;
+    var concl;
+    if (up && vol >= 1.5 && c.s50 > 0 && c.s200 > 0) {
+      concl = c.rsi != null && c.rsi >= 70
+        ? T("El momentum está confirmado, pero el precio se está extendiendo: no persigas.", "Momentum is confirmed, but price is getting extended: don't chase.")
+        : T("Momentum confirmado por volumen y tendencia.", "Momentum confirmed by volume and trend.");
+    } else if (up && big && vol < 1) {
+      concl = T("Sube sin volumen: la confirmación es débil.", "Rising without volume: weak confirmation.");
+    } else if (!up && vol >= 1.5 && c.s50 < 0) {
+      concl = T("Venta con volumen bajo medias clave: debilidad real.", "Selling on volume below key averages: real weakness.");
+    } else if (!up && big && c.s200 > 0) {
+      concl = T("Retroceso dentro de una tendencia mayor alcista.", "Pullback inside a larger uptrend.");
+    } else if (c.rsi != null && c.rsi <= 30) {
+      concl = T("Sobreventa: espera una señal de giro antes de actuar.", "Oversold: wait for a turn before acting.");
+    } else {
+      concl = T("Sin confirmación clara en ninguna dirección.", "No clear confirmation either way.");
+    }
+    if (c.market != null && big && Math.sign(c.market) === Math.sign(c.chg) && Math.abs(c.rel || 0) < Math.abs(c.chg) * 0.4) {
+      concl += T(" Ojo: se mueve sobre todo con el mercado.", " Note: it's mostly moving with the market.");
+    }
+    return { lines: lines, conclusion: concl };
+  }
+
+  /* ---------- registro de un evento ---------- */
+  function fire(out, key, ev, opt) {
+    var now = Date.now(), cfg = settings();
+    if (st.fired[key]) return false;
+    if (opt && opt.cdKey) {
+      var lastCd = st.fired["cd|" + opt.cdKey];
+      if (lastCd && now - lastCd < cfg.cooldown * 60000) return false;
+      st.fired["cd|" + opt.cdKey] = now;
+    }
+    st.fired[key] = now;
+    ev.id = DL.uid("e");
+    ev.timestamp = now;
+    ev.status = "NEW";
+    ev.decision = null;
+    ev.notes = "";
+    out.push(ev);
+    return true;
+  }
+
+  var ICON = { pctUp: "🚀", pctDn: "⚠", sma: "📐", rsi: "🌡", macd: "〽", vol: "📊", hi52: "🏔", lo52: "🕳",
+               stopNear: "🛑", stopHit: "🛑", targetNear: "🎯", targetHit: "🎯", pl: "💰", dd: "📉", thesis: "⛔" };
+
+  function base(sym, d, an, type, sev, icon) {
+    return {
+      symbol: sym, type: type, severity: sev, icon: icon,
+      priceAtEvent: d ? d.price : null, stale: !!(d && (d.stale || d.cachedAt)),
+      sessLabel: d ? DL.sess(d).short : "", ctx: ctxOf(sym, an, d)
+    };
+  }
+
+  /* ---------- detección por activo ---------- */
+  function detectSym(sym, out, cfg) {
+    var d = DL.data.bySym[sym], an = DL.data.an[sym];
+    if (!d || !an || !d.bars || d.bars.length < 30 || d.price == null) return;
+    var sk = sessKey(d), snap = st.snap[sym], same = snap && snap.sess === sk;
+    var chg = an.chgPct, volR = DL.ENG.volRatio(an.vol, an.avgVol);
+
+    /* 1. % del día: la sesión empieza en 0 — cruzar es pasar de un lado al otro */
+    var ladder = (cfg.pct || []).slice();
+    if (cfg.custom && ladder.indexOf(+cfg.custom) < 0) ladder.push(+cfg.custom);
+    ladder.sort(function (a, b) { return a - b; });
+    var prevChg = same ? snap.chg : 0;
+    [1, -1].forEach(function (dir) {
+      var crossed = ladder.filter(function (t) {
+        return dir > 0 ? (prevChg < t && chg >= t) : (prevChg > -t && chg <= -t);
+      });
+      if (!crossed.length) return;
+      var top = crossed[crossed.length - 1];
+      crossed.forEach(function (t) { if (t !== top) st.fired[sym + "|pct|" + dir * t + "|" + sk] = Date.now(); });
+      var sev = top >= 8 ? "CRITICAL" : top >= 5 ? "IMPORTANT" : "WATCH";
+      var ev = base(sym, d, an, "pct", sev, dir > 0 ? ICON.pctUp : ICON.pctDn);
+      var thr = (dir > 0 ? "+" : "-") + top + "%";
+      ev.title = [thr + " cruzado", thr + " crossed"];
+      ev.description = [DL.pct(chg) + " en la sesión" + (volR != null ? " · volumen " + volR.toFixed(1) + "×" : ""),
+                        DL.pct(chg) + " on the session" + (volR != null ? " · volume " + volR.toFixed(1) + "×" : "")];
+      ev.triggerValue = chg; ev.threshold = dir * top; ev.previousValue = prevChg;
+      ev.action = dir > 0 ? ["Revisa el momentum", "Review momentum"] : ["Vigila la debilidad", "Watch the weakness"];
+      fire(out, sym + "|pct|" + dir * top + "|" + sk, ev);
+    });
+
+    /* 2. volumen: también parte de 0 en cada sesión */
+    if (cfg.vol && volR != null) {
+      var prevV = same ? (snap.volR || 0) : 0;
+      var vx = [2, 1.5].filter(function (t) { return prevV < t && volR >= t; })[0];
+      if (vx) {
+        if (vx === 2) st.fired[sym + "|vol|1.5|" + sk] = Date.now();
+        var evv = base(sym, d, an, "vol", vx >= 2 ? "IMPORTANT" : "WATCH", ICON.vol);
+        evv.title = ["Volumen " + vx + "× el promedio", "Volume " + vx + "× average"];
+        evv.description = ["Volumen " + volR.toFixed(1) + "× su promedio de 20 sesiones · " + DL.pct(chg),
+                           "Volume " + volR.toFixed(1) + "× its 20-session average · " + DL.pct(chg)];
+        evv.triggerValue = volR; evv.threshold = vx; evv.previousValue = prevV;
+        evv.action = ["Busca el catalizador (noticia, resultados)", "Look for the catalyst (news, earnings)"];
+        fire(out, sym + "|vol|" + vx + "|" + sk, evv);
+      }
+    }
+
+    /* 3. cruces técnicos: penúltima observación (cierre anterior) vs. actual */
+    var bx = series(d), n = bx.length;
+    [[20, cfg.sma20, "INFO"], [50, cfg.sma50, "IMPORTANT"], [200, cfg.sma200, "IMPORTANT"]].forEach(function (s) {
+      if (!s[1]) return;
+      var arr = DL.IND.sma(bx, s[0]);
+      var a0 = side(bx[n - 2].c, arr[n - 2]), a1 = side(bx[n - 1].c, arr[n - 1]);
+      if (!a0 || !a1 || a0 === a1) return;
+      var sev = s[2];
+      if (s[0] === 200 && a1 < 0 && volR != null && volR >= 1.5) sev = "CRITICAL";   // ruptura mayor con volumen
+      var ev = base(sym, d, an, "sma" + s[0], sev, ICON.sma);
+      ev.title = a1 > 0 ? ["Cruzó sobre la SMA" + s[0], "Crossed above SMA" + s[0]] : ["Perdió la SMA" + s[0], "Lost SMA" + s[0]];
+      ev.description = ["Precio " + DL.px(d.price) + " vs SMA" + s[0] + " " + DL.px(arr[n - 1]) + " (antes " + DL.px(bx[n - 2].c) + " vs " + DL.px(arr[n - 2]) + ")",
+                        "Price " + DL.px(d.price) + " vs SMA" + s[0] + " " + DL.px(arr[n - 1]) + " (before " + DL.px(bx[n - 2].c) + " vs " + DL.px(arr[n - 2]) + ")"];
+      ev.triggerValue = d.price; ev.threshold = arr[n - 1]; ev.previousValue = bx[n - 2].c;
+      ev.action = s[0] === 20 ? ["Fíjate si se sostiene", "See if it holds"] : ["Reevalúa la tendencia", "Reassess the trend"];
+      fire(out, sym + "|sma" + s[0] + "|" + a1 + "|" + sk, ev);
+    });
+
+    if (cfg.rsi) {
+      var r = DL.IND.rsi(bx, 14), r0 = r[n - 2], r1 = r[n - 1];
+      if (r0 != null && r1 != null) {
+        var rx = (r0 < 70 && r1 >= 70) ? 70 : (r0 > 30 && r1 <= 30) ? 30 : null;
+        if (rx) {
+          var evr = base(sym, d, an, "rsi", "WATCH", ICON.rsi);
+          evr.title = rx === 70 ? ["RSI en sobrecompra (≥70)", "RSI overbought (≥70)"] : ["RSI en sobreventa (≤30)", "RSI oversold (≤30)"];
+          evr.description = ["RSI(14) pasó de " + r0.toFixed(1) + " a " + r1.toFixed(1), "RSI(14) went from " + r0.toFixed(1) + " to " + r1.toFixed(1)];
+          evr.triggerValue = r1; evr.threshold = rx; evr.previousValue = r0;
+          evr.action = rx === 70 ? ["Precio extendido: no persigas", "Extended: don't chase"] : ["Espera confirmación de giro", "Wait for a confirmed turn"];
+          fire(out, sym + "|rsi|" + rx + "|" + sk, evr);
+        }
+      }
+    }
+
+    if (cfg.macd) {
+      var m = DL.IND.macd(bx);
+      var m0 = side(m.line[n - 2], m.signal[n - 2]), m1 = side(m.line[n - 1], m.signal[n - 1]);
+      if (m0 && m1 && m0 !== m1) {
+        var evm = base(sym, d, an, "macd", "WATCH", ICON.macd);
+        evm.title = m1 > 0 ? ["Cruce alcista del MACD", "MACD bullish cross"] : ["Cruce bajista del MACD", "MACD bearish cross"];
+        evm.description = ["MACD " + m.line[n - 1].toFixed(2) + " vs señal " + m.signal[n - 1].toFixed(2), "MACD " + m.line[n - 1].toFixed(2) + " vs signal " + m.signal[n - 1].toFixed(2)];
+        evm.triggerValue = m.line[n - 1]; evm.threshold = m.signal[n - 1]; evm.previousValue = m.line[n - 2];
+        evm.action = ["Confirma con precio y volumen", "Confirm with price and volume"];
+        fire(out, sym + "|macd|" + m1 + "|" + sk, evm);
+      }
+    }
+
+    if (cfg.hl52 && n > 60) {
+      var win = bx.slice(Math.max(0, n - 253), n - 1);
+      var hi = Math.max.apply(null, win.map(function (x) { return x.h; }));
+      var lo = Math.min.apply(null, win.map(function (x) { return x.l; }));
+      var prevC = bx[n - 2].c;
+      if (d.price > hi && prevC <= hi) {
+        var evh = base(sym, d, an, "hi52", "INFO", ICON.hi52);
+        evh.title = ["Nuevo máximo de 52 semanas", "New 52-week high"];
+        evh.description = [DL.px(d.price) + " supera el máximo previo " + DL.px(hi), DL.px(d.price) + " tops the prior high " + DL.px(hi)];
+        evh.triggerValue = d.price; evh.threshold = hi; evh.previousValue = prevC;
+        evh.action = ["Ruptura de rango: confirma con volumen", "Range breakout: confirm with volume"];
+        fire(out, sym + "|hi52|" + sk, evh);
+      } else if (d.price < lo && prevC >= lo) {
+        var evl = base(sym, d, an, "lo52", "INFO", ICON.lo52);
+        evl.title = ["Nuevo mínimo de 52 semanas", "New 52-week low"];
+        evl.description = [DL.px(d.price) + " rompe el mínimo previo " + DL.px(lo), DL.px(d.price) + " breaks the prior low " + DL.px(lo)];
+        evl.triggerValue = d.price; evl.threshold = lo; evl.previousValue = prevC;
+        evl.action = ["Debilidad estructural: revisa la tesis", "Structural weakness: review the thesis"];
+        fire(out, sym + "|lo52|" + sk, evl);
+      }
+    }
+
+    st.snap[sym] = { sess: sk, chg: chg, volR: volR, px: d.price, t: Date.now() };
+  }
+
+  /* ---------- detección de posiciones y portafolio ---------- */
+  function detectPositions(out, cfg) {
+    var P = DL.ENG.portfolio(DL.prices());
+    P.open.forEach(function (p) {
+      var d = DL.data.bySym[p.sym], an = DL.data.an[p.sym];
+      if (!d || d.price == null) return;
+      var px = d.price, snap = st.snap["pos|" + p.id] || {};
+      if (cfg.stop && p.stop) {
+        if (px <= p.stop) {
+          var e1 = base(p.sym, d, an, "stopHit", "CRITICAL", ICON.stopHit);
+          e1.title = ["Stop alcanzado", "Stop reached"];
+          e1.description = ["Precio " + DL.money(px) + " ≤ stop " + DL.money(p.stop) + " · tu tesis quedó invalidada", "Price " + DL.money(px) + " ≤ stop " + DL.money(p.stop) + " · your thesis is invalidated"];
+          e1.triggerValue = px; e1.threshold = p.stop; e1.previousValue = snap.px != null ? snap.px : p.entry;
+          e1.action = ["Ejecuta el plan: cierra la posición", "Execute the plan: close the position"];
+          fire(out, "pos|" + p.id + "|stopHit", e1);
+        } else if (px - p.stop <= Math.max(0.25 * Math.max(0, p.entry - p.stop), px * 0.01) && !(snap.nearStop)) {
+          var e2 = base(p.sym, d, an, "stopNear", "IMPORTANT", ICON.stopNear);
+          e2.title = ["Precio cerca del stop", "Price approaching stop"];
+          e2.description = [DL.money(px) + " a " + DL.pctp(((px - p.stop) / px) * 100, 2) + " del stop " + DL.money(p.stop), DL.money(px) + " is " + DL.pctp(((px - p.stop) / px) * 100, 2) + " from the stop " + DL.money(p.stop)];
+          e2.triggerValue = px; e2.threshold = p.stop; e2.previousValue = snap.px != null ? snap.px : null;
+          e2.action = ["Prepara la salida: no bajes el stop", "Prepare the exit: don't lower the stop"];
+          fire(out, "pos|" + p.id + "|stopNear|" + Date.now(), e2, { cdKey: "pos|" + p.id + "|stopNear" });
+        }
+      }
+      if (cfg.target && p.target) {
+        if (px >= p.target) {
+          var e3 = base(p.sym, d, an, "targetHit", "IMPORTANT", ICON.targetHit);
+          e3.title = ["Target alcanzado", "Target reached"];
+          e3.description = ["Precio " + DL.money(px) + " ≥ target " + DL.money(p.target), "Price " + DL.money(px) + " ≥ target " + DL.money(p.target)];
+          e3.triggerValue = px; e3.threshold = p.target; e3.previousValue = snap.px != null ? snap.px : p.entry;
+          e3.action = ["Plan cumplido: toma ganancia o sube el stop", "Plan done: take profit or raise the stop"];
+          fire(out, "pos|" + p.id + "|targetHit", e3);
+        } else if (p.target - px <= Math.max(0.2 * Math.max(0, p.target - p.entry), px * 0.01) && !(snap.nearTarget)) {
+          var e4 = base(p.sym, d, an, "targetNear", "WATCH", ICON.targetNear);
+          e4.title = ["Precio cerca del target", "Price approaching target"];
+          e4.description = [DL.money(px) + " a " + DL.pctp(((p.target - px) / px) * 100, 2) + " del target " + DL.money(p.target), DL.money(px) + " is " + DL.pctp(((p.target - px) / px) * 100, 2) + " from target " + DL.money(p.target)];
+          e4.triggerValue = px; e4.threshold = p.target; e4.previousValue = snap.px != null ? snap.px : null;
+          e4.action = ["Decide: tomar ganancia o subir el stop", "Decide: take profit or raise the stop"];
+          fire(out, "pos|" + p.id + "|targetNear|" + Date.now(), e4, { cdKey: "pos|" + p.id + "|targetNear" });
+        }
+      }
+      if (cfg.pl && cfg.plPct > 0 && p._cost > 0) {
+        var plPct = (p._pl / p._cost) * 100, prevPl = snap.plPct != null ? snap.plPct : 0;
+        [1, -1].forEach(function (dir) {
+          var t = dir * cfg.plPct;
+          if (dir > 0 ? (prevPl < t && plPct >= t) : (prevPl > t && plPct <= t)) {
+            var e5 = base(p.sym, d, an, "pl", dir > 0 ? "IMPORTANT" : "CRITICAL", ICON.pl);
+            e5.title = ["P/L " + (dir > 0 ? "+" : "") + t + "% en la posición", "Position P/L " + (dir > 0 ? "+" : "") + t + "%"];
+            e5.description = ["P/L " + DL.sgn(p._pl) + " (" + DL.pct(plPct) + ") desde la entrada en " + DL.money(p.entry), "P/L " + DL.sgn(p._pl) + " (" + DL.pct(plPct) + ") since entry at " + DL.money(p.entry)];
+            e5.triggerValue = plPct; e5.threshold = t; e5.previousValue = prevPl;
+            e5.action = dir > 0 ? ["Protege la ganancia: considera subir el stop", "Protect the gain: consider raising the stop"] : ["Revisa la tesis", "Review the thesis"];
+            fire(out, "pos|" + p.id + "|pl|" + t, e5);
+          }
+        });
+        snap.plPct = plPct;
+      }
+      var stt = DL.ENG.positionState(p, an);
+      if (stt.s === "SELL" && !(p.stop && px <= p.stop) && !(p.target && px >= p.target)) {
+        var e6 = base(p.sym, d, an, "thesis", "CRITICAL", ICON.thesis);
+        e6.title = ["Tesis invalidada", "Thesis invalidated"];
+        e6.description = [stt.why, stt.why];
+        e6.triggerValue = an ? an.score : null; e6.threshold = 40; e6.previousValue = null;
+        e6.action = ["Revisa y decide si cierras", "Review and decide whether to close"];
+        fire(out, "pos|" + p.id + "|thesis|" + sessKey(d), e6);
+      }
+      snap.px = px;
+      snap.nearStop = !!(p.stop && px > p.stop && px - p.stop <= Math.max(0.25 * Math.max(0, p.entry - p.stop), px * 0.01));
+      snap.nearTarget = !!(p.target && px < p.target && p.target - px <= Math.max(0.2 * Math.max(0, p.target - p.entry), px * 0.01));
+      st.snap["pos|" + p.id] = snap;
+    });
+
+    if (cfg.dd && cfg.ddPct > 0 && P.closed.length + P.open.length > 0) {
+      var prevDd = (st.snap.port || {}).dd || 0;
+      if (prevDd < cfg.ddPct && P.drawdown >= cfg.ddPct) {
+        var e7 = { symbol: T("PORTAFOLIO", "PORTFOLIO"), type: "dd", severity: P.drawdown >= cfg.ddPct * 2 ? "CRITICAL" : "IMPORTANT",
+          icon: ICON.dd, priceAtEvent: P.equity, stale: false, sessLabel: "", ctx: null };
+        e7.title = ["Drawdown de " + cfg.ddPct + "% alcanzado", cfg.ddPct + "% drawdown reached"];
+        e7.description = ["Equity " + DL.money(P.equity) + " · " + DL.pctp(P.drawdown, 1) + " bajo su máximo", "Equity " + DL.money(P.equity) + " · " + DL.pctp(P.drawdown, 1) + " below its peak"];
+        e7.triggerValue = P.drawdown; e7.threshold = cfg.ddPct; e7.previousValue = prevDd;
+        e7.action = ["Reduce riesgo: no abras posiciones nuevas", "Reduce risk: don't open new positions"];
+        fire(out, "port|dd|" + cfg.ddPct + "|" + Date.now(), e7, { cdKey: "port|dd" });
+      }
+      st.snap.port = { dd: P.drawdown };
+    }
+  }
+
+  /* ---------- API ---------- */
+  function detect() {
+    if (!DL.S.profile.setup) return [];
+    var cfg = settings(), out = [];
+    DL.symbolsInUse().forEach(function (s) { try { detectSym(s, out, cfg); } catch (e) { console.warn("events", s, e); } });
+    try { detectPositions(out, cfg); } catch (e) { console.warn("events pos", e); }
+    // poda: estado de disparos de más de 10 días y lista acotada
+    var cut = Date.now() - 10 * 86400000;
+    Object.keys(st.fired).forEach(function (k) { if (st.fired[k] < cut) delete st.fired[k]; });
+    if (out.length) {
+      st.list = out.concat(st.list).slice(0, MAX);
+    }
+    persist();
+    return out;
+  }
+  var detT = null;
+  function detectSoon() {
+    clearTimeout(detT);
+    detT = setTimeout(function () { if (detect().length) DL.renderSoon(); }, 350);
+  }
+  function all(filter) {
+    var l = st.list.slice().sort(function (a, b) { return b.timestamp - a.timestamp; });
+    if (!filter || filter === "ALL") return l;
+    if (filter === "UNREAD") return l.filter(function (e) { return e.status === "NEW"; });
+    return l.filter(function (e) { return e.severity === filter; });
+  }
+  function get(id) { return st.list.filter(function (e) { return e.id === id; })[0] || null; }
+  function forSymbol(sym, hours) {
+    var cut = hours ? Date.now() - hours * 3600000 : 0;
+    return all().filter(function (e) { return e.symbol === sym && e.timestamp >= cut; });
+  }
+  function update(id, patch) { var e = get(id); if (!e) return null; Object.assign(e, patch); persist(); return e; }
+  function acknowledge(id) { var e = get(id); if (e && e.status === "NEW") update(id, { status: "ACKNOWLEDGED" }); return e; }
+  function resolve(id) { return update(id, { status: "RESOLVED" }); }
+  function ackAll() { st.list.forEach(function (e) { if (e.status === "NEW") e.status = "ACKNOWLEDGED"; }); persist(); }
+  function unread() { return st.list.filter(function (e) { return e.status === "NEW"; }).length; }
+  /* decisión: IGNORE / WATCH / ACT / REVIEWED → queda en el diario */
+  function decide(id, decision, notes) {
+    var e = get(id); if (!e) return null;
+    var status = decision === "WATCH" ? "WATCHING" : (decision === "IGNORE" || decision === "REVIEWED") ? "RESOLVED" : "ACKNOWLEDGED";
+    var prevDecision = e.decision;
+    if (decision !== "REVIEWED") e.decision = decision;
+    e.status = status; e.notes = notes != null ? notes : e.notes; e.decidedAt = Date.now();
+    persist();
+    record(e, decision === "REVIEWED" ? "REVIEWED" : null, prevDecision);
+    return e;
+  }
+  function record(e, reviewed, prevDecision) {
+    var c = e.ctx || {};
+    var parts = [e.icon + " " + L(e.title)];
+    if (e.priceAtEvent != null && e.type !== "dd") parts.push(T("Precio ", "Price ") + DL.money(e.priceAtEvent));
+    if (c.volR != null) parts.push(T("Vol ", "Vol ") + c.volR.toFixed(1) + "×");
+    if (c.score != null) parts.push("Score " + c.score);
+    var text = reviewed
+      ? "✓ " + T("Revisado", "Reviewed") + " · " + L(e.title) + " · " + T("Decisión: ", "Decision: ") + (e.decision || prevDecision || "—")
+      : parts.join(" · ") + " · " + T("Decisión: ", "Decision: ") + e.decision;
+    if (e.notes) text += " · " + T("Notas: ", "Notes: ") + e.notes;
+    DL.addDiary(e.type === "dd" ? "PORT" : e.symbol, "event", text, e.type === "dd" ? null : e.priceAtEvent);
+    e.logged = true; persist();
+  }
+
+  /* ---------- próximo evento: el umbral más cercano ---------- */
+  function next(sym, k) {
+    var d = DL.data.bySym[sym], an = DL.data.an[sym];
+    if (!d || !an || d.price == null) return k ? [] : null;
+    var px = d.price, cfg = settings(), c = [];
+    var ladder = (cfg.pct || []).slice(); if (cfg.custom) ladder.push(+cfg.custom);
+    if (d.prevClose) ladder.forEach(function (t) {
+      [1, -1].forEach(function (dir) {
+        var lvl = d.prevClose * (1 + dir * t / 100);
+        if (dir > 0 ? lvl > px : lvl < px) c.push({ kind: "pct", label: [(dir > 0 ? "+" : "-") + t + "% del día", (dir > 0 ? "+" : "-") + t + "% day move"], level: lvl, pts: dir * t - an.chgPct });
+      });
+    });
+    [[20, an.sma20], [50, an.sma50], [200, an.sma200]].forEach(function (s) {
+      if (s[1] == null) return;
+      c.push({ kind: "sma", label: [(s[1] > px ? "Cruce sobre SMA" : "Pérdida de SMA") + s[0], (s[1] > px ? "Cross above SMA" : "Loss of SMA") + s[0]], level: s[1] });
+    });
+    if (an.hi52 != null && an.hi52 > px) c.push({ kind: "hi52", label: ["Máximo 52 sem.", "52-week high"], level: an.hi52 });
+    if (an.lo52 != null && an.lo52 < px) c.push({ kind: "lo52", label: ["Mínimo 52 sem.", "52-week low"], level: an.lo52 });
+    var pos = DL.S.pos.filter(function (p) { return p.status === "open" && p.sym === sym; })[0];
+    var plan = !pos && DL.ENG.suggestPlan ? DL.ENG.suggestPlan(an) : null;
+    var stp = pos ? pos.stop : plan ? plan.stop : null, tgt = pos ? pos.target : plan ? plan.target : null;
+    if (stp && stp < px) c.push({ kind: "stop", label: [pos ? "Stop" : "Stop del plan", pos ? "Stop" : "Plan stop"], level: stp, key: true });
+    if (tgt && tgt > px) c.push({ kind: "target", label: [pos ? "Target" : "Target del plan", pos ? "Target" : "Plan target"], level: tgt, key: true });
+    c.forEach(function (x) { x.dist = ((x.level - px) / px) * 100; x.current = px; });
+    c = c.filter(function (x) { return Math.abs(x.dist) >= 0.05; })
+      .sort(function (a, b) { return Math.abs(a.dist) - Math.abs(b.dist); });
+    return k ? c.slice(0, k) : (c[0] || null);
+  }
+
+  /* ---------- desglose explicable del Decision Score ---------- */
+  function breakdown(an) {
+    if (!an) return null;
+    var px = an.price, t = 0, tn = 0;
+    [[px, an.sma20], [px, an.sma50], [px, an.sma200], [an.sma50, an.sma200]].forEach(function (x) {
+      if (x[0] == null || x[1] == null) return; tn++; if (x[0] > x[1]) t++;
+    });
+    var trend = tn ? Math.round(t / tn * 100) : null;
+    var mom = 0;
+    if (an.macd != null && an.macdSignal != null && an.macd > an.macdSignal) mom += 50;
+    if (an.rsi != null) mom += an.rsi >= 50 && an.rsi < 70 ? 50 : an.rsi >= 70 ? 25 : an.rsi >= 40 ? 20 : 0;
+    var vr = DL.ENG.volRatio(an.vol, an.avgVol);
+    var vol = vr == null ? null : Math.round(Math.min(100, (vr / 1.5) * 100));
+    var risk = an.atrPct == null ? null : an.atrPct < 2 ? 100 : an.atrPct < 3 ? 80 : an.atrPct < 5 ? 60 : 30;
+    return [
+      { k: ["TENDENCIA", "TREND"], v: trend }, { k: ["MOMENTUM", "MOMENTUM"], v: mom },
+      { k: ["VOLUMEN", "VOLUME"], v: vol }, { k: ["RIESGO", "RISK"], v: risk },
+      { k: ["TÉCNICO", "TECHNICAL"], v: an.score }
+    ];
+  }
+
+  /* ---------- trayecto de la operación ---------- */
+  function track(sym) {
+    var d = DL.data.bySym[sym], an = DL.data.an[sym];
+    if (!d || d.price == null) return null;
+    var pos = DL.S.pos.filter(function (p) { return p.status === "open" && p.sym === sym; })[0];
+    var plan = !pos && an && DL.ENG.suggestPlan ? DL.ENG.suggestPlan(an) : null;
+    if (!pos && !plan) return null;
+    var entry = pos ? pos.entry : plan.entry, stop = pos ? pos.stop : plan.stop, target = pos ? pos.target : plan.target;
+    if (!entry || !stop || !target || target <= entry) return null;
+    var pts = [{ k: "stop", lab: "STOP", lvl: stop }, { k: "entry", lab: T("ENTRADA", "ENTRY"), lvl: entry }];
+    [3, 5].forEach(function (p) { var l = entry * (1 + p / 100); if (l < target) pts.push({ k: "p" + p, lab: "+" + p + "%", lvl: l }); });
+    if (an && an.sma50 && an.sma50 > entry && an.sma50 < target) pts.push({ k: "sma50", lab: "SMA50", lvl: an.sma50 });
+    pts.push({ k: "target", lab: "TARGET", lvl: target });
+    pts.sort(function (a, b) { return a.lvl - b.lvl; });
+    // máximo y mínimo REAL desde la entrada (velas + precio actual)
+    var since = pos ? pos.openedAt : Date.now();
+    var hi = d.price, lo = d.price;
+    // solo velas de sesiones POSTERIORES a la entrada: la vela del día de entrada incluye precios previos a ella
+    (d.bars || []).forEach(function (b) { if (pos && b.t > since) { hi = Math.max(hi, b.h); lo = Math.min(lo, b.l); } });
+    var px = d.price, nextSet = false;
+    pts.forEach(function (p) {
+      if (p.k === "entry") p.s = pos ? "done" : (px >= entry ? "near" : "todo");
+      else if (p.k === "stop") p.s = pos && lo <= stop ? "hit" : "risk";
+      else if (pos && hi >= p.lvl) p.s = "done";
+      else if (!nextSet && p.lvl > px) { p.s = "next"; nextSet = true; }
+      else p.s = "todo";
+    });
+    return { pts: pts, px: px, isPlan: !pos };
+  }
+
+  return {
+    detect: detect, detectSoon: detectSoon, evaluate: detect, record: record, decide: decide,
+    acknowledge: acknowledge, ackAll: ackAll, resolve: resolve, next: next, forSymbol: forSymbol,
+    all: all, get: get, unread: unread, settings: settings, setSettings: setSettings,
+    regime: regime, signal: signal, why: why, ctxOf: ctxOf, breakdown: breakdown, track: track,
+    RANK: RANK, L: L, _state: function () { return st; }
+  };
+})();
+
+/* contexto de mercado (SPY, QQQ, VIX + ETF sectoriales de lo que sigues) en UNA petición
+   agrupada — solo hace falta fuera del modo Mercado, que ya carga todo esto */
+DL.loadContext = function (force) {
+  if (DL.modeId === "market" || DL.MOVERS.loading) return Promise.resolve();
+  var set = { SPY: 1, QQQ: 1, "^VIX": 1 };
+  DL.symbolsInUse().forEach(function (s) { var e = DL.sectorOf(s); if (e) set[e] = 1; });
+  return fastLoad(DL.MOVERS, Object.keys(set), "5d", force);
+};
+
+/* ============================================================
+   UI DE EVENTOS (compacta, sin animaciones)
+   ============================================================ */
+DL.sevTag = function (sev) {
+  var lab = { CRITICAL: T("CRÍTICO", "CRITICAL"), IMPORTANT: T("IMPORTANTE", "IMPORTANT"), WATCH: T("VIGILAR", "WATCH"), INFO: "INFO" }[sev] || sev;
+  return '<span class="sev ' + (sev || "").toLowerCase() + '">' + DL.esc(lab) + "</span>";
+};
+DL.evTime = function (ts) {
+  var d = new Date(ts), today = new Date().toDateString() === d.toDateString();
+  return (today ? "" : d.toLocaleDateString(DL.loc(), { day: "numeric", month: "short" }) + " ") + DL.hm(ts);
+};
+DL.evRow = function (e) {
+  var L = DL.EVENTS.L;
+  return '<button type="button" class="evrow' + (e.status === "NEW" ? " new" : "") + " s-" + e.severity.toLowerCase() + '" data-ev="' + e.id + '">' +
+    '<span class="t n">' + DL.esc(DL.evTime(e.timestamp)) + "</span>" +
+    '<span class="b"><span class="h"><span class="ic">' + e.icon + '</span><b class="n">' + DL.esc(e.symbol) + "</b> " +
+    DL.sevTag(e.severity) + (e.stale ? ' <span class="eyebrow">' + DL.esc(T("caché", "cached")) + "</span>" : "") +
+    (e.decision ? ' <span class="eyebrow">· ' + DL.esc(e.decision) + "</span>" : "") + "</span>" +
+    '<span class="tt">' + DL.esc(L(e.title)) + (e.sessLabel ? ' <span class="mute">· ' + DL.esc(e.sessLabel) + "</span>" : "") + "</span>" +
+    '<span class="ac">' + DL.esc(T("Acción → ", "Action → ") + L(e.action)) + "</span></span>" +
+    '<span class="go">' + DL.esc(T("ABRIR", "OPEN")) + "</span></button>";
+};
+DL.bindEvRows = function (root) {
+  DL.$$(".evrow[data-ev]", root).forEach(function (b) { b.onclick = function () { DL.eventSheet(b.dataset.ev); }; });
+};
+
+/* régimen de mercado + riesgo propio: la primera línea de la pantalla */
+DL.regimeCard = function () {
+  var R = DL.EVENTS.regime(), P = DL.ENG.portfolio(DL.prices());
+  var lab = !R ? "—" : R.state === "ON" ? "RISK-ON" : R.state === "OFF" ? "RISK-OFF" : T("MIXTO", "MIXED");
+  var cls = !R ? "" : R.state === "ON" ? "buy" : R.state === "OFF" ? "sell" : "wait";
+  return '<section class="card regime"><div class="row" style="justify-content:space-between;gap:8px;flex-wrap:nowrap">' +
+    '<span class="row" style="gap:7px;flex-wrap:nowrap"><span class="eyebrow">' + DL.esc(T("Régimen", "Regime")) + "</span>" + DL.tag(lab, cls) + "</span>" +
+    DL.marketPill() + "</div>" +
+    '<div class="rgline n">' +
+    "<span>S&amp;P <b class=\"" + DL.tone(R && R.spy) + "\">" + (R ? DL.pct(R.spy) : "—") + "</b></span>" +
+    "<span>NASDAQ <b class=\"" + DL.tone(R && R.qqq) + "\">" + (R && R.qqq != null ? DL.pct(R.qqq) : "—") + "</b></span>" +
+    "<span>VIX <b>" + (R && R.vix != null ? R.vix.toFixed(1) : "—") + "</b></span>" +
+    (R && R.stale ? '<span class="eyebrow">' + DL.esc(T("caché", "cached")) + "</span>" : "") + "</div>" +
+    '<div class="rgline n" style="color:var(--muted)">' +
+    "<span>" + DL.esc(T("Riesgo abierto ", "Open risk ")) + "<b class=\"" + (P.openRiskPct > DL.S.profile.maxRiskPct * 3 ? "neg" : "") + "\">" + DL.pctp(P.openRiskPct, 2) + "</b></span>" +
+    "<span>" + DL.esc(T("Exposición ", "Exposure ")) + "<b>" + DL.pctp(P.exposurePct, 0) + "</b></span>" +
+    "<span>" + DL.esc(T("Drawdown ", "Drawdown ")) + "<b class=\"" + (P.drawdown >= 5 ? "neg" : "") + "\">" + DL.pctp(P.drawdown, 1) + "</b></span></div>" +
+    "</section>";
+};
+
+/* radar de eventos de la pantalla Hoy */
+DL.current.evf = DL.current.evf || "ALL";
+DL.eventRadarCard = function (limit) {
+  var f = DL.current.evf || "ALL";
+  var list = DL.EVENTS.all(f), total = DL.EVENTS.all().length, un = DL.EVENTS.unread();
+  var shown = DL.current.evAll ? list : list.slice(0, limit || 5);
+  var html = '<section class="card"><div class="head" style="margin-bottom:8px"><h3>' + DL.esc(T("Radar de eventos", "Event radar")) + "</h3>" +
+    '<span class="row" style="gap:6px">' + (un ? '<span class="sev important">' + un + T(" nuevos", " new") + "</span>" : "") +
+    '<span class="eyebrow">' + total + "</span>" +
+    '<button type="button" class="btn sm g" id="evCfg" title="' + DL.esc(T("Alertas", "Alerts")) + '" aria-label="' + DL.esc(T("Alertas", "Alerts")) + '">⚙</button></span></div>' +
+    '<div class="pills" id="evFilter" style="margin-bottom:8px">' +
+    [["ALL", T("Todos", "All")], ["CRITICAL", T("Críticos", "Critical")], ["IMPORTANT", T("Importantes", "Important")],
+     ["WATCH", T("Vigilar", "Watch")], ["UNREAD", T("Sin leer", "Unread")]].map(function (x) {
+      return '<button type="button" class="pill' + (f === x[0] ? " on" : "") + '" data-f="' + x[0] + '">' + DL.esc(x[1]) + "</button>";
+    }).join("") + "</div>";
+  if (!shown.length) {
+    html += '<p style="font-size:12px;color:var(--muted);line-height:1.5;padding:4px 0">' +
+      DL.esc(total ? T("Nada en este filtro.", "Nothing in this filter.")
+        : T("Sin eventos todavía. Se registran cuando un activo de tu watchlist o una posición cruza un umbral (±3/5/8%, SMA, RSI, MACD, volumen, stop, target).",
+            "No events yet. They're logged when a watchlist asset or a position crosses a threshold (±3/5/8%, SMA, RSI, MACD, volume, stop, target).")) + "</p>";
+  } else {
+    html += '<div class="evlist">' + shown.map(DL.evRow).join("") + "</div>";
+    html += '<div class="row" style="justify-content:space-between;margin-top:8px">' +
+      (list.length > (limit || 5) ? '<button type="button" class="btn sm g" id="evMore">' +
+        DL.esc(DL.current.evAll ? T("Ver menos", "Show less") : T("Ver todos (", "Show all (") + list.length + ")") + "</button>" : "<span></span>") +
+      (un ? '<button type="button" class="btn sm g" id="evAck">' + DL.esc(T("Marcar todo como leído", "Mark all read")) + "</button>" : "") + "</div>";
+  }
+  return html + "</section>";
+};
+DL.bindEventRadar = function (root) {
+  DL.$$("#evFilter button", root).forEach(function (b) { b.onclick = function () { DL.current.evf = b.dataset.f; DL.render(); }; });
+  var m = DL.$("#evMore", root); if (m) m.onclick = function () { DL.current.evAll = !DL.current.evAll; DL.render(); };
+  var a = DL.$("#evAck", root); if (a) a.onclick = function () { DL.EVENTS.ackAll(); DL.render(); };
+  var c = DL.$("#evCfg", root); if (c) c.onclick = DL.alertsSheet;
+  DL.bindEvRows(root);
+};
+
+/* bloques reutilizables: por qué ahora, señal vs ruido, próximo evento, trayecto */
+DL.whyBlock = function (ctx) {
+  var w = DL.EVENTS.why(ctx);
+  if (!w.lines.length) return "";
+  return '<div class="why"><div class="eyebrow">' + DL.esc(T("Por qué ahora", "Why now")) + "</div>" +
+    '<div class="wl n">' + w.lines.map(function (l) { return "<span>" + DL.esc(l) + "</span>"; }).join("") + "</div>" +
+    '<p class="wc"><b>' + DL.esc(T("Conclusión: ", "Conclusion: ")) + "</b>" + DL.esc(w.conclusion) + "</p></div>";
+};
+DL.signalBlock = function (c) {
+  if (!c || c.market == null) return "";
+  var lab = { HIGH: T("ALTA", "HIGH"), MEDIUM: T("MEDIA", "MEDIUM"), LOW: T("BAJA", "LOW") }[c.strength] || "—";
+  var cls = c.strength === "HIGH" ? "buy" : c.strength === "MEDIUM" ? "wait" : "";
+  function r(k, v, extra) { return '<div class="sn"><span>' + DL.esc(k) + '</span><b class="n ' + DL.tone(v) + '">' + (v == null ? "—" : DL.pct(v)) + "</b>" + (extra || "") + "</div>"; }
+  return '<div class="sig"><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="eyebrow">' +
+    DL.esc(T("Señal vs ruido", "Signal vs noise")) + "</span>" + DL.tag(T("Fuerza ", "Strength ") + lab, cls) + "</div>" +
+    r(T("ACCIÓN", "STOCK"), c.chg) +
+    (c.sector != null ? r(T("SECTOR", "SECTOR") + (c.sectorEtf ? " · " + c.sectorEtf : ""), c.sector) : "") +
+    r(T("MERCADO", "MARKET"), c.market) +
+    r(T("RELATIVO", "RELATIVE"), c.rel) +
+    '<div class="sn"><span>' + DL.esc(T("VOLUMEN", "VOLUME")) + '</span><b class="n">' + (c.volR == null ? "—" : c.volR.toFixed(1) + "×") + "</b></div></div>";
+};
+DL.nextBlock = function (sym, many) {
+  var L = DL.EVENTS.L, list = DL.EVENTS.next(sym, many ? 3 : 1);
+  if (!list.length) return "";
+  var n0 = list[0];
+  function line(x) {
+    return DL.esc(L(x.label)) + " · " + DL.money(x.level) + ' · <span class="' + DL.tone(x.dist) + '">' + DL.pct(x.dist, 1) + "</span>";
+  }
+  return '<div class="nextev"><div class="eyebrow">' + DL.esc(T("Próximo evento", "Next event")) + "</div>" +
+    '<div class="ne n"><b>' + DL.esc(L(n0.label)) + "</b>" +
+    '<span>' + DL.esc(T("Nivel ", "Level ")) + DL.money(n0.level) + " · " + DL.esc(T("actual ", "now ")) + DL.money(n0.current) +
+    ' · <b class="' + DL.tone(n0.dist) + '">' + DL.pct(n0.dist, 1) + "</b></span></div>" +
+    (list.length > 1 ? '<div class="nl">' + DL.esc(T("Después: ", "Then: ")) + list.slice(1).map(line).join(" &nbsp;·&nbsp; ") + "</div>" : "") +
+    "</div>";
+};
+DL.trackBlock = function (sym) {
+  var t = DL.EVENTS.track(sym);
+  if (!t) return "";
+  var MARK = { done: "✓", hit: "✕", next: "●", near: "●", todo: "○", risk: "○" };
+  return '<div class="etrack"><div class="eyebrow" style="margin-bottom:6px">' +
+    DL.esc(t.isPlan ? T("Trayecto del plan", "Plan path") : T("Trayecto de la operación", "Trade path")) + "</div>" +
+    '<div class="tk">' + t.pts.map(function (p) {
+      return '<span class="tp ' + p.s + " k-" + p.k + '"><i>' + MARK[p.s] + "</i><b>" + DL.esc(p.lab) + "</b><small class=\"n\">" + DL.px(p.lvl) + "</small></span>";
+    }).join('<span class="tl-l"></span>') + "</div>" +
+    '<div class="nl n">' + DL.esc(T("Precio actual ", "Current price ")) + DL.money(t.px) + "</div></div>";
+};
+DL.scoreBlock = function (an) {
+  var bd = DL.EVENTS.breakdown(an);
+  if (!bd) return "";
+  return '<div class="dscore"><div class="sc"><span class="eyebrow">Decision Score</span>' +
+    '<span class="score"><b>' + an.score + "</b><span>/100</span></span></div>" +
+    '<div class="bd">' + bd.map(function (x) {
+      var v = x.v == null ? 0 : x.v;
+      return '<div class="br"><span>' + DL.esc(DL.EVENTS.L(x.k)) + '</span><span class="bar"><i class="' +
+        (v >= 75 ? "pos" : v >= 50 ? "amber" : "neg") + '" style="width:' + v + '%"></i></span><b class="n">' + (x.v == null ? "—" : x.v) + "</b></div>";
+    }).join("") + "</div></div>";
+};
+
+/* hoja de un evento: contexto congelado al momento del evento + decisión al diario */
+DL.eventSheet = function (id) {
+  var e = DL.EVENTS.acknowledge(id) || DL.EVENTS.get(id);
+  if (!e) return;
+  var L = DL.EVENTS.L;
+  var d = DL.data.bySym[e.symbol];
+  var since = (d && e.priceAtEvent && e.type !== "dd") ? ((d.price - e.priceAtEvent) / e.priceAtEvent) * 100 : null;
+  var body = DL.el("<div></div>");
+  body.innerHTML =
+    '<div class="row" style="gap:7px;margin-bottom:8px">' + DL.sevTag(e.severity) +
+    '<span class="eyebrow">' + DL.esc(DL.evTime(e.timestamp)) + (e.sessLabel ? " · " + DL.esc(e.sessLabel) : "") + "</span>" +
+    (e.stale ? '<span class="eyebrow" style="color:var(--amber)">' + DL.esc(T("dato en caché", "cached data")) + "</span>" : "") + "</div>" +
+    '<p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px">' + DL.esc(L(e.description)) + "</p>" +
+    '<div class="grid g3" style="margin-bottom:10px">' +
+    DL.ro(T("Precio al evento", "Price at event"), e.type === "dd" ? DL.money(e.priceAtEvent) : (e.priceAtEvent != null ? DL.money(e.priceAtEvent) : "—"), "", "sm") +
+    DL.ro(T("Umbral", "Threshold"), e.threshold == null ? "—" : (e.type === "pct" || e.type === "pl" ? (e.threshold > 0 ? "+" : "") + e.threshold + "%" : e.type === "vol" ? e.threshold + "×" : e.type === "rsi" ? String(e.threshold) : DL.px(e.threshold)), "", "sm") +
+    DL.ro(T("Desde entonces", "Since then"), since == null ? "—" : DL.pct(since), DL.tone(since), "sm") + "</div>" +
+    '<div class="note" style="margin-bottom:10px"><b>' + DL.esc(T("Acción → ", "Action → ")) + "</b>" + DL.esc(L(e.action)) + "</div>" +
+    (e.ctx ? DL.whyBlock(e.ctx) + DL.signalBlock(e.ctx) : "") +
+    '<div class="eyebrow" style="margin:12px 0 6px">' + DL.esc(T("Tu decisión", "Your decision")) +
+    (e.decision ? " · " + DL.esc(T("actual: ", "current: ") + e.decision) : "") + "</div>" +
+    '<div class="decs">' + ["IGNORE", "WATCH", "ACT", "REVIEWED"].map(function (k) {
+      var lab = { IGNORE: T("IGNORAR", "IGNORE"), WATCH: T("VIGILAR", "WATCH"), ACT: T("ACTUAR", "ACT"), REVIEWED: T("REVISADO", "REVIEWED") }[k];
+      return '<button type="button" class="btn sm' + (e.decision === k ? " p" : "") + '" data-dec="' + k + '">' + DL.esc(lab) + "</button>";
+    }).join("") + "</div>" +
+    '<div class="fld" style="margin-top:10px"><label for="evNotes">' + DL.esc(T("Notas (opcional)", "Notes (optional)")) + "</label>" +
+    '<textarea id="evNotes" style="min-height:56px" placeholder="' + DL.esc(T("Qué viste, qué harás, qué te haría cambiar de idea.", "What you saw, what you'll do, what would change your mind.")) + '"></textarea></div>' +
+    '<p style="font-size:11px;color:var(--faint);margin-top:6px">' + DL.esc(T("Tu decisión queda en el diario con el precio y el contexto de este momento.", "Your decision is saved to the journal with this moment's price and context.")) + "</p>";
+  body.querySelector("#evNotes").value = e.notes || "";
+  var foot = DL.el('<div class="row" style="margin-top:12px;justify-content:space-between"></div>');
+  if (e.type !== "dd") {
+    var op = DL.el('<button class="btn sm g"></button>');
+    op.textContent = T("Abrir ", "Open ") + e.symbol + " →";
+    op.onclick = function () { s.close(); DL.openAsset(e.symbol); };
+    foot.appendChild(op);
+  } else foot.appendChild(DL.el("<span></span>"));
+  var s = DL.sheet(e.icon + " " + (e.type === "dd" ? "" : e.symbol + " · ") + L(e.title), body, foot);
+  DL.$$("[data-dec]", body).forEach(function (b) {
+    b.onclick = function () {
+      DL.EVENTS.decide(e.id, b.dataset.dec, body.querySelector("#evNotes").value.trim());
+      s.close();
+      DL.toast(T("Decisión guardada en el diario", "Decision saved to the journal"));
+      DL.render();
+      if (b.dataset.dec === "ACT" && e.type !== "dd" && DL.modeId !== "market") { DL.tradeSym = e.symbol; }
+    };
+  });
+  DL.renderSoon();
+};
+
+/* ajustes de alertas */
+DL.alertsSheet = function () {
+  var c = DL.EVENTS.settings();
+  function chk(id, on, label) {
+    return '<label class="chk" style="margin-bottom:7px"><input type="checkbox" id="' + id + '"' + (on ? " checked" : "") + "> " + DL.esc(label) + "</label>";
+  }
+  var body = DL.el("<div></div>");
+  body.innerHTML =
+    '<div class="eyebrow" style="margin-bottom:8px">' + DL.esc(T("Movimiento del día", "Daily move")) + "</div>" +
+    '<div class="row" style="gap:14px;margin-bottom:8px">' +
+    [3, 5, 8].map(function (t) { return chk("aP" + t, c.pct.indexOf(t) >= 0, "±" + t + "%"); }).join("") + "</div>" +
+    '<div class="fld" style="margin-bottom:14px"><label for="aCustom">' + DL.esc(T("Umbral personalizado ± (%)", "Custom threshold ± (%)")) + "</label>" +
+    '<input type="number" id="aCustom" step="0.5" min="0.5" placeholder="—" value="' + (c.custom || "") + '"></div>' +
+    '<div class="eyebrow" style="margin-bottom:8px">' + DL.esc(T("Técnicos", "Technical")) + "</div>" +
+    '<div class="grid g2" style="gap:2px 12px;margin-bottom:12px">' +
+    chk("aS20", c.sma20, T("Cruce SMA20", "SMA20 cross")) + chk("aS50", c.sma50, T("Cruce SMA50", "SMA50 cross")) +
+    chk("aS200", c.sma200, T("Cruce SMA200", "SMA200 cross")) + chk("aRsi", c.rsi, "RSI 70 / 30") +
+    chk("aMacd", c.macd, T("Cruce MACD", "MACD cross")) + chk("aVol", c.vol, T("Volumen 1.5× / 2×", "Volume 1.5× / 2×")) +
+    chk("aHL", c.hl52, T("Máx./mín. 52 semanas", "52-week high/low")) + "</div>" +
+    '<div class="eyebrow" style="margin-bottom:8px">' + DL.esc(T("Posiciones", "Positions")) + "</div>" +
+    '<div class="grid g2" style="gap:2px 12px;margin-bottom:8px">' +
+    chk("aStop", c.stop, T("Stop (cerca / alcanzado)", "Stop (near / reached)")) + chk("aTgt", c.target, T("Target (cerca / alcanzado)", "Target (near / reached)")) +
+    chk("aPl", c.pl, T("Umbral de P/L", "P/L threshold")) + chk("aDd", c.dd, T("Drawdown del portafolio", "Portfolio drawdown")) + "</div>" +
+    '<div class="grid g3" style="margin-bottom:12px">' +
+    '<div class="fld"><label for="aPlPct">P/L ± (%)</label><input type="number" id="aPlPct" step="1" min="1" value="' + c.plPct + '"></div>' +
+    '<div class="fld"><label for="aDdPct">Drawdown (%)</label><input type="number" id="aDdPct" step="1" min="1" value="' + c.ddPct + '"></div>' +
+    '<div class="fld"><label for="aCd">' + DL.esc(T("Enfriamiento", "Cooldown")) + "</label><select id=\"aCd\">" +
+    [[15, "15 min"], [30, "30 min"], [60, "60 min"], [240, "4 h"], [1440, T("1 día", "1 day")]].map(function (x) {
+      return '<option value="' + x[0] + '"' + (c.cooldown === x[0] ? " selected" : "") + ">" + x[1] + "</option>";
+    }).join("") + "</select></div></div>" +
+    '<p style="font-size:11.5px;color:var(--muted);line-height:1.5">' +
+    DL.esc(T("Un evento se registra solo cuando el umbral se CRUZA (la observación anterior estaba del otro lado). Cada umbral dispara una vez por sesión; los avisos que se repiten (cerca del stop/target, drawdown) respetan el enfriamiento.",
+             "An event is logged only when a threshold is CROSSED (the previous observation was on the other side). Each threshold fires once per session; repeating notices (near stop/target, drawdown) respect the cooldown.")) + "</p>";
+  var foot = DL.el('<div class="row" style="margin-top:12px;justify-content:flex-end"></div>');
+  var ok = DL.el('<button class="btn p"></button>');
+  ok.textContent = T("Guardar", "Save");
+  ok.onclick = function () {
+    var q = function (id) { return body.querySelector("#" + id); };
+    var cu = parseFloat(q("aCustom").value);
+    DL.EVENTS.setSettings({
+      pct: [3, 5, 8].filter(function (t) { return q("aP" + t).checked; }),
+      custom: cu > 0 ? cu : null,
+      sma20: q("aS20").checked, sma50: q("aS50").checked, sma200: q("aS200").checked,
+      rsi: q("aRsi").checked, macd: q("aMacd").checked, vol: q("aVol").checked, hl52: q("aHL").checked,
+      stop: q("aStop").checked, target: q("aTgt").checked, pl: q("aPl").checked, dd: q("aDd").checked,
+      plPct: Math.max(1, parseFloat(q("aPlPct").value) || 10), ddPct: Math.max(1, parseFloat(q("aDdPct").value) || 5),
+      cooldown: parseInt(q("aCd").value, 10) || 60
+    });
+    s.close(); DL.toast(T("Alertas guardadas", "Alerts saved")); DL.EVENTS.detect(); DL.render();
+  };
+  foot.appendChild(ok);
+  var s = DL.sheet(T("Alertas", "Alerts"), body, foot);
+};
+
 
 DL.route = "home";
 

@@ -330,7 +330,27 @@ input.field:focus,select.field:focus{outline:none;border-color:var(--gold)}
 .cal-day.today .cal-num{color:var(--gold);font-weight:800}
 .cal-day.today.partial .cal-num{color:var(--text)}
 .cal-day.today.full .cal-num{color:var(--on-gold)}
-.cal-mark{position:absolute;top:3px;right:5px;z-index:2;font-size:9px;line-height:1;color:var(--on-gold)}
+.cal-mark{position:absolute;top:2px;right:4px;z-index:3;font-size:13px;line-height:1;color:var(--gold);text-shadow:0 0 6px var(--gold-soft)}
+.cal-day.full .cal-mark{color:var(--on-gold);text-shadow:none}
+.cal-day.starred{box-shadow:0 0 0 1px var(--gold),0 0 14px var(--gold-soft)}
+.cal-note{position:absolute;bottom:6px;left:6px;z-index:2;width:8px;height:2px;border-radius:1px;background:var(--muted)}
+.cal-day.full .cal-note{background:var(--on-gold)}
+.lg.lg-note{width:10px;height:3px;border-radius:2px;background:var(--muted)}
+.star-banner{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:var(--r-md);background:var(--surface-2);border:1px dashed var(--line-strong)}
+.star-banner.won{background:var(--gold-soft);border:1px solid var(--gold)}
+.star-banner .big{font-size:30px;line-height:1;color:var(--faint);flex:none}
+.star-banner.won .big{color:var(--gold);animation:seal .7s cubic-bezier(.2,.8,.2,1.2) both}
+.star-banner p{font-size:15px}
+.star-banner b{display:block;font-size:16px}
+.day-writing{border-top:1px solid var(--line)}
+.day-writing summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 2px}
+.day-writing summary::-webkit-details-marker{display:none}
+.day-writing summary .t{font-weight:600}
+.day-writing summary .s{display:block;font-size:14px;color:var(--muted)}
+.day-writing summary .chev{transition:transform .2s;font-size:20px;line-height:1}
+.day-writing[open] summary .chev{transform:rotate(45deg)}
+.day-writing .en{font-size:17px;white-space:pre-wrap;word-wrap:break-word;padding:0 2px 16px}
+.sent-badge{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--sage)}
 .cal-dot{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);z-index:2;width:6px;height:6px;border-radius:50%;background:var(--gold)}
 .cal-prac{position:absolute;top:5px;left:5px;z-index:2;width:5px;height:5px;border-radius:50%;background:var(--sage)}
 .cal-legend{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:14px}
@@ -1218,7 +1238,7 @@ function defaultState(){
     onboarded:false, tier:"essential", placementStart:0,
     speakingAttempts:[], reflections:[], mirrorSamples:[], shadowLog:[], draft:null, ttsRate:0.92,
     /* v4 — classes */
-    classSeries:[], classRecords:{}, myTexts:[]
+    classSeries:[], classRecords:{}, myTexts:[], days:{}
   };
 }
 function migrate(raw){
@@ -1232,6 +1252,10 @@ function migrate(raw){
   s.classSeries = s.classSeries.filter(x=>x && x.id && Array.isArray(x.days) && x.days.length && /^\d{4}-\d{2}-\d{2}$/.test(x.start||""));
   Object.keys(s.classRecords).forEach(k=>{ const r = s.classRecords[k]; if(!r || typeof r!=="object" || !/^\d{4}-\d{2}-\d{2}$/.test(r.date||"")) delete s.classRecords[k]; else r.id = k; });
   s.myTexts = s.myTexts.filter(t=>t && t.id && t.title && typeof t.body==="string");
+  if(!s.days || typeof s.days!=="object" || Array.isArray(s.days)) s.days = {};
+  Object.keys(s.days).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.days[k] || typeof s.days[k]!=="object") delete s.days[k]; });
+  /* class notes from the first 11.0 build become day notes */
+  Object.values(s.classRecords).forEach(r=>{ if((r.notes||"").trim()){ const d = s.days[r.date] || (s.days[r.date] = {}); d.note = d.note ? d.note+"\n"+r.notes : r.notes; } delete r.notes; });
   s.startingPoint = Object.assign({level:"",goal:"",fear:"",learningStyle:"",baseline:""}, raw.startingPoint||{});
   if(!TIERS[s.tier]) s.tier = "essential";
   if(typeof s.placementStart!=="number") s.placementStart = 0;
@@ -1359,6 +1383,8 @@ function classStats(){
     classesAttended: recs.filter(r=>r.attended).length,
     classTextsRead: recs.filter(r=>r.readAt).length,
     classesComplete: recs.map(r=>occById(r.id)).filter(o=>o && classPct(o)>=1).length,
+    stars: recs.map(r=>occById(r.id)).filter(o=>o && classStar(o)).length,
+    daysSent: Object.values(state.days).filter(d=>d.sentAt).length,
     classWords: state.writingSamples.filter(w=>w.kind==="class").reduce((a,w)=>a+(w.wordCount||0),0)
   };
 }
@@ -1444,7 +1470,7 @@ function ensureRec(o){
   o.rec = state.classRecords[o.id];
   return o.rec;
 }
-const hasProgress = r => !!(r && (r.attended || r.readAt || r.writingId || r.bestSecs || r.reflectionId || (r.notes||"").trim()));
+const hasProgress = r => !!(r && (r.attended || r.readAt || r.writingId || r.bestSecs || r.reflectionId));
 
 function classSpeakRule(lv){
   let [min,target] = CLASS_LEVELS[levelKey(lv)].speak;
@@ -1458,6 +1484,23 @@ function classParts(o){
 }
 const classDone = o => { const p = classParts(o); return CLASS_PARTS.filter(x=>p[x[0]]).length; };
 const classPct = o => classDone(o)/CLASS_PARTS.length;
+/* ★ The day's star: the student attended AND wrote the class text to the
+   instructions — at least the minimum words for the class level. */
+function classStar(o){
+  const r = o.rec||{};
+  if(r.cancelled || !r.attended || !r.writingId) return false;
+  const w = state.writingSamples.find(x=>x.id===r.writingId);
+  return !!w && (w.wordCount||0) >= CLASS_LEVELS[o.level].write[0];
+}
+const dayStarred = k => occurrencesBetween(k,k).some(classStar);
+/* one note per calendar day, with or without a class */
+const dayNote = k => ((state.days[k]||{}).note||"");
+function dayRec(k){ if(!state.days[k]) state.days[k] = {}; return state.days[k]; }
+/* call before a change; the returned function celebrates a newly earned star */
+function starWatch(o){
+  const had = classStar(o);
+  return () => { const now = occById(o.id); if(now && !had && classStar(now)) toast("★ Star earned for "+fmtDay(now.date)+"!"); };
+}
 function classStartDate(o){ const d = parseKey(o.date), p = o.time.split(":").map(Number); d.setHours(p[0]||0, p[1]||0, 0, 0); return d; }
 const classOver = o => Date.now() > classStartDate(o).getTime() + o.duration*60000;
 function classStatus(o){
@@ -1579,7 +1622,7 @@ function classCard(o, kicker){
   return `<button class="panel class-card" data-act="openClass" data-id="${esc(o.id)}">
     <p class="kicker">${esc(kicker)}${num?" · Class "+num.n+(num.total?" of "+num.total:""):""}</p>
     <h3>${esc(o.title)}</h3><p class="class-when">${esc(whenLine(o))}</p>
-    <div class="meta-row">${statusPill(o)}<span class="pill gold">${o.level}</span></div>
+    <div class="meta-row">${statusPill(o)}<span class="pill gold">${o.level}</span>${classStar(o)?'<span class="pill gold">★ Star</span>':""}</div>
     ${partsBar(o)}<div class="parts-cap"><span>${classDone(o)} of 5 done</span><span>${esc(nextPartHint(o))}</span></div>
   </button>`;
 }
@@ -1762,7 +1805,7 @@ function openSheet(html, keep){
   $("#sheet").innerHTML = html; $("#scrim").classList.add("open");
   if(!keep){ $("#sheet").scrollTop = 0; const f=$("#sheet").querySelector("button,input,select,a"); if(f) setTimeout(()=>f.focus({preventScroll:true}),60); }
 }
-function closeSheet(){ if($("#scrim").classList.contains("open")) stopReading(); $("#scrim").classList.remove("open"); shadowPlaying=false; openClassId=null; }
+function closeSheet(){ if($("#scrim").classList.contains("open")){ stopReading(); if(openDayKey||openClassId) setTimeout(repaint,0); } $("#scrim").classList.remove("open"); shadowPlaying=false; openClassId=null; openDayKey=null; }
 const sheetHead = (title, sub) => `<div class="sheet-head"><div><h3>${esc(title)}</h3>${sub?`<p class="muted small mt-s">${esc(sub)}</p>`:""}</div><button class="icon-btn" data-act="closeSheet" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
 
 /* ============================================================
@@ -1955,7 +1998,7 @@ VIEWS.evolution = function(){
         ${cell(st.missions,"missions complete")}${cell(st.samples,"writing samples")}${cell(st.words,"words written")}${cell(st.attempts,"speaking attempts")}
         ${cell(Math.round(st.secs/60),"minutes spoken")}${cell(mmss(st.longest),"longest attempt")}${cell(st.hours.toFixed(1),"practice hours")}${cell(st.topics,"topics explored")}
         ${cell(st.reflections,"reflections")}${cell(st.shadow,"shadowing sessions")}${cell(st.meditations,"meditations")}${cell(st.streak,"day streak")}
-        ${cell(st.classesAttended,"classes attended")}${cell(st.classTextsRead,"class texts read")}${cell(st.classesComplete,"classes complete")}${cell(st.classWords,"words in class texts")}
+        ${cell(st.classesAttended,"classes attended")}${cell("★ "+st.stars,"stars earned")}${cell(st.classTextsRead,"class texts read")}${cell(st.classWords,"words in class texts")}
       </div>
       <p class="small muted mt-s">Cycle ${cyc.n}, day ${cyc.day}. ${mir.length} mirror sample${mir.length===1?"":"s"} recorded.</p>
     </section>
@@ -1964,7 +2007,7 @@ VIEWS.evolution = function(){
       ${archive("Writing samples", state.writingSamples.slice().reverse().map(w=>`<div class="archive-item"><header><span>${esc(w.label||w.topic||w.prompt||"Writing")}</span><span>${fmtDate(w.createdAt)}</span></header><p class="en" style="font-size:17px">${esc(w.content)}</p></div>`))}
       ${archive("Speaking attempts", state.speakingAttempts.slice().reverse().map(x=>`<div class="attempt"><span class="grow"><b>${mmss(x.duration)}</b> <span class="muted small">${esc(x.topic||"")}, ${fmtDate(x.date)}</span></span>${x.recordingId?`<audio class="hide" controls preload="none" data-rec="${esc(x.recordingId)}"></audio>`:""}</div>`))}
       ${archive("Reflections", state.reflections.slice().reverse().map(r=>`<div class="archive-item"><header><span>${esc(r.topic||"")}</span><span>${fmtDate(r.date)}</span></header><p><b>I managed to say:</b> ${esc(r.managed)}</p>${r.difficult?`<p><b>Difficult:</b> ${esc(r.difficult)}</p>`:""}${r.better?`<p><b>Next time:</b> ${esc(r.better)}</p>`:""}</div>`))}
-      ${(()=>{ const notes = Object.values(state.classRecords).filter(r=>(r.notes||"").trim()).sort((a,b)=>b.date.localeCompare(a.date)); return notes.length?archive("Class notes", notes.map(r=>{ const o = occById(r.id); return `<div class="archive-item"><header><span>${esc(o?o.title:"Class")}</span><span>${esc(fmtDay(r.date))}</span></header><p>${esc(r.notes)}</p></div>`; })):""; })()}
+      ${(()=>{ const ks = Object.keys(state.days).filter(k=>dayNote(k).trim()).sort().reverse(); return ks.length?archive("Day notes", ks.map(k=>`<div class="archive-item"><header><span>${dayStarred(k)?"★ ":""}${esc(fmtDay(k,true))}</span><span>${state.days[k].sentAt?"Sent "+esc(fmtDate(state.days[k].sentAt)):""}</span></header><p>${esc(dayNote(k))}</p></div>`)):""; })()}
       ${state.journalEntries.length?archive("Notebook entries", state.journalEntries.map(j=>`<div class="archive-item"><header><span>${esc(j.mood||"Entry")}</span><span>${fmtDate(j.date)}</span></header><p>${esc([j.learned,j.questions,j.homework,j.notes].filter(Boolean).join("\n\n"))}</p></div>`)):""}
       ${state.practiceRecords.length?archive("Earlier practice records", state.practiceRecords.slice().reverse().map(p=>`<div class="archive-item"><header><span>${esc(p.topic||p.type)}</span><span>${fmtDate(p.date)}</span></header><p>${esc(p.content||"")}</p></div>`)):""}
     </div></section>`;
@@ -2011,21 +2054,24 @@ function calendarHTML(){
   const occ = occurrencesBetween(dayKey(first), dayKey(new Date(calY, calM, dim))).filter(o=>!o.rec.cancelled);
   const byDay = {}; occ.forEach(o=>(byDay[o.date] = byDay[o.date] || []).push(o));
   const prac = practiceDays();
-  let due = 0, att = 0, comp = 0, sum = 0;
-  occ.forEach(o=>{ const p = classPct(o); if(p>=1) comp++; if(o.date<=t){ due++; if(o.rec.attended) att++; sum += p; } });
+  let due = 0, att = 0, stars = 0, sum = 0;
+  occ.forEach(o=>{ if(classStar(o)) stars++; if(o.date<=t){ due++; if(o.rec.attended) att++; sum += classPct(o); } });
   const cells = [];
   for(let e=0;e<off;e++) cells.push('<div class="cal-day cal-blank" aria-hidden="true"></div>');
   for(let d=1; d<=dim; d++){
     const k = dayKey(new Date(calY, calM, d)), list = byDay[k]||[], fut = k>t;
     const pct = list.length ? list.reduce((a,o)=>a+classPct(o),0)/list.length : 0;
-    let cls = "cal-day"+(fut?" future":"")+(k===t?" today":"")+(list.length?" has-class":"");
+    const star = list.some(classStar), note = !!dayNote(k).trim();
+    let cls = "cal-day"+(fut?" future":"")+(k===t?" today":"")+(list.length?" has-class":"")+(star?" starred":"");
     if(pct>=1) cls += " full"; else if(pct>0) cls += " partial";
     if(k<t && pct<1 && list.some(o=>!o.rec.attended)) cls += " missed";
     const fill = pct>0 ? Math.round(18+pct*82) : 0;
     let aria = MONTHS[calM]+" "+d;
     if(list.length) aria += ", "+list.length+" class"+(list.length>1?"es":"")+", "+Math.round(pct*100)+" percent complete";
+    if(star) aria += ", star earned";
     if(prac.has(k)) aria += ", practice day";
-    cells.push(`<button type="button" class="${cls}" data-act="openDay" data-k="${k}" aria-label="${esc(aria)}">${fill?`<span class="cal-fill" style="height:${fill}%"></span>`:""}<span class="cal-num">${d}</span>${pct>=1?'<span class="cal-mark">★</span>':""}${list.length&&pct<1?'<span class="cal-dot"></span>':""}${prac.has(k)?'<span class="cal-prac"></span>':""}</button>`);
+    if(note) aria += ", has a note";
+    cells.push(`<button type="button" class="${cls}" data-act="openDay" data-k="${k}" aria-label="${esc(aria)}">${fill?`<span class="cal-fill" style="height:${fill}%"></span>`:""}<span class="cal-num">${d}</span>${star?'<span class="cal-mark">★</span>':""}${list.length&&pct<1&&!star?'<span class="cal-dot"></span>':""}${prac.has(k)?'<span class="cal-prac"></span>':""}${note?'<span class="cal-note"></span>':""}</button>`);
   }
   const isNow = calY===now.getFullYear() && calM===now.getMonth();
   const m = (v,l) => `<div><b>${v}</b><span>${l}</span></div>`;
@@ -2033,11 +2079,11 @@ function calendarHTML(){
   return `<section class="mt-l" id="calSection"><div class="phase-head"><h3>Your month</h3>${isNow?"":'<button class="link" data-act="calToday">Back to today</button>'}</div>
     <div class="cal-card mt-s">
       <div class="cal-nav-row"><button class="icon-btn" data-act="calShift" data-d="-1" aria-label="Previous month">${arrow("M15 6l-6 6 6 6")}</button><div class="cal-month" aria-live="polite">${MONTHS[calM]} ${calY}</div><button class="icon-btn" data-act="calShift" data-d="1" aria-label="Next month">${arrow("M9 6l6 6-6 6")}</button></div>
-      <div class="cal-metrics">${m(occ.length,"Classes")}${m(due?Math.round(att/due*100)+"%":"—","Attended")}${m(comp,"Complete")}${m(due?Math.round(sum/due*100)+"%":"—","Average")}</div>
+      <div class="cal-metrics">${m(occ.length,"Classes")}${m(due?Math.round(att/due*100)+"%":"—","Attended")}${m("★ "+stars,"Stars")}${m(due?Math.round(sum/due*100)+"%":"—","Average")}</div>
       <div class="cal-grid" aria-hidden="true">${["M","T","W","T","F","S","S"].map(x=>`<div class="cal-dow">${x}</div>`).join("")}</div>
       <div class="cal-grid">${cells.join("")}</div>
-      <div class="cal-legend"><span><i class="lg lg-fill"></i>Class progress</span><span><b class="lg-star">★</b>Complete</span><span><i class="lg lg-dot"></i>Class to do</span><span><i class="lg lg-prac"></i>Practice day</span><span><i class="lg lg-today"></i>Today</span></div>
-      <p class="cal-tip">Tap any day to open its classes, add one, or mark attendance.</p>
+      <div class="cal-legend"><span><i class="lg lg-fill"></i>Class progress</span><span><b class="lg-star">★</b>Star: attended + wrote</span><span><i class="lg lg-dot"></i>Class to do</span><span><i class="lg lg-prac"></i>Practice</span><span><i class="lg lg-note"></i>Note</span><span><i class="lg lg-today"></i>Today</span></div>
+      <p class="cal-tip">Tap any day to see its writings, leave a note, or send it to ProfGermandario.</p>
     </div></section>`;
 }
 function scheduleHTML(){
@@ -2061,13 +2107,98 @@ function levelGuideHTML(){
 
 /* ---------------- CLASS SHEETS ---------------- */
 let openClassId = null;
+let openDayKey = null;
+const ucfirst = s => s ? s[0].toUpperCase()+s.slice(1) : s;
+const dayWritings = k => state.writingSamples.filter(x=>dayKey(x.createdAt)===k);
+function writingTarget(w){
+  if(w.kind!=="class") return null;
+  const o = occById(w.classId); if(!o) return null;
+  const L = CLASS_LEVELS[o.level];
+  return {range:L.write, ok:(w.wordCount||0)>=L.write[0], level:o.level};
+}
+function starBanner(o){
+  const r = o.rec||{}, L = CLASS_LEVELS[o.level];
+  if(r.cancelled) return "";
+  const w = state.writingSamples.find(x=>x.id===r.writingId);
+  if(classStar(o)) return `<div class="star-banner won"><span class="big" aria-hidden="true">★</span><p><b>Star earned</b>You attended and wrote ${w.wordCount} words. The ${o.level} target is ${L.write[0]}–${L.write[1]}.</p></div>`;
+  const need = [];
+  if(!r.attended) need.push(o.date>dayKey() ? "attend the class on "+fmtDay(o.date) : "mark that you attended");
+  if(!w) need.push("write your class text ("+L.write[0]+"–"+L.write[1]+" words)");
+  else if((w.wordCount||0)<L.write[0]) need.push("write at least "+L.write[0]+" words");
+  return `<div class="star-banner"><span class="big" aria-hidden="true">☆</span><p><b>Earn this day's star</b>${esc(ucfirst(need.join(" and ")))}.</p></div>`;
+}
+function noteField(k){
+  return `<label class="lbl" for="dayNote">Note for ${k===dayKey()?"today":esc(fmtDay(k))}</label>
+    <textarea class="write short mt-s" id="dayNote" data-in="dayNote" data-k="${k}" placeholder="Homework, new words, a question for your teacher, how the class went…">${esc(dayNote(k))}</textarea>
+    <p class="small muted mt-s">Saved automatically. It travels with your day report.</p>`;
+}
 function daySheet(k){
-  openClassId = null;
-  const t = dayKey(), list = occurrencesBetween(k,k), ev = dayEvidence(k);
-  openSheet(`${sheetHead((k===t?"Today · ":"")+fmtDay(k,true), list.length ? list.length+" class"+(list.length>1?"es":"") : "No class this day")}
-    ${list.length ? `<div class="list">${list.map(classRow).join("")}</div>` : `<p class="muted">${k<t?"Nothing was scheduled. If you had a class, add it to keep the record.":"Nothing scheduled yet."}</p>`}
-    ${ev?`<div class="well mt"><p class="kicker">Practice this day</p><p class="small">${esc(ev)}</p></div>`:""}
-    <button class="btn-line mt" style="width:100%" data-act="oneoffNew" data-k="${k}">Add a class on this day</button>`);
+  const keep = openDayKey===k && $("#scrim").classList.contains("open"), scroll = keep ? $("#sheet").scrollTop : 0;
+  openClassId = null; openDayKey = k;
+  const t = dayKey(), list = occurrencesBetween(k,k), live = list.filter(o=>!o.rec.cancelled);
+  const ws = dayWritings(k), atts = state.speakingAttempts.filter(x=>dayKey(x.date)===k), d = state.days[k]||{};
+  const star = live.some(classStar);
+  const sub = [star?"★ Star earned":"", live.length ? live.length+" class"+(live.length>1?"es":"") : "No class", ws.length ? ws.length+" writing"+(ws.length>1?"s":"") : ""].filter(Boolean).join(" · ");
+  let h = sheetHead((k===t?"Today · ":"")+fmtDay(k,true), sub);
+  /* star + writing instructions for the class of the day */
+  const main = live.find(o=>!classStar(o)) || live[0];
+  if(main){
+    const T = assignText(main), L = CLASS_LEVELS[main.level], r = main.rec;
+    h += starBanner(main);
+    h += `<div class="well mt"><p class="kicker">Writing instructions · ${main.level}</p>
+      <p class="en" style="font-size:17px">${esc(T.write||CLASS_WRITE_DEFAULT)}</p>
+      <p class="small muted mt-s">${L.write[0]}–${L.write[1]} words, based on “${esc(T.title)}”.</p>
+      ${r.writingId ? "" : `<button class="btn block mt" data-act="classWork" data-id="${esc(main.id)}">${r.readAt?"Write my class text":"Read the text, then write"}</button>`}
+      ${!r.attended && main.date<=t ? `<button class="btn-line mt" style="width:100%" data-act="classAttend" data-id="${esc(main.id)}">I attended this class</button>` : ""}</div>`;
+  }
+  if(list.length) h += `<div class="list mt">${list.map(classRow).join("")}</div>`;
+  else h += `<p class="muted">${k<t?"No class was scheduled. If you had one, add it to keep the record.":"Nothing scheduled yet."}</p>`;
+  h += `<div class="mt-l">${noteField(k)}</div>`;
+  h += `<h3 class="mt-l">Writings${ws.length?" ("+ws.length+")":""}</h3>`;
+  h += ws.length ? `<div class="mt-s">${ws.map(w=>{ const tg = writingTarget(w), time = new Date(w.createdAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+      return `<details class="day-writing"><summary><span><span class="t">${esc(w.label||w.topic||"Writing")}</span><span class="s">${w.wordCount} words${tg?" · "+tg.level+" target "+tg.range[0]+"–"+tg.range[1]+(tg.ok?" ✓":""):""} · ${time}</span></span><span class="chev" aria-hidden="true">+</span></summary><p class="en">${esc(w.content)}</p></details>`; }).join("")}</div>`
+    : `<p class="small muted mt-s">${k>t?"Writings from this day will appear here.":"No writing saved this day."}</p>`;
+  if(atts.length) h += `<p class="small muted mt">Speaking: ${atts.length} attempt${atts.length>1?"s":""}, longest ${mmss(Math.max(...atts.map(a=>a.duration)))}.</p>`;
+  if(live.length || ws.length || atts.length || dayNote(k).trim()){
+    h += `<div class="stack mt-l">
+      ${d.sentAt?`<p class="sent-badge">✓ Sent to ProfGermandario · ${esc(fmtDate(d.sentAt))}, ${new Date(d.sentAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})}</p>`:""}
+      <button class="btn block" data-act="sendDay" data-k="${k}">${d.sentAt?"Send again on WhatsApp":"Send to ProfGermandario"}</button>
+      <button class="btn-line" style="width:100%" data-act="shareDay" data-k="${k}">Share or copy the full report</button></div>`;
+  }
+  h += `<p class="mt center"><button class="link" data-act="oneoffNew" data-k="${k}">Add a class on this day</button></p>`;
+  openSheet(h, keep); if(keep) $("#sheet").scrollTop = scroll;
+}
+/* The day report, written for the teacher (in Spanish, like the other messages).
+   limit: max characters for a WhatsApp link; writings are shortened to fit. */
+function dayReport(k, limit){
+  const live = occurrencesBetween(k,k).filter(o=>!o.rec.cancelled), ws = dayWritings(k);
+  const atts = state.speakingAttempts.filter(x=>dayKey(x.date)===k), note = dayNote(k).trim();
+  const build = per => {
+    const L = ["Hola Profe, soy "+(state.name||"tu estudiante")+". Este es mi reporte del "+fmtDayEs(k)+"."];
+    if(live.some(classStar)) L.push("⭐ Gané la estrella del día: asistí y escribí según las instrucciones.");
+    live.forEach(o=>{
+      const T = classText(o);
+      L.push("", "Clase: "+o.title+" ("+fmtTime(o.time)+", "+o.level+")", "- Asistencia: "+(o.rec.attended?"sí":"no marcada"));
+      if(T) L.push("- Texto de clase: \""+T.title+"\" ("+wc(T.body)+" palabras)"+(o.rec.readAt?", leído":""));
+      L.push("- Avance: "+classDone(o)+" de 5 partes");
+    });
+    if(note) L.push("", "Nota del día:", note);
+    if(ws.length){
+      L.push("", "Mis escritos ("+ws.length+"):");
+      ws.forEach((w,i)=>{
+        const tg = writingTarget(w), c = w.content.length>per ? w.content.slice(0,per).replace(/\s+\S*$/,"")+"… (continúa)" : w.content;
+        L.push("", (i+1)+") "+(w.label||w.topic||"Escrito")+" · "+w.wordCount+" palabras"+(tg?" (meta "+tg.level+": "+tg.range[0]+"–"+tg.range[1]+")":""), c);
+      });
+    }
+    if(atts.length) L.push("", "Hablé: "+atts.length+" intento(s), el más largo "+mmss(Math.max(...atts.map(a=>a.duration)))+".");
+    return L.join("\n");
+  };
+  let text = build(1e9);
+  if(!limit || text.length<=limit) return text;
+  let per = Math.max(160, Math.floor((limit - build(0).length) / Math.max(1, ws.length)));
+  text = build(per);
+  while(text.length>limit && per>160){ per -= 100; text = build(per); }
+  return text+"\n\n(Texto recortado para WhatsApp. Tengo el reporte completo si lo necesitas.)";
 }
 function checkRow(on, title, sub, attrs){
   const tag = attrs ? "button" : "div";
@@ -2078,7 +2209,7 @@ function classSheet(id){
   if(!o){ closeSheet(); toast("This class no longer exists."); repaint(); return; }
   const same = openClassId===id && $("#scrim").classList.contains("open");
   const scroll = same ? $("#sheet").scrollTop : 0;
-  openClassId = id;
+  openClassId = id; openDayKey = null;
   const r = o.rec, t = dayKey(), num = classNumber(o), L = CLASS_LEVELS[o.level];
   const sub = whenLine(o) + (num ? " · Class "+num.n+(num.total?" of "+num.total:"") : "");
   let h = `${sheetHead(o.title, sub)}<div class="meta-row" style="margin-top:0">${statusPill(o)}<span class="pill gold">${o.level} · ${esc(L.name)}</span></div>`;
@@ -2101,13 +2232,13 @@ function classSheet(id){
     ${checkRow(p.reflected, "Reflected", p.reflected ? "Saved in your evidence." : "Three short answers at the end.")}
   </div>
   ${partsBar(o)}<div class="parts-cap"><span>${classDone(o)} of 5 · ${Math.round(classPct(o)*100)}%</span><span>${esc(nextPartHint(o))}</span></div>
+  <div class="mt">${starBanner(o)}</div>
   <button class="btn block mt" data-act="classWork" data-id="${esc(id)}">${label}</button>
   <div class="well mt-l"><p class="kicker">Class text${T.from?" · "+(T.from==="shared"?"shared with you":"my text"):""}</p><h3>${esc(T.title)}</h3>
     ${meterInner(wc(T.body), L.read, o.level+" range")}
     <div class="row-gap mt"><button class="btn-line" data-act="readerOpen" data-id="${esc(id)}">Read it now</button><button class="btn-line" data-act="textPick" data-id="${esc(id)}">Change text</button></div></div>
-  <div class="mt-l"><label class="lbl" for="clNotes">Class notes</label>
-    <textarea class="write short mt-s" id="clNotes" data-in="classNotes" data-id="${esc(id)}" placeholder="Homework, new words, what you want to remember…">${esc(r.notes||"")}</textarea>
-    <p class="small muted mt-s">Saved automatically.</p></div>
+  <div class="mt-l">${noteField(o.date)}</div>
+  <p class="mt"><button class="link" data-act="openDay" data-k="${o.date}">See everything from ${esc(fmtDay(o.date))} and send it</button></p>
   <div class="list mt-l">
     <button data-act="classEdit" data-id="${esc(id)}"><span class="grow"><span class="t">${o.oneoff?"Edit or move this class":"Edit or move this date"}</span><br><span class="s">Time, duration, title, level${o.oneoff?", date":", or a new date"}.</span></span><span class="chev">›</span></button>
     ${o.series?`<button data-act="seriesEdit" data-id="${esc(o.series.id)}"><span class="grow"><span class="t">Edit the weekly schedule</span><br><span class="s">${esc(seriesSummary(o.series))}</span></span><span class="chev">›</span></button>`:""}
@@ -2698,7 +2829,7 @@ function planSheet(){
 }
 function dataSheet(){
   openSheet(`${sheetHead("My data","Your progress lives on this device, in this browser.")}
-    <p>Export a backup every week, and before changing phones or browsers. The backup includes your missions, evidence, classes, class notes, and texts. Audio recordings stay on this device and are not included.</p>
+    <p>Export a backup every week, and before changing phones or browsers. The backup includes your missions, evidence, classes, day notes, and texts. Audio recordings stay on this device and are not included.</p>
     <div class="stack mt">
       <button class="btn block" data-act="export">Export my backup</button>
       <button class="btn-line" style="width:100%" data-act="import">Import a backup</button>
@@ -2821,9 +2952,11 @@ const ACT = {
     if(wc(text) < cfg.min) return;
     const s = {id:uid("w"), createdAt:nowISO(), week:cycleInfo().n, missionId:run.mi, classId:run.cid||null, kind:run.kind, prompt: run.write.mode==="open"&&cfg.openPrompt?cfg.openPrompt:cfg.prompt,
       mode:run.kind==="mirror"?"mirror":run.write.mode, content:text, wordCount:wc(text), topic:cfg.topic, label:cfg.topic};
+    const co = run.kind==="class" ? runClass() : null, celebrate = co ? starWatch(co) : null;
     state.writingSamples.push(s); run.write.savedId = s.id;
-    if(run.kind==="class"){ const o = runClass(); if(o) ensureRec(o).writingId = s.id; }
+    if(co) ensureRec(co).writingId = s.id;
     touch(); nextStep();
+    if(celebrate) celebrate();
   },
   startSpeak: el => startSpeaking(el.dataset.rec==="1"),
   stopSpeak: () => finishSpeaking(false),
@@ -2921,6 +3054,7 @@ function startClassWork(id){
   if(!confirmReplaceDraft()) return;
   assignText(o);
   run = newRun("class",{cid:id});
+  if(o.rec.readAt) run.stepIdx = 1;
   saveRun(); closeSheet(); go("lesson");
 }
 /* per-date changes on a weekly class: store only what differs from the weekly settings */
@@ -2951,7 +3085,7 @@ function classEvidenceMessage(id){
   if(w){ const c = w.content.length>700 ? w.content.slice(0,700)+"…" : w.content; t += `\nMi texto (${w.wordCount} palabras):\n${c}\n`; }
   if(r.bestSecs) t += `\nHablé: intento más largo ${mmss(r.bestSecs)}.\n`;
   if(rf) t += `\nReflexión:\n- Logré decir: ${rf.managed}\n- Difícil: ${rf.difficult||"-"}\n- Mejorar: ${rf.better||"-"}\n`;
-  if((r.notes||"").trim()) t += `\nMis notas de clase:\n${r.notes.trim().slice(0,400)}\n`;
+  if(dayNote(o.date).trim()) t += `\nNota del día:\n${dayNote(o.date).trim().slice(0,400)}\n`;
   return t;
 }
 function afterClassChange(id, msg){ save(); if(msg) toast(msg); if(id) classSheet(id); repaint(); }
@@ -2967,13 +3101,15 @@ Object.assign(ACT, {
   classAttend: el => {
     const o = occById(el.dataset.id); if(!o) return;
     if(o.date>dayKey()){ toast("You can mark attendance on the day of the class."); return; }
-    const r = ensureRec(o);
+    const r = ensureRec(o), celebrate = starWatch(o), inDay = openDayKey;
     r.attended = !r.attended; r.attendedAt = r.attended ? nowISO() : null;
     if(r.attended) touch();
     save();
     toast(r.attended ? (classPct(o)>=1 ? "Class complete. All five parts done." : "Attendance saved.") : "Attendance removed.");
+    celebrate();
     if(location.hash==="#lesson" && run){ renderLesson(); return; }
-    classSheet(o.id); repaint();
+    if(inDay) daySheet(inDay); else classSheet(o.id);
+    repaint();
   },
   readAll: el => readAll(el),
   saySnt: el => { stopReading(); el.classList.add("on"); say(el.textContent, null, ()=>el.classList.remove("on")); },
@@ -3080,10 +3216,30 @@ Object.assign(ACT, {
     else { s.end = addDays(s.start,-1); rehomeFuture(s); state.classSeries = state.classSeries.filter(x=>x!==s); }
     save(); closeSheet(); toast("Weekly class stopped."); repaint();
   },
-  ics: () => icsExport()
+  ics: () => icsExport(),
+  sendDay: el => {
+    const k = el.dataset.k, full = dayReport(k), short = dayReport(k, 3000);
+    if(short.length<full.length) copyText(full);
+    const d = dayRec(k); d.sentAt = nowISO(); d.sentCount = (d.sentCount||0)+1; save();
+    openExternal(waLink(short));
+    toast(short.length<full.length ? "Long report: WhatsApp gets a shorter version. The full text is copied, paste it if needed." : "Opening WhatsApp with your day report.");
+    daySheet(k); repaint();
+  },
+  shareDay: async el => {
+    const k = el.dataset.k, text = dayReport(k);
+    if(navigator.share){
+      try{ await navigator.share({title:"Reporte "+fmtDayEs(k), text}); dayRec(k).sharedAt = nowISO(); save(); return; }
+      catch(e){ if(e && e.name==="AbortError") return; }
+    }
+    copyText(text); toast("Full report copied. Paste it in WhatsApp or email.");
+  }
 });
 Object.assign(INP, {
-  classNotes: el => { const o = occById(el.dataset.id); if(!o) return; ensureRec(o).notes = el.value; clearTimeout(INP._n); INP._n = setTimeout(save, 500); },
+  dayNote: el => {
+    const k = el.dataset.k, v = el.value;
+    if(v.trim()) dayRec(k).note = v; else if(state.days[k]){ delete state.days[k].note; if(!Object.keys(state.days[k]).length) delete state.days[k]; }
+    clearTimeout(INP._n); INP._n = setTimeout(save, 500);
+  },
   ptBody: el => { const m = $("#ptMeter"); if(!m) return; const lv = levelKey(($("#ptLevel")||{}).value); m.innerHTML = meterInner(wc(el.value), CLASS_LEVELS[lv].read, lv+" range"); }
 });
 

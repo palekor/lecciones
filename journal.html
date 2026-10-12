@@ -7,6 +7,11 @@
 <title>Fluency OS · ProfGermandario</title>
 <meta name="description" content="Your English. Your journey. Your evidence. The ProfGermandario Fluency OS.">
 <link rel="icon" href="https://palekor.github.io/lecciones/profgermandario-logo-clean.png">
+<link rel="apple-touch-icon" href="https://palekor.github.io/lecciones/profgermandario-logo-clean.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fluency OS">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -286,6 +291,93 @@ input.field:focus,select.field:focus{outline:none;border-color:var(--gold)}
 .mt-s{margin-top:10px}.mt{margin-top:20px}.mt-l{margin-top:34px}
 .row-gap{display:flex;flex-wrap:wrap;gap:10px}
 .hide{display:none!important}
+.btn-line svg{width:14px;height:14px;flex:none}
+.pill.coral{background:color-mix(in srgb,var(--coral) 16%,transparent);color:var(--coral)}
+
+/* ============================================================
+   CLASSES — weekly schedule, month calendar (from ThingsWallet),
+   level-sized class texts, reader, measures
+   ============================================================ */
+.class-card{display:block;width:100%;text-align:left}
+.class-when{font-size:15px;color:var(--muted);margin-top:6px}
+.parts{display:flex;gap:4px;margin-top:16px}
+.parts i{flex:1;height:5px;border-radius:3px;background:var(--line-strong)}
+.parts i.on{background:var(--gold)}
+.parts-cap{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--muted);margin-top:8px}
+.pct{font-family:var(--display);font-size:18px;color:var(--gold);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
+.cal-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 12px 16px}
+.cal-nav-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px}
+.cal-month{font-family:var(--display);font-size:22px;font-weight:500;text-align:center;flex:0 1 220px;white-space:nowrap}
+.cal-metrics{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;margin:0 0 14px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cal-metrics b{display:block;font-family:var(--display);font-weight:500;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.cal-metrics span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cal-dow{text-align:center;font-size:12px;color:var(--faint);font-weight:700;padding-bottom:6px}
+.cal-day{min-width:0;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--surface-2);border:1px solid var(--line);transition:border-color .15s,transform .12s;-webkit-tap-highlight-color:transparent}
+.cal-day:hover{border-color:var(--line-strong)}
+.cal-day:active{transform:scale(.92)}
+.cal-blank{visibility:hidden;pointer-events:none}
+.cal-day.future{opacity:.62}
+.cal-day.has-class{opacity:1;border-color:color-mix(in srgb,var(--gold) 55%,transparent)}
+.cal-num{position:relative;z-index:2;font-size:14px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.cal-fill{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,color-mix(in srgb,var(--gold) 45%,transparent),var(--gold));opacity:.55;z-index:1}
+.cal-day.partial .cal-num{color:var(--text)}
+.cal-day.full{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.cal-day.full .cal-fill{opacity:.95}
+.cal-day.full .cal-num{color:var(--on-gold);font-weight:700}
+.cal-day.missed{border:1.5px dashed var(--coral)}
+.cal-day.today{border:2px solid var(--gold);background:var(--surface)}
+.cal-day.today .cal-num{color:var(--gold);font-weight:800}
+.cal-day.today.partial .cal-num{color:var(--text)}
+.cal-day.today.full .cal-num{color:var(--on-gold)}
+.cal-mark{position:absolute;top:3px;right:5px;z-index:2;font-size:9px;line-height:1;color:var(--on-gold)}
+.cal-dot{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);z-index:2;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.cal-prac{position:absolute;top:5px;left:5px;z-index:2;width:5px;height:5px;border-radius:50%;background:var(--sage)}
+.cal-legend{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:14px}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{display:inline-block;width:10px;height:10px;border-radius:3px}
+.lg-fill{background:linear-gradient(0deg,color-mix(in srgb,var(--gold) 45%,transparent),var(--gold))}
+.lg-dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.lg-prac{width:7px;height:7px;border-radius:50%;background:var(--sage)}
+.lg-today{border:2px solid var(--gold)}
+.lg-star{color:var(--gold);font-size:11px}
+.cal-tip{text-align:center;font-size:13px;color:var(--faint);margin-top:8px}
+.check-row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:13px 2px;border-bottom:1px solid var(--line)}
+.check-row:last-child{border-bottom:0}
+.check-row .box{width:30px;height:30px;flex:none;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:15px;font-weight:700;color:transparent}
+.check-row.on .box{background:var(--sage);border-color:var(--sage);color:var(--bg)}
+.check-row .grow{flex:1;min-width:0}
+.check-row .t{font-weight:600}
+.check-row .s{display:block;font-size:14px;color:var(--muted)}
+button.check-row[disabled]{opacity:.55;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-width:54px;min-height:46px;padding:0 12px;border-radius:12px;border:1px solid var(--line-strong);font-weight:600;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-grid>*{min-width:0}
+label.lbl{display:block;font-size:14px;color:var(--muted)}
+.reader p{font-family:var(--display);font-size:clamp(18px,4.7vw,21px);line-height:1.75}
+.reader p+p{margin-top:1em}
+.reader .snt{border-radius:5px;cursor:pointer;transition:background .2s,box-shadow .2s;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media(hover:hover){.reader .snt:hover{background:var(--surface-2)}}
+.reader .snt.on{background:var(--gold-soft);box-shadow:0 0 0 3px var(--gold-soft)}
+.meter-track{position:relative;height:8px;border-radius:4px;background:var(--surface-2);margin-top:12px}
+.meter-zone{position:absolute;top:0;bottom:0;background:var(--sage-soft);border-left:2px solid var(--sage);border-right:2px solid var(--sage)}
+.meter-pin{position:absolute;top:-4px;width:4px;height:16px;border-radius:2px;background:var(--gold);transform:translateX(-50%);transition:left .25s}
+.meter.ok .meter-pin{background:var(--sage)}
+.meter.high .meter-pin{background:var(--coral)}
+.meter-cap{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--muted);margin-top:8px}
+.meter.ok .meter-cap b{color:var(--sage)}
+.lvl-table{width:100%;border-collapse:collapse;font-size:14.5px}
+.lvl-table th,.lvl-table td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.lvl-table th{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.lvl-table tr.me td{color:var(--gold);font-weight:600}
+textarea.textbody{min-height:240px;font-size:17px}
+.mytext{padding:14px 2px;border-bottom:1px solid var(--line)}
+.mytext:first-child{border-top:1px solid var(--line)}
+.mytext>button{display:flex;align-items:center;gap:14px;width:100%;text-align:left}
+.mytext .grow{flex:1;min-width:0}.mytext .t{font-weight:600}.mytext .s{font-size:14px;color:var(--muted)}
+@media(max-width:380px){.cal-day{height:42px}.cal-metrics b{font-size:20px}.tabs button{font-size:11px}}
 </style>
 </head>
 <body>
@@ -306,6 +398,7 @@ input.field:focus,select.field:focus{outline:none;border-color:var(--gold)}
 <nav class="tabs" id="tabs" aria-label="Main">
   <button data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Home</button>
   <button data-go="path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17c6 0 2-9 8-10"/></svg>Path</button>
+  <button data-go="classes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg>Classes</button>
   <button data-go="evolution"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V14M10 20V9M16 20v-6M22 20V4"/></svg>Evolution</button>
   <button data-go="toolbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M3 13h18"/></svg>Toolbox</button>
 </nav>
@@ -718,6 +811,7 @@ const TOOLBOX = [
     {g:"S", t:"Free speaking", s:"Choose a topic, write, speak, reflect.", action:"free"},
     {g:"E", t:"Shadowing", s:"Listen to mission sentences and repeat them aloud.", action:"shadow"},
     {g:"Q", t:"Quick check", s:"Five fast questions from missions you completed.", action:"quiz"},
+    {g:"Tx", t:"Class texts", s:"Every class text by level, plus texts you write or receive.", action:"texts"},
     {g:"Y", t:"Speak Ya", s:"Your AI speaking partner, available any time.", url:CONFIG.speakYa},
     {g:"M", t:"Shadowing Masterclass", s:"Level-adjustable texts with live highlighting.", url:"08.html"},
     {g:"I", t:"Intercambio", s:"Language exchange chat, no sign-up.", url:"intercambio.html"},
@@ -754,6 +848,327 @@ const TOOLBOX = [
 function toolUrl(u){ return /^https?:/.test(u) ? u : CONFIG.base + u; }
 
 /* ============================================================
+   CLASSES — DATA. One row per CEFR level:
+   read  = length of the class text (words)
+   write = the student's own class text (words; exam-style ranges)
+   speak = seconds of speaking [minimum, target]
+   wpm   = reading speed used to estimate reading time
+   Change a number here and every class, meter, and target updates.
+   ============================================================ */
+const CLASS_LEVELS = {
+  A1:{name:"Beginner",           read:[80,120],  write:[25,50],   speak:[30,60],   wpm:70},
+  A2:{name:"Elementary",         read:[120,180], write:[35,80],   speak:[45,90],   wpm:90},
+  B1:{name:"Intermediate",       read:[200,300], write:[100,150], speak:[60,120],  wpm:120},
+  B2:{name:"Upper intermediate", read:[300,450], write:[140,190], speak:[90,150],  wpm:150},
+  C1:{name:"Advanced",           read:[450,600], write:[220,260], speak:[120,180], wpm:170}
+};
+const LEVEL_KEYS = Object.keys(CLASS_LEVELS);
+const CLASS_FRAMES = {
+  A1:["I am ___ and I ___.","Every day I ___.","I like ___ because ___."],
+  A2:["The text is about ___.","Last week I ___ and then I ___.","I think ___ because ___."],
+  B1:["The text is mainly about ___.","I agree that ___ because ___.","In my own life, ___."],
+  B2:["The author argues that ___.","While I agree that ___, I think ___.","A clear example from my experience is ___."],
+  C1:["The central claim of the text is ___.","What the text overlooks, however, is ___.","Ultimately, ___."]
+};
+const CLASS_DEFAULT = {title:"English class with ProfGermandario", time:"19:00", duration:60};
+const CLASS_WRITE_DEFAULT = "Summarize the class text in your own words. Then explain what it means for you.";
+const CLASS_SPEAK_DEFAULT = "Retell the class text in your own words, then give your opinion.";
+const CLASS_PARTS = [["attended","Attended"],["read","Read the text"],["wrote","Wrote my text"],["spoke","Spoke"],["reflected","Reflected"]];
+const CLASS_STATUS = {scheduled:["Scheduled",""], today:["Today","gold"], unmarked:["Mark attendance","gold"], attended:["Attended","sage"], complete:["Complete","sage"], missed:["Not attended","coral"], cancelled:["Cancelled",""], moved:["Moved",""]};
+const DOW_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const DOW_MON_FIRST = [1,2,3,4,5,6,0];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DURATIONS = [30,45,60,75,90,120];
+
+/* Class text library — original texts, four per level (work,
+   travel, confidence, general). Add more objects with the same
+   shape and they appear in the library automatically. */
+const CLASS_TEXTS = [
+/* ---------------- A1 · 80–120 words ---------------- */
+{id:"a1-work", level:"A1", ctx:"work", title:"My Workday",
+ body:`My name is Laura. I live in Pereira, and I work in a small office near the park. I start work at eight in the morning. First, I read my emails. Then I call clients and answer their questions.
+
+At twelve, I have lunch with my friend Andrés. We eat rice, chicken, and salad. In the afternoon, I write reports on my computer. My job is not easy, but I like it. My boss is kind, and my team is friendly.
+
+I finish work at five. After work, I walk home and study English for twenty minutes. I want to speak English at work next year.`,
+ keys:[["start","empezar"],["answer","responder"],["report","informe"],["boss","jefe, jefa"],["friendly","amable"]],
+ questions:["What time does Laura start work?","What does she do in the afternoon?","Why does Laura study English?"],
+ write:"Write about your workday. What time do you start? What do you do first? What do you like about your job?",
+ speak:"Describe your workday, from the morning to the evening."},
+
+{id:"a1-travel", level:"A1", ctx:"travel", title:"At the Airport",
+ body:`Today, Diego is at the airport in Bogotá. He is happy because he is going to Miami. He has one big bag and one small backpack.
+
+First, he goes to the counter. A woman asks for his passport and his ticket. Diego gives them to her. She smiles and says, "Gate twelve, please." Then Diego goes through security. He takes off his shoes and his belt.
+
+After that, he buys a coffee and a sandwich. He sits near the window and watches the planes. At ten o'clock, he hears his name. It is time to get on the plane. Diego is nervous, but he is excited too.`,
+ keys:[["counter","mostrador"],["passport","pasaporte"],["gate","puerta de embarque"],["security","control de seguridad"],["excited","emocionado"]],
+ questions:["Where is Diego going?","What does the woman ask for?","How does Diego feel?"],
+ write:"Write about a trip you want to take. Where do you want to go? What do you take with you?",
+ speak:"Tell me what you do at the airport, step by step."},
+
+{id:"a1-confidence", level:"A1", ctx:"confidence", title:"My First English Class",
+ body:`Hello! I am Sofía. I am a nurse, and I am a new English student. My first class is on Monday at seven in the evening.
+
+Before the class, I am very nervous. I think, "My English is bad. People will laugh." But my teacher is patient. He speaks slowly and he smiles a lot. He asks me, "What is your name? Where do you live?" I answer with short sentences. I make mistakes, but nobody laughs.
+
+My teacher says, "Mistakes are normal. Mistakes help you learn." After the class, I feel proud. Now I practice every day for fifteen minutes. English is not a monster. It is a new door.`,
+ keys:[["nurse","enfermera"],["nervous","nervioso"],["patient","paciente"],["mistake","error"],["proud","orgulloso"]],
+ questions:["What is Sofía's job?","How does she feel before the class?","What does her teacher say about mistakes?"],
+ write:"Write about you and English. Who are you? Why do you study English? How do you feel in class?",
+ speak:"Introduce yourself and say why English is important for you."},
+
+{id:"a1-general", level:"A1", ctx:"general", title:"My Morning Routine",
+ body:`I get up at six o'clock every day. First, I drink a big glass of water. Then I take a shower and get dressed. I make breakfast in the kitchen. I usually eat eggs, bread, and fruit. I drink black coffee with no sugar.
+
+While I eat, I listen to music or a short English podcast. At seven, I brush my teeth and make my bed. Then I check my phone for messages.
+
+I leave my house at seven thirty and take the bus to work. The bus is often full, so I stand. On the bus, I read new English words on my phone. My morning is simple, but it is good.`,
+ keys:[["get up","levantarse"],["get dressed","vestirse"],["usually","normalmente"],["brush my teeth","cepillarme los dientes"],["full","lleno"]],
+ questions:["What time does the person get up?","What do they eat for breakfast?","What do they do on the bus?"],
+ write:"Write about your morning routine. Use first, then, and after that.",
+ speak:"Describe your morning, from the moment you get up."},
+
+/* ---------------- A2 · 120–180 words ---------------- */
+{id:"a2-work", level:"A2", ctx:"work", title:"My First Day at a New Job",
+ body:`Last Monday was my first day at a new company. I woke up very early because I was nervous. I put on my best shirt and took a taxi to the office.
+
+When I arrived, the manager, Mrs. Ortiz, showed me my desk and introduced me to the team. Everybody was friendly, but they spoke very fast. In the morning, I had a short training on the company's software. It was difficult at first, but my colleague Julián helped me a lot.
+
+At lunch, we went to a small restaurant near the office and talked about our families. In the afternoon, I answered emails and organized some files. I made a few mistakes, but nobody was angry. When I got home, I felt tired but happy. I think this job is going to be a great opportunity for me.`,
+ keys:[["introduce","presentar (a alguien)"],["colleague","colega"],["training","capacitación"],["organize","organizar"],["opportunity","oportunidad"]],
+ questions:["Why did the writer wake up early?","Who helped them with the software?","How did they feel at the end of the day?"],
+ write:"Write about a first day you remember: a new job, school, or city. What happened? How did you feel?",
+ speak:"Tell the story of your first day at a job or a school."},
+
+{id:"a2-travel", level:"A2", ctx:"travel", title:"A Weekend in Salento",
+ body:`Two months ago, my sister and I traveled to Salento, a small town in the coffee region of Colombia. We took a bus from Bogotá, and the trip was long, about eight hours. When we arrived, it was raining, but the town was beautiful. The houses were white, with red, blue, and green doors.
+
+On Saturday morning, we visited the Cocora Valley. We walked for four hours between tall wax palms, the national tree of Colombia. It was hard, but the views were amazing. In the afternoon, we went to a coffee farm. A farmer explained how they grow coffee, and we tasted three different types. My favorite one tasted a little like chocolate.
+
+On Sunday, we bought some gifts for our parents and returned home. It was a short trip, but I want to go back soon.`,
+ keys:[["region","región"],["valley","valle"],["amazing","increíble"],["farm","finca"],["taste","probar, saber a"]],
+ questions:["How long was the bus trip?","What did they do on Saturday morning?","What was special about the writer's favorite coffee?"],
+ write:"Write about a trip you took. Where did you go? What did you do? What was your favorite part?",
+ speak:"Tell me about the best trip of your life."},
+
+{id:"a2-confidence", level:"A2", ctx:"confidence", title:"The Phone Call",
+ body:`Last week, I had to call a hotel in the United States to change a reservation. I was very nervous because I never speak English on the phone.
+
+Before the call, I wrote some sentences on a piece of paper: "Hello, I have a reservation for March tenth. I would like to change the date." I practiced them three times. When the receptionist answered, she spoke very quickly, and I didn't understand everything. So I said, "Sorry, could you speak more slowly, please?" She said, "Of course!" and repeated the information.
+
+After that, the conversation was easier. She asked for my name and my email, and she changed the date in two minutes. When I hung up, I smiled. It was not perfect, but it worked. Now I know an important thing: asking for help is not a weakness. It is a skill.`,
+ keys:[["reservation","reserva"],["receptionist","recepcionista"],["repeat","repetir"],["hang up","colgar (el teléfono)"],["weakness","debilidad"]],
+ questions:["Why did the writer call the hotel?","What did they do before the call?","What did they learn from the experience?"],
+ write:"Write about a moment when you used English and felt nervous. What happened? What did you do?",
+ speak:"Tell me about a time you were nervous but did it anyway."},
+
+{id:"a2-general", level:"A2", ctx:"general", title:"My Favorite Place",
+ body:`My favorite place in my city is a small park near my house. It is not big or famous, but it is special for me. There are tall trees, a few wooden benches, and a little fountain in the middle. In the mornings, older people walk there and children play on the grass.
+
+When I was a child, my grandfather took me to this park every Sunday. We fed the birds and ate ice cream together. He told me stories about his life on a farm.
+
+Today, I go to the park when I feel stressed. I sit on our old bench, breathe slowly, and listen to the birds. After fifteen minutes, I always feel calmer. I think everyone needs a place like this: a quiet place to stop and feel at home.`,
+ keys:[["bench","banca"],["fountain","fuente"],["feed","alimentar"],["stressed","estresado"],["calmer","más tranquilo"]],
+ questions:["What can you see in the park?","What did the writer do there as a child?","Why does the writer go to the park today?"],
+ write:"Write about your favorite place. Where is it? What is there? Why is it special for you?",
+ speak:"Describe your favorite place and explain why you like it."},
+
+/* ---------------- B1 · 200–300 words ---------------- */
+{id:"b1-work", level:"B1", ctx:"work", title:"Working From Home: The Good and the Bad",
+ body:`Since 2020, millions of people around the world have started working from home, at least part of the week. For many, it has been a positive change. They no longer spend two hours a day in traffic, they can have lunch with their families, and they often feel more in control of their time.
+
+However, working from home is not perfect. One common problem is that the line between work and personal life disappears. When your office is also your living room, it is easy to answer emails at ten o'clock at night. Another problem is loneliness. Many remote workers say they miss the small conversations with colleagues, like a quick coffee or a joke in the hallway. These moments may seem unimportant, but they help people build trust.
+
+So what is the best solution? Many companies now use a hybrid model: two or three days at home and the rest in the office. If you work from home, a few simple habits can help. Start and finish at the same time every day. Create a space that is only for work. And call a colleague at least once a day, not only to talk about tasks but also to connect as people.
+
+In the end, the question is not only where we work, but how we work. A good routine can make almost any place productive.`,
+ keys:[["traffic","tráfico"],["loneliness","soledad"],["hallway","pasillo"],["trust","confianza"],["hybrid","híbrido"]],
+ questions:["What are two advantages of working from home?","Why are small conversations with colleagues important?","Which habits does the text recommend?"],
+ write:"Do you prefer working or studying from home or in an office? Give two reasons and one example from your life.",
+ speak:"Explain the pros and cons of working from home, then give your opinion."},
+
+{id:"b1-travel", level:"B1", ctx:"travel", title:"The Day Everything Went Wrong",
+ body:`Last year, I was flying from Medellín to Madrid for a work conference. I had planned everything carefully, or at least I thought I had. The first problem appeared at check-in: my flight was delayed by three hours because of a storm. I wasn't too worried, because I still had time to catch my connection in Panama.
+
+But when we finally landed, my second flight had already left. I ran to the airline desk, where a long line of angry passengers was waiting. After an hour, an agent told me the next flight was the following morning. I asked about my suitcase, and she wasn't sure where it was.
+
+At that moment, I had two options: get angry or stay calm. I decided to stay calm. I asked politely if the airline could give me a hotel room and a meal, and to my surprise, she said yes. At the hotel, I met another passenger, an engineer from Chile who was going to the same conference. We had dinner together and talked for hours.
+
+The next day, I arrived in Madrid tired, without my suitcase, and wearing the same clothes. But I also arrived with a new friend and a great story. My suitcase appeared two days later. Since then, I have learned something important: you can't control every problem when you travel, but you can always control your reaction.`,
+ keys:[["delayed","retrasado"],["connection","conexión, escala"],["suitcase","maleta"],["politely","con cortesía"],["reaction","reacción"]],
+ questions:["Why did the writer miss the connection?","What did the writer decide to do at the airline desk?","What positive thing came out of the problem?"],
+ write:"Tell the story of a day when something went wrong. What happened, how did you react, and what did you learn?",
+ speak:"Tell a story about a problem you had while traveling or at work, and how you solved it."},
+
+{id:"b1-confidence", level:"B1", ctx:"confidence", title:"Why Mistakes Help You Learn",
+ body:`Many adult learners have the same fear: they don't want to speak English because they might make a mistake. They prefer to stay silent until their grammar is perfect. Unfortunately, that day never comes. Nobody, not even a native speaker, speaks without errors.
+
+Mistakes are not the opposite of progress; they are part of it. When you try to say something and get it wrong, your brain notices the gap between what you said and what you wanted to say. If someone corrects you, or if you hear the correct form later, that gap starts to close. Without the mistake, there is nothing to correct.
+
+Think about how children learn their first language. A three-year-old says, "I goed to the park," and nobody tells them to stop talking. Adults simply answer, "Oh, you went to the park? That's great!" The child hears the correct form, and after a while, they start using it. Children are not afraid of looking silly, and that is one of their biggest advantages.
+
+So what can adults do? First, change the goal of each conversation. The goal is not to be perfect; it is to communicate one idea clearly. Second, write down your common mistakes after class and review them once a week. Third, celebrate small wins, like the first time you order food or make a phone call in English.
+
+Every mistake you make today is a lesson you won't need tomorrow.`,
+ keys:[["fear","miedo"],["gap","brecha, vacío"],["silly","tonto, ridículo"],["advantage","ventaja"],["celebrate","celebrar"]],
+ questions:["Why do many adults stay silent in English?","What happens in the brain when we make a mistake?","What three things can adults do differently?"],
+ write:"Write about a mistake that taught you something, in English or in life. What happened, and what did you learn?",
+ speak:"Do you agree that mistakes help you learn? Give your opinion with one personal example."},
+
+{id:"b1-general", level:"B1", ctx:"general", title:"The Power of Small Habits",
+ body:`Most people want big changes in their lives: a healthier body, a better job, fluent English. The problem is that big changes feel heavy, so we wait for the perfect moment to start. Meanwhile, months go by and nothing changes.
+
+A different approach is to focus on small habits. A small habit is an action so easy that you can do it even on a bad day. For example, instead of promising to study English for two hours every night, you could promise to learn three new words with your morning coffee. Instead of planning to run ten kilometers, you could put on your running shoes and walk around the block.
+
+These actions may seem too small to matter, but they work for two reasons. First, they are easy to repeat, and repetition is what turns an action into a habit. Second, each time you complete a small habit, you prove to yourself that you are the kind of person who keeps promises. Over time, three words become ten, and a walk becomes a run.
+
+A useful trick is to connect a new habit to something you already do every day. For instance: "After I brush my teeth, I will read one paragraph in English." Your old habit becomes a reminder for the new one.
+
+You don't need more motivation. You need a smaller first step and the patience to repeat it.`,
+ keys:[["approach","enfoque"],["meanwhile","mientras tanto"],["repeat","repetir"],["keep a promise","cumplir una promesa"],["reminder","recordatorio"]],
+ questions:["Why do big changes often fail?","What are the two reasons small habits work?","How can you connect a new habit to an old one?"],
+ write:"Choose one small habit you want to start. Describe it, explain why it is small enough, and connect it to something you already do.",
+ speak:"Describe one habit that changed your life, or one you want to build, and explain why."},
+
+/* ---------------- B2 · 300–450 words ---------------- */
+{id:"b2-work", level:"B2", ctx:"work", title:"Meetings People Actually Want to Attend",
+ body:`Ask any office worker what wastes most of their time, and the answer is likely to be the same: meetings. Many professionals spend a large part of their week in meetings, and a surprising number of those hours produce few concrete results. Yet meetings are not inherently bad. When they are well designed, they are the fastest way to make decisions, resolve conflicts, and align a team. The difference lies almost entirely in preparation.
+
+The first rule of an effective meeting is that it must have a clear purpose, stated in one sentence. "Weekly update" is not a purpose; "Decide which supplier we will sign with" is. A clear purpose also tells participants how to prepare and how to know when the meeting has succeeded. If you cannot write that sentence, you probably need an email, not a meeting.
+
+The second rule concerns the guest list. Every person in the room should contribute information, make a decision, or be directly affected by the outcome. A useful test is to ask whether the meeting would suffer if a particular person were absent. Inviting people "just to keep them informed" turns a working session into an audience, and audiences rarely participate.
+
+Third, share an agenda in advance, ideally with the materials people need to read. This allows participants to arrive with opinions instead of first impressions. During the meeting itself, the facilitator's job is to protect time and voices: keep the discussion on track, invite quieter colleagues to speak, and politely interrupt anyone who dominates the conversation.
+
+Finally, no meeting should end without three things: a summary of what was decided, a list of actions, and a name next to each action. Without them, people leave the room with different memories of what happened, and the same meeting has to take place again next week.
+
+For non-native speakers, meetings can feel especially intimidating, since conversations move quickly and interruptions are common. Preparing two or three key sentences in advance, such as "Could I add something here?" or "Just to clarify, are we saying that…?", can make the difference between staying silent and being heard.`,
+ keys:[["inherently","en sí mismo"],["align","alinear"],["supplier","proveedor"],["outcome","resultado"],["intimidating","intimidante"]],
+ questions:["How can you tell whether you need a meeting or an email?","Who should be invited to a meeting, according to the text?","What three things should every meeting end with?"],
+ write:"Describe the worst or the best meeting you have attended. Then explain what made it work or fail, using ideas from the text.",
+ speak:"Explain how you would run a meeting that people actually want to attend. Give at least three rules."},
+
+{id:"b2-travel", level:"B2", ctx:"travel", title:"The Case for Slow Travel",
+ body:`For decades, the typical holiday has looked like a race. Travelers try to visit five cities in seven days, rushing from one famous monument to the next, taking hundreds of photos and remembering surprisingly little. They return home exhausted, often feeling that they need another holiday to recover from the first one.
+
+In response, a growing number of people are embracing what has become known as slow travel. The idea is simple: visit fewer places and stay longer in each one. Instead of spending a single night in a city, slow travelers might rent an apartment for two weeks, shop at the local market, take a cooking class, or join a language exchange. Rather than seeing a place, they try to live in it, even briefly. Some combine their trips with remote work, staying for a month or more in a single city.
+
+Supporters argue that this approach has several advantages. First, it is often cheaper, since weekly rentals usually cost less than hotels and travelers spend less on transport. Second, fewer flights and long journeys mean a smaller environmental footprint. Third, and perhaps most importantly, it leads to deeper experiences. When you return to the same café every morning, the owner starts to recognize you. Conversations become possible, and with them, real cultural exchange.
+
+Slow travel also offers a remarkable opportunity for language learners. Ordering bread every day at the same bakery may sound repetitive, but repetition in a real context is exactly what makes vocabulary stick. Locals also tend to be more patient with a visitor they see every day. By the end of the second week, phrases that once required careful planning start to come out naturally.
+
+Of course, slow travel is not for everyone. Many people only have a few days of vacation each year, and they understandably want to see as much as possible. Nevertheless, even short trips can borrow the philosophy: choose one neighborhood instead of five, leave empty space in your schedule, and allow yourself to get lost. Sometimes the most memorable moments are the ones nobody planned.`,
+ keys:[["embrace","adoptar, acoger"],["briefly","brevemente"],["footprint","huella"],["stick","quedarse (en la memoria)"],["nevertheless","sin embargo"]],
+ questions:["What problem does slow travel try to solve?","What are the three advantages mentioned in the text?","How can people with short holidays use the same idea?"],
+ write:"Plan a two-week slow-travel trip to one place. Explain where you would stay, what you would do, and what you hope to learn.",
+ speak:"Argue for or against slow travel, using at least two reasons from the text and one of your own."},
+
+{id:"b2-confidence", level:"B2", ctx:"confidence", title:"The Myth of the Perfect Accent",
+ body:`Many English learners spend years trying to eliminate their accent. They watch pronunciation videos, imitate actors, and feel embarrassed every time someone asks them where they are from. Behind all this effort lies a common belief: that a foreign accent is a sign of poor English. This belief is not only inaccurate; it can actively hold learners back.
+
+To begin with, there is no single correct English accent. English is spoken as a first language in countries as different as Scotland, Nigeria, Australia, and Jamaica, and as an additional language by far more people. A person from Glasgow and a person from Texas sound completely different, yet both speak perfectly good English. In international business, many conversations in English take place between people for whom it is not a first language at all.
+
+What really matters is not accent but intelligibility: how easily a listener can understand you. Pronunciation researchers have long distinguished between the two, and their work suggests that a speaker can have a noticeable accent while being completely clear. Intelligibility depends on a few key features: placing stress on the right syllable, pronouncing certain vowel contrasts clearly, and speaking at a steady pace with natural pauses.
+
+This is good news, because it means learners can focus their energy where it counts. Instead of trying to sound like a news presenter from London, they can work on the specific sounds that cause misunderstandings, such as the difference between "ship" and "sheep", or between "thirty" and "thirteen". For Spanish speakers, the most common difficulties involve short and long vowels and the final consonants that Spanish rarely uses. Recording yourself and comparing it with a model is one of the fastest ways to find your personal priorities.
+
+There is also an emotional side to this issue. Your accent carries your history, your first language, and your identity. Many respected public figures speak English with a strong accent and are admired for their ideas, not criticized for their vowels. Confidence comes from clarity and preparation, not from hiding where you come from.`,
+ keys:[["eliminate","eliminar"],["embarrassed","avergonzado"],["intelligibility","inteligibilidad"],["stress (a syllable)","acentuar (una sílaba)"],["misunderstanding","malentendido"]],
+ questions:["Why is the belief about accents described as inaccurate?","What is the difference between accent and intelligibility?","Which features make speech easier to understand?"],
+ write:"How do you feel about your accent in English? Explain whether this text changed your opinion, and set one realistic pronunciation goal.",
+ speak:"Explain the difference between accent and intelligibility, then talk about your own accent with confidence."},
+
+{id:"b2-general", level:"B2", ctx:"general", title:"Attention: The Most Valuable Thing You Own",
+ body:`Every time you unlock your phone, you enter a marketplace in which your attention is the product being sold. Social media platforms, news sites, and games compete fiercely for the minutes of your day, because the longer you stay, the more advertising they can show you. To win that competition, they rely on design techniques borrowed from psychology: endless scrolling, unpredictable rewards, and notifications engineered to feel urgent.
+
+The consequences are easy to observe. Many people report that they find it harder to read a long article or a book without checking their phone. Conversations are interrupted by vibrations. Work that requires deep thinking, such as writing a report or learning a language, is broken into small fragments, and each interruption carries a cost, because the mind needs time to return to full concentration after switching tasks.
+
+None of this means that technology is the enemy. The same phone that distracts you can also give you access to dictionaries, podcasts, and conversation partners from around the world. The real question is who is in control: you or the app.
+
+Fortunately, regaining control does not require dramatic measures. Turning off non-essential notifications removes dozens of interruptions a day. Keeping the phone in another room while studying reduces the temptation to check it. Scheduling specific times for email and messages, rather than responding instantly, protects longer periods for focused work. Removing the most distracting apps from the home screen adds a small but useful barrier between impulse and action.
+
+It can also help to treat attention as a skill that can be trained. Short meditation practices, in which you repeatedly bring your focus back to your breathing, are essentially exercises in noticing distraction and choosing to return. Like a muscle, attention grows stronger with regular use. Even five minutes a day, practiced consistently, is more useful than an hour once a month.
+
+Ultimately, what you pay attention to shapes who you become. If you want to become fluent in English, the most important investment you can make may not be money, but focused minutes.`,
+ keys:[["fiercely","ferozmente"],["unpredictable","impredecible"],["fragment","fragmento"],["regain","recuperar"],["temptation","tentación"]],
+ questions:["Why do apps compete for your attention?","What happens to deep work when we are interrupted?","Which three practical strategies does the text suggest?"],
+ write:"Describe how your phone affects your attention. Then design a realistic plan to protect one hour of focused English practice each day.",
+ speak:"Is technology helping or hurting your ability to focus? Defend your position with examples."},
+
+/* ---------------- C1 · 450–600 words ---------------- */
+{id:"c1-work", level:"C1", ctx:"work", title:"Leading Across Cultures",
+ body:`When a Colombian manager joins a video call with colleagues in Germany, Japan, and the United States, the agenda may be written in a single language, but the conversation is taking place in several cultures at once. Each participant brings unspoken assumptions about how decisions should be made, how disagreement should be expressed, and even what counts as being on time. Leaders who ignore these differences often conclude that their colleagues are rude, evasive, or inefficient, when in reality they are simply following a different set of rules.
+
+One of the most useful distinctions is between low-context and high-context communication, a framework introduced by the anthropologist Edward T. Hall. In low-context cultures, such as the Netherlands or the United States, messages are expected to be explicit: people say what they mean, and the listener is not supposed to read between the lines. In high-context cultures, which include much of Latin America and East Asia, meaning depends heavily on relationships, tone, and what is left unsaid. A Japanese colleague who describes a proposal as "difficult" may be delivering a clear refusal; a Dutch colleague who says "this plan has three serious problems" may simply be trying to help.
+
+Feedback is another area in which misunderstandings flourish. In some workplaces, criticism is delivered directly and even publicly, and receiving it is considered a sign of respect. In others, negative feedback is softened, wrapped in compliments, or delivered privately through an intermediary. A manager accustomed to the first style may unintentionally humiliate a team member; one accustomed to the second may give feedback so gentle that the message never arrives.
+
+Decision-making varies just as widely. Some organizations favor consensus, investing considerable time in discussion so that implementation is fast and smooth once a decision has been reached. Others prefer a top-down approach, in which the leader decides quickly and the details are adjusted later. Neither model is inherently superior, but mixing them without acknowledging the difference creates frustration on both sides.
+
+What, then, distinguishes leaders who thrive in multicultural teams? Rather than memorizing lists of national stereotypes, they cultivate a habit of curiosity. They ask explicit questions about expectations at the start of a project: How do we prefer to receive feedback? Who needs to be consulted before a decision is final? What does a deadline actually mean here? Some teams even write these agreements down in a short document that new members read on their first day. They also learn to adapt their own style while remaining recognizably themselves, becoming slightly more direct with some colleagues and more patient with others.
+
+For professionals working in a second language, there is an additional layer of complexity, since linguistic precision and cultural fluency are not the same thing. Mastering English grammar allows you to be understood; understanding the cultural logic behind the words allows you to be trusted. In global teams, it is often the second skill that determines who is invited to lead.`,
+ keys:[["unspoken assumption","supuesto tácito"],["evasive","evasivo"],["flourish","florecer, proliferar"],["intermediary","intermediario"],["thrive","prosperar"]],
+ questions:["What is the difference between low-context and high-context communication?","How can different feedback styles cause problems?","What do successful multicultural leaders do instead of relying on stereotypes?"],
+ write:"Describe a cross-cultural misunderstanding you have experienced or observed. Analyze it using the concepts in the text and propose how it could have been avoided.",
+ speak:"Brief a new manager on how to lead a multicultural team. Cover communication, feedback, and decisions."},
+
+{id:"c1-travel", level:"C1", ctx:"travel", title:"The Paradox of Popular Places",
+ body:`Few experiences are as disappointing as arriving at a destination you have dreamed about for years, only to find it buried under crowds. In recent years, cities such as Venice, Barcelona, and Amsterdam have struggled with what is now widely called overtourism: a situation in which the number of visitors damages the very qualities that attracted them in the first place. Residents complain of rising rents, disappearing local shops, and streets that feel more like theme parks than neighborhoods.
+
+The causes are well documented. Cheaper flights, a growing global middle class, cruise ships that release thousands of passengers at once, and short-term rental platforms have made travel more accessible than ever before. Social media has added a powerful accelerant. When a single photograph of a hidden beach or a colorful street goes viral, thousands of people may arrive within months to recreate the same image, often with little interest in the place beyond the picture.
+
+This creates a genuine paradox. Tourism brings employment, investment, and cultural exchange, and many communities depend on it economically. Yet when it grows without limits, it can erode housing affordability, strain infrastructure, and turn living traditions into performances staged for outsiders. The question facing local governments is not whether to welcome visitors, but how to welcome them without sacrificing the community itself.
+
+Responses have varied considerably. Some cities have introduced tourist taxes or entry fees for their most crowded areas, using the revenue to fund public services; Venice, for example, began charging day-trippers an entry fee on its busiest days in 2024. Others have restricted short-term rentals, limited the number of cruise ships that can dock, or stopped approving new hotels in historic centers. A few have launched campaigns encouraging visitors to explore less famous neighborhoods or to travel outside the peak season. Critics argue that such measures risk turning travel into a privilege of the wealthy, while supporters respond that unregulated tourism already imposes its costs on those least able to bear them: local residents.
+
+Colombia offers an instructive example of both opportunity and risk. After decades in which many international travelers avoided the country, regions such as the Coffee Region and the Caribbean coast have seen rapid growth in visitors. This has created new livelihoods for farmers, guides, and small business owners. In Salento and the Cocora Valley, for instance, weekend crowds now fill trails and streets that were quiet a decade ago, and residents debate how much more growth the area can absorb. At the same time, some communities have begun to ask how to protect water resources, landscapes, and traditional ways of life as the numbers increase.
+
+Ultimately, much of the responsibility lies with travelers themselves. Choosing locally owned accommodation, spending money in small businesses, visiting outside the busiest months, and treating residents as neighbors rather than background scenery may seem like modest gestures. Multiplied by millions, however, they can determine whether a beloved destination remains a living place or becomes a crowded postcard.`,
+ keys:[["accelerant","acelerador"],["erode","erosionar"],["strain","sobrecargar"],["revenue","ingresos"],["livelihood","sustento"]],
+ questions:["Why is overtourism described as a paradox?","What measures have cities taken, and what is the main criticism of them?","What role does the text give to individual travelers?"],
+ write:"Write an opinion piece for a local newspaper: should your region limit tourism? Weigh the economic benefits against the costs, and propose concrete measures.",
+ speak:"Present a balanced two-minute argument about tourism in your region, then state your own position."},
+
+{id:"c1-confidence", level:"C1", ctx:"confidence", title:"Speaking Under Pressure",
+ body:`Almost everyone has experienced it: you prepare carefully for a presentation, a job interview, or a difficult conversation in English, and at the crucial moment your mind goes blank. Words you used fluently the night before suddenly seem to vanish. Your heart races, your voice tightens, and you hear yourself speaking in short, hesitant fragments. It is tempting to interpret this as proof that your English is not good enough. In reality, it is usually proof that your nervous system is doing exactly what it was designed to do.
+
+When the brain perceives a threat, whether it is a predator or a room full of evaluating faces, it activates the stress response. Hormones such as adrenaline and cortisol prepare the body for action by increasing heart rate and redirecting energy toward the muscles. Useful as this was for our ancestors, it comes at a cost for complex thinking. Research suggests that high levels of stress can impair working memory, the mental workspace we use to hold information while we manipulate it. Speaking a second language places heavy demands on precisely this system, because the speaker must retrieve vocabulary, apply grammar, monitor pronunciation, and follow the conversation simultaneously.
+
+Understanding this mechanism changes the strategy. If the problem is not a lack of knowledge but a temporary reduction in mental capacity, the solution is to reduce the load and calm the system, not to cram more grammar the night before.
+
+Several approaches have solid support. The first is slow breathing, particularly with a long exhalation, which activates the parasympathetic nervous system and signals to the body that the danger has passed. Even a minute or two of slow, steady breathing before speaking can noticeably lower physical tension. The second is automatization: language that has been practiced until it is automatic requires far less working memory. This is why rehearsing key chunks, such as your opening sentence, transitions, and common phrases, is more valuable than memorizing an entire script, which tends to collapse at the first interruption.
+
+A third approach involves reframing. Studies on stress have found that people who interpret their racing heart as a sign of energy, rather than of danger, often perform better under pressure. Saying "I'm excited" instead of "I'm nervous" may sound like a trick, but it changes how the body's arousal is put to use.
+
+Finally, gradual exposure matters. Each time you speak in a moderately stressful situation and come through it, the brain updates its threat assessment. A short contribution in a meeting today makes a longer one easier next month. The same principle underlies many treatments for anxiety: avoidance keeps fear alive, while safe repetition gradually weakens it.
+
+Fluency under pressure, in other words, is not only a linguistic achievement. It is the product of a trained mind, a regulated body, and repeated evidence that you can be uncomfortable and still communicate clearly.`,
+ keys:[["go blank","quedarse en blanco"],["impair","deteriorar"],["cram","estudiar a última hora"],["reframe","replantear"],["threat assessment","evaluación de amenaza"]],
+ questions:["Why can stress make a fluent speaker suddenly lose words?","Why is rehearsing chunks more useful than memorizing a full script?","What does reframing mean, and why might it help?"],
+ write:"Describe a high-pressure speaking situation you will face soon. Using the text, write a concrete preparation plan for the day before and the five minutes before.",
+ speak:"Explain to a nervous colleague what happens in the brain under pressure and what they can do about it."},
+
+{id:"c1-general", level:"C1", ctx:"general", title:"Deep Work in a Distracted World",
+ body:`In an economy increasingly shaped by automation and artificial intelligence, one human ability is becoming both rarer and more valuable: the capacity to concentrate intensely on a demanding task for an extended period. The writer and computer scientist Cal Newport has called this ability "deep work", contrasting it with "shallow work": the logistical tasks, such as answering messages and attending routine meetings, that can be performed while distracted and that rarely create much new value.
+
+The argument rests on two observations. First, the skills that are hardest to automate, from designing a complex strategy to writing persuasively or mastering a language, require sustained concentration to acquire and to perform. Second, modern workplaces are organized in ways that make such concentration almost impossible. Open offices, instant messaging, and the expectation of constant availability fragment the working day into intervals of a few minutes, and each interruption leaves behind what researchers have described as "attention residue": part of the mind remains occupied with the previous task, reducing performance on the next one.
+
+If deep work is so valuable, why do so few people practice it? Partly because shallow work is visible. Responding quickly to every email creates a sense of productivity and signals commitment to colleagues, even when it accomplishes little. Deep work, by contrast, often looks like doing nothing: a person sitting quietly with a notebook, phone switched off, apparently unreachable. In many organizations, busyness is rewarded more consistently than results.
+
+Cultivating the ability requires deliberate structure rather than willpower alone. Newport compares the capacity for focus to a muscle: it weakens when neglected and grows stronger with deliberate training. Some people adopt a rhythmic approach, reserving the same block of time each morning for their most demanding work before checking any messages. Others prefer a more radical approach, disappearing for several days to complete a major project. Equally important is learning to tolerate boredom. If every moment of waiting in a queue is filled with a quick glance at a screen, the brain becomes conditioned to expect constant novelty, and sustained focus begins to feel almost painful.
+
+For language learners, the implications are significant. Thirty minutes of fully focused practice, in which you read a challenging text, write a paragraph without looking up words, or record yourself speaking and then analyze the recording, will usually produce more progress than two hours of half-attentive studying with notifications appearing every few minutes. Intensity, not just time, determines how quickly new structures become automatic. A useful rule is to decide in advance exactly what a focused session should produce, such as one corrected paragraph or ten new phrases used in context.
+
+None of this requires abandoning technology or retreating from professional life. It requires recognizing that attention is finite and treating your focused hours as the scarce resource they are. Those who learn to protect them will find that they can master difficult things quickly, which, in a rapidly changing world, may be the most important skill of all.`,
+ keys:[["sustained","sostenido"],["residue","residuo"],["busyness","estar ocupado (sin resultados)"],["willpower","fuerza de voluntad"],["scarce","escaso"]],
+ questions:["What is the difference between deep work and shallow work?","Why do organizations often reward shallow work?","What does the text recommend for language learners specifically?"],
+ write:"Evaluate your own working or study week in terms of deep and shallow work. Propose a realistic schedule change and justify it with arguments from the text.",
+ speak:"Argue whether deep work is realistic in your job or studies. Address one counterargument."}
+];
+
+/* ============================================================
    UTILITIES
    ============================================================ */
 const $ = s => document.querySelector(s);
@@ -777,8 +1192,8 @@ function copyText(t){
   fallbackCopy(t); return Promise.resolve();
 }
 function fallbackCopy(t){ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand("copy");}catch(e){} a.remove(); }
-function download(name, text){
-  const blob = new Blob([text],{type:"application/json"}); const url = URL.createObjectURL(blob);
+function download(name, text, mime){
+  const blob = new Blob([text],{type:mime||"application/json"}); const url = URL.createObjectURL(blob);
   const a = document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 4000);
 }
@@ -788,8 +1203,8 @@ function download(name, text){
    v1/v2 data is backed up untouched before the first v3 save.
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
-const DATA_VERSION = 3;
-const APP_VERSION = "10.0";
+const DATA_VERSION = 4;
+const APP_VERSION = "11.0";
 
 function defaultState(){
   return {
@@ -801,7 +1216,9 @@ function defaultState(){
     practiceRecords:[], quizzes:[], lastMilestoneCycleShown:0,
     /* v3 */
     onboarded:false, tier:"essential", placementStart:0,
-    speakingAttempts:[], reflections:[], mirrorSamples:[], shadowLog:[], draft:null, ttsRate:0.92
+    speakingAttempts:[], reflections:[], mirrorSamples:[], shadowLog:[], draft:null, ttsRate:0.92,
+    /* v4 — classes */
+    classSeries:[], classRecords:{}, myTexts:[]
   };
 }
 function migrate(raw){
@@ -809,8 +1226,12 @@ function migrate(raw){
   if(!raw || typeof raw!=="object") return s;
   Object.assign(s, raw);
   ["completedMissions","achievements","journalEntries","writingSamples","sessionLog","meditationLog","stuckSignals",
-   "practiceRecords","quizzes","speakingAttempts","reflections","mirrorSamples","shadowLog"].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; });
+   "practiceRecords","quizzes","speakingAttempts","reflections","mirrorSamples","shadowLog","classSeries","myTexts"].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; });
   if(!s.missionProgress || typeof s.missionProgress!=="object") s.missionProgress = {};
+  if(!s.classRecords || typeof s.classRecords!=="object" || Array.isArray(s.classRecords)) s.classRecords = {};
+  s.classSeries = s.classSeries.filter(x=>x && x.id && Array.isArray(x.days) && x.days.length && /^\d{4}-\d{2}-\d{2}$/.test(x.start||""));
+  Object.keys(s.classRecords).forEach(k=>{ const r = s.classRecords[k]; if(!r || typeof r!=="object" || !/^\d{4}-\d{2}-\d{2}$/.test(r.date||"")) delete s.classRecords[k]; else r.id = k; });
+  s.myTexts = s.myTexts.filter(t=>t && t.id && t.title && typeof t.body==="string");
   s.startingPoint = Object.assign({level:"",goal:"",fear:"",learningStyle:"",baseline:""}, raw.startingPoint||{});
   if(!TIERS[s.tier]) s.tier = "essential";
   if(typeof s.placementStart!=="number") s.placementStart = 0;
@@ -928,7 +1349,17 @@ function stats(){
     meditations: Math.max(state.meditationsCompleted||0, state.meditationLog.length),
     shadow: state.shadowLog.length,
     reflections: state.reflections.length,
-    streak: liveStreak()
+    streak: liveStreak(),
+    ...classStats()
+  };
+}
+function classStats(){
+  const recs = Object.values(state.classRecords).filter(r=>!r.cancelled);
+  return {
+    classesAttended: recs.filter(r=>r.attended).length,
+    classTextsRead: recs.filter(r=>r.readAt).length,
+    classesComplete: recs.map(r=>occById(r.id)).filter(o=>o && classPct(o)>=1).length,
+    classWords: state.writingSamples.filter(w=>w.kind==="class").reduce((a,w)=>a+(w.wordCount||0),0)
   };
 }
 function mirrorDue(){
@@ -947,6 +1378,301 @@ function keywords(text){
   const seen = new Set(), out = [];
   (String(text).toLowerCase().match(/[a-z'’]{5,}/g)||[]).forEach(w=>{ if(!stop.has(w) && !seen.has(w) && out.length<6){ seen.add(w); out.push(w); } });
   return out;
+}
+
+/* ============================================================
+   CLASSES — ENGINE
+   A weekly class is a "series" (days + time + duration). Every
+   date it falls on is an occurrence with id  seriesId@YYYY-MM-DD.
+   Records (progress, notes, text, per-date changes) are created
+   only when needed, so empty weeks cost nothing. A single class
+   is a record with oneoff:true. When a series with history is
+   edited, past dates are frozen as they were (frozenUntil).
+   ============================================================ */
+const parseKey = k => { const p = String(k).split("-").map(Number); return new Date(p[0], (p[1]||1)-1, p[2]||1); };
+const addDays = (k,n) => { const d = parseKey(k); d.setDate(d.getDate()+n); return dayKey(d); };
+const maxKey = (...a) => a.filter(Boolean).reduce((x,y)=>x>y?x:y);
+const fmtDay = (k,long) => parseKey(k).toLocaleDateString("en-US", long ? {weekday:"long",month:"long",day:"numeric"} : {weekday:"short",month:"short",day:"numeric"});
+const fmtDayEs = k => parseKey(k).toLocaleDateString("es-CO",{weekday:"long",day:"numeric",month:"long"});
+function fmtTime(t){ const p = String(t||"00:00").split(":").map(Number), h = p[0]||0; return ((h%12)||12)+":"+pad2(p[1]||0)+" "+(h>=12?"PM":"AM"); }
+function levelKey(v){ const s = String(v||"").toUpperCase(); if(s.startsWith("C")) return "C1"; const k = s.slice(0,2); return CLASS_LEVELS[k] ? k : "A2"; }
+const studentLevel = () => levelKey(state.startingPoint.level);
+const hasClasses = () => state.classSeries.length>0 || Object.values(state.classRecords).some(r=>r.oneoff);
+
+function seriesEnd(s){
+  let e = s.end || null;
+  if(s.weeks){ const w = addDays(s.start, s.weeks*7-1); if(!e || w<e) e = w; }
+  return e;
+}
+function seriesDates(s, from, to){
+  const out = [], end = seriesEnd(s);
+  let k = maxKey(s.start, from, s.frozenUntil ? addDays(s.frozenUntil,1) : null);
+  const last = end && end<to ? end : to;
+  for(let g=0; k<=last && g<1500; g++, k=addDays(k,1)) if(s.days.includes(parseKey(k).getDay())) out.push(k);
+  return out;
+}
+function buildOcc(id, date, s){
+  const r = state.classRecords[id] || null, b = r || s || {}, base = s || b;
+  return {id, date, series:s||null, oneoff:!s,
+    time: (r&&r.time) || base.time || CLASS_DEFAULT.time,
+    duration: +((r&&r.duration) || base.duration || CLASS_DEFAULT.duration),
+    title: (r&&r.title) || base.title || CLASS_DEFAULT.title,
+    level: levelKey((r&&r.level) || base.level || studentLevel()),
+    rec: r || {}};
+}
+function occurrencesBetween(from, to){
+  const out = [], seen = new Set();
+  state.classSeries.forEach(s=>seriesDates(s,from,to).forEach(k=>{ const id = s.id+"@"+k; seen.add(id); out.push(buildOcc(id,k,s)); }));
+  Object.values(state.classRecords).forEach(r=>{
+    if(seen.has(r.id) || r.date<from || r.date>to) return;
+    if(r.oneoff) out.push(buildOcc(r.id, r.date, null));
+    else if(r.frozen) out.push(buildOcc(r.id, r.date, state.classSeries.find(x=>x.id===r.seriesId)||null));
+  });
+  return out.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+}
+function occById(id){
+  if(!id) return null;
+  const r = state.classRecords[id];
+  if(r && r.oneoff) return buildOcc(id, r.date, null);
+  const at = String(id).lastIndexOf("@"); if(at<0) return null;
+  const s = state.classSeries.find(x=>x.id===id.slice(0,at)), date = id.slice(at+1);
+  if(s) return buildOcc(id, date, s);
+  return r ? buildOcc(id, date, null) : null;
+}
+function ensureRec(o){
+  if(!state.classRecords[o.id]) state.classRecords[o.id] = {id:o.id, date:o.date, seriesId:o.series?o.series.id:null};
+  o.rec = state.classRecords[o.id];
+  return o.rec;
+}
+const hasProgress = r => !!(r && (r.attended || r.readAt || r.writingId || r.bestSecs || r.reflectionId || (r.notes||"").trim()));
+
+function classSpeakRule(lv){
+  let [min,target] = CLASS_LEVELS[levelKey(lv)].speak;
+  const adjusted = depth()>=2 && freezes(state.startingPoint.fear);
+  if(adjusted) min = Math.max(20, Math.round(min*0.66/5)*5);
+  return {min, target, adjusted};
+}
+function classParts(o){
+  const r = o.rec||{};
+  return {attended:!!r.attended, read:!!r.readAt, wrote:!!r.writingId, spoke:(r.bestSecs||0)>=classSpeakRule(o.level).min, reflected:!!r.reflectionId};
+}
+const classDone = o => { const p = classParts(o); return CLASS_PARTS.filter(x=>p[x[0]]).length; };
+const classPct = o => classDone(o)/CLASS_PARTS.length;
+function classStartDate(o){ const d = parseKey(o.date), p = o.time.split(":").map(Number); d.setHours(p[0]||0, p[1]||0, 0, 0); return d; }
+const classOver = o => Date.now() > classStartDate(o).getTime() + o.duration*60000;
+function classStatus(o){
+  const r = o.rec||{}, t = dayKey();
+  if(r.cancelled) return r.movedTo ? "moved" : "cancelled";
+  if(classPct(o)>=1) return "complete";
+  if(r.attended) return "attended";
+  if(o.date<t) return "missed";
+  if(o.date===t) return classOver(o) ? "unmarked" : "today";
+  return "scheduled";
+}
+function classNumber(o){
+  if(!o.series) return null;
+  const s = o.series, mine = x => x.series && x.series.id===s.id && !x.rec.cancelled;
+  const n = occurrencesBetween(s.start, o.date).filter(mine).length;
+  const end = seriesEnd(s);
+  return {n, total: end ? occurrencesBetween(s.start, end).filter(mine).length : null};
+}
+
+/* ---------- class texts ---------- */
+const allTexts = () => CLASS_TEXTS.concat(state.myTexts||[]);
+const textById = id => allTexts().find(t=>t.id===id) || null;
+const classText = o => textById((o.rec||{}).textId);
+function assignText(o){
+  const r = ensureRec(o), cur = textById(r.textId);
+  if(cur) return cur;
+  const used = {};
+  Object.values(state.classRecords).forEach(x=>{ if(x.textId) used[x.textId] = (used[x.textId]||0)+1; });
+  const c = ctx();
+  const pool = CLASS_TEXTS.filter(t=>t.level===o.level).sort((a,b)=>(used[a.id]||0)-(used[b.id]||0) || (b.ctx===c)-(a.ctx===c));
+  r.textId = pool[0].id; save();
+  return pool[0];
+}
+function splitSentences(p){
+  const safe = p.replace(/\s+/g," ").trim().replace(/\b(Mrs|Mr|Ms|Dr|St|vs)\./g,"$1\u0001").replace(/\b([A-Z])\.(?=\s[A-Z])/g,"$1\u0001");
+  return (safe.match(/[^.!?…]+(?:[.!?…]+["”’)]*|$)/g)||[safe]).map(s=>s.replace(/\u0001/g,".").trim()).filter(Boolean);
+}
+function readerHTML(T){
+  let i = 0;
+  return `<article class="reader">${String(T.body).split(/\n\s*\n/).map(p=>`<p>${splitSentences(p).map(s=>`<span class="snt" data-act="saySnt" data-i="${i++}">${esc(s)}</span>`).join(" ")}</p>`).join("")}</article>`;
+}
+function readerTools(){
+  return `<div class="row-gap mt" style="align-items:center"><button class="btn-line" data-act="readAll">${ICON_PLAY}<span>Listen to the text</span></button>
+    <div class="seg" style="grid-template-columns:1fr 1fr;flex:1;min-width:170px" role="group" aria-label="Reading speed"><button data-act="rateR" data-v="0.75" aria-pressed="${state.ttsRate<0.85}">Slow</button><button data-act="rateR" data-v="0.95" aria-pressed="${state.ttsRate>=0.85}">Natural</button></div></div>
+    <p class="small muted mt-s">Tap any sentence to hear it on its own.</p>`;
+}
+function meterInner(n, range, label){
+  const [a,b] = range, top = b*1.35, pos = Math.min(100, n/top*100), za = a/top*100, zb = b/top*100;
+  const st = n<a ? "low" : n>b ? "high" : "ok";
+  const note = st==="low" ? (a-n)+" to go" : st==="high" ? (n-b)+" over" : "In range";
+  return `<div class="meter ${st}"><div class="meter-track"><span class="meter-zone" style="left:${za}%;width:${zb-za}%"></span><span class="meter-pin" style="left:${pos}%"></span></div>
+    <div class="meter-cap"><span><b>${n}</b> words · ${note}</span><span>${esc(label)} ${a}–${b}</span></div></div>`;
+}
+
+/* reading aloud, sentence by sentence (long texts in one utterance get cut off on some phones) */
+let readTok = 0;
+function stopReading(){
+  readTok++;
+  document.querySelectorAll(".snt.on").forEach(s=>s.classList.remove("on"));
+  document.querySelectorAll('[data-act="readAll"] span').forEach(s=>s.textContent="Listen to the text");
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+}
+function readerScope(){ return $("#scrim").classList.contains("open") && $("#sheet").querySelector(".reader") ? $("#sheet") : view; }
+function readAll(btn){
+  const scope = readerScope(), spans = [...scope.querySelectorAll(".snt")];
+  const lbl = btn && btn.querySelector("span");
+  if(lbl && lbl.textContent==="Stop"){ stopReading(); return; }
+  stopReading();
+  const tok = readTok;
+  if(lbl) lbl.textContent = "Stop";
+  let k = 0;
+  const next = () => {
+    if(tok!==readTok) return;
+    if(k>=spans.length){ stopReading(); return; }
+    const sp = spans[k];
+    sp.classList.add("on"); sp.scrollIntoView({block:"nearest", behavior:"smooth"});
+    say(sp.textContent, null, ()=>{ if(tok!==readTok) return; sp.classList.remove("on"); k++; setTimeout(next, 220); });
+  };
+  next();
+}
+
+/* ---------- derived views ---------- */
+function focusClass(){
+  const t = dayKey();
+  const list = occurrencesBetween(t, addDays(t,60)).filter(o=>!o.rec.cancelled);
+  return list.find(o=>o.date===t && classPct(o)<1) || list.find(o=>!(o.date===t && classOver(o))) || null;
+}
+function practiceDays(){
+  const s = new Set(), add = iso => { if(iso) s.add(dayKey(iso)); };
+  state.sessionLog.forEach(x=>add(x.date)); state.writingSamples.forEach(x=>add(x.createdAt));
+  state.speakingAttempts.forEach(x=>add(x.date)); state.shadowLog.forEach(x=>add(x.date));
+  state.quizzes.forEach(x=>add(x.date)); state.meditationLog.forEach(x=>add(x.date));
+  return s;
+}
+function dayEvidence(k){
+  const w = state.writingSamples.filter(x=>dayKey(x.createdAt)===k), s = state.speakingAttempts.filter(x=>dayKey(x.date)===k);
+  const m = state.sessionLog.filter(x=>dayKey(x.date)===k).length;
+  const out = [];
+  if(m) out.push(m+" completed session"+(m>1?"s":""));
+  if(w.length) out.push(w.length+" writing sample"+(w.length>1?"s":"")+", "+w.reduce((a,x)=>a+(x.wordCount||0),0)+" words");
+  if(s.length) out.push(s.length+" speaking attempt"+(s.length>1?"s":"")+", "+mmss(s.reduce((a,x)=>a+(x.duration||0),0))+" spoken");
+  return out.join(" · ");
+}
+const whenLine = o => (o.date===dayKey()?"Today":fmtDay(o.date))+" · "+fmtTime(o.time)+" · "+o.duration+" min";
+function statusPill(o){ const L = CLASS_STATUS[classStatus(o)]; return `<span class="pill ${L[1]}">${L[0]}</span>`; }
+function partsBar(o){ const p = classParts(o); return `<div class="parts" aria-hidden="true">${CLASS_PARTS.map(x=>`<i class="${p[x[0]]?"on":""}"></i>`).join("")}</div>`; }
+function nextPartHint(o){
+  const p = classParts(o);
+  if(o.rec.cancelled) return "";
+  if(!p.read) return "Next: read the text";
+  if(!p.wrote) return "Next: write";
+  if(!p.spoke) return "Next: speak";
+  if(!p.reflected) return "Next: reflect";
+  if(!p.attended) return o.date>dayKey() || (o.date===dayKey() && !classOver(o)) ? "Ready for class" : "Mark attendance";
+  return "All five done";
+}
+function classCard(o, kicker){
+  const num = classNumber(o);
+  return `<button class="panel class-card" data-act="openClass" data-id="${esc(o.id)}">
+    <p class="kicker">${esc(kicker)}${num?" · Class "+num.n+(num.total?" of "+num.total:""):""}</p>
+    <h3>${esc(o.title)}</h3><p class="class-when">${esc(whenLine(o))}</p>
+    <div class="meta-row">${statusPill(o)}<span class="pill gold">${o.level}</span></div>
+    ${partsBar(o)}<div class="parts-cap"><span>${classDone(o)} of 5 done</span><span>${esc(nextPartHint(o))}</span></div>
+  </button>`;
+}
+function classRow(o){
+  const c = o.rec.cancelled;
+  return `<button data-act="openClass" data-id="${esc(o.id)}" ${c?'style="opacity:.55"':""}><span class="glyph">${DOW_SHORT[parseKey(o.date).getDay()]}</span>
+    <span class="grow"><span class="t">${esc(o.title)}</span><br><span class="s">${esc(whenLine(o))} · ${o.level}</span></span>
+    ${c||classStatus(o)==="missed" ? statusPill(o) : `<span class="pct">${Math.round(classPct(o)*100)}%</span>`}</button>`;
+}
+const daysLabel = days => { const d = DOW_MON_FIRST.filter(x=>days.includes(x)).map(x=>DOW_SHORT[x]); return d.length<=1 ? d.join("") : d.slice(0,-1).join(", ")+" & "+d[d.length-1]; };
+function seriesSummary(s){
+  const e = seriesEnd(s), t = dayKey();
+  return daysLabel(s.days)+" · "+fmtTime(s.time)+" · "+s.duration+" min · "+levelKey(s.level)+" · "+(e ? (e<t?"ended ":"until ")+fmtDay(e) : "every week");
+}
+function seriesRow(s){
+  return `<button data-act="seriesEdit" data-id="${esc(s.id)}"><span class="glyph">${esc(levelKey(s.level))}</span><span class="grow"><span class="t">${esc(s.title)}</span><br><span class="s">${esc(seriesSummary(s))}</span></span><span class="chev">›</span></button>`;
+}
+
+/* ---------- schedule changes that keep history ---------- */
+function freezePast(s){
+  const t = dayKey(), y = addDays(t,-1);
+  if(s.start>y) return;
+  seriesDates(s, s.start, y).forEach(k=>{
+    const o = buildOcc(s.id+"@"+k, k, s), r = ensureRec(o);
+    r.frozen = true; r.seriesId = s.id;
+    if(!r.time) r.time = o.time; if(!r.duration) r.duration = o.duration; if(!r.title) r.title = o.title; if(!r.level) r.level = o.level;
+  });
+  s.frozenUntil = maxKey(s.frozenUntil, y);
+}
+function rehomeFuture(s){
+  /* future records of this series that no longer fall on its dates:
+     keep the ones with work in them as single classes, drop the rest */
+  const t = dayKey(), valid = new Set(seriesDates(s, t, addDays(t,800)).map(k=>s.id+"@"+k));
+  Object.values(state.classRecords).forEach(r=>{
+    if(r.seriesId!==s.id || r.oneoff || r.frozen || r.date<t || valid.has(r.id)) return;
+    if(hasProgress(r) || r.textId){
+      const o = buildOcc(r.id, r.date, s);
+      Object.assign(r, {oneoff:true, frozen:false, time:o.time, duration:o.duration, title:o.title, level:o.level});
+    } else delete state.classRecords[r.id];
+  });
+}
+function nextClassFor(textId){
+  const t = dayKey();
+  return occurrencesBetween(t, addDays(t,60)).find(o=>!o.rec.cancelled && !(o.rec||{}).readAt && !(o.date===t && classOver(o))) || null;
+}
+
+/* ---------- calendar file (.ics) — weekly repeats + reminders ---------- */
+function icsText(s){ return String(s).replace(/\\/g,"\\\\").replace(/[;,]/g,m=>"\\"+m).replace(/\r?\n/g,"\\n"); }
+function icsExport(){
+  const t = dayKey(), BY = ["SU","MO","TU","WE","TH","FR","SA"];
+  const stamp = new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const dt = (k,tm) => k.replace(/-/g,"")+"T"+tm.replace(":","")+"00";
+  const dtEnd = (k,tm,dur) => { const d = parseKey(k), p = tm.split(":").map(Number); d.setHours(p[0], p[1]+dur, 0, 0); return dayKey(d).replace(/-/g,"")+"T"+pad2(d.getHours())+pad2(d.getMinutes())+"00"; };
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ProfGermandario//Fluency OS//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:English classes"];
+  const ev = (id,k,tm,dur,title,extra) => {
+    L.push("BEGIN:VEVENT","UID:"+id.replace(/[^A-Za-z0-9-]/g,"-")+"@fluency-os","DTSTAMP:"+stamp,"DTSTART:"+dt(k,tm),"DTEND:"+dtEnd(k,tm,dur),"SUMMARY:"+icsText(title),"DESCRIPTION:"+icsText("Open Fluency OS before class to read your class text."));
+    (extra||[]).forEach(x=>L.push(x));
+    L.push("BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsText(title),"TRIGGER:-PT30M","END:VALARM","END:VEVENT");
+  };
+  let n = 0;
+  state.classSeries.forEach(s=>{
+    const end = seriesEnd(s); if(end && end<t) return;
+    const lo = maxKey(t, s.start, s.frozenUntil?addDays(s.frozenUntil,1):null), first = seriesDates(s, lo, addDays(lo,7))[0];
+    if(!first) return;
+    let rule = "RRULE:FREQ=WEEKLY;BYDAY="+DOW_MON_FIRST.filter(d=>s.days.includes(d)).map(d=>BY[d]).join(",");
+    if(end) rule += ";UNTIL="+end.replace(/-/g,"")+"T235959";
+    const ex = Object.values(state.classRecords).filter(r=>r.seriesId===s.id && !r.oneoff && r.cancelled && r.date>=first).map(r=>"EXDATE:"+dt(r.date,s.time));
+    ev(s.id, first, s.time, s.duration, s.title, [rule].concat(ex)); n++;
+  });
+  Object.values(state.classRecords).forEach(r=>{
+    if(!r.oneoff || r.cancelled || r.date<t) return;
+    const o = buildOcc(r.id, r.date, null); ev(r.id, o.date, o.time, o.duration, o.title); n++;
+  });
+  if(!n){ toast("No upcoming classes to add."); return; }
+  L.push("END:VCALENDAR");
+  download("english-classes.ics", L.join("\r\n")+"\r\n", "text/calendar");
+  toast("Calendar file downloaded. Open it to add your classes with reminders.");
+}
+
+/* ---------- sharing a class text by link (no server) ---------- */
+function b64urlEncode(str){ const b = new TextEncoder().encode(str); let s = ""; b.forEach(x=>s+=String.fromCharCode(x)); return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function b64urlDecode(s){ s = s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s += "="; const bin = atob(s), b = new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) b[i] = bin.charCodeAt(i); return new TextDecoder().decode(b); }
+function textShareLink(T){ return location.href.split("#")[0]+"#t="+b64urlEncode(JSON.stringify({v:1, t:T.title, l:T.level, b:T.body, w:T.write||"", s:T.speak||""})); }
+let pendingShare = null;
+function receiveShared(code){
+  try{
+    const o = JSON.parse(b64urlDecode(code));
+    const title = String(o.t||"").trim().slice(0,140), body = String(o.b||"").trim().slice(0,12000);
+    if(!title || wc(body)<10) throw new Error("empty");
+    let T = state.myTexts.find(x=>x.body===body);
+    if(!T){ T = {id:uid("txt"), title, level:levelKey(o.l), body, write:String(o.w||"").slice(0,400), speak:String(o.s||"").slice(0,400), from:"shared", createdAt:nowISO()}; state.myTexts.push(T); save(); }
+    pendingShare = T.id;
+  }catch(e){ toast("That class text link is incomplete. Ask for it again."); }
 }
 
 /* ============================================================
@@ -980,17 +1706,24 @@ let run = null;           /* active lesson / practice / mirror */
 let SP = null;            /* active speaking session */
 let ob = {step:0, name:"", goal:"", level:"", block:"", style:"", placement:null};
 
+let curRoute = "home";
 function go(r){ if(location.hash !== "#"+r) location.hash = r; else render(); }
+/* re-draw the current page behind an open sheet, keeping the scroll position */
+function repaint(){
+  if(!["home","classes","evolution"].includes(curRoute) || document.body.classList.contains("in-lesson")) return;
+  const y = window.scrollY; VIEWS[curRoute](); window.scrollTo(0,y);
+}
 function setBody(cls){ document.body.classList.remove("in-lesson","in-onboarding"); if(cls) document.body.classList.add(cls); }
 function setTab(r){ document.querySelectorAll("#tabs button").forEach(b=>{ if(b.dataset.go===r) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); }); }
 function teardown(){
   if(SP) finishSpeaking(true);
-  if("speechSynthesis" in window) speechSynthesis.cancel();
+  stopReading();
   shadowPlaying = false;
 }
 function render(){
   teardown();
   let r = (location.hash||"#home").slice(1) || "home";
+  if(r.startsWith("t=")){ receiveShared(r.slice(2)); r = "classes"; }
   if(!state.onboarded && !(r==="lesson" && run && run.kind==="mirror")) r = "onboarding";
   else if(r==="onboarding") r = "home";
   if(r==="lesson" && !run){
@@ -1002,8 +1735,10 @@ function render(){
   hideAction();
   closeSheet();
   setTab(r);
-  (VIEWS[r]||VIEWS.home)();
+  curRoute = VIEWS[r] ? r : "home";
+  VIEWS[curRoute]();
   window.scrollTo(0,0);
+  if(pendingShare && state.onboarded && curRoute!=="lesson"){ const id = pendingShare; pendingShare = null; sharedSheet(id); }
 }
 
 /* ---------- action bar ---------- */
@@ -1022,8 +1757,12 @@ function actionEnabled(on, hint){ const b=$("#abMain"); if(b) b.disabled=!on; $(
 function hideAction(){ ab.classList.add("hide"); }
 
 /* ---------- sheet ---------- */
-function openSheet(html){ $("#sheet").innerHTML = html; $("#scrim").classList.add("open"); const f=$("#sheet").querySelector("button,input,select,a"); if(f) setTimeout(()=>f.focus(),60); }
-function closeSheet(){ $("#scrim").classList.remove("open"); shadowPlaying=false; }
+function openSheet(html, keep){
+  if(!keep) stopReading();
+  $("#sheet").innerHTML = html; $("#scrim").classList.add("open");
+  if(!keep){ $("#sheet").scrollTop = 0; const f=$("#sheet").querySelector("button,input,select,a"); if(f) setTimeout(()=>f.focus({preventScroll:true}),60); }
+}
+function closeSheet(){ if($("#scrim").classList.contains("open")) stopReading(); $("#scrim").classList.remove("open"); shadowPlaying=false; openClassId=null; }
 const sheetHead = (title, sub) => `<div class="sheet-head"><div><h3>${esc(title)}</h3>${sub?`<p class="muted small mt-s">${esc(sub)}</p>`:""}</div><button class="icon-btn" data-act="closeSheet" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
 
 /* ============================================================
@@ -1098,7 +1837,8 @@ VIEWS.home = function(){
   let hero, cta;
   if(state.draft){
     const d = state.draft, steps = stepsFor(d), stepName = STEP_NAMES[steps[d.stepIdx]]||"";
-    const what = d.kind==="mission" ? "Mission "+(d.mi+1)+": "+LESSONS[d.mi].t : d.kind==="mirror" ? "Mirror sample" : "Free practice";
+    const dc = d.kind==="class" ? occById(d.cid) : null, dt = dc ? classText(dc) : null;
+    const what = d.kind==="mission" ? "Mission "+(d.mi+1)+": "+LESSONS[d.mi].t : d.kind==="mirror" ? "Mirror sample" : d.kind==="class" ? "Class work"+(dt?": "+dt.title:"") : "Free practice";
     cta = {label:"Resume at "+stepName, act:"resume"};
     hero = `<p class="kicker">In progress</p><h2 class="display">${esc(what)}</h2><p class="obj">You stopped at ${esc(stepName)}. Everything you did is saved.</p>`;
   } else if(nx>=0){
@@ -1119,14 +1859,18 @@ VIEWS.home = function(){
     const da=(state.missionProgress[a]||{}).completedAt||"", db=(state.missionProgress[b]||{}).completedAt||""; return db.localeCompare(da);
   })[0];
   const recent = lastDone!==undefined ? `<div class="note mt"><span class="dot" style="background:var(--sage)"></span><p class="small"><b>Last completed:</b> Mission ${lastDone+1}, ${esc(LESSONS[lastDone].t)}${(state.missionProgress[lastDone]||{}).completedAt?", "+ago(state.missionProgress[lastDone].completedAt):""}. <a class="link" href="#evolution">See the evidence</a></p></div>` : "";
+  const fc = focusClass(), today = fc && fc.date===dayKey();
+  const classBlock = fc ? `<div class="mt">${classCard(fc, today?"Today's class":"Next class")}</div>` : "";
   view.innerHTML = `
     <section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${hello}${name}.</h1>
-      <p>${nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
+      <p>${today?"You have class today. Your text is ready.":nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
+    ${today?classBlock:""}
     <section class="panel mission-hero mt">${hero}
       <div class="journey" aria-hidden="true">${ticks}</div>
       <div class="journey-label"><span>${st.missions} of 17 missions complete</span><span>Cycle ${cyc.n}, day ${cyc.day} of ${CONFIG.cycleDays}</span></div>
       <button class="btn block mt" data-act="${cta.act}">${esc(cta.label)}</button>
     </section>
+    ${!today?classBlock:""}
     ${mirrorNote?`<div class="mt">${mirrorNote}</div>`:""}
     <section class="mt-l"><h3>Your evidence</h3>
       <div class="evidence mt-s">
@@ -1137,6 +1881,7 @@ VIEWS.home = function(){
       </div>${recent}
     </section>
     <section class="mt-l list">
+      ${hasClasses()?"":`<a href="#classes"><span class="glyph">C</span><span class="grow"><span class="t">Weekly classes</span><br><span class="s">Add your class days. Each class comes with a text at your level.</span></span><span class="chev">›</span></a>`}
       <a href="#toolbox"><span class="glyph">T</span><span class="grow"><span class="t">Toolbox</span><br><span class="s">Practice, language, mind, and support.</span></span><span class="chev">›</span></a>
     </section>`;
 };
@@ -1210,6 +1955,7 @@ VIEWS.evolution = function(){
         ${cell(st.missions,"missions complete")}${cell(st.samples,"writing samples")}${cell(st.words,"words written")}${cell(st.attempts,"speaking attempts")}
         ${cell(Math.round(st.secs/60),"minutes spoken")}${cell(mmss(st.longest),"longest attempt")}${cell(st.hours.toFixed(1),"practice hours")}${cell(st.topics,"topics explored")}
         ${cell(st.reflections,"reflections")}${cell(st.shadow,"shadowing sessions")}${cell(st.meditations,"meditations")}${cell(st.streak,"day streak")}
+        ${cell(st.classesAttended,"classes attended")}${cell(st.classTextsRead,"class texts read")}${cell(st.classesComplete,"classes complete")}${cell(st.classWords,"words in class texts")}
       </div>
       <p class="small muted mt-s">Cycle ${cyc.n}, day ${cyc.day}. ${mir.length} mirror sample${mir.length===1?"":"s"} recorded.</p>
     </section>
@@ -1218,6 +1964,7 @@ VIEWS.evolution = function(){
       ${archive("Writing samples", state.writingSamples.slice().reverse().map(w=>`<div class="archive-item"><header><span>${esc(w.label||w.topic||w.prompt||"Writing")}</span><span>${fmtDate(w.createdAt)}</span></header><p class="en" style="font-size:17px">${esc(w.content)}</p></div>`))}
       ${archive("Speaking attempts", state.speakingAttempts.slice().reverse().map(x=>`<div class="attempt"><span class="grow"><b>${mmss(x.duration)}</b> <span class="muted small">${esc(x.topic||"")}, ${fmtDate(x.date)}</span></span>${x.recordingId?`<audio class="hide" controls preload="none" data-rec="${esc(x.recordingId)}"></audio>`:""}</div>`))}
       ${archive("Reflections", state.reflections.slice().reverse().map(r=>`<div class="archive-item"><header><span>${esc(r.topic||"")}</span><span>${fmtDate(r.date)}</span></header><p><b>I managed to say:</b> ${esc(r.managed)}</p>${r.difficult?`<p><b>Difficult:</b> ${esc(r.difficult)}</p>`:""}${r.better?`<p><b>Next time:</b> ${esc(r.better)}</p>`:""}</div>`))}
+      ${(()=>{ const notes = Object.values(state.classRecords).filter(r=>(r.notes||"").trim()).sort((a,b)=>b.date.localeCompare(a.date)); return notes.length?archive("Class notes", notes.map(r=>{ const o = occById(r.id); return `<div class="archive-item"><header><span>${esc(o?o.title:"Class")}</span><span>${esc(fmtDay(r.date))}</span></header><p>${esc(r.notes)}</p></div>`; })):""; })()}
       ${state.journalEntries.length?archive("Notebook entries", state.journalEntries.map(j=>`<div class="archive-item"><header><span>${esc(j.mood||"Entry")}</span><span>${fmtDate(j.date)}</span></header><p>${esc([j.learned,j.questions,j.homework,j.notes].filter(Boolean).join("\n\n"))}</p></div>`)):""}
       ${state.practiceRecords.length?archive("Earlier practice records", state.practiceRecords.slice().reverse().map(p=>`<div class="archive-item"><header><span>${esc(p.topic||p.type)}</span><span>${fmtDate(p.date)}</span></header><p>${esc(p.content||"")}</p></div>`)):""}
     </div></section>`;
@@ -1239,28 +1986,269 @@ VIEWS.toolbox = function(){
     `<p class="small muted mt-l center">Fluency OS ${APP_VERSION}. ${esc(tier().name)} program.</p>`;
 };
 
+/* ---------------- CLASSES ---------------- */
+let calY = new Date().getFullYear(), calM = new Date().getMonth();
+VIEWS.classes = function(){
+  setBody("");
+  const has = hasClasses(), fc = focusClass(), lv = studentLevel();
+  let h = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">Your classes</h1>
+    <p>${has ? "Every class comes with a text at your level, and every part you complete is measured." : "Add your weekly classes. Each one comes with a text at your level and five clear parts to complete."}</p></section>`;
+  if(!has){
+    h += `<section class="panel mt"><p class="kicker">Start here</p><h3>Set up your weekly classes</h3>
+      <p class="muted mt-s">Choose your class days and time once. They repeat every week on your calendar, and each class brings a ${lv} text of ${CLASS_LEVELS[lv].read[0]}–${CLASS_LEVELS[lv].read[1]} words.</p>
+      <button class="btn block mt" data-act="seriesNew">Add my weekly classes</button>
+      <p class="mt center"><button class="link" data-act="oneoffNew">Add a single class instead</button></p></section>`;
+  } else if(fc){
+    h += `<div class="mt">${classCard(fc, fc.date===dayKey()?"Today's class":"Next class")}</div>`;
+  }
+  const t = dayKey(), mon = addDays(t, -((parseKey(t).getDay()+6)%7)), week = occurrencesBetween(mon, addDays(mon,6));
+  if(week.length) h += `<section class="mt-l"><h3>This week</h3><div class="list mt-s">${week.map(classRow).join("")}</div></section>`;
+  view.innerHTML = h + calendarHTML() + scheduleHTML() + levelGuideHTML();
+};
+function calendarHTML(){
+  const now = new Date(), t = dayKey();
+  const first = new Date(calY, calM, 1), off = (first.getDay()+6)%7, dim = new Date(calY, calM+1, 0).getDate();
+  const occ = occurrencesBetween(dayKey(first), dayKey(new Date(calY, calM, dim))).filter(o=>!o.rec.cancelled);
+  const byDay = {}; occ.forEach(o=>(byDay[o.date] = byDay[o.date] || []).push(o));
+  const prac = practiceDays();
+  let due = 0, att = 0, comp = 0, sum = 0;
+  occ.forEach(o=>{ const p = classPct(o); if(p>=1) comp++; if(o.date<=t){ due++; if(o.rec.attended) att++; sum += p; } });
+  const cells = [];
+  for(let e=0;e<off;e++) cells.push('<div class="cal-day cal-blank" aria-hidden="true"></div>');
+  for(let d=1; d<=dim; d++){
+    const k = dayKey(new Date(calY, calM, d)), list = byDay[k]||[], fut = k>t;
+    const pct = list.length ? list.reduce((a,o)=>a+classPct(o),0)/list.length : 0;
+    let cls = "cal-day"+(fut?" future":"")+(k===t?" today":"")+(list.length?" has-class":"");
+    if(pct>=1) cls += " full"; else if(pct>0) cls += " partial";
+    if(k<t && pct<1 && list.some(o=>!o.rec.attended)) cls += " missed";
+    const fill = pct>0 ? Math.round(18+pct*82) : 0;
+    let aria = MONTHS[calM]+" "+d;
+    if(list.length) aria += ", "+list.length+" class"+(list.length>1?"es":"")+", "+Math.round(pct*100)+" percent complete";
+    if(prac.has(k)) aria += ", practice day";
+    cells.push(`<button type="button" class="${cls}" data-act="openDay" data-k="${k}" aria-label="${esc(aria)}">${fill?`<span class="cal-fill" style="height:${fill}%"></span>`:""}<span class="cal-num">${d}</span>${pct>=1?'<span class="cal-mark">★</span>':""}${list.length&&pct<1?'<span class="cal-dot"></span>':""}${prac.has(k)?'<span class="cal-prac"></span>':""}</button>`);
+  }
+  const isNow = calY===now.getFullYear() && calM===now.getMonth();
+  const m = (v,l) => `<div><b>${v}</b><span>${l}</span></div>`;
+  const arrow = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+  return `<section class="mt-l" id="calSection"><div class="phase-head"><h3>Your month</h3>${isNow?"":'<button class="link" data-act="calToday">Back to today</button>'}</div>
+    <div class="cal-card mt-s">
+      <div class="cal-nav-row"><button class="icon-btn" data-act="calShift" data-d="-1" aria-label="Previous month">${arrow("M15 6l-6 6 6 6")}</button><div class="cal-month" aria-live="polite">${MONTHS[calM]} ${calY}</div><button class="icon-btn" data-act="calShift" data-d="1" aria-label="Next month">${arrow("M9 6l6 6-6 6")}</button></div>
+      <div class="cal-metrics">${m(occ.length,"Classes")}${m(due?Math.round(att/due*100)+"%":"—","Attended")}${m(comp,"Complete")}${m(due?Math.round(sum/due*100)+"%":"—","Average")}</div>
+      <div class="cal-grid" aria-hidden="true">${["M","T","W","T","F","S","S"].map(x=>`<div class="cal-dow">${x}</div>`).join("")}</div>
+      <div class="cal-grid">${cells.join("")}</div>
+      <div class="cal-legend"><span><i class="lg lg-fill"></i>Class progress</span><span><b class="lg-star">★</b>Complete</span><span><i class="lg lg-dot"></i>Class to do</span><span><i class="lg lg-prac"></i>Practice day</span><span><i class="lg lg-today"></i>Today</span></div>
+      <p class="cal-tip">Tap any day to open its classes, add one, or mark attendance.</p>
+    </div></section>`;
+}
+function scheduleHTML(){
+  const t = dayKey(), all = state.classSeries.slice().sort((a,b)=>a.start.localeCompare(b.start));
+  const active = all.filter(s=>{ const e = seriesEnd(s); return !e || e>=t; }), ended = all.filter(s=>{ const e = seriesEnd(s); return e && e<t; });
+  return `<section class="mt-l"><h3>Weekly schedule</h3><p class="muted small mt-s">Your classes repeat every week. Change them any time; past classes keep their evidence.</p>
+    <div class="list mt">${active.map(seriesRow).join("") || '<p class="muted small" style="padding:14px 2px">No weekly classes yet.</p>'}</div>
+    <div class="row-gap mt"><button class="btn-line" data-act="seriesNew">Add weekly class</button><button class="btn-line" data-act="oneoffNew">Add single class</button>${hasClasses()?'<button class="btn-line" data-act="ics">Add to my phone calendar</button>':""}</div>
+    ${ended.length?`<details class="more mt"><summary>Finished schedules (${ended.length})</summary><div class="inner"><div class="list">${ended.map(seriesRow).join("")}</div></div></details>`:""}
+  </section>`;
+}
+function levelGuideHTML(){
+  const me = studentLevel();
+  return `<details class="more mt-l"><summary>How classes are measured</summary><div class="inner">
+    <p class="small muted">Each class has five parts: attend, read the class text, write your own text, speak, and reflect. The lengths grow with the level of the class.</p>
+    <table class="lvl-table mt"><thead><tr><th>Level</th><th>Class text</th><th>You write</th><th>You speak</th></tr></thead><tbody>
+    ${LEVEL_KEYS.map(k=>{ const L = CLASS_LEVELS[k]; return `<tr class="${k===me?"me":""}"><td>${k}</td><td>${L.read[0]}–${L.read[1]} words</td><td>${L.write[0]}–${L.write[1]} words</td><td>${mmss(L.speak[0])}–${mmss(L.speak[1])}</td></tr>`; }).join("")}
+    </tbody></table><p class="small muted mt-s">Your level (${me}) comes from your profile. Each class can have its own level.</p>
+    <p class="mt"><button class="link" data-act="texts">Browse every class text</button></p></div></details>`;
+}
+
+/* ---------------- CLASS SHEETS ---------------- */
+let openClassId = null;
+function daySheet(k){
+  openClassId = null;
+  const t = dayKey(), list = occurrencesBetween(k,k), ev = dayEvidence(k);
+  openSheet(`${sheetHead((k===t?"Today · ":"")+fmtDay(k,true), list.length ? list.length+" class"+(list.length>1?"es":"") : "No class this day")}
+    ${list.length ? `<div class="list">${list.map(classRow).join("")}</div>` : `<p class="muted">${k<t?"Nothing was scheduled. If you had a class, add it to keep the record.":"Nothing scheduled yet."}</p>`}
+    ${ev?`<div class="well mt"><p class="kicker">Practice this day</p><p class="small">${esc(ev)}</p></div>`:""}
+    <button class="btn-line mt" style="width:100%" data-act="oneoffNew" data-k="${k}">Add a class on this day</button>`);
+}
+function checkRow(on, title, sub, attrs){
+  const tag = attrs ? "button" : "div";
+  return `<${tag} class="check-row ${on?"on":""}" ${attrs||""}><span class="box" aria-hidden="true">✓</span><span class="grow"><span class="t">${esc(title)}</span><span class="s">${esc(sub)}</span></span></${tag}>`;
+}
+function classSheet(id){
+  const o = occById(id);
+  if(!o){ closeSheet(); toast("This class no longer exists."); repaint(); return; }
+  const same = openClassId===id && $("#scrim").classList.contains("open");
+  const scroll = same ? $("#sheet").scrollTop : 0;
+  openClassId = id;
+  const r = o.rec, t = dayKey(), num = classNumber(o), L = CLASS_LEVELS[o.level];
+  const sub = whenLine(o) + (num ? " · Class "+num.n+(num.total?" of "+num.total:"") : "");
+  let h = `${sheetHead(o.title, sub)}<div class="meta-row" style="margin-top:0">${statusPill(o)}<span class="pill gold">${o.level} · ${esc(L.name)}</span></div>`;
+  if(r.cancelled){
+    const moved = r.movedTo && occById(r.movedTo);
+    h += `<div class="well mt"><p>${moved ? "This class was moved to "+esc(fmtDay(moved.date,true))+" at "+fmtTime(moved.time)+"." : "This class is cancelled. It doesn't count in your measures."}</p></div>
+      <div class="stack mt">${moved ? `<button class="btn block" data-act="openClass" data-id="${esc(moved.id)}">Open the new date</button>` : `<button class="btn block" data-act="classRestore" data-id="${esc(id)}">Restore this class</button>`}</div>`;
+    openSheet(h, same); if(same) $("#sheet").scrollTop = scroll; return;
+  }
+  const T = assignText(o), p = classParts(o), sp = classSpeakRule(o.level);
+  const w = state.writingSamples.find(x=>x.id===r.writingId);
+  const future = o.date>t, inDraft = state.draft && state.draft.kind==="class" && state.draft.cid===id;
+  const started = p.read || p.wrote || p.spoke || p.reflected;
+  const label = inDraft ? "Resume class work" : r.doneAt ? "Practice this class again" : started ? "Continue class work" : future ? "Prepare for class" : "Start class work";
+  h += `<div class="mt">
+    ${checkRow(p.attended, "Attended the class", future ? "You can mark this on "+fmtDay(o.date)+"." : p.attended ? "Marked. Tap to undo." : "Tap after your class.", `data-act="classAttend" data-id="${esc(id)}" ${future?"disabled":""}`)}
+    ${checkRow(p.read, "Read the class text", T.title+" · "+wc(T.body)+" words")}
+    ${checkRow(p.wrote, "Wrote my text", w ? w.wordCount+" words · target "+L.write[0]+"–"+L.write[1] : "Target "+L.write[0]+"–"+L.write[1]+" words")}
+    ${checkRow(p.spoke, "Spoke", r.bestSecs ? "Longest "+mmss(r.bestSecs)+" · minimum "+mmss(sp.min) : "Minimum "+mmss(sp.min)+", target "+mmss(sp.target))}
+    ${checkRow(p.reflected, "Reflected", p.reflected ? "Saved in your evidence." : "Three short answers at the end.")}
+  </div>
+  ${partsBar(o)}<div class="parts-cap"><span>${classDone(o)} of 5 · ${Math.round(classPct(o)*100)}%</span><span>${esc(nextPartHint(o))}</span></div>
+  <button class="btn block mt" data-act="classWork" data-id="${esc(id)}">${label}</button>
+  <div class="well mt-l"><p class="kicker">Class text${T.from?" · "+(T.from==="shared"?"shared with you":"my text"):""}</p><h3>${esc(T.title)}</h3>
+    ${meterInner(wc(T.body), L.read, o.level+" range")}
+    <div class="row-gap mt"><button class="btn-line" data-act="readerOpen" data-id="${esc(id)}">Read it now</button><button class="btn-line" data-act="textPick" data-id="${esc(id)}">Change text</button></div></div>
+  <div class="mt-l"><label class="lbl" for="clNotes">Class notes</label>
+    <textarea class="write short mt-s" id="clNotes" data-in="classNotes" data-id="${esc(id)}" placeholder="Homework, new words, what you want to remember…">${esc(r.notes||"")}</textarea>
+    <p class="small muted mt-s">Saved automatically.</p></div>
+  <div class="list mt-l">
+    <button data-act="classEdit" data-id="${esc(id)}"><span class="grow"><span class="t">${o.oneoff?"Edit or move this class":"Edit or move this date"}</span><br><span class="s">Time, duration, title, level${o.oneoff?", date":", or a new date"}.</span></span><span class="chev">›</span></button>
+    ${o.series?`<button data-act="seriesEdit" data-id="${esc(o.series.id)}"><span class="grow"><span class="t">Edit the weekly schedule</span><br><span class="s">${esc(seriesSummary(o.series))}</span></span><span class="chev">›</span></button>`:""}
+    <a href="${waLink("Hola Profe, soy "+(state.name||"tu estudiante")+". Sobre la clase del "+fmtDayEs(o.date)+" a las "+fmtTime(o.time)+": ")}" target="_blank" rel="noopener"><span class="grow"><span class="t">Message ProfGermandario</span><br><span class="s">Questions, rescheduling, or homework.</span></span><span class="chev">↗</span></a>
+    ${depth()>=2 && started ? `<button data-act="sendClass" data-id="${esc(id)}"><span class="grow"><span class="t">Send my class work</span><br><span class="s">Your text, speaking time, and reflection on WhatsApp.</span></span><span class="chev">↗</span></button>` : ""}
+    <button data-act="${o.oneoff?"classDelete":"classCancel"}" data-id="${esc(id)}" style="color:var(--coral)"><span class="grow"><span class="t">${o.oneoff?"Delete this class":"Cancel this date"}</span><br><span class="s" style="color:var(--muted)">${o.oneoff?"Your writing and speaking stay in your evidence.":"Other weeks are not affected."}</span></span></button>
+  </div>`;
+  openSheet(h, same); if(same) $("#sheet").scrollTop = scroll;
+}
+function readerSheet(classId, textId){
+  openClassId = null;
+  const o = classId ? occById(classId) : null;
+  const T = textId ? textById(textId) : o ? assignText(o) : null;
+  if(!T){ closeSheet(); return; }
+  const lv = o ? o.level : T.level, n = wc(T.body);
+  openSheet(`${sheetHead(T.title, lv+" · "+n+" words · about "+Math.max(1,Math.round(n/CLASS_LEVELS[levelKey(lv)].wpm))+" min")}
+    ${readerTools()}<div class="mt">${readerHTML(T)}</div>
+    ${T.keys&&T.keys.length?`<details class="more mt"><summary>Key words</summary><div class="inner">${T.keys.map(k=>`<div class="example"><p><b>${esc(k[0])}</b><br><span class="muted small">${esc(k[1])}</span></p>${listenBtn(k[0])}</div>`).join("")}</div></details>`:""}
+    <div class="stack mt">${o ? `<button class="btn block" data-act="classWork" data-id="${esc(o.id)}">${o.rec.readAt?"Continue class work":"Start class work"}</button><button class="btn-line" style="width:100%" data-act="openClass" data-id="${esc(o.id)}">Back to the class</button>` : `<button class="btn-line" style="width:100%" data-act="texts">Back to class texts</button>`}</div>`);
+}
+function textPickerSheet(classId, tab, editId){
+  const o = classId ? occById(classId) : null;
+  tab = tab || "library";
+  const lv = o ? o.level : studentLevel(), cur = o ? (o.rec||{}).textId : null;
+  const cid = esc(classId||"");
+  const item = T => `<button data-act="${o?"textUse":"textRead"}" data-id="${cid}" data-t="${esc(T.id)}"><span class="glyph">${esc(T.level)}</span><span class="grow"><span class="t">${esc(T.title)}</span><br><span class="s">${wc(T.body)} words${T.ctx?" · "+esc(CTX_LABEL[T.ctx]||T.ctx):""}${T.from?" · "+(T.from==="shared"?"shared with you":"written here"):""}</span></span>${T.id===cur?'<span class="pill gold">Current</span>':'<span class="chev">›</span>'}</button>`;
+  let body = "";
+  if(tab==="library"){
+    const mine = CLASS_TEXTS.filter(T=>T.level===lv), other = CLASS_TEXTS.filter(T=>T.level!==lv);
+    body = `<p class="small muted">${o?"Texts written for "+lv+", "+CLASS_LEVELS[lv].read[0]+"–"+CLASS_LEVELS[lv].read[1]+" words. Tap one to use it for this class.":"Original class texts at every level. Tap one to read it."}</p>
+      <div class="list mt-s">${mine.map(item).join("")}</div>
+      <details class="more mt"><summary>Other levels</summary><div class="inner"><div class="list">${other.map(item).join("")}</div></div></details>`;
+  } else if(tab==="mine"){
+    const list = state.myTexts.slice().reverse();
+    body = list.length ? list.map(T=>`<div class="mytext">${item(T)}<div class="row-gap mt-s"><button class="link" data-act="textPick" data-id="${cid}" data-tab="write" data-edit="${esc(T.id)}">Edit</button><button class="link" data-act="textShare" data-t="${esc(T.id)}">Copy share link</button><button class="link" style="color:var(--coral)" data-act="textDel" data-id="${cid}" data-t="${esc(T.id)}">Delete</button></div></div>`).join("")
+      : `<p class="muted">Texts you paste, write, or receive by link appear here.</p>`;
+  } else {
+    const E = editId ? state.myTexts.find(x=>x.id===editId) : null;
+    const elv = E ? E.level : lv, n = E ? wc(E.body) : 0;
+    body = `<p class="small muted">Paste the text from your teacher, or write one. The meter shows if its length fits the level.</p>
+      <div class="stack mt"><div><label class="lbl" for="ptTitle">Title</label><input class="field mt-s" id="ptTitle" value="${esc(E?E.title:"")}" placeholder="Title of the text"></div>
+      <div><label class="lbl" for="ptLevel">Level</label><select class="field mt-s" id="ptLevel">${LEVEL_KEYS.map(k=>`<option ${k===elv?"selected":""}>${k}</option>`).join("")}</select></div>
+      <div><label class="lbl" for="ptBody">Text</label><textarea class="write textbody mt-s" id="ptBody" data-in="ptBody" placeholder="Paste or write the class text here. Leave an empty line between paragraphs.">${esc(E?E.body:"")}</textarea>
+        <div id="ptMeter">${meterInner(n, CLASS_LEVELS[elv].read, elv+" range")}</div></div>
+      <details class="more"><summary>Writing and speaking prompts (optional)</summary><div class="inner stack">
+        <div><label class="lbl" for="ptWrite">Writing prompt</label><textarea class="write short mt-s" id="ptWrite" placeholder="${esc(CLASS_WRITE_DEFAULT)}">${esc(E?E.write||"":"")}</textarea></div>
+        <div><label class="lbl" for="ptSpeak">Speaking prompt</label><textarea class="write short mt-s" id="ptSpeak" placeholder="${esc(CLASS_SPEAK_DEFAULT)}">${esc(E?E.speak||"":"")}</textarea></div></div></details>
+      <button class="btn block" data-act="textSave" data-id="${cid}" data-edit="${esc(E?E.id:"")}">${o?"Use this text for the class":"Save to my texts"}</button>
+      <button class="btn-line" style="width:100%" data-act="textSave" data-id="${cid}" data-edit="${esc(E?E.id:"")}" data-share="1">Save and copy a share link</button>
+      <p class="small muted">A share link carries the whole text. Anyone who opens it gets the text in their Fluency OS.</p></div>`;
+  }
+  const segBtn = (k,l) => `<button data-act="textPick" data-id="${cid}" data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`;
+  openSheet(`${sheetHead(o?"Class text":"Class texts", o?fmtDay(o.date,true)+" · "+o.level:"Library, your texts, and texts to share.")}
+    <div class="seg" role="group" aria-label="Source">${segBtn("library","Library")}${segBtn("mine","My texts")}${segBtn("write","Add text")}</div>
+    <div class="mt">${body}</div>
+    ${o?`<p class="mt center"><button class="link" data-act="openClass" data-id="${cid}">Back to the class</button></p>`:""}`);
+}
+function sharedSheet(textId){
+  const T = textById(textId); if(!T) return;
+  const nx = nextClassFor(T.id), L = CLASS_LEVELS[T.level];
+  openSheet(`${sheetHead("A class text was shared with you", T.level+" · "+wc(T.body)+" words")}
+    <h3>${esc(T.title)}</h3>${meterInner(wc(T.body), L.read, T.level+" range")}
+    <div class="stack mt">
+      ${nx?`<button class="btn block" data-act="useShared" data-id="${esc(nx.id)}" data-t="${esc(T.id)}">Use it for my class on ${esc(fmtDay(nx.date))}</button>`:""}
+      <button class="${nx?"btn-line":"btn block"}" ${nx?'style="width:100%"':""} data-act="textRead" data-t="${esc(T.id)}">Read it now</button>
+      <button class="link" data-act="closeSheet">Keep it in My texts</button>
+    </div>`);
+}
+function classEditSheet(id){
+  const o = occById(id); if(!o) return;
+  openSheet(`${sheetHead(o.oneoff?"Edit this class":"Edit this date", o.oneoff?whenLine(o):"Changes apply to "+fmtDay(o.date,true)+" only. A new date moves the class and its work.")}
+    <div class="stack">
+      <div><label class="lbl" for="ceTitle">Title</label><input class="field mt-s" id="ceTitle" value="${esc(o.title)}"></div>
+      <div class="field-grid"><div><label class="lbl" for="ceDate">Date</label><input type="date" class="field mt-s" id="ceDate" value="${o.date}"></div>
+        <div><label class="lbl" for="ceTime">Time</label><input type="time" class="field mt-s" id="ceTime" value="${o.time}"></div></div>
+      <div class="field-grid"><div><label class="lbl" for="ceDur">Duration</label><select class="field mt-s" id="ceDur">${DURATIONS.concat(DURATIONS.includes(o.duration)?[]:[o.duration]).map(d=>`<option value="${d}" ${d===o.duration?"selected":""}>${d} min</option>`).join("")}</select></div>
+        <div><label class="lbl" for="ceLevel">Level</label><select class="field mt-s" id="ceLevel">${LEVEL_KEYS.map(k=>`<option ${k===o.level?"selected":""}>${k}</option>`).join("")}</select></div></div>
+      <button class="btn block" data-act="classEditSave" data-id="${esc(id)}">Save changes</button>
+      <button class="link" data-act="openClass" data-id="${esc(id)}">Back to the class</button>
+    </div>`);
+}
+function oneoffSheet(presetKey){
+  openClassId = null;
+  const lv = studentLevel();
+  openSheet(`${sheetHead("Add a single class", "For an extra class, a make-up class, or one you already had.")}
+    <div class="stack">
+      <div><label class="lbl" for="ooTitle">Title</label><input class="field mt-s" id="ooTitle" value="${esc(CLASS_DEFAULT.title)}"></div>
+      <div class="field-grid"><div><label class="lbl" for="ooDate">Date</label><input type="date" class="field mt-s" id="ooDate" value="${presetKey||dayKey()}"></div>
+        <div><label class="lbl" for="ooTime">Time</label><input type="time" class="field mt-s" id="ooTime" value="${CLASS_DEFAULT.time}"></div></div>
+      <div class="field-grid"><div><label class="lbl" for="ooDur">Duration</label><select class="field mt-s" id="ooDur">${DURATIONS.map(d=>`<option value="${d}" ${d===CLASS_DEFAULT.duration?"selected":""}>${d} min</option>`).join("")}</select></div>
+        <div><label class="lbl" for="ooLevel">Level</label><select class="field mt-s" id="ooLevel">${LEVEL_KEYS.map(k=>`<option ${k===lv?"selected":""}>${k}</option>`).join("")}</select></div></div>
+      <button class="btn block" data-act="oneoffSave">Add class</button>
+    </div>`);
+}
+function seriesSheet(id){
+  openClassId = null;
+  const s = id ? state.classSeries.find(x=>x.id===id) : null;
+  const v = s || {title:CLASS_DEFAULT.title, days:[], time:CLASS_DEFAULT.time, duration:CLASS_DEFAULT.duration, level:studentLevel(), start:dayKey(), weeks:null};
+  const locked = s && s.start<dayKey();
+  const weeksMode = !!v.weeks;
+  openSheet(`${sheetHead(s?"Weekly class":"Add weekly classes", s?seriesSummary(s):"Pick your days and time once. They repeat every week.")}
+    <div class="stack">
+      <div><span class="lbl">Class days</span><div class="chips mt-s" id="sdDays" role="group" aria-label="Class days">${DOW_MON_FIRST.map(d=>`<button class="chip" data-act="chip" data-d="${d}" aria-pressed="${v.days.includes(d)}">${DOW_SHORT[d]}</button>`).join("")}</div></div>
+      <div class="field-grid"><div><label class="lbl" for="sdTime">Time</label><input type="time" class="field mt-s" id="sdTime" value="${v.time}"></div>
+        <div><label class="lbl" for="sdDur">Duration</label><select class="field mt-s" id="sdDur">${DURATIONS.concat(DURATIONS.includes(+v.duration)?[]:[+v.duration]).map(d=>`<option value="${d}" ${d===+v.duration?"selected":""}>${d} min</option>`).join("")}</select></div></div>
+      <div class="field-grid"><div><label class="lbl" for="sdLevel">Level</label><select class="field mt-s" id="sdLevel">${LEVEL_KEYS.map(k=>`<option ${k===levelKey(v.level)?"selected":""}>${k}</option>`).join("")}</select></div>
+        <div><label class="lbl" for="sdStart">Starts</label><input type="date" class="field mt-s" id="sdStart" value="${v.start}" ${locked?"disabled":""}></div></div>
+      ${locked?`<p class="small muted" style="margin-top:8px">Started ${esc(fmtDay(s.start,true))}. Changes apply from today; past classes stay as they were.</p>`:""}
+      <div><span class="lbl">How long</span><div class="seg mt-s" style="grid-template-columns:1fr 1fr" id="sdLen" role="group" aria-label="How long"><button data-act="segPick" data-v="ongoing" aria-pressed="${!weeksMode}">Every week</button><button data-act="segPick" data-v="weeks" aria-pressed="${weeksMode}">Set number of weeks</button></div>
+        <div class="mt-s ${weeksMode?"":"hide"}" id="sdWeeksWrap"><label class="lbl" for="sdWeeks">Number of weeks${locked?", counted from the first class":""}</label><input type="number" inputmode="numeric" min="1" max="104" class="field mt-s" id="sdWeeks" value="${v.weeks||8}"></div></div>
+      <div><label class="lbl" for="sdTitle">Title</label><input class="field mt-s" id="sdTitle" value="${esc(v.title)}"></div>
+      <button class="btn block" data-act="seriesSave" data-id="${esc(s?s.id:"")}">${s?"Save changes":"Add to my calendar"}</button>
+      ${s?`<button class="link" style="color:var(--coral)" data-act="seriesStop" data-id="${esc(s.id)}">Stop this weekly class</button>`:""}
+    </div>`);
+}
+
 /* ============================================================
    LESSON ENGINE — one renderer for every mission, free practice,
    and mirror sample. Content comes from LESSONS (schema above).
    THINK → WRITE → SPEAK → REFLECT → SAVE
    ============================================================ */
-const STEP_NAMES = {arrive:"Arrival", understand:"Understand", see:"See it", build:"Build it", write:"Write it", speak:"Speak it", reflect:"Reflect", complete:"Complete"};
+const STEP_NAMES = {arrive:"Arrival", read:"Read it", understand:"Understand", see:"See it", build:"Build it", write:"Write it", speak:"Speak it", reflect:"Reflect", complete:"Complete"};
 function stepsFor(r){
   if(r.kind==="mission") return ["arrive","understand","see","build","write","speak","reflect","complete"];
+  if(r.kind==="class") return ["read","write","speak","reflect","complete"];
   if(r.kind==="free") return ["write","speak","reflect","complete"];
   return ["arrive","write","speak","complete"];
 }
 function newRun(kind, o){
-  return {kind, mi:o.mi!=null?o.mi:null, topicId:o.topicId||null, stepIdx:0, startedAt:nowISO(), lastTick:Date.now(), activeMs:0,
+  return {kind, mi:o.mi!=null?o.mi:null, topicId:o.topicId||null, cid:o.cid||null, stepIdx:0, startedAt:nowISO(), lastTick:Date.now(), activeMs:0,
     ladder:1, scr:{}, write:{mode:"guided", text:"", savedId:null}, attempts:[], reflect:{a:"",b:"",c:""}, finalized:false};
 }
 function saveRun(){ state.draft = run && !run.finalized ? run : null; save(); }
 function tickActive(){ if(!run) return; const n=Date.now(); run.activeMs=(run.activeMs||0)+Math.min(n-(run.lastTick||n), 10*60000); run.lastTick=n; }
 const runLesson = () => run && run.mi!=null ? LESSONS[run.mi] : null;
 const runTopicObj = () => TOPICS.find(t=>t.id===run.topicId) || TOPICS[0];
+const runClass = () => run && run.kind==="class" ? occById(run.cid) : null;
 function runTopic(){
   if(run.kind==="mission") return "Mission "+(run.mi+1)+": "+LESSONS[run.mi].t;
   if(run.kind==="mirror") return "Mirror sample";
+  if(run.kind==="class"){ const o = runClass(), T = o && classText(o); return "Class "+(o?fmtDay(o.date):"")+(T?": "+T.title:""); }
   return runTopicObj().title;
 }
 const phaseRef = () => run.kind==="mission" ? run.mi : (nextMission()>=0 ? nextMission() : state.currentMission);
@@ -1269,9 +2257,10 @@ VIEWS.lesson = function(){ setBody("in-lesson"); renderLesson(); };
 
 function renderLesson(){
   if(!run){ go("home"); return; }
+  if(run.kind==="class" && !runClass()){ state.draft = null; run = null; save(); toast("That class was removed from your schedule."); go("classes"); return; }
   const steps = stepsFor(run), key = steps[run.stepIdx];
   const rail = steps.filter(s=>s!=="complete").map((s,i)=>`<i class="${i<run.stepIdx?"on":i===run.stepIdx?"cur":""}"></i>`).join("");
-  const title = run.kind==="mission" ? "Mission "+(run.mi+1) : run.kind==="mirror" ? "Mirror sample" : "Free practice";
+  const title = run.kind==="mission" ? "Mission "+(run.mi+1) : run.kind==="mirror" ? "Mirror sample" : run.kind==="class" ? "Class · "+fmtDay(runClass().date) : "Free practice";
   const top = `<div class="lesson-top">
       <button class="icon-btn" data-act="closeLesson" aria-label="Save and exit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="rail" aria-hidden="true">${key==="complete"?steps.slice(0,-1).map(()=>'<i class="on"></i>').join(""):rail}</div>
@@ -1311,6 +2300,20 @@ STEPS.arrive = function(){
     <div class="meta-row"><span class="pill gold">${esc(L.level)}</span><span class="pill">About ${L.duration} min</span><span class="pill">${esc(PHASES[phaseIndex(run.mi)].label)}</span>${done?'<span class="pill sage">Review</span>':""}</div>
     <p class="muted mt-l">Understand, see it, build it, write it, speak it, reflect. Your work is saved as you go.</p>
   </section>`;
+};
+
+/* A2. READ — the class text, sentence by sentence (classes only) */
+STEPS.read = function(){
+  const o = runClass(), T = assignText(o), L = CLASS_LEVELS[o.level], n = wc(T.body);
+  const hasKeys = T.keys && T.keys.length;
+  setAction({label: o.rec.readAt ? "Continue to writing" : "I've read it", act:"classRead"});
+  return `<section style="padding-top:clamp(8px,3vh,24px)"><p class="kicker">Class text${T.from?" · "+(T.from==="shared"?"shared with you":"my text"):""}</p>
+    <h1 class="display" style="font-size:clamp(30px,7.5vw,44px)">${esc(T.title)}</h1>
+    <div class="meta-row"><span class="pill gold">${o.level}</span><span class="pill">${n} words</span><span class="pill">About ${Math.max(1,Math.round(n/L.wpm))} min</span>${o.rec.readAt?'<span class="pill sage">Read</span>':""}</div></section>
+    ${readerTools()}
+    <div class="mt">${readerHTML(T)}</div>
+    ${hasKeys?`<details class="more mt-l"><summary>Key words</summary><div class="inner">${T.keys.map(k=>`<div class="example"><p><b>${esc(k[0])}</b><br><span class="muted small">${esc(k[1])}</span></p>${listenBtn(k[0])}</div>`).join("")}</div></details>`:""}
+    ${T.questions&&T.questions.length?`<details class="more ${hasKeys?"":"mt-l"}"><summary>Think about it</summary><div class="inner"><ul class="pattern">${T.questions.map(q=>`<li>${esc(q)}</li>`).join("")}</ul><p class="small muted mt-s">Answer in your head or out loud. You'll use these ideas when you write and speak.</p></div></details>`:""}`;
 };
 
 /* B. UNDERSTAND */
@@ -1383,14 +2386,20 @@ STEPS.build = function(){
 function writeConfig(){
   if(run.kind==="mirror") return {min:20, prompt:MIRROR_PROMPT, frames:["I am ___ and I work as ___.","I want English because ___.","With better English, I will ___."], topic:"Mirror sample", modes:false};
   if(run.kind==="free"){ const t=runTopicObj(); return {min:minWords(phaseRef()), prompt:t.prompt, frames:t.frames.map(f=>f.replace("…"," ___")), topic:t.title, modes:true, openPrompt:"Write about anything from your life today."}; }
+  if(run.kind==="class"){
+    const o = runClass(), T = classText(o) || assignText(o), L = CLASS_LEVELS[o.level];
+    return {min:L.write[0], max:L.write[1], prompt:T.write||CLASS_WRITE_DEFAULT, frames:CLASS_FRAMES[o.level], topic:"Class "+fmtDay(o.date)+": "+T.title, modes:true,
+      openPrompt:"Write about anything from today's class, in your own words.", keys:(T.keys||[]).map(k=>k[0]).slice(0,4)};
+  }
   const L = runLesson();
   return {min:minWords(run.mi), prompt:L.topics[ctx()]||L.topics.general, frames:L.frames, topic:"Mission "+L.n+": "+L.t, modes:true, openPrompt:"Write about anything from your life today. Try to use today's idea: "+L.t.toLowerCase()+".", keys:L.vocab.map(v=>v[0].split(/[\/,·]/)[0].trim()).slice(0,4)};
 }
 STEPS.write = function(){
   const cfg = writeConfig(), w = run.write;
+  const canBack = run.kind==="mission" || run.kind==="class";
   if(w.savedId){
     const s = state.writingSamples.find(x=>x.id===w.savedId);
-    setAction({label:"Continue to speaking", act:"next", back: run.kind==="mission"?"prev":null});
+    setAction({label:"Continue to speaking", act:"next", back: canBack?"prev":null});
     return `<h2 class="display">Saved as evidence</h2><p class="muted mt-s">Your original stays exactly as you wrote it. Nothing is corrected or overwritten.</p>
       <article class="sample mt"><header><span>${esc(cfg.topic)}</span><span>${s?fmtDate(s.createdAt):""}</span></header><p class="en">${esc(s?s.content:w.text)}</p><p class="small muted mt-s">${s?s.wordCount:wc(w.text)} words</p></article>`;
   }
@@ -1398,7 +2407,7 @@ STEPS.write = function(){
   const n = wc(w.text), ok = n>=cfg.min;
   const modeDesc = {guided:"Start from a structure. Tap one to add it, then complete it.", suggested:"Write about this topic in your own way.", open:"Your topic, your words."};
   const prompt = mode==="open" ? cfg.openPrompt : cfg.prompt;
-  setAction({label:"Save and continue", act:"saveWriting", back: run.kind==="mission"?"prev":null, disabled:!ok, hint: ok?"":"Write at least "+cfg.min+" words to continue."});
+  setAction({label:"Save and continue", act:"saveWriting", back: canBack?"prev":null, disabled:!ok, hint: ok?"":"Write at least "+cfg.min+" words to continue."});
   return `<h2 class="display">Write it</h2>
     ${cfg.modes?`<div class="seg mt" role="group" aria-label="How much guidance">
       ${["guided","suggested","open"].map(m=>`<button data-act="mode" data-m="${m}" aria-pressed="${mode===m}">${m[0].toUpperCase()+m.slice(1)}</button>`).join("")}
@@ -1407,12 +2416,13 @@ STEPS.write = function(){
     ${mode==="guided"?`<div class="frames mt">${cfg.frames.map(f=>`<button class="frame" data-act="frame" data-f="${esc(f)}">${esc(f)}</button>`).join("")}</div>`:""}
     ${mode==="suggested"&&cfg.keys?`<p class="small muted mt">Try to use: ${cfg.keys.map(esc).join(", ")}.</p>`:""}
     <textarea class="write mt" id="writeBox" data-in="write" placeholder="Write in English. Don't translate, don't worry about mistakes." spellcheck="false" autocapitalize="sentences">${esc(w.text)}</textarea>
-    <div class="counter"><span><b id="wcount" class="${ok?"ok":""}">${n}</b> of ${cfg.min} words</span><span>Saved exactly as you write it</span></div>`;
+    <div class="counter"><span><b id="wcount" class="${ok?"ok":""}">${n}</b> of ${cfg.min}${cfg.max?"–"+cfg.max:""} words${cfg.max?" ("+runClass().level+")":""}</span><span>Saved exactly as you write it</span></div>`;
 };
 
 /* F. SPEAK IT */
 function speakConfig(){
   if(run.kind==="mirror") return {prompt:MIRROR_PROMPT, min:30, target:60, adjusted:false};
+  if(run.kind==="class"){ const o = runClass(), T = classText(o) || {}; return Object.assign(classSpeakRule(o.level), {prompt:T.speak||CLASS_SPEAK_DEFAULT}); }
   const r = speakRule(phaseRef());
   return Object.assign(r, {prompt: run.kind==="mission" ? runLesson().speak : runTopicObj().prompt});
 }
@@ -1484,8 +2494,10 @@ function finishSpeaking(silent){
     if(!silent){ toast("Too short to save. Try again."); renderLesson(); }
     return;
   }
-  const a = {id:uid("sp"), date:nowISO(), kind:run.kind, missionId:run.kind==="mission"?run.mi:null, topic:runTopic(), duration:dur, recordingId:null};
-  state.speakingAttempts.push(a); run.attempts.push(a.id); touch(); tickActive(); saveRun();
+  const a = {id:uid("sp"), date:nowISO(), kind:run.kind, missionId:run.kind==="mission"?run.mi:null, classId:run.kind==="class"?run.cid:null, topic:runTopic(), duration:dur, recordingId:null};
+  state.speakingAttempts.push(a); run.attempts.push(a.id);
+  if(run.kind==="class"){ const o = runClass(); if(o){ const r = ensureRec(o); r.bestSecs = Math.max(r.bestSecs||0, dur); r.attemptIds = (r.attemptIds||[]).concat(a.id); } }
+  touch(); tickActive(); saveRun();
   if(s.rec && s.rec.state!=="inactive"){
     s.rec.onstop = async () => {
       stopStream();
@@ -1515,11 +2527,15 @@ function finalize(){
   run.finalized = true; tickActive();
   const minutes = Math.max(1, Math.round(Math.min(run.activeMs||0, 90*60000)/60000));
   state.hours = +((state.hours||0) + minutes/60).toFixed(2);
-  state.sessionLog.push({date:nowISO(), missionId:run.mi, minutes, kind:run.kind});
+  state.sessionLog.push({date:nowISO(), missionId:run.mi, classId:run.cid||null, minutes, kind:run.kind});
   let reflId = null;
   if(run.kind!=="mirror"){
-    const r = {id:uid("rf"), date:nowISO(), kind:run.kind, missionId:run.mi, topic:runTopic(), managed:run.reflect.a.trim(), difficult:run.reflect.b.trim(), better:run.reflect.c.trim()};
+    const r = {id:uid("rf"), date:nowISO(), kind:run.kind, missionId:run.mi, classId:run.cid||null, topic:runTopic(), managed:run.reflect.a.trim(), difficult:run.reflect.b.trim(), better:run.reflect.c.trim()};
     state.reflections.push(r); reflId = r.id;
+  }
+  if(run.kind==="class"){
+    const o = runClass();
+    if(o){ const rec = ensureRec(o); rec.reflectionId = reflId; rec.doneAt = rec.doneAt || nowISO(); rec.lastWorkAt = nowISO(); rec.minutes = (rec.minutes||0) + minutes; }
   }
   if(run.kind==="mission"){
     const i = run.mi, mp = state.missionProgress[i] || {startedAt:run.startedAt, sessions:0};
@@ -1558,6 +2574,17 @@ STEPS.complete = function(){
   if(run.kind==="free"){
     setAction({label:"Back to home", act:"goHome"});
     return `<section class="complete">${SEAL}<h1 class="display">Practice complete</h1><p class="lead" style="margin:14px auto 0">${esc(runTopicObj().title)}</p>${evidence}</section>`;
+  }
+  if(run.kind==="class"){
+    const o = runClass(), T = classText(o), p = classParts(o), t = dayKey();
+    setAction({label:"Back to my classes", act:"goClasses"});
+    return `<section class="complete">${SEAL}<h1 class="display">Class work complete</h1>
+      <p class="lead" style="margin:14px auto 0">${esc(T?T.title:o.title)} · ${esc(fmtDay(o.date))}</p>
+      <ul class="checks">${CLASS_PARTS.map(x=>`<li class="${p[x[0]]?"yes":""}">${x[1]}</li>`).join("")}</ul>
+      ${p.attended ? "" : o.date<=t ? `<div><button class="btn-line mt" data-act="classAttend" data-id="${esc(o.id)}">I attended this class</button></div>` : `<p class="small muted mt">You're prepared. Mark your attendance after class on ${esc(fmtDay(o.date))}.</p>`}
+      ${evidence}
+      ${depth()>=2?`<p class="mt"><button class="link" data-act="sendClass" data-id="${esc(o.id)}">Send my class work to ProfGermandario</button></p>`:""}
+    </section>`;
   }
   const L = runLesson(), nx = nextMission();
   const nextHtml = nx>=0 ? `<div class="panel mt" style="text-align:left"><p class="kicker">Next mission</p><h3>Mission ${nx+1}: ${esc(LESSONS[nx].t)}</h3><p class="muted mt-s">${esc(LESSONS[nx].obj)}</p></div>`
@@ -1671,7 +2698,7 @@ function planSheet(){
 }
 function dataSheet(){
   openSheet(`${sheetHead("My data","Your progress lives on this device, in this browser.")}
-    <p>Export a backup every week, and before changing phones or browsers. Audio recordings stay on this device and are not included in the backup.</p>
+    <p>Export a backup every week, and before changing phones or browsers. The backup includes your missions, evidence, classes, class notes, and texts. Audio recordings stay on this device and are not included.</p>
     <div class="stack mt">
       <button class="btn block" data-act="export">Export my backup</button>
       <button class="btn-line" style="width:100%" data-act="import">Import a backup</button>
@@ -1764,7 +2791,12 @@ const ACT = {
   startMirror: () => { if(run && run.finalized) run=null; startMirror(); },
   startFree: el => startFree(el.dataset.t),
   openMission: el => missionSheet(+el.dataset.i),
-  closeLesson: () => { if(SP) finishSpeaking(true); if(run && !run.finalized){ tickActive(); saveRun(); toast("Saved. Resume any time from Home."); } run = null; go("home"); },
+  closeLesson: () => {
+    if(SP) finishSpeaking(true);
+    const toClasses = run && run.kind==="class";
+    if(run && !run.finalized){ tickActive(); saveRun(); toast("Saved. Resume any time from "+(toClasses?"the class":"Home")+"."); }
+    run = null; go(toClasses?"classes":"home");
+  },
   next: () => nextStep(),
   prev: () => prevStep(),
   say: el => say(el.dataset.text, el),
@@ -1787,9 +2819,11 @@ const ACT = {
   saveWriting: () => {
     const cfg = writeConfig(), text = run.write.text.trim();
     if(wc(text) < cfg.min) return;
-    const s = {id:uid("w"), createdAt:nowISO(), week:cycleInfo().n, missionId:run.mi, kind:run.kind, prompt: run.write.mode==="open"&&cfg.openPrompt?cfg.openPrompt:cfg.prompt,
+    const s = {id:uid("w"), createdAt:nowISO(), week:cycleInfo().n, missionId:run.mi, classId:run.cid||null, kind:run.kind, prompt: run.write.mode==="open"&&cfg.openPrompt?cfg.openPrompt:cfg.prompt,
       mode:run.kind==="mirror"?"mirror":run.write.mode, content:text, wordCount:wc(text), topic:cfg.topic, label:cfg.topic};
-    state.writingSamples.push(s); run.write.savedId = s.id; touch(); nextStep();
+    state.writingSamples.push(s); run.write.savedId = s.id;
+    if(run.kind==="class"){ const o = runClass(); if(o) ensureRec(o).writingId = s.id; }
+    touch(); nextStep();
   },
   startSpeak: el => startSpeaking(el.dataset.rec==="1"),
   stopSpeak: () => finishSpeaking(false),
@@ -1804,7 +2838,7 @@ const ACT = {
     openExternal(waLink(`Hola Profe, soy ${state.name}. Quiero que revises mis muestras espejo.\n\nPrimera (${fmtDate(a.date)}, ${a.words} palabras):\n${a.text.slice(0,500)}\n\nÚltima (${fmtDate(b.date)}, ${b.words} palabras, hablé ${mmss(b.seconds)}):\n${b.text.slice(0,500)}`)); },
   tool: el => {
     const t = el.dataset.tool;
-    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, meditate:meditateSheet, teacher:teacherSheet, plan:planSheet, data:dataSheet, profile:profileSheet})[t]();
+    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, plan:planSheet, data:dataSheet, profile:profileSheet})[t]();
   },
   applyCode: async () => {
     const v = ($("#codeIn").value||"").trim().toUpperCase(); if(!v) return;
@@ -1878,6 +2912,181 @@ const INP = {
   }
 };
 
+/* ============================================================
+   CLASSES — starters, messages, actions
+   ============================================================ */
+function startClassWork(id){
+  const o = occById(id); if(!o) return;
+  if(state.draft && state.draft.kind==="class" && state.draft.cid===id){ run = state.draft; run.lastTick = Date.now(); closeSheet(); go("lesson"); return; }
+  if(!confirmReplaceDraft()) return;
+  assignText(o);
+  run = newRun("class",{cid:id});
+  saveRun(); closeSheet(); go("lesson");
+}
+/* per-date changes on a weekly class: store only what differs from the weekly settings */
+function applyOverrides(o, f){
+  const r = ensureRec(o);
+  if(o.oneoff || r.frozen || !o.series){ Object.assign(r, f); return; }
+  ["title","time","duration","level"].forEach(k=>{
+    const base = k==="level" ? levelKey(o.series.level) : o.series[k];
+    if(String(f[k])!==String(base)) r[k] = f[k]; else delete r[k];
+  });
+}
+/* moving a weekly date: it becomes a single class on the new date, with its work */
+function moveClass(o, date, f){
+  const r = ensureRec(o), nid = uid("cls");
+  state.classRecords[nid] = Object.assign({}, r, {id:nid, date, oneoff:true, frozen:false, seriesId:null, movedFrom:o.id, cancelled:false, movedTo:null, title:o.title, time:o.time, duration:o.duration, level:o.level}, f);
+  Object.keys(r).forEach(k=>{ if(!["id","date","seriesId","frozen","time","duration","title","level"].includes(k)) delete r[k]; });
+  r.cancelled = true; r.movedTo = nid;
+  [state.writingSamples, state.speakingAttempts, state.reflections, state.sessionLog].forEach(list=>list.forEach(x=>{ if(x.classId===o.id) x.classId = nid; }));
+  if(state.draft && state.draft.cid===o.id) state.draft.cid = nid;
+  return nid;
+}
+function classEvidenceMessage(id){
+  const o = occById(id); if(!o) return "";
+  const r = o.rec, T = classText(o), w = state.writingSamples.find(x=>x.id===r.writingId), rf = state.reflections.find(x=>x.id===r.reflectionId);
+  let t = `Hola Profe, soy ${state.name||"tu estudiante"}. Te envío mi trabajo de la clase del ${fmtDayEs(o.date)} (${o.level}).\n\n`;
+  if(T) t += `Texto de clase: "${T.title}" (${wc(T.body)} palabras)${r.readAt?", leído":""}.\n`;
+  t += `Asistencia: ${r.attended?"sí":"aún no marcada"}.\n`;
+  if(w){ const c = w.content.length>700 ? w.content.slice(0,700)+"…" : w.content; t += `\nMi texto (${w.wordCount} palabras):\n${c}\n`; }
+  if(r.bestSecs) t += `\nHablé: intento más largo ${mmss(r.bestSecs)}.\n`;
+  if(rf) t += `\nReflexión:\n- Logré decir: ${rf.managed}\n- Difícil: ${rf.difficult||"-"}\n- Mejorar: ${rf.better||"-"}\n`;
+  if((r.notes||"").trim()) t += `\nMis notas de clase:\n${r.notes.trim().slice(0,400)}\n`;
+  return t;
+}
+function afterClassChange(id, msg){ save(); if(msg) toast(msg); if(id) classSheet(id); repaint(); }
+
+Object.assign(ACT, {
+  goClasses: () => { if(run && run.finalized) run = null; go("classes"); },
+  calShift: el => { calM += +el.dataset.d; if(calM<0){ calM = 11; calY--; } if(calM>11){ calM = 0; calY++; } repaint(); },
+  calToday: () => { const d = new Date(); calY = d.getFullYear(); calM = d.getMonth(); repaint(); },
+  openDay: el => daySheet(el.dataset.k),
+  openClass: el => classSheet(el.dataset.id),
+  classWork: el => startClassWork(el.dataset.id),
+  classRead: () => { const o = runClass(); if(o){ const r = ensureRec(o); if(!r.readAt){ r.readAt = nowISO(); touch(); } } stopReading(); nextStep(); },
+  classAttend: el => {
+    const o = occById(el.dataset.id); if(!o) return;
+    if(o.date>dayKey()){ toast("You can mark attendance on the day of the class."); return; }
+    const r = ensureRec(o);
+    r.attended = !r.attended; r.attendedAt = r.attended ? nowISO() : null;
+    if(r.attended) touch();
+    save();
+    toast(r.attended ? (classPct(o)>=1 ? "Class complete. All five parts done." : "Attendance saved.") : "Attendance removed.");
+    if(location.hash==="#lesson" && run){ renderLesson(); return; }
+    classSheet(o.id); repaint();
+  },
+  readAll: el => readAll(el),
+  saySnt: el => { stopReading(); el.classList.add("on"); say(el.textContent, null, ()=>el.classList.remove("on")); },
+  rateR: el => { state.ttsRate = +el.dataset.v; save(); el.parentElement.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", String(b===el))); },
+  readerOpen: el => readerSheet(el.dataset.id),
+  textRead: el => readerSheet(null, el.dataset.t),
+  texts: () => textPickerSheet(null, "library"),
+  textPick: el => textPickerSheet(el.dataset.id||null, el.dataset.tab, el.dataset.edit||null),
+  textUse: el => {
+    const o = occById(el.dataset.id); if(!o) return;
+    const r = ensureRec(o); if(r.textId!==el.dataset.t){ r.textId = el.dataset.t; r.readAt = null; }
+    afterClassChange(o.id, "Text set for this class.");
+  },
+  textSave: el => {
+    const title = ($("#ptTitle").value||"").trim(), body = ($("#ptBody").value||"").replace(/\r/g,"").replace(/\n{3,}/g,"\n\n").trim(), level = levelKey($("#ptLevel").value);
+    if(!title){ toast("Give the text a title."); $("#ptTitle").focus(); return; }
+    if(wc(body)<20){ toast("The text needs at least 20 words."); $("#ptBody").focus(); return; }
+    const write = ($("#ptWrite").value||"").trim(), speak = ($("#ptSpeak").value||"").trim();
+    let T = el.dataset.edit ? state.myTexts.find(x=>x.id===el.dataset.edit) : null;
+    if(T) Object.assign(T, {title, body, level, write, speak, updatedAt:nowISO()});
+    else { T = {id:uid("txt"), title, level, body, write, speak, from:"me", createdAt:nowISO()}; state.myTexts.push(T); }
+    const o = el.dataset.id ? occById(el.dataset.id) : null;
+    if(o){ const r = ensureRec(o); if(r.textId!==T.id){ r.textId = T.id; r.readAt = null; } }
+    save();
+    if(el.dataset.share){ copyText(textShareLink(T)); toast("Saved. Share link copied."); } else toast(o ? "Text set for this class." : "Saved to My texts.");
+    if(o) classSheet(o.id); else textPickerSheet(null, "mine");
+    repaint();
+  },
+  textShare: el => { const T = textById(el.dataset.t); if(T){ copyText(textShareLink(T)); toast("Share link copied. Paste it in WhatsApp."); } },
+  textDel: el => {
+    const T = state.myTexts.find(x=>x.id===el.dataset.t); if(!T) return;
+    const used = Object.values(state.classRecords).filter(r=>r.textId===T.id).length;
+    if(!confirm('Delete "'+T.title+'"?'+(used ? " "+used+(used>1?" classes use":" class uses")+" it; a library text will replace it." : ""))) return;
+    state.myTexts = state.myTexts.filter(x=>x.id!==T.id);
+    Object.values(state.classRecords).forEach(r=>{ if(r.textId===T.id){ r.textId = null; r.readAt = null; } });
+    save(); toast("Text deleted."); textPickerSheet(el.dataset.id||null, "mine"); repaint();
+  },
+  useShared: el => { const o = occById(el.dataset.id); if(!o) return; const r = ensureRec(o); r.textId = el.dataset.t; r.readAt = null; afterClassChange(o.id, "Text set for "+fmtDay(o.date)+"."); },
+  classEdit: el => classEditSheet(el.dataset.id),
+  classEditSave: el => {
+    const o = occById(el.dataset.id); if(!o) return;
+    const date = $("#ceDate").value || o.date;
+    const f = {title:($("#ceTitle").value||"").trim()||o.title, time:$("#ceTime").value||o.time, duration:+$("#ceDur").value||o.duration, level:levelKey($("#ceLevel").value)};
+    let id = o.id;
+    if(o.oneoff) Object.assign(ensureRec(o), f, {date});
+    else if(date!==o.date) id = moveClass(o, date, f);
+    else applyOverrides(o, f);
+    const r = state.classRecords[id], T = r && textById(r.textId);
+    if(T && !T.from && T.level!==f.level){ r.textId = null; r.readAt = null; }
+    if(date!==o.date){ const d = parseKey(date); calY = d.getFullYear(); calM = d.getMonth(); }
+    afterClassChange(id, date!==o.date ? "Class moved to "+fmtDay(date)+"." : "Class updated.");
+  },
+  classCancel: el => { const o = occById(el.dataset.id); if(!o) return; if(!confirm("Cancel the class on "+fmtDay(o.date,true)+"? Other weeks are not affected.")) return; ensureRec(o).cancelled = true; afterClassChange(o.id, "Class cancelled."); },
+  classRestore: el => { const o = occById(el.dataset.id); if(!o) return; const r = ensureRec(o); r.cancelled = false; r.movedTo = null; afterClassChange(o.id, "Class restored."); },
+  classDelete: el => {
+    const o = occById(el.dataset.id); if(!o) return;
+    if(!confirm("Delete this class?"+(hasProgress(o.rec) ? " Your writing, speaking, and reflections stay in your evidence." : ""))) return;
+    delete state.classRecords[o.id];
+    if(state.draft && state.draft.cid===o.id) state.draft = null;
+    save(); closeSheet(); toast("Class deleted."); repaint();
+  },
+  sendClass: el => openExternal(waLink(classEvidenceMessage(el.dataset.id))),
+  oneoffNew: el => oneoffSheet(el && el.dataset ? el.dataset.k : null),
+  oneoffSave: () => {
+    const date = $("#ooDate").value; if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){ toast("Choose a date."); return; }
+    const id = uid("cls");
+    state.classRecords[id] = {id, oneoff:true, date, time:$("#ooTime").value||CLASS_DEFAULT.time, duration:+$("#ooDur").value||CLASS_DEFAULT.duration, title:($("#ooTitle").value||"").trim()||CLASS_DEFAULT.title, level:levelKey($("#ooLevel").value), createdAt:nowISO()};
+    const d = parseKey(date); calY = d.getFullYear(); calM = d.getMonth();
+    afterClassChange(id, "Class added for "+fmtDay(date)+".");
+  },
+  seriesNew: () => seriesSheet(null),
+  seriesEdit: el => seriesSheet(el.dataset.id),
+  chip: el => el.setAttribute("aria-pressed", String(el.getAttribute("aria-pressed")!=="true")),
+  segPick: el => { el.parentElement.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", String(b===el))); const w = $("#sdWeeksWrap"); if(w) w.classList.toggle("hide", el.dataset.v!=="weeks"); },
+  seriesSave: el => {
+    const days = [...document.querySelectorAll('#sdDays .chip[aria-pressed="true"]')].map(b=>+b.dataset.d);
+    if(!days.length){ toast("Choose at least one day."); return; }
+    const lenBtn = document.querySelector('#sdLen [aria-pressed="true"]');
+    const v = {days, time:$("#sdTime").value||CLASS_DEFAULT.time, duration:+$("#sdDur").value||CLASS_DEFAULT.duration, level:levelKey($("#sdLevel").value),
+      weeks: lenBtn && lenBtn.dataset.v==="weeks" ? Math.min(104, Math.max(1, parseInt($("#sdWeeks").value,10)||8)) : null,
+      title:($("#sdTitle").value||"").trim()||CLASS_DEFAULT.title};
+    const id = el.dataset.id, t = dayKey();
+    if(!id){
+      const s = Object.assign({id:uid("ser"), createdAt:nowISO(), start:$("#sdStart").value||t, end:null}, v);
+      state.classSeries.push(s);
+      const d = parseKey(maxKey(s.start, t)); calY = d.getFullYear(); calM = d.getMonth();
+      save(); closeSheet(); toast("Weekly classes added: "+daysLabel(days)+" at "+fmtTime(v.time)+"."); repaint(); return;
+    }
+    const s = state.classSeries.find(x=>x.id===id); if(!s) return;
+    if(s.start<t) freezePast(s); else v.start = $("#sdStart").value || s.start;
+    Object.assign(s, v);
+    rehomeFuture(s);
+    Object.values(state.classRecords).forEach(r=>{
+      if(r.seriesId!==s.id || r.oneoff || r.frozen || r.date<t || r.level || r.readAt) return;
+      const T = textById(r.textId); if(T && !T.from && T.level!==levelKey(s.level)) r.textId = null;
+    });
+    save(); closeSheet(); toast("Weekly schedule updated."); repaint();
+  },
+  seriesStop: el => {
+    const s = state.classSeries.find(x=>x.id===el.dataset.id); if(!s) return;
+    if(!confirm('Stop "'+s.title+'"? Classes before today keep their evidence. Future dates are removed.')) return;
+    const t = dayKey();
+    if(s.start<t){ s.end = addDays(t,-1); rehomeFuture(s); }
+    else { s.end = addDays(s.start,-1); rehomeFuture(s); state.classSeries = state.classSeries.filter(x=>x!==s); }
+    save(); closeSheet(); toast("Weekly class stopped."); repaint();
+  },
+  ics: () => icsExport()
+});
+Object.assign(INP, {
+  classNotes: el => { const o = occById(el.dataset.id); if(!o) return; ensureRec(o).notes = el.value; clearTimeout(INP._n); INP._n = setTimeout(save, 500); },
+  ptBody: el => { const m = $("#ptMeter"); if(!m) return; const lv = levelKey(($("#ptLevel")||{}).value); m.innerHTML = meterInner(wc(el.value), CLASS_LEVELS[lv].read, lv+" range"); }
+});
+
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]"); if(g){ go(g.dataset.go); return; }
   const el = e.target.closest("[data-act]"); if(!el || el.disabled) return;
@@ -1886,6 +3095,7 @@ document.addEventListener("click", e=>{
 document.addEventListener("input", e=>{ const k = e.target.dataset && e.target.dataset.in; if(k && INP[k]) INP[k](e.target); });
 document.addEventListener("change", e=>{
   if(e.target.id==="shMission") shadowSheet(+e.target.value);
+  if(e.target.id==="ptLevel"){ const b = $("#ptBody"); if(b) INP.ptBody(b); }
   if(e.target.id==="importFile" && e.target.files[0]){
     const r = new FileReader();
     r.onload = () => {
@@ -1904,7 +3114,7 @@ $("#scrim").addEventListener("click", e=>{ if(e.target.id==="scrim") ACT.closeSh
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && $("#scrim").classList.contains("open")) ACT.closeSheet(); });
 window.addEventListener("hashchange", render);
 window.addEventListener("scroll", ()=>$("#top").classList.toggle("scrolled", window.scrollY>8), {passive:true});
-window.addEventListener("pagehide", ()=>{ if(run && !run.finalized){ tickActive(); saveRun(); } });
+window.addEventListener("pagehide", ()=>{ if(run && !run.finalized){ tickActive(); saveRun(); } else save(); });
 document.addEventListener("visibilitychange", ()=>{ if(document.hidden && run && !run.finalized){ tickActive(); saveRun(); } else if(run) run.lastTick = Date.now(); });
 
 /* ---------- theme ---------- */

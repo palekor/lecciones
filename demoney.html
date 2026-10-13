@@ -120,24 +120,48 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .bar i{position:absolute;inset:0 auto 0 0;background:var(--purple);display:block}
 .bar i.pos{background:var(--pos)} .bar i.neg{background:var(--neg)} .bar i.amber{background:var(--amber)}
 
-/* ---------- watchlist rows ---------- */
-.wrow{padding:9px 11px 8px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate);
-  margin-bottom:6px;cursor:pointer;transition:border-color .15s}
-.wrow:hover{border-color:var(--purple)}
-.wrow .wa{display:flex;align-items:baseline;gap:8px;min-width:0}
-.wrow .sy{font-family:var(--m);font-size:15px;font-weight:600;letter-spacing:.01em}
-.wrow .evi{font-size:12px;line-height:1}
-.wrow .px{font-family:var(--m);font-size:15px;font-weight:500;margin-left:auto}
-.wrow .pct{font-family:var(--m);font-size:13px;font-weight:600;min-width:62px;text-align:right}
-.wrow .wb{display:flex;justify-content:space-between;gap:8px;margin-top:1px}
+/* ---------- watchlist rows: una fila densa por activo ----------
+   [símbolo / estado + nombre] [semana intradía, hoy en color] [precio / % hoy] [1 sem] */
+.wtop{display:flex;flex-direction:column;gap:8px}
+.wtop .wpills{display:flex;gap:7px;align-items:center;min-width:0}
+@media (min-width:700px){ .wtop{flex-direction:row;align-items:center} .wtop .wsearch{flex:0 1 380px} .wtop .wpills{flex:1} }
+#searchOut:empty{display:none}
+.wsearch{display:flex;gap:7px}
+.wsearch input{flex:1;min-width:0;padding:9px 11px}
+.wsearch .btn{padding:9px 14px}
+.wlegend{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;font-family:var(--m);font-size:9.5px;color:var(--faint);letter-spacing:.03em;margin:10px 2px 6px}
+.wlegend i{display:inline-block;width:14px;height:0;border-top:2px solid var(--pos);vertical-align:2px;margin-right:4px}
+.wlegend i.prev{border-top:1px dotted var(--muted)} .wlegend i.past{border-top:1.5px solid var(--faint)} .wlegend i.sma{border-top:1px solid var(--amber)}
+#wlist{display:flex;flex-direction:column;gap:5px}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(76px,32%) 78px 50px;grid-template-rows:auto auto;
+  column-gap:10px;row-gap:1px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--plate);cursor:pointer;transition:border-color .15s,background .15s;min-height:48px}
+.wrow:hover{border-color:var(--purple);background:var(--plate2)}
+.wrow .wt{grid-column:1;grid-row:1;display:flex;align-items:baseline;gap:6px;min-width:0}
+.wrow .sy{font-family:var(--m);font-size:14px;font-weight:600;letter-spacing:.01em}
+.wrow .evi{font-size:11px;line-height:1}
+.wrow .ws{grid-column:1;grid-row:2;display:flex;align-items:center;gap:6px;min-width:0}
+.wrow .ws .tag{padding:1px 6px;font-size:8.5px;letter-spacing:.06em;flex:none}
 .wrow .nm{font-size:10.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.wrow .chg{font-family:var(--m);font-size:10.5px;white-space:nowrap}
-.wrow .chart{margin:5px 0 4px}
-.wrow .chart canvas{width:100%;height:46px;display:block}
-.wrow .wc{display:flex;align-items:center;gap:10px;font-family:var(--m);font-size:10.5px;color:var(--muted);flex-wrap:nowrap}
-.wrow .wc .st{margin-left:auto;flex:none}
-.wrow .wc .st .tag{padding:2px 7px;font-size:9px}
-.wrow .wn{font-family:var(--m);font-size:10.5px;color:var(--faint);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow .cv{grid-column:2;grid-row:1 / span 2;align-self:stretch;display:flex;align-items:center;min-width:0}
+.wrow .cv canvas{width:100%;height:32px;display:block}
+.wrow .px{grid-column:3;grid-row:1;font-family:var(--m);font-size:13.5px;font-weight:500;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrow .px.lg{font-size:11.5px}
+.wrow .pct{grid-column:3;grid-row:2;font-family:var(--m);font-size:11.5px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrow .wk{grid-column:4;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:flex-end;gap:1px;
+  border-left:1px solid var(--soft);padding-left:8px;align-self:stretch;justify-content:center}
+.wrow .wk small{font-family:var(--m);font-size:8.5px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase}
+.wrow .wk b{font-family:var(--m);font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (min-width:760px){
+  #wlist{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px}
+}
+@media (min-width:1100px){
+  #wlist{grid-template-columns:1fr 1fr 1fr}
+}
+@media (max-width:560px){ .wrow .nm.name{display:none} }
+@media (max-width:370px){
+  .wrow{grid-template-columns:minmax(0,1fr) minmax(64px,28%) 72px 44px;column-gap:7px;padding:7px 8px}
+}
 
 /* ---------- eventos ---------- */
 .sev{display:inline-flex;align-items:center;font-family:var(--m);font-size:8.5px;letter-spacing:.1em;padding:2px 6px;
@@ -352,7 +376,6 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 }
 @media (max-width:420px){
   .g4{grid-template-columns:1fr 1fr}
-  .wrow .st .tag{padding:3px 6px;letter-spacing:.05em;font-size:9px}
   .sector-row{grid-template-columns:66px 1fr 56px;gap:6px}
   .sector-row.wide{grid-template-columns:112px 1fr 58px}
   .modes button b{font-size:11.5px}
@@ -704,11 +727,26 @@ DL.legalSheet = function () {
    Módulo 1c — nube: la misma cuenta en todos tus dispositivos
    Usa palekor-sync.js (compartido por todas las apps).
    Si la nube no está disponible, la app sigue funcionando local.
+
+   Reglas (v2):
+   · Antes de subir SIEMPRE se trae lo último de la nube y se fusiona.
+     Así un dispositivo con datos viejos nunca pisa lo nuevo.
+   · Se fusiona por ELEMENTO (cada acción, operación, nota) y, en el
+     perfil, por CAMPO: cambiar el idioma en el celular no devuelve el
+     capital del computador a un valor viejo.
+   · Una edición siempre queda más nueva que la versión que editó,
+     aunque el reloj del dispositivo esté atrasado.
+   · Cada petición tiene tiempo límite: si el celular cambia de red a
+     mitad de camino, la sincronización no se queda congelada.
+   · Cambios en vivo (Supabase Realtime) cuando está activo; si no,
+     revisa cada 15 s mientras la app está a la vista.
    ============================================================ */
 
 DL.CLOUD = (function () {
   var APP = "demoney";
   var META_KEY = "dlab.sync.v1";
+  var NET_TIMEOUT = 15000;
+  var POLL_FAST = 15000, POLL_SLOW = 60000;
   var COLLS = {
     watch: { id: function (x) { return x.sym; },  order: function (a, b) { return (a.addedAt || 0) - (b.addedAt || 0); } },
     pos:   { id: function (x) { return x.id; },   order: function (a, b) { return (a.openedAt || 0) - (b.openedAt || 0); } },
@@ -716,10 +754,12 @@ DL.CLOUD = (function () {
     lists: { id: function (x) { return x.id; },   order: function (a, b) { return (a.order || 0) - (b.order || 0); } }
   };
 
-  var S = { status: "off", lastSync: 0, error: null };  // off | idle | syncing | pending | error
-  var meta = { tomb: { watch: {}, pos: {}, diary: {}, lists: {} }, dirty: {}, everPushed: false };
-  var shadow = { watch: {}, pos: {}, diary: {}, lists: {}, profile: null };
-  var pushT = null, pollT = null, applying = false;
+  var S = { status: "off", lastSync: 0, error: null, live: false };  // off | idle | syncing | pending | error
+  var meta = { tomb: { watch: {}, pos: {}, diary: {}, lists: {} }, dirty: {}, everPushed: false, seen: {} };
+  // sombra: huella de cada elemento (h) y su marca de tiempo (u) tal como se guardó por última vez
+  var shadow = { watch: {}, pos: {}, diary: {}, lists: {}, profile: {} };
+  var pushT = null, pollT = null, rtT = null, applying = false, unsub = null, lastPoll = 0;
+  var pulledOnce = false;
   // marca de versión para "pendiente de subir": siempre creciente, aun entre recargas
   var seq = 0;
   function nextSeq() { seq = Math.max(seq + 1, Date.now()); return seq; }
@@ -727,29 +767,54 @@ DL.CLOUD = (function () {
   try {
     var raw = localStorage.getItem(META_KEY);
     if (raw) meta = Object.assign(meta, JSON.parse(raw));
+    meta.seen = meta.seen || {};
   } catch (e) {}
   function saveMeta() { try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch (e) {} }
 
   function PS() { return window.PalekorSync || null; }
   function fp(o) { return PS() ? PS().fingerprint(o) : JSON.stringify(o); }
+  function clean(o) { return PS() ? PS().clean(o) : o; }
+  function timed(p, what) {
+    return new Promise(function (res, rej) {
+      var t = setTimeout(function () { rej(new Error("timeout_" + what)); }, NET_TIMEOUT);
+      Promise.resolve(p).then(function (v) { clearTimeout(t); res(v); }, function (e) { clearTimeout(t); rej(e); });
+    });
+  }
+  function maxOf(o) { var m = 0; for (var k in o) if (o[k] > m) m = o[k]; return m; }
+  function fields(p) { return Object.keys(p || {}).filter(function (k) { return k.charAt(0) !== "_"; }); }
 
   /* ---------- 1. detectar qué cambió desde el último guardado ---------- */
   function naturalTime(coll, x) {
     return coll === "watch" ? (x.addedAt || 1) : coll === "pos" ? (x.exitAt || x.openedAt || 1)
       : coll === "lists" ? (x._u || 1) : (x.t || 1);
   }
+  function snapshotProfile() {
+    var p = DL.S.profile, out = {};
+    fields(p).forEach(function (k) { out[k] = fp(p[k]); });
+    return out;
+  }
+  function rebuildShadow() {
+    Object.keys(COLLS).forEach(function (c) {
+      shadow[c] = {};
+      (DL.S[c] || []).forEach(function (x) { shadow[c][COLLS[c].id(x)] = { h: fp(x), u: x._u || 0 }; });
+    });
+    shadow.profile = snapshotProfile();
+  }
 
   // Primera vez: registra el estado actual sin marcarlo como "recién editado"
   function primeShadow() {
     Object.keys(COLLS).forEach(function (c) {
-      shadow[c] = {};
-      (DL.S[c] || []).forEach(function (x) {
-        if (!x._u) x._u = naturalTime(c, x);
-        shadow[c][COLLS[c].id(x)] = fp(x);
-      });
+      (DL.S[c] || []).forEach(function (x) { if (!x._u) x._u = naturalTime(c, x); });
     });
-    if (!DL.S.profile._u) DL.S.profile._u = DL.S.profile.setup ? 1 : 0;
-    shadow.profile = fp(DL.S.profile);
+    var p = DL.S.profile;
+    if (!p._u) p._u = p.setup ? 1 : 0;
+    if (!p._f) {
+      // perfil de la versión anterior (sin marcas por campo): si este dispositivo no tiene
+      // cambios del perfil pendientes de subir, lo de la nube es igual o más nuevo
+      var st = meta.dirty.profile ? p._u : 0;
+      p._f = {}; fields(p).forEach(function (k) { p._f[k] = st; });
+    }
+    rebuildShadow();
     if (!meta.everPushed) { meta.dirty = { watch: 1, pos: 1, diary: 1, lists: 1, profile: 1 }; saveMeta(); }
   }
 
@@ -758,76 +823,77 @@ DL.CLOUD = (function () {
     Object.keys(COLLS).forEach(function (c) {
       var seen = {};
       (DL.S[c] || []).forEach(function (x) {
-        var id = COLLS[c].id(x), h = fp(x);
+        var id = COLLS[c].id(x), h = fp(x), sh = shadow[c][id];
         seen[id] = 1;
-        if (shadow[c][id] !== h) {
-          x._u = now; shadow[c][id] = h;
+        if (!sh || sh.h !== h) {
+          // siempre más nueva que la versión que se editó, aunque el reloj vaya atrasado
+          x._u = Math.max(now, (sh ? sh.u : 0) + 1, (x._u || 0) + 1);
+          shadow[c][id] = { h: h, u: x._u };
           if (meta.tomb[c][id]) delete meta.tomb[c][id];   // se volvió a agregar
           meta.dirty[c] = nextSeq(); any = true;
         }
       });
       Object.keys(shadow[c]).forEach(function (id) {
         if (!seen[id]) {                                    // se borró en este dispositivo
-          meta.tomb[c][id] = now; delete shadow[c][id];
+          meta.tomb[c][id] = Math.max(now, (shadow[c][id].u || 0) + 1);
+          delete shadow[c][id];
           meta.dirty[c] = nextSeq(); any = true;
         }
       });
     });
-    var hp = fp(DL.S.profile);
-    if (hp !== shadow.profile) {
-      DL.S.profile._u = now; shadow.profile = hp;
-      meta.dirty.profile = nextSeq(); any = true;
-    }
+    // perfil: campo por campo
+    var p = DL.S.profile, f = p._f || (p._f = {}), anyP = false;
+    var keys = {};
+    fields(p).forEach(function (k) { keys[k] = 1; });
+    Object.keys(shadow.profile).forEach(function (k) { keys[k] = 1; });
+    Object.keys(keys).forEach(function (k) {
+      var h = fp(p[k]);
+      if (shadow.profile[k] !== h) {
+        f[k] = Math.max(now, (f[k] || p._u || 0) + 1);
+        shadow.profile[k] = h; anyP = true;
+      }
+    });
+    if (anyP) { p._u = Math.max(p._u || 0, maxOf(f)); meta.dirty.profile = nextSeq(); any = true; }
     if (any) saveMeta();
     return any;
   }
 
-  /* ---------- 2. subir lo pendiente ---------- */
+  /* ---------- 2. qué se sube ---------- */
   function docFor(c) {
     var items = {};
-    (DL.S[c] || []).forEach(function (x) { items[COLLS[c].id(x)] = PS().clean(x); });
+    (DL.S[c] || []).forEach(function (x) { items[COLLS[c].id(x)] = clean(x); });
     return { items: items, tomb: meta.tomb[c] || {} };
   }
-
-  function schedulePush() {
-    if (!signedIn()) { if (Object.keys(meta.dirty).length) setStatus("off"); return; }
-    setStatus("pending");
-    clearTimeout(pushT);
-    pushT = setTimeout(pushNow, 1500);
+  var remoteProfileU = 0;
+  function profileDoc() {
+    var v = clean(DL.S.profile);
+    // _u solo sirve para que el servidor sepa que esta versión ya incluye la suya
+    v._u = Math.max(DL.S.profile._u || 0, remoteProfileU + 1);
+    v._f = Object.assign({}, DL.S.profile._f || {});      // cuándo cambió cada campo
+    return { v: v };
   }
 
-  var pulledOnce = false;   // nunca se sube nada antes de haber traído lo de la nube:
-                            // subir primero reemplazaría datos de otros dispositivos
-  function pushNow() {
-    if (!signedIn() || !pulledOnce) return Promise.resolve();
-    var keys = Object.keys(meta.dirty);
-    if (!keys.length) { setStatus("idle"); return Promise.resolve(); }
-    setStatus("syncing");
-    var sent = {}, results = {};
-    return Promise.all(keys.map(function (k) {
-      sent[k] = meta.dirty[k];
-      var data = k === "profile" ? { v: PS().clean(DL.S.profile) } : docFor(k);
-      // fusión atómica en el servidor: devuelve lo combinado con otros dispositivos
-      return PS().merge(APP, k, data).then(function (merged) {
-        results[k] = { data: merged };
-        // solo se limpia si nadie editó esa lista mientras viajaba la petición
-        if (meta.dirty[k] === sent[k]) delete meta.dirty[k];
-      });
-    })).then(function () {
-      meta.everPushed = true;
-      var changed = applyRemote(results, false);
-      saveMeta();
-      S.lastSync = Date.now(); S.error = null;
-      if (changed && DL.recompute) { DL.recompute(); DL.render(); }
-      if (Object.keys(meta.dirty).length) schedulePush(); else setStatus("idle");
-    }).catch(function (e) {
-      saveMeta();
-      S.error = e.message || "error";
-      setStatus(navigator.onLine === false ? "pending" : "error");
+  /* ---------- 3. fusionar ---------- */
+  // perfil campo por campo. Devuelve { p, push }.
+  function mergeProfile(local, doc) {
+    if (!doc || !doc.v) return { p: local, push: true };
+    var rv = doc.v, rf = rv._f || {}, ru = rv._u || 0;
+    var lf = local._f || {}, lu = local._u || 0;
+    var out = Object.assign({}, local), of = {}, keys = {};
+    fields(local).forEach(function (k) { keys[k] = 1; });
+    fields(rv).forEach(function (k) { keys[k] = 1; });
+    Object.keys(keys).forEach(function (k) {
+      var lt = lf[k] != null ? lf[k] : lu, rt = rf[k] != null ? rf[k] : ru;
+      var inL = Object.prototype.hasOwnProperty.call(local, k), inR = Object.prototype.hasOwnProperty.call(rv, k);
+      if (inR && (!inL || rt > lt)) { out[k] = rv[k]; of[k] = rt; }
+      else of[k] = lt;
     });
+    out._f = of;
+    out._u = Math.max(lu, ru, maxOf(of));
+    var same = fp(out) === fp(rv) && !!rv._f;
+    return { p: out, push: !same };
   }
 
-  /* ---------- 3. fusionar lo que llega de la nube ---------- */
   function applyRemote(rows, isPull) {
     applying = true;
     var changed = false;
@@ -844,81 +910,139 @@ DL.CLOUD = (function () {
       meta.tomb[c] = merged.tomb;
 
       // si lo local tenía algo que la nube no tenía, hay que subirlo
-      if (!remote || fp(merged) !== fp(remote)) meta.dirty[c] = nextSeq();
+      if (!remote || fp(merged) !== fp(remote)) meta.dirty[c] = meta.dirty[c] || nextSeq();
     });
 
     if (isPull || rows.profile) {
-      var rp = rows.profile && rows.profile.data ? rows.profile.data.v : null;
-      // Primera sincronización de este dispositivo: si la cuenta ya tiene un
-      // perfil, manda el de la nube (tu capital, tu nombre, tus ajustes)
-      // aunque este dispositivo haya creado uno por defecto hace un minuto.
-      var mp = (isPull && !meta.everPushed && rp) ? rp : PS().mergeObject(DL.S.profile, rp);
-      if (mp !== DL.S.profile) {
-        if (fp(mp) !== fp(DL.S.profile)) changed = true;
-        DL.S.profile = Object.assign({}, DL.S.profile, mp);
-      } else if (!rp || fp(rp) !== fp(DL.S.profile)) {
-        meta.dirty.profile = nextSeq();
+      var rd = rows.profile && rows.profile.data ? rows.profile.data : null;
+      if (rd && rd.v) remoteProfileU = Math.max(remoteProfileU, rd.v._u || 0);
+      var np;
+      if (isPull && !meta.everPushed && rd && rd.v) {
+        // Primera sincronización de este dispositivo: si la cuenta ya tiene un
+        // perfil, manda el de la nube (tu capital, tu nombre, tus ajustes)
+        // aunque este dispositivo haya creado uno por defecto hace un minuto.
+        var cloudP = Object.assign({}, DL.S.profile, rd.v);
+        cloudP._f = Object.assign({}, rd.v._f || {});
+        fields(cloudP).forEach(function (k) { if (cloudP._f[k] == null) cloudP._f[k] = rd.v._u || 0; });
+        np = { p: cloudP, push: !rd.v._f };
+      } else {
+        np = mergeProfile(DL.S.profile, rd);
       }
+      if (fp(np.p) !== fp(DL.S.profile)) changed = true;
+      DL.S.profile = Object.assign({}, DL.S.profile, np.p);
+      if (np.push) meta.dirty.profile = meta.dirty.profile || nextSeq();
     }
 
-    // reconstruir la sombra sin marcar nada como editado
-    Object.keys(COLLS).forEach(function (c) {
-      shadow[c] = {};
-      DL.S[c].forEach(function (x) { shadow[c][COLLS[c].id(x)] = fp(x); });
-    });
-    shadow.profile = fp(DL.S.profile);
-
+    rebuildShadow();
     rawSave();
     applying = false;
     return changed;
   }
 
-  /* ---------- 4. traer lo de otros dispositivos ---------- */
-  function pullNow() {
-    if (!signedIn()) return Promise.resolve(false);
+  /* ---------- 4. un ciclo: traer → fusionar → subir lo pendiente ---------- */
+  function cycle() {
     setStatus("syncing");
-    return PS().pull(APP).then(function (rows) {
-      var reset = false;
-
+    var changed = false;
+    return timed(PS().pull(APP), "pull").then(function (rows) {
       // Si en este dispositivo entra una cuenta DISTINTA a la anterior, lo local
       // no se mezcla con la cuenta nueva: se reemplaza por lo que hay en la nube.
       var uid = PS().user().id;
       if (meta.owner && meta.owner !== uid) {
         Object.keys(COLLS).forEach(function (c) { DL.S[c] = []; meta.tomb[c] = {}; });
-        DL.S.profile = Object.assign({}, DL.S.profile, { _u: 0, setup: false, name: "" });
+        DL.S.profile = Object.assign({}, DL.S.profile, { _u: 0, _f: {}, setup: false, name: "" });
         DL.migrateLists();   // sin esto el dispositivo quedaría sin ninguna lista
         meta.everPushed = false; meta.dirty = {};
-        reset = true;
+        changed = true;
       }
       meta.owner = uid;
+      Object.keys(rows).forEach(function (k) { meta.seen[k] = rows[k].updated_at || ""; });
 
-      var changed = applyRemote(rows, true) || reset;
-      saveMeta();
+      changed = applyRemote(rows, true) || changed;
       pulledOnce = true;
       // listas que llegan sin ninguna (cuenta nueva) o duplicadas: se arreglan y se suben
       if (!DL.S.lists.length) { DL.migrateLists(); DL.save(); changed = true; }
       else if (DL.dedupeLists()) { DL.migrateLists(); DL.save(); changed = true; }
-      S.lastSync = Date.now(); S.error = null;
 
+      var keys = Object.keys(meta.dirty);
+      if (!keys.length) return;
+      var sent = {}, results = {};
+      return Promise.all(keys.map(function (k) {
+        sent[k] = meta.dirty[k];
+        var data = k === "profile" ? profileDoc() : docFor(k);
+        // el servidor fusiona de forma atómica y devuelve lo combinado
+        return timed(PS().merge(APP, k, data), "push").then(function (merged) {
+          results[k] = { data: merged };
+          // solo se limpia si nadie editó esa lista mientras viajaba la petición
+          if (meta.dirty[k] === sent[k]) delete meta.dirty[k];
+        });
+      })).then(function () {
+        meta.everPushed = true;
+        changed = applyRemote(results, false) || changed;
+      });
+    }).then(function () {
+      saveMeta();
+      S.lastSync = Date.now(); S.error = null;
       if (changed && DL.recompute) { DL.recompute(); DL.render(); }
-      return pushNow().then(function () { return changed; });
+      setStatus(Object.keys(meta.dirty).length ? "pending" : "idle");
+      return changed;
     }).catch(function (e) {
       applying = false;
+      saveMeta();
       S.error = e.message || "error";
-      setStatus("error");
+      setStatus(navigator.onLine === false ? "pending" : "error");
       return false;
     });
   }
 
-  var inflight = null;      // una sola sincronización a la vez
+  var inflight = null, again = false;   // una sola sincronización a la vez; si llega otra, se repite al terminar
   function syncNow() {
-    if (inflight) return inflight;
-    inflight = pullNow().then(function (r) { inflight = null; return r; },
-                              function (e) { inflight = null; throw e; });
+    if (!signedIn()) { setStatus("off"); return Promise.resolve(false); }
+    if (inflight) { again = true; return inflight; }
+    inflight = cycle().then(function (r) {
+      inflight = null;
+      if (again) { again = false; return syncNow().then(function (r2) { return r || r2; }); }
+      if (Object.keys(meta.dirty).length && S.status !== "error") schedulePush(3000);
+      return r;
+    });
     return inflight;
   }
 
-  /* ---------- 4. enganche con DL.save ---------- */
+  function schedulePush(ms) {
+    if (!signedIn()) { if (Object.keys(meta.dirty).length) setStatus("off"); return; }
+    setStatus("pending");
+    clearTimeout(pushT);
+    pushT = setTimeout(syncNow, ms || 1200);
+  }
+
+  /* revisión liviana: solo pregunta qué bloques cambiaron (fechas) y trae todo
+     únicamente si algo cambió. Si palekor-sync.js es viejo, trae todo. */
+  function poll() {
+    if (!signedIn() || inflight || document.visibilityState !== "visible") return;
+    lastPoll = Date.now();
+    if (!PS().stamps || !pulledOnce) { syncNow(); return; }
+    timed(PS().stamps(APP), "stamps").then(function (st) {
+      var diff = Object.keys(st).some(function (k) { return meta.seen[k] !== st[k]; }) ||
+        Object.keys(meta.seen).some(function (k) { return !(k in st); });
+      if (diff || Object.keys(meta.dirty).length) syncNow();
+    }).catch(function () { syncNow(); });
+  }
+
+  /* ---------- 5. tiempo real ---------- */
+  function subscribe() {
+    if (unsub) { try { unsub(); } catch (e) {} unsub = null; }
+    S.live = false;
+    if (!signedIn() || !PS().subscribe) return;
+    unsub = PS().subscribe(APP, function () {
+      S.live = true;                                       // llegó un evento: el tiempo real funciona
+      clearTimeout(rtT);
+      rtT = setTimeout(syncNow, 250);
+    }, function (st) {
+      if (st !== "SUBSCRIBED") S.live = false;
+    });
+  }
+  function pollEvery() { return S.live ? POLL_SLOW : POLL_FAST; }
+
+  /* ---------- 6. enganche con DL.save ---------- */
   var rawSave = DL.save;
   DL.save = function () {
     rawSave();
@@ -926,7 +1050,7 @@ DL.CLOUD = (function () {
     if (markChanges()) schedulePush();
   };
 
-  /* ---------- 5. estado visible ---------- */
+  /* ---------- 7. estado visible ---------- */
   function signedIn() { return !!(PS() && PS().user()); }
 
   function setStatus(s) {
@@ -935,7 +1059,7 @@ DL.CLOUD = (function () {
     if (!b) return;
     var map = {
       off:     ["☁", T("Sin cuenta — los datos viven solo en este dispositivo", "No account — data lives only on this device"), "var(--faint)"],
-      idle:    ["☁", T("Sincronizado", "Synced"), "var(--pos)"],
+      idle:    ["☁", T("Sincronizado", "Synced") + (S.lastSync ? " · " + DL.hm(S.lastSync) : ""), "var(--pos)"],
       syncing: ['<span class="spin"></span>', T("Sincronizando…", "Syncing…"), "var(--purple2)"],
       pending: ["☁", T("Cambios pendientes de subir", "Changes waiting to upload"), "var(--amber)"],
       error:   ["☁", T("No se pudo sincronizar — se reintentará", "Couldn't sync — will retry"), "var(--neg)"]
@@ -947,7 +1071,7 @@ DL.CLOUD = (function () {
     b.style.color = m[2];
   }
 
-  /* ---------- 6. hoja de cuenta ---------- */
+  /* ---------- 8. hoja de cuenta ---------- */
   function accountSheet(onDone) {
     var P = PS();
     if (!P) { DL.toast(T("La sincronización no está disponible en esta página", "Sync isn't available on this page")); return; }
@@ -961,16 +1085,22 @@ DL.CLOUD = (function () {
         '<div class="grid g2" style="margin-bottom:12px">' +
         DL.ro(T("Cuenta", "Account"), u.email || "—", "", "sm") +
         DL.ro(T("Última sincronización", "Last sync"), S.lastSync ? DL.hm(S.lastSync) : "—", "", "sm") +
+        DL.ro(T("Cambios de otros dispositivos", "Changes from other devices"),
+          S.live ? T("al instante", "instant") : T("cada 15 s (con la app abierta)", "every 15 s (app open)"), "", "sm") +
+        DL.ro(T("Pendiente de subir", "Waiting to upload"),
+          Object.keys(meta.dirty).length ? T("sí", "yes") : T("nada", "nothing"), "", "sm") +
         "</div>" +
         '<p style="font-size:12.5px;color:var(--muted);line-height:1.5">' +
-        DL.esc(T("Tus datos se guardan en tu cuenta y aparecen igual en cualquier dispositivo donde entres con este correo. Esta misma cuenta sirve para todas las apps de ProfGermandario.",
-                 "Your data is stored in your account and shows up the same on any device where you sign in with this email. The same account works across every ProfGermandario app.")) + "</p>" +
+        DL.esc(T("Tus datos se guardan en tu cuenta y aparecen igual en cualquier dispositivo donde entres con este correo. Siempre gana el cambio más reciente de cada dato (cada acción, cada operación, cada ajuste), no el último dispositivo que se conectó.",
+                 "Your data is stored in your account and shows up the same on any device where you sign in with this email. The most recent change to each item (each asset, trade, setting) always wins, not the last device that connected.")) + "</p>" +
         (S.error ? '<div class="note bad" style="margin-top:10px"><b>' + DL.esc(T("Último error:", "Last error:")) + "</b> " + DL.esc(S.error) + "</div>" : "");
       foot.innerHTML = "";
       var out = DL.el('<button class="btn g sm"></button>');
       out.textContent = T("Cerrar sesión", "Sign out");
       out.onclick = function () {
         P.signOut().then(function () {
+          if (unsub) { try { unsub(); } catch (e) {} unsub = null; }
+          pulledOnce = false; S.live = false;
           setStatus("off"); s.close();
           DL.toast(T("Sesión cerrada. Tus datos siguen en este dispositivo.", "Signed out. Your data is still on this device."));
         });
@@ -979,7 +1109,10 @@ DL.CLOUD = (function () {
       now.textContent = T("Sincronizar ahora", "Sync now");
       now.onclick = function () {
         now.disabled = true;
-        syncNow().then(function () { paintIn(); DL.toast(T("Sincronizado", "Synced")); });
+        syncNow().then(function () {
+          paintIn();
+          DL.toast(S.error ? T("No se pudo sincronizar: ", "Couldn't sync: ") + S.error : T("Sincronizado", "Synced"));
+        });
       };
       foot.appendChild(out); foot.appendChild(now);
     }
@@ -1037,6 +1170,7 @@ DL.CLOUD = (function () {
         if (code.length < 6) { DL.toast(T("El código tiene 6 dígitos", "The code has 6 digits")); return; }
         ok.disabled = true; ok.innerHTML = '<span class="spin"></span> ' + DL.esc(T("Entrando…", "Signing in…"));
         P.verifyCode(em, code).then(function () {
+          subscribe();
           return syncNow();
         }).then(function () {
           s.close();
@@ -1058,34 +1192,41 @@ DL.CLOUD = (function () {
     if (P.user()) paintIn(); else paintEmail();
   }
 
-  /* ---------- 7. arranque ---------- */
+  /* ---------- 9. arranque ---------- */
   function start() {
     primeShadow();
     setStatus("off");
     var P = PS();
     if (!P) return;
+    var lastUid = null;
     P.onAuth(function (u) {
-      if (u) syncNow(); else { pulledOnce = false; setStatus("off"); }
+      var uid = u ? u.id : null;
+      if (uid === lastUid) return;          // renovar el token no es "entrar de nuevo"
+      lastUid = uid;
+      if (u) { subscribe(); syncNow(); }
+      else { pulledOnce = false; S.live = false; if (unsub) { try { unsub(); } catch (e) {} unsub = null; } setStatus("off"); }
     });
     P.ready().then(function () {
-      if (P.user()) syncNow(); else setStatus("off");
+      if (P.user()) { lastUid = P.user().id; subscribe(); syncNow(); } else setStatus("off");
     }).catch(function () { setStatus("off"); });
 
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "visible" && signedIn()) syncNow();
-    });
-    window.addEventListener("online", function () { if (signedIn()) syncNow(); });
+    // volver a la app (otra pestaña, otra ventana, desbloquear el celular) = traer lo último
+    function wake() { if (document.visibilityState === "visible" && signedIn()) poll(); }
+    document.addEventListener("visibilitychange", wake);
+    window.addEventListener("focus", wake);
+    window.addEventListener("pageshow", wake);
+    window.addEventListener("online", function () { if (signedIn()) { subscribe(); syncNow(); } });
     clearInterval(pollT);
     pollT = setInterval(function () {
-      if (document.visibilityState === "visible" && signedIn() && S.status !== "syncing") syncNow();
-    }, 60000);
+      if (Date.now() - lastPoll >= pollEvery() - 500) poll();
+    }, 5000);
   }
 
   return {
     start: start, syncNow: syncNow, accountSheet: accountSheet,
     signedIn: signedIn, state: S, repaint: function () { setStatus(S.status); },
     // expuesto para pruebas
-    _merge: pullNow, _mark: markChanges, _meta: function () { return meta; }
+    _mark: markChanges, _meta: function () { return meta; }
   };
 })();
 /* ============================================================
@@ -1591,6 +1732,65 @@ DL.MKT = (function () {
     });
   }
 
+  /* semana intradía (5 sesiones · velas de 30 min) para los mini gráficos de la watchlist.
+     Primero en lote (spark, 20 símbolos por petición); lo que falte, uno por uno con el
+     mismo endpoint que usa la ficha del activo. */
+  var WEEK_OFF = "dlab.weekoff";
+  function weekBatchOff() {
+    try { return Date.now() - (+localStorage.getItem(WEEK_OFF) || 0) < 2 * 3600000; } catch (e) { return false; }
+  }
+  function weekFrom(r, sym) {
+    var d = parseChart({ chart: { result: [r] } }, false);
+    if (!d || d.bars.length < 2) return null;
+    return { symbol: norm(sym || d.symbol), bars: d.bars };
+  }
+  function week(symbols, force) {
+    var ttl = clock().open ? 4 * 60000 : 30 * 60000;
+    var out = {}, need = [];
+    symbols.forEach(function (s) {
+      s = norm(s);
+      var hit = !force && fresh("w:" + s, ttl);
+      if (hit) out[s] = hit; else need.push(s);
+    });
+    if (!need.length) return Promise.resolve(out);
+    var batch = weekBatchOff() ? Promise.resolve() : (function () {
+      var chunks = [], anyOk = false;
+      for (var i = 0; i < need.length; i += 20) chunks.push(need.slice(i, i + 20));
+      return Promise.all(chunks.map(function (ch) {
+        var url = BASE + "/v7/finance/spark?symbols=" + encodeURIComponent(ch.join(",")) +
+          "&range=5d&interval=30m&indicators=close&includeTimestamps=true&includePrePost=false";
+        return slot(function () { return getJSON(url, 12000); }).then(function (j) {
+          var list = [];
+          if (j && j.spark && j.spark.result) {
+            j.spark.result.forEach(function (x) { if (x.response && x.response[0]) list.push(weekFrom(x.response[0], x.symbol)); });
+          } else if (j && typeof j === "object") {
+            Object.keys(j).forEach(function (s) {
+              var x = j[s];
+              if (x && x.timestamp && x.close) list.push(weekFrom({ meta: { symbol: s }, timestamp: x.timestamp, indicators: { quote: [{ close: x.close }] } }, s));
+            });
+          }
+          list.forEach(function (d) {
+            if (!d || d.bars.length < 8) return;           // si spark devolvió velas diarias, no sirve
+            anyOk = true; out[d.symbol] = d; write("w:" + d.symbol, d);
+          });
+        }).catch(function () {});
+      })).then(function () { if (!anyOk) { try { localStorage.setItem(WEEK_OFF, String(Date.now())); } catch (e) {} } });
+    })();
+    return batch.then(function () {
+      var miss = need.filter(function (s) { return !out[s]; });
+      return Promise.all(miss.map(function (s) {
+        return intraday(s, force).then(function (d) {
+          var w = { symbol: s, bars: d.bars };
+          out[s] = w; write("w:" + s, w);
+        }).catch(function () {
+          var st = stale("w:" + s);
+          if (st) out[s] = st;
+        });
+      }));
+    }).then(function () { return out; });
+  }
+  function peekWeek(sym) { return stale("w:" + norm(sym)); }
+
   /* lo último que haya en caché, sin importar la edad: para pintar al instante */
   function peek(sym) {
     var k = "d2:" + norm(sym), s = stale(k);
@@ -1603,13 +1803,13 @@ DL.MKT = (function () {
 
   return {
     daily: daily, intraday: intraday, history: history, search: search, refresh: refresh,
-    spark: spark, quick: quick, peek: peek, peekSpark: peekSpark,
+    spark: spark, quick: quick, peek: peek, peekSpark: peekSpark, week: week, peekWeek: peekWeek,
     clock: clock, openInstant: openInstant, lastFailure: lastFailure,
     route: function () { return pref || "—"; },
     clearCache: function () {
       Object.keys(idx).forEach(function (k) { try { localStorage.removeItem(PFX + k); } catch (e) {} });
       idx = {}; mem = {}; dirty = {};
-      try { localStorage.removeItem(IDX); localStorage.removeItem(ROUTE_KEY); localStorage.removeItem(SPARK_OFF); } catch (e) {}
+      try { localStorage.removeItem(IDX); localStorage.removeItem(ROUTE_KEY); localStorage.removeItem(SPARK_OFF); localStorage.removeItem(WEEK_OFF); } catch (e) {}
     },
     _parseChart: parseChart, _parseSpark: parseSpark
   };
@@ -2611,6 +2811,105 @@ DL.CH = (function () {
     c.fillStyle = col; c.fill();
   }
 
+  /* mini gráfico de la watchlist: la SEMANA (5 sesiones) con la última sesión resaltada.
+     · sesiones anteriores en gris, la de hoy en verde/rojo con relleno hasta el cierre anterior
+     · punteado = cierre anterior (la referencia del % de hoy)
+     · ámbar = SMA 20 diaria, solo si cae dentro del rango visible
+     · con el mercado abierto, el resto de la sesión queda reservado: se ve qué tan avanzado va el día
+     o: { h, prevClose, sma20, live, last }   (last = precio actual, se agrega al final si es más nuevo) */
+  function week(cv, bars, o) {
+    o = o || {};
+    if (!bars || bars.length < 2) return false;
+    var nyd = DL.MKT.clock().nyDate;
+    // el precio más reciente (de las velas diarias) puede ser más nuevo que la última vela de 30 min
+    if (o.last != null && isFinite(o.last) && o.sessDay) {
+      var lastDay = nyd(bars[bars.length - 1].t);
+      if (lastDay < o.sessDay) bars = bars.concat([{ t: o.sessT || Date.now(), c: o.last }]);
+      else if (lastDay === o.sessDay) { bars = bars.slice(); bars[bars.length - 1] = Object.assign({}, bars[bars.length - 1], { c: o.last }); }
+    }
+    var days = [], cur = null;
+    bars.forEach(function (b, i) {
+      var d = nyd(b.t);
+      if (!cur || cur.d !== d) { cur = { d: d, from: i, to: i }; days.push(cur); } else cur.to = i;
+    });
+    if (days.length > 5) {
+      var cut = days[days.length - 5].from;
+      bars = bars.slice(cut);
+      days = days.slice(-5).map(function (x) { return { d: x.d, from: x.from - cut, to: x.to - cut }; });
+    }
+    var pts = bars.map(function (b) { return b.c; });
+    var today = days[days.length - 1], prevDays = days.slice(0, -1);
+    var base = o.prevClose != null ? o.prevClose : (prevDays.length ? pts[prevDays[prevDays.length - 1].to] : pts[0]);
+
+    // espacio reservado para lo que falta de la sesión de hoy
+    var perDay = 1;
+    prevDays.forEach(function (x) { perDay = Math.max(perDay, x.to - x.from + 1); });
+    var todayN = today.to - today.from + 1;
+    var total = pts.length + (o.live && prevDays.length && todayN < perDay ? perDay - todayN : 0);
+
+    var s = setup(cv, o.h || 32), c = s.ctx, C = pal();
+    var lo = Math.min.apply(null, pts.concat([base])), hi = Math.max.apply(null, pts.concat([base]));
+    var showSma = o.sma20 != null && isFinite(o.sma20);
+    if (showSma) {
+      var span0 = hi - lo || Math.abs(hi) * 0.01;
+      if (o.sma20 >= lo - span0 * 0.35 && o.sma20 <= hi + span0 * 0.35) { lo = Math.min(lo, o.sma20); hi = Math.max(hi, o.sma20); }
+      else showSma = false;
+    }
+    var pad = (hi - lo) * 0.1 || Math.abs(hi) * 0.005 || 0.5;
+    lo -= pad; hi += pad;
+    var R = 3;
+    var X = function (i) { return 1 + (total > 1 ? i / (total - 1) : 0) * (s.w - 2 - R); };
+    var Y = function (v) { return s.h - 2 - ((v - lo) / (hi - lo)) * (s.h - 4); };
+    var up = pts[pts.length - 1] >= base;
+    var col = up ? C.up : C.down;
+
+    // separadores de día
+    c.strokeStyle = C.line; c.lineWidth = 1;
+    days.forEach(function (x, k) {
+      if (!k) return;
+      var xx = Math.round(X(x.from - 0.5)) + 0.5;
+      c.beginPath(); c.moveTo(xx, 2); c.lineTo(xx, s.h - 2); c.stroke();
+    });
+    // zona de hoy: un velo muy suave para separarla de la semana
+    var tx = X(Math.max(0, today.from - 0.5));
+    c.globalAlpha = 0.07; c.fillStyle = col; c.fillRect(tx, 0, s.w - tx, s.h); c.globalAlpha = 1;
+
+    // SMA 20 diaria (nivel)
+    if (showSma) {
+      c.beginPath(); c.moveTo(1, Y(o.sma20)); c.lineTo(s.w - 1, Y(o.sma20));
+      c.strokeStyle = C.amber; c.globalAlpha = 0.75; c.lineWidth = 1; c.stroke(); c.globalAlpha = 1;
+    }
+    // cierre anterior (punteado)
+    c.save();
+    c.setLineDash([1.5, 2.5]);
+    c.beginPath(); c.moveTo(1, Y(base)); c.lineTo(s.w - 1, Y(base));
+    c.strokeStyle = C.muted; c.globalAlpha = 0.9; c.lineWidth = 1; c.stroke();
+    c.restore();
+
+    // días anteriores en gris
+    if (today.from > 0) {
+      c.beginPath();
+      for (var i = 0; i <= today.from - 1; i++) i ? c.lineTo(X(i), Y(pts[i])) : c.moveTo(X(i), Y(pts[i]));
+      c.strokeStyle = C.faint; c.lineWidth = 1.25; c.lineJoin = "round"; c.stroke();
+    }
+    // hoy: relleno hasta el cierre anterior + línea de color
+    var start = Math.max(0, today.from - 1);
+    c.beginPath();
+    c.moveTo(X(start), Y(base));
+    for (var j = start; j < pts.length; j++) c.lineTo(X(j), Y(pts[j]));
+    c.lineTo(X(pts.length - 1), Y(base)); c.closePath();
+    c.globalAlpha = 0.16; c.fillStyle = col; c.fill(); c.globalAlpha = 1;
+    c.beginPath();
+    for (var k2 = start; k2 < pts.length; k2++) k2 > start ? c.lineTo(X(k2), Y(pts[k2])) : c.moveTo(X(k2), Y(pts[k2]));
+    c.strokeStyle = col; c.lineWidth = 1.7; c.lineJoin = "round"; c.stroke();
+
+    // punto final
+    var ex = X(pts.length - 1), ey = Y(pts[pts.length - 1]);
+    if (o.live) { c.beginPath(); c.arc(ex, ey, R + 1.5, 0, Math.PI * 2); c.globalAlpha = 0.22; c.fillStyle = col; c.fill(); c.globalAlpha = 1; }
+    c.beginPath(); c.arc(ex, ey, 2.1, 0, Math.PI * 2); c.fillStyle = col; c.fill();
+    return true;
+  }
+
   /* gráfico principal: velas + SMA 20/50/200 + volumen + niveles de la operación
      opt.sma        → periodos calculados sobre opt.bars (velas diarias)
      opt.smaLevels  → {20:v,50:v,200:v} medias DIARIAS como líneas horizontales (gráficos intradía) */
@@ -2897,13 +3196,42 @@ DL.CH = (function () {
     c.fillStyle = col; c.fill();
   }
 
-  return { spark: spark, candles: candles, equityCurve: equityCurve, rsiPanel: rsiPanel, macdPanel: macdPanel };
+  return { spark: spark, week: week, candles: candles, equityCurve: equityCurve, rsiPanel: rsiPanel, macdPanel: macdPanel };
 })();
 /* ============================================================
    Módulo 5/6 — vistas: Hoy, Watchlist y ficha del activo
    ============================================================ */
 
-DL.data = { bySym: {}, an: {}, bench: null, loading: false, error: null, intraBySym: {}, intraLoading: {} };
+DL.data = { bySym: {}, an: {}, bench: null, loading: false, error: null, intraBySym: {}, intraLoading: {}, week: {}, weekLoading: false };
+
+/* semana intradía de la watchlist (mini gráficos). No bloquea nada: llega y se repinta. */
+DL.loadWeek = function (force) {
+  var syms = DL.S.watch.map(function (w) { return w.sym; });
+  if (!syms.length || DL.data.weekLoading) return Promise.resolve();
+  DL.data.weekLoading = true;
+  var now = Date.now();
+  DL.data.weekTried = DL.data.weekTried || {};
+  syms.forEach(function (s) { DL.data.weekTried[s] = now; });
+  return DL.MKT.week(syms, force).then(function (res) {
+    Object.keys(res).forEach(function (s) { if (res[s]) DL.data.week[s] = res[s]; });
+  }).catch(function () {}).then(function () {
+    DL.data.weekLoading = false;
+    if (DL.route === "watch") DL.renderSoon();
+  });
+};
+
+/* % de la última semana: precio actual contra el cierre de hace 5 sesiones
+   (7 días en cripto, que opera todos los días). Mismo criterio que "5D" en Yahoo. */
+DL.weekChg = function (d, an) {
+  if (!d || !d.bars || d.bars.length < 9) return null;
+  var px = an && an.price != null ? an.price : d.price;
+  if (px == null) return null;
+  var bars = d.bars, n = bars.length, nyd = DL.MKT.clock().nyDate;
+  var lastDay = nyd(bars[n - 1].t), sessDay = d.sessionT ? nyd(d.sessionT) : lastDay;
+  var cur = sessDay > lastDay ? n : n - 1;            // índice de la sesión actual (aún sin vela → n)
+  var base = bars[cur - (DL.isCrypto(d) ? 7 : 5)];
+  return base && base.c ? ((px - base.c) / base.c) * 100 : null;
+};
 DL.BENCH = "SPY";
 
 DL.symbolsInUse = function () {
@@ -2941,6 +3269,11 @@ DL.hydrate = function () {
     any = true;
     if (s === DL.BENCH && !DL.data.bench) DL.data.bench = c;
     if (DL.symbolsInUse().indexOf(s) >= 0 && !DL.data.bySym[s]) DL.data.bySym[s] = c;
+  });
+  DL.S.watch.forEach(function (w) {
+    if (DL.data.week[w.sym]) return;
+    var wk = DL.MKT.peekWeek(w.sym);
+    if (wk) DL.data.week[w.sym] = wk;
   });
   if (any) DL.recompute();
 };
@@ -2994,6 +3327,7 @@ DL.sync = function (force, done) {
   if (DL.modeId === "market") jobs.push(DL.loadMovers(force));
   else if (DL.loadContext) jobs.push(DL.loadContext(force));   // SPY / QQQ / VIX + sectores, en una sola petición
   if (DL.route === "radar") jobs.push(DL.loadRadar(force));
+  DL.loadWeek(force);                                           // mini gráficos de la watchlist, en paralelo
   Promise.all(jobs).then(function () {
     DL.data.loading = false;
     if (syms.length && !got && !Object.keys(DL.data.bySym).length) {
@@ -3245,7 +3579,7 @@ DL.VIEW_home = function (root) {
   /* --- tarjeta de portafolio --- */
   html += '<section class="card">' +
     '<div class="head"><h3>' + DL.esc(market ? T("Tu portafolio", "Your portfolio") : T("Hoy", "Today")) + "</h3>" +
-    '<span class="eyebrow">' + DL.esc(DL.S.lastSync ? T("actualizado ", "updated ") + DL.hm(DL.S.lastSync) : T("sin sincronizar", "not synced")) +
+    '<span class="eyebrow">' + DL.esc(DL.S.lastSync ? T("precios ", "prices ") + DL.hm(DL.S.lastSync) : T("precios sin cargar", "prices not loaded")) +
     (DL.data.loading ? ' <span class="spin"></span>' : "") + "</span></div>" +
     '<div class="row" style="justify-content:space-between;align-items:flex-end;gap:14px">' +
     '<div class="ro lg"><span class="k">' + DL.esc(live || clock.open
@@ -3443,14 +3777,12 @@ DL.VIEW_watch = function (root) {
   if (DL.current.list == null) DL.current.list = "all";
   // si la lista activa ya no existe (se borró en otro dispositivo), vuelve a "Todas"
   if (DL.current.list !== "all" && !DL.S.lists.some(function (l) { return l.id === DL.current.list; })) DL.current.list = "all";
-  var html = '<section class="card"><div class="head"><h3>' + DL.esc(T("Lista de seguimiento", "Watchlist")) + "</h3>" +
-    '<span class="eyebrow">' + DL.S.watch.length + T(" activos", " assets") + "</span></div>" +
-    '<div class="row" style="gap:7px"><input type="text" id="symIn" placeholder="AAPL, GOOG, SPY, BTC-USD…" ' +
-    'autocapitalize="characters" autocomplete="off" style="flex:1;min-width:140px">' +
-    '<button class="btn p" id="addSym">' + DL.esc(T("Agregar", "Add")) + "</button></div>" +
-    '<div id="searchOut" style="margin-top:10px"></div></section>';
+  var html = '<div class="wtop"><div class="wsearch"><input type="text" id="symIn" aria-label="' + DL.esc(T("Agregar símbolo", "Add symbol")) +
+    '" placeholder="' + DL.esc(T("Agregar: AAPL, SMCI, BTC-USD…", "Add: AAPL, SMCI, BTC-USD…")) + '" ' +
+    'autocapitalize="characters" autocomplete="off">' +
+    '<button class="btn p" id="addSym">' + DL.esc(T("Agregar", "Add")) + "</button></div>";
 
-  html += '<div class="row" style="margin-top:10px;gap:7px;align-items:center;flex-wrap:nowrap">' +
+  html += '<div class="wpills">' +
     '<div class="pills" id="listPills" style="flex:1;min-width:0">' +
     '<button type="button" class="pill' + (DL.current.list === "all" ? " on" : "") + '" data-list="all">' +
     DL.esc(T("Todas", "All")) + " (" + DL.S.watch.length + ")</button>" +
@@ -3460,7 +3792,8 @@ DL.VIEW_watch = function (root) {
         DL.esc(l.id) + '">' + DL.esc(l.name) + " (" + n + ")</button>";
     }).join("") + "</div>" +
     '<button class="btn sm g" id="manageLists" title="' + DL.esc(T("Gestionar listas", "Manage lists")) +
-    '" aria-label="' + DL.esc(T("Gestionar listas", "Manage lists")) + '">⚙</button></div>';
+    '" aria-label="' + DL.esc(T("Gestionar listas", "Manage lists")) + '">⚙</button></div></div>' +
+    '<div id="searchOut" style="margin-top:8px"></div>';
 
   if (DL.data.error && !Object.keys(DL.data.bySym).length) {
     html += '<div class="note bad" style="margin-top:10px"><b>' + DL.esc(T("No se pudo conectar al mercado.", "Couldn't reach the market.")) + "</b> " +
@@ -3480,8 +3813,11 @@ DL.VIEW_watch = function (root) {
       (DL.current.scalpOnly ? " checked" : "") + "> " + DL.esc(T("Mostrar solo candidatos", "Show candidates only")) + "</label></section>";
   }
 
-  html += '<div class="row" style="justify-content:space-between;margin:12px 2px 6px">' + DL.smaKey() +
-    '<span class="eyebrow">' + DL.esc(T("30 sesiones", "30 sessions")) + "</span></div>";
+  html += '<div class="wlegend"><span>' + DL.esc(T("5 sesiones", "5 sessions")) + "</span>" +
+    '<span><i class="past"></i>' + DL.esc(T("previas", "prior")) + "</span>" +
+    '<span><i></i>' + DL.esc(T("hoy", "today")) + "</span>" +
+    '<span><i class="prev"></i>' + DL.esc(T("cierre ant.", "prev close")) + "</span>" +
+    '<span><i class="sma"></i>SMA20</span></div>';
   html += '<div id="wlist"></div>';
   root.innerHTML = html;
 
@@ -3499,7 +3835,11 @@ DL.VIEW_watch = function (root) {
       T("Agrega un símbolo arriba (cae en esta lista) o cambia de pestaña.",
         "Add a symbol above (it goes into this list) or switch tabs."));
   } else {
-    var shown = 0;
+    var shown = 0, rows = [];
+    var tried = DL.data.weekTried || {};
+    var needWeek = !DL.data.weekLoading && inList.some(function (w) {
+      return !DL.data.week[w.sym] && !(tried[w.sym] && Date.now() - tried[w.sym] < 120000);
+    });
     inList.forEach(function (w) {
       var an = DL.data.an[w.sym];
       var d = DL.data.bySym[w.sym];
@@ -3525,21 +3865,44 @@ DL.VIEW_watch = function (root) {
       }
       var px = an ? an.price : (d ? d.price : null);
       var pc = an ? an.prevClose : (d ? d.prevClose : null);
-      var chgAmt = (px != null && pc) ? px - pc : null;
-      var chgPct = an ? an.chgPct : (chgAmt != null ? (chgAmt / pc) * 100 : null);
+      var chgPct = an ? an.chgPct : (px != null && pc ? ((px - pc) / pc) * 100 : null);
+      var wkPct = DL.weekChg(d, an);
+      var sess = d ? DL.sess(d) : null;
+      // segunda línea: el próximo nivel (stop, target, meta) si existe; si no, el nombre
+      var nx = held && DL.EVENTS ? DL.EVENTS.next(w.sym) : null;
+      var sub = nx
+        ? DL.esc(DL.EVENTS.L(nx.label)) + " " + DL.money(nx.level) + ' <span class="' + DL.tone(nx.dist) + '">' + DL.pct(nx.dist, 1) + "</span>"
+        : DL.esc((d && d.name) || w.name || "—");
       row.innerHTML =
-        '<div class="wa"><span class="sy">' + DL.esc(w.sym) + "</span>" + DL.evIndicator(w.sym) +
-        '<span class="px">' + (px != null ? DL.money(px) : '<span class="spin"></span>') + "</span>" +
-        '<span class="pct ' + DL.tone(chgPct) + '">' + (chgPct != null ? DL.pct(chgPct) : "") + "</span></div>" +
-        '<div class="wb"><span class="nm">' + DL.esc((d && d.name) || w.name || "—") + "</span>" +
-        (chgAmt != null ? '<span class="chg ' + DL.tone(chgPct) + '">' + DL.sgn(chgAmt) + ' <span class="mute">' + DL.esc(d ? DL.sess(d).tiny : "") + "</span></span>" : "") + "</div>" +
-        '<div class="chart"><canvas></canvas></div>' +
-        '<div class="wc">' + DL.smaDir(d, an) + '<div class="st">' + tag + "</div></div>" + DL.nextMini(w.sym);
+        '<div class="wt"><span class="sy">' + DL.esc(w.sym) + "</span>" + DL.evIndicator(w.sym) + "</div>" +
+        '<div class="ws">' + tag + '<span class="nm' + (nx ? "" : " name") + '">' + sub + "</span></div>" +
+        '<div class="cv"><canvas aria-hidden="true"></canvas></div>' +
+        '<span class="px' + (px != null && DL.money(px).length > 9 ? " lg" : "") + '">' + (px != null ? DL.money(px) : '<span class="spin"></span>') + "</span>" +
+        '<span class="pct ' + DL.tone(chgPct) + '" title="' + DL.esc(sess ? DL.chgLabel(d) : "") + '">' + (chgPct != null ? DL.pct(chgPct) : "") + "</span>" +
+        '<div class="wk" title="' + DL.esc(T("Cambio de la última semana (5 sesiones)", "Change over the last week (5 sessions)")) + '">' +
+        "<small>" + DL.esc(T("1 sem", "1 wk")) + '</small><b class="' + DL.tone(wkPct) + '">' + (wkPct != null ? DL.pct(wkPct, 1) : "—") + "</b></div>";
+      row.setAttribute("aria-label", w.sym + (px != null ? " " + DL.money(px) : "") +
+        (chgPct != null ? ", " + T("hoy ", "today ") + DL.pct(chgPct) : "") + (wkPct != null ? ", " + T("semana ", "week ") + DL.pct(wkPct, 1) : ""));
       row.onclick = function () { DL.openAsset(w.sym); };
       row.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); DL.openAsset(w.sym); } };
       listEl.appendChild(row);
-      if (d && d.bars) DL.CH.spark(row.querySelector("canvas"), d.bars, 46, 30);
+      rows.push({ row: row, w: w, d: d, an: an, px: px, pc: pc, sess: sess });
     });
+    // los gráficos se dibujan cuando la fila ya tiene su ancho final
+    rows.forEach(function (r) {
+      var cv = r.row.querySelector("canvas");
+      var wk = DL.data.week[r.w.sym];
+      var sma20 = r.an ? r.an.sma20 : null;
+      var opt = { h: 32, prevClose: r.pc, sma20: sma20, live: !!(r.sess && r.sess.live), last: r.px,
+                  sessDay: r.sess && r.sess.ymd ? r.sess.ymd : (r.d && DL.isCrypto(r.d) ? DL.MKT.clock().nyDate(Date.now()) : null),
+                  sessT: r.d ? r.d.sessionT : null };
+      var ok = wk && wk.bars && DL.CH.week(cv, wk.bars, opt);
+      if (!ok && r.d && r.d.bars && r.d.bars.length > 6) {
+        // sin velas de 30 min todavía: la semana con cierres diarios (la última sesión en color)
+        DL.CH.week(cv, r.d.bars.slice(-6), Object.assign({}, opt, { live: false }));
+      }
+    });
+    if (needWeek) DL.loadWeek(false);
     if (!shown) {
       listEl.innerHTML = DL.empty(T("Ningún activo pasa el filtro de scalping hoy", "No asset passes the scalping filter today"),
         T("Eso también es información: hoy no hay setup. Desactiva el filtro para ver toda la lista.",

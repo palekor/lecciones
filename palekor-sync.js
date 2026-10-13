@@ -115,6 +115,45 @@
     });
   }
 
+  // Solo las fechas de última modificación de cada bloque → { key: updated_at }.
+  // Es una consulta mínima: sirve para revisar seguido si otro dispositivo cambió algo
+  // sin descargar todos los datos cada vez.
+  function stamps(app) {
+    return ready().then(function (c) {
+      if (!currentUser) throw new Error("sin_sesion");
+      return c.from("docs").select("key,updated_at").eq("app", app);
+    }).then(unwrap).then(function (rows) {
+      var out = {};
+      (rows || []).forEach(function (r) { out[r.key] = r.updated_at; });
+      return out;
+    });
+  }
+
+  // Avisa al instante cuando otro dispositivo guarda algo de esta app (Supabase Realtime).
+  // Necesita una sola vez en la base de datos:
+  //   alter publication supabase_realtime add table public.docs;
+  // Si no está activo, no pasa nada: la app sigue revisando cada pocos segundos.
+  // Devuelve una función para cancelar la suscripción.
+  function subscribe(app, onChange, onStatus) {
+    var ch = null, closed = false;
+    ready().then(function (c) {
+      if (closed || !currentUser || !c.channel) { if (onStatus) onStatus("UNAVAILABLE"); return; }
+      ch = c.channel("docs:" + app + ":" + currentUser.id)
+        .on("postgres_changes",
+          { event: "*", schema: "public", table: "docs", filter: "user_id=eq." + currentUser.id },
+          function (p) {
+            var r = (p && (p.new && p.new.key ? p.new : p.old)) || {};
+            if (!r.app || r.app === app) onChange(r);
+          })
+        .subscribe(function (st) { if (onStatus) onStatus(st); });
+    }).catch(function () { if (onStatus) onStatus("UNAVAILABLE"); });
+    return function () {
+      closed = true;
+      if (ch && client) { try { client.removeChannel(ch); } catch (e) {} }
+      ch = null;
+    };
+  }
+
   // Guarda un bloque FUSIONÁNDOLO en el servidor de forma atómica.
   // Devuelve el resultado combinado (incluye lo de otros dispositivos).
   // Es lo que deben usar las apps: dos dispositivos guardando a la vez
@@ -205,7 +244,7 @@
     config: { url: CONFIG.url },
     ready: ready, user: user, onAuth: onAuth,
     sendCode: sendCode, verifyCode: verifyCode, signOut: signOut,
-    pull: pull, merge: merge, push: push,
+    pull: pull, merge: merge, push: push, stamps: stamps, subscribe: subscribe,
     mergeCollection: mergeCollection, mergeObject: mergeObject,
     fingerprint: fingerprint, clean: clean
   };

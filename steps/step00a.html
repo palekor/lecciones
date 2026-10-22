@@ -3,157 +3,962 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="An interactive class about English personal pronouns: subject, object, possessive adjective, possessive pronoun, and reflexive forms.">
-  <title>Pronoun Logic · ProfGermandario</title>
+  <meta name="description" content="Step 00a of the ProfGermandario System: Pronoun Logic. The first decision of every English sentence — with voice, a speaking lab and endless random practice.">
+  <meta name="theme-color" content="#1a1730">
+  <title>Step 00a · Pronoun Logic · ProfGermandario</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
   <style>
-    :root{--canvas:#fcf8f3;--cloud:#f2ece2;--ink:#1a1730;--soft:#3a3552;--mist:#76718a;--coral:#ff5a3c;--coral-dark:#e8482c;--mint:#15b79e;--mint-dark:#0e8c79;--amber:#ffb627;--amber-dark:#b97700;--wine:#7b2cbf;--white:#fff;--shadow:0 14px 44px rgba(26,23,48,.09)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;overscroll-behavior-y:none}button,a{font:inherit;-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit}::selection{background:rgba(255,90,60,.2)}
+    :root{--canvas:#fcf8f3;--cloud:#f2ece2;--paper:#fffdf9;--ink:#1a1730;--ink2:#25213f;--soft:#3a3552;--mist:#76718a;--line:rgba(26,23,48,.09);--coral:#ff5a3c;--coral-dark:#e8482c;--mint:#15b79e;--mint-dark:#0e8c79;--amber:#ffb627;--amber-dark:#b97700;--wine:#7b2cbf;--white:#fff;--shadow:0 14px 44px rgba(26,23,48,.09);--shadow-lg:0 30px 80px rgba(26,23,48,.18);
+      --sub-bg:#ffdcd4;--sub-ink:#a72e18;--obj-bg:#d4f6ef;--obj-ink:#087260;--adj-bg:#ffebbb;--adj-ink:#805500;--pro-bg:#ead7f7;--pro-ink:#59218a;--ref-bg:#dfe2ff;--ref-ink:#363d91}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}button,a,input{font:inherit;-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}a{color:inherit}::selection{background:rgba(255,90,60,.2)}
     .bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 45% at 5% 0%,rgba(255,90,60,.11),transparent 65%),radial-gradient(55% 50% at 100% 75%,rgba(21,183,158,.11),transparent 65%),var(--canvas)}
     .bg:after{content:"";position:absolute;inset:0;opacity:.2;background-image:radial-gradient(rgba(26,23,48,.17) .65px,transparent .65px);background-size:18px 18px;mask-image:linear-gradient(to bottom,black,transparent 70%)}
-    .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.mono{font-family:"DM Mono",monospace}.display{font-family:Fraunces,Georgia,serif}.eyebrow{font:500 .7rem/1.2 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.22em;color:var(--coral)}
-    .hero{min-height:650px;min-height:92svh;display:grid;align-items:center;padding:70px 0 46px;position:relative;overflow:hidden}.hero-inner{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:70px;align-items:center}.hero h1{font:900 clamp(4rem,9vw,7.7rem)/.82 Fraunces,Georgia,serif;letter-spacing:-.065em;margin:17px 0 25px}.hero h1 em{display:block;color:var(--coral);font-weight:600}.hero-copy{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--soft);max-width:600px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.btn{border:0;border-radius:999px;padding:13px 20px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.2s ease}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--ink);color:white;box-shadow:0 12px 28px rgba(26,23,48,.2)}.btn-secondary{background:white;border:1px solid rgba(26,23,48,.1)}
-    .logic-orbit{aspect-ratio:1;position:relative;display:grid;place-items:center}.orbit{position:absolute;border:1px solid rgba(26,23,48,.12);border-radius:50%;animation:spin 24s linear infinite}.orbit.one{inset:6%}.orbit.two{inset:18%;animation-direction:reverse;animation-duration:17s}.core{width:42%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--ink);color:white;box-shadow:0 20px 60px rgba(26,23,48,.25);position:relative;z-index:2}.core strong{font:700 clamp(1.25rem,2.4vw,2rem)/1 Fraunces,serif}.core span{display:block;color:var(--amber);font:.6rem "DM Mono",monospace;letter-spacing:.13em;margin-top:8px}.sat{position:absolute;z-index:3;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--ink);font:700 .72rem/1.2 "DM Mono",monospace;box-shadow:var(--shadow);animation:float 3.6s ease-in-out infinite}.sat b{display:block;font:900 1.35rem Fraunces,serif}.s1{top:2%;left:41%;background:#ffd5cb}.s2{top:37%;right:0;background:#b9eee5;animation-delay:-.7s}.s3{bottom:3%;right:20%;background:#ffe4a0;animation-delay:-1.4s}.s4{bottom:8%;left:10%;background:#e5caf8;animation-delay:-2.1s}.s5{top:27%;left:0;background:white;animation-delay:-2.8s}@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-9px)}}
-    .sticky-nav{position:sticky;top:10px;z-index:20;margin-bottom:30px}.nav-shell{background:rgba(255,255,255,.76);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.85);border-radius:999px;padding:6px;display:flex;gap:4px;overflow:auto;box-shadow:var(--shadow);scrollbar-width:none}.nav-shell::-webkit-scrollbar{display:none}.nav-shell a{white-space:nowrap;text-decoration:none;padding:10px 15px;border-radius:999px;font-size:.84rem;font-weight:700;color:var(--soft);transition:.2s}.nav-shell a:hover,.nav-shell a.active{background:var(--ink);color:#fff}
-    section{padding:74px 0}.section-head{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:36px}.section-head h2{font:800 clamp(2.4rem,5vw,4.6rem)/.95 Fraunces,serif;letter-spacing:-.045em;margin:8px 0}.section-head p{color:var(--soft);font-size:1.05rem;max-width:550px;margin:0 0 8px}.rule-stage{background:var(--ink);color:white;border-radius:34px;padding:clamp(25px,5vw,56px);box-shadow:0 25px 70px rgba(26,23,48,.18)}.rule-stage h3{font:700 clamp(1.75rem,4vw,3rem)/1.08 Fraunces,serif;margin:0 0 24px;max-width:780px}.rule-stage h3 span{color:var(--amber)}.job-line{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.job{min-height:126px;padding:18px 15px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.job .num{font:.64rem "DM Mono",monospace;color:var(--amber);letter-spacing:.12em}.job strong{font:700 1.08rem Fraunces,serif;display:block;margin:9px 0 5px}.job small{color:#d8d4e4;line-height:1.35;display:block}.formula{margin-top:18px;padding:16px 19px;background:white;color:var(--ink);border-radius:17px;font-family:"DM Mono",monospace;font-size:.84rem;overflow:auto;white-space:nowrap}.f-sub{color:var(--coral-dark)}.f-obj{color:var(--mint-dark)}.f-adj{color:var(--amber-dark)}.f-pro{color:var(--wine)}
-    .table-shell{background:white;border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(26,23,48,.06)}.table-scroll{overflow-x:auto}.pronoun-table{width:100%;min-width:830px;border-collapse:collapse}.pronoun-table th,.pronoun-table td{text-align:left;padding:16px 14px;border-bottom:1px solid #eee9e3}.pronoun-table th{background:var(--ink);color:white;font:.66rem/1.3 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em}.pronoun-table th span{display:block;color:#aaa6bc;text-transform:none;letter-spacing:0;margin-top:4px}.pronoun-table td:first-child{font-weight:700}.pronoun-table td b{font:700 1.08rem Fraunces,serif}.pronoun-table tr:hover td{background:#fff9f5}.tag{font:.56rem "DM Mono",monospace;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;border-radius:99px;margin-left:5px;vertical-align:2px}.tag.same{background:#dcf7f1;color:#087260}.tag.none{background:#eeeaf2;color:#696277}.table-note{display:flex;gap:10px;align-items:flex-start;padding:17px 20px;background:#fff7e8;color:#744e00;font-size:.9rem}.table-note strong{white-space:nowrap}
-    .switcher{display:flex;gap:8px;overflow:auto;margin-bottom:20px;padding-bottom:4px;scrollbar-width:none}.switcher button{border:1px solid rgba(26,23,48,.1);background:white;border-radius:999px;padding:10px 15px;white-space:nowrap;font-weight:700;color:var(--soft)}.switcher button.on{background:var(--coral);border-color:var(--coral);color:white}.lesson-panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:stretch}.definition{border-radius:28px;padding:31px;background:var(--cloud)}.definition .big-form{font:900 clamp(3rem,8vw,6rem)/1 Fraunces,serif;color:var(--coral);margin:10px 0}.definition h3{font:700 1.6rem Fraunces,serif;margin:0}.definition p{color:var(--soft)}.position{display:inline-flex;border-radius:9px;background:white;padding:7px 10px;font:.7rem "DM Mono",monospace;color:var(--wine)}.examples{border-radius:28px;padding:31px;background:white;border:1px solid rgba(26,23,48,.07);box-shadow:var(--shadow)}.example{padding:15px 0;border-bottom:1px solid #eee9e3}.example:last-child{border:0}.example p{margin:0;font-size:1.06rem}.example small{display:block;color:var(--mist);margin-top:5px}.highlight{border-radius:6px;padding:1px 5px;font-weight:800;background:#ffdcd4;color:#a72e18}.highlight.obj{background:#d4f6ef;color:#087260}.highlight.adj{background:#ffebbb;color:#805500}.highlight.pro{background:#ead7f7;color:#59218a}.highlight.ref{background:#dfe2ff;color:#363d91}
-    .contrast-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.contrast{background:white;border-radius:25px;padding:25px;border:1px solid rgba(26,23,48,.07);box-shadow:var(--shadow)}.contrast h3{font:700 1.35rem Fraunces,serif;margin:0 0 14px}.pair{display:grid;grid-template-columns:32px 1fr;gap:9px;padding:9px 0}.pair .mark{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem}.good .mark{background:#d4f6ef;color:#087260}.bad .mark{background:#ffdcd4;color:#a72e18}.pair p{margin:0}.pair small{display:block;color:var(--mist)}
-    .stories{display:grid;gap:12px}.story{display:grid;grid-template-columns:76px 1fr;gap:22px;align-items:start;background:rgba(255,255,255,.8);border:1px solid rgba(26,23,48,.06);border-radius:24px;padding:22px;transition:.2s}.story:hover{transform:translateX(5px);background:white}.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:800 1.55rem Fraunces,serif;background:var(--cloud)}.story:nth-child(4n+1) .avatar{background:#ffd5cb}.story:nth-child(4n+2) .avatar{background:#b9eee5}.story:nth-child(4n+3) .avatar{background:#ffe4a0}.story:nth-child(4n+4) .avatar{background:#e5caf8}.story h3{font:700 1.25rem Fraunces,serif;margin:0 0 6px}.story p{margin:0;color:var(--soft)}
-    .special-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.special{padding:24px;border-top:3px solid var(--coral);background:white;border-radius:0 0 22px 22px}.special:nth-child(2){border-color:var(--mint)}.special:nth-child(3){border-color:var(--amber)}.special h3{font:700 1.3rem Fraunces,serif;margin:0 0 8px}.special p{margin:0;color:var(--soft);font-size:.93rem}
-    .practice-shell{background:var(--ink);border-radius:34px;padding:clamp(24px,5vw,50px);color:white}.practice-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.practice-top h2{font:800 clamp(2rem,5vw,3.7rem)/1 Fraunces,serif;margin:0}.score{font:.75rem "DM Mono",monospace;background:rgba(255,255,255,.09);padding:9px 13px;border-radius:99px;white-space:nowrap}.progress{height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:28px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--amber),var(--coral));transition:width .35s ease}.question-label{font:.67rem "DM Mono",monospace;color:var(--amber);letter-spacing:.14em;text-transform:uppercase}.question{font:700 clamp(1.5rem,3.5vw,2.35rem)/1.2 Fraunces,serif;margin:8px 0 24px}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:white;border-radius:16px;padding:15px;text-align:left;font-weight:700;transition:.18s}.answer:hover:not(:disabled){background:rgba(255,255,255,.13);transform:translateY(-2px)}.answer.correct{background:rgba(21,183,158,.26);border-color:var(--mint)}.answer.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}.feedback{min-height:55px;margin-top:18px;color:#dbd8e4}.feedback strong{color:var(--amber)}.next{border:0;background:var(--coral);color:white;border-radius:999px;padding:12px 18px;font-weight:800;display:none}.next.show{display:inline-flex}.result{text-align:center;padding:20px 0}.result .result-number{font:900 6rem/1 Fraunces,serif;color:var(--amber)}
-    footer{padding:40px 0 110px;text-align:center;color:var(--mist);font:.65rem "DM Mono",monospace;text-transform:uppercase;letter-spacing:.12em}.wa{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:30;background:#25d366;color:white;text-decoration:none;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 12px 32px rgba(37,211,102,.35);transition:.2s}.wa:hover{transform:translateY(-3px)}.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}.reveal.seen{opacity:1;transform:none}
-    @media(max-width:850px){.hero{min-height:auto;padding-top:80px}.hero-inner{grid-template-columns:1fr;gap:45px}.logic-orbit{max-width:500px;width:90%;margin:auto}.section-head{grid-template-columns:1fr}.job-line{grid-template-columns:1fr 1fr}.job:last-child{grid-column:1/-1}.lesson-panel{grid-template-columns:1fr}.special-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(4rem,18vw,7rem)}}
-    @media(max-width:570px){.wrap{width:min(100% - 22px,1120px)}section{padding:55px 0}.hero{padding-top:60px}.hero-inner{gap:30px}.hero h1{margin-top:12px}.logic-orbit{width:100%}.sat{width:72px;height:72px;font-size:.58rem}.sat b{font-size:1.05rem}.job-line,.contrast-grid,.answers{grid-template-columns:1fr}.job:last-child{grid-column:auto}.rule-stage,.practice-shell{border-radius:25px}.story{grid-template-columns:1fr;gap:10px}.avatar{width:52px;height:52px}.section-head h2{font-size:2.7rem}.wa span{display:none}}
+    .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.mono{font-family:"DM Mono",monospace}.display{font-family:Fraunces,Georgia,serif}
+    .eyebrow{font:500 .7rem/1.2 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.22em;color:var(--coral)}.eyebrow i{font-style:normal;color:var(--mist)}
+
+    /* Masthead */
+    .masthead{background:var(--ink);color:#d9d5e6;font:500 .6rem/1 "DM Mono",monospace;letter-spacing:.2em;text-transform:uppercase}.mast-inner{display:flex;justify-content:space-between;gap:14px;padding:12px 0}.mast-inner b{color:var(--amber);font-weight:500}
+
+    /* Hero */
+    .hero{min-height:620px;min-height:86svh;display:grid;align-items:center;padding:60px 0 40px;position:relative;overflow:hidden}.hero-inner{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:70px;align-items:center}
+    .hero h1{font:900 clamp(4rem,9vw,7.7rem)/.82 Fraunces,Georgia,serif;letter-spacing:-.065em;margin:17px 0 25px}.hero h1 em{display:block;color:var(--coral);font-weight:600}
+    .hero-copy{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--soft);max-width:600px;margin:0}.hero-copy strong{color:var(--ink)}
+    .tagline{margin-top:18px;font:italic 500 1.08rem Fraunces,serif;color:var(--mist)}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;align-items:center}
+    .btn{border:0;border-radius:999px;padding:13px 20px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.2s ease}.btn:hover{transform:translateY(-2px)}.btn svg{width:15px;height:15px}
+    .btn-primary{background:var(--ink);color:#fff;box-shadow:0 12px 28px rgba(26,23,48,.2)}.btn-secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn-amber{background:var(--amber);color:var(--ink)}.btn-ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff}
+    .btn.playing{background:var(--coral);color:#fff}
+    .logic-orbit{aspect-ratio:1;position:relative;display:grid;place-items:center}.orbit{position:absolute;border:1px solid rgba(26,23,48,.12);border-radius:50%;animation:spin 24s linear infinite}.orbit.one{inset:6%}.orbit.two{inset:18%;animation-direction:reverse;animation-duration:17s}
+    .core{width:42%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--ink);color:#fff;box-shadow:0 20px 60px rgba(26,23,48,.25);position:relative;z-index:2;border:0}.core strong{font:700 clamp(1.25rem,2.4vw,2rem)/1 Fraunces,serif;display:block}.core span{display:block;color:var(--amber);font:.6rem "DM Mono",monospace;letter-spacing:.13em;margin-top:8px}
+    .sat{position:absolute;z-index:3;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--ink);font:700 .72rem/1.2 "DM Mono",monospace;box-shadow:var(--shadow);animation:float 3.6s ease-in-out infinite;border:0;padding:0;transition:box-shadow .2s}.sat:hover{box-shadow:0 0 0 4px #fff,var(--shadow)}.sat.playing{box-shadow:0 0 0 4px var(--coral),var(--shadow)}.sat b{display:block;font:900 1.35rem Fraunces,serif}
+    .s1{top:2%;left:41%;background:var(--sub-bg)}.s2{top:37%;right:0;background:var(--obj-bg);animation-delay:-.7s}.s3{bottom:3%;right:20%;background:var(--adj-bg);animation-delay:-1.4s}.s4{bottom:8%;left:10%;background:var(--pro-bg);animation-delay:-2.1s}.s5{top:27%;left:0;background:var(--ref-bg);animation-delay:-2.8s}
+    @keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-9px)}}
+    .orbit-hint{position:absolute;bottom:-6px;left:0;right:0;text-align:center;font:.62rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}
+
+    /* Brief */
+    .brief{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin:0 auto 28px;box-shadow:var(--shadow)}.brief div{background:rgba(255,255,255,.9);padding:18px 20px}.brief small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);margin-bottom:6px}.brief b{font:700 1.02rem/1.25 Fraunces,serif}
+
+    /* Nav */
+    .sticky-nav{position:sticky;top:10px;z-index:20;margin-bottom:30px}.nav-shell{background:rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.85);border-radius:999px;padding:6px;display:flex;gap:4px;overflow:auto;box-shadow:var(--shadow);scrollbar-width:none}.nav-shell::-webkit-scrollbar{display:none}.nav-shell a{white-space:nowrap;text-decoration:none;padding:10px 15px;border-radius:999px;font-size:.84rem;font-weight:700;color:var(--soft);transition:.2s}.nav-shell a:hover,.nav-shell a.active{background:var(--ink);color:#fff}
+
+    section{padding:74px 0}.section-head{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:36px}.section-head h2{font:800 clamp(2.4rem,5vw,4.6rem)/.95 Fraunces,serif;letter-spacing:-.045em;margin:8px 0}.section-head p{color:var(--soft);font-size:1.05rem;max-width:550px;margin:0 0 8px}
+
+    /* Audio controls */
+    .say{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:inline-grid;place-items:center;transition:.18s;padding:0;vertical-align:middle}.say svg{width:13px;height:13px;margin-left:2px}.say:hover{background:var(--ink);color:#fff;border-color:var(--ink)}.say.sm{width:30px;height:30px}.say.sm svg{width:11px;height:11px}
+    .say.playing,.pill-btn.playing,.bigplay.playing{background:var(--coral)!important;color:#fff!important;border-color:var(--coral)!important;animation:pulse 1.2s infinite}
+    .on-dark .say{background:transparent;color:#fff;border-color:rgba(255,255,255,.25)}.on-dark .say:hover{background:#fff;color:var(--ink)}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,60,.45)}100%{box-shadow:0 0 0 13px rgba(255,90,60,0)}}
+    .pill-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.8rem;display:inline-flex;align-items:center;gap:7px;color:var(--soft);transition:.18s;white-space:nowrap}.pill-btn svg{width:12px;height:12px}.pill-btn:hover{border-color:var(--ink);color:var(--ink)}
+    .pill-btn.dark{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);color:#fff}.pill-btn.dark:hover{background:rgba(255,255,255,.14)}
+    .mic{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,90,60,.35);background:#fff3ef;color:var(--coral-dark);display:inline-grid;place-items:center;padding:0;transition:.18s}.mic svg{width:15px;height:15px}.mic:hover{background:var(--coral);color:#fff}
+    .mic.listening,.micbig.listening{background:var(--coral);color:#fff;border-color:var(--coral);animation:pulse 1s infinite}
+    body.no-speech .say,body.no-speech .needs-tts{display:none!important}body.no-sr .mic,body.no-sr .needs-sr{display:none!important}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+    /* Why */
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.conj{background:#fff;border-radius:28px;padding:28px;border:1px solid var(--line);box-shadow:var(--shadow)}.conj .lang{font:500 .64rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mist)}.conj h3{font:700 1.45rem/1.15 Fraunces,serif;margin:6px 0 4px}.conj .lead{color:var(--soft);margin:0 0 14px;font-size:.95rem}
+    .conj-row{display:grid;grid-template-columns:118px 1fr auto;align-items:center;gap:10px;min-height:52px;border-top:1px solid #eee9e3}.conj-row .who{font:.66rem "DM Mono",monospace;color:var(--mist);text-transform:uppercase;letter-spacing:.08em}.conj-row .v{font:600 1.18rem Fraunces,serif}
+    .end{background:var(--sub-bg);color:var(--sub-ink);border-radius:4px;padding:0 1px}.pr{background:var(--sub-bg);color:var(--sub-ink);border-radius:6px;padding:0 5px;font-weight:700}.agr{color:var(--coral-dark);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    .conj.es{background:var(--cloud);box-shadow:none}.conj .verdict{margin-top:14px;padding:12px 14px;border-radius:14px;font-size:.9rem;background:#fff7e8;color:#744e00}.conj.en .verdict{background:#e9faf6;color:#075e51}
+    .laws{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.law{background:var(--ink);color:#fff;border-radius:26px;padding:24px;display:flex;flex-direction:column}.law .n{font:500 .64rem "DM Mono",monospace;color:var(--amber);letter-spacing:.14em;text-transform:uppercase}.law h3{font:700 1.3rem/1.15 Fraunces,serif;margin:10px 0 6px}.law p{color:#d8d4e4;margin:0;font-size:.92rem}.law .ex{margin-top:auto;padding-top:16px}.law .ex div{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 12px}.law .ex span{font:600 1rem Fraunces,serif}.law .ex s{color:#ff9d8a;text-decoration-thickness:2px}.law .ex small{display:block;color:#a9a4bd;font:.62rem "DM Mono",monospace;margin-bottom:6px;letter-spacing:.08em;text-transform:uppercase}
+    .chain{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.node{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;text-decoration:none;display:block;transition:.2s}.node:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.node small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.node b{display:block;font:700 1.08rem Fraunces,serif;margin-top:4px}.node span{font-size:.82rem;color:var(--soft)}.node.here{background:var(--coral);border-color:var(--coral);color:#fff}.node.here small,.node.here span{color:#ffe6df}.node:not(:last-child):after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--mist);z-index:2}
+
+    /* Rule */
+    .rule-stage{background:var(--ink);color:#fff;border-radius:34px;padding:clamp(25px,5vw,56px);box-shadow:0 25px 70px rgba(26,23,48,.18)}.rule-stage h3{font:700 clamp(1.75rem,4vw,3rem)/1.08 Fraunces,serif;margin:0 0 24px;max-width:780px}.rule-stage h3 span{color:var(--amber)}
+    .job-line{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.job{min-height:150px;padding:18px 15px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column}.job .num{font:.64rem "DM Mono",monospace;color:var(--amber);letter-spacing:.12em}.job strong{font:700 1.08rem Fraunces,serif;display:block;margin:9px 0 5px}.job small{color:#d8d4e4;line-height:1.35;display:block}.job .ask{margin-top:auto;padding-top:12px;font:italic 500 .95rem Fraunces,serif;color:var(--amber)}
+    .formula{margin-top:18px;padding:14px 16px 14px 19px;background:#fff;color:var(--ink);border-radius:17px;font-family:"DM Mono",monospace;font-size:.84rem;display:flex;align-items:center;justify-content:space-between;gap:12px}.formula .f-text{overflow:auto;white-space:nowrap}.f-sub{color:var(--coral-dark)}.f-obj{color:var(--mint-dark)}.f-adj{color:var(--amber-dark)}.f-pro{color:var(--wine)}.f-ref{color:#363d91}
+
+    /* Map */
+    .table-shell{background:#fff;border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(26,23,48,.06)}.table-scroll{overflow-x:auto}.pronoun-table{width:100%;min-width:860px;border-collapse:collapse}.pronoun-table th,.pronoun-table td{text-align:left;padding:13px 12px;border-bottom:1px solid #eee9e3;background:#fff}.pronoun-table th{background:var(--ink);color:#fff;font:.66rem/1.3 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em}.pronoun-table th span{display:block;color:#aaa6bc;text-transform:none;letter-spacing:0;margin-top:4px}
+    .pronoun-table td:first-child,.pronoun-table th:first-child{position:sticky;left:0;z-index:1}.pronoun-table td:first-child{font-weight:700;box-shadow:1px 0 0 #eee9e3}.pronoun-table tr:hover td{background:#fff9f5}
+    .rowhead{display:flex;align-items:center;gap:10px}.fb{border:0;background:none;padding:3px 6px;border-radius:8px;font:700 1.1rem Fraunces,serif;transition:.15s}.fb:hover{background:var(--cloud)}.fb.playing{background:var(--coral);color:#fff}
+    .tag{font:.56rem "DM Mono",monospace;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;border-radius:99px;margin-left:3px;vertical-align:2px;white-space:nowrap}.tag.same{background:#dcf7f1;color:#087260}.tag.none{background:#eeeaf2;color:#696277}
+    .table-note{display:flex;gap:10px;align-items:flex-start;padding:17px 20px;background:#fff7e8;color:#744e00;font-size:.9rem}.table-note strong{white-space:nowrap}
+
+    /* Five jobs */
+    .switcher{display:flex;gap:8px;overflow:auto;margin-bottom:20px;padding-bottom:4px;scrollbar-width:none}.switcher button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;white-space:nowrap;font-weight:700;color:var(--soft)}.switcher button.on{background:var(--coral);border-color:var(--coral);color:#fff}
+    .lesson-panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:stretch}.definition{border-radius:28px;padding:31px;background:var(--cloud)}.definition .big-form{font:900 clamp(3rem,8vw,6rem)/1 Fraunces,serif;color:var(--coral);margin:10px 0}.definition h3{font:700 1.6rem Fraunces,serif;margin:0}.definition p{color:var(--soft)}.definition .forms{font:600 1rem Fraunces,serif;color:var(--soft)}.definition .askline{margin-top:16px;padding:12px 14px;border-radius:14px;background:#fff;font:italic 500 1.05rem Fraunces,serif}
+    .position{display:inline-flex;border-radius:9px;background:#fff;padding:7px 10px;font:.7rem "DM Mono",monospace;color:var(--wine)}
+    .examples{border-radius:28px;padding:22px 31px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}.example{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid #eee9e3}.example:last-of-type{border-bottom:0}.example p{margin:0;font-size:1.08rem}.example small{display:block;color:var(--mist);margin-top:5px}.examples .all{display:flex;justify-content:flex-end;padding-top:12px;border-top:1px solid #eee9e3}
+    .hl{border-radius:6px;padding:1px 5px;font-weight:800;background:var(--sub-bg);color:var(--sub-ink);transition:background .2s,color .2s}.hl.obj{background:var(--obj-bg);color:var(--obj-ink)}.hl.adj{background:var(--adj-bg);color:var(--adj-ink)}.hl.pro{background:var(--pro-bg);color:var(--pro-ink)}.hl.ref{background:var(--ref-bg);color:var(--ref-ink)}
+    .jp{font:500 .6rem/1 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:99px;display:inline-block;white-space:nowrap;background:var(--sub-bg);color:var(--sub-ink)}.jp.obj{background:var(--obj-bg);color:var(--obj-ink)}.jp.adj{background:var(--adj-bg);color:var(--adj-ink)}.jp.pro{background:var(--pro-bg);color:var(--pro-ink)}.jp.ref{background:var(--ref-bg);color:var(--ref-ink)}
+
+    /* Voice lab */
+    .lab{display:grid;grid-template-columns:300px 1fr;gap:22px;align-items:start}.persona{background:var(--ink);color:#fff;border-radius:28px;padding:26px;position:sticky;top:84px}.persona .lbl{font:500 .62rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:#aaa6bc}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.pchip{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.86rem}.pchip.on{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+    .persona .big{font:900 4.6rem/1 Fraunces,serif;color:var(--amber);margin:22px 0 2px;letter-spacing:-.04em}.persona .es{font:.72rem "DM Mono",monospace;color:#bdb8cf}.rotation{margin-top:18px;padding:14px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.rotation .forms{font:600 1.1rem Fraunces,serif;margin:6px 0 10px;color:#fff}.rotation .acts{display:flex;gap:7px;align-items:center}.rotation .heard{color:#cfcbe0}
+    .lines{background:#fff;border-radius:28px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}.line{display:grid;grid-template-columns:132px 1fr auto;gap:14px;align-items:center;padding:16px 20px;border-bottom:1px solid #eee9e3;transition:background .25s}.line.active{background:#fff6ec}.line .txt{font:600 1.14rem/1.35 Fraunces,serif}.line .txt small{display:block;font:500 .8rem Figtree,sans-serif;color:var(--mist);margin-top:3px}.line .acts{display:flex;gap:6px;align-items:center}.line.nailed .jp:after{content:" ✓"}
+    .heard{grid-column:1/-1;font-size:.88rem;color:var(--mist);display:none}.heard.show{display:block}.heard .w{display:inline-block;margin-right:4px;font-weight:700}.heard .ok{color:var(--mint-dark)}.heard .miss{color:var(--coral-dark);text-decoration:line-through;text-decoration-thickness:2px}.heard .said{font-style:italic}.heard .badge{display:inline-block;font:500 .66rem "DM Mono",monospace;padding:3px 8px;border-radius:99px;margin-right:8px;background:var(--cloud);color:var(--soft)}.heard .badge.good{background:var(--obj-bg);color:var(--obj-ink)}.heard .badge.low{background:var(--sub-bg);color:var(--sub-ink)}
+    .on-dark .heard .ok{color:#6fe3cf}.on-dark .heard .miss{color:#ff9d8a}.on-dark .heard .badge{background:rgba(255,255,255,.1);color:#fff}
+    .lines-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 20px;background:var(--cloud)}.lines-foot .group{display:flex;gap:8px;flex-wrap:wrap}.lab-note{font-size:.85rem;color:var(--mist);margin:0}
+
+    /* Traps */
+    .traps{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.trap{background:#fff;border-radius:25px;padding:24px;border:1px solid var(--line);box-shadow:var(--shadow)}.trap .tn{font:500 .62rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}.trap h3{font:700 1.3rem/1.2 Fraunces,serif;margin:6px 0 12px}.pair{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:8px 0}.pair .mark{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem}.good .mark{background:var(--obj-bg);color:var(--obj-ink)}.bad .mark{background:var(--sub-bg);color:var(--sub-ink)}.pair p{margin:0}.bad p{color:var(--mist)}.bad s{text-decoration-color:rgba(232,72,44,.55);text-decoration-thickness:1.5px}.pair .es-src{font-style:italic;color:var(--soft)}.trap .why{margin:10px 0 0;padding-top:12px;border-top:1px solid #eee9e3;color:var(--soft);font-size:.9rem}
+
+    /* Stories */
+    .story-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px 18px;margin-bottom:14px;box-shadow:var(--shadow)}.story-bar .sc{font:.75rem "DM Mono",monospace;color:var(--soft)}
+    .switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:.9rem;user-select:none}.switch input{appearance:none;-webkit-appearance:none;width:40px;height:23px;border-radius:99px;background:#d9d3e2;position:relative;transition:.2s;margin:0;cursor:pointer;flex:none}.switch input:checked{background:var(--mint)}.switch input:after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}.switch input:checked:after{transform:translateX(17px)}.switch input:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+    .stories{display:grid;gap:12px}.story{display:grid;grid-template-columns:76px 1fr;gap:22px;align-items:start;background:rgba(255,255,255,.82);border:1px solid rgba(26,23,48,.06);border-radius:24px;padding:22px;transition:.2s}.story:hover{background:#fff}.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:800 1.45rem Fraunces,serif;background:var(--cloud)}.story:nth-child(4n+1) .avatar{background:var(--sub-bg)}.story:nth-child(4n+2) .avatar{background:var(--obj-bg)}.story:nth-child(4n+3) .avatar{background:var(--adj-bg)}.story:nth-child(4n+4) .avatar{background:var(--pro-bg)}
+    .story-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}.story h3{font:700 1.25rem Fraunces,serif;margin:0}.story p{margin:0;color:var(--soft);font-size:1.04rem;line-height:1.75}.sent{border-radius:6px;transition:background .25s,box-shadow .25s}.sent.speaking{background:rgba(255,182,39,.3);box-shadow:0 0 0 3px rgba(255,182,39,.3)}
+    .stories.quiz .hl:not(.done){background:#efeaf4;color:var(--ink);cursor:pointer;outline:1.5px dashed rgba(26,23,48,.28);outline-offset:-1px}.stories.quiz .hl:not(.done):hover{background:#e3dcea}.hl.missed{box-shadow:0 0 0 2px var(--coral)}
+    .jobpop{position:absolute;z-index:45;background:var(--ink);color:#fff;border-radius:16px;padding:9px;display:none;gap:6px;flex-wrap:wrap;width:264px;box-shadow:var(--shadow-lg)}.jobpop.show{display:flex}.jobpop .q{width:100%;font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#aaa6bc;padding:2px 4px 4px}.jobpop button{border:0;border-radius:99px;padding:7px 11px;font-weight:700;font-size:.8rem}
+    .shake{animation:shake .35s}@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+    /* Clarity */
+    .special-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.special{padding:24px;border-top:3px solid var(--coral);background:#fff;border-radius:0 0 22px 22px;box-shadow:var(--shadow)}.special:nth-child(2){border-color:var(--mint)}.special:nth-child(3){border-color:var(--amber)}.special:nth-child(4){border-color:var(--wine)}.special h3{font:700 1.3rem Fraunces,serif;margin:0 0 8px;display:flex;justify-content:space-between;gap:10px;align-items:center}.special p{margin:0;color:var(--soft);font-size:.95rem}
+
+    /* Arena */
+    .arena{background:var(--ink);color:#fff;border-radius:34px;padding:clamp(22px,4.5vw,48px);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}.arena:before{content:"";position:absolute;width:520px;height:520px;right:-180px;top:-220px;background:radial-gradient(circle,rgba(255,182,39,.16),transparent 65%);pointer-events:none}.arena > *{position:relative}
+    .arena-top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:24px}.arena h2{font:800 clamp(2.1rem,5vw,3.7rem)/1 Fraunces,serif;margin:8px 0 0;letter-spacing:-.03em}.arena-top p{margin:0;color:#cfcbe0;max-width:430px;font-size:.95rem}
+    .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.mode{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#fff;border-radius:20px;padding:16px 18px;text-align:left;transition:.2s}.mode:hover{background:rgba(255,255,255,.09)}.mode.on{border-color:var(--amber);background:rgba(255,182,39,.12)}.mode small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}.mode b{display:block;font:700 1.2rem Fraunces,serif;margin:4px 0 2px}.mode span{font-size:.84rem;color:#cfcbe0}
+    .toggles{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:20px;font-size:.86rem;color:#d8d4e4}.toggles .switch input{background:rgba(255,255,255,.2)}.toggles .switch input:checked{background:var(--mint)}.toggles .note{font-size:.8rem;color:#a9a4bd}
+    .stage{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:26px;padding:clamp(18px,3.5vw,36px);min-height:380px}
+    .qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}.qtype{font:500 .66rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}.qcount{font:.72rem "DM Mono",monospace;color:#bdb8cf}
+    .progress{height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:26px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--amber),var(--coral));transition:width .35s ease}
+    .question{font:700 clamp(1.45rem,3.4vw,2.25rem)/1.25 Fraunces,serif;margin:6px 0 22px}.blank{display:inline-block;min-width:84px;border-bottom:3px solid var(--amber);margin:0 4px;text-align:center;color:var(--amber);line-height:1.1}.blank.filled{color:#6fe3cf;border-color:var(--mint)}.es-line{font:italic 500 1.12rem Fraunces,serif;color:#cfcbe0;margin-bottom:4px}.es-line small{font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;color:var(--amber);font-style:normal;margin-right:8px}
+    .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;border-radius:16px;padding:15px;text-align:left;font-weight:700;font-size:1.05rem;transition:.18s;display:flex;align-items:center;gap:10px}.answer:hover:not(:disabled){background:rgba(255,255,255,.13);transform:translateY(-2px)}.answer:disabled{cursor:default}.answer kbd{font:500 .62rem "DM Mono",monospace;opacity:.55;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:2px 6px}.answer.correct{background:rgba(21,183,158,.26);border-color:var(--mint)}.answer.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}
+    .tokens{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}.tok{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;border-radius:12px;padding:9px 13px;font:600 clamp(1.05rem,2.6vw,1.3rem) Fraunces,serif;transition:.15s}.tok:hover:not(:disabled){background:rgba(255,255,255,.14);transform:translateY(-2px)}.tok:disabled{cursor:default}.tok.correct{background:rgba(21,183,158,.26);border-color:var(--mint)}.tok.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}.tok.culprit{border-color:var(--amber);background:rgba(255,182,39,.2)}.ctx{color:#bdb8cf;font-size:.9rem;margin-bottom:10px}
+    .dict-in{background:transparent;border:0;border-bottom:3px solid var(--amber);color:var(--amber);font:700 1em Fraunces,serif;width:150px;max-width:40vw;text-align:center;outline:none;padding:0 4px}.dict-in.ok{color:#6fe3cf;border-color:var(--mint)}.dict-in.bad{color:#ff9d8a;border-color:var(--coral)}
+    .listen-row,.speak-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:16px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}.listen-row .t,.speak-row .t{flex:1;min-width:180px;color:#d8d4e4;font-size:.92rem}.listen-row b,.speak-row b{color:#fff;display:block}
+    .bigplay,.micbig{width:62px;height:62px;border-radius:50%;border:0;display:grid;place-items:center;flex:none;transition:.2s}.bigplay{background:var(--amber);color:var(--ink)}.bigplay svg{width:22px;height:22px;margin-left:3px}.micbig{background:#fff;color:var(--coral-dark)}.micbig svg{width:24px;height:24px}.bigplay:hover,.micbig:hover{transform:scale(1.05)}
+    .hint{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border-radius:99px;background:rgba(255,182,39,.14);color:var(--amber);font-size:.84rem;margin-bottom:10px}.hint b{color:#fff}
+    .feedback{min-height:28px;margin-top:18px;color:#dbd8e4}.feedback strong{color:var(--amber)}.feedback .note{display:block;margin-top:6px;color:#bdb8cf;font-size:.92rem}.fb-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .next{border:0;background:var(--coral);color:#fff;border-radius:999px;padding:12px 18px;font-weight:800;display:inline-flex;gap:8px;align-items:center}
+    .intro{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}.intro h3{font:700 clamp(1.6rem,3.5vw,2.4rem)/1.1 Fraunces,serif;margin:0 0 10px}.intro p{color:#d8d4e4;margin:0 0 18px}.formats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fmt{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.84rem;color:#d8d4e4}.fmt b{display:block;color:#fff;font:700 .98rem Fraunces,serif}.fmt.off{opacity:.4}
+    .jobpick{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.jobpick button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:99px;padding:8px 13px;font-weight:700;font-size:.84rem}.jobpick button.on{background:#fff;color:var(--ink)}
+    .result{text-align:center;padding:6px 0}.result-number{font:900 clamp(4rem,12vw,6.5rem)/1 Fraunces,serif;color:var(--amber)}.result h3{font:700 clamp(1.4rem,3vw,2rem) Fraunces,serif;margin:8px 0 4px}.result .sub{color:#cfcbe0;margin:0}
+    .jobres{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:24px 0}.jr{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;text-align:left}.jr small{font:500 .58rem "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:#bdb8cf}.jr b{display:block;font:800 1.45rem Fraunces,serif;margin-top:3px}.jr .mini{height:4px;border-radius:99px;background:rgba(255,255,255,.1);margin-top:8px;overflow:hidden}.jr .mini span{display:block;height:100%;background:var(--mint)}.jr.weak{border-color:var(--coral)}.jr.weak .mini span{background:var(--coral)}.jr.none{opacity:.4}
+    .res-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .speedbar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:26px}.speedbar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--coral),var(--amber));transform-origin:left}
+    .speed-prompt{text-align:center;margin-bottom:26px}.speed-prompt .who{font:900 clamp(3.2rem,10vw,5.6rem)/1 Fraunces,serif;letter-spacing:-.04em}.speed-prompt .es{font:.72rem "DM Mono",monospace;color:#bdb8cf;margin:6px 0 14px;letter-spacing:.08em}.speed-prompt .jp{font-size:.72rem;padding:8px 14px}
+    .flash-ok{animation:fok .35s}.flash-bad{animation:fbad .45s}@keyframes fok{0%{box-shadow:inset 0 0 0 0 rgba(21,183,158,0)}40%{box-shadow:inset 0 0 0 3px rgba(21,183,158,.8)}100%{box-shadow:inset 0 0 0 0 rgba(21,183,158,0)}}@keyframes fbad{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+    /* Progress */
+    .prog{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow)}.tile small{display:block;font:500 .58rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.tile b{display:block;font:800 1.9rem/1.1 Fraunces,serif;margin-top:6px}.tile span{font-size:.8rem;color:var(--mist)}.up{color:var(--mint-dark)!important;font-weight:700}.down{color:var(--coral-dark)!important;font-weight:700}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.panel h3{font:700 1.2rem Fraunces,serif;margin:0 0 4px}.panel .lead{color:var(--mist);font-size:.86rem;margin:0 0 12px}
+    .bar{display:grid;grid-template-columns:150px 1fr 46px;gap:10px;align-items:center;padding:7px 0}.bar .bl{font-weight:700;font-size:.88rem}.bar .track{height:10px;background:var(--cloud);border-radius:99px;overflow:hidden}.bar .fill{height:100%;border-radius:99px;transition:width .6s ease}.bar .pc{font:.75rem "DM Mono",monospace;text-align:right;color:var(--soft)}
+    .spark{margin-top:14px}.spark svg{width:100%;height:auto;display:block}.spark .empty{padding:24px;text-align:center;color:var(--mist);font-size:.88rem;background:var(--cloud);border-radius:16px}
+    .checklist{display:grid;gap:8px;margin:10px 0 0;padding:0;list-style:none}.checklist li{display:flex;gap:10px;align-items:center;font-size:.92rem}.checklist .ck{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;background:var(--cloud);color:var(--mist);flex:none}.checklist .ck.ok{background:var(--obj-bg);color:var(--obj-ink)}
+    .seal{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--cloud);font:600 1rem Fraunces,serif;display:flex;gap:10px;align-items:center}.seal.won{background:var(--ink);color:var(--amber)}
+    .report{margin-top:14px;display:grid;gap:10px}.report label{font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.report input{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--paper);outline:none}.report input:focus{border-color:var(--ink)}.report .row{display:flex;gap:10px;flex-wrap:wrap}.linkish{background:none;border:0;color:var(--mist);text-decoration:underline;font-size:.82rem;padding:4px 0}
+
+    /* Footer & docks */
+    .next-step{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--ink);color:#fff;border-radius:28px;padding:26px 30px;text-decoration:none;transition:.2s}.next-step:hover{transform:translateY(-3px)}.next-step small{font:500 .62rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}.next-step b{display:block;font:700 clamp(1.4rem,3vw,2rem) Fraunces,serif}.next-step span{color:#cfcbe0}
+    footer{padding:40px 0 120px;text-align:center;color:var(--mist);font:.65rem "DM Mono",monospace;text-transform:uppercase;letter-spacing:.12em}
+    .wa{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;background:#25d366;color:#fff;text-decoration:none;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 12px 32px rgba(37,211,102,.35);transition:.2s}.wa:hover{transform:translateY(-3px)}
+    .vdock{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:31}.vbtn{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 16px;font-weight:700;font-size:.86rem;display:flex;gap:8px;align-items:center;box-shadow:0 12px 32px rgba(26,23,48,.3)}.vbtn svg{width:16px;height:16px}.vbtn em{font-style:normal;color:var(--amber);font:500 .7rem "DM Mono",monospace}
+    .vpanel{position:absolute;bottom:58px;left:0;width:290px;background:#fff;border-radius:22px;box-shadow:var(--shadow-lg);padding:18px;display:none;border:1px solid var(--line)}.vpanel.show{display:block}.vpanel h4{font:700 1.15rem Fraunces,serif;margin:0 0 10px}.vpanel label{font:500 .58rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.vpanel .meta{font-size:.78rem;color:var(--mist);margin:10px 0 0}
+    .seg{display:flex;background:var(--cloud);border-radius:99px;padding:3px;margin:6px 0 12px}.seg button{flex:1;border:0;background:none;border-radius:99px;padding:8px;font-weight:700;font-size:.82rem;color:var(--soft)}.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}.reveal.seen{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+
+    @media(max-width:900px){.hero{min-height:auto;padding-top:56px}.hero-inner{grid-template-columns:1fr;gap:40px}.logic-orbit{max-width:480px;width:90%;margin:auto}.section-head{grid-template-columns:1fr}.job-line{grid-template-columns:1fr 1fr}.job:last-child{grid-column:1/-1}.lesson-panel,.why-grid,.lab,.prog,.intro{grid-template-columns:1fr}.laws{grid-template-columns:1fr}.chain{grid-template-columns:1fr 1fr}.node:nth-child(2):after{display:none}.brief{grid-template-columns:1fr 1fr}.persona{position:static}.hero h1{font-size:clamp(4rem,18vw,7rem)}.jobres{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:600px){.wrap{width:min(100% - 32px,1120px)}.formula{align-items:flex-start}.formula .f-text{white-space:normal}.modes{grid-template-columns:repeat(3,1fr)!important;gap:6px}.mode{padding:11px 10px;border-radius:16px}.mode b{font-size:.95rem}.mode span{display:none}.mode small{font-size:.5rem;letter-spacing:.08em}.formats{grid-template-columns:1fr 1fr!important}.answers{grid-template-columns:1fr 1fr!important}.answer{padding:13px 12px;font-size:1rem}section{padding:54px 0}.hero{padding-top:44px}.hero-inner{gap:28px}.hero h1{margin-top:12px}.logic-orbit{width:100%}.sat{width:70px;height:70px;font-size:.56rem}.sat b{font-size:1.02rem}.job-line,.traps,.answers,.special-grid,.modes,.formats{grid-template-columns:1fr}.job:last-child{grid-column:auto}.job{min-height:auto}.rule-stage,.arena{border-radius:24px}.story{grid-template-columns:1fr;gap:10px}.avatar{width:50px;height:50px;font-size:1.15rem}.section-head h2{font-size:2.6rem}.wa span{display:none}.mast-inner span:last-child{display:none}.conj-row{grid-template-columns:96px 1fr auto}.line{grid-template-columns:1fr;gap:8px;padding:16px}.line .acts{justify-content:flex-start}.tiles{grid-template-columns:1fr 1fr}.bar{grid-template-columns:110px 1fr 40px}.jobres{grid-template-columns:1fr 1fr}.chain{grid-template-columns:1fr}.node:after{display:none}.persona .big{font-size:3.6rem}.vbtn .vlabel{display:none}.examples{padding:16px 20px}.definition{padding:24px}.answer kbd{display:none}.stage{padding:18px}.next-step{padding:22px}}
+    @media(hover:none){.answer kbd{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
+  <div class="masthead"><div class="wrap mast-inner"><span>The ProfGermandario System · <b>Logic, written &amp; spoken</b></span><span>Step 00a · Foundation · “Not perfection — production and speed.”</span></div></div>
+
   <header class="hero" id="home">
     <div class="wrap hero-inner">
       <div>
-        <div class="eyebrow">Personal pronouns · Class 4</div>
+        <div class="eyebrow">Step 00a · The first decision of every sentence</div>
         <h1>Pronoun <em>Logic.</em></h1>
-        <p class="hero-copy">One person can have five different forms. The form changes because the <strong>job in the sentence</strong> changes—not because the person changes.</p>
-        <div class="hero-actions"><a class="btn btn-primary" href="#rule">Learn the rule →</a><a class="btn btn-secondary" href="#practice">Test yourself</a></div>
+        <p class="hero-copy">One person can have five different forms. The form changes because the <strong>job in the sentence</strong> changes — not because the person changes. Master this, and every sentence you build after it stands on solid ground.</p>
+        <p class="tagline">Think in English. Not about English.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#why">Start the class →</a><a class="btn btn-secondary" href="#arena">Random test</a><button class="btn btn-secondary needs-tts" data-say="She gave me her book. The red one is hers. She made it herself." data-rate=".85" aria-label="Listen to the core sentence"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Hear the logic</button></div>
       </div>
-      <div class="logic-orbit" aria-label="Five pronoun jobs">
+      <div class="logic-orbit" aria-label="Five pronoun jobs — tap to hear">
         <div class="orbit one"></div><div class="orbit two"></div>
-        <div class="core"><div><strong>same person</strong><span>DIFFERENT JOB</span></div></div>
-        <div class="sat s1"><div><b>I</b>subject</div></div><div class="sat s2"><div><b>me</b>object</div></div><div class="sat s3"><div><b>my</b>+ noun</div></div><div class="sat s4"><div><b>mine</b>alone</div></div><div class="sat s5"><div><b>myself</b>back to I</div></div>
+        <button class="core" data-say="I. Me. My. Mine. Myself." data-rate=".8" aria-label="Hear the full first-person row"><span><strong>same person</strong><span>DIFFERENT JOB</span></span></button>
+        <button class="sat s1" data-say="I" aria-label="Hear: I"><span><b>I</b>subject</span></button><button class="sat s2" data-say="me" aria-label="Hear: me"><span><b>me</b>object</span></button><button class="sat s3" data-say="my" aria-label="Hear: my"><span><b>my</b>+ noun</span></button><button class="sat s4" data-say="mine" aria-label="Hear: mine"><span><b>mine</b>alone</span></button><button class="sat s5" data-say="myself" aria-label="Hear: myself"><span><b>myself</b>back to I</span></button>
+        <div class="orbit-hint needs-tts">Tap any form to hear it</div>
       </div>
     </div>
   </header>
 
-  <div class="wrap sticky-nav"><nav class="nav-shell" aria-label="Lesson sections"><a href="#home">Home</a><a href="#rule">The rule</a><a href="#map">Full map</a><a href="#forms">Five jobs</a><a href="#stories">In context</a><a href="#practice">Practice</a></nav></div>
+  <div class="wrap brief reveal">
+    <div><small>Level</small><b>A1 → B1 · Foundation</b></div>
+    <div><small>Time</small><b>40 min class · 10 min daily</b></div>
+    <div><small>Method</small><b>Perception → Listening → Prosody → Retrieval</b></div>
+    <div><small>Mastery standard</small><b>85% twice · 20+ in Speed</b></div>
+  </div>
+
+  <div class="wrap sticky-nav"><nav class="nav-shell" aria-label="Lesson sections"><a href="#why">Why first</a><a href="#rule">The rule</a><a href="#map">Full map</a><a href="#forms">Five jobs</a><a href="#lab">Voice lab</a><a href="#traps">Traps</a><a href="#stories">Stories</a><a href="#arena">Arena</a><a href="#progress">Progress</a></nav></div>
 
   <main>
+    <!-- 01 WHY -->
+    <section id="why"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Exposure · 01 <i>· System logic</i></div><h2>Why this lesson comes first.</h2></div><p>In Spanish, the verb carries the person. In English, the pronoun does. Before verbs, chunks or questions, every English sentence asks you for one decision: <strong>who?</strong> Get it right, and the rest of the sentence organizes itself.</p></div>
+      <div class="why-grid">
+        <article class="conj es reveal">
+          <div class="lang">Spanish · español</div><h3>The person lives inside the verb.</h3><p class="lead">The ending tells you who. That is why Spanish can drop the subject.</p>
+          <div class="conj-row"><span class="who">yo</span><span class="v">trabaj<span class="end">o</span></span><span></span></div>
+          <div class="conj-row"><span class="who">tú</span><span class="v">trabaj<span class="end">as</span></span><span></span></div>
+          <div class="conj-row"><span class="who">él / ella</span><span class="v">trabaj<span class="end">a</span></span><span></span></div>
+          <div class="conj-row"><span class="who">nosotros</span><span class="v">trabaj<span class="end">amos</span></span><span></span></div>
+          <div class="conj-row"><span class="who">ellos</span><span class="v">trabaj<span class="end">an</span></span><span></span></div>
+          <div class="verdict"><b>Five endings.</b> “Trabajo en casa” is a complete sentence — no subject needed.</div>
+        </article>
+        <article class="conj en reveal">
+          <div class="lang">English</div><h3>The person lives in the pronoun.</h3><p class="lead">The verb barely changes, so the pronoun must appear — always.</p>
+          <div class="conj-row"><span class="who">I</span><span class="v"><span class="pr">I</span> work</span><button class="say sm" data-say="I work."></button></div>
+          <div class="conj-row"><span class="who">you</span><span class="v"><span class="pr">You</span> work</span><button class="say sm" data-say="You work."></button></div>
+          <div class="conj-row"><span class="who">he / she / it</span><span class="v"><span class="pr">She</span> work<span class="agr">s</span></span><button class="say sm" data-say="She works."></button></div>
+          <div class="conj-row"><span class="who">we</span><span class="v"><span class="pr">We</span> work</span><button class="say sm" data-say="We work."></button></div>
+          <div class="conj-row"><span class="who">they</span><span class="v"><span class="pr">They</span> work</span><button class="say sm" data-say="They work."></button></div>
+          <div class="verdict"><b>Almost one form.</b> Only he / she / it adds <b>-s</b>. Remove the pronoun and nobody knows who works.</div>
+        </article>
+      </div>
+      <div class="laws">
+        <article class="law reveal on-dark"><span class="n">Law 01</span><h3>Never drop the subject.</h3><p>Even when Spanish has nothing to translate, English needs a word in the subject position.</p><div class="ex"><small>Es importante.</small><div><span><s>Is important.</s> → It is important.</span><button class="say sm" data-say="It is important."></button></div></div></article>
+        <article class="law reveal on-dark"><span class="n">Law 02</span><h3>The pronoun steers the verb.</h3><p>Choose the pronoun first. The verb agrees with it: <em>am / is / are</em>, <em>work / works</em>.</p><div class="ex"><small>Agreement</small><div><span>I am · She is · They are</span><button class="say sm" data-say="I am. She is. They are. She works. They work."></button></div></div></article>
+        <article class="law reveal on-dark"><span class="n">Law 03</span><h3>Choose by job, not translation.</h3><p>One Spanish word can open five English doors. The owner and the job decide — never the dictionary.</p><div class="ex"><small>su carro</small><div><span>his car · her car · their car</span><button class="say sm" data-say="His car. Her car. Their car."></button></div></div></article>
+      </div>
+      <div class="chain reveal" aria-label="Where this lesson sits in the system">
+        <span class="node here"><small>You are here · 00a</small><b>WHO</b><span>Pronoun logic</span></span>
+        <a class="node" href="step00b.html"><small>Step 00b</small><b>ACTION</b><span>Verb mode</span></a>
+        <a class="node" href="step01.html"><small>Step 01</small><b>COMPLETE</b><span>The sentence engine</span></a>
+        <a class="node" href="step02.html"><small>Step 02</small><b>CONNECT</b><span>Chunk logic</span></a>
+      </div>
+    </div></section>
+
+    <!-- 02 RULE -->
     <section id="rule"><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">01 · The governing idea</div><h2>Choose by function, not translation.</h2></div><p>Spanish often allows the subject to disappear and expresses possession differently. English usually requires an explicit subject and uses position to reveal which pronoun form belongs there.</p></div>
+      <div class="section-head reveal"><div><div class="eyebrow">Exposure · 02 <i>· The governing idea</i></div><h2>Choose by function, not translation.</h2></div><p>Spanish often lets the subject disappear and expresses possession differently. English requires an explicit subject and uses <strong>position</strong> to reveal which form belongs there. Five jobs. Five questions.</p></div>
       <div class="rule-stage reveal"><h3>First identify the job. <span>Then choose the form.</span></h3><div class="job-line">
-        <div class="job"><span class="num">01 · DOER</span><strong>Subject</strong><small>Performs the verb. Usually comes before it.</small></div>
-        <div class="job"><span class="num">02 · RECEIVER</span><strong>Object</strong><small>Receives the action or follows a preposition.</small></div>
-        <div class="job"><span class="num">03 · OWNER + THING</span><strong>Possessive adjective</strong><small>Describes a noun, so the noun must follow.</small></div>
-        <div class="job"><span class="num">04 · OWNER ALONE</span><strong>Possessive pronoun</strong><small>Replaces the owner + noun phrase. No noun follows.</small></div>
-        <div class="job"><span class="num">05 · RETURN</span><strong>Reflexive</strong><small>The subject and object are the same, or it adds emphasis.</small></div>
-      </div><div class="formula"><span class="f-sub">She</span> gave <span class="f-obj">me</span> <span class="f-adj">her</span> book. The red one is <span class="f-pro">hers</span>. She made it herself.</div></div>
+        <div class="job"><span class="num">01 · DOER</span><strong>Subject</strong><small>Performs the verb. Usually comes before it.</small><span class="ask">Who does it?</span></div>
+        <div class="job"><span class="num">02 · RECEIVER</span><strong>Object</strong><small>Receives the action or follows a preposition.</small><span class="ask">Who receives it?</span></div>
+        <div class="job"><span class="num">03 · OWNER + THING</span><strong>Possessive adjective</strong><small>Describes a noun, so the noun must follow.</small><span class="ask">Is a noun next?</span></div>
+        <div class="job"><span class="num">04 · OWNER ALONE</span><strong>Possessive pronoun</strong><small>Replaces owner + noun. No noun follows.</small><span class="ask">Does it stand alone?</span></div>
+        <div class="job"><span class="num">05 · RETURN</span><strong>Reflexive</strong><small>Subject and object are the same — or it adds emphasis.</small><span class="ask">Does it come back?</span></div>
+      </div><div class="formula"><span class="f-text"><span class="f-sub">She</span> gave <span class="f-obj">me</span> <span class="f-adj">her</span> book. The red one is <span class="f-pro">hers</span>. She made it <span class="f-ref">herself</span>.</span><button class="say sm" data-say="She gave me her book. The red one is hers. She made it herself." data-rate=".85"></button></div></div>
     </div></section>
 
+    <!-- 03 MAP -->
     <section id="map"><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">02 · Complete reference</div><h2>One map. Every form.</h2></div><p>Read each row horizontally. It follows one grammatical person across every possible job. “You” covers tú, usted, ustedes, and vosotros/as; context tells us whether it is singular or plural.</p></div>
-      <div class="table-shell reveal"><div class="table-scroll"><table class="pronoun-table">
-        <thead><tr><th>Person<span>Spanish reference</span></th><th>Subject<span>before the verb</span></th><th>Object<span>after verb/preposition</span></th><th>Possessive adjective<span>must have a noun</span></th><th>Possessive pronoun<span>replaces the noun</span></th><th>Reflexive<span>returns to subject</span></th></tr></thead>
-        <tbody>
-          <tr><td>yo</td><td><b>I</b></td><td><b>me</b></td><td><b>my</b></td><td><b>mine</b></td><td><b>myself</b></td></tr>
-          <tr><td>tú / usted</td><td><b>you</b></td><td><b>you</b> <span class="tag same">same</span></td><td><b>your</b></td><td><b>yours</b></td><td><b>yourself</b></td></tr>
-          <tr><td>él</td><td><b>he</b></td><td><b>him</b></td><td><b>his</b></td><td><b>his</b> <span class="tag same">same</span></td><td><b>himself</b></td></tr>
-          <tr><td>ella</td><td><b>she</b></td><td><b>her</b></td><td><b>her</b> <span class="tag same">same</span></td><td><b>hers</b></td><td><b>herself</b></td></tr>
-          <tr><td>eso / animal / thing</td><td><b>it</b></td><td><b>it</b> <span class="tag same">same</span></td><td><b>its</b></td><td><b>—</b> <span class="tag none">not normally used</span></td><td><b>itself</b></td></tr>
-          <tr><td>nosotros/as</td><td><b>we</b></td><td><b>us</b></td><td><b>our</b></td><td><b>ours</b></td><td><b>ourselves</b></td></tr>
-          <tr><td>ustedes / vosotros/as</td><td><b>you</b></td><td><b>you</b> <span class="tag same">same</span></td><td><b>your</b></td><td><b>yours</b></td><td><b>yourselves</b></td></tr>
-          <tr><td>ellos / ellas</td><td><b>they</b></td><td><b>them</b></td><td><b>their</b></td><td><b>theirs</b></td><td><b>themselves</b></td></tr>
-        </tbody></table></div><div class="table-note"><strong>Important correction:</strong><span>The independent possessive form is <b>yours</b>, not <b>your</b>. Say “This book is yours.” Use <b>your</b> only before a noun: “This is your book.”</span></div></div>
+      <div class="section-head reveal"><div><div class="eyebrow">Exposure · 03 <i>· Complete reference</i></div><h2>One map. Every form.</h2></div><p>Read each row horizontally: one person across every job. “You” covers tú, usted, ustedes and vosotros — context tells us if it is singular or plural. <span class="needs-tts">Tap any form to hear it; tap ▶ to hear the full row, then say it out loud.</span></p></div>
+      <div class="table-shell reveal"><div class="table-scroll"><table class="pronoun-table" id="mapTable">
+        <thead><tr><th>Person<span>Spanish reference</span></th><th>Subject<span>before the verb</span></th><th>Object<span>after verb / preposition</span></th><th>Possessive adjective<span>must have a noun</span></th><th>Possessive pronoun<span>replaces the noun</span></th><th>Reflexive<span>returns to subject</span></th></tr></thead>
+        <tbody></tbody></table></div><div class="table-note"><strong>Precision note:</strong><span>The independent possessive is <b>yours</b>, never “your”. Say “This book is yours.” Use <b>your</b> only before a noun: “This is your book.”</span></div></div>
     </div></section>
 
+    <!-- 04 FIVE JOBS -->
     <section id="forms"><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">03 · Five grammatical jobs</div><h2>Position reveals meaning.</h2></div><p>Select a form to see its sentence position, purpose, and the contrast that makes it different from the other four.</p></div>
-      <div class="switcher reveal" role="tablist"><button class="on" data-form="subject">Subject</button><button data-form="object">Object</button><button data-form="adjective">Possessive adjective</button><button data-form="pronoun">Possessive pronoun</button><button data-form="reflexive">Reflexive</button></div>
+      <div class="section-head reveal"><div><div class="eyebrow">Perception · 04 <i>· Five grammatical jobs</i></div><h2>Position reveals meaning.</h2></div><p>Select a job to see its sentence position, its purpose, and the question that identifies it in under a second.</p></div>
+      <div class="switcher reveal" role="tablist"><button class="on" data-form="sub">Subject</button><button data-form="obj">Object</button><button data-form="adj">Possessive adjective</button><button data-form="pro">Possessive pronoun</button><button data-form="ref">Reflexive</button></div>
       <div class="lesson-panel reveal" id="lessonPanel"></div>
     </div></section>
 
-    <section><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">04 · Contrasts that matter</div><h2>Similar forms, different logic.</h2></div><p>Most mistakes disappear when you ask one small question: “Is a noun coming next?” Then check whether the form is doing or receiving the action.</p></div>
-      <div class="contrast-grid">
-        <article class="contrast reveal"><h3>My vs. mine</h3><div class="pair good"><span class="mark">✓</span><p>This is <b>my house</b>.<small>“My” describes the noun “house.”</small></p></div><div class="pair good"><span class="mark">✓</span><p>This house is <b>mine</b>.<small>“Mine” replaces “my house.”</small></p></div><div class="pair bad"><span class="mark">×</span><p>This is mine house.<small>A possessive pronoun cannot describe a following noun.</small></p></div></article>
-        <article class="contrast reveal"><h3>Her vs. hers</h3><div class="pair good"><span class="mark">✓</span><p>I called <b>her</b>.<small>Object: she receives the action.</small></p></div><div class="pair good"><span class="mark">✓</span><p><b>Her recipe</b> is excellent.<small>Possessive adjective + noun.</small></p></div><div class="pair good"><span class="mark">✓</span><p>The recipe is <b>hers</b>.<small>Possessive pronoun; no noun follows.</small></p></div></article>
-        <article class="contrast reveal"><h3>Its vs. it’s</h3><div class="pair good"><span class="mark">✓</span><p>The dog moved <b>its tail</b>.<small>“Its” shows possession. No apostrophe.</small></p></div><div class="pair good"><span class="mark">✓</span><p><b>It’s</b> happy.<small>“It’s” contracts “it is” or “it has.”</small></p></div><div class="pair bad"><span class="mark">×</span><p>The dog moved it’s tail.<small>Expand it: “it is tail” proves this is incorrect.</small></p></div></article>
-        <article class="contrast reveal"><h3>Subject vs. object</h3><div class="pair good"><span class="mark">✓</span><p><b>She</b> is with <b>us</b>.<small>She = subject; us follows the preposition “with.”</small></p></div><div class="pair good"><span class="mark">✓</span><p><b>I</b> am with <b>her</b>.<small>I performs “am”; her follows “with.”</small></p></div><div class="pair bad"><span class="mark">×</span><p>Her is with we.<small>Object forms cannot fill these subject/object positions.</small></p></div></article>
+    <!-- 05 VOICE LAB -->
+    <section id="lab"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Prosody · 05 <i>· Voice lab</i></div><h2>Same sentence. New person.</h2></div><p>Pick a person. The five lines keep the same structure — only the pronoun and the verb agreement move. Listen, then say each line: the lab transcribes you and marks every word. <span class="needs-sr">Allow the microphone when your browser asks.</span></p></div>
+      <div class="lab reveal">
+        <aside class="persona on-dark">
+          <div class="lbl">Choose a person</div>
+          <div class="chips" id="labChips"></div>
+          <div class="big" id="labBig">I</div><div class="es" id="labEs">yo</div>
+          <div class="rotation"><div class="lbl">Rotation drill · say the row fast</div><div class="forms" id="labRow"></div><div class="acts"><button class="say sm" id="rowSay" aria-label="Hear the row"></button><button class="mic" id="rowMic" aria-label="Say the row"></button><span class="lab-note needs-sr" style="color:#bdb8cf">Say it in one breath.</span></div><div class="heard" id="rowHeard"></div></div>
+        </aside>
+        <div class="lines" id="labLines"></div>
       </div>
     </div></section>
 
+    <!-- 06 TRAPS -->
+    <section id="traps"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Integration · 06 <i>· Interference map</i></div><h2>Eight traps Spanish sets for you.</h2></div><p>Most pronoun errors are not English mistakes. They are Spanish logic leaking into English. Name the leak and it stops. Hear every correct version — your ear needs the right model, not the wrong one.</p></div>
+      <div class="traps">
+        <article class="trap reveal"><span class="tn">Trap 01 · “su”</span><h3>One Spanish word, five owners.</h3><div class="pair bad"><span class="mark">×</span><p><s>My mother loves his garden.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>My mother loves <b>her</b> garden.</p><button class="say sm" data-say="My mother loves her garden."></button></div><p class="why">“Su” hides the owner. English shows it: <b>his</b> (él), <b>her</b> (ella), <b>its</b> (cosa), <b>their</b> (ellos), <b>your</b> (usted). Look at the owner, never at the thing.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 02 · dropped subject</span><h3>English never leaves the seat empty.</h3><div class="pair bad"><span class="mark">×</span><p><s>Is important. / Works in Bogotá.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p><b>It</b> is important. <b>She</b> works in Bogotá.</p><button class="say sm" data-say="It is important. She works in Bogotá."></button></div><p class="why">Weather, time, opinions and distances also need <b>it</b>: It is raining. It is late. It is far.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 03 · “me and…”</span><h3>Remove the other person.</h3><div class="pair bad"><span class="mark">×</span><p><s>Me and Ana study together.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>Ana and <b>I</b> study together. She called Ana and <b>me</b>.</p><button class="say sm" data-say="Ana and I study together. She called Ana and me."></button></div><p class="why">Delete “Ana and”: <i>I study</i> ✓ · <i>She called me</i> ✓. The test never fails. Courtesy puts the other person first.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 04 · my vs. mine</span><h3>Is a noun coming next?</h3><div class="pair bad"><span class="mark">×</span><p><s>This is mine car.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>This is <b>my</b> car. This car is <b>mine</b>.</p><button class="say sm" data-say="This is my car. This car is mine."></button></div><p class="why">Noun next → <b>my, your, her, our, their</b>. Nothing next → <b>mine, yours, hers, ours, theirs</b>.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 05 · its vs. it’s</span><h3>The apostrophe is not possession here.</h3><div class="pair bad"><span class="mark">×</span><p><s>The dog moved it’s tail.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>The dog moved <b>its</b> tail. <b>It’s</b> happy.</p><button class="say sm" data-say="The dog moved its tail. It's happy."></button></div><p class="why">Expand it: “it is tail” is impossible. <b>It’s</b> = it is / it has. <b>Its</b> = possession.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 06 · body parts</span><h3>English names the owner of the body.</h3><div class="pair bad"><span class="mark">×</span><p><s>I wash the hands. She broke the arm.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>I wash <b>my</b> hands. She broke <b>her</b> arm.</p><button class="say sm" data-say="I wash my hands. She broke her arm."></button></div><p class="why">Spanish uses the article (“me lavo las manos”). English uses the possessive adjective.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 07 · lo / la / le</span><h3>Object pronouns move after the verb.</h3><div class="pair bad"><span class="mark">×</span><p><span class="es-src">Lo vi →</span> <s>I him saw.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>I saw <b>him</b>. I bought <b>it</b>. I called <b>her</b>.</p><button class="say sm" data-say="I saw him. I bought it. I called her."></button></div><p class="why">Spanish puts the object before the verb. English puts it <b>after</b>: subject → verb → object. “Lo” can be <b>him</b> or <b>it</b> — decide by the person or thing.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 08 · fake formality</span><h3>“Myself” does not sound more polite.</h3><div class="pair bad"><span class="mark">×</span><p><s>Please contact myself for details.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>Please contact <b>me</b> for details.</p><button class="say sm" data-say="Please contact me for details."></button></div><p class="why">Use a reflexive only when the action returns to the doer (<i>I taught myself</i>) or for emphasis (<i>I did it myself</i>).</p></article>
+      </div>
+    </div></section>
+
+    <!-- 07 STORIES -->
     <section id="stories"><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">05 · Every person in context</div><h2>Follow each form through a story.</h2></div><p>Each paragraph keeps one person active while changing grammatical jobs. Read the colored pronouns and name their job before continuing.</p></div>
-      <div class="stories">
-        <article class="story reveal"><div class="avatar">I</div><div><h3>I · me · my · mine</h3><p><span class="highlight">I</span> love reading books. My friends gave <span class="highlight obj">me</span> this one for <span class="highlight adj">my</span> birthday. It is <span class="highlight adj">my</span> favorite book. No one can take it from <span class="highlight obj">me</span>. It is <span class="highlight pro">mine</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">You</div><div><h3>You · you · your · yours</h3><p><span class="highlight">You</span> are very smart. <span class="highlight adj">Your</span> teacher praised <span class="highlight obj">you</span> for <span class="highlight adj">your</span> work. <span class="highlight">You</span> should be proud of <span class="highlight ref">yourself</span>. Those achievements are <span class="highlight pro">yours</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">He</div><div><h3>He · him · his · his</h3><p><span class="highlight">He</span> is a good singer. I heard <span class="highlight obj">him</span> sing yesterday. <span class="highlight adj">His</span> voice is amazing. <span class="highlight">He</span> should share <span class="highlight adj">his</span> talent with the world. Those songs are <span class="highlight pro">his</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">She</div><div><h3>She · her · her · hers</h3><p><span class="highlight">She</span> is a great cook. She invited me to <span class="highlight adj">her</span> house. <span class="highlight adj">Her</span> food was delicious. <span class="highlight">She</span> made everything by <span class="highlight ref">herself</span>. The recipes are <span class="highlight pro">hers</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">It</div><div><h3>It · it · its · itself</h3><p><span class="highlight">It</span> is a cute dog. <span class="highlight">It</span> followed me home. <span class="highlight adj">Its</span> fur is soft and fluffy. I like to play with <span class="highlight obj">it</span>. The dog can entertain <span class="highlight ref">itself</span> with its toys.</p></div></article>
-        <article class="story reveal"><div class="avatar">We</div><div><h3>We · us · our · ours</h3><p><span class="highlight">We</span> are a team. <span class="highlight">We</span> support each other. <span class="highlight adj">Our</span> coach trained <span class="highlight obj">us</span> well. We prepared <span class="highlight ref">ourselves</span>. The final victory is <span class="highlight pro">ours</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">You</div><div><h3>You plural · you · your · yours</h3><p><span class="highlight">You</span> are my friends. You helped me a lot. <span class="highlight adj">Your</span> kindness is appreciated. <span class="highlight">You</span> deserve the best. This celebration is <span class="highlight pro">yours</span>; enjoy <span class="highlight ref">yourselves</span>.</p></div></article>
-        <article class="story reveal"><div class="avatar">They</div><div><h3>They · them · their · theirs</h3><p><span class="highlight">They</span> are my neighbors. <span class="highlight">They</span> moved in last week. <span class="highlight adj">Their</span> house is beautiful. I met <span class="highlight obj">them</span> yesterday. They decorated it <span class="highlight ref">themselves</span>. The style is <span class="highlight pro">theirs</span>.</p></div></article>
-      </div>
+      <div class="section-head reveal"><div><div class="eyebrow">Listening · 07 <i>· Every person in context</i></div><h2>Follow one person through five jobs.</h2></div><p>Listen sentence by sentence and watch the line light up. Then switch on <strong>Quiz mode</strong>: the colors disappear and you name each job yourself.</p></div>
+      <div class="story-bar reveal"><label class="switch"><input type="checkbox" id="quizToggle"> Quiz mode · identify each job</label><span class="sc" id="storyScore">Tap a pronoun to identify its job</span><button class="linkish" id="storyReset">Reset</button></div>
+      <div class="stories" id="storyList"></div>
     </div></section>
 
-    <section><div class="wrap">
-      <div class="section-head reveal"><div><div class="eyebrow">06 · Advanced clarity</div><h2>Three details learners miss.</h2></div><p>These points complete the system and prevent rules from becoming misleading shortcuts.</p></div>
+    <!-- 08 CLARITY -->
+    <section id="clarity"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Integration · 08 <i>· Advanced clarity</i></div><h2>Four details advanced speakers own.</h2></div><p>These points complete the system and stop the rules from becoming misleading shortcuts.</p></div>
       <div class="special-grid">
-        <article class="special reveal"><h3>Singular “they”</h3><p>Use <b>they / them / their / theirs / themselves</b> for a person whose gender is unknown, irrelevant, or nonbinary: “Someone left their phone. I hope they find it.”</p></article>
-        <article class="special reveal"><h3>Reflexive has two uses</h3><p>Return: “She taught <b>herself</b>.” Emphasis: “She made it <b>herself</b>.” Do not use a reflexive simply to sound formal: say “Contact me,” not “Contact myself.”</p></article>
-        <article class="special reveal"><h3>“It” rarely has a possessive pronoun</h3><p>English uses <b>its + noun</b> but normally avoids an independent equivalent of “mine.” Rephrase: “Each animal has its own territory,” not “The territory is its.”</p></article>
+        <article class="special reveal"><h3>Singular “they” <button class="say sm" data-say="Someone left their phone. I hope they find it."></button></h3><p>Use <b>they / them / their / theirs / themselves</b> for one person whose gender is unknown, irrelevant or nonbinary: “Someone left <b>their</b> phone. I hope <b>they</b> find it.”</p></article>
+        <article class="special reveal"><h3>Reflexive has two uses <button class="say sm" data-say="She taught herself. She made it herself."></button></h3><p>Return: “She taught <b>herself</b>.” Emphasis: “She made it <b>herself</b>.” <b>By + reflexive</b> means alone: “I live by <b>myself</b>.”</p></article>
+        <article class="special reveal"><h3>“It” has no “mine” <button class="say sm" data-say="Each animal has its own territory."></button></h3><p>English uses <b>its + noun</b> but avoids an independent form. Rephrase: “Each animal has <b>its own</b> territory,” not “The territory is its.”</p></article>
+        <article class="special reveal"><h3>After “than” and “as” <button class="say sm" data-say="She is taller than me. She is taller than I am."></button></h3><p>Conversation: “She is taller than <b>me</b>.” Formal or with a verb: “She is taller than <b>I am</b>.” Both are correct; “than I” alone sounds stiff.</p></article>
       </div>
     </div></section>
 
-    <section id="practice"><div class="wrap"><div class="practice-shell reveal"><div class="practice-top"><h2>Pronoun check.</h2><div class="score">Score <span id="score">0</span> / <span id="total">10</span></div></div><div class="progress"><span id="bar"></span></div><div id="quiz"></div></div></div></section>
+    <!-- 09 ARENA -->
+    <section id="arena"><div class="wrap"><div class="arena reveal on-dark">
+      <div class="arena-top"><div><div class="eyebrow" style="color:var(--amber)">Retrieval · 09 · The arena</div><h2>Test the logic. Randomly.</h2></div><p>Every session is generated fresh from a bank of <span id="bankCount">100+</span> hand-written situations, each playable in several of six formats. You will not get the same test twice — so you cannot memorize answers, only the logic.</p></div>
+      <div class="modes" role="tablist">
+        <button class="mode on" data-mode="mixed"><small>12 questions</small><b>Mixed session</b><span>All six formats, random order.</span></button>
+        <button class="mode" data-mode="speed"><small>60 seconds</small><b>Speed round</b><span>Person + job → form. Production and speed.</span></button>
+        <button class="mode" data-mode="focus"><small>10 questions</small><b>Focus one job</b><span>Train your weakest job.</span></button>
+      </div>
+      <div class="toggles"><label class="switch needs-sr"><input type="checkbox" id="speakToggle" checked> Speaking questions (microphone)</label><span class="note" id="capNote"></span></div>
+      <div class="stage" id="stage" aria-live="polite"></div>
+    </div></div></section>
+
+    <!-- 10 PROGRESS -->
+    <section id="progress"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Performance · 10 <i>· Visible growth</i></div><h2>Proof you are better than last class.</h2></div><p>Your results stay on this device. Every session updates your accuracy per job, so you always know exactly what to train next — and your teacher can see it in one message.</p></div>
+      <div class="prog">
+        <div>
+          <div class="tiles" id="tiles"></div>
+          <div class="panel" style="margin-top:12px"><h3>Accuracy trend</h3><p class="lead">Last 10 sessions · dashed line = 85% mastery standard</p><div class="spark" id="spark"></div></div>
+        </div>
+        <div class="panel">
+          <h3>Mastery by job</h3><p class="lead">All answers across every session and speed round.</p>
+          <div id="bars"></div>
+          <ul class="checklist" id="checklist"></ul>
+          <div class="seal" id="seal"></div>
+          <div class="report"><label for="studentName">Your name for the report</label><input id="studentName" placeholder="e.g. Angela M." autocomplete="name" maxlength="40"><div class="row"><a class="btn btn-primary" id="sendReport" href="#" target="_blank" rel="noopener">Send my progress to Prof. Germandario</a></div><button class="linkish" id="resetProgress">Reset my progress on this device</button></div>
+        </div>
+      </div>
+    </div></section>
+
+    <div class="wrap"><a class="next-step reveal" href="step00b.html"><div><small>Next in the system</small><b>Step 00b · Verb Mode</b><span>You have the WHO. Now the ACTION: simple vs. progressive.</span></div><span class="btn btn-amber">Continue →</span></a></div>
   </main>
-  <footer class="wrap">ProfGermandario · Pronoun Logic · Personal Pronouns · Class 4</footer>
-  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%27m%20studying%20Pronoun%20Logic%20and%20want%20more%20information." target="_blank" rel="noopener" aria-label="Contact Prof. Germandario on WhatsApp">● <span>WhatsApp</span></a>
+  <footer class="wrap">ProfGermandario · The System · Step 00a · Pronoun Logic</footer>
+
+  <div class="vdock" id="vdock"><div class="vpanel" id="vpanel" role="dialog" aria-label="Voice settings"><h4>Voice settings</h4><label>Accent</label><div class="seg" id="segAccent"><button data-v="en-US">American</button><button data-v="en-GB">British</button></div><label>Default speed</label><div class="seg" id="segRate"><button data-v="0.72">Slow</button><button data-v="0.92">Natural</button><button data-v="1.08">Fast</button></div><button class="pill-btn" data-say="I, me, my, mine, myself.">Test the voice</button><p class="meta" id="voiceMeta"></p></div><button class="vbtn" id="vbtn" aria-expanded="false" aria-controls="vpanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg><span class="vlabel">Voice</span><em id="vtag">US · 0.92</em></button></div>
+  <div class="jobpop" id="jobPop" role="dialog" aria-label="Choose the job"><div class="q">What job does it do?</div><button data-j="sub" class="jp sub">Subject</button><button data-j="obj" class="jp obj">Object</button><button data-j="adj" class="jp adj">Poss. adjective</button><button data-j="pro" class="jp pro">Poss. pronoun</button><button data-j="ref" class="jp ref">Reflexive</button></div>
+  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%27m%20studying%20Step%2000a%20%C2%B7%20Pronoun%20Logic%20and%20want%20more%20information." target="_blank" rel="noopener" aria-label="Contact Prof. Germandario on WhatsApp">● <span>WhatsApp</span></a>
 
   <script>
-    const lessons={
-      subject:{form:"I · you · he · she · it · we · they",title:"Subject pronouns",position:"SUBJECT + VERB",definition:"The subject performs the action or carries the state. English normally states it explicitly before the verb.",examples:[["She works here.","She","She performs the action works."],["They are ready.","They","They is the subject of are."],["My brother and I study together.","I","Use I—not me—because the complete phrase is the subject."]],cls:""},
-      object:{form:"me · you · him · her · it · us · them",title:"Object pronouns",position:"VERB / PREPOSITION + OBJECT",definition:"The object receives the action. The same forms also follow prepositions such as with, for, to, from, about, and between.",examples:[["The teacher called me.","me","Me receives the action called."],["This gift is for her.","her","Her follows the preposition for."],["Come with us.","us","Us follows the preposition with."]],cls:"obj"},
-      adjective:{form:"my · your · his · her · its · our · their",title:"Possessive adjectives",position:"POSSESSIVE ADJECTIVE + NOUN",definition:"These forms identify the owner but cannot stand alone. A noun—or a noun phrase—must follow them.",examples:[["That is my blue car.","my","My describes the noun phrase blue car."],["Their house is beautiful.","Their","Their tells us who owns the house."],["The dog moved its tail.","its","Its shows possession and never takes an apostrophe."]],cls:"adj"},
-      pronoun:{form:"mine · yours · his · hers · ours · theirs",title:"Possessive pronouns",position:"NO NOUN AFTER THE FORM",definition:"These forms replace a complete possessive adjective + noun phrase. They avoid repetition and stand independently.",examples:[["This house is mine.","mine","Mine means my house."],["Her friend is also mine.","mine","Mine means my friend too."],["That victory is ours.","ours","Ours means our victory."]],cls:"pro"},
-      reflexive:{form:"myself · yourself · himself · herself · itself · ourselves · yourselves · themselves",title:"Reflexive pronouns",position:"SUBJECT = OBJECT / EMPHASIS",definition:"Use a reflexive when the action returns to its subject or when you want to emphasize that the subject did something without help.",examples:[["He taught himself English.","himself","He is both the teacher and the learner."],["She made it herself.","herself","Herself adds emphasis: nobody helped her."],["We prepared ourselves.","ourselves","The action of preparing returns to we."]],cls:"ref"}
+  (function(){
+    "use strict";
+    const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+    const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+    const rand=a=>a[Math.floor(Math.random()*a.length)];
+    const cap=w=>w==="I"?"I":w.charAt(0).toUpperCase()+w.slice(1);
+    const WA="573197894038";
+    const ICON={
+      play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+      mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>'
     };
-    const panel=document.querySelector('#lessonPanel');
-    function renderLesson(key){const l=lessons[key];panel.innerHTML=`<article class="definition"><span class="position">${l.position}</span><div class="big-form">${l.form.split(' · ')[0]}</div><h3>${l.title}</h3><p>${l.definition}</p></article><article class="examples">${l.examples.map(e=>`<div class="example"><p>${e[0].replace(e[1],`<span class="highlight ${l.cls}">${e[1]}</span>`)}</p><small>${e[2]}</small></div>`).join('')}</article>`}
-    renderLesson('subject');document.querySelectorAll('[data-form]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-form]').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderLesson(b.dataset.form)}));
-    const questions=[
-      {q:"___ invited me to dinner.",a:["She","Her","Hers","Herself"],c:0,e:"The blank performs “invited,” so it needs the subject form she."},
-      {q:"I spoke with ___ after class.",a:["he","his","him","himself"],c:2,e:"After a preposition such as with, use an object pronoun: him."},
-      {q:"This is ___ new phone.",a:["mine","my","me","myself"],c:1,e:"A noun follows, so use the possessive adjective my."},
-      {q:"That red phone is ___.",a:["your","you","yours","yourself"],c:2,e:"No noun follows; yours replaces your phone."},
-      {q:"The cat is cleaning ___.",a:["it","its","itself","it's"],c:2,e:"The cat performs and receives the action, so use itself."},
-      {q:"Our coach trained ___ well.",a:["we","our","ours","us"],c:3,e:"Us receives the action trained, so it is an object."},
-      {q:"The students finished ___ project.",a:["them","their","theirs","themselves"],c:1,e:"Project is a noun; their identifies its owners."},
-      {q:"These seats are ___.",a:["our","us","ours","ourselves"],c:2,e:"Ours stands alone and means our seats."},
-      {q:"The dog moved ___ tail.",a:["it's","its","it","itself"],c:1,e:"Its is the possessive form. It’s would mean it is."},
-      {q:"Maria and ___ work together.",a:["me","mine","I","myself"],c:2,e:"The complete phrase is the subject, so use I: Maria and I."}
+    const sayBtn=(text,opts={})=>`<button class="say${opts.sm?" sm":""}" data-say="${esc(text)}"${opts.rate?` data-rate="${opts.rate}"`:""} aria-label="${esc(opts.label||"Listen")}">${ICON.play}</button>`;
+    const pillSay=(text,label,rate,dark)=>`<button class="pill-btn${dark?" dark":""}" data-say="${esc(text)}" data-rate="${rate}">${ICON.play}${label}</button>`;
+
+    /* ───────── Core data ───────── */
+    const PERSONS=[
+      {id:"i",label:"I",es:"yo",f:{sub:"I",obj:"me",adj:"my",pro:"mine",ref:"myself"}},
+      {id:"you",label:"you",es:"tú / usted",f:{sub:"you",obj:"you",adj:"your",pro:"yours",ref:"yourself"}},
+      {id:"he",label:"he",es:"él",f:{sub:"he",obj:"him",adj:"his",pro:"his",ref:"himself"}},
+      {id:"she",label:"she",es:"ella",f:{sub:"she",obj:"her",adj:"her",pro:"hers",ref:"herself"}},
+      {id:"it",label:"it",es:"eso · animal · cosa",f:{sub:"it",obj:"it",adj:"its",pro:null,ref:"itself"}},
+      {id:"we",label:"we",es:"nosotros / nosotras",f:{sub:"we",obj:"us",adj:"our",pro:"ours",ref:"ourselves"}},
+      {id:"youpl",label:"you (plural)",es:"ustedes · vosotros",f:{sub:"you",obj:"you",adj:"your",pro:"yours",ref:"yourselves"}},
+      {id:"they",label:"they",es:"ellos / ellas",f:{sub:"they",obj:"them",adj:"their",pro:"theirs",ref:"themselves"}}
     ];
-    let qi=0,score=0,locked=false;const quiz=document.querySelector('#quiz');
-    function drawQuiz(){locked=false;const x=questions[qi];quiz.innerHTML=`<div class="question-label">Question ${qi+1} of ${questions.length}</div><div class="question">${x.q}</div><div class="answers">${x.a.map((a,i)=>`<button class="answer" data-i="${i}">${a}</button>`).join('')}</div><div class="feedback" id="feedback">Choose the form that matches the blank’s grammatical job.</div><button class="next" id="next">${qi===questions.length-1?'See result':'Next question →'}</button>`;document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',answer));document.querySelector('#next').addEventListener('click',next);updateProgress()}
-    function answer(e){if(locked)return;locked=true;const chosen=+e.currentTarget.dataset.i,correct=questions[qi].c;document.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');if(i===chosen&&i!==correct)b.classList.add('wrong')});if(chosen===correct)score++;document.querySelector('#score').textContent=score;document.querySelector('#feedback').innerHTML=`<strong>${chosen===correct?'Correct.':'Not quite.'}</strong> ${questions[qi].e}`;document.querySelector('#next').classList.add('show')}
-    function next(){qi++;if(qi<questions.length)drawQuiz();else showResult()}
-    function updateProgress(){document.querySelector('#bar').style.width=`${(qi/questions.length)*100}%`}
-    function showResult(){document.querySelector('#bar').style.width='100%';const msg=score>=9?'Pronoun logic mastered.':score>=7?'Strong work—review the contrasts once more.':'Review the five jobs, then try again.';quiz.innerHTML=`<div class="result"><div class="result-number">${score}/10</div><h3 class="display">${msg}</h3><button class="btn btn-primary" id="restart">Try again ↺</button></div>`;document.querySelector('#restart').addEventListener('click',()=>{qi=0;score=0;document.querySelector('#score').textContent=0;drawQuiz()})}
-    drawQuiz();
-    const revealObserver=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>revealObserver.observe(e));
-    const sections=[...document.querySelectorAll('header[id],section[id]')],links=[...document.querySelectorAll('.nav-shell a')];const navObserver=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-20% 0px -70%'});sections.forEach(s=>navObserver.observe(s));
+    const P=Object.fromEntries(PERSONS.map(p=>[p.id,p]));
+    const JOB_KEYS=["sub","obj","adj","pro","ref"];
+    const JOB={
+      sub:{name:"Subject",short:"Subject",hint:"does the action",why:"the blank does the action of the verb, so it takes the subject form."},
+      obj:{name:"Object",short:"Object",hint:"receives / after preposition",why:"the blank receives the action or follows a preposition, so it takes the object form."},
+      adj:{name:"Possessive adjective",short:"Poss. adj.",hint:"+ noun",why:"a noun comes right after the blank, so it takes a possessive adjective."},
+      pro:{name:"Possessive pronoun",short:"Poss. pron.",hint:"stands alone",why:"nothing follows the blank — it replaces owner + noun, so it takes a possessive pronoun."},
+      ref:{name:"Reflexive",short:"Reflexive",hint:"returns to the doer",why:"the action returns to the doer (or adds emphasis), so it takes a reflexive."}
+    };
+    const JOB_COLOR={sub:"#ff5a3c",obj:"#15b79e",adj:"#ffb627",pro:"#7b2cbf",ref:"#4950c9"};
+
+    /* ───────── Storage ───────── */
+    const KEY="pg_step00a_v2";
+    const blank=()=>({name:"",sessions:[],speedBest:0,speedRuns:0,jobs:{sub:[0,0],obj:[0,0],adj:[0,0],pro:[0,0],ref:[0,0]},seen:[],lab:0,days:[],story:0});
+    let store=blank();
+    try{const raw=JSON.parse(localStorage.getItem(KEY)||"null");if(raw&&typeof raw==="object"){store=Object.assign(blank(),raw);store.jobs=Object.assign(blank().jobs,raw.jobs||{})}}catch(e){}
+    function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+    const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+    function markDay(){const t=today();if(!store.days.includes(t)){store.days.push(t);store.days=store.days.slice(-120)}}
+    function recordJob(j,ok){if(!store.jobs[j])store.jobs[j]=[0,0];store.jobs[j][1]++;if(ok)store.jobs[j][0]++}
+
+    /* ───────── Voice: speech synthesis ───────── */
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition||null;
+    if(!SR)document.body.classList.add("no-sr");
+    const Voice={tts:"speechSynthesis" in window&&"SpeechSynthesisUtterance" in window,voices:[],pref:{accent:"en-US",rate:0.92}};
+    try{const vp=JSON.parse(localStorage.getItem("pg_voice")||"null");if(vp&&vp.accent)Voice.pref=Object.assign(Voice.pref,vp)}catch(e){}
+    if(!Voice.tts)document.body.classList.add("no-speech");
+    function loadVoices(){if(!Voice.tts)return;Voice.voices=speechSynthesis.getVoices()||[];updateVoiceUI()}
+    if(Voice.tts){loadVoices();if("onvoiceschanged" in speechSynthesis)speechSynthesis.onvoiceschanged=loadVoices}
+    function pickVoice(){
+      const acc=Voice.pref.accent,vs=Voice.voices.filter(v=>(v.lang||"").replace("_","-").toLowerCase()===acc.toLowerCase());
+      const fav=acc==="en-US"?/Samantha|Ava|Allison|Google US English|Aria|Jenny|Microsoft Guy|Alex/i:/Daniel|Serena|Kate|Google UK English|Libby|Sonia|Ryan/i;
+      return vs.find(v=>fav.test(v.name))||vs[0]||Voice.voices.find(v=>(v.lang||"").toLowerCase().startsWith("en"))||null;
+    }
+    let seq=0;
+    function stopAll(){seq++;if(Voice.tts)try{speechSynthesis.cancel()}catch(e){}$$(".playing").forEach(b=>b.classList.remove("playing"));$$(".sent.speaking").forEach(e=>e.classList.remove("speaking"));$$(".line.active").forEach(e=>e.classList.remove("active"))}
+    function utter(text,rate,done){
+      const u=new SpeechSynthesisUtterance(text);u.lang=Voice.pref.accent;u.rate=rate||Voice.pref.rate;u.pitch=1;const v=pickVoice();if(v)u.voice=v;
+      let fired=false;const fin=()=>{if(fired)return;fired=true;done&&done()};u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);
+    }
+    function speak(text,opts={}){
+      if(!Voice.tts||!text)return;
+      if(opts.btn&&opts.btn.classList.contains("playing")){stopAll();return}
+      stopAll();const my=seq;if(opts.btn)opts.btn.classList.add("playing");
+      utter(text,opts.rate,()=>{if(my!==seq)return;if(opts.btn)opts.btn.classList.remove("playing");opts.onend&&opts.onend()});
+    }
+    function speakList(items,opts={}){
+      if(!Voice.tts||!items.length)return;
+      if(opts.btn&&opts.btn.classList.contains("playing")){stopAll();return}
+      stopAll();const my=seq;if(opts.btn)opts.btn.classList.add("playing");let i=0;
+      const next=()=>{if(my!==seq)return;if(i>=items.length){if(opts.btn)opts.btn.classList.remove("playing");opts.onItem&&opts.onItem(-1);opts.onDone&&opts.onDone();return}opts.onItem&&opts.onItem(i);utter(items[i],opts.rate,()=>{if(my!==seq)return;i++;setTimeout(next,280)})};
+      next();
+    }
+    document.addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(!b)return;e.preventDefault();speak(b.dataset.say,{btn:b,rate:b.dataset.rate?+b.dataset.rate:undefined})});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAll()});
+    $$(".say").forEach(b=>{if(!b.innerHTML.trim())b.innerHTML=ICON.play;if(!b.getAttribute("aria-label"))b.setAttribute("aria-label","Listen")});
+
+    /* ───────── Voice: speech recognition ───────── */
+    let rec=null,recBtn=null;
+    function listen(btn,cb){
+      if(!SR){cb({error:"unsupported"});return}
+      if(rec){const old=rec,wasSame=recBtn===btn;old._cancelled=true;try{old.abort()}catch(e){}rec=null;if(recBtn)recBtn.classList.remove("listening");recBtn=null;if(wasSame)return}
+      stopAll();
+      const r=new SR();rec=r;recBtn=btn;r.lang=Voice.pref.accent;r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
+      let got=false;btn&&btn.classList.add("listening");
+      r.onresult=e=>{if(got||r._cancelled)return;got=true;const alts=[...e.results[0]].map(a=>a.transcript);cb({alts})};
+      r.onerror=e=>{if(got||r._cancelled)return;got=true;cb({error:e.error||"error"})};
+      r.onend=()=>{btn&&btn.classList.remove("listening");if(rec===r){rec=null;recBtn=null}if(!got&&!r._cancelled){got=true;cb({error:"no-speech"})}};
+      try{r.start()}catch(err){btn&&btn.classList.remove("listening");rec=null;recBtn=null;if(!got){got=true;cb({error:"start"})}}
+    }
+    const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’‘`']/g,"").replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
+    const toks=s=>norm(s)?norm(s).split(" "):[];
+    const HOMO={their:["there","theyre"],theirs:["theres"],your:["youre"],yours:["yours"],ours:["hours","hour"],its:["its"],hers:["hers"],i:["eye"],our:["are","hour"],him:["hymn"],we:["wee"]};
+    const same=(t,s)=>t===s||(HOMO[t]||[]).includes(s);
+    function compare(target,said){
+      const T=toks(target),S=toks(said),n=T.length,m=S.length;
+      const dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+      for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=same(T[i],S[j])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+      const flags=new Array(n).fill(false);let i=0,j=0;
+      while(i<n&&j<m){if(same(T[i],S[j])){flags[i]=true;i++;j++}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++}
+      const D=String(target).split(/\s+/).map(w=>w.replace(/^[^A-Za-zÀ-ÿ0-9]+|[^A-Za-zÀ-ÿ0-9]+$/g,"")).filter(w=>norm(w));
+      return {T:D.length===n?D:T,flags,score:n?dp[0][0]/n:0};
+    }
+    function best(target,alts){let b=null;for(const a of alts){const c=compare(target,a);c.said=a;if(!b||c.score>b.score)b=c}return b}
+    function heardHTML(res,goal=.8){
+      const pct=Math.round(res.score*100),cls=res.score>=goal?"good":res.score>=.5?"":"low";
+      return `<span class="badge ${cls}">${pct}% match</span>${res.T.map((w,k)=>`<span class="w ${res.flags[k]?"ok":"miss"}">${esc(w)}</span>`).join(" ")}<br><span class="said">You said: “${esc(res.said)}”</span>`;
+    }
+    function micError(err){
+      return {"not-allowed":"Microphone blocked. Allow mic access in your browser settings, then try again.","service-not-allowed":"Speech service not available. Try Chrome or Safari.","no-speech":"I didn’t hear anything. Tap the mic and speak clearly.","audio-capture":"No microphone found on this device.","network":"Speech recognition needs an internet connection.","unsupported":"Speaking practice needs Chrome, Edge or Safari."}[err]||"Something interrupted the microphone. Try again.";
+    }
+
+    /* ───────── Voice dock ───────── */
+    const vpanel=$("#vpanel"),vbtn=$("#vbtn");
+    function updateVoiceUI(){
+      $$("#segAccent button").forEach(b=>b.classList.toggle("on",b.dataset.v===Voice.pref.accent));
+      $$("#segRate button").forEach(b=>b.classList.toggle("on",Math.abs(+b.dataset.v-Voice.pref.rate)<.01));
+      $("#vtag").textContent=(Voice.pref.accent==="en-US"?"US":"UK")+" · "+({"0.72":"Slow","0.92":"Natural","1.08":"Fast"}[String(Voice.pref.rate)]||Voice.pref.rate);
+      const v=Voice.tts?pickVoice():null;
+      $("#voiceMeta").innerHTML=(Voice.tts?(v?`Voice: <b>${esc(v.name)}</b>`:"Loading voices…"):"Audio is not available in this browser.")+"<br>"+(SR?"Speaking feedback: <b>available</b>":"Speaking feedback: not available here — use Chrome, Edge or Safari.");
+    }
+    function setPref(k,v){Voice.pref[k]=v;try{localStorage.setItem("pg_voice",JSON.stringify(Voice.pref))}catch(e){}updateVoiceUI()}
+    vbtn.addEventListener("click",e=>{e.stopPropagation();const s=vpanel.classList.toggle("show");vbtn.setAttribute("aria-expanded",s)});
+    $("#segAccent").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setPref("accent",b.dataset.v)});
+    $("#segRate").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setPref("rate",+b.dataset.v)});
+    document.addEventListener("click",e=>{if(!e.target.closest("#vdock"))vpanel.classList.remove("show")});
+    updateVoiceUI();
+
+    /* ───────── Map table ───────── */
+    $("#mapTable tbody").innerHTML=PERSONS.map(p=>{
+      const f=p.f,row=[f.sub,f.obj,f.adj,f.pro,f.ref].filter(Boolean).map(cap).join(", ")+".";
+      const cell=(w,tag)=>w?`<td><button class="fb" data-say="${esc(w)}">${esc(w)}</button>${tag||""}</td>`:`<td><b>—</b> <span class="tag none">not normally used</span></td>`;
+      const sameTag='<span class="tag same">same</span>';
+      return `<tr><td><span class="rowhead">${sayBtn(row,{sm:true,rate:.78,label:"Hear the row for "+p.label})}${esc(p.es)}</span></td>${cell(f.sub)}${cell(f.obj,f.obj===f.sub?sameTag:"")}${cell(f.adj,f.adj===f.obj&&p.id==="she"?sameTag:"")}${cell(f.pro,f.pro&&f.pro===f.adj?sameTag:"")}${cell(f.ref)}</tr>`;
+    }).join("");
+
+    /* ───────── Five jobs explorer ───────── */
+    const LESSONS={
+      sub:{form:"I · you · he · she · it · we · they",position:"SUBJECT + VERB",ask:"Who does the action?",definition:"The subject performs the action or carries the state. English states it explicitly before the verb — and the verb agrees with it.",examples:[["She works here.","She","She performs the action “works”."],["They are ready.","They","They is the subject of “are”."],["My brother and I study together.","I","Use I — not me — because the complete phrase is the subject."]]},
+      obj:{form:"me · you · him · her · it · us · them",position:"VERB / PREPOSITION + OBJECT",ask:"Who receives it? Is there a preposition before it?",definition:"The object receives the action. The same forms also follow prepositions such as with, for, to, from, about and between.",examples:[["The teacher called me.","me","Me receives the action “called”."],["This gift is for her.","her","Her follows the preposition “for”."],["Come with us.","us","Us follows the preposition “with”."]]},
+      adj:{form:"my · your · his · her · its · our · their",position:"POSSESSIVE ADJECTIVE + NOUN",ask:"Is a noun coming next?",definition:"These forms identify the owner but cannot stand alone. A noun — or a noun phrase — must follow them.",examples:[["That is my blue car.","my","My describes the noun phrase “blue car”."],["Their house is beautiful.","Their","Their tells us who owns the house."],["The dog moved its tail.","its","Its shows possession and never takes an apostrophe."]]},
+      pro:{form:"mine · yours · his · hers · ours · theirs",position:"NO NOUN AFTER THE FORM",ask:"Does it stand alone and replace owner + noun?",definition:"These forms replace a complete possessive adjective + noun. They avoid repetition and stand independently.",examples:[["This house is mine.","mine","Mine means “my house”."],["Her phone is new. Mine is old.","Mine","Mine means “my phone”."],["That victory is ours.","ours","Ours means “our victory”."]]},
+      ref:{form:"myself · yourself · himself · herself · itself · ourselves · yourselves · themselves",position:"SUBJECT = OBJECT / EMPHASIS",ask:"Does the action come back to the doer?",definition:"Use a reflexive when the action returns to its subject, or to emphasize that the subject did it without help.",examples:[["He taught himself English.","himself","He is both the teacher and the learner."],["She made it herself.","herself","Herself adds emphasis: nobody helped her."],["We prepared ourselves.","ourselves","The action of preparing returns to “we”."]]}
+    };
+    const panel=$("#lessonPanel");
+    function renderLesson(key){
+      const l=LESSONS[key];
+      panel.innerHTML=`<article class="definition"><span class="position">${l.position}</span><div class="big-form">${esc(l.form.split(" · ")[0])}</div><h3>${JOB[key].name}</h3><p class="forms">${esc(l.form)}</p><p>${l.definition}</p><div class="askline">Ask: ${esc(l.ask)}</div></article><article class="examples">${l.examples.map(e=>`<div class="example"><div><p>${esc(e[0]).replace(e[1],`<span class="hl ${key}">${e[1]}</span>`)}</p><small>${esc(e[2])}</small></div>${sayBtn(e[0],{sm:true})}</div>`).join("")}<div class="all needs-tts">${pillSay(l.examples.map(e=>e[0]).join(" "),"Hear all three",.88)}</div></article>`;
+    }
+    function setLesson(key){$$("[data-form]").forEach(x=>x.classList.toggle("on",x.dataset.form===key));renderLesson(key)}
+    $$("[data-form]").forEach(b=>b.addEventListener("click",()=>setLesson(b.dataset.form)));
+    setLesson("sub");
+
+    /* ───────── Voice lab ───────── */
+    function labLines(pid){
+      const p=P[pid],f=p.f;
+      if(pid==="it")return[{j:"sub",t:"It is ready, and it works fast.",h:["It","it"],n:"The app is ready."},{j:"obj",t:"The team updated it last night.",h:["it"]},{j:"adj",t:"The app changed its design.",h:["its"]},{j:"pro",t:"The app has its own style.",h:["its own"],n:"No independent form for it — say “its own”."},{j:"ref",t:"The app updates itself.",h:["itself"]}];
+      const be=pid==="i"?"am":(pid==="he"||pid==="she")?"is":"are",work=(pid==="he"||pid==="she")?"works":"work",S=f.sub;
+      return[
+        {j:"sub",t:`${cap(S)} ${be} ready, and ${S} ${work} hard.`,h:[cap(S),S],n:(pid==="he"||pid==="she")?"He / she → is · works. The pronoun steers the verb.":null},
+        {j:"obj",t:`The client called ${f.obj}.`,h:[f.obj]},
+        {j:"adj",t:`This is ${f.adj} notebook.`,h:[f.adj]},
+        {j:"pro",t:`The notebook is ${f.pro}.`,h:[f.pro]},
+        {j:"ref",t:`${cap(S)} trained ${f.ref} to speak fast.`,h:[f.ref]}
+      ];
+    }
+    function highlight(text,words,cls){const list=[...new Set(words)].sort((a,b)=>b.length-a.length).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));return esc(text).replace(new RegExp("\\b("+list.join("|")+")\\b","g"),`<span class="hl ${cls}">$1</span>`)}
+    let labPid="i";
+    const labChips=$("#labChips");
+    labChips.innerHTML=PERSONS.map(p=>`<button class="pchip" data-pid="${p.id}">${esc(p.label)}</button>`).join("");
+    labChips.addEventListener("click",e=>{const b=e.target.closest("[data-pid]");if(b)renderLab(b.dataset.pid)});
+    $("#rowSay").innerHTML=ICON.play;$("#rowMic").innerHTML=ICON.mic;
+    function rowText(pid){const f=P[pid].f;return [f.sub,f.obj,f.adj,f.pro,f.ref].filter(Boolean).map(cap).join(", ")}
+    function renderLab(pid){
+      stopAll();labPid=pid;const p=P[pid];
+      $$(".pchip",labChips).forEach(b=>b.classList.toggle("on",b.dataset.pid===pid));
+      $("#labBig").textContent=p.label==="you (plural)"?"you":p.label;$("#labEs").textContent=p.es+(pid==="youpl"?" · plural":"");
+      $("#labRow").textContent=rowText(pid).replace(/, /g," · ");$("#rowSay").dataset.say=rowText(pid)+".";$("#rowSay").dataset.rate=".8";$("#rowHeard").className="heard";$("#rowHeard").innerHTML="";
+      const L=labLines(pid);
+      $("#labLines").innerHTML=L.map((l,k)=>`<div class="line" data-k="${k}"><span><span class="jp ${l.j}">${JOB[l.j].short}</span></span><div class="txt">${highlight(l.t,l.h,l.j)}${l.n?`<small>${esc(l.n)}</small>`:""}</div><div class="acts">${pillSay(l.t,"Slow",.7,false)}${pillSay(l.t,"Natural","",false)}<button class="mic" data-k="${k}" aria-label="Say this line">${ICON.mic}</button></div><div class="heard"></div></div>`).join("")+
+      `<div class="lines-foot"><div class="group needs-tts"><button class="pill-btn" id="chainSlow">${ICON.play}Chain · slow</button><button class="pill-btn" id="chainNat">${ICON.play}Chain · natural</button></div><p class="lab-note">${SR?"Goal: 80%+ match on each line. Then switch person.":"Listen, pause, repeat aloud. Speaking feedback needs Chrome, Edge or Safari."}</p></div>`;
+      const lines=$$("#labLines .line");
+      const chain=(btn,rate)=>speakList(L.map(l=>l.t),{btn,rate,onItem:i=>lines.forEach((el,k)=>el.classList.toggle("active",k===i))});
+      $("#chainSlow").addEventListener("click",e=>chain(e.currentTarget,.72));
+      $("#chainNat").addEventListener("click",e=>chain(e.currentTarget,undefined));
+      $$("#labLines .mic").forEach(m=>m.addEventListener("click",()=>{
+        const k=+m.dataset.k,line=lines[k],out=$(".heard",line),target=L[k].t;
+        out.className="heard show";out.innerHTML="Listening… say the line.";
+        listen(m,res=>{
+          if(res.error){out.innerHTML=esc(micError(res.error));return}
+          const r=best(target,res.alts);out.innerHTML=heardHTML(r);
+          if(r.score>=.8){line.classList.add("nailed");store.lab++;markDay();save();renderProgress()}
+        });
+      }));
+    }
+    $("#rowMic").addEventListener("click",()=>{
+      const out=$("#rowHeard"),target=rowText(labPid);out.className="heard show";out.innerHTML="Listening… say the whole row.";
+      listen($("#rowMic"),res=>{if(res.error){out.innerHTML=esc(micError(res.error));return}const r=best(target,res.alts);out.innerHTML=heardHTML(r);if(r.score>=.8){store.lab++;markDay();save();renderProgress()}});
+    });
+    renderLab("i");
+
+    /* ───────── Stories ───────── */
+    const STORIES=[
+      {who:"I",title:"I · me · my · mine · myself",s:["[I|sub] love reading books.","[My|adj] friends gave [me|obj] this one for [my|adj] birthday.","No one can take it from [me|obj].","[I|sub] read it by [myself|ref] every night.","This book is [mine|pro]."]},
+      {who:"You",title:"You · you · your · yours · yourself",s:["[You|sub] are very smart.","[Your|adj] teacher praised [you|obj] for [your|adj] work.","[You|sub] should be proud of [yourself|ref].","These achievements are [yours|pro]."]},
+      {who:"He",title:"He · him · his · his · himself",s:["[He|sub] is a great singer.","I heard [him|obj] sing yesterday.","[His|adj] voice is amazing.","[He|sub] wrote the songs [himself|ref].","The new album is [his|pro]."]},
+      {who:"She",title:"She · her · her · hers · herself",s:["[She|sub] is a great cook.","[She|sub] invited me to [her|adj] house.","I thanked [her|obj] for the dinner.","[She|sub] made everything [herself|ref].","The recipes are [hers|pro]."]},
+      {who:"It",title:"It · it · its · itself",s:["[It|sub] is a small, happy dog.","[It|sub] followed me home one night.","[Its|adj] fur is soft.","I feed [it|obj] every morning.","[It|sub] entertains [itself|ref] with a ball."]},
+      {who:"We",title:"We · us · our · ours · ourselves",s:["[We|sub] are a team.","[Our|adj] coach trained [us|obj] hard.","[We|sub] prepared [ourselves|ref] for the final.","The victory is [ours|pro]."]},
+      {who:"You",title:"You (plural) · your · yours · yourselves",s:["[You|sub] are my best friends.","[You|sub] helped me so much this year.","[Your|adj] support changed everything.","I invited [you|obj] here tonight.","This celebration is [yours|pro], so enjoy [yourselves|ref]."]},
+      {who:"They",title:"They · them · their · theirs · themselves",s:["[They|sub] are my new neighbors.","I met [them|obj] yesterday.","[Their|adj] house is beautiful.","[They|sub] decorated it [themselves|ref].","The style is completely [theirs|pro]."]}
+    ];
+    const plain=s=>s.replace(/\[([^|\]]+)\|[a-z]+\]/g,"$1");
+    const marked=s=>esc(s).replace(/\[([^|\]]+)\|([a-z]+)\]/g,'<span class="hl $2" data-job="$2">$1</span>');
+    const storiesEl=$("#storyList");
+    storiesEl.innerHTML=STORIES.map((st,k)=>`<article class="story reveal" data-k="${k}"><div class="avatar">${st.who}</div><div><div class="story-top"><h3>${esc(st.title)}</h3><span class="needs-tts" style="display:flex;gap:6px"><button class="pill-btn story-play" data-k="${k}">${ICON.play}Listen</button></span></div><p>${st.s.map(x=>`<span class="sent">${marked(x)}</span>`).join(" ")}</p></div></article>`).join("");
+    $$(".story-play",storiesEl).forEach(b=>b.addEventListener("click",()=>{const k=+b.dataset.k,sents=$$(".sent",storiesEl.children[k]);speakList(STORIES[k].s.map(plain),{btn:b,rate:.86,onItem:i=>sents.forEach((el,n)=>el.classList.toggle("speaking",n===i))})}));
+    const totalTags=$$(".hl",storiesEl).length;
+    let sCorrect=0,sDone=0;
+    function storyScore(){$("#storyScore").textContent=storiesEl.classList.contains("quiz")?`${sCorrect} correct · ${sDone} / ${totalTags} identified`:"Colors on — switch on Quiz mode to test yourself"}
+    $("#quizToggle").addEventListener("change",e=>{storiesEl.classList.toggle("quiz",e.target.checked);$$(".hl",storiesEl).forEach(h=>e.target.checked?h.setAttribute("tabindex","0"):h.removeAttribute("tabindex"));pop.classList.remove("show");storyScore()});
+    $("#storyReset").addEventListener("click",()=>{$$(".hl",storiesEl).forEach(h=>h.classList.remove("done","missed"));sCorrect=0;sDone=0;pop.classList.remove("show");storyScore()});
+    const pop=$("#jobPop");let popTarget=null;
+    function openPop(h){
+      popTarget=h;const r=h.getBoundingClientRect(),w=264,vw=document.documentElement.clientWidth;
+      let left=r.left+r.width/2-w/2;left=Math.max(10,Math.min(left,vw-w-10));
+      pop.style.left=(left+window.scrollX)+"px";pop.style.top=(r.bottom+window.scrollY+8)+"px";pop.classList.add("show");
+    }
+    storiesEl.addEventListener("click",e=>{const h=e.target.closest(".hl");if(!h||!storiesEl.classList.contains("quiz")||h.classList.contains("done"))return;e.stopPropagation();openPop(h)});
+    storiesEl.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList.contains("hl")&&storiesEl.classList.contains("quiz")&&!e.target.classList.contains("done")){e.preventDefault();openPop(e.target)}});
+    pop.addEventListener("click",e=>{
+      e.stopPropagation();const b=e.target.closest("[data-j]");if(!b||!popTarget)return;
+      const ok=b.dataset.j===popTarget.dataset.job;sDone++;if(ok)sCorrect++;
+      popTarget.classList.add("done");popTarget.title=JOB[popTarget.dataset.job].name;
+      if(!ok){popTarget.classList.add("missed","shake");setTimeout(()=>popTarget&&popTarget.classList.remove("shake"),400)}
+      recordJob(popTarget.dataset.job,ok);store.story++;save();renderProgress();
+      pop.classList.remove("show");popTarget=null;storyScore();
+    });
+    document.addEventListener("click",e=>{if(!e.target.closest("#jobPop"))pop.classList.remove("show")});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"){pop.classList.remove("show");vpanel.classList.remove("show")}});
+    storyScore();
+
+    /* ───────── Exercise banks ───────── */
+    // [sentence, person, job, forced distractor, custom note]
+    const GAP_RAW=[
+      ["___ invited me to dinner.","she","sub"],
+      ["My brother and ___ study together.","i","sub","me","Remove “my brother and”: I study — never “me study”."],
+      ["My parents live in Cali. ___ visit me every month.","they","sub"],
+      ["Where are ___ from, Ana?","you","sub"],
+      ["___ is raining again.","it","sub","it's","English always needs a subject — even for weather: It is raining."],
+      ["Carlos is tired because ___ works at night.","he","sub"],
+      ["___ always practice together on Fridays.","we","sub"],
+      ["___ is important to practice every day.","it","sub",null,"Spanish says “Es importante”. English fills the seat: It is important."],
+      ["Laura is a doctor. ___ helps people every day.","she","sub"],
+      ["Daniel called. ___ is waiting outside.","he","sub"],
+      ["Kids, ___ are going to love this game.","youpl","sub"],
+      ["Juan is my friend. I spoke with ___ after class.","he","obj"],
+      ["Our coach trained ___ well.","we","obj"],
+      ["Mónica called. Please call ___ back.","she","obj"],
+      ["Where are my keys? I can't find ___.","they","obj"],
+      ["The teacher looked at ___ and smiled.","i","obj"],
+      ["I have a new laptop. I use ___ every day.","it","obj"],
+      ["Between you and ___, this plan is weak.","i","obj","I","After a preposition (between) → object form: between you and me."],
+      ["My grandparents are amazing. I love ___.","they","obj"],
+      ["Can you help ___ with our project?","we","obj"],
+      ["Pedro is late. Please wait for ___.","he","obj"],
+      ["Sofía, this gift is for ___.","you","obj"],
+      ["This is ___ new phone.","i","adj","mine"],
+      ["The students finished ___ project.","they","adj"],
+      ["The dog moved ___ tail.","it","adj","it's","It’s = it is. Possession has no apostrophe: its tail."],
+      ["Ana loves ___ job at the hospital.","she","adj","hers"],
+      ["Mr. Ruiz forgot ___ keys in the car.","he","adj"],
+      ["We sold ___ old car last month.","we","adj","ours"],
+      ["Paula, is this ___ jacket?","you","adj","yours"],
+      ["The company changed ___ logo.","it","adj","it's"],
+      ["Kids, please take ___ books.","youpl","adj"],
+      ["I wash ___ hands before dinner.","i","adj",null,"Body parts take a possessive in English: my hands, not “the hands”."],
+      ["Ana, that red phone is ___.","you","pro","your"],
+      ["These seats are ___ — we bought the tickets.","we","pro","our"],
+      ["This house is ___. I bought it in 2020.","i","pro","my"],
+      ["Laura has a new bag. The black bag is ___.","she","pro"],
+      ["Tom had a great idea. The idea was ___, not mine.","he","pro"],
+      ["We have one dog. Our neighbors have three. The dogs in the garden are ___.","they","pro","their"],
+      ["Don't drink that coffee. That coffee is ___!","i","pro"],
+      ["Team, the victory is ___. Enjoy it!","youpl","pro"],
+      ["My car is blue. ___ is red, Carlos.","you","pro","your"],
+      ["Your team won last year. This year, the trophy is ___.","we","pro"],
+      ["The baby cat can't eat by ___ yet.","it","ref",null,"By + reflexive = alone, without help: by itself."],
+      ["Nobody helped Juan. He taught ___ English with videos.","he","ref"],
+      ["She made the cake ___. Nobody helped her.","she","ref"],
+      ["We prepared ___ for the exam.","we","ref"],
+      ["Be careful with that knife! Don't cut ___.","you","ref"],
+      ["They painted the house ___.","they","ref"],
+      ["I looked at ___ in the mirror.","i","ref"],
+      ["Kids, enjoy ___ at the party!","youpl","ref"],
+      ["Did you build this website ___, Marta?","you","ref"],
+      ["The door closes by ___.","it","ref"]
+    ];
+    const GAP=GAP_RAW.map((g,i)=>{const ans=P[g[1]].f[g[2]];return{id:"g"+i,s:g[0],p:g[1],j:g[2],force:g[3]||null,note:g[4]||null,ans,speakable:ans!=="its"&&ans!=="it"}});
+    const BRIDGE_RAW=[
+      {es:"Ella ama a su perro.",en:"She loves ___ dog.",o:["her","his","its","their"],j:"adj",n:"“Su” → mira al dueño, no a la cosa: ella → her."},
+      {es:"Él vendió su carro.",en:"He sold ___ car.",o:["his","her","him","its"],j:"adj",n:"El dueño es él → his."},
+      {es:"Ellos visitaron a su abuela.",en:"They visited ___ grandmother.",o:["their","his","them","theirs"],j:"adj",n:"Dueños: ellos → their (y sigue un sustantivo)."},
+      {es:"El perro movió su cola.",en:"The dog moved ___ tail.",o:["its","it's","his","their"],j:"adj",n:"Cosa o animal → its. It’s = it is."},
+      {es:"Usted olvidó su llave.",en:"You forgot ___ key.",o:["your","yours","his","you"],j:"adj",n:"“Su” de usted → your."},
+      {es:"Lo vi ayer. (a Juan)",en:"I saw ___ yesterday.",o:["him","he","his","it"],j:"obj",n:"“Lo” = Juan, una persona → him. Va después del verbo."},
+      {es:"Lo compré ayer. (el libro)",en:"I bought ___ yesterday.",o:["it","him","its","he"],j:"obj",n:"“Lo” = el libro, una cosa → it."},
+      {es:"La llamé anoche. (a María)",en:"I called ___ last night.",o:["her","she","hers","it"],j:"obj",n:"“La” = María → her (objeto)."},
+      {es:"Le di el libro. (a ella)",en:"I gave ___ the book.",o:["her","she","hers","him"],j:"obj",n:"“Le” no muestra género; el contexto sí: a ella → her."},
+      {es:"Nos invitaron a la fiesta.",en:"They invited ___ to the party.",o:["us","we","our","ours"],j:"obj",n:"Recibimos la acción → us."},
+      {es:"Trabaja en Bogotá. (ella)",en:"___ works in Bogotá.",o:["She","Her","Hers","∅ (no word)"],j:"sub",n:"El inglés nunca elimina el sujeto: el verbo no dice quién."},
+      {es:"Es importante.",en:"___ is important.",o:["It","∅ (no word)","Its","This"],j:"sub",n:"“Es importante” no tiene sujeto visible. En inglés: It is important."},
+      {es:"Llueve mucho en abril.",en:"___ rains a lot in April.",o:["It","∅ (no word)","Its","There"],j:"sub",n:"Clima, hora, distancia → It."},
+      {es:"Me lavo las manos.",en:"I wash ___ hands.",o:["my","the","me","myself"],j:"adj",n:"Partes del cuerpo: el inglés usa posesivo → my hands."},
+      {es:"Se cortó con el cuchillo. (él)",en:"He cut ___ with the knife.",o:["himself","him","his","hisself"],j:"ref",n:"La acción regresa a él → himself. “Hisself” no existe."},
+      {es:"Es mío.",en:"It's ___.",o:["mine","my","me","myself"],j:"pro",n:"Sin sustantivo después → mine."},
+      {es:"¿Es tuyo este celular?",en:"Is this phone ___?",o:["yours","your","you","yourself"],j:"pro",n:"Solo, sin sustantivo → yours."},
+      {es:"Su casa es grande. (de ellos)",en:"___ house is big.",o:["Their","His","Her","Theirs"],j:"adj",n:"Dueños: ellos, y sigue “house” → Their."},
+      {es:"Ella aprendió inglés sola.",en:"She learned English by ___.",o:["herself","her","hers","she"],j:"ref",n:"By + reflexivo = sola, sin ayuda."},
+      {es:"Se lo dije. (a ellos)",en:"I told ___.",o:["them","they","their","theirs"],j:"obj",n:"Ellos reciben la acción → them."},
+      {es:"Este proyecto es nuestro.",en:"This project is ___.",o:["ours","our","us","ourselves"],j:"pro",n:"Sin sustantivo después → ours."},
+      {es:"Somos estudiantes.",en:"___ are students.",o:["We","Us","Our","∅ (no word)"],j:"sub",n:"El sujeto siempre aparece: We are students."},
+      {es:"Mi hermana y yo vivimos juntas.",en:"My sister and ___ live together.",o:["I","me","my","myself"],j:"sub",n:"Quita “my sister and”: I live → I."},
+      {es:"Ella se mira en el espejo.",en:"She looks at ___ in the mirror.",o:["herself","her","hers","she"],j:"ref",n:"Ella hace y recibe la acción → herself."},
+      {es:"Es suyo. (de él)",en:"It's ___.",o:["his","him","he","himself"],j:"pro",n:"Suyo, de él, sin sustantivo después → his."},
+      {es:"Son suyas. (de ellas)",en:"They're ___.",o:["theirs","their","them","hers"],j:"pro",n:"Suyas, de ellas (plural), sin sustantivo → theirs."},
+      {es:"Te llamo mañana.",en:"I'll call ___ tomorrow.",o:["you","your","yours","yourself"],j:"obj",n:"“Te” recibe la acción y va después del verbo → you."}
+    ];
+    const BRIDGE=BRIDGE_RAW.map((b,i)=>Object.assign({id:"b"+i},b));
+    const DET_RAW=[
+      {t:["Me","and","Ana","study","together."],w:0,fix:"Ana and I study together.",j:"sub",n:"Remove “and Ana”: I study. Courtesy puts the other person first."},
+      {t:["This","book","is","your."],w:3,fix:"This book is yours.",j:"pro",n:"No noun follows → yours."},
+      {t:["The","dog","moved","it's","tail."],w:3,fix:"The dog moved its tail.",j:"adj",n:"It’s = it is. Possession → its."},
+      {t:["Him","is","my","brother."],w:0,fix:"He is my brother.",j:"sub",n:"He does the action of “is” → subject form."},
+      {t:["She","called","we","yesterday."],w:2,fix:"She called us yesterday.",j:"obj",n:"We receive the call → object form: us."},
+      {t:["Laura","has","a","new","bag.","Is","that","bag","her?"],w:8,fix:"Laura has a new bag. Is that bag hers?",j:"pro",n:"Nothing follows → hers."},
+      {t:["They","painted","it","theirselves."],w:3,fix:"They painted it themselves.",j:"ref",n:"“Theirselves” does not exist → themselves."},
+      {t:["He","hurt","hisself","at","the","gym."],w:2,fix:"He hurt himself at the gym.",j:"ref",n:"“Hisself” does not exist → himself."},
+      {t:["Please","contact","myself","for","details."],w:2,fix:"Please contact me for details.",j:"obj",n:"The action does not return to the doer → me."},
+      {t:["Between","you","and","I,","the","plan","is","weak."],w:3,fix:"Between you and me, the plan is weak.",j:"obj",n:"After a preposition → object form: me."},
+      {t:["Is","very","important","to","practice."],w:0,fix:"It is very important to practice.",j:"sub",n:"The subject seat is empty. English needs “It is…”."},
+      {t:["This","is","mine","car."],w:2,fix:"This is my car.",j:"adj",n:"A noun follows → my."},
+      {t:["Us","are","ready","for","the","test."],w:0,fix:"We are ready for the test.",j:"sub",n:"Doer of “are” → we."},
+      {t:["I","did","it","by","me."],w:4,fix:"I did it by myself.",j:"ref",n:"By + reflexive = alone, without help."},
+      {t:["The","students","did","his","homework."],w:3,fix:"The students did their homework.",j:"adj",n:"The owners are the students (plural) → their."},
+      {t:["My","mother","loves","his","garden."],w:3,fix:"My mother loves her garden.",j:"adj",ctx:"The garden belongs to my mother.",n:"The owner is a woman → her. Spanish “su” hides this; English shows it."},
+      {t:["Give","it","to","they,","please."],w:3,fix:"Give it to them, please.",j:"obj",n:"After “to” → object form: them."},
+      {t:["Our","house","is","bigger","than","their."],w:5,fix:"Our house is bigger than theirs.",j:"pro",n:"Nothing follows → theirs (= their house)."},
+      {t:["I","love","my","parents.","I","call","they","every","Sunday."],w:6,fix:"I love my parents. I call them every Sunday.",j:"obj",n:"They receive the call → them."},
+      {t:["Sara","and","me","are","from","Medellín."],w:2,fix:"Sara and I are from Medellín.",j:"sub",n:"Remove “Sara and”: I am from Medellín → I."},
+      {t:["Me","and","my","friends","love","this","app."],w:0,fix:"My friends and I love this app.",j:"sub",n:"Remove “and my friends”: I love → I. Other people first."},
+      {t:["She","finished","the","project","by","her."],w:5,fix:"She finished the project by herself.",j:"ref",n:"By + reflexive = alone, without help."},
+      {t:["Those","keys","are","my."],w:3,fix:"Those keys are mine.",j:"pro",n:"Nothing follows → mine."},
+      {t:["Can","you","help","we?"],w:3,fix:"Can you help us?",j:"obj",n:"We receive the help → us."},
+      {t:["Our","car","is","blue.","Their","is","red."],w:4,fix:"Our car is blue. Theirs is red.",j:"pro",n:"No noun after it → theirs (= their car)."}
+    ];
+    const DET=DET_RAW.map((d,i)=>Object.assign({id:"d"+i},d));
+    $("#bankCount").textContent=GAP.length+BRIDGE.length+DET.length;
+
+    /* ───────── Arena ───────── */
+    const stage=$("#stage");
+    const A={mode:"mixed",job:"pro",speakOn:true,sess:null,speed:null,raf:0};
+    try{const so=localStorage.getItem("pg_speakOn");if(so!==null)A.speakOn=so==="1"}catch(e){}
+    $("#speakToggle").checked=A.speakOn;
+    $("#speakToggle").addEventListener("change",e=>{A.speakOn=e.target.checked;try{localStorage.setItem("pg_speakOn",A.speakOn?"1":"0")}catch(err){}if(!A.sess||A.sess.done)renderIntro()});
+    $("#capNote").textContent=!Voice.tts?"Audio unavailable in this browser — listening questions are replaced by logic questions.":(!SR?"Speaking questions need Chrome, Edge or Safari. They are replaced automatically.":"");
+    const TYPE_LABEL={gap:"Logic gap",bridge:"Spanish → English",det:"Error detective",listen:"Listen & choose",dict:"Listen & write",speak:"Say it"};
+    const canTTS=()=>Voice.tts, canSpeak=()=>!!SR&&A.speakOn;
+
+    $$(".mode").forEach(b=>b.addEventListener("click",()=>{$$(".mode").forEach(x=>x.classList.toggle("on",x===b));A.mode=b.dataset.mode;endSpeedLoop();A.sess=null;stopAll();renderIntro()}));
+
+    function renderIntro(){
+      endSpeedLoop();
+      const fm=[["gap","Logic gap","Choose the form the position demands.",true],["bridge","Spanish → English","Beat the “su / lo / le” traps.",true],["det","Error detective","Tap the word that breaks the logic.",true],["listen","Listen & choose","Hear it, then choose.",canTTS()],["dict","Listen & write","Write the missing word.",canTTS()],["speak","Say it","Produce the full sentence aloud.",canSpeak()]];
+      if(A.mode==="speed"){
+        stage.innerHTML=`<div class="intro"><div><div class="qtype">Speed round · 60 seconds</div><h3>Production and speed, not perfection.</h3><p>A person and a job appear. Tap the form. No thinking about Spanish — just the map, fast. Your record: <b>${store.speedBest}</b>. Mastery standard: <b>20+</b>.</p><button class="btn btn-amber" id="go">Start the clock →</button></div><div class="formats"><div class="fmt"><b>she · Object</b>→ her</div><div class="fmt"><b>we · Poss. pronoun</b>→ ours</div><div class="fmt"><b>they · Reflexive</b>→ themselves</div><div class="fmt"><b>I · Poss. adjective</b>→ my</div></div></div>`;
+        $("#go").addEventListener("click",startSpeed);return;
+      }
+      const focus=A.mode==="focus";
+      stage.innerHTML=`<div class="intro"><div><div class="qtype">${focus?"Focus · 10 questions":"Mixed session · 12 questions"}</div><h3>${focus?"Train one job until it is automatic.":"A new test every time."}</h3><p>${focus?"Pick the job. Every question — gap, trap, error, audio — targets it.":"Six formats in random order. Each session pulls fresh items you have not seen recently."}</p>${focus?`<div class="jobpick" id="jobpick">${JOB_KEYS.map(j=>`<button data-j="${j}" class="${j===A.job?"on":""}">${JOB[j].name}</button>`).join("")}</div>`:""}<button class="btn btn-amber" id="go">Start session →</button></div><div class="formats">${fm.map(f=>`<div class="fmt${f[3]?"":" off"}"><b>${f[1]}</b>${f[2]}</div>`).join("")}</div></div>`;
+      if(focus)$("#jobpick").addEventListener("click",e=>{const b=e.target.closest("[data-j]");if(!b)return;A.job=b.dataset.j;$$("#jobpick button").forEach(x=>x.classList.toggle("on",x===b))});
+      $("#go").addEventListener("click",startSession);
+    }
+
+    function pickItem(type,job,used){
+      const src=type==="bridge"?BRIDGE:type==="det"?DET:GAP;
+      let c=src.filter(x=>!used.has(x.id)&&(!job||x.j===job));
+      if(type==="speak")c=c.filter(x=>x.speakable);
+      if(!c.length)return null;
+      const fresh=c.filter(x=>!store.seen.includes(x.id)),pool=fresh.length?fresh:c,it=rand(pool);
+      used.add(it.id);return{type,item:it};
+    }
+    function buildQueue(job){
+      let plan=job?["gap","gap","bridge","det","listen","dict","speak","gap","bridge","det"]:["gap","gap","gap","bridge","bridge","det","det","listen","listen","dict","speak","speak"];
+      plan=plan.map(t=>(t==="listen"||t==="dict")&&!canTTS()?(Math.random()<.5?"gap":"bridge"):t).map(t=>t==="speak"&&!canSpeak()?(Math.random()<.5?"det":"gap"):t);
+      shuffle(plan);
+      const used=new Set(),q=[];
+      for(const t of plan){let it=pickItem(t,job,used)||pickItem("gap",job,used)||pickItem("bridge",job,used)||pickItem("det",job,used);if(it)q.push(it)}
+      return q;
+    }
+    function startSession(){
+      stopAll();const job=A.mode==="focus"?A.job:null;
+      A.sess={queue:buildQueue(job),i:0,res:[],job,done:false};
+      renderQ();stage.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function head(type){
+      const s=A.sess,c=s.res.filter(r=>r.ok).length;
+      return `<div class="qhead"><span class="qtype">${TYPE_LABEL[type]}</span><span class="qcount">${s.i+1} / ${s.queue.length} · ${c} correct</span></div><div class="progress"><span style="width:${(s.i/s.queue.length)*100}%"></span></div>`;
+    }
+    const blankify=s=>esc(s).replace("___",'<span class="blank" id="blank">?</span>');
+    const spoken=s=>s.replace(/\s*\([^)]*\)/g,"").replace(/\s+/g," ").trim();
+    function needsCap(str){const pre=str.split("___")[0].trim();return pre===""||/[.!?]$/.test(pre)}
+    function gapOptions(it){
+      const f=P[it.p].f;let pool=[...new Set(Object.values(f).filter(Boolean))];if(it.p==="it")pool.push("it's");
+      pool=pool.filter(x=>x!==it.ans);const opts=[it.ans];
+      if(it.force&&it.force!==it.ans){opts.push(it.force);pool=pool.filter(x=>x!==it.force)}
+      shuffle(pool);while(opts.length<4&&pool.length)opts.push(pool.shift());
+      const atStart=needsCap(it.s);
+      return shuffle(opts).map(o=>atStart?cap(o):o);
+    }
+    const ansFor=it=>needsCap(it.s)?cap(it.ans):it.ans;
+    const fullGap=it=>it.s.replace("___",ansFor(it));
+
+    function renderQ(){
+      const s=A.sess;if(!s)return;if(s.i>=s.queue.length)return showResult();
+      const {type,item}=s.queue[s.i];s.locked=false;stopAll();
+      let body="";
+      if(type==="gap"||type==="listen"){
+        const full=fullGap(item);
+        body=(type==="listen"?`<div class="listen-row"><button class="bigplay" id="autoPlay" data-say="${esc(spoken(full))}" aria-label="Play the sentence">${ICON.play}</button><div class="t"><b>Listen first.</b>Then choose the word you heard — and confirm it with the logic.</div>${pillSay(spoken(full),"Slow",.68,true)}</div>`:"")+
+          `<div class="question">${blankify(item.s)}</div><div class="answers">${gapOptions(item).map((o,k)=>`<button class="answer" data-v="${esc(o)}"><kbd>${k+1}</kbd>${esc(o)}</button>`).join("")}</div>`;
+      }else if(type==="bridge"){
+        body=`<div class="es-line"><small>ES</small>${esc(item.es)}</div><div class="question">${blankify(item.en)}</div><div class="answers">${shuffle([...item.o]).map((o,k)=>`<button class="answer" data-v="${esc(o)}"><kbd>${k+1}</kbd>${esc(o)}</button>`).join("")}</div>`;
+      }else if(type==="det"){
+        body=`<div class="hint">One word breaks the logic. <b>Tap it.</b></div>${item.ctx?`<div class="ctx">Context: ${esc(item.ctx)}</div>`:""}<div class="tokens">${item.t.map((w,k)=>`<button class="tok" data-k="${k}">${esc(w)}</button>`).join("")}</div>`;
+      }else if(type==="dict"){
+        const full=fullGap(item);
+        body=`<div class="listen-row"><button class="bigplay" id="autoPlay" data-say="${esc(spoken(full))}" aria-label="Play the sentence">${ICON.play}</button><div class="t"><b>Listen and write the missing word.</b>Spelling counts — its ≠ it’s.</div>${pillSay(spoken(full),"Slow",.68,true)}</div><div class="question">${esc(item.s).replace("___",'<input class="dict-in" id="dictIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Missing word">')}</div><div class="fb-actions"><button class="next" id="checkDict">Check</button></div>`;
+      }else if(type==="speak"){
+        const p=P[item.p];
+        body=`<div class="hint">Person: <b>${esc(p.label)}</b> · ${esc(p.es)}</div><div class="question">${blankify(item.s)}</div><div class="speak-row"><button class="micbig" id="micQ" aria-label="Tap and speak">${ICON.mic}</button><div class="t"><b>Tap and say the complete sentence.</b>Your first clear attempt is scored.</div><button class="pill-btn dark" id="skipQ">Skip · no mic now</button></div><div class="heard" id="heardQ"></div>`;
+      }
+      stage.innerHTML=head(type)+body+`<div class="feedback" id="feedback"></div><div class="fb-actions" id="after"></div>`;
+      if(type==="gap"||type==="listen"||type==="bridge")$$(".answer",stage).forEach(b=>b.addEventListener("click",()=>chooseMC(b)));
+      if(type==="det")$$(".tok",stage).forEach(b=>b.addEventListener("click",()=>chooseTok(b)));
+      if(type==="dict"){const inp=$("#dictIn");$("#checkDict").addEventListener("click",checkDict);inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();checkDict()}});setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},50)}
+      if(type==="speak"){$("#micQ").addEventListener("click",doSpeak);$("#skipQ").addEventListener("click",skipQ)}
+      if(type==="listen"||type==="dict"){const ap=$("#autoPlay");speak(ap.dataset.say,{btn:ap})}
+    }
+    function finish(ok,html,sayText){
+      const s=A.sess,{item}=s.queue[s.i];s.locked=true;
+      s.res.push({j:item.j,ok,type:s.queue[s.i].type});recordJob(item.j,ok);
+      $("#feedback").innerHTML=html;
+      const last=s.i===s.queue.length-1;
+      $("#after").innerHTML=(sayText&&Voice.tts?pillSay(sayText,"Hear it correctly",.85,true):"")+`<button class="next" id="nextQ">${last?"See result":"Next question"} →</button>`;
+      $("#nextQ").addEventListener("click",()=>{s.i++;renderQ()});
+      $(".progress span",stage).style.width=((s.i+1)/s.queue.length*100)+"%";
+    }
+    function chooseMC(b){
+      const s=A.sess;if(s.locked)return;const {type,item}=s.queue[s.i];
+      const correct=type==="bridge"?item.o[0]:ansFor(item),ok=b.dataset.v.toLowerCase()===correct.toLowerCase();
+      $$(".answer",stage).forEach(x=>{x.disabled=true;if(x.dataset.v.toLowerCase()===correct.toLowerCase())x.classList.add("correct")});
+      if(!ok)b.classList.add("wrong");
+      const bl=$("#blank");if(bl){bl.textContent=correct==="∅ (no word)"?"—":correct;bl.classList.add("filled")}
+      let html,say;
+      if(type==="bridge"){say=spoken(item.en.replace("___",correct));html=`<strong>${ok?"Correct.":"Not quite."}</strong> ${esc(item.n)}`}
+      else{say=spoken(fullGap(item));html=`<strong>${ok?"Correct.":"Not quite."}</strong> <b>${esc(correct)}</b> — ${JOB[item.j].why}${item.note?`<span class="note">${esc(item.note)}</span>`:""}`}
+      finish(ok,html,say);
+    }
+    function chooseTok(b){
+      const s=A.sess;if(s.locked)return;const item=s.queue[s.i].item,k=+b.dataset.k,ok=k===item.w;
+      $$(".tok",stage).forEach(x=>{x.disabled=true});
+      const culprit=$(`.tok[data-k="${item.w}"]`,stage);culprit.classList.add(ok?"correct":"culprit");if(!ok)b.classList.add("wrong");
+      finish(ok,`<strong>${ok?"Found it.":"The error was “"+esc(item.t[item.w])+"”."}</strong> ✓ ${esc(item.fix)}<span class="note">${esc(item.n)}</span>`,item.fix);
+    }
+    function checkDict(){
+      const s=A.sess;if(s.locked)return;const item=s.queue[s.i].item,inp=$("#dictIn");
+      const v=inp.value.trim().replace(/[’‘]/g,"'").toLowerCase();if(!v){inp.focus();return}
+      const ok=v===item.ans.toLowerCase();inp.disabled=true;inp.classList.add(ok?"ok":"bad");$("#checkDict").remove();
+      finish(ok,`<strong>${ok?"Correct.":"Not quite."}</strong> ${ok?"":`You wrote “${esc(inp.value.trim())}”. `}The word is <b>${esc(ansFor(item))}</b> — ${JOB[item.j].why}${item.note?`<span class="note">${esc(item.note)}</span>`:""}`,spoken(fullGap(item)));
+    }
+    function doSpeak(){
+      const s=A.sess,item=s.queue[s.i].item,out=$("#heardQ"),target=spoken(fullGap(item));
+      out.className="heard show";out.innerHTML=s.locked?"Practice attempt — listening…":"Listening… say the complete sentence.";
+      listen($("#micQ"),res=>{
+        if(!A.sess||A.sess.queue[A.sess.i].item!==item)return;
+        if(res.error){out.innerHTML=esc(micError(res.error));return}
+        const r=best(target,res.alts),pre=spoken(item.s.split("___")[0]),bi=toks(pre).length;
+        out.innerHTML=heardHTML(r,.6);
+        if(s.locked)return;
+        const ok=!!r.flags[bi]&&r.score>=.6;
+        $("#skipQ")&&$("#skipQ").remove();const bl=$("#blank");if(bl){bl.textContent=ansFor(item);bl.classList.add("filled")}
+        finish(ok,`<strong>${ok?"Produced correctly.":r.flags[bi]?"Right pronoun — say the whole sentence more clearly.":"Not quite."}</strong> Model: “${esc(target)}” <b>${esc(ansFor(item))}</b> — ${JOB[item.j].why}<span class="note">Tap the microphone again to practice — your score is already saved.</span>`,target);
+      });
+    }
+    function skipQ(){
+      const s=A.sess;if(s.locked)return;
+      const it=pickItem("gap",s.job,new Set(s.queue.map(q=>q.item.id)))||pickItem("bridge",s.job,new Set(s.queue.map(q=>q.item.id)));
+      if(it){s.queue[s.i]=it;renderQ()}else{s.queue.splice(s.i,1);renderQ()}
+    }
+    function showResult(){
+      const s=A.sess;s.done=true;stopAll();
+      const n=s.res.length,c=s.res.filter(r=>r.ok).length,acc=n?Math.round(c/n*100):0;
+      const per={};JOB_KEYS.forEach(j=>per[j]=[0,0]);s.res.forEach(r=>{per[r.j][1]++;if(r.ok)per[r.j][0]++});
+      let weak=null;JOB_KEYS.forEach(j=>{if(per[j][1]&&per[j][0]<per[j][1]){const a=per[j][0]/per[j][1];if(!weak||a<weak.a)weak={j,a}}});
+      store.sessions.push({t:Date.now(),mode:s.job?"focus":"mixed",job:s.job,c,n,acc});store.sessions=store.sessions.slice(-40);
+      store.seen=[...s.queue.map(q=>q.item.id),...store.seen].slice(0,48);markDay();save();renderProgress();
+      const prev=store.sessions.length>1?store.sessions[store.sessions.length-2].acc:null;
+      const msg=acc>=85?"Mastery level. The logic is automatic.":acc>=70?"Strong. One job still needs attention.":"Rebuild the logic, then test again.";
+      const delta=prev===null?"Your first recorded session.":acc>prev?`+${acc-prev} points vs. your previous session.`:acc===prev?"Same as your previous session.":`${acc-prev} points vs. your previous session.`;
+      stage.innerHTML=`<div class="result"><div class="qtype">${s.job?"Focus · "+JOB[s.job].name:"Mixed session"} · complete</div><div class="result-number">${acc}%</div><h3>${msg}</h3><p class="sub">${c} of ${n} correct · ${delta}</p>
+        <div class="jobres">${JOB_KEYS.map(j=>{const [a,t]=per[j];const pc=t?Math.round(a/t*100):0;return `<div class="jr${!t?" none":weak&&weak.j===j?" weak":""}"><small>${JOB[j].short}</small><b>${t?a+"/"+t:"—"}</b><div class="mini"><span style="width:${pc}%"></span></div></div>`}).join("")}</div>
+        <div class="res-actions">${weak?`<button class="btn btn-ghost" id="review">Review ${JOB[weak.j].name.toLowerCase()} →</button><button class="btn btn-ghost" id="focusWeak">Focus session on it</button>`:""}<button class="btn btn-amber" id="again">New random session ↺</button><a class="btn btn-ghost" href="${waLink(sessionText(acc,c,n,weak))}" target="_blank" rel="noopener">Send result to Prof.</a></div></div>`;
+      $("#again").addEventListener("click",startSession);
+      if(weak){
+        $("#review").addEventListener("click",()=>{setLesson(weak.j);$("#forms").scrollIntoView({behavior:"smooth"})});
+        $("#focusWeak").addEventListener("click",()=>{A.mode="focus";A.job=weak.j;$$(".mode").forEach(x=>x.classList.toggle("on",x.dataset.mode==="focus"));startSession()});
+      }
+    }
+
+    /* Speed round */
+    function startSpeed(){
+      stopAll();A.speed={score:0,tries:0,combo:0,bestCombo:0,last:null,end:performance.now()+60000,locked:false,running:true};
+      nextSpeed();loopSpeed();stage.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function endSpeedLoop(){if(A.speed)A.speed.running=false;cancelAnimationFrame(A.raf)}
+    function loopSpeed(){
+      const sp=A.speed;if(!sp||!sp.running)return;
+      const left=Math.max(0,sp.end-performance.now()),bar=$("#spBar"),tl=$("#spTime");
+      if(bar)bar.style.transform=`scaleX(${left/60000})`;if(tl)tl.textContent=Math.ceil(left/1000)+"s";
+      if(left<=0){sp.running=false;return endSpeed()}
+      A.raf=requestAnimationFrame(loopSpeed);
+    }
+    function nextSpeed(){
+      const sp=A.speed;let pid,j,key;
+      do{pid=rand(PERSONS).id;j=rand(JOB_KEYS);key=pid+j}while(!P[pid].f[j]||key===sp.last);
+      sp.last=key;sp.cur={pid,j,ans:P[pid].f[j]};sp.locked=false;
+      let pool=[...new Set(Object.values(P[pid].f).filter(Boolean))];if(pid==="it")pool.push("it's");
+      const opts=shuffle([sp.cur.ans,...shuffle(pool.filter(x=>x!==sp.cur.ans)).slice(0,3)]);
+      const p=P[pid];
+      stage.innerHTML=`<div class="qhead"><span class="qtype">Speed round · <span id="spTime">60s</span></span><span class="qcount">${sp.score} correct · combo ×${sp.combo}</span></div><div class="speedbar"><span id="spBar" style="transform:scaleX(${Math.max(0,(sp.end-performance.now())/60000)})"></span></div><div class="speed-prompt"><div class="who">${esc(p.label==="you (plural)"?"you (pl.)":p.label)}</div><div class="es">${esc(p.es)}</div><span class="jp ${j}">${JOB[j].name} · ${JOB[j].hint}</span></div><div class="answers">${opts.map((o,k)=>`<button class="answer" data-v="${esc(o)}"><kbd>${k+1}</kbd>${esc(o)}</button>`).join("")}</div>`;
+      $$(".answer",stage).forEach(b=>b.addEventListener("click",()=>speedAnswer(b)));
+    }
+    function speedAnswer(b){
+      const sp=A.speed;if(!sp||!sp.running||sp.locked)return;sp.locked=true;sp.tries++;
+      const ok=b.dataset.v===sp.cur.ans;recordJob(sp.cur.j,ok);
+      if(ok){sp.score++;sp.combo++;sp.bestCombo=Math.max(sp.bestCombo,sp.combo);b.classList.add("correct");stage.classList.add("flash-ok");setTimeout(()=>{stage.classList.remove("flash-ok");if(sp.running)nextSpeed()},160)}
+      else{sp.combo=0;b.classList.add("wrong");$$(".answer",stage).forEach(x=>{if(x.dataset.v===sp.cur.ans)x.classList.add("correct")});stage.classList.add("flash-bad");setTimeout(()=>{stage.classList.remove("flash-bad");if(sp.running)nextSpeed()},700)}
+    }
+    function endSpeed(){
+      const sp=A.speed;const acc=sp.tries?Math.round(sp.score/sp.tries*100):0,record=sp.score>store.speedBest;
+      if(record)store.speedBest=sp.score;store.speedRuns++;markDay();save();renderProgress();
+      stage.innerHTML=`<div class="result"><div class="qtype">Speed round · time</div><div class="result-number">${sp.score}</div><h3>${record?"New personal record.":sp.score>=20?"Mastery speed.":"Keep the hands fast and the mind quiet."}</h3><p class="sub">${sp.tries} attempts · ${acc}% accuracy · best combo ×${sp.bestCombo} · record ${store.speedBest}</p><div class="res-actions" style="margin-top:24px"><button class="btn btn-amber" id="again">Run it again ↺</button><a class="btn btn-ghost" href="${waLink(`Hi Prof. Germandario! Step 00a · Pronoun Logic — Speed round: ${sp.score} correct (${acc}% accuracy). Record: ${store.speedBest}.`)}" target="_blank" rel="noopener">Send result to Prof.</a></div></div>`;
+      $("#again").addEventListener("click",startSpeed);
+    }
+
+    /* Keyboard shortcuts in the arena */
+    document.addEventListener("keydown",e=>{
+      if(e.target.closest&&e.target.closest("input,textarea"))return;
+      const r=$("#arena").getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+      if(/^[1-4]$/.test(e.key)){const b=$$(".answer",stage)[+e.key-1];if(b&&!b.disabled){e.preventDefault();b.click()}}
+      else if(e.key==="Enter"){const n=$("#nextQ");if(n){e.preventDefault();n.click()}}
+    });
+
+    /* ───────── Progress ───────── */
+    function waLink(text){return `https://wa.me/${WA}?text=${encodeURIComponent(text)}`}
+    function jobAcc(j){const [c,t]=store.jobs[j]||[0,0];return t?c/t:null}
+    function weakestJob(){let w=null;JOB_KEYS.forEach(j=>{const a=jobAcc(j);if(a!==null&&(!w||a<w.a))w={j,a}});return w}
+    function streak(){const set=new Set(store.days);let d=new Date(),n=0;const fmt=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");if(!set.has(fmt(d)))d.setDate(d.getDate()-1);while(set.has(fmt(d))){n++;d.setDate(d.getDate()-1)}return n}
+    function mastery(){const strong=store.sessions.filter(s=>s.mode==="mixed"&&s.acc>=85).length;return{strong,speed:store.speedBest,ok:strong>=2&&store.speedBest>=20}}
+    function sessionText(acc,c,n,weak){return `Hi Prof. Germandario! Step 00a · Pronoun Logic${store.name?" — "+store.name:""}\nSession: ${c}/${n} (${acc}%)${weak?"\nWeakest job: "+JOB[weak.j].name:""}\nSessions completed: ${store.sessions.length} · Speed record: ${store.speedBest}`}
+    function reportText(){
+      const sess=store.sessions,last=sess[sess.length-1],bestAcc=sess.length?Math.max(...sess.map(s=>s.acc)):0,w=weakestJob(),m=mastery();
+      return `Hi Prof. Germandario! Progress report · Step 00a · Pronoun Logic${store.name?"\nStudent: "+store.name:""}\nSessions: ${sess.length} · Best: ${bestAcc}%${last?" · Last: "+last.acc+"%":""}\nSpeed record: ${store.speedBest}\nVoice lab lines nailed: ${store.lab}\n`+JOB_KEYS.map(j=>{const a=jobAcc(j);return `${JOB[j].name}: ${a===null?"—":Math.round(a*100)+"%"}`}).join("\n")+`${w?"\nFocus next: "+JOB[w.j].name:""}\nMastery: ${m.ok?"UNLOCKED ✓":"in progress ("+m.strong+"/2 sessions ≥85%, speed "+m.speed+"/20)"}\nDay streak: ${streak()}`;
+    }
+    function renderProgress(){
+      const sess=store.sessions,last=sess[sess.length-1],prev=sess[sess.length-2],bestAcc=sess.length?Math.max(...sess.map(s=>s.acc)):null;
+      const d=last&&prev?last.acc-prev.acc:null;
+      $("#tiles").innerHTML=[
+        ["Sessions",sess.length,sess.length?"tests completed":"start in the arena"],
+        ["Best accuracy",bestAcc===null?"—":bestAcc+"%",last?"last: "+last.acc+"%":"no data yet"],
+        ["Vs. previous",d===null?"—":(d>0?"+":"")+d,d===null?"needs two sessions":`<span class="${d>0?"up":d<0?"down":""}">${d>0?"growing":d<0?"dip — review the weak job":"steady"}</span>`],
+        ["Speed record",store.speedBest,store.speedRuns+" run"+(store.speedRuns===1?"":"s")+" · goal 20"],
+        ["Day streak",streak(),"days in a row"],
+        ["Voice lab",store.lab,"lines said at 80%+"]
+      ].map(t=>`<div class="tile"><small>${t[0]}</small><b>${t[1]}</b><span>${t[2]}</span></div>`).join("");
+      $("#bars").innerHTML=JOB_KEYS.map(j=>{const [c,t]=store.jobs[j]||[0,0],a=t?Math.round(c/t*100):0;return `<div class="bar"><span class="bl">${JOB[j].name}</span><div class="track"><div class="fill" style="width:${a}%;background:${JOB_COLOR[j]}"></div></div><span class="pc">${t?a+"%":"—"}</span></div>`}).join("");
+      const pts=sess.slice(-10);
+      if(pts.length<2){$("#spark").innerHTML=`<div class="empty">Complete two sessions to see your growth line.</div>`}
+      else{
+        const W=320,H=90,pad=10,x=i=>pad+i*(W-2*pad)/(pts.length-1),y=v=>H-pad-(v/100)*(H-2*pad);
+        $("#spark").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Accuracy over the last ${pts.length} sessions"><line x1="${pad}" x2="${W-pad}" y1="${y(85)}" y2="${y(85)}" stroke="#ffb627" stroke-dasharray="4 4" stroke-width="1.5"/><polyline fill="none" stroke="#1a1730" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="${pts.map((p,i)=>x(i)+","+y(p.acc)).join(" ")}"/>${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.acc)}" r="4" fill="${p.acc>=85?"#15b79e":"#ff5a3c"}" stroke="#fff" stroke-width="1.5"><title>${p.acc}%</title></circle>`).join("")}</svg>`;
+      }
+      const m=mastery();
+      $("#checklist").innerHTML=[[m.strong>=1,"First mixed session at 85%+"],[m.strong>=2,"Second mixed session at 85%+"],[m.speed>=20,"Speed round: 20+ correct"],[store.lab>=5,"Voice lab: 5 lines said at 80%+"]].map(c=>`<li><span class="ck ${c[0]?"ok":""}">${c[0]?"✓":""}</span>${c[1]}</li>`).join("");
+      const w=weakestJob();
+      $("#seal").className="seal"+(m.ok?" won":"");
+      $("#seal").innerHTML=m.ok?"★ Pronoun Logic — mastery unlocked. Continue to Step 00b.":w?`Train next: <b>${JOB[w.j].name}</b> (${Math.round(w.a*100)}%)`:"Your first session will set your baseline.";
+      $("#sendReport").href=waLink(reportText());
+    }
+    const nameIn=$("#studentName");nameIn.value=store.name||"";
+    nameIn.addEventListener("input",()=>{store.name=nameIn.value.trim();save();$("#sendReport").href=waLink(reportText())});
+    $("#resetProgress").addEventListener("click",()=>{if(confirm("Reset all progress for this lesson on this device?")){const n=store.name;store=blank();store.name=n;save();renderProgress();if(!A.sess||A.sess.done)renderIntro()}});
+    renderProgress();
+    renderIntro();
+
+    /* ───────── Reveal + nav ───────── */
+    const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("seen");ro.unobserve(e.target)}}),{threshold:.08});
+    $$(".reveal").forEach(e=>ro.observe(e));
+    const sections=$$("section[id]"),links=$$(".nav-shell a");
+    const no=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>{const on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("active",on);if(on&&a.scrollIntoView){const sh=a.parentElement;sh.scrollTo({left:a.offsetLeft-sh.clientWidth/2+a.clientWidth/2,behavior:"smooth"})}})}}),{rootMargin:"-25% 0px -70%"});
+    sections.forEach(s=>no.observe(s));
+  })();
   </script>
 </body>
 </html>

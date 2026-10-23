@@ -158,6 +158,7 @@
     @media(hover:none){.answer kbd{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
+  <script src="../pg-access.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -255,7 +256,7 @@
     </div></section>
 
     <!-- 05 VOICE LAB -->
-    <section id="lab"><div class="wrap">
+    <section id="lab" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Prosody · 05 <i>· Voice lab</i></div><h2>Same sentence. New person.</h2></div><p>Pick a person. The five lines keep the same structure — only the pronoun and the verb agreement move. Listen, then say each line: the lab transcribes you and marks every word. <span class="needs-sr">Allow the microphone when your browser asks.</span></p></div>
       <div class="lab reveal">
         <aside class="persona on-dark">
@@ -269,7 +270,7 @@
     </div></section>
 
     <!-- 06 TRAPS -->
-    <section id="traps"><div class="wrap">
+    <section id="traps" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 06 <i>· Interference map</i></div><h2>Eight traps Spanish sets for you.</h2></div><p>Most pronoun errors are not English mistakes. They are Spanish logic leaking into English. Name the leak and it stops. Hear every correct version — your ear needs the right model, not the wrong one.</p></div>
       <div class="traps">
         <article class="trap reveal"><span class="tn">Trap 01 · “su”</span><h3>One Spanish word, five owners.</h3><div class="pair bad"><span class="mark">×</span><p><s>My mother loves his garden.</s></p><span></span></div><div class="pair good"><span class="mark">✓</span><p>My mother loves <b>her</b> garden.</p><button class="say sm" data-say="My mother loves her garden."></button></div><p class="why">“Su” hides the owner. English shows it: <b>his</b> (él), <b>her</b> (ella), <b>its</b> (cosa), <b>their</b> (ellos), <b>your</b> (usted). Look at the owner, never at the thing.</p></article>
@@ -284,14 +285,14 @@
     </div></section>
 
     <!-- 07 STORIES -->
-    <section id="stories"><div class="wrap">
+    <section id="stories" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Listening · 07 <i>· Every person in context</i></div><h2>Follow one person through five jobs.</h2></div><p>Listen sentence by sentence and watch the line light up. Then switch on <strong>Quiz mode</strong>: the colors disappear and you name each job yourself.</p></div>
       <div class="story-bar reveal"><label class="switch"><input type="checkbox" id="quizToggle"> Quiz mode · identify each job</label><span class="sc" id="storyScore">Tap a pronoun to identify its job</span><button class="linkish" id="storyReset">Reset</button></div>
       <div class="stories" id="storyList"></div>
     </div></section>
 
     <!-- 08 CLARITY -->
-    <section id="clarity"><div class="wrap">
+    <section id="clarity" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 08 <i>· Advanced clarity</i></div><h2>Four details advanced speakers own.</h2></div><p>These points complete the system and stop the rules from becoming misleading shortcuts.</p></div>
       <div class="special-grid">
         <article class="special reveal"><h3>Singular “they” <button class="say sm" data-say="Someone left their phone. I hope they find it."></button></h3><p>Use <b>they / them / their / theirs / themselves</b> for one person whose gender is unknown, irrelevant or nonbinary: “Someone left <b>their</b> phone. I hope <b>they</b> find it.”</p></article>
@@ -302,7 +303,7 @@
     </div></section>
 
     <!-- 09 ARENA -->
-    <section id="arena"><div class="wrap"><div class="arena reveal on-dark">
+    <section id="arena" data-tier="member"><div class="wrap"><div class="arena reveal on-dark">
       <div class="arena-top"><div><div class="eyebrow" style="color:var(--amber)">Retrieval · 09 · The arena</div><h2>Test the logic. Randomly.</h2></div><p>Every session is generated fresh from a bank of <span id="bankCount">100+</span> hand-written situations, each playable in several of six formats. You will not get the same test twice — so you cannot memorize answers, only the logic.</p></div>
       <div class="modes" role="tablist">
         <button class="mode on" data-mode="mixed"><small>12 questions</small><b>Mixed session</b><span>All six formats, random order.</span></button>
@@ -314,7 +315,7 @@
     </div></div></section>
 
     <!-- 10 PROGRESS -->
-    <section id="progress"><div class="wrap">
+    <section id="progress" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Performance · 10 <i>· Visible growth</i></div><h2>Proof you are better than last class.</h2></div><p>Your results stay on this device. Every session updates your accuracy per job, so you always know exactly what to train next — and your teacher can see it in one message.</p></div>
       <div class="prog">
         <div>

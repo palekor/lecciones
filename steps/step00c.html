@@ -141,6 +141,7 @@
     @media(hover:none){.answer kbd{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
+  <script src="../pg-access.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -220,26 +221,26 @@
     </div></section>
 
     <!-- 04 TENSES -->
-    <section id="tenses"><div class="wrap">
+    <section id="tenses" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 04 <i>· Tense × aspect</i></div><h2>Twelve tenses. One pattern.</h2></div><p>Tense tells <strong>when</strong>. Aspect tells the <strong>shape</strong> of the action: complete, in progress, finished before a point, or lasting up to a point. Four aspects × three times = twelve — all built with the same chain.</p></div>
       <div class="tabshell reveal"><div class="tabs" id="aspectTabs"></div><div class="tabbody" id="aspectBody"></div></div>
       <div class="ladder reveal on-dark"><span>Same verb, four shapes: I <em>work</em> · I <em>am working</em> · I <em>have worked</em> · I <em>have been working</em></span><button class="pill-btn dark needs-tts" data-say="I work. I am working. I have worked. I have been working." data-rate=".85">Hear the ladder</button></div>
     </div></section>
 
     <!-- 05 TYPES -->
-    <section id="types"><div class="wrap">
+    <section id="types" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 05 <i>· Verb types</i></div><h2>Know what kind of verb you are using.</h2></div><p>The same word can change type with context: “She <b>looks</b> tired” (linking) · “She <b>looked</b> at the map” (action) · “She <b>looked up</b> the word” (phrasal).</p></div>
       <div class="grid3" id="typeCards"></div>
     </div></section>
 
     <!-- 06 PATTERNS -->
-    <section id="patterns"><div class="wrap">
+    <section id="patterns" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 06 <i>· Verb patterns</i></div><h2>Some verbs demand the next form.</h2></div><p>This is where intermediate speakers get trapped. Learn each verb together with the structure it controls — the pattern is part of the word.</p></div>
       <div class="grid3" id="patternCards"></div>
     </div></section>
 
     <!-- 07 VOICE & MOOD -->
-    <section id="voice"><div class="wrap">
+    <section id="voice" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 07 <i>· Voice and mood</i></div><h2>Who acts? What do you intend?</h2></div><p>Voice moves the focus between the doer and the receiver. Mood is the speaker’s intention: a fact, a command, or an unreal wish. These two controls make English sound mature.</p></div>
       <div class="vm">
         <article class="card reveal"><span class="badge c4">Voice</span><h3>Active vs. passive</h3><p><b>Active:</b> the subject does the action. <b>Passive:</b> the subject receives it — use it when the doer is unknown, obvious or less important.</p>
@@ -252,7 +253,7 @@
     </div></section>
 
     <!-- 08 LAB -->
-    <section id="lab"><div class="wrap">
+    <section id="lab" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Prosody · 08 <i>· Sentence lab</i></div><h2>Positive. Negative. Question.</h2></div><p>Choose a subject, a verb and a tense. The lab builds all three functions and colors the machinery: <span class="ra">auxiliary</span> and <span class="rm">main verb</span>. Listen, then say each line — watch the first auxiliary move.</p></div>
       <div class="lab reveal">
         <aside class="persona on-dark">
@@ -265,19 +266,19 @@
     </div></section>
 
     <!-- 09 LEVELS -->
-    <section id="levels"><div class="wrap">
+    <section id="levels" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Prosody · 09 <i>· Same idea, stronger verbs</i></div><h2>Watch one idea grow from A1 to C2.</h2></div><p>Higher levels are not “harder words.” They control time, aspect, cause, voice and stance. Say each step out loud — the lab tells you how close you are. Your goal: one step above your level.</p></div>
       <div class="stairs" id="stairs"></div>
     </div></section>
 
     <!-- 10 CORE 100 -->
-    <section id="core100"><div class="wrap">
+    <section id="core100" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Retrieval · 10 <i>· Core verb vocabulary</i></div><h2>The 100 verbs that build most sentences.</h2></div><p>Don’t spend early energy on rare verbs. Tap any verb to hear its forms and see its full profile. Filter the irregular ones — they are the ones to drill.</p></div>
       <div class="cloudbox reveal"><div class="cfilters" id="cFilters"><button class="on" data-f="all">All</button><button data-f="irr">Irregular</button><button data-f="reg">Regular</button></div><div class="cloud" id="cloud"></div><div class="vdetail on-dark" id="vdetail"></div></div>
     </div></section>
 
     <!-- 11 TRAPS -->
-    <section id="traps"><div class="wrap">
+    <section id="traps" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 11 <i>· Interference map</i></div><h2>Eight traps Spanish sets for you.</h2></div><p>Each of these is Spanish logic running inside an English verb phrase. Name the leak, hear the correct model, and the error loses its power.</p></div>
       <div class="traps">
         <article class="trap reveal"><span class="tn">Trap 01 · double marking</span><h3>Only one word carries the ‑s.</h3><div class="tp bad"><span class="mark">×</span><p><s>She doesn't works here.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>She <b>doesn't work</b> here.</p><button class="say sm" data-say="She doesn't work here."></button></div><p class="why">DOES already carries the ‑s and the time. Chain rule 1: do / does / did → base.</p></article>
@@ -292,7 +293,7 @@
     </div></section>
 
     <!-- 12 ARENA -->
-    <section id="arena"><div class="wrap"><div class="arena reveal on-dark">
+    <section id="arena" data-tier="member"><div class="wrap"><div class="arena reveal on-dark">
       <div class="arena-top"><div><div class="eyebrow" style="color:var(--amber)">Retrieval · 12 · The arena</div><h2>Test the engine. Randomly.</h2></div><p>Every session is generated fresh from a bank of <span id="bankCount">150+</span> hand-written situations across eight formats. You cannot memorize the test — only the logic.</p></div>
       <div class="modes" role="tablist">
         <button class="mode on" data-mode="mixed"><small>12 questions</small><b>Mixed session</b><span>All eight formats, random order.</span></button>
@@ -304,7 +305,7 @@
     </div></div></section>
 
     <!-- 13 PROGRESS -->
-    <section id="progress"><div class="wrap">
+    <section id="progress" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Performance · 13 <i>· Visible growth</i></div><h2>Proof you are better than last class.</h2></div><p>Results stay on this device. Every session updates your accuracy per skill, so you always know what to train next — and your teacher can see it in one message.</p></div>
       <div class="growth">
         <div><div class="tiles" id="tiles"></div><div class="panel" style="margin-top:12px"><h3>Accuracy trend</h3><p class="lead">Last 10 sessions · dashed line = 85% mastery standard</p><div class="spark" id="spark"></div></div></div>
@@ -314,7 +315,7 @@
     </div></section>
 
     <!-- 14 ROUTE -->
-    <section id="route" style="padding-top:20px"><div class="wrap"><div class="route reveal">
+    <section id="route" data-tier="member" style="padding-top:20px"><div class="wrap"><div class="route reveal">
       <div><div class="eyebrow">Student route · 10 minutes a day</div><h3>How to own this map.</h3><ol><li><b>Day 1–2:</b> forms explorer + chain rule. Say the five forms of ten verbs.</li><li><b>Day 3–4:</b> one tense tab per day. Hear it, shadow it, say it.</li><li><b>Day 5:</b> sentence lab — one verb through + / − / ? in four tenses.</li><li><b>Every day:</b> one Speed round. Beat yesterday’s number.</li><li><b>End of week:</b> two mixed sessions at 85%+, then send your report.</li></ol></div>
       <div><div class="eyebrow">Teacher route · live class</div><h3>How to teach it.</h3><ol><li><b>Open with the engine:</b> a verb is not a translation; it is the sentence motor.</li><li><b>Three verbs, three types:</b> work · be · can — action, linking, modal.</li><li><b>Move one verb through its forms:</b> work, works, worked, working, worked.</li><li><b>Draw the four arrows</b> and build one tense per arrow.</li><li><b>Force auxiliary control:</b> + → − → ? with the lab.</li><li><b>End with production:</b> each student says one sentence one level above theirs.</li></ol></div>
     </div></div></section>

@@ -3,97 +3,826 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="ProfGermandario masterclass: English verbs, types, tenses, aspect, voice, mood, conjugation, patterns, and exercises.">
-  <title>Verb Master Map · English Verbs Masterclass · ProfGermandario</title>
+  <meta name="description" content="Step 00c of the ProfGermandario System: the Verb Master Map. Forms, the auxiliary chain, 12 tenses, types, patterns, voice and mood — with voice, a sentence lab and endless random practice.">
+  <meta name="theme-color" content="#1a1730">
+  <title>Step 00c · Verb Master Map · ProfGermandario</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --canvas:#fcf8f3;--cloud:#f2ece2;--paper:#fffaf5;--ink:#1a1730;--soft:#3a3552;--mist:#76718a;
-      --coral:#ff5a3c;--coral-dark:#e8482c;--mint:#15b79e;--mint-dark:#0e8c79;--amber:#ffb627;--amber-dark:#b97700;--wine:#7b2cbf;--blue:#2f80ed;
-      --line:rgba(26,23,48,.12);--line-soft:rgba(26,23,48,.07);--shadow:0 18px 50px rgba(26,23,48,.10);--radius:30px;--pill:999px;
-    }
-    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:86px}body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}a{color:inherit;text-decoration:none}button,input,select{font:inherit;-webkit-tap-highlight-color:transparent}button{cursor:pointer}::selection{background:rgba(255,90,60,.2)}
-    .bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 45% at 7% 0%,rgba(255,90,60,.13),transparent 65%),radial-gradient(55% 45% at 100% 30%,rgba(21,183,158,.13),transparent 60%),radial-gradient(50% 50% at 80% 100%,rgba(123,44,191,.10),transparent 60%),var(--canvas)}.bg:after{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(rgba(26,23,48,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(26,23,48,.08) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
-    .wrap{width:min(1160px,calc(100% - 34px));margin:auto}.display{font-family:Fraunces,Georgia,serif}.mono{font-family:"DM Mono",ui-monospace,monospace}.eyebrow{font:700 .67rem/1.2 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.22em;color:var(--coral)}
-    .topbar{position:sticky;top:0;z-index:50;background:rgba(252,248,243,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0}.brand{font:900 1.1rem Fraunces,Georgia,serif;letter-spacing:-.02em}.nav{display:flex;gap:6px;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{white-space:nowrap;border-radius:var(--pill);padding:9px 12px;font-size:.86rem;font-weight:800;color:var(--soft)}.nav a:hover,.nav a.active{background:var(--ink);color:white}
-    .hero{padding:74px 0 58px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.03fr .97fr;gap:44px;align-items:center}.hero h1{font:900 clamp(3.35rem,8vw,7rem)/.86 Fraunces,Georgia,serif;letter-spacing:-.06em;margin:14px 0 22px}.hero h1 em{color:var(--coral);font-weight:700}.hero p{font-size:clamp(1.03rem,2vw,1.22rem);color:var(--soft);max-width:650px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:var(--pill);padding:13px 19px;font-weight:900;display:inline-flex;align-items:center;gap:9px;transition:.18s;min-height:47px}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--coral);color:white;box-shadow:0 14px 32px rgba(255,90,60,.24)}.btn-dark{background:var(--ink);color:white}.btn-light{background:rgba(255,255,255,.74);border:1px solid var(--line);color:var(--soft)}
-    .verb-orbit{position:relative;min-height:460px;display:grid;place-items:center}.core{width:min(340px,75%);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--ink);color:white;box-shadow:0 24px 70px rgba(26,23,48,.24);position:relative;z-index:2}.core b{font:900 clamp(3rem,7vw,4.8rem)/.82 Fraunces,serif;letter-spacing:-.05em}.core small{display:block;margin-top:12px;font:.65rem "DM Mono";letter-spacing:.16em;color:var(--amber);text-transform:uppercase}.orbit-ring{position:absolute;inset:7%;border:1px dashed rgba(26,23,48,.18);border-radius:50%;animation:spin 28s linear infinite}.node{position:absolute;z-index:3;width:132px;min-height:94px;border-radius:26px;background:white;border:1px solid var(--line-soft);box-shadow:var(--shadow);padding:16px;text-align:center}.node strong{display:block;font:900 1.2rem Fraunces,serif;line-height:1}.node span{display:block;font:.58rem "DM Mono";letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-top:6px}.n1{top:0;left:36%;background:#ffe1da}.n2{top:28%;right:0;background:#d7f6f0}.n3{bottom:5%;right:13%;background:#ffeab1}.n4{bottom:5%;left:13%;background:#eadbff}.n5{top:28%;left:0;background:#e3efff}@keyframes spin{to{transform:rotate(360deg)}}
-    section{padding:72px 0}.section-head{display:grid;grid-template-columns:1fr minmax(280px,520px);gap:28px;align-items:end;margin-bottom:30px}.section-head h2{font:900 clamp(2.25rem,5vw,4.45rem)/.94 Fraunces,Georgia,serif;letter-spacing:-.05em;margin:9px 0 0}.section-head p{color:var(--soft);font-size:1.03rem;margin:0 0 8px}
-    .master-card{background:var(--ink);color:white;border-radius:36px;padding:clamp(25px,5vw,52px);box-shadow:0 26px 70px rgba(26,23,48,.18);overflow:hidden;position:relative}.master-card:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 100% 0%,rgba(255,182,39,.16),transparent 55%),radial-gradient(60% 60% at 0% 100%,rgba(21,183,158,.15),transparent 58%);pointer-events:none}.master-card>*{position:relative}.master-card h3{font:900 clamp(1.9rem,4.2vw,3.35rem)/1 Fraunces,serif;margin:0 0 14px}.master-card h3 span{color:var(--amber)}.formula-large{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.token{border-radius:15px;padding:12px 14px;font:800 .82rem "DM Mono";letter-spacing:.02em;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12)}.token:nth-child(1){color:#ffd8cf}.token:nth-child(2){color:#c4f4ec}.token:nth-child(3){color:#ffe2a4}.token:nth-child(4){color:#e6d1ff}.permission{margin-top:22px;background:white;color:var(--ink);border-radius:18px;padding:17px 19px}.permission b{color:var(--coral-dark)}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:white;border:1px solid var(--line-soft);border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card h3{font:900 1.55rem Fraunces,serif;line-height:1.02;margin:8px 0 10px}.card p{color:var(--soft);margin:0}.badge{display:inline-flex;align-items:center;gap:7px;font:.62rem "DM Mono";letter-spacing:.12em;text-transform:uppercase;border-radius:var(--pill);padding:7px 10px;background:var(--cloud);color:var(--soft)}.badge.coral{background:rgba(255,90,60,.11);color:var(--coral-dark)}.badge.mint{background:rgba(21,183,158,.11);color:var(--mint-dark)}.badge.amber{background:rgba(255,182,39,.15);color:var(--amber-dark)}.badge.wine{background:rgba(123,44,191,.11);color:var(--wine)}.examples{margin-top:15px;display:grid;gap:8px}.ex{background:var(--cloud);border-radius:14px;padding:11px 12px;font-size:.92rem;color:var(--soft)}.ex b{color:var(--ink)}
-    .tab-shell{background:white;border:1px solid var(--line-soft);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}.tabs{display:flex;gap:6px;overflow:auto;padding:11px;background:var(--cloud);scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:0;background:rgba(255,255,255,.75);color:var(--soft);font-weight:900;border-radius:var(--pill);padding:10px 14px;white-space:nowrap}.tab.on{background:var(--ink);color:white}.tab-body{padding:clamp(22px,4vw,40px)}.tense-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.tense-card{border:1px solid var(--line-soft);border-radius:24px;padding:20px;background:#fffdf9}.tense-card h3{font:900 1.55rem Fraunces,serif;margin:0 0 8px}.formula{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0}.part{border-radius:11px;padding:7px 9px;font:700 .78rem "DM Mono";background:var(--cloud)}.part:nth-child(1){background:#ffe1da;color:var(--coral-dark)}.part:nth-child(2){background:#d7f6f0;color:var(--mint-dark)}.part:nth-child(3){background:#ffeab1;color:var(--amber-dark)}.part:nth-child(4){background:#eadbff;color:var(--wine)}.teacher-note{background:#fff7e8;border:1px solid rgba(255,182,39,.22);color:#6b4a00;border-radius:18px;padding:15px 17px;margin-top:15px}.danger-note{background:#ffe7e1;border:1px solid rgba(255,90,60,.22);color:#8e2a18;border-radius:18px;padding:15px 17px;margin-top:15px}
-    .lab{background:var(--ink);color:white;border-radius:36px;padding:clamp(24px,5vw,46px);box-shadow:0 26px 70px rgba(26,23,48,.18)}.lab h3{font:900 clamp(1.85rem,4vw,3.2rem)/.98 Fraunces,serif;margin:0 0 12px}.lab p{color:#d8d4e4}.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}.panel{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:22px}.panel label{display:block;font:.66rem "DM Mono";letter-spacing:.12em;text-transform:uppercase;color:#aaa6bb;margin:0 0 8px}.panel select,.panel input{width:100%;border:0;border-radius:14px;padding:12px 13px;background:white;color:var(--ink);font-weight:700}.output{background:white;color:var(--ink);border-radius:20px;padding:18px;margin-top:15px;min-height:116px}.output strong{display:block;font:900 1.35rem Fraunces,serif}.audio-btn{border:0;border-radius:var(--pill);background:var(--mint);color:white;font-weight:900;padding:10px 14px;margin-top:12px}
-    .matrix{overflow:auto;background:white;border-radius:30px;box-shadow:var(--shadow);border:1px solid var(--line-soft)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:16px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{background:var(--ink);color:white;font:.72rem "DM Mono";letter-spacing:.12em;text-transform:uppercase}td b{font:900 1.08rem Fraunces,serif}td small{display:block;color:var(--mist);margin-top:3px}.matrix tr:hover td{background:#fffaf4}
-    .staircase{display:grid;gap:10px}.level-row{display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:center;background:white;border:1px solid var(--line-soft);border-radius:22px;padding:13px 16px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.level{font:900 1.25rem Fraunces,serif;color:white;background:var(--coral);border-radius:16px;padding:10px;text-align:center}.level-row:nth-child(2) .level{background:var(--mint)}.level-row:nth-child(3) .level{background:var(--amber-dark)}.level-row:nth-child(4) .level{background:var(--wine)}.level-row:nth-child(5) .level{background:var(--blue)}.level-row:nth-child(6) .level{background:var(--ink)}.level-row p{margin:0;color:var(--soft)}.speak-mini{border:0;background:var(--cloud);border-radius:var(--pill);padding:9px 12px;font-weight:900;color:var(--soft)}
-    .practice-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.exercise{background:white;border:1px solid var(--line-soft);border-radius:28px;padding:24px;box-shadow:var(--shadow)}.exercise h3{font:900 1.55rem Fraunces,serif;margin:0 0 9px}.choices{display:grid;gap:9px;margin-top:15px}.choice{border:1px solid var(--line);background:#fffdf9;border-radius:16px;padding:13px;text-align:left;font-weight:800;color:var(--soft)}.choice.correct{background:#d7f6f0;border-color:var(--mint);color:var(--mint-dark)}.choice.wrong{background:#ffe1da;border-color:var(--coral);color:var(--coral-dark)}.feedback{min-height:48px;color:var(--soft);margin-top:13px}.next{display:none;margin-top:10px}.next.show{display:inline-flex}.quiz-score{font:.7rem "DM Mono";letter-spacing:.12em;text-transform:uppercase;background:var(--cloud);border-radius:var(--pill);padding:8px 11px;color:var(--soft)}.bar{height:8px;border-radius:var(--pill);background:var(--cloud);overflow:hidden;margin:14px 0 18px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint));transition:.25s}.result{text-align:center;padding:25px}.result b{font:900 4.7rem/1 Fraunces,serif;color:var(--coral);display:block}
-    .verb-cloud{display:flex;flex-wrap:wrap;gap:8px}.verb-chip{border:1px solid var(--line);background:white;border-radius:var(--pill);padding:9px 12px;font-weight:800;color:var(--soft)}.verb-chip:hover{background:var(--ink);color:white}
-    .script{background:var(--cloud);border-radius:34px;padding:clamp(24px,4vw,40px)}.script ol{margin:18px 0 0;padding-left:22px}.script li{margin:10px 0;color:var(--soft)}.script b{color:var(--ink)}
-    footer{padding:45px 0 100px;text-align:center;color:var(--mist);font:.65rem "DM Mono";letter-spacing:.14em;text-transform:uppercase}.wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:white;border-radius:var(--pill);padding:13px 17px;font-weight:900;box-shadow:0 12px 32px rgba(37,211,102,.35)}
-    @media(max-width:920px){.hero-grid,.section-head,.lab-grid,.tense-grid,.practice-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.verb-orbit{min-height:420px}.node{width:116px;min-height:86px;padding:13px}.topbar .wrap{align-items:flex-start}.nav{max-width:72vw}}
-    @media(max-width:620px){.wrap{width:min(100% - 22px,1160px)}.hero{padding-top:54px}.hero h1{font-size:clamp(3rem,17vw,4.8rem)}section{padding:56px 0}.grid{grid-template-columns:1fr}.core{width:68%}.node{position:static;width:100%;min-height:auto}.verb-orbit{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:auto}.core{grid-column:1/-1;margin:auto}.orbit-ring{display:none}.n1,.n2,.n3,.n4,.n5{position:static}.level-row{grid-template-columns:56px 1fr}.speak-mini{grid-column:2}.wa span{display:none}.wa{width:54px;height:54px;display:grid;place-items:center;padding:0}.nav{display:none}}
-    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    :root{--canvas:#fcf8f3;--cloud:#f2ece2;--paper:#fffdf9;--ink:#1a1730;--soft:#3a3552;--mist:#76718a;--line:rgba(26,23,48,.09);--coral:#ff5a3c;--coral-dark:#e8482c;--mint:#15b79e;--mint-dark:#0e8c79;--amber:#ffb627;--amber-dark:#b97700;--wine:#7b2cbf;--blue:#2f80ed;--shadow:0 14px 44px rgba(26,23,48,.09);--shadow-lg:0 30px 80px rgba(26,23,48,.18);
+      --s-bg:#ffdcd4;--s-ink:#a72e18;--p-bg:#d4f6ef;--p-ink:#087260;--a-bg:#ffebbb;--a-ink:#805500;--w-bg:#ead7f7;--w-ink:#59218a;--i-bg:#dfe2ff;--i-ink:#363d91}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--canvas);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.55;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}button,a,input{font:inherit;-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}a{color:inherit}::selection{background:rgba(255,90,60,.2)}
+    .bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 45% at 7% 0%,rgba(255,90,60,.12),transparent 65%),radial-gradient(55% 45% at 100% 30%,rgba(21,183,158,.12),transparent 60%),radial-gradient(50% 50% at 80% 100%,rgba(123,44,191,.09),transparent 60%),var(--canvas)}.bg:after{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(rgba(26,23,48,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(26,23,48,.08) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
+    .wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+    .eyebrow{font:500 .7rem/1.2 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.22em;color:var(--coral)}.eyebrow i{font-style:normal;color:var(--mist)}
+    .masthead{background:var(--ink);color:#d9d5e6;font:500 .6rem/1 "DM Mono",monospace;letter-spacing:.2em;text-transform:uppercase}.mast-inner{display:flex;justify-content:space-between;gap:14px;padding:12px 0}.mast-inner b{color:var(--amber);font-weight:500}
+
+    /* Hero */
+    .hero{min-height:620px;min-height:86svh;display:grid;align-items:center;padding:60px 0 40px;overflow:hidden}.hero-inner{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(360px,.97fr);gap:50px;align-items:center}
+    .hero h1{font:900 clamp(3.6rem,8vw,7rem)/.84 Fraunces,Georgia,serif;letter-spacing:-.06em;margin:16px 0 24px}.hero h1 em{display:block;color:var(--coral);font-weight:600}.hero-copy{font-size:clamp(1.05rem,2vw,1.22rem);color:var(--soft);max-width:620px;margin:0}.hero-copy strong{color:var(--ink)}.tagline{margin-top:18px;font:italic 500 1.08rem Fraunces,serif;color:var(--mist)}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;align-items:center}
+    .btn{border:0;border-radius:999px;padding:13px 20px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.2s ease}.btn:hover{transform:translateY(-2px)}.btn svg{width:15px;height:15px}.btn-primary{background:var(--ink);color:#fff;box-shadow:0 12px 28px rgba(26,23,48,.2)}.btn-secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn-amber{background:var(--amber);color:var(--ink)}.btn-ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff}.btn.playing{background:var(--coral);color:#fff}
+    .engine{position:relative;aspect-ratio:1;max-width:520px;width:100%;margin:auto;display:grid;place-items:center}.ring{position:absolute;inset:6%;border:1px dashed rgba(26,23,48,.18);border-radius:50%;animation:spin 30s linear infinite}.ring.two{inset:20%;border-style:solid;border-color:rgba(26,23,48,.09);animation-direction:reverse;animation-duration:22s}
+    .core{width:44%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--ink);color:#fff;box-shadow:0 24px 70px rgba(26,23,48,.24);position:relative;z-index:2;border:0}.core b{font:900 clamp(2.2rem,5vw,3.6rem)/.85 Fraunces,serif;letter-spacing:-.04em;display:block}.core small{display:block;margin-top:10px;font:.58rem "DM Mono",monospace;letter-spacing:.16em;color:var(--amber);text-transform:uppercase}
+    .orb{position:absolute;z-index:3;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;text-align:center;box-shadow:var(--shadow);border:0;padding:6px;animation:float 3.8s ease-in-out infinite;transition:box-shadow .2s}.orb:hover{box-shadow:0 0 0 4px #fff,var(--shadow)}.orb.playing{box-shadow:0 0 0 4px var(--coral),var(--shadow)}.orb b{display:block;font:800 1.15rem Fraunces,serif}.orb>span>span{display:block;font:500 .54rem "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-top:3px}
+    .o1{top:0;left:39%;background:var(--s-bg)}.o2{top:30%;right:0;background:var(--p-bg);animation-delay:-.8s}.o3{bottom:2%;right:16%;background:var(--a-bg);animation-delay:-1.6s}.o4{bottom:2%;left:16%;background:var(--w-bg);animation-delay:-2.4s}.o5{top:30%;left:0;background:var(--i-bg);animation-delay:-3.2s}
+    @keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-8px)}}
+
+    .brief{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin:0 auto 28px;box-shadow:var(--shadow)}.brief div{background:rgba(255,255,255,.9);padding:18px 20px}.brief small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);margin-bottom:6px}.brief b{font:700 1.02rem/1.25 Fraunces,serif}
+    .sticky-nav{position:sticky;top:10px;z-index:20;margin-bottom:30px}.nav-shell{background:rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.85);border-radius:999px;padding:6px;display:flex;gap:4px;overflow:auto;box-shadow:var(--shadow);scrollbar-width:none}.nav-shell::-webkit-scrollbar{display:none}.nav-shell a{white-space:nowrap;text-decoration:none;padding:10px 14px;border-radius:999px;font-size:.84rem;font-weight:700;color:var(--soft);transition:.2s}.nav-shell a:hover,.nav-shell a.active{background:var(--ink);color:#fff}
+    section{padding:74px 0}.section-head{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:36px}.section-head h2{font:800 clamp(2.4rem,5vw,4.5rem)/.95 Fraunces,serif;letter-spacing:-.045em;margin:8px 0}.section-head p{color:var(--soft);font-size:1.05rem;max-width:560px;margin:0 0 8px}
+
+    /* Audio */
+    .say{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:inline-grid;place-items:center;transition:.18s;padding:0;vertical-align:middle}.say svg{width:13px;height:13px;margin-left:2px}.say:hover{background:var(--ink);color:#fff;border-color:var(--ink)}.say.sm{width:30px;height:30px}.say.sm svg{width:11px;height:11px}
+    .say.playing,.pill-btn.playing,.bigplay.playing,.vchip.playing{background:var(--coral)!important;color:#fff!important;border-color:var(--coral)!important;animation:pulse 1.2s infinite}
+    .on-dark .say{background:transparent;color:#fff;border-color:rgba(255,255,255,.25)}.on-dark .say:hover{background:#fff;color:var(--ink)}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,60,.45)}100%{box-shadow:0 0 0 13px rgba(255,90,60,0)}}
+    .pill-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.8rem;display:inline-flex;align-items:center;gap:7px;color:var(--soft);transition:.18s;white-space:nowrap}.pill-btn svg{width:12px;height:12px}.pill-btn:hover{border-color:var(--ink);color:var(--ink)}.pill-btn.dark{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);color:#fff}.pill-btn.dark:hover{background:rgba(255,255,255,.14)}
+    .mic{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,90,60,.35);background:#fff3ef;color:var(--coral-dark);display:inline-grid;place-items:center;padding:0;transition:.18s}.mic svg{width:15px;height:15px}.mic:hover{background:var(--coral);color:#fff}.mic.listening,.micbig.listening{background:var(--coral);color:#fff;border-color:var(--coral);animation:pulse 1s infinite}
+    body.no-speech .say,body.no-speech .needs-tts{display:none!important}body.no-sr .mic,body.no-sr .needs-sr{display:none!important}
+    .ra{background:var(--w-bg);color:var(--w-ink);border-radius:6px;padding:1px 5px;font-weight:800}.rm{background:var(--p-bg);color:var(--p-ink);border-radius:6px;padding:1px 5px;font-weight:800}.rx{background:var(--s-bg);color:var(--s-ink);border-radius:6px;padding:1px 5px;font-weight:800}
+    .heard{font-size:.88rem;color:var(--mist);display:none}.heard.show{display:block}.heard .w{display:inline-block;margin-right:2px;font-weight:700}.heard .ok{color:var(--mint-dark)}.heard .miss{color:var(--coral-dark);text-decoration:line-through;text-decoration-thickness:2px}.heard .said{font-style:italic}.heard .badge{display:inline-block;font:500 .66rem "DM Mono",monospace;padding:3px 8px;border-radius:99px;margin-right:8px;background:var(--cloud);color:var(--soft)}.heard .badge.good{background:var(--p-bg);color:var(--p-ink)}.heard .badge.low{background:var(--s-bg);color:var(--s-ink)}
+    .on-dark .heard{color:#cfcbe0}.on-dark .heard .ok{color:#6fe3cf}.on-dark .heard .miss{color:#ff9d8a}.on-dark .heard .badge{background:rgba(255,255,255,.1);color:#fff}
+
+    /* Why */
+    .equation{background:var(--ink);color:#fff;border-radius:34px;padding:clamp(24px,5vw,52px);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}.equation:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 100% 0%,rgba(255,182,39,.15),transparent 55%),radial-gradient(60% 60% at 0% 100%,rgba(21,183,158,.14),transparent 58%);pointer-events:none}.equation>*{position:relative}.equation h3{font:800 clamp(1.8rem,4vw,3rem)/1.05 Fraunces,serif;margin:0 0 12px;max-width:820px}.equation h3 span{color:var(--amber)}.equation p{color:#d8d4e4;max-width:760px;margin:0}
+    .slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:24px}.slot{border-radius:18px;padding:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.slot small{display:block;font:500 .56rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:#aaa6bb}.slot b{display:block;font:700 1.25rem Fraunces,serif;margin:6px 0 2px}.slot span{font-size:.8rem;color:#cfcbe0}.slot.aux{border-color:rgba(234,215,247,.5)}.slot.aux b{color:#e6d1ff}.slot.main b{color:#a8f0e3}
+    .eq-demo{margin-top:16px;background:#fff;color:var(--ink);border-radius:18px;padding:14px 16px 14px 19px;display:flex;justify-content:space-between;gap:12px;align-items:center;font:600 1.1rem Fraunces,serif}
+    .laws{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.law{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:26px;padding:24px;display:flex;flex-direction:column}.law .n{font:500 .64rem "DM Mono",monospace;color:var(--coral);letter-spacing:.14em;text-transform:uppercase}.law h3{font:700 1.3rem/1.15 Fraunces,serif;margin:10px 0 6px}.law p{color:var(--soft);margin:0;font-size:.92rem}.law .ex{margin-top:auto;padding-top:16px}.law .ex div{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cloud);border-radius:14px;padding:10px 12px}.law .ex span{font:600 .98rem Fraunces,serif}
+    .chain-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.node{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;text-decoration:none;display:block;transition:.2s}.node:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.node small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.node b{display:block;font:700 1.08rem Fraunces,serif;margin-top:4px}.node span{font-size:.82rem;color:var(--soft)}.node.here{background:var(--coral);border-color:var(--coral);color:#fff}.node.here small,.node.here span{color:#ffe6df}.node.done{background:var(--cloud)}.node:not(:last-child):after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--mist);z-index:2}
+
+    /* Forms explorer */
+    .vchips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}.vchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.86rem;color:var(--soft);transition:.15s}.vchip:hover{border-color:var(--ink);color:var(--ink)}.vchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}.vchip.irr:after{content:"*";color:var(--coral)}
+    .fx{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.fcard{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;min-width:0}.fcard .k{font:500 .58rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.fcard .f{font:800 clamp(1.5rem,2.6vw,2.1rem)/1 Fraunces,serif;display:flex;justify-content:space-between;align-items:center;gap:6px;word-break:break-word}.fcard .trig{font-size:.82rem;color:var(--soft);padding:8px 10px;border-radius:12px;background:var(--cloud)}.fcard .trig b{color:var(--w-ink)}.fcard .ex{font:600 .98rem/1.35 Fraunces,serif;margin-top:auto;display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .fcard:nth-child(1){border-top:4px solid var(--blue)}.fcard:nth-child(2){border-top:4px solid var(--coral)}.fcard:nth-child(3){border-top:4px solid var(--amber)}.fcard:nth-child(4){border-top:4px solid var(--mint)}.fcard:nth-child(5){border-top:4px solid var(--wine)}
+    .fx-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding:14px 18px;border-radius:18px;background:#fff7e8;color:#6f4b00;font-size:.92rem}
+
+    /* Chain rule */
+    .chainbox{background:#fff;border-radius:31px;padding:clamp(20px,4vw,40px);box-shadow:var(--shadow)}.rules4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}.rule4{border-radius:20px;padding:16px;background:var(--cloud)}.rule4 small{display:block;font:500 .58rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}.rule4 b{display:block;font:700 1.15rem Fraunces,serif;margin:6px 0 4px}.rule4 .arrow{font:500 .78rem "DM Mono",monospace;color:var(--w-ink)}
+    .crow{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #eee9e3}.ctoks{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}.ct{display:flex;flex-direction:column;align-items:center;gap:4px}.ct b{font:700 1.12rem Fraunces,serif;padding:6px 10px;border-radius:12px;background:var(--cloud)}.ct.a b{background:var(--w-bg);color:var(--w-ink)}.ct.m b{background:var(--p-bg);color:var(--p-ink)}.ct small{font:500 .56rem "DM Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);text-align:center;max-width:110px}.ct.arr{align-self:center;color:var(--mist);font-weight:800;padding-bottom:16px}
+
+    /* Tenses */
+    .tabshell{background:#fff;border:1px solid var(--line);border-radius:31px;box-shadow:var(--shadow);overflow:hidden}.tabs{display:flex;gap:6px;overflow:auto;padding:10px;background:var(--cloud);scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:0;background:rgba(255,255,255,.75);color:var(--soft);font-weight:800;border-radius:999px;padding:10px 15px;white-space:nowrap}.tab.on{background:var(--ink);color:#fff}.tabbody{padding:clamp(18px,3.5vw,36px)}.aspect-tag{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.aspect-tag span{font:500 .66rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-dark);background:var(--s-bg);padding:7px 11px;border-radius:99px}
+    .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tcard{border:1px solid var(--line);border-radius:22px;padding:18px;background:var(--paper);display:flex;flex-direction:column;gap:8px;min-width:0}.tcard .tl{font:500 .58rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}.tcard h3{font:800 1.25rem Fraunces,serif;margin:0}.tcard svg{width:100%;height:50px;display:block;color:var(--coral)}.parts{display:flex;flex-wrap:wrap;gap:5px}.part{border-radius:10px;padding:5px 8px;font:500 .74rem "DM Mono",monospace;background:var(--cloud)}.part.a{background:var(--w-bg);color:var(--w-ink)}.part.m{background:var(--p-bg);color:var(--p-ink)}.tcard .ex{display:flex;justify-content:space-between;gap:8px;align-items:center;font:600 1rem/1.35 Fraunces,serif;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line)}.tcard p{margin:0;font-size:.86rem;color:var(--soft)}
+    .ladder{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:18px;background:var(--ink);color:#fff}.ladder span{font:600 1rem Fraunces,serif}.ladder em{font-style:normal;color:var(--amber)}
+
+    /* Types, patterns, voice */
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0}.badge{display:inline-flex;align-self:flex-start;font:500 .6rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:6px 10px;background:var(--cloud);color:var(--soft)}.badge.c1{background:var(--s-bg);color:var(--s-ink)}.badge.c2{background:var(--p-bg);color:var(--p-ink)}.badge.c3{background:var(--a-bg);color:var(--a-ink)}.badge.c4{background:var(--w-bg);color:var(--w-ink)}.badge.c5{background:var(--i-bg);color:var(--i-ink)}.card h3{font:800 1.35rem/1.1 Fraunces,serif;margin:10px 0 6px}.card p{color:var(--soft);margin:0;font-size:.93rem}.exs{margin-top:14px;display:grid;gap:7px}.exl{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--cloud);border-radius:13px;padding:8px 8px 8px 12px;font-size:.95rem}.exl b{color:var(--ink)}
+    .vm{display:grid;grid-template-columns:1fr 1fr;gap:16px}.vm .card{padding:26px}.formula{margin-top:14px;padding:12px 14px;border-radius:14px;background:#fff7e8;color:#6b4a00;font-size:.9rem}
+
+    /* Lab */
+    .lab{display:grid;grid-template-columns:320px 1fr;gap:22px;align-items:start}.persona{background:var(--ink);color:#fff;border-radius:28px;padding:22px;position:sticky;top:84px}.persona .lbl{font:500 .6rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:#aaa6bc}.chips{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 15px}.pchip{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:7px 11px;font-weight:700;font-size:.82rem}.pchip.on{background:var(--amber);color:var(--ink);border-color:var(--amber)}.pchip.irr:after{content:"*";color:var(--coral)}
+    .lines{background:#fff;border-radius:28px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}.lhead{padding:20px 22px;background:var(--cloud)}.lhead h3{font:800 1.5rem Fraunces,serif;margin:0 0 4px}.lhead p{margin:0;color:var(--soft);font-size:.92rem}.lhead p b{color:var(--w-ink)}
+    .line{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;padding:16px 22px;border-bottom:1px solid #eee9e3;transition:background .25s}.line.active{background:#fff6ec}.line .fn{font:500 .62rem "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}.line .fn b{display:block;font:800 1.5rem Fraunces,serif;color:var(--ink);letter-spacing:0}.line .txt{font:600 1.18rem/1.4 Fraunces,serif}.line .txt small{display:block;font:500 .78rem Figtree,sans-serif;color:var(--mist);margin-top:3px}.line .acts{display:flex;gap:6px;align-items:center}.line .heard{grid-column:1/-1}.line.nailed .fn b:after{content:" ✓";color:var(--mint-dark);font-size:1rem}
+    .lines-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 22px;background:var(--cloud)}.lab-note{font-size:.85rem;color:var(--mist);margin:0}
+
+    /* Levels */
+    .stairs{display:grid;gap:10px}.step{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:13px 16px;box-shadow:0 10px 28px rgba(26,23,48,.06)}.step:nth-child(2){margin-left:2%}.step:nth-child(3){margin-left:4%}.step:nth-child(4){margin-left:6%}.step:nth-child(5){margin-left:8%}.step:nth-child(6){margin-left:10%}.lvl{font:800 1.2rem Fraunces,serif;color:#fff;background:var(--coral);border-radius:16px;padding:10px;text-align:center}.step:nth-child(2) .lvl{background:var(--mint)}.step:nth-child(3) .lvl{background:var(--amber-dark)}.step:nth-child(4) .lvl{background:var(--wine)}.step:nth-child(5) .lvl{background:var(--blue)}.step:nth-child(6) .lvl{background:var(--ink)}.step p{margin:0;font:600 1.04rem/1.4 Fraunces,serif}.step p small{display:block;font:500 .8rem Figtree,sans-serif;color:var(--mist);margin-top:3px}.step .acts{display:flex;gap:6px}.step .heard{grid-column:2/-1}
+
+    /* Core 100 */
+    .cloudbox{background:#fff;border-radius:31px;padding:clamp(20px,4vw,36px);box-shadow:var(--shadow)}.cfilters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.cfilters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.84rem;color:var(--soft)}.cfilters button.on{background:var(--ink);color:#fff}.cloud{display:flex;flex-wrap:wrap;gap:7px}.cloud .vchip{font-size:.84rem;padding:7px 11px}
+    .vdetail{margin-top:16px;padding:16px 18px;border-radius:20px;background:var(--ink);color:#fff;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}.vdetail .big{font:900 2.4rem/1 Fraunces,serif;color:var(--amber)}.vdetail .row5{display:flex;flex-wrap:wrap;gap:8px}.vdetail .row5 span{background:rgba(255,255,255,.08);border-radius:12px;padding:7px 11px;font:600 1rem Fraunces,serif}.vdetail .row5 span small{display:block;font:500 .52rem "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:#aaa6bb}
+
+    /* Traps */
+    .traps{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.trap{background:#fff;border-radius:25px;padding:24px;border:1px solid var(--line);box-shadow:var(--shadow)}.trap .tn{font:500 .62rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}.trap h3{font:700 1.3rem/1.2 Fraunces,serif;margin:6px 0 12px}.tp{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:8px 0}.tp .mark{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem}.tp.good .mark{background:var(--p-bg);color:var(--p-ink)}.tp.bad .mark{background:var(--s-bg);color:var(--s-ink)}.tp p{margin:0}.tp.bad p{color:var(--mist)}.tp.bad s{text-decoration-color:rgba(232,72,44,.55);text-decoration-thickness:1.5px}.es-src{font-style:italic;color:var(--soft)}.trap .why{margin:10px 0 0;padding-top:12px;border-top:1px solid #eee9e3;color:var(--soft);font-size:.9rem}
+
+    /* Arena */
+    .arena{background:var(--ink);color:#fff;border-radius:34px;padding:clamp(22px,4.5vw,48px);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}.arena:before{content:"";position:absolute;width:520px;height:520px;right:-180px;top:-220px;background:radial-gradient(circle,rgba(123,44,191,.22),transparent 65%);pointer-events:none}.arena>*{position:relative}
+    .arena-top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:24px}.arena h2{font:800 clamp(2.1rem,5vw,3.7rem)/1 Fraunces,serif;margin:8px 0 0;letter-spacing:-.03em}.arena-top p{margin:0;color:#cfcbe0;max-width:430px;font-size:.95rem}
+    .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.mode{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#fff;border-radius:20px;padding:16px 18px;text-align:left;transition:.2s}.mode:hover{background:rgba(255,255,255,.09)}.mode.on{border-color:var(--amber);background:rgba(255,182,39,.12)}.mode small{display:block;font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}.mode b{display:block;font:700 1.2rem Fraunces,serif;margin:4px 0 2px}.mode span{font-size:.84rem;color:#cfcbe0}
+    .toggles{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:20px;font-size:.86rem;color:#d8d4e4}.toggles .note2{font-size:.8rem;color:#a9a4bd}
+    .switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:.9rem;user-select:none}.switch input{appearance:none;-webkit-appearance:none;width:40px;height:23px;border-radius:99px;background:rgba(255,255,255,.2);position:relative;transition:.2s;margin:0;cursor:pointer;flex:none}.switch input:checked{background:var(--mint)}.switch input:after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}.switch input:checked:after{transform:translateX(17px)}
+    .stage{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:26px;padding:clamp(18px,3.5vw,36px);min-height:380px}
+    .qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}.qtype{font:500 .66rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}.qcount{font:.72rem "DM Mono",monospace;color:#bdb8cf}
+    .progress{height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:26px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--amber),var(--coral));transition:width .35s ease}
+    .question{font:700 clamp(1.4rem,3.4vw,2.15rem)/1.3 Fraunces,serif;margin:6px 0 22px}.question.sm{font-size:clamp(1.25rem,3vw,1.7rem)}.blank{display:inline-block;min-width:96px;border-bottom:3px solid var(--amber);margin:0 4px;text-align:center;color:var(--amber);line-height:1.1}.blank.filled{color:#6fe3cf;border-color:var(--mint)}.hintv{color:#a9a4bd;font-style:italic;font-weight:500}.es-line{font:italic 500 1.12rem Fraunces,serif;color:#cfcbe0;margin-bottom:4px}.es-line small{font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;color:var(--amber);font-style:normal;margin-right:8px}
+    .src{font:600 clamp(1.3rem,3vw,1.8rem) Fraunces,serif;margin:6px 0 4px}.tofn{display:inline-block;font:500 .66rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;border-radius:99px;background:rgba(255,182,39,.16);color:var(--amber);margin-bottom:18px}
+    .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;border-radius:16px;padding:15px;text-align:left;font-weight:700;font-size:1.05rem;transition:.18s;display:flex;align-items:center;gap:10px}.answer:hover:not(:disabled){background:rgba(255,255,255,.13);transform:translateY(-2px)}.answer:disabled{cursor:default}.answer kbd{font:500 .62rem "DM Mono",monospace;opacity:.55;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:2px 6px}.answer.correct{background:rgba(21,183,158,.26);border-color:var(--mint)}.answer.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}
+    .answers.long{grid-template-columns:1fr}
+    .tokens{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}.tok{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;border-radius:12px;padding:9px 13px;font:600 clamp(1.05rem,2.6vw,1.3rem) Fraunces,serif;transition:.15s}.tok:hover:not(:disabled){background:rgba(255,255,255,.14);transform:translateY(-2px)}.tok:disabled{cursor:default}.tok.correct{background:rgba(21,183,158,.26);border-color:var(--mint)}.tok.wrong{background:rgba(255,90,60,.25);border-color:var(--coral)}.tok.culprit{border-color:var(--amber);background:rgba(255,182,39,.2)}
+    .dict-in{background:transparent;border:0;border-bottom:3px solid var(--amber);color:var(--amber);font:700 1em Fraunces,serif;width:190px;max-width:52vw;text-align:center;outline:none;padding:0 4px}.dict-in.ok{color:#6fe3cf;border-color:var(--mint)}.dict-in.bad{color:#ff9d8a;border-color:var(--coral)}
+    .listen-row,.speak-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:16px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}.listen-row .t,.speak-row .t{flex:1;min-width:180px;color:#d8d4e4;font-size:.92rem}.listen-row b,.speak-row b{color:#fff;display:block}
+    .bigplay,.micbig{width:62px;height:62px;border-radius:50%;border:0;display:grid;place-items:center;flex:none;transition:.2s}.bigplay{background:var(--amber);color:var(--ink)}.bigplay svg{width:22px;height:22px;margin-left:3px}.micbig{background:#fff;color:var(--coral-dark)}.micbig svg{width:24px;height:24px}.bigplay:hover,.micbig:hover{transform:scale(1.05)}
+    .hint{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border-radius:99px;background:rgba(255,182,39,.14);color:var(--amber);font-size:.84rem;margin-bottom:10px}.hint b{color:#fff}
+    .feedback{min-height:28px;margin-top:18px;color:#dbd8e4}.feedback strong{color:var(--amber)}.feedback .note3{display:block;margin-top:6px;color:#bdb8cf;font-size:.92rem}.fb-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .next{border:0;background:var(--coral);color:#fff;border-radius:999px;padding:12px 18px;font-weight:800;display:inline-flex;gap:8px;align-items:center}
+    .intro{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center}.intro h3{font:700 clamp(1.6rem,3.5vw,2.4rem)/1.1 Fraunces,serif;margin:0 0 10px}.intro p{color:#d8d4e4;margin:0 0 18px}.formats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fmt{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.8rem;color:#d8d4e4}.fmt b{display:block;color:#fff;font:700 .94rem Fraunces,serif}.fmt.off{opacity:.4}
+    .jobpick{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.jobpick button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:99px;padding:8px 13px;font-weight:700;font-size:.84rem}.jobpick button.on{background:#fff;color:var(--ink)}
+    .result{text-align:center;padding:6px 0}.result-number{font:900 clamp(4rem,12vw,6.5rem)/1 Fraunces,serif;color:var(--amber)}.result h3{font:700 clamp(1.4rem,3vw,2rem) Fraunces,serif;margin:8px 0 4px}.result .sub{color:#cfcbe0;margin:0}
+    .jobres{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:24px 0}.jr{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;text-align:left}.jr small{font:500 .58rem "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:#bdb8cf}.jr b{display:block;font:800 1.45rem Fraunces,serif;margin-top:3px}.jr .mini{height:4px;border-radius:99px;background:rgba(255,255,255,.1);margin-top:8px;overflow:hidden}.jr .mini span{display:block;height:100%;background:var(--mint)}.jr.weak{border-color:var(--coral)}.jr.weak .mini span{background:var(--coral)}.jr.none{opacity:.4}
+    .res-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .speedbar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:24px}.speedbar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--coral),var(--amber));transform-origin:left}
+    .speed-prompt{text-align:center;margin-bottom:24px}.speed-prompt .who{font:900 clamp(3rem,10vw,5.4rem)/1 Fraunces,serif;letter-spacing:-.03em}.speed-prompt .tm{margin-top:12px}.speed-prompt .tm span{font:500 .72rem "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:99px;background:var(--w-bg);color:var(--w-ink)}
+    .flash-ok{animation:fok .35s}.flash-bad{animation:fbad .45s}@keyframes fok{40%{box-shadow:inset 0 0 0 3px rgba(21,183,158,.8)}}@keyframes fbad{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+    /* Progress */
+    .growth{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow)}.tile small{display:block;font:500 .58rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.tile b{display:block;font:800 1.9rem/1.1 Fraunces,serif;margin-top:6px}.tile span{font-size:.8rem;color:var(--mist)}.up{color:var(--mint-dark)!important;font-weight:700}.down{color:var(--coral-dark)!important;font-weight:700}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.panel h3{font:700 1.2rem Fraunces,serif;margin:0 0 4px}.panel .lead{color:var(--mist);font-size:.86rem;margin:0 0 12px}
+    .bar{display:grid;grid-template-columns:170px 1fr 46px;gap:10px;align-items:center;padding:7px 0}.bar .bl{font-weight:700;font-size:.88rem}.bar .track2{height:10px;background:var(--cloud);border-radius:99px;overflow:hidden}.bar .fill{height:100%;border-radius:99px;transition:width .6s ease}.bar .pc{font:.75rem "DM Mono",monospace;text-align:right;color:var(--soft)}
+    .spark{margin-top:14px}.spark svg{width:100%;height:auto;display:block}.spark .empty{padding:24px;text-align:center;color:var(--mist);font-size:.88rem;background:var(--cloud);border-radius:16px}
+    .checklist{display:grid;gap:8px;margin:10px 0 0;padding:0;list-style:none}.checklist li{display:flex;gap:10px;align-items:center;font-size:.92rem}.checklist .ck{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;background:var(--cloud);color:var(--mist);flex:none}.checklist .ck.ok{background:var(--p-bg);color:var(--p-ink)}
+    .seal{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--cloud);font:600 1rem Fraunces,serif}.seal.won{background:var(--ink);color:var(--amber)}
+    .report{margin-top:14px;display:grid;gap:10px}.report label{font:500 .6rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.report input{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--paper);outline:none}.report input:focus{border-color:var(--ink)}.linkish{background:none;border:0;color:var(--mist);text-decoration:underline;font-size:.82rem;padding:4px 0;justify-self:start}
+
+    .route{background:var(--cloud);border-radius:31px;padding:clamp(22px,4vw,40px);display:grid;grid-template-columns:1fr 1fr;gap:24px}.route h3{font:800 1.6rem Fraunces,serif;margin:6px 0 10px}.route ol{margin:0;padding-left:20px;color:var(--soft)}.route li{margin:8px 0}.route b{color:var(--ink)}
+    .next-step{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--ink);color:#fff;border-radius:28px;padding:26px 30px;text-decoration:none;transition:.2s}.next-step:hover{transform:translateY(-3px)}.next-step small{font:500 .62rem "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}.next-step b{display:block;font:700 clamp(1.4rem,3vw,2rem) Fraunces,serif}.next-step span{color:#cfcbe0}
+    footer{padding:40px 0 120px;text-align:center;color:var(--mist);font:.65rem "DM Mono",monospace;text-transform:uppercase;letter-spacing:.12em}
+    .wa{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;background:#25d366;color:#fff;text-decoration:none;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 12px 32px rgba(37,211,102,.35);transition:.2s}.wa:hover{transform:translateY(-3px)}
+    .vdock{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:31}.vbtn{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 16px;font-weight:700;font-size:.86rem;display:flex;gap:8px;align-items:center;box-shadow:0 12px 32px rgba(26,23,48,.3)}.vbtn svg{width:16px;height:16px}.vbtn em{font-style:normal;color:var(--amber);font:500 .7rem "DM Mono",monospace}
+    .vpanel{position:absolute;bottom:58px;left:0;width:290px;background:#fff;border-radius:22px;box-shadow:var(--shadow-lg);padding:18px;display:none;border:1px solid var(--line)}.vpanel.show{display:block}.vpanel h4{font:700 1.15rem Fraunces,serif;margin:0 0 10px}.vpanel label{font:500 .58rem "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}.vpanel .meta{font-size:.78rem;color:var(--mist);margin:10px 0 0}
+    .seg{display:flex;background:var(--cloud);border-radius:99px;padding:3px;margin:6px 0 12px}.seg button{flex:1;border:0;background:none;border-radius:99px;padding:8px;font-weight:700;font-size:.82rem;color:var(--soft)}.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}.reveal.seen{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+    .growth>*,.lab>*,.vm>*,.traps>*,.grid3>*,.route>*{min-width:0}
+
+    @media(max-width:960px){.hero{min-height:auto;padding-top:56px}.hero-inner{grid-template-columns:1fr;gap:36px}.section-head{grid-template-columns:1fr}.slots{grid-template-columns:1fr 1fr}.laws{grid-template-columns:1fr}.chain-nav{grid-template-columns:1fr 1fr}.node:nth-child(2):after{display:none}.brief{grid-template-columns:1fr 1fr}.fx{grid-template-columns:1fr 1fr}.rules4{grid-template-columns:1fr 1fr}.tgrid,.grid3{grid-template-columns:1fr 1fr}.vm,.lab,.growth,.intro,.route{grid-template-columns:1fr}.persona{position:static}.jobres{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:600px){.wrap{width:min(100% - 32px,1120px)}section{padding:54px 0}.hero{padding-top:44px}.hero h1{font-size:clamp(3.4rem,16vw,5rem)}.orb{width:76px;height:76px}.orb b{font-size:.9rem}.orb>span>span{font-size:.46rem}.slots{grid-template-columns:1fr}.fx,.rules4,.tgrid,.grid3,.traps,.answers{grid-template-columns:1fr}.chain-nav{grid-template-columns:1fr}.node:after{display:none}.crow{grid-template-columns:1fr}.line{grid-template-columns:1fr;gap:8px;padding:16px}.line .fn{display:flex;align-items:baseline;gap:8px}.line .fn b{font-size:1.2rem}.step{grid-template-columns:52px 1fr;margin-left:0!important}.step .acts{grid-column:2}.lvl{font-size:1rem;padding:8px}.tiles{grid-template-columns:1fr 1fr}.bar{grid-template-columns:118px 1fr 40px}.jobres{grid-template-columns:1fr 1fr}.wa span{display:none}.mast-inner span:last-child{display:none}.vbtn .vlabel{display:none}.modes{gap:6px}.mode{padding:11px 10px;border-radius:16px}.mode b{font-size:.95rem}.mode span{display:none}.mode small{font-size:.5rem;letter-spacing:.08em}.answer kbd{display:none}.stage{padding:18px}.vdetail{grid-template-columns:1fr}.next-step{padding:22px}.eq-demo{align-items:flex-start}}
+    @media(hover:none){.answer kbd{display:none}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true"></div>
-<a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%20want%20more%20information%20about%20the%20English%20verbs%20masterclass." target="_blank" rel="noopener">● <span>WhatsApp</span></a>
-<nav class="topbar"><div class="wrap"><a class="brand" href="#top">ProfGermandario · Verb Master Map</a><div class="nav"><a href="#model">Model</a><a href="#types">Types</a><a href="#tense">Tense</a><a href="#lab">Builder</a><a href="#voice">Voice</a><a href="#levels">Levels</a><a href="#practice">Practice</a></div></div></nav>
-<header class="hero" id="top"><div class="wrap hero-grid"><div><div class="eyebrow">English verbs · Masterclass</div><h1>Verb <em>Master Map.</em></h1><p>A verb is not only an action word. In English, the verb is the engine of the sentence: it carries action, state, time, aspect, voice, mood, questions, negation, and meaning. Master the verb, and the sentence starts obeying you.</p><div class="hero-actions"><a class="btn btn-primary" href="#model">Start the masterclass →</a><a class="btn btn-light" href="#practice">Go to exercises</a></div></div><div class="verb-orbit" aria-label="Verb master map visual"><div class="orbit-ring"></div><div class="core"><div><b>VERB</b><small>Action · State · Possession</small></div></div><div class="node n1"><strong>Types</strong><span>action · linking · modal</span></div><div class="node n2"><strong>Tense</strong><span>time of action</span></div><div class="node n3"><strong>Voice</strong><span>active · passive</span></div><div class="node n4"><strong>Mood</strong><span>intention</span></div><div class="node n5"><strong>Forms</strong><span>base · ing · participle</span></div></div></div></header>
-<main>
-<section id="model"><div class="wrap"><div class="section-head"><div><div class="eyebrow">01 · The verb engine</div><h2>Stop memorizing verbs as isolated words.</h2></div><p>Weak method: “eat = comer.” Strong method: verb + subject + time + structure + context. A verb becomes useful only when you can move it through sentences.</p></div><div class="master-card"><h3>The complete verb equation: <span>meaning + structure + time.</span></h3><p>Every English verb answers three control questions: What kind of verb is it? What time/aspect does it use? What role does it play in the sentence?</p><div class="formula-large"><span class="token">SUBJECT</span><span class="token">AUXILIARY</span><span class="token">MAIN VERB</span><span class="token">COMPLEMENT</span><span class="token">TIME MARKER</span></div><div class="permission"><b>Master rule:</b> English questions and negatives usually need an auxiliary. If the student does not control auxiliaries, verbs will feel chaotic.</div></div></div></section>
-<section id="types"><div class="wrap"><div class="section-head"><div><div class="eyebrow">02 · Verb types</div><h2>Know what kind of verb you are using.</h2></div><p>The same word can behave differently depending on context. “Look” can be an action verb, a linking verb, or part of a phrasal verb.</p></div><div class="grid"><article class="card"><span class="badge coral">Action verbs</span><h3>They show movement or activity.</h3><p>They can be physical or mental. They usually answer: “What does the subject do?”</p><div class="examples"><div class="ex"><b>I run</b> every morning.</div><div class="ex"><b>She writes</b> emails.</div><div class="ex"><b>They think</b> deeply.</div></div></article><article class="card"><span class="badge mint">Linking verbs</span><h3>They connect subject and description.</h3><p>They do not show action. They link the subject to a state, identity, or quality.</p><div class="examples"><div class="ex">He <b>is</b> tired.</div><div class="ex">The soup <b>tastes</b> good.</div><div class="ex">She <b>seems</b> nervous.</div></div></article><article class="card"><span class="badge amber">Auxiliary verbs</span><h3>They build grammar.</h3><p>Auxiliaries support tense, questions, negatives, perfect forms, progressive forms, and passive voice.</p><div class="examples"><div class="ex"><b>Do</b> you work?</div><div class="ex">She <b>is</b> studying.</div><div class="ex">They <b>have</b> finished.</div></div></article><article class="card"><span class="badge wine">Modal verbs</span><h3>They add attitude and possibility.</h3><p>Modals do not take -s and are followed by the base verb.</p><div class="examples"><div class="ex">He <b>can</b> swim.</div><div class="ex">You <b>should</b> rest.</div><div class="ex">They <b>must</b> leave.</div></div></article><article class="card"><span class="badge coral">Stative verbs</span><h3>They describe states, not actions.</h3><p>Many stative verbs resist progressive form unless the meaning changes.</p><div class="examples"><div class="ex">I <b>know</b> the answer.</div><div class="ex">She <b>owns</b> a car.</div><div class="ex">They <b>believe</b> him.</div></div></article><article class="card"><span class="badge mint">Phrasal verbs</span><h3>Verb + particle = new meaning.</h3><p>The particle can change the meaning completely. “Look” is not the same as “look up.”</p><div class="examples"><div class="ex">Look <b>up</b> the word.</div><div class="ex">Turn <b>off</b> the light.</div><div class="ex">Give <b>up</b> smoking.</div></div></article></div></div></section>
-<section id="tense"><div class="wrap"><div class="section-head"><div><div class="eyebrow">03 · Tense and aspect</div><h2>Time is not enough. Aspect explains the shape of the action.</h2></div><p>Tense tells when. Aspect tells how the speaker sees the action: complete, repeated, in progress, or connected to another time.</p></div><div class="tab-shell"><div class="tabs" id="aspectTabs"></div><div class="tab-body" id="aspectBody"></div></div></div></section>
-<section id="lab"><div class="wrap"><div class="lab"><h3>Verb Sentence Builder.</h3><p>Choose a subject, verb, tense, and function. The sentence will change. This trains the hidden machinery: auxiliary, main verb, and complement.</p><div class="lab-grid"><div class="panel"><label for="subjectSel">Subject</label><select id="subjectSel"><option>I</option><option>You</option><option>He</option><option>She</option><option>We</option><option>They</option></select><label for="verbSel" style="margin-top:14px">Verb</label><select id="verbSel"><option value="work">work</option><option value="study">study</option><option value="eat">eat</option><option value="go">go</option><option value="write">write</option><option value="speak">speak</option></select></div><div class="panel"><label for="tenseSel">Tense / aspect</label><select id="tenseSel"><option value="simple">Present Simple</option><option value="progressive">Present Progressive</option><option value="perfect">Present Perfect</option><option value="past">Past Simple</option><option value="future">Future with will</option></select><label for="modeSel" style="margin-top:14px">Function</label><select id="modeSel"><option value="positive">Positive</option><option value="negative">Negative</option><option value="question">Question</option></select></div></div><div class="output"><strong id="sentenceOutput">I work every day.</strong><p id="sentenceExplain">Present simple uses the base verb with I/you/we/they.</p><button class="audio-btn" data-speak-target="sentenceOutput">▶ Hear sentence</button></div></div></div></section>
-<section id="forms"><div class="wrap"><div class="section-head"><div><div class="eyebrow">04 · Verb forms</div><h2>Every verb has working pieces.</h2></div><p>When students say “I am work” or “She doesn’t works,” the problem is not vocabulary. The problem is verb form control.</p></div><div class="matrix"><table><thead><tr><th>Form</th><th>Function</th><th>Example</th><th>Common trap</th></tr></thead><tbody><tr><td><b>Base form</b><small>work, go, eat</small></td><td>After modals, do/does/did, infinitive marker to.</td><td>I can <b>work</b>. / She doesn't <b>work</b>.</td><td>Never add -s after does/doesn't/did.</td></tr><tr><td><b>-s form</b><small>works, goes, studies</small></td><td>Present simple with he/she/it.</td><td>She <b>works</b> on Mondays.</td><td>Only in positive present simple.</td></tr><tr><td><b>-ing form</b><small>working, going</small></td><td>Progressive forms and gerunds.</td><td>They are <b>working</b>. / <b>Swimming</b> is fun.</td><td>Needs be for progressive: am/is/are + ing.</td></tr><tr><td><b>Past form</b><small>worked, went</small></td><td>Completed past actions.</td><td>He <b>went</b> home.</td><td>Past question uses did + base: Did he go?</td></tr><tr><td><b>Past participle</b><small>worked, gone, eaten</small></td><td>Perfect tenses and passive voice.</td><td>I have <b>eaten</b>. / It was <b>eaten</b>.</td><td>Do not confuse past and participle in irregular verbs.</td></tr><tr><td><b>Infinitive</b><small>to work</small></td><td>Purpose, plans, many verb patterns.</td><td>I want <b>to learn</b>.</td><td>After modals use base, not to: can learn.</td></tr></tbody></table></div></div></section>
-<section id="voice"><div class="wrap"><div class="section-head"><div><div class="eyebrow">05 · Voice and mood</div><h2>Who does the action? What is the speaker's intention?</h2></div><p>Voice changes the focus. Mood changes the intention. These two controls make English flexible and mature.</p></div><div class="practice-grid"><article class="exercise"><h3>Active vs Passive Voice</h3><p><b>Active:</b> The subject does the action. <br><b>Passive:</b> The subject receives the action.</p><div class="examples"><div class="ex"><b>Active:</b> The chef cooks dinner.</div><div class="ex"><b>Passive:</b> Dinner is cooked by the chef.</div></div><div class="teacher-note"><b>Formula:</b> object + be + past participle + by + agent.</div></article><article class="exercise"><h3>Mood: intention of the speaker</h3><p>Mood is not emotion. It is the grammatical intention behind the verb.</p><div class="examples"><div class="ex"><b>Indicative:</b> He goes to class.</div><div class="ex"><b>Imperative:</b> Go to class.</div><div class="ex"><b>Subjunctive:</b> I wish he were here.</div></div><div class="danger-note"><b>High-level note:</b> Subjunctive is limited but important in formal English, wishes, and hypotheticals.</div></article></div></div></section>
-<section id="patterns"><div class="wrap"><div class="section-head"><div><div class="eyebrow">06 · Verb patterns</div><h2>Some verbs demand a specific next form.</h2></div><p>This is where many intermediate students get trapped. You must learn verbs together with the structure they control.</p></div><div class="grid"><article class="card"><span class="badge coral">Verb + to</span><h3>want / need / decide / hope</h3><p>These verbs usually take an infinitive after them.</p><div class="examples"><div class="ex">I want <b>to improve</b>.</div><div class="ex">She decided <b>to leave</b>.</div></div></article><article class="card"><span class="badge mint">Verb + ing</span><h3>enjoy / avoid / finish / keep</h3><p>These verbs usually take a gerund after them.</p><div class="examples"><div class="ex">I enjoy <b>learning</b>.</div><div class="ex">He avoids <b>speaking</b>.</div></div></article><article class="card"><span class="badge amber">Verb + object + to</span><h3>tell / ask / invite / allow</h3><p>The object receives the instruction or invitation.</p><div class="examples"><div class="ex">She told me <b>to wait</b>.</div><div class="ex">They invited us <b>to join</b>.</div></div></article><article class="card"><span class="badge wine">Modal + base</span><h3>can / must / should / might</h3><p>Modal verbs never need “to” before the next verb.</p><div class="examples"><div class="ex">You should <b>study</b>.</div><div class="ex">He can <b>drive</b>.</div></div></article><article class="card"><span class="badge coral">Causative verbs</span><h3>make / let / have</h3><p>These verbs can force a base verb pattern.</p><div class="examples"><div class="ex">My teacher made me <b>repeat</b>.</div><div class="ex">Let me <b>try</b>.</div></div></article><article class="card"><span class="badge mint">Linking + adjective</span><h3>be / seem / feel / look</h3><p>After linking verbs, describe the subject with an adjective.</p><div class="examples"><div class="ex">She looks <b>happy</b>.</div><div class="ex">The soup tastes <b>good</b>.</div></div></article></div></div></section>
-<section id="levels"><div class="wrap"><div class="section-head"><div><div class="eyebrow">07 · Same idea, stronger verbs</div><h2>Watch one idea grow from A1 to C2.</h2></div><p>This makes progress visible. Higher levels do not only use “harder words”; they control time, nuance, causality, voice, and stance.</p></div><div class="staircase"><div class="level-row"><div class="level">A1</div><p>I work every day.</p><button class="speak-mini" data-speak="I work every day.">▶</button></div><div class="level-row"><div class="level">A2</div><p>I usually work in the morning, but today I am resting.</p><button class="speak-mini" data-speak="I usually work in the morning, but today I am resting.">▶</button></div><div class="level-row"><div class="level">B1</div><p>I have worked hard this year because I want to improve my opportunities.</p><button class="speak-mini" data-speak="I have worked hard this year because I want to improve my opportunities.">▶</button></div><div class="level-row"><div class="level">B2</div><p>I had been working without a clear method until I realized that consistency mattered more than intensity.</p><button class="speak-mini" data-speak="I had been working without a clear method until I realized that consistency mattered more than intensity.">▶</button></div><div class="level-row"><div class="level">C1</div><p>My progress accelerated once my practice was structured around feedback, retrieval, and deliberate repetition.</p><button class="speak-mini" data-speak="My progress accelerated once my practice was structured around feedback, retrieval, and deliberate repetition.">▶</button></div><div class="level-row"><div class="level">C2</div><p>What had once felt like mechanical study gradually evolved into an automatic command of patterns, nuance, and communicative intention.</p><button class="speak-mini" data-speak="What had once felt like mechanical study gradually evolved into an automatic command of patterns, nuance, and communicative intention.">▶</button></div></div></div></section>
-<section id="vocab"><div class="wrap"><div class="section-head"><div><div class="eyebrow">08 · Core verb vocabulary</div><h2>Train high-frequency verbs first.</h2></div><p>Do not waste early energy on rare verbs. Build command over verbs that create thousands of sentences.</p></div><div class="verb-cloud" id="verbCloud"></div></div></section>
-<section id="practice"><div class="wrap"><div class="section-head"><div><div class="eyebrow">09 · Mastery check</div><h2>Prove that the map is working.</h2></div><p>Answer by structure, not by instinct. The goal is not luck. The goal is controlled explanation.</p></div><div class="exercise"><div style="display:flex;justify-content:space-between;gap:15px;align-items:center"><h3>Verb Master Quiz</h3><span class="quiz-score">Score <b id="score">0</b> / 10</span></div><div class="bar"><span id="quizBar"></span></div><div id="quiz"></div></div></div></section>
-<section id="teacher"><div class="wrap"><div class="script"><div class="eyebrow">Teacher route</div><h2 class="display" style="font-size:clamp(2rem,4vw,3.4rem);line-height:.98;margin:10px 0 0">How to teach this live.</h2><ol><li><b>Open with the engine idea:</b> a verb is not a translation; it is the sentence motor.</li><li><b>Use three example verbs:</b> work, be, can. Show action, linking, modal.</li><li><b>Move one verb through forms:</b> work, works, worked, working, have worked, is worked.</li><li><b>Contrast time and aspect:</b> I work / I am working / I have worked / I had been working.</li><li><b>Force auxiliary control:</b> positive → negative → question.</li><li><b>End with production:</b> students create one sentence at A1, A2, B1, B2, C1.</li></ol></div></div></section>
-</main>
-<footer class="wrap">ProfGermandario · Verb Master Map · English Verbs Masterclass</footer>
-<script>
-const aspects=[
-  {name:'Simple',tag:'habit · fact · completed action',cards:[['Present Simple','Subject + base / -s','I work every day.','Use for routines, facts, and general truths.'],['Past Simple','Subject + past verb','I worked yesterday.','Use for completed past actions.'],['Future Simple','Subject + will + base','I will work tomorrow.','Use for predictions, promises, and decisions.']]},
-  {name:'Continuous',tag:'action in progress',cards:[['Present Progressive','am/is/are + verb-ing','I am working now.','Use for actions happening around now.'],['Past Progressive','was/were + verb-ing','I was working at 8 p.m.','Use for an action in progress at a past moment.'],['Future Progressive','will be + verb-ing','I will be working tonight.','Use for an action in progress at a future moment.']]},
-  {name:'Perfect',tag:'completed but connected',cards:[['Present Perfect','have/has + past participle','I have worked here for years.','Use for experience, result, or duration connected to now.'],['Past Perfect','had + past participle','I had worked before I studied.','Use for the earlier of two past actions.'],['Future Perfect','will have + past participle','I will have finished by Friday.','Use for completion before a future point.']]},
-  {name:'Perfect Continuous',tag:'duration and continuity',cards:[['Present Perfect Continuous','have/has been + verb-ing','I have been working all day.','Use for duration continuing to now or recently stopped.'],['Past Perfect Continuous','had been + verb-ing','I had been working for hours.','Use for duration before a past point.'],['Future Perfect Continuous','will have been + verb-ing','I will have been working for ten hours.','Use for duration before a future point.']]}
-];
-const aspectTabs=document.querySelector('#aspectTabs'),aspectBody=document.querySelector('#aspectBody');
-function drawAspect(i=0){aspectTabs.innerHTML=aspects.map((a,n)=>`<button class="tab ${n===i?'on':''}" data-i="${n}">${a.name}</button>`).join('');const a=aspects[i];aspectBody.innerHTML=`<p class="badge coral">${a.tag}</p><div class="tense-grid" style="margin-top:18px">${a.cards.map(c=>`<article class="tense-card"><h3>${c[0]}</h3><p>${c[3]}</p><div class="formula">${c[1].split(' + ').map(x=>`<span class="part">${x}</span>`).join('')}</div><div class="ex"><b>${c[2]}</b></div><button class="audio-btn" data-speak="${c[2].replace(/"/g,'&quot;')}">▶ Hear</button></article>`).join('')}</div><div class="teacher-note"><b>Teaching move:</b> ask students to keep the same verb and change only the aspect. This makes the grammar visible instead of abstract.</div>`;aspectTabs.querySelectorAll('.tab').forEach(b=>b.onclick=()=>drawAspect(+b.dataset.i));wireSpeech();}
-drawAspect(0);
-const irregular={go:{past:'went',pp:'gone',third:'goes',ing:'going'},eat:{past:'ate',pp:'eaten',third:'eats',ing:'eating'},write:{past:'wrote',pp:'written',third:'writes',ing:'writing'},speak:{past:'spoke',pp:'spoken',third:'speaks',ing:'speaking'},work:{past:'worked',pp:'worked',third:'works',ing:'working'},study:{past:'studied',pp:'studied',third:'studies',ing:'studying'}};
-function beFor(s){return s==='I'?'am':(s==='He'||s==='She')?'is':'are'}function haveFor(s){return (s==='He'||s==='She')?'has':'have'}function doFor(s){return (s==='He'||s==='She')?'does':'do'}function third(s,v){return (s==='He'||s==='She')?irregular[v].third:v}function cap(x){return x.charAt(0).toUpperCase()+x.slice(1)}
-function buildSentence(){const s=subjectSel.value,v=verbSel.value,t=tenseSel.value,m=modeSel.value;let sentence='',explain='';const obj=v==='eat'?'lunch':v==='write'?'a paragraph':v==='speak'?'English':v==='go'?'to class':v==='study'?'grammar':'every day';if(t==='simple'){if(m==='positive'){sentence=`${s} ${third(s,v)} ${obj}.`;explain='Present simple uses base form, but he/she/it takes -s in positive sentences.'}if(m==='negative'){sentence=`${s} ${doFor(s)} not ${v} ${obj}.`;explain='Present simple negative uses do/does + not + base verb.'}if(m==='question'){sentence=`${cap(doFor(s))} ${s.toLowerCase()} ${v} ${obj}?`;explain='Present simple question uses Do/Does + subject + base verb.'}}
-if(t==='progressive'){const be=beFor(s);if(m==='positive'){sentence=`${s} ${be} ${irregular[v].ing} ${obj}.`;explain='Progressive uses am/is/are + verb-ing.'}if(m==='negative'){sentence=`${s} ${be} not ${irregular[v].ing} ${obj}.`;explain='Progressive negative places not after be.'}if(m==='question'){sentence=`${cap(be)} ${s.toLowerCase()} ${irregular[v].ing} ${obj}?`;explain='Progressive question inverts be and subject.'}}
-if(t==='perfect'){const hv=haveFor(s);if(m==='positive'){sentence=`${s} ${hv} ${irregular[v].pp} ${obj}.`;explain='Present perfect uses have/has + past participle.'}if(m==='negative'){sentence=`${s} ${hv} not ${irregular[v].pp} ${obj}.`;explain='Present perfect negative places not after have/has.'}if(m==='question'){sentence=`${cap(hv)} ${s.toLowerCase()} ${irregular[v].pp} ${obj}?`;explain='Present perfect question inverts have/has and subject.'}}
-if(t==='past'){if(m==='positive'){sentence=`${s} ${irregular[v].past} ${obj}.`;explain='Past simple positive uses the past form.'}if(m==='negative'){sentence=`${s} did not ${v} ${obj}.`;explain='Past negative uses did not + base verb.'}if(m==='question'){sentence=`Did ${s.toLowerCase()} ${v} ${obj}?`;explain='Past question uses Did + subject + base verb.'}}
-if(t==='future'){if(m==='positive'){sentence=`${s} will ${v} ${obj}.`;explain='Future with will uses will + base verb.'}if(m==='negative'){sentence=`${s} will not ${v} ${obj}.`;explain='Future negative uses will not + base verb.'}if(m==='question'){sentence=`Will ${s.toLowerCase()} ${v} ${obj}?`;explain='Future question inverts will and subject.'}}
-sentenceOutput.textContent=sentence;sentenceExplain.textContent=explain;}
-['subjectSel','verbSel','tenseSel','modeSel'].forEach(id=>document.getElementById(id).addEventListener('change',buildSentence));buildSentence();
-const verbs=['be','have','do','make','go','get','take','come','see','know','think','give','find','tell','ask','work','seem','feel','try','leave','call','use','need','become','put','mean','keep','let','begin','help','talk','turn','start','show','hear','play','run','move','live','believe','bring','write','sit','stand','lose','pay','meet','include','continue','set','learn','change','lead','understand','watch','follow','stop','create','speak','read','allow','add','spend','grow','open','walk','win','offer','remember','love','consider','appear','buy','wait','serve','die','send','expect','build','stay','fall','cut','reach','kill','raise','pass','sell','decide','return','explain','hope','develop','carry','break','receive','agree','support'];
-verbCloud.innerHTML=verbs.map(v=>`<button class="verb-chip" data-speak="${v}">${v}</button>`).join('');
-function speak(text,rate=.86){if(!('speechSynthesis' in window)){alert('Speech synthesis is not available in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang&&v.lang.startsWith('en'));if(voice)u.voice=voice;speechSynthesis.speak(u)}
-function wireSpeech(){document.querySelectorAll('[data-speak]').forEach(b=>{b.onclick=()=>speak(b.dataset.speak)});document.querySelectorAll('[data-speak-target]').forEach(b=>{b.onclick=()=>speak(document.getElementById(b.dataset.speakTarget).textContent)});}wireSpeech();
-const quizData=[
-{q:'Which sentence uses a linking verb?',a:['She runs fast.','He is tired.','They built a house.','I opened the door.'],c:1,e:'Is connects the subject to a state. It does not show physical action.'},
-{q:'Choose the correct present simple negative.',a:['She doesn’t works here.','She don’t work here.','She doesn’t work here.','She not works here.'],c:2,e:'Doesn’t already carries the third-person marker, so the main verb returns to base form.'},
-{q:'Which formula builds present progressive?',a:['subject + have + participle','subject + am/is/are + verb-ing','subject + did + base','subject + will + base'],c:1,e:'Progressive aspect uses be + -ing.'},
-{q:'Which is passive voice?',a:['The chef cooked dinner.','Dinner was cooked by the chef.','The chef is cooking dinner.','The chef will cook dinner.'],c:1,e:'Passive voice uses be + past participle and focuses on the receiver of the action.'},
-{q:'After a modal verb, what form comes next?',a:['to + verb','verb-ing','base verb','past participle'],c:2,e:'Modal + base verb: can go, should study, must leave.'},
-{q:'Which sentence is correct?',a:['Did she went home?','Did she go home?','Does she goes home?','Can she to go home?'],c:1,e:'Did questions use base verb: Did she go?'},
-{q:'Which one is a past participle?',a:['eating','eats','eaten','ate'],c:2,e:'Eaten is the past participle used in perfect and passive forms.'},
-{q:'Which sentence uses present perfect?',a:['I work here.','I am working here.','I have worked here.','I worked here yesterday.'],c:2,e:'Present perfect uses have/has + past participle.'},
-{q:'Which verb pattern is correct?',a:['I enjoy to learn.','I enjoy learning.','I enjoy learn.','I enjoy learned.'],c:1,e:'Enjoy is commonly followed by a gerund: enjoy learning.'},
-{q:'Which mood gives a command?',a:['Indicative','Imperative','Passive','Progressive'],c:1,e:'Imperative mood gives commands: Go. Listen. Study.'}
-];
-let qi=0,score=0,locked=false;const quiz=document.getElementById('quiz');function drawQuiz(){locked=false;quizBar.style.width=`${qi/quizData.length*100}%`;const x=quizData[qi];quiz.innerHTML=`<p class="badge amber">Question ${qi+1}</p><h3 style="font-size:1.35rem;margin:14px 0 6px">${x.q}</h3><div class="choices">${x.a.map((o,i)=>`<button class="choice" data-i="${i}">${o}</button>`).join('')}</div><div class="feedback" id="feedback">Choose the best structural answer.</div><button class="btn btn-primary next" id="nextBtn">${qi===quizData.length-1?'See result':'Next →'}</button>`;document.querySelectorAll('.choice').forEach(b=>b.onclick=answer);nextBtn.onclick=nextQuestion;}
-function answer(e){if(locked)return;locked=true;const n=+e.currentTarget.dataset.i,c=quizData[qi].c;document.querySelectorAll('.choice').forEach((b,i)=>{b.disabled=true;if(i===c)b.classList.add('correct');if(i===n&&i!==c)b.classList.add('wrong')});if(n===c)score++;scoreEl=document.getElementById('score');scoreEl.textContent=score;feedback.innerHTML=`<b>${n===c?'Correct.':'Not quite.'}</b> ${quizData[qi].e}`;nextBtn.classList.add('show')}
-function nextQuestion(){qi++;if(qi<quizData.length)drawQuiz();else{quizBar.style.width='100%';quiz.innerHTML=`<div class="result"><b>${score}/10</b><h3 class="display">${score>=9?'Verb engine calibrated.':score>=7?'Strong control. Review the traps.':'Repeat types, forms, and auxiliaries slowly.'}</h3><button class="btn btn-dark" id="restartQuiz">Restart ↺</button></div>`;restartQuiz.onclick=()=>{qi=0;score=0;document.getElementById('score').textContent=0;drawQuiz()}}}drawQuiz();
-const sections=[...document.querySelectorAll('header[id],section[id]')],links=[...document.querySelectorAll('.nav a')];const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-22% 0px -72%'});sections.forEach(s=>obs.observe(s));
-</script>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="masthead"><div class="wrap mast-inner"><span>The ProfGermandario System · <b>Logic, written &amp; spoken</b></span><span>Step 00c · Foundation · “Not perfection — production and speed.”</span></div></div>
+
+  <header class="hero" id="home">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow">Step 00c · The engine of every sentence</div>
+        <h1>Verb <em>Master Map.</em></h1>
+        <p class="hero-copy">A verb is not a word to translate. It is the <strong>engine</strong> of the sentence: it carries action, time, aspect, voice, questions and negation. Learn its five working pieces and one chain rule — and every tense in English becomes predictable.</p>
+        <p class="tagline">Think in English. Not about English.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#why">Start the class →</a><a class="btn btn-secondary" href="#arena">Random test</a><button class="btn btn-secondary needs-tts" data-say="She works. She is working. She has worked. She has been working." data-rate=".85"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Hear the engine</button></div>
+      </div>
+      <div class="engine" aria-label="The five verb forms — tap to hear">
+        <div class="ring"></div><div class="ring two"></div>
+        <button class="core" data-say="go, goes, went, going, gone." data-rate=".8"><span><b>VERB</b><small>5 forms · 1 chain rule</small></span></button>
+        <button class="orb o1" data-say="go"><span><b>go</b><span>base</span></span></button>
+        <button class="orb o2" data-say="goes"><span><b>goes</b><span>‑s form</span></span></button>
+        <button class="orb o3" data-say="went"><span><b>went</b><span>past</span></span></button>
+        <button class="orb o4" data-say="going"><span><b>going</b><span>‑ing</span></span></button>
+        <button class="orb o5" data-say="gone"><span><b>gone</b><span>participle</span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap brief reveal">
+    <div><small>Level</small><b>A2 → B2 · Foundation</b></div>
+    <div><small>Time</small><b>60 min class · 10 min daily</b></div>
+    <div><small>Method</small><b>Perception → Listening → Prosody → Retrieval</b></div>
+    <div><small>Mastery standard</small><b>85% twice · 25+ in Speed</b></div>
+  </div>
+
+  <div class="wrap sticky-nav"><nav class="nav-shell" aria-label="Lesson sections"><a href="#why">Why</a><a href="#forms">5 forms</a><a href="#chain">Chain rule</a><a href="#tenses">12 tenses</a><a href="#types">Types</a><a href="#patterns">Patterns</a><a href="#voice">Voice &amp; mood</a><a href="#lab">Lab</a><a href="#levels">A1→C2</a><a href="#core100">Core 100</a><a href="#traps">Traps</a><a href="#arena">Arena</a><a href="#progress">Progress</a></nav></div>
+
+  <main>
+    <!-- 01 WHY -->
+    <section id="why"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Exposure · 01 <i>· System logic</i></div><h2>Stop memorizing verbs. Run the engine.</h2></div><p>Weak method: “eat = comer.” Strong method: <strong>subject + auxiliary + verb form + complement + time</strong>. Step 00a gave you the subject. Step 00b gave you the camera. Now you get the whole machine — and the one rule that controls it.</p></div>
+      <div class="equation reveal on-dark"><h3>Every English verb phrase has <span>five slots.</span></h3><p>Not every slot is always full — but the order never changes. The auxiliary is the steering wheel: it carries time, agreement, questions and negation.</p>
+        <div class="slots"><div class="slot"><small>01 · Subject</small><b>she</b><span>who? (00a)</span></div><div class="slot aux"><small>02 · Auxiliary</small><b>has been</b><span>time · agreement · ? · not</span></div><div class="slot main"><small>03 · Main verb form</small><b>working</b><span>one of 5 forms</span></div><div class="slot"><small>04 · Complement</small><b>from home</b><span>what · where · how</span></div><div class="slot"><small>05 · Time</small><b>all week</b><span>when · how long</span></div></div>
+        <div class="eq-demo"><span>She <span class="ra">has been</span> <span class="rm">working</span> from home all week.</span><button class="say sm" data-say="She has been working from home all week."></button></div>
+      </div>
+      <div class="laws">
+        <article class="law reveal"><span class="n">Law 01 · the chain rule</span><h3>Each auxiliary chooses the next form.</h3><p>do / modals → base · be → ‑ing (or participle) · have → participle. Learn four arrows, unlock twelve tenses.</p><div class="ex"><div><span>has → been → working</span><button class="say sm" data-say="She has been working."></button></div></div></article>
+        <article class="law reveal"><span class="n">Law 02 · the first auxiliary</span><h3>Only the first auxiliary moves.</h3><p>For a question it jumps before the subject. For a negative it takes <em>not</em>. Everything after it stays still.</p><div class="ex"><div><span>Has she been working? · She hasn't.</span><button class="say sm" data-say="Has she been working? She hasn't been working."></button></div></div></article>
+        <article class="law reveal"><span class="n">Law 03 · no auxiliary?</span><h3>Borrow DO.</h3><p>Present and past simple have no auxiliary in the positive — so questions and negatives borrow <em>do / does / did</em> + base verb.</p><div class="ex"><div><span>She works. → Does she work?</span><button class="say sm" data-say="She works. Does she work? She doesn't work."></button></div></div></article>
+      </div>
+      <div class="chain-nav reveal" aria-label="Where this lesson sits in the system">
+        <a class="node done" href="step00a.html"><small>Step 00a · ✓</small><b>WHO</b><span>Pronoun logic</span></a>
+        <a class="node done" href="step00b.html"><small>Step 00b · ✓</small><b>CAMERA</b><span>Verb mode</span></a>
+        <span class="node here"><small>You are here · 00c</small><b>ENGINE</b><span>Verb master map</span></span>
+        <a class="node" href="step00d.html"><small>Step 00d</small><b>THINGS</b><span>Noun master map</span></a>
+      </div>
+    </div></section>
+
+    <!-- 02 FORMS -->
+    <section id="forms"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Exposure · 02 <i>· The working pieces</i></div><h2>Every verb has five forms.</h2></div><p>When a student says “I am work” or “She doesn’t works,” the problem is not vocabulary — it is form control. Pick a verb: each form has one job and one trigger. <span class="needs-tts">Tap any form to hear it.</span></p></div>
+      <div class="vchips reveal" id="fxChips"></div>
+      <div class="fx reveal" id="fxCards"></div>
+      <div class="fx-foot reveal"><span><b>Infinitive = to + base:</b> purpose and many patterns — “I want <b>to learn</b>.” Never after modals: “can learn”, not “can to learn”.</span><button class="pill-btn needs-tts" id="fxAll">Hear all five</button></div>
+    </div></section>
+
+    <!-- 03 CHAIN -->
+    <section id="chain"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Perception · 03 <i>· The chain rule</i></div><h2>Four arrows run the whole system.</h2></div><p>This is the hidden logic behind every tense, question and passive in English. Read each chain left to right: every auxiliary decides the form of the word that comes next.</p></div>
+      <div class="chainbox reveal">
+        <div class="rules4">
+          <div class="rule4"><small>Rule 1</small><b>do · does · did</b><span class="arrow">→ BASE</span></div>
+          <div class="rule4"><small>Rule 2</small><b>will · can · should · must…</b><span class="arrow">→ BASE</span></div>
+          <div class="rule4"><small>Rule 3</small><b>am · is · are · was · were · be · been</b><span class="arrow">→ ‑ING (active) · PARTICIPLE (passive)</span></div>
+          <div class="rule4"><small>Rule 4</small><b>have · has · had</b><span class="arrow">→ PARTICIPLE</span></div>
+        </div>
+        <div id="chainRows"></div>
+      </div>
+    </div></section>
+
+    <!-- 04 TENSES -->
+    <section id="tenses"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Perception · 04 <i>· Tense × aspect</i></div><h2>Twelve tenses. One pattern.</h2></div><p>Tense tells <strong>when</strong>. Aspect tells the <strong>shape</strong> of the action: complete, in progress, finished before a point, or lasting up to a point. Four aspects × three times = twelve — all built with the same chain.</p></div>
+      <div class="tabshell reveal"><div class="tabs" id="aspectTabs"></div><div class="tabbody" id="aspectBody"></div></div>
+      <div class="ladder reveal on-dark"><span>Same verb, four shapes: I <em>work</em> · I <em>am working</em> · I <em>have worked</em> · I <em>have been working</em></span><button class="pill-btn dark needs-tts" data-say="I work. I am working. I have worked. I have been working." data-rate=".85">Hear the ladder</button></div>
+    </div></section>
+
+    <!-- 05 TYPES -->
+    <section id="types"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Perception · 05 <i>· Verb types</i></div><h2>Know what kind of verb you are using.</h2></div><p>The same word can change type with context: “She <b>looks</b> tired” (linking) · “She <b>looked</b> at the map” (action) · “She <b>looked up</b> the word” (phrasal).</p></div>
+      <div class="grid3" id="typeCards"></div>
+    </div></section>
+
+    <!-- 06 PATTERNS -->
+    <section id="patterns"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Integration · 06 <i>· Verb patterns</i></div><h2>Some verbs demand the next form.</h2></div><p>This is where intermediate speakers get trapped. Learn each verb together with the structure it controls — the pattern is part of the word.</p></div>
+      <div class="grid3" id="patternCards"></div>
+    </div></section>
+
+    <!-- 07 VOICE & MOOD -->
+    <section id="voice"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Integration · 07 <i>· Voice and mood</i></div><h2>Who acts? What do you intend?</h2></div><p>Voice moves the focus between the doer and the receiver. Mood is the speaker’s intention: a fact, a command, or an unreal wish. These two controls make English sound mature.</p></div>
+      <div class="vm">
+        <article class="card reveal"><span class="badge c4">Voice</span><h3>Active vs. passive</h3><p><b>Active:</b> the subject does the action. <b>Passive:</b> the subject receives it — use it when the doer is unknown, obvious or less important.</p>
+          <div class="exs"><div class="exl"><span><b>Active:</b> The chef cooks dinner.</span><button class="say sm" data-say="The chef cooks dinner."></button></div><div class="exl"><span><b>Passive:</b> Dinner <span class="ra">is</span> <span class="rm">cooked</span> by the chef.</span><button class="say sm" data-say="Dinner is cooked by the chef."></button></div><div class="exl"><span><b>Past passive:</b> The bridge <span class="ra">was</span> <span class="rm">built</span> in 1990.</span><button class="say sm" data-say="The bridge was built in 1990."></button></div><div class="exl"><span><b>No doer needed:</b> English <span class="ra">is</span> <span class="rm">spoken</span> here.</span><button class="say sm" data-say="English is spoken here."></button></div></div>
+          <div class="formula"><b>Formula:</b> receiver + BE (any tense) + past participle (+ by + doer). Chain rule 3 again.</div></article>
+        <article class="card reveal"><span class="badge c5">Mood</span><h3>The speaker’s intention</h3><p>Mood is not emotion. It is the grammatical intention behind the verb.</p>
+          <div class="exs"><div class="exl"><span><b>Indicative · fact:</b> He goes to class.</span><button class="say sm" data-say="He goes to class."></button></div><div class="exl"><span><b>Imperative · command:</b> Go to class.</span><button class="say sm" data-say="Go to class."></button></div><div class="exl"><span><b>Negative command:</b> Don't be late.</span><button class="say sm" data-say="Don't be late."></button></div><div class="exl"><span><b>Subjunctive · unreal:</b> I wish he <span class="ra">were</span> here.</span><button class="say sm" data-say="I wish he were here."></button></div></div>
+          <div class="formula"><b>Imperative:</b> base verb, no subject. <b>Subjunctive:</b> limited but powerful in formal English — “If I <b>were</b> you…”, “I suggest that he <b>be</b> on time.”</div></article>
+      </div>
+    </div></section>
+
+    <!-- 08 LAB -->
+    <section id="lab"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Prosody · 08 <i>· Sentence lab</i></div><h2>Positive. Negative. Question.</h2></div><p>Choose a subject, a verb and a tense. The lab builds all three functions and colors the machinery: <span class="ra">auxiliary</span> and <span class="rm">main verb</span>. Listen, then say each line — watch the first auxiliary move.</p></div>
+      <div class="lab reveal">
+        <aside class="persona on-dark">
+          <div class="lbl">Subject</div><div class="chips" id="labS"></div>
+          <div class="lbl">Verb</div><div class="chips" id="labV"></div>
+          <div class="lbl">Tense</div><div class="chips" id="labT"></div>
+        </aside>
+        <div class="lines" id="labLines"></div>
+      </div>
+    </div></section>
+
+    <!-- 09 LEVELS -->
+    <section id="levels"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Prosody · 09 <i>· Same idea, stronger verbs</i></div><h2>Watch one idea grow from A1 to C2.</h2></div><p>Higher levels are not “harder words.” They control time, aspect, cause, voice and stance. Say each step out loud — the lab tells you how close you are. Your goal: one step above your level.</p></div>
+      <div class="stairs" id="stairs"></div>
+    </div></section>
+
+    <!-- 10 CORE 100 -->
+    <section id="core100"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Retrieval · 10 <i>· Core verb vocabulary</i></div><h2>The 100 verbs that build most sentences.</h2></div><p>Don’t spend early energy on rare verbs. Tap any verb to hear its forms and see its full profile. Filter the irregular ones — they are the ones to drill.</p></div>
+      <div class="cloudbox reveal"><div class="cfilters" id="cFilters"><button class="on" data-f="all">All</button><button data-f="irr">Irregular</button><button data-f="reg">Regular</button></div><div class="cloud" id="cloud"></div><div class="vdetail on-dark" id="vdetail"></div></div>
+    </div></section>
+
+    <!-- 11 TRAPS -->
+    <section id="traps"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Integration · 11 <i>· Interference map</i></div><h2>Eight traps Spanish sets for you.</h2></div><p>Each of these is Spanish logic running inside an English verb phrase. Name the leak, hear the correct model, and the error loses its power.</p></div>
+      <div class="traps">
+        <article class="trap reveal"><span class="tn">Trap 01 · double marking</span><h3>Only one word carries the ‑s.</h3><div class="tp bad"><span class="mark">×</span><p><s>She doesn't works here.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>She <b>doesn't work</b> here.</p><button class="say sm" data-say="She doesn't work here."></button></div><p class="why">DOES already carries the ‑s and the time. Chain rule 1: do / does / did → base.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 02 · “estoy de acuerdo”</span><h3>Agree is a verb, not a state.</h3><div class="tp bad"><span class="mark">×</span><p><s>I am agree with you.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>agree</b> with you. I <b>don't agree</b>.</p><button class="say sm" data-say="I agree with you. I don't agree."></button></div><p class="why">“Estar de acuerdo” has estar; English “agree” is one verb. No BE.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 03 · modal + to</span><h3>Modals never take “to”.</h3><div class="tp bad"><span class="mark">×</span><p><s>Can you to help me? You must to rest.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p><b>Can</b> you <b>help</b> me? You <b>must rest</b>.</p><button class="say sm" data-say="Can you help me? You must rest."></button></div><p class="why">Chain rule 2: modal → base verb. No to, no ‑s, no DO.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 04 · “tengo 25 años”</span><h3>Age, hunger and fear use BE.</h3><div class="tp bad"><span class="mark">×</span><p><s>I have 25 years. I have hungry.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>am</b> 25 (years old). I <b>am</b> hungry.</p><button class="say sm" data-say="I am twenty-five years old. I am hungry."></button></div><p class="why">Spanish “tener” becomes English BE for age, hunger, thirst, cold, fear and being right.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 05 · “quiero que vengas”</span><h3>Want + person + to.</h3><div class="tp bad"><span class="mark">×</span><p><s>I want that you come.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>want you to come</b>.</p><button class="say sm" data-say="I want you to come."></button></div><p class="why">want / need / ask / tell + object + to + base. “That” never follows want.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 06 · “disfruto aprender”</span><h3>Some verbs demand ‑ing.</h3><div class="tp bad"><span class="mark">×</span><p><s>I enjoy to learn. I avoid to speak.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>enjoy learning</b>. I <b>avoid speaking</b>.</p><button class="say sm" data-say="I enjoy learning. I avoid speaking."></button></div><p class="why">enjoy, avoid, finish, keep, mind, suggest → ‑ing. The pattern belongs to the verb.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 07 · “lo he terminado ayer”</span><h3>Finished time kills the perfect.</h3><div class="tp bad"><span class="mark">×</span><p><s>I have finished it yesterday.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>finished</b> it yesterday. I <b>have</b> already <b>finished</b>.</p><button class="say sm" data-say="I finished it yesterday. I have already finished."></button></div><p class="why">yesterday, last week, in 2020 → past simple. The present perfect connects to now — no finished time.</p></article>
+        <article class="trap reveal"><span class="tn">Trap 08 · “vivo aquí desde 2019”</span><h3>Since / for need the perfect.</h3><div class="tp bad"><span class="mark">×</span><p><s>I live here since 2019.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>have lived</b> here since 2019. I <b>have been working</b> here for five years.</p><button class="say sm" data-say="I have lived here since 2019. I have been working here for five years."></button></div><p class="why">Spanish uses the present for “desde / hace”. English measures from past to now → present perfect (simple or progressive).</p></article>
+      </div>
+    </div></section>
+
+    <!-- 12 ARENA -->
+    <section id="arena"><div class="wrap"><div class="arena reveal on-dark">
+      <div class="arena-top"><div><div class="eyebrow" style="color:var(--amber)">Retrieval · 12 · The arena</div><h2>Test the engine. Randomly.</h2></div><p>Every session is generated fresh from a bank of <span id="bankCount">150+</span> hand-written situations across eight formats. You cannot memorize the test — only the logic.</p></div>
+      <div class="modes" role="tablist">
+        <button class="mode on" data-mode="mixed"><small>12 questions</small><b>Mixed session</b><span>All eight formats, random order.</span></button>
+        <button class="mode" data-mode="speed"><small>60 seconds</small><b>Speed round</b><span>Verb + form → answer. 100 verbs.</span></button>
+        <button class="mode" data-mode="focus"><small>10 questions</small><b>Focus one skill</b><span>Train your weakest skill.</span></button>
+      </div>
+      <div class="toggles"><label class="switch needs-sr"><input type="checkbox" id="speakToggle" checked> Speaking questions (microphone)</label><span class="note2" id="capNote"></span></div>
+      <div class="stage" id="stage" aria-live="polite"></div>
+    </div></div></section>
+
+    <!-- 13 PROGRESS -->
+    <section id="progress"><div class="wrap">
+      <div class="section-head reveal"><div><div class="eyebrow">Performance · 13 <i>· Visible growth</i></div><h2>Proof you are better than last class.</h2></div><p>Results stay on this device. Every session updates your accuracy per skill, so you always know what to train next — and your teacher can see it in one message.</p></div>
+      <div class="growth">
+        <div><div class="tiles" id="tiles"></div><div class="panel" style="margin-top:12px"><h3>Accuracy trend</h3><p class="lead">Last 10 sessions · dashed line = 85% mastery standard</p><div class="spark" id="spark"></div></div></div>
+        <div class="panel"><h3>Mastery by skill</h3><p class="lead">All answers across sessions and speed rounds.</p><div id="bars"></div><ul class="checklist" id="checklist"></ul><div class="seal" id="seal"></div>
+          <div class="report"><label for="studentName">Your name for the report</label><input id="studentName" placeholder="e.g. Angela M." autocomplete="name" maxlength="40"><a class="btn btn-primary" id="sendReport" href="#" target="_blank" rel="noopener">Send my progress to Prof. Germandario</a><button class="linkish" id="resetProgress">Reset my progress on this device</button></div></div>
+      </div>
+    </div></section>
+
+    <!-- 14 ROUTE -->
+    <section id="route" style="padding-top:20px"><div class="wrap"><div class="route reveal">
+      <div><div class="eyebrow">Student route · 10 minutes a day</div><h3>How to own this map.</h3><ol><li><b>Day 1–2:</b> forms explorer + chain rule. Say the five forms of ten verbs.</li><li><b>Day 3–4:</b> one tense tab per day. Hear it, shadow it, say it.</li><li><b>Day 5:</b> sentence lab — one verb through + / − / ? in four tenses.</li><li><b>Every day:</b> one Speed round. Beat yesterday’s number.</li><li><b>End of week:</b> two mixed sessions at 85%+, then send your report.</li></ol></div>
+      <div><div class="eyebrow">Teacher route · live class</div><h3>How to teach it.</h3><ol><li><b>Open with the engine:</b> a verb is not a translation; it is the sentence motor.</li><li><b>Three verbs, three types:</b> work · be · can — action, linking, modal.</li><li><b>Move one verb through its forms:</b> work, works, worked, working, worked.</li><li><b>Draw the four arrows</b> and build one tense per arrow.</li><li><b>Force auxiliary control:</b> + → − → ? with the lab.</li><li><b>End with production:</b> each student says one sentence one level above theirs.</li></ol></div>
+    </div></div></section>
+
+    <div class="wrap"><a class="next-step reveal" href="step00d.html"><div><small>Next in the system</small><b>Step 00d · Noun Master Map</b><span>You control the engine. Now the things it moves.</span></div><span class="btn btn-amber">Continue →</span></a></div>
+  </main>
+  <footer class="wrap">ProfGermandario · The System · Step 00c · Verb Master Map</footer>
+
+  <div class="vdock" id="vdock"><div class="vpanel" id="vpanel" role="dialog" aria-label="Voice settings"><h4>Voice settings</h4><label>Accent</label><div class="seg" id="segAccent"><button data-v="en-US">American</button><button data-v="en-GB">British</button></div><label>Default speed</label><div class="seg" id="segRate"><button data-v="0.72">Slow</button><button data-v="0.92">Natural</button><button data-v="1.08">Fast</button></div><button class="pill-btn" data-say="Go, goes, went, going, gone.">Test the voice</button><p class="meta" id="voiceMeta"></p></div><button class="vbtn" id="vbtn" aria-expanded="false" aria-controls="vpanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg><span class="vlabel">Voice</span><em id="vtag">US · Natural</em></button></div>
+  <a class="wa" href="https://wa.me/573197894038?text=Hi%20Prof.%20Germandario!%20I%27m%20studying%20Step%2000c%20%C2%B7%20Verb%20Master%20Map%20and%20want%20more%20information." target="_blank" rel="noopener" aria-label="Contact Prof. Germandario on WhatsApp">● <span>WhatsApp</span></a>
+
+  <script>
+  (function(){
+    "use strict";
+    const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+    const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+    const rand=a=>a[Math.floor(Math.random()*a.length)];
+    const cap=w=>w.charAt(0).toUpperCase()+w.slice(1);
+    const WA="573197894038";
+    const ICON={play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>'};
+    const sayBtn=(t,o={})=>`<button class="say${o.sm?" sm":""}" data-say="${esc(t)}"${o.rate?` data-rate="${o.rate}"`:""} aria-label="${esc(o.label||"Listen")}">${ICON.play}</button>`;
+    const pillSay=(t,label,rate,dark)=>`<button class="pill-btn${dark?" dark":""}" data-say="${esc(t)}"${rate?` data-rate="${rate}"`:""}>${ICON.play}${label}</button>`;
+    const micBtn=(attrs="")=>`<button class="mic" ${attrs} aria-label="Say it">${ICON.mic}</button>`;
+
+    /* ───────── Skills & storage ───────── */
+    const SK=["forms","tenses","aux","patterns","types"];
+    const SKILL={forms:{name:"Forms & chain rule",short:"Forms",color:"#2f80ed"},tenses:{name:"Tense & aspect",short:"Tense",color:"#ff5a3c"},aux:{name:"Questions & negatives",short:"Aux",color:"#7b2cbf"},patterns:{name:"Verb patterns",short:"Pattern",color:"#15b79e"},types:{name:"Types, voice & mood",short:"Types",color:"#ffb627"}};
+    const KEY="pg_step00c_v2";
+    const blank=()=>({name:"",sessions:[],speedBest:0,speedRuns:0,skills:{forms:[0,0],tenses:[0,0],aux:[0,0],patterns:[0,0],types:[0,0]},seen:[],lab:0,days:[]});
+    let store=blank();
+    try{const raw=JSON.parse(localStorage.getItem(KEY)||"null");if(raw&&typeof raw==="object"){store=Object.assign(blank(),raw);store.skills=Object.assign(blank().skills,raw.skills||{})}}catch(e){}
+    const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
+    const fmtDate=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    function markDay(){const t=fmtDate(new Date());if(!store.days.includes(t)){store.days.push(t);store.days=store.days.slice(-120)}}
+    function recordSkill(k,ok){if(!store.skills[k])store.skills[k]=[0,0];store.skills[k][1]++;if(ok)store.skills[k][0]++}
+
+    /* ───────── Voice ───────── */
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition||null;
+    if(!SR)document.body.classList.add("no-sr");
+    const Voice={tts:"speechSynthesis" in window&&"SpeechSynthesisUtterance" in window,voices:[],pref:{accent:"en-US",rate:0.92}};
+    try{const vp=JSON.parse(localStorage.getItem("pg_voice")||"null");if(vp&&vp.accent)Voice.pref=Object.assign(Voice.pref,vp)}catch(e){}
+    if(!Voice.tts)document.body.classList.add("no-speech");
+    function pickVoice(){const acc=Voice.pref.accent,vs=Voice.voices.filter(v=>(v.lang||"").replace("_","-").toLowerCase()===acc.toLowerCase());const fav=acc==="en-US"?/Samantha|Ava|Allison|Google US English|Aria|Jenny|Microsoft Guy|Alex/i:/Daniel|Serena|Kate|Google UK English|Libby|Sonia|Ryan/i;return vs.find(v=>fav.test(v.name))||vs[0]||Voice.voices.find(v=>(v.lang||"").toLowerCase().startsWith("en"))||null}
+    let seq=0;
+    function stopAll(){seq++;if(Voice.tts)try{speechSynthesis.cancel()}catch(e){}$$(".playing").forEach(b=>b.classList.remove("playing"));$$(".line.active").forEach(e=>e.classList.remove("active"))}
+    function utter(text,rate,done){const u=new SpeechSynthesisUtterance(text);u.lang=Voice.pref.accent;u.rate=rate||Voice.pref.rate;const v=pickVoice();if(v)u.voice=v;let f=false;const fin=()=>{if(f)return;f=true;done&&done()};u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}
+    function speak(text,o={}){if(!Voice.tts||!text)return;if(o.btn&&o.btn.classList.contains("playing")){stopAll();return}stopAll();const my=seq;if(o.btn)o.btn.classList.add("playing");utter(text,o.rate,()=>{if(my!==seq)return;if(o.btn)o.btn.classList.remove("playing");o.onend&&o.onend()})}
+    function speakList(items,o={}){if(!Voice.tts||!items.length)return;if(o.btn&&o.btn.classList.contains("playing")){stopAll();return}stopAll();const my=seq;if(o.btn)o.btn.classList.add("playing");let i=0;const next=()=>{if(my!==seq)return;if(i>=items.length){if(o.btn)o.btn.classList.remove("playing");o.onItem&&o.onItem(-1);return}o.onItem&&o.onItem(i);utter(items[i],o.rate,()=>{if(my!==seq)return;i++;setTimeout(next,280)})};next()}
+    function loadVoices(){if(!Voice.tts)return;Voice.voices=speechSynthesis.getVoices()||[];updateVoiceUI()}
+    document.addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(!b)return;e.preventDefault();speak(b.dataset.say,{btn:b,rate:b.dataset.rate?+b.dataset.rate:undefined})});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAll()});
+    $$(".say").forEach(b=>{if(!b.innerHTML.trim())b.innerHTML=ICON.play;if(!b.getAttribute("aria-label"))b.setAttribute("aria-label","Listen")});
+
+    let rec=null,recBtn=null;
+    function listen(btn,cb){
+      if(!SR){cb({error:"unsupported"});return}
+      if(rec){const old=rec,same=recBtn===btn;old._x=true;try{old.abort()}catch(e){}rec=null;if(recBtn)recBtn.classList.remove("listening");recBtn=null;if(same)return}
+      stopAll();const r=new SR();rec=r;recBtn=btn;r.lang=Voice.pref.accent;r.interimResults=false;r.maxAlternatives=5;r.continuous=false;let got=false;btn&&btn.classList.add("listening");
+      r.onresult=e=>{if(got||r._x)return;got=true;cb({alts:[...e.results[0]].map(a=>a.transcript)})};
+      r.onerror=e=>{if(got||r._x)return;got=true;cb({error:e.error||"error"})};
+      r.onend=()=>{btn&&btn.classList.remove("listening");if(rec===r){rec=null;recBtn=null}if(!got&&!r._x){got=true;cb({error:"no-speech"})}};
+      try{r.start()}catch(err){btn&&btn.classList.remove("listening");rec=null;recBtn=null;if(!got){got=true;cb({error:"start"})}}
+    }
+    const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’‘`']/g,"").replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
+    const toks=s=>norm(s)?norm(s).split(" "):[];
+    const EXP={im:["i","am"],youre:["you","are"],hes:["he","is"],shes:["she","is"],theyre:["they","are"],ill:["i","will"],youll:["you","will"],theyll:["they","will"],isnt:["is","not"],arent:["are","not"],wasnt:["was","not"],werent:["were","not"],dont:["do","not"],doesnt:["does","not"],didnt:["did","not"],havent:["have","not"],hasnt:["has","not"],hadnt:["had","not"],wont:["will","not"],cant:["can","not"],cannot:["can","not"],shouldnt:["should","not"],couldnt:["could","not"],wouldnt:["would","not"],mustnt:["must","not"],ive:["i","have"],youve:["you","have"],weve:["we","have"],theyve:["they","have"],id:["i","would"]};
+    const HOMO={won:["one"],ate:["eight"],read:["red"],two:["to","too"],for:["four"],be:["bee"],seen:["scene"],made:["maid"],through:["threw"]};
+    const same=(t,s)=>t===s||(HOMO[t]||[]).includes(s);
+    const expand=arr=>{const o=[];arr.forEach(w=>{if(EXP[w])o.push(...EXP[w]);else o.push(w)});return o};
+    function lcs(T,S){const n=T.length,m=S.length,dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=same(T[i],S[j])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);const flags=new Array(n).fill(false);let i=0,j=0;while(i<n&&j<m){if(same(T[i],S[j])){flags[i]=true;i++;j++}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++}return{flags,score:n?dp[0][0]/n:0}}
+    function compare(target,said){
+      const T0=toks(target),S0=toks(said);const a=lcs(T0,S0);const T1=expand(T0),b=lcs(T1,expand(S0));
+      const D=String(target).split(/\s+/).map(w=>w.replace(/^[^A-Za-z0-9À-ÿ]+|[^A-Za-z0-9À-ÿ'’]+$/g,"")).filter(w=>norm(w));
+      if(a.score>=b.score)return{T:D.length===T0.length?D:T0,flags:a.flags,score:a.score};
+      return{T:T1,flags:b.flags,score:b.score};
+    }
+    function bestOf(target,alts){let b=null;for(const al of alts){const c=compare(target,al);c.said=al;if(!b||c.score>b.score)b=c}return b}
+    function heardHTML(r,goal=.8){const pct=Math.round(r.score*100),cls=r.score>=goal?"good":r.score>=.5?"":"low";return `<span class="badge ${cls}">${pct}% match</span>${r.T.map((w,k)=>`<span class="w ${r.flags[k]?"ok":"miss"}">${esc(w)}</span>`).join(" ")}<br><span class="said">You said: “${esc(r.said)}”</span>`}
+    const micError=err=>({"not-allowed":"Microphone blocked. Allow mic access in your browser settings, then try again.","service-not-allowed":"Speech service not available. Try Chrome or Safari.","no-speech":"I didn’t hear anything. Tap the mic and speak clearly.","audio-capture":"No microphone found on this device.","network":"Speech recognition needs an internet connection.","unsupported":"Speaking practice needs Chrome, Edge or Safari."}[err]||"Something interrupted the microphone. Try again.");
+    function micTo(btn,target,out,goal,onPass){out.className="heard show";out.innerHTML="Listening… say it.";listen(btn,res=>{if(res.error){out.innerHTML=esc(micError(res.error));return}const r=bestOf(target,res.alts);out.innerHTML=heardHTML(r,goal);if(r.score>=goal&&onPass)onPass(r)})}
+
+    const vpanel=$("#vpanel"),vbtn=$("#vbtn");
+    function updateVoiceUI(){
+      $$("#segAccent button").forEach(b=>b.classList.toggle("on",b.dataset.v===Voice.pref.accent));
+      $$("#segRate button").forEach(b=>b.classList.toggle("on",Math.abs(+b.dataset.v-Voice.pref.rate)<.01));
+      $("#vtag").textContent=(Voice.pref.accent==="en-US"?"US":"UK")+" · "+({"0.72":"Slow","0.92":"Natural","1.08":"Fast"}[String(Voice.pref.rate)]||Voice.pref.rate);
+      const v=Voice.tts?pickVoice():null;
+      $("#voiceMeta").innerHTML=(Voice.tts?(v?`Voice: <b>${esc(v.name)}</b>`:"Loading voices…"):"Audio is not available in this browser.")+"<br>"+(SR?"Speaking feedback: <b>available</b>":"Speaking feedback: not available here — use Chrome, Edge or Safari.");
+    }
+    function setPref(k,v){Voice.pref[k]=v;try{localStorage.setItem("pg_voice",JSON.stringify(Voice.pref))}catch(e){}updateVoiceUI()}
+    vbtn.addEventListener("click",e=>{e.stopPropagation();const s=vpanel.classList.toggle("show");vbtn.setAttribute("aria-expanded",s)});
+    $("#segAccent").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setPref("accent",b.dataset.v)});
+    $("#segRate").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setPref("rate",+b.dataset.v)});
+    document.addEventListener("click",e=>{if(!e.target.closest("#vdock"))vpanel.classList.remove("show")});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")vpanel.classList.remove("show")});
+    if(Voice.tts){loadVoices();if("onvoiceschanged" in speechSynthesis)speechSynthesis.onvoiceschanged=loadVoices}
+    updateVoiceUI();
+
+    /* ───────── Verb morphology (100 core verbs) ───────── */
+    const IRR={be:["was / were","been"],have:["had","had"],do:["did","done"],make:["made","made"],go:["went","gone"],get:["got","got / gotten"],take:["took","taken"],come:["came","come"],see:["saw","seen"],know:["knew","known"],think:["thought","thought"],give:["gave","given"],find:["found","found"],tell:["told","told"],feel:["felt","felt"],leave:["left","left"],become:["became","become"],put:["put","put"],mean:["meant","meant"],keep:["kept","kept"],let:["let","let"],begin:["began","begun"],show:["showed","shown"],hear:["heard","heard"],run:["ran","run"],bring:["brought","brought"],write:["wrote","written"],sit:["sat","sat"],stand:["stood","stood"],lose:["lost","lost"],pay:["paid","paid"],meet:["met","met"],set:["set","set"],lead:["led","led"],understand:["understood","understood"],spend:["spent","spent"],grow:["grew","grown"],win:["won","won"],buy:["bought","bought"],send:["sent","sent"],build:["built","built"],fall:["fell","fallen"],cut:["cut","cut"],sell:["sold","sold"],break:["broke","broken"],read:["read","read"],speak:["spoke","spoken"],eat:["ate","eaten"]};
+    const DOUBLE=new Set(["run","get","sit","put","let","set","cut","begin","win","stop","plan","shop","swim"]);
+    const thirdOf=b=>b==="be"?"is":b==="have"?"has":b==="go"?"goes":b==="do"?"does":/(s|sh|ch|x|z|o)$/.test(b)?b+"es":/[^aeiou]y$/.test(b)?b.slice(0,-1)+"ies":b+"s";
+    const ingOf=b=>b==="be"?"being":b==="die"?"dying":b==="lie"?"lying":/ee$/.test(b)?b+"ing":/[^aeiouy]e$|ue$|[aiu]e$/.test(b)&&!/ye$|oe$/.test(b)?b.slice(0,-1)+"ing":DOUBLE.has(b)?b+b.slice(-1)+"ing":b+"ing";
+    const pastReg=b=>/e$/.test(b)?b+"d":/[^aeiou]y$/.test(b)?b.slice(0,-1)+"ied":DOUBLE.has(b)?b+b.slice(-1)+"ed":b+"ed";
+    function vform(b){const irr=IRR[b];const p=irr?irr[0]:pastReg(b),pp=irr?irr[1]:pastReg(b);return{b,s:thirdOf(b),p,pp,g:ingOf(b),irr:!!irr}}
+    const CORE=["be","have","do","make","go","get","take","come","see","know","think","give","find","tell","ask","work","seem","feel","try","leave","call","use","need","become","put","mean","keep","let","begin","help","talk","turn","start","show","hear","play","run","move","live","believe","bring","write","sit","stand","lose","pay","meet","include","continue","set","learn","change","lead","understand","watch","follow","stop","create","speak","read","allow","add","spend","grow","open","walk","win","offer","remember","love","consider","appear","buy","wait","serve","die","send","expect","build","stay","fall","cut","reach","kill","raise","pass","sell","decide","return","explain","hope","develop","carry","break","receive","agree","support"];
+    const VF=Object.fromEntries(CORE.map(b=>[b,vform(b)]));
+
+    /* ───────── Forms explorer ───────── */
+    const LABV=[{b:"work",c:"from home"},{b:"study",c:"English"},{b:"eat",c:"lunch"},{b:"go",c:"to the gym"},{b:"write",c:"a report"},{b:"speak",c:"with the client"},{b:"take",c:"the bus"},{b:"make",c:"breakfast"},{b:"read",c:"the news"},{b:"finish",c:"the project"}];
+    LABV.forEach(v=>{Object.assign(v,vform(v.b))});
+    let fxV=LABV[3];
+    $("#fxChips").innerHTML=LABV.map((v,i)=>`<button class="vchip${v.irr?" irr":""}" data-i="${i}">${v.b}</button>`).join("");
+    function fxSentences(v){return[[v.b,"Base","After <b>do / does / did</b>, modals and <b>to</b>.",`She can ${v.b} ${v.c}.`],[v.s,"‑s form","Present simple with <b>he / she / it</b> — positive only.",`She ${v.s} ${v.c} every week.`],[v.p,"Past","Past simple — <b>positive only</b>.",`She ${v.p} ${v.c} yesterday.`],[v.g,"‑ing","After <b>be</b> (progressive) · gerunds.",`She is ${v.g} ${v.c} now.`],[v.pp,"Participle","After <b>have</b> (perfect) · after <b>be</b> (passive).",`She has ${v.pp} ${v.c}.`]]}
+    function renderFx(){$$("#fxChips .vchip").forEach(b=>b.classList.toggle("on",LABV[+b.dataset.i]===fxV));
+      $("#fxCards").innerHTML=fxSentences(fxV).map(f=>`<article class="fcard"><span class="k">${f[1]}</span><div class="f">${esc(f[0])}${sayBtn(f[0],{sm:true})}</div><div class="trig">${f[2]}</div><div class="ex"><span>${esc(f[3]).replace(new RegExp("\\b"+f[0]+"\\b"),`<span class="rm">${esc(f[0])}</span>`)}</span>${sayBtn(f[3],{sm:true})}</div></article>`).join("");
+      $("#fxAll").dataset.say=[fxV.b,fxV.s,fxV.p,fxV.g,fxV.pp].join(", ")+".";$("#fxAll").dataset.rate=".8"}
+    $("#fxChips").addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(b){fxV=LABV[+b.dataset.i];renderFx()}});
+    $("#fxAll").innerHTML=ICON.play+"Hear all five";renderFx();
+
+    /* ───────── Chain rows ───────── */
+    const CHAINS=[
+      [["She","s"],["doesn't","a","does → base"],["work","m","base"],["on Sundays.",""]],
+      [["She","s"],["can","a","modal → base"],["work","m","base"],["from home.",""]],
+      [["She","s"],["is","a","be → ‑ing"],["working","m","‑ing"],["now.",""]],
+      [["The report","s"],["was","a","be → participle"],["written","m","participle (passive)"],["yesterday.",""]],
+      [["She","s"],["has","a","have → participle"],["worked","m","participle"],["here for years.",""]],
+      [["She","s"],["will","a","modal → base"],["have","a","have → participle"],["been","a","be → ‑ing"],["working","m","‑ing"],["for ten years.",""]]
+    ];
+    $("#chainRows").innerHTML=CHAINS.map(ch=>{const text=ch.map(t=>t[0]).join(" ");return `<div class="crow"><div class="ctoks">${ch.map((t,k)=>`${k&&ch[k-1][1]==="a"?'<span class="ct arr">→</span>':""}<span class="ct ${t[1]}"><b>${esc(t[0])}</b>${t[2]?`<small>${esc(t[2])}</small>`:""}</span>`).join("")}</div>${sayBtn(text,{sm:true})}</div>`}).join("");
+
+    /* ───────── Tenses ───────── */
+    const REF={past:62,present:120,future:178};
+    const wave=(x0,x1,y)=>{const n=Math.max(3,Math.round((x1-x0)/9)),s=(x1-x0)/n;return `M${x0},${y} q${s/2},-7 ${s},0`+` t${s},0`.repeat(n-1)};
+    function timeline(t,a){const r=REF[t];let g="";
+      if(a==="simple")g=t==="present"?[30,66,102,138,174,210].map(x=>`<circle cx="${x}" cy="30" r="4.5" fill="currentColor"/>`).join(""):`<circle cx="${r}" cy="30" r="6" fill="currentColor"/>`;
+      if(a==="prog")g=`<path d="${wave(r-26,r+26,30)}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>`;
+      if(a==="perf")g=`<circle cx="${r-52}" cy="30" r="4" fill="currentColor"/><line x1="${r-52}" x2="${r-6}" y1="30" y2="30" stroke="currentColor" stroke-width="3"/><path d="M${r-8},24 L${r},30 L${r-8},36 Z" fill="currentColor"/>`;
+      if(a==="perfprog")g=`<path d="${wave(r-54,r,30)}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M${r-6},24 L${r+2},30 L${r-6},36 Z" fill="currentColor"/>`;
+      const refLine=t!=="present"?`<line x1="${r}" x2="${r}" y1="18" y2="42" stroke="#1a1730" stroke-dasharray="2 2" stroke-width="1"/>`:"";
+      return `<svg viewBox="0 0 240 48" aria-hidden="true"><line x1="8" x2="232" y1="30" y2="30" stroke="#d9d3e2" stroke-width="1.5"/><line x1="120" x2="120" y1="16" y2="44" stroke="#1a1730" stroke-width="1.5"/><text x="120" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#76718a">NOW</text>${refLine}${g}</svg>`}
+    const ASPECTS=[
+      {id:"simple",name:"Simple",tag:"habit · fact · complete action",cards:[["past","Past simple",[["past form","m"]],"I worked late yesterday.","worked","Finished action at a finished time."],["present","Present simple",[["base / ‑s","m"]],"I work every day.","work","Routines, facts, general truths."],["future","Future simple",[["will","a"],["base","m"]],"I will work tomorrow.","will work","Predictions, promises, decisions made now."]]},
+      {id:"prog",name:"Progressive",tag:"in progress around a moment",cards:[["past","Past progressive",[["was / were","a"],["‑ing","m"]],"I was working at 8 p.m.","was working","In progress at a past moment."],["present","Present progressive",[["am / is / are","a"],["‑ing","m"]],"I am working right now.","am working","In progress now, or temporary."],["future","Future progressive",[["will be","a"],["‑ing","m"]],"I will be working tonight.","will be working","In progress at a future moment."]]},
+      {id:"perf",name:"Perfect",tag:"complete before a point — and connected to it",cards:[["past","Past perfect",[["had","a"],["participle","m"]],"I had finished before you called.","had finished","The earlier of two past actions."],["present","Present perfect",[["have / has","a"],["participle","m"]],"I have worked here for five years.","have worked","Experience, result or duration connected to now."],["future","Future perfect",[["will have","a"],["participle","m"]],"I will have finished by Friday.","will have finished","Complete before a future point."]]},
+      {id:"perfprog",name:"Perfect progressive",tag:"duration up to a point",cards:[["past","Past perfect progressive",[["had been","a"],["‑ing","m"]],"I had been working for hours when you called.","had been working","Duration before a past moment."],["present","Present perfect progressive",[["have / has been","a"],["‑ing","m"]],"I have been working all day.","have been working","Duration up to now — often with visible results."],["future","Future perfect progressive",[["will have been","a"],["‑ing","m"]],"By May, I will have been working here for ten years.","will have been working","Duration up to a future point."]]}
+    ];
+    let aspI=0;
+    function hl(text,phrase,cls){return esc(text).replace(new RegExp("\\b("+phrase.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")\\b"),`<span class="${cls}">$1</span>`)}
+    function drawAspect(){const A0=ASPECTS[aspI];
+      $("#aspectTabs").innerHTML=ASPECTS.map((a,n)=>`<button class="tab${n===aspI?" on":""}" data-i="${n}">${a.name}</button>`).join("");
+      $("#aspectBody").innerHTML=`<div class="aspect-tag"><span>${A0.tag}</span>${pillSay(A0.cards.map(c=>c[3]).join(" "),"Hear all three",".88")}</div><div class="tgrid">${A0.cards.map(c=>`<article class="tcard"><span class="tl">${c[0]}</span><h3>${c[1]}</h3>${timeline(c[0],A0.id)}<div class="parts"><span class="part">subject</span>${c[2].map(p=>`<span class="part ${p[1]}">${p[0]}</span>`).join("")}</div><div class="ex"><span>${hl(c[3],c[4],"rm")}</span>${sayBtn(c[3],{sm:true})}</div><p>${c[5]}</p></article>`).join("")}</div>`}
+    $("#aspectTabs").addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(b){aspI=+b.dataset.i;drawAspect()}});
+    drawAspect();
+
+    /* ───────── Types & patterns ───────── */
+    const TYPES=[["c1","Action","They show movement or activity — physical or mental.",["I run every morning.","She writes emails.","They think deeply."]],["c2","Linking","They connect the subject to a description. No action.",["He is tired.","The soup tastes good.","She seems nervous."]],["c3","Auxiliary","They build grammar: tense, questions, negatives, perfect, passive.",["Do you work?","She is studying.","They have finished."]],["c4","Modal","Attitude and possibility. No ‑s, no to, followed by base.",["He can swim.","You should rest.","They must leave."]],["c5","Stative","States, not actions. They resist the progressive.",["I know the answer.","She owns a car.","They believe him."]],["c1","Phrasal","Verb + particle = a new meaning.",["Look up the word.","Turn off the light.","She gave up sugar."]]];
+    $("#typeCards").innerHTML=TYPES.map(t=>`<article class="card reveal"><span class="badge ${t[0]}">${t[1]} verbs</span><h3>${t[1]}</h3><p>${t[2]}</p><div class="exs">${t[3].map(x=>`<div class="exl"><span>${esc(x)}</span>${sayBtn(x,{sm:true})}</div>`).join("")}</div></article>`).join("");
+    const PATS=[["c1","Verb + to","want · need · decide · hope · plan",["I want to improve.","She decided to leave."]],["c2","Verb + ‑ing","enjoy · avoid · finish · keep · mind",["I enjoy learning.","He avoids speaking."]],["c3","Verb + object + to","tell · ask · want · invite · allow",["She told me to wait.","I want you to come."]],["c4","Modal + base","can · must · should · might · will",["You should study.","He can drive."]],["c5","Causative + base","make · let · have + object + base",["My teacher made me repeat.","Let me try."]],["c2","Linking + adjective","be · seem · feel · look · taste",["She looks happy.","The soup tastes good."]]];
+    $("#patternCards").innerHTML=PATS.map(t=>`<article class="card reveal"><span class="badge ${t[0]}">${t[1]}</span><h3>${t[2]}</h3><div class="exs">${t[3].map(x=>`<div class="exl"><span>${esc(x)}</span>${sayBtn(x,{sm:true})}</div>`).join("")}</div></article>`).join("");
+
+    /* ───────── Sentence lab ───────── */
+    const SUBJ=[{s:"I",t:false,be:"am",was:"was"},{s:"you",t:false,be:"are",was:"were"},{s:"he",t:true,be:"is",was:"was"},{s:"she",t:true,be:"is",was:"was"},{s:"we",t:false,be:"are",was:"were"},{s:"they",t:false,be:"are",was:"were"}];
+    const LT=[{id:"ps",name:"Present simple",chain:"No auxiliary in the positive. Borrow <b>do / does</b> for − and ?, then <b>base</b>."},{id:"pp",name:"Present progressive",chain:"<b>am / is / are</b> → ‑ing. BE moves for ?, takes not for −."},{id:"pf",name:"Present perfect",chain:"<b>have / has</b> → participle."},{id:"pfp",name:"Present perfect progressive",chain:"<b>have / has</b> → been → ‑ing. Only the first auxiliary moves."},{id:"pa",name:"Past simple",chain:"Past form in the positive. Borrow <b>did</b> for − and ?, then <b>base</b>."},{id:"pap",name:"Past progressive",chain:"<b>was / were</b> → ‑ing."},{id:"paf",name:"Past perfect",chain:"<b>had</b> → participle — the same for every subject."},{id:"fu",name:"Future · will",chain:"<b>will</b> → base — the same for every subject."},{id:"mo",name:"Modal · can",chain:"<b>can</b> → base. No ‑s, no to, no DO."}];
+    const CONTR={"do not":"don't","does not":"doesn't","did not":"didn't","is not":"isn't","are not":"aren't","was not":"wasn't","were not":"weren't","have not":"haven't","has not":"hasn't","had not":"hadn't","will not":"won't","can not":"can't"};
+    function labBuild(S,v,t){
+      const th=S.t,have=th?"has":"have",dO=th?"does":"do";
+      const spec={ps:[[],th?v.s:v.b,[dO],v.b],pp:[[S.be],v.g,[S.be],v.g],pf:[[have],v.pp,[have],v.pp],pfp:[[have,"been"],v.g,[have,"been"],v.g],pa:[[],v.p,["did"],v.b],pap:[[S.was],v.g,[S.was],v.g],paf:[["had"],v.pp,["had"],v.pp],fu:[["will"],v.b,["will"],v.b],mo:[["can"],v.b,["can"],v.b]}[t];
+      const [pA,pM,nA,nM]=spec,first=nA[0],rest=nA.slice(1);
+      const neg1=S.s==="I"&&first==="am"?"am not":CONTR[first+" not"]||first+" not";
+      const pos=[[cap(S.s),""],...pA.map(a=>[a,"a"]),[pM,"m"],[v.c+".",""]];
+      const neg=[[cap(S.s),""],[neg1,"a"],...rest.map(a=>[a,"a"]),[nM,"m"],[v.c+".",""]];
+      const q=[[cap(first),"a"],[S.s,""],...rest.map(a=>[a,"a"]),[nM,"m"],[v.c+"?",""]];
+      return{pos,neg,q,negFull:[cap(S.s),first+" not",...rest,nM,v.c].join(" ")+"."};
+    }
+    const txt=tk=>tk.map(t=>t[0]).join(" "),html=tk=>tk.map(t=>t[1]==="a"?`<span class="ra">${esc(t[0])}</span>`:t[1]==="m"?`<span class="rm">${esc(t[0])}</span>`:esc(t[0])).join(" ");
+    let labS=3,labV=0,labT="pf";
+    $("#labS").innerHTML=SUBJ.map((s,i)=>`<button class="pchip" data-i="${i}">${s.s}</button>`).join("");
+    $("#labV").innerHTML=LABV.map((v,i)=>`<button class="pchip${v.irr?" irr":""}" data-i="${i}">${v.b}</button>`).join("");
+    $("#labT").innerHTML=LT.map(t=>`<button class="pchip" data-t="${t.id}">${t.name}</button>`).join("");
+    $("#labS").addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(b){labS=+b.dataset.i;renderLab()}});
+    $("#labV").addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(b){labV=+b.dataset.i;renderLab()}});
+    $("#labT").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(b){labT=b.dataset.t;renderLab()}});
+    function renderLab(){
+      stopAll();$$("#labS .pchip").forEach((b,i)=>b.classList.toggle("on",i===labS));$$("#labV .pchip").forEach((b,i)=>b.classList.toggle("on",i===labV));$$("#labT .pchip").forEach(b=>b.classList.toggle("on",b.dataset.t===labT));
+      const t=LT.find(x=>x.id===labT),r=labBuild(SUBJ[labS],LABV[labV],labT);
+      const L=[["+","Positive",r.pos,""],["−","Negative",r.neg,`Full form: ${r.negFull}`],["?","Question",r.q,"The first auxiliary jumps before the subject."]];
+      $("#labLines").innerHTML=`<div class="lhead"><h3>${t.name}</h3><p>${t.chain}</p></div>`+L.map((l,k)=>`<div class="line" data-k="${k}"><span class="fn"><b>${l[0]}</b>${l[1]}</span><div class="txt">${html(l[2])}${l[3]?`<small>${esc(l[3])}</small>`:""}</div><div class="acts">${pillSay(txt(l[2]),"Slow",.7)}${pillSay(txt(l[2]),"Natural","")}${micBtn(`data-k="${k}"`)}</div><div class="heard"></div></div>`).join("")+
+        `<div class="lines-foot"><button class="pill-btn needs-tts" id="labAll">${ICON.play}+ − ? in a row</button><p class="lab-note">${SR?"Goal: 80%+ on each line. Then change only the tense.":"Listen, pause, repeat aloud."}</p></div>`;
+      const lines=$$("#labLines .line"),texts=L.map(l=>txt(l[2]));
+      $("#labAll").addEventListener("click",e=>speakList(texts,{btn:e.currentTarget,rate:.86,onItem:i=>lines.forEach((el,k)=>el.classList.toggle("active",k===i))}));
+      $$("#labLines .mic").forEach(m=>m.addEventListener("click",()=>{const k=+m.dataset.k,line=lines[k];micTo(m,texts[k],$(".heard",line),.8,()=>{line.classList.add("nailed");store.lab++;markDay();save();renderProgress()})}));
+    }
+    renderLab();
+
+    /* ───────── Levels ───────── */
+    const LEVELS=[["A1","I work every day.","Present simple · one idea"],["A2","I usually work in the morning, but today I am resting.","Simple vs. progressive · contrast"],["B1","I have worked hard this year because I want to improve my opportunities.","Present perfect · cause · verb + to"],["B2","I had been working without a clear method until I realized that consistency mattered more than intensity.","Past perfect progressive · time clause"],["C1","My progress accelerated once my practice was structured around feedback, retrieval and deliberate repetition.","Passive · precise verbs · abstraction"],["C2","What had once felt like mechanical study gradually evolved into an automatic command of patterns, nuance and communicative intention.","Nominal clause · stance · nuance"]];
+    $("#stairs").innerHTML=LEVELS.map((l,k)=>`<div class="step reveal"><div class="lvl">${l[0]}</div><p>${esc(l[1])}<small>${esc(l[2])}</small></p><div class="acts">${sayBtn(l[1],{sm:true,rate:.88})}${micBtn(`data-k="${k}"`)}</div><div class="heard"></div></div>`).join("");
+    $$("#stairs .mic").forEach(m=>m.addEventListener("click",()=>{const k=+m.dataset.k,row=m.closest(".step");micTo(m,LEVELS[k][1],$(".heard",row),.8,()=>{store.lab++;markDay();save();renderProgress()})}));
+
+    /* ───────── Core 100 ───────── */
+    let cF="all",cSel="go";
+    function renderCloud(){$$("#cFilters button").forEach(b=>b.classList.toggle("on",b.dataset.f===cF));
+      $("#cloud").innerHTML=CORE.filter(b=>cF==="all"||(cF==="irr"?VF[b].irr:!VF[b].irr)).map(b=>`<button class="vchip${VF[b].irr?" irr":""}${b===cSel?" on":""}" data-v="${b}">${b}</button>`).join("");
+      const v=VF[cSel],base=cSel==="be"?"be (am / is / are)":v.b,third=cSel==="be"?"is":v.s;
+      $("#vdetail").innerHTML=`<div class="big">${esc(cSel)}</div><div><div class="row5"><span><small>base</small>${esc(base)}</span><span><small>he / she / it</small>${esc(third)}</span><span><small>past</small>${esc(v.p)}</span><span><small>participle</small>${esc(v.pp)}</span><span><small>‑ing</small>${esc(v.g)}</span></div><div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${pillSay([cSel,v.p.replace(" / ",", "),v.pp.replace(" / ",", ")].join(", ")+".","Base · past · participle",".8",true)}<span style="font-size:.84rem;color:#cfcbe0">${v.irr?"Irregular — drill the three forms aloud.":"Regular — past and participle end in ‑ed."}</span></div></div>`}
+    $("#cFilters").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(b){cF=b.dataset.f;renderCloud()}});
+    $("#cloud").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;cSel=b.dataset.v;const v=VF[cSel];speak([cSel,v.p.replace(" / ",", "),v.pp.replace(" / ",", ")].join(", "),{rate:.8});renderCloud()});
+    renderCloud();
+
+    /* ───────── Exercise banks ───────── */
+    // gap: [sentence ___ (hint), answer, [3 distractors], skill, note]
+    const GAP_RAW=[
+      ["She has ___ (eat) breakfast already.","eaten",["ate","eating","eats"],"forms","have / has → past participle."],
+      ["They can ___ (speak) three languages.","speak",["speaks","to speak","speaking"],"forms","Modal → base verb. No ‑s, no to."],
+      ["He doesn't ___ (like) coffee.","like",["likes","liking","liked"],"forms","does already carries the ‑s → base verb."],
+      ["We are ___ (wait) for the bus.","waiting",["wait","waited","waits"],"forms","be → ‑ing."],
+      ["The letters were ___ (write) by hand.","written",["wrote","writing","writed"],"forms","be + participle = passive."],
+      ["I have never ___ (see) the ocean.","seen",["saw","see","seeing"],"forms","have → participle: seen."],
+      ["Did you ___ (go) to the meeting?","go",["went","gone","going"],"forms","did → base verb."],
+      ["She has been ___ (work) here since May.","working",["worked","work","works"],"forms","been (a form of be) → ‑ing."],
+      ["The house was ___ (build) in 1990.","built",["build","builded","building"],"forms","Passive: was + participle. build → built."],
+      ["He had already ___ (leave) when I arrived.","left",["leaved","leave","leaving"],"forms","had → participle: left."],
+      ["You should ___ (take) a break.","take",["to take","taking","took"],"forms","Modal → base."],
+      ["English is ___ (speak) all over the world.","spoken",["speak","spoke","speaking"],"forms","Passive: is + participle: spoken."],
+      ["I ___ (live) in Pereira since 2019.","have lived",["live","am living","lived"],"tenses","Since + up to now → present perfect."],
+      ["When I arrived at the cinema, the movie ___ (start) ten minutes before.","had started",["has started","was start","have started"],"tenses","The earlier of two past actions → past perfect."],
+      ["Listen! The neighbors ___ (argue) again.","are arguing",["argue","have argue","argued"],"tenses","“Listen!” = in progress now → present progressive."],
+      ["I ___ (work) for three hours, so I'm tired now.","have been working",["am working","work","will work"],"tenses","Duration up to now with a visible result → present perfect progressive."],
+      ["By next June, she ___ (finish) her degree.","will have finished",["finishes","will finishing","has finished"],"tenses","Complete before a future point → future perfect."],
+      ["This time tomorrow, we ___ (fly) to Lima.","will be flying",["fly","will have flown","flew"],"tenses","In progress at a future moment → future progressive."],
+      ["Shakespeare ___ (write) Hamlet around 1600.","wrote",["has written","writes","was writing"],"tenses","Finished time in the past → past simple."],
+      ["I ___ (visit) Cartagena twice in my life.","have visited",["am visiting","had visit","visits"],"tenses","Life experience up to now → present perfect."],
+      ["She ___ (study) when the power went out.","was studying",["has studied","is studying","studies"],"tenses","In progress when something happened → past progressive."],
+      ["We ___ (know) each other since primary school.","have known",["know","are knowing","knew"],"tenses","Since + a state verb → present perfect simple (not progressive)."],
+      ["I ___ (wait) for two hours when the bus finally came.","had been waiting",["have been waiting","am waiting","wait"],"tenses","Duration before a past moment → past perfect progressive."],
+      ["___ she finished the report yet?","has",["does","did","is"],"aux","Present perfect question → Has + subject + participle."],
+      ["___ they living in Spain now?","are",["do","have","did"],"aux","Progressive question → BE first."],
+      ["Where ___ you go last weekend?","did",["do","were","have"],"aux","Past simple question → did + base."],
+      ["She ___ been to Europe.","hasn't",["doesn't","didn't","isn't"],"aux","Present perfect negative → hasn't + participle."],
+      ["I ___ swim very well.","can't",["don't can","doesn't","am not"],"aux","Modal negative: can't. Never “don't can”."],
+      ["What time ___ the class start?","does",["do","is","has"],"aux","the class = it → does + base."],
+      ["___ you ever seen a whale?","have",["did","do","are"],"aux","Experience → Have you ever + participle?"],
+      ["We ___ going to the party tonight — we're too tired.","aren't",["don't","haven't","didn't"],"aux","Progressive negative → aren't + ‑ing."],
+      ["How long ___ you been studying English?","have",["are","did","do"],"aux","Present perfect progressive question → have + subject + been + ‑ing."],
+      ["He ___ call me yesterday.","didn't",["doesn't","hasn't","wasn't"],"aux","Past negative → didn't + base."],
+      ["I want ___ (improve) my pronunciation.","to improve",["improving","improve","improved"],"patterns","want + to + base."],
+      ["She enjoys ___ (read) before bed.","reading",["to read","read","reads"],"patterns","enjoy + ‑ing."],
+      ["They decided ___ (move) to Medellín.","to move",["moving","move","moved"],"patterns","decide + to + base."],
+      ["He avoids ___ (speak) in meetings.","speaking",["to speak","speak","spoke"],"patterns","avoid + ‑ing."],
+      ["My teacher made me ___ (repeat) the sentence.","repeat",["to repeat","repeating","repeated"],"patterns","make + object + base. No to."],
+      ["She told me ___ (wait) outside.","to wait",["wait","waiting","that I wait"],"patterns","tell + object + to + base."],
+      ["Let me ___ (help) you.","help",["to help","helping","helped"],"patterns","let + object + base."],
+      ["I finished ___ (write) the report at midnight.","writing",["to write","write","wrote"],"patterns","finish + ‑ing."],
+      ["We hope ___ (see) you soon.","to see",["seeing","see","saw"],"patterns","hope + to + base."],
+      ["I want you ___ (come) to the party.","to come",["come","that you come","coming"],"patterns","want + object + to. Never “want that you…”."],
+      ["Can you ___ (help) me with this?","help",["to help","helping","helps"],"patterns","Modal + base."],
+      ["The soup tastes ___.","good",["well","goodly","to good"],"patterns","Linking verb + adjective: tastes good."],
+      ["Don't ___ (be) late tomorrow.","be",["to be","being","are"],"types","Negative imperative → Don't + base."],
+      ["If I ___ you, I would study every day.","were",["am","be","been"],"types","Unreal condition → subjunctive were."],
+      ["The bridge ___ (build) last year.","was built",["built","was build","has build"],"types","Passive: was + participle, because the bridge receives the action."],
+      ["She ___ tired after the trip.","looks",["looks like","is look","look"],"types","Linking verb + adjective, no “like”."]
+    ];
+    const GAP=GAP_RAW.map((g,i)=>({id:"g"+i,s:g[0],a:g[1],o:g[2],k:g[3],n:g[4]}));
+    const QA_RAW=[
+      ["Which sentence uses a linking verb?",["He seems tired.","He runs fast.","He opened the door.","He bought a car."],"types","Seem connects the subject to a state — no action."],
+      ["Which sentence is passive?",["The report was written by Ana.","Ana wrote the report.","Ana is writing the report.","Ana has written the report."],"types","BE + participle; the report receives the action."],
+      ["Which sentence is in the imperative mood?",["Close the door, please.","She closes the door.","If I were you, I'd close it.","The door was closed."],"types","Base verb, no subject = a command."],
+      ["Which sentence uses a stative verb?",["I own two bikes.","I ride my bike daily.","I'm fixing my bike.","I washed my bike."],"types","Own describes a state (possession)."],
+      ["In “Please turn off the lights,” what is “turn off”?",["a phrasal verb","a modal verb","a linking verb","an auxiliary"],"types","Verb + particle with a new meaning."],
+      ["Which sentence uses a modal verb?",["You should rest.","You rest.","You are resting.","You rested."],"types","should + base."],
+      ["Make it passive: “The chef cooks dinner.”",["Dinner is cooked by the chef.","Dinner cooks by the chef.","Dinner is cook by the chef.","Dinner was cooking by the chef."],"types","is + participle, same tense as the active."],
+      ["Which sentence uses the subjunctive?",["I wish I were taller.","I wish I am taller.","I am taller.","I was taller."],"types","Unreal wish → were."],
+      ["In “She looks tired,” look is…",["a linking verb","an action verb","a modal verb","a phrasal verb"],"types","It links “she” to “tired”."],
+      ["In “She looked at the map,” look is…",["an action verb","a linking verb","a modal verb","an auxiliary"],"types","She performs an action with her eyes."],
+      ["Which sentence contains an auxiliary verb?",["They have finished.","They have a car.","They finished.","They finish early."],"types","have + participle = auxiliary. “Have a car” is the main verb."],
+      ["What does “give up” mean in “She gave up sugar”?",["She stopped eating it.","She gave it to someone.","She bought more.","She cooked with it."],"types","Phrasal verb: give up = stop doing / using."],
+      ["What is the past participle of “go”?",["gone","went","goed","going"],"forms","go · went · gone."],
+      ["What is the past participle of “write”?",["written","wrote","writed","writing"],"forms","write · wrote · written."],
+      ["Which form follows “has” in a perfect tense?",["past participle","base","‑ing","past form"],"forms","Chain rule 4: have → participle."],
+      ["Which form follows a modal verb?",["base","to + base","‑ing","participle"],"forms","Chain rule 2: modal → base."],
+      ["Which sentence is present perfect?",["I have worked here.","I worked here yesterday.","I am working here.","I work here."],"tenses","have + participle."],
+      ["Which formula builds the past perfect?",["had + participle","was + ‑ing","did + base","will have + ‑ing"],"tenses","had + participle for every subject."],
+      ["Which sentence is present perfect progressive?",["She has been working all day.","She has worked all day.","She is working all day.","She was working all day."],"tenses","have / has + been + ‑ing."],
+      ["Which sentence describes the earlier of two past actions?",["I had eaten when she arrived.","I ate when she arrived.","I was eating when she arrived.","I eat when she arrives."],"tenses","had eaten = finished before she arrived."]
+    ];
+    const QA=QA_RAW.map((q,i)=>({id:"q"+i,q:q[0],o:q[1],k:q[2],n:q[3]}));
+    const TR_RAW=[
+      ["She works on Saturdays.","question",["Does she work on Saturdays?","Does she works on Saturdays?","Is she work on Saturdays?","Works she on Saturdays?"]],
+      ["They are watching TV.","negative",["They aren't watching TV.","They don't watching TV.","They aren't watch TV.","They not watching TV."]],
+      ["He has finished the report.","question",["Has he finished the report?","Does he have finished the report?","Did he finished the report?","Has he finish the report?"]],
+      ["You went to the meeting.","question",["Did you go to the meeting?","Did you went to the meeting?","Went you to the meeting?","Do you went to the meeting?"]],
+      ["I can drive.","negative",["I can't drive.","I don't can drive.","I can't to drive.","I not can drive."]],
+      ["She was sleeping.","question",["Was she sleeping?","Did she sleeping?","Was she sleep?","Did she was sleeping?"]],
+      ["We will call you.","negative",["We won't call you.","We don't will call you.","We won't to call you.","We will don't call you."]],
+      ["He likes jazz.","negative",["He doesn't like jazz.","He doesn't likes jazz.","He don't like jazz.","He isn't like jazz."]],
+      ["They have been working all day.","question",["Have they been working all day?","Do they have been working all day?","Have they working all day?","Are they been working all day?"]],
+      ["The package arrived yesterday.","negative",["The package didn't arrive yesterday.","The package didn't arrived yesterday.","The package wasn't arrive yesterday.","The package not arrived yesterday."]],
+      ["You should take a break.","question",["Should you take a break?","Do you should take a break?","Should you to take a break?","Should you taking a break?"]],
+      ["It is raining.","question",["Is it raining?","Does it raining?","Is raining?","Does it rain now?"]],
+      ["She had left.","negative",["She hadn't left.","She didn't had left.","She hadn't leave.","She doesn't had left."]],
+      ["They live in Bogotá.","question",["Do they live in Bogotá?","Are they live in Bogotá?","Does they live in Bogotá?","Live they in Bogotá?"]],
+      ["I am working today.","negative",["I am not working today.","I don't working today.","I am not work today.","I not am working today."]],
+      ["The report was sent.","question",["Was the report sent?","Did the report sent?","Was the report send?","Did the report was sent?"]]
+    ];
+    const TR=TR_RAW.map((t,i)=>({id:"t"+i,src:t[0],to:t[1],o:t[2],k:"aux",n:t[1]==="question"?"Question: move the first auxiliary before the subject. No auxiliary? Borrow do / does / did.":"Negative: not goes right after the first auxiliary. No auxiliary? Borrow do / does / did + base."}));
+    const BRIDGE_RAW=[
+      {es:"Estoy de acuerdo.",en:"I ___.",o:["agree","am agree","am agreeing","agreeing"],k:"types",n:"Agree es un verbo completo: I agree. Sin BE."},
+      {es:"Tengo 25 años.",en:"I ___ 25 years old.",o:["am","have","has","do have"],k:"types",n:"Edad → be. “Tener” no siempre es have."},
+      {es:"¿Puedes ayudarme?",full:true,o:["Can you help me?","Can you to help me?","Do you can help me?","Can you helping me?"],k:"patterns",n:"Modal + base: sin to, sin DO."},
+      {es:"Quiero que vengas.",full:true,o:["I want you to come.","I want that you come.","I want you come.","I want that you to come."],k:"patterns",n:"Want + persona + to + verbo base."},
+      {es:"Lo terminé ayer.",en:"I ___ it yesterday.",o:["finished","have finished","had finish","was finish"],k:"tenses",n:"Tiempo terminado (yesterday) → past simple."},
+      {es:"Vivo aquí desde 2019.",en:"I ___ here since 2019.",o:["have lived","live","am living","lived"],k:"tenses",n:"Desde + hasta ahora → present perfect."},
+      {es:"Hace tres años que estudio inglés.",en:"I ___ English for three years.",o:["have been studying","study","am studying","studied"],k:"tenses",n:"Duración hasta ahora → present perfect progressive."},
+      {es:"Me hicieron repetir.",en:"They made me ___.",o:["repeat","to repeat","repeating","repeated"],k:"patterns",n:"Make + objeto + verbo base."},
+      {es:"Fue construido en 1990.",en:"It ___ in 1990.",o:["was built","was build","built","is building"],k:"types",n:"Pasiva: was + participio."},
+      {es:"Aquí se habla inglés.",en:"English ___ here.",o:["is spoken","speaks","is speak","spoken"],k:"types",n:"“Se habla” → pasiva: is spoken."},
+      {es:"Disfruto aprender idiomas.",en:"I enjoy ___ languages.",o:["learning","to learn","learn","learned"],k:"patterns",n:"Enjoy + ‑ing."},
+      {es:"Ojalá estuviera aquí.",en:"I wish she ___ here.",o:["were","is","be","are"],k:"types",n:"Deseo irreal → were (subjuntivo)."},
+      {es:"No tengo que trabajar hoy.",en:"I ___ work today.",o:["don't have to","haven't to","mustn't to","don't must"],k:"aux",n:"Obligación negativa → don't have to + base."},
+      {es:"¿Has visto mis llaves?",en:"___ you seen my keys?",o:["Have","Did","Are","Do"],k:"aux",n:"Present perfect → Have + sujeto + participio."},
+      {es:"Apaga la luz, por favor.",en:"___ the light, please.",o:["Turn off","Turn of","Off turn","Turning off"],k:"types",n:"Phrasal verb: turn off = apagar."},
+      {es:"Parece cansado.",en:"He ___ tired.",o:["looks","looks like","look","is look"],k:"types",n:"Verbo de enlace + adjetivo, sin “like”."},
+      {es:"Llevo dos horas esperando.",en:"I ___ for two hours.",o:["have been waiting","am waiting","wait","waited"],k:"tenses",n:"Duración hasta ahora → present perfect progressive."},
+      {es:"No pudimos venir.",en:"We ___ come.",o:["couldn't","didn't could","couldn't to","not could"],k:"aux",n:"Modal en negativo: couldn't + base."},
+      {es:"Ya había salido cuando llamaste.",en:"She ___ when you called.",o:["had already left","has already left","already left","was already leave"],k:"tenses",n:"Antes de otra acción pasada → past perfect."},
+      {es:"Te sugiero estudiar más.",en:"I suggest ___ more.",o:["studying","to study","study","studied"],k:"patterns",n:"Suggest + ‑ing (o suggest that you study)."}
+    ];
+    const BRIDGE=BRIDGE_RAW.map((b,i)=>Object.assign({id:"b"+i},b));
+    const DET_RAW=[
+      [["She","doesn't","works","here."],2,"She doesn't work here.","aux","does already carries the ‑s → base."],
+      [["I","am","agree","with","you."],1,"I agree with you.","types","Agree is a verb — no BE."],
+      [["Can","you","to","help","me?"],2,"Can you help me?","patterns","Modal + base. No to."],
+      [["I","have","25","years."],1,"I am 25 years old.","types","Age → BE."],
+      [["I","enjoy","to","learn","English."],2,"I enjoy learning English.","patterns","enjoy + ‑ing."],
+      [["I","want","that","you","come."],2,"I want you to come.","patterns","want + object + to."],
+      [["I","have","finished","it","yesterday."],1,"I finished it yesterday.","tenses","Finished time → past simple, not present perfect."],
+      [["The","bridge","was","build","in","1990."],3,"The bridge was built in 1990.","forms","Passive needs the participle: built."],
+      [["She","has","went","home."],2,"She has gone home.","forms","has → participle: gone."],
+      [["He","must","to","leave","now."],2,"He must leave now.","patterns","Modal + base."],
+      [["They","have","saw","that","movie."],2,"They have seen that movie.","forms","have → participle: seen."],
+      [["Did","he","finished","the","test?"],2,"Did he finish the test?","aux","did → base."],
+      [["We","are","knowing","the","answer."],2,"We know the answer.","types","Know is stative → simple."],
+      [["I","live","here","since","2019."],1,"I have lived here since 2019.","tenses","Since + up to now → present perfect."],
+      [["She","looks","like","tired."],2,"She looks tired.","types","Linking verb + adjective, no “like”."],
+      [["My","teacher","made","me","to","repeat."],4,"My teacher made me repeat.","patterns","make + object + base."],
+      [["English","is","speak","here."],2,"English is spoken here.","forms","Passive: is + participle."],
+      [["Has","she","finish","the","report?"],2,"Has she finished the report?","forms","has → participle."],
+      [["They","doesn't","like","coffee."],1,"They don't like coffee.","aux","they → don't."],
+      [["I","am","working","here","for","five","years."],1,"I have been working here for five years.","tenses","Duration up to now → present perfect progressive."],
+      [["He","can","speaks","French."],2,"He can speak French.","forms","Modal → base: no ‑s."],
+      [["Do","you","can","swim?"],0,"Can you swim?","aux","Modals form their own questions — no DO."]
+    ];
+    const DET=DET_RAW.map((d,i)=>({id:"d"+i,t:d[0],w:d[1],fix:d[2],k:d[3],n:d[4]}));
+    $("#bankCount").textContent=GAP.length+QA.length+TR.length+BRIDGE.length+DET.length;
+
+    /* ───────── Arena ───────── */
+    const stage=$("#stage");
+    const A={mode:"mixed",skill:"forms",speakOn:true,sess:null,speed:null,raf:0};
+    try{const so=localStorage.getItem("pg_speakOn");if(so!==null)A.speakOn=so==="1"}catch(e){}
+    $("#speakToggle").checked=A.speakOn;
+    $("#speakToggle").addEventListener("change",e=>{A.speakOn=e.target.checked;try{localStorage.setItem("pg_speakOn",A.speakOn?"1":"0")}catch(err){}if(!A.sess||A.sess.done)renderIntro()});
+    $("#capNote").textContent=!Voice.tts?"Audio unavailable in this browser — listening questions are replaced by logic questions.":(!SR?"Speaking questions need Chrome, Edge or Safari. They are replaced automatically.":"");
+    const TYPE_LABEL={gap:"Choose the form",qa:"Map check",tr:"Transform",bridge:"Spanish → English",det:"Error detective",listen:"Listen & choose",dict:"Listen & write",speak:"Say it · transform"};
+    const canTTS=()=>Voice.tts,canSpeak=()=>!!SR&&A.speakOn;
+    $$(".mode").forEach(b=>b.addEventListener("click",()=>{$$(".mode").forEach(x=>x.classList.toggle("on",x===b));A.mode=b.dataset.mode;endSpeedLoop();A.sess=null;stopAll();renderIntro()}));
+    function renderIntro(){
+      endSpeedLoop();
+      const fm=[["Choose the form","The chain decides.",true],["Map check","Types, tenses, voice.",true],["Transform","+ → − or ?",true],["Spanish → English","Beat the interference.",true],["Error detective","Tap the broken word.",true],["Listen & choose","Hear it, then choose.",canTTS()],["Listen & write","Write the verb form.",canTTS()],["Say it","Transform out loud.",canSpeak()]];
+      if(A.mode==="speed"){
+        stage.innerHTML=`<div class="intro"><div><div class="qtype">Speed round · 60 seconds</div><h3>Production and speed, not perfection.</h3><p>A verb from the Core 100 and a form appear. Tap the right form — fast. Your record: <b>${store.speedBest}</b>. Mastery standard: <b>25+</b>.</p><button class="btn btn-amber" id="go">Start the clock →</button></div><div class="formats"><div class="fmt"><b>go · participle</b>→ gone</div><div class="fmt"><b>study · he / she / it</b>→ studies</div><div class="fmt"><b>buy · past</b>→ bought</div><div class="fmt"><b>run · ‑ing</b>→ running</div></div></div>`;
+        $("#go").addEventListener("click",startSpeed);return;
+      }
+      const focus=A.mode==="focus";
+      stage.innerHTML=`<div class="intro"><div><div class="qtype">${focus?"Focus · 10 questions":"Mixed session · 12 questions"}</div><h3>${focus?"Train one skill until it is automatic.":"A new test every time."}</h3><p>${focus?"Pick the skill. Every question targets it.":"Eight formats in random order. Each session pulls items you have not seen recently."}</p>${focus?`<div class="jobpick" id="jobpick">${SK.map(k=>`<button data-k="${k}" class="${k===A.skill?"on":""}">${SKILL[k].name}</button>`).join("")}</div>`:""}<button class="btn btn-amber" id="go">Start session →</button></div><div class="formats">${fm.map(f=>`<div class="fmt${f[2]?"":" off"}"><b>${f[0]}</b>${f[1]}</div>`).join("")}</div></div>`;
+      if(focus)$("#jobpick").addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;A.skill=b.dataset.k;$$("#jobpick button").forEach(x=>x.classList.toggle("on",x===b))});
+      $("#go").addEventListener("click",startSession);
+    }
+    const SRC={gap:GAP,listen:GAP,dict:GAP,qa:QA,tr:TR,speak:TR,bridge:BRIDGE,det:DET};
+    function pickItem(type,skill,used){let c=SRC[type].filter(x=>!used.has(x.id)&&(!skill||x.k===skill));if(!c.length)return null;const fresh=c.filter(x=>!store.seen.includes(x.id)),it=rand(fresh.length?fresh:c);used.add(it.id);return{type,item:it}}
+    function buildQueue(skill){
+      let plan=skill?["gap","gap","qa","bridge","det","listen","dict","tr","speak","gap"]:["gap","gap","qa","tr","bridge","bridge","det","det","listen","dict","speak","gap"];
+      plan=plan.map(t=>(t==="listen"||t==="dict")&&!canTTS()?(Math.random()<.5?"gap":"qa"):t).map(t=>t==="speak"&&!canSpeak()?"tr":t);
+      shuffle(plan);const used=new Set(),q=[];
+      for(const t of plan){const it=pickItem(t,skill,used)||pickItem("gap",skill,used)||pickItem("qa",skill,used)||pickItem("bridge",skill,used)||pickItem("det",skill,used)||pickItem("tr",skill,used);if(it)q.push(it)}
+      return q;
+    }
+    function startSession(){stopAll();const skill=A.mode==="focus"?A.skill:null;A.sess={queue:buildQueue(skill),i:0,res:[],skill,done:false};renderQ();stage.scrollIntoView({behavior:"smooth",block:"start"})}
+    function head(type){const s=A.sess,c=s.res.filter(r=>r.ok).length;return `<div class="qhead"><span class="qtype">${TYPE_LABEL[type]}</span><span class="qcount">${s.i+1} / ${s.queue.length} · ${c} correct</span></div><div class="progress"><span style="width:${(s.i/s.queue.length)*100}%"></span></div>`}
+    const needsCap=str=>{const pre=str.split("___")[0].trim();return pre===""||/[.!?]$/.test(pre)};
+    const ansFor=it=>needsCap(it.s)?cap(it.a):it.a;
+    const fullGap=it=>it.s.replace("___",ansFor(it));
+    const spoken=s=>s.replace(/\s*\([^)]*\)/g,"").replace(/\s+([,.!?])/g,"$1").replace(/\s+/g," ").trim();
+    const blankify=s=>esc(s).replace("___",'<span class="blank" id="blank">?</span>').replace(/\(([^)]+)\)/,'<span class="hintv">($1)</span>');
+    const mcHTML=(opts,long)=>`<div class="answers${long?" long":""}">${opts.map((o,k)=>`<button class="answer" data-v="${esc(o)}"><kbd>${k+1}</kbd>${esc(o)}</button>`).join("")}</div>`;
+    function renderQ(){
+      const s=A.sess;if(!s)return;if(s.i>=s.queue.length)return showResult();
+      const {type,item}=s.queue[s.i];s.locked=false;stopAll();let body="";
+      if(type==="gap"||type==="listen"){const full=spoken(fullGap(item)),c=needsCap(item.s);body=(type==="listen"?`<div class="listen-row"><button class="bigplay" id="autoPlay" data-say="${esc(full)}" aria-label="Play the sentence">${ICON.play}</button><div class="t"><b>Listen first.</b>Then choose what you heard — and confirm it with the chain rule.</div>${pillSay(full,"Slow",.68,true)}</div>`:"")+`<div class="question">${blankify(item.s)}</div>${mcHTML(shuffle([item.a,...item.o]).map(o=>c?cap(o):o))}`}
+      else if(type==="qa"){body=`<div class="question sm">${esc(item.q)}</div>${mcHTML(shuffle([...item.o]),item.o.some(o=>o.length>18))}`}
+      else if(type==="tr"){body=`<div class="src">${esc(item.src)}</div><span class="tofn">Make it ${item.to==="question"?"a question":"negative"}</span>${mcHTML(shuffle([...item.o]),true)}`}
+      else if(type==="bridge"){body=`<div class="es-line"><small>ES</small>${esc(item.es)}</div><div class="question">${item.full?"Which is the natural English?":blankify(item.en)}</div>${mcHTML(shuffle([...item.o]),!!item.full)}`}
+      else if(type==="det"){body=`<div class="hint">One word breaks the engine. <b>Tap it.</b></div><div class="tokens">${item.t.map((w,k)=>`<button class="tok" data-k="${k}">${esc(w)}</button>`).join("")}</div>`}
+      else if(type==="dict"){const full=spoken(fullGap(item));body=`<div class="listen-row"><button class="bigplay" id="autoPlay" data-say="${esc(full)}" aria-label="Play the sentence">${ICON.play}</button><div class="t"><b>Listen and write the missing words.</b>One, two or three words.</div>${pillSay(full,"Slow",.68,true)}</div><div class="question">${esc(item.s).replace("___",'<input class="dict-in" id="dictIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Missing words">').replace(/\(([^)]+)\)/,'<span class="hintv">($1)</span>')}</div><div class="fb-actions"><button class="next" id="checkDict">Check</button></div>`}
+      else if(type==="speak"){body=`<div class="src">${esc(item.src)}</div><span class="tofn">Say it as ${item.to==="question"?"a question":"a negative"}</span><div class="speak-row"><button class="micbig" id="micQ" aria-label="Tap and speak">${ICON.mic}</button><div class="t"><b>Tap and say the whole sentence.</b>Contractions are welcome. First clear attempt is scored.</div><button class="pill-btn dark" id="skipQ">Skip · no mic now</button></div><div class="heard" id="heardQ"></div>`}
+      stage.innerHTML=head(type)+body+`<div class="feedback" id="feedback"></div><div class="fb-actions" id="after"></div>`;
+      if(["gap","listen","bridge","qa","tr"].includes(type))$$(".answer",stage).forEach(b=>b.addEventListener("click",()=>chooseMC(b)));
+      if(type==="det")$$(".tok",stage).forEach(b=>b.addEventListener("click",()=>chooseTok(b)));
+      if(type==="dict"){const inp=$("#dictIn");$("#checkDict").addEventListener("click",checkDict);inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();checkDict()}});setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},50)}
+      if(type==="speak"){$("#micQ").addEventListener("click",doSpeak);$("#skipQ").addEventListener("click",skipQ)}
+      if(type==="listen"||type==="dict"){const ap=$("#autoPlay");speak(ap.dataset.say,{btn:ap})}
+    }
+    function finish(ok,html,sayText){const s=A.sess,{item,type}=s.queue[s.i];s.locked=true;s.res.push({k:item.k,ok,type});recordSkill(item.k,ok);$("#feedback").innerHTML=html;const last=s.i===s.queue.length-1;$("#after").innerHTML=(sayText&&Voice.tts?pillSay(sayText,"Hear it correctly",.85,true):"")+`<button class="next" id="nextQ">${last?"See result":"Next question"} →</button>`;$("#nextQ").addEventListener("click",()=>{s.i++;renderQ()});$(".progress span",stage).style.width=((s.i+1)/s.queue.length*100)+"%"}
+    function chooseMC(b){
+      const s=A.sess;if(s.locked)return;const {type,item}=s.queue[s.i];
+      const correct=(type==="gap"||type==="listen")?ansFor(item):item.o[0];const ok=b.dataset.v.toLowerCase()===correct.toLowerCase();
+      $$(".answer",stage).forEach(x=>{x.disabled=true;if(x.dataset.v.toLowerCase()===correct.toLowerCase())x.classList.add("correct")});if(!ok)b.classList.add("wrong");
+      const bl=$("#blank");if(bl){bl.textContent=correct;bl.classList.add("filled")}
+      let say=null;if(type==="gap"||type==="listen")say=spoken(fullGap(item));else if(type==="tr")say=correct;else if(type==="bridge")say=item.full?correct:spoken(item.en.replace("___",correct));else if(type==="qa"&&/[.?!]$/.test(correct))say=correct;
+      finish(ok,`<strong>${ok?"Correct.":"Not quite."}</strong> ${type==="gap"||type==="listen"?`<b>${esc(correct)}</b> — `:""}${esc(item.n)}`,say);
+    }
+    function chooseTok(b){const s=A.sess;if(s.locked)return;const item=s.queue[s.i].item,k=+b.dataset.k,ok=k===item.w;$$(".tok",stage).forEach(x=>{x.disabled=true});$(`.tok[data-k="${item.w}"]`,stage).classList.add(ok?"correct":"culprit");if(!ok)b.classList.add("wrong");finish(ok,`<strong>${ok?"Found it.":"The error was “"+esc(item.t[item.w])+"”."}</strong> ✓ ${esc(item.fix)}<span class="note3">${esc(item.n)}</span>`,item.fix)}
+    function checkDict(){const s=A.sess;if(s.locked)return;const item=s.queue[s.i].item,inp=$("#dictIn");const clean=x=>x.trim().replace(/[’‘]/g,"'").toLowerCase().replace(/\s+/g," ");const v=clean(inp.value);if(!v){inp.focus();return}const ok=v===clean(item.a);inp.disabled=true;inp.classList.add(ok?"ok":"bad");$("#checkDict").remove();finish(ok,`<strong>${ok?"Correct.":"Not quite."}</strong> ${ok?"":`You wrote “${esc(inp.value.trim())}”. `}The answer is <b>${esc(ansFor(item))}</b> — ${esc(item.n)}`,spoken(fullGap(item)))}
+    function doSpeak(){
+      const s=A.sess,item=s.queue[s.i].item,out=$("#heardQ"),target=item.o[0];
+      out.className="heard show";out.innerHTML=s.locked?"Practice attempt — listening…":"Listening… say the whole sentence.";
+      listen($("#micQ"),res=>{if(!A.sess||A.sess.queue[A.sess.i].item!==item)return;if(res.error){out.innerHTML=esc(micError(res.error));return}
+        const r=bestOf(target,res.alts);out.innerHTML=heardHTML(r,.8);if(s.locked)return;const ok=r.score>=.8;$("#skipQ")&&$("#skipQ").remove();
+        finish(ok,`<strong>${ok?"Produced correctly.":"Not quite."}</strong> Model: “${esc(target)}” — ${esc(item.n)}<span class="note3">Tap the microphone again to practice — your score is already saved.</span>`,target)})}
+    function skipQ(){const s=A.sess;if(s.locked)return;const used=new Set(s.queue.map(q=>q.item.id));const it=pickItem("tr",s.skill,used)||pickItem("gap",s.skill,used);if(it)s.queue[s.i]=it;else s.queue.splice(s.i,1);renderQ()}
+    function showResult(){
+      const s=A.sess;s.done=true;stopAll();const n=s.res.length,c=s.res.filter(r=>r.ok).length,acc=n?Math.round(c/n*100):0;
+      const per={};SK.forEach(k=>per[k]=[0,0]);s.res.forEach(r=>{per[r.k][1]++;if(r.ok)per[r.k][0]++});
+      let weak=null;SK.forEach(k=>{if(per[k][1]&&per[k][0]<per[k][1]){const a=per[k][0]/per[k][1];if(!weak||a<weak.a)weak={k,a}}});
+      store.sessions.push({t:Date.now(),mode:s.skill?"focus":"mixed",skill:s.skill,c,n,acc});store.sessions=store.sessions.slice(-40);
+      store.seen=[...s.queue.map(q=>q.item.id),...store.seen].slice(0,70);markDay();save();renderProgress();
+      const prev=store.sessions.length>1?store.sessions[store.sessions.length-2].acc:null;
+      const msg=acc>=85?"Mastery level. The engine runs on its own.":acc>=70?"Strong. One skill still needs attention.":"Rebuild the chain, then test again.";
+      const delta=prev===null?"Your first recorded session.":acc>prev?`+${acc-prev} points vs. your previous session.`:acc===prev?"Same as your previous session.":`${acc-prev} points vs. your previous session.`;
+      const REVIEW={forms:"#forms",tenses:"#tenses",aux:"#lab",patterns:"#patterns",types:"#types"};
+      stage.innerHTML=`<div class="result"><div class="qtype">${s.skill?"Focus · "+SKILL[s.skill].name:"Mixed session"} · complete</div><div class="result-number">${acc}%</div><h3>${msg}</h3><p class="sub">${c} of ${n} correct · ${delta}</p>
+        <div class="jobres">${SK.map(k=>{const[a,t]=per[k],pc=t?Math.round(a/t*100):0;return `<div class="jr${!t?" none":weak&&weak.k===k?" weak":""}"><small>${SKILL[k].short}</small><b>${t?a+"/"+t:"—"}</b><div class="mini"><span style="width:${pc}%"></span></div></div>`}).join("")}</div>
+        <div class="res-actions">${weak?`<a class="btn btn-ghost" href="${REVIEW[weak.k]}">Review ${SKILL[weak.k].name.toLowerCase()} →</a><button class="btn btn-ghost" id="focusWeak">Focus session on it</button>`:""}<button class="btn btn-amber" id="again">New random session ↺</button><a class="btn btn-ghost" href="${waLink(`Hi Prof. Germandario! Step 00c · Verb Master Map${store.name?" — "+store.name:""}\nSession: ${c}/${n} (${acc}%)${weak?"\nWeakest skill: "+SKILL[weak.k].name:""}\nSessions: ${store.sessions.length} · Speed record: ${store.speedBest}`)}" target="_blank" rel="noopener">Send result to Prof.</a></div></div>`;
+      $("#again").addEventListener("click",startSession);
+      if(weak)$("#focusWeak").addEventListener("click",()=>{A.mode="focus";A.skill=weak.k;$$(".mode").forEach(x=>x.classList.toggle("on",x.dataset.mode==="focus"));startSession()});
+    }
+
+    /* Speed round: verb + form */
+    const FORM_LBL={s:"he / she / it",p:"past",pp:"past participle",g:"‑ing form"};
+    const SPEEDV=CORE.filter(b=>b!=="be");
+    function startSpeed(){stopAll();A.speed={score:0,tries:0,combo:0,bestCombo:0,last:null,end:performance.now()+60000,locked:false,running:true};nextSpeed();loopSpeed();stage.scrollIntoView({behavior:"smooth",block:"start"})}
+    function endSpeedLoop(){if(A.speed)A.speed.running=false;cancelAnimationFrame(A.raf)}
+    function loopSpeed(){const sp=A.speed;if(!sp||!sp.running)return;const left=Math.max(0,sp.end-performance.now()),bar=$("#spBar"),tl=$("#spTime");if(bar)bar.style.transform=`scaleX(${left/60000})`;if(tl)tl.textContent=Math.ceil(left/1000)+"s";if(left<=0){sp.running=false;return endSpeed()}A.raf=requestAnimationFrame(loopSpeed)}
+    function nextSpeed(){
+      const sp=A.speed;let b,f,v,key;
+      do{b=rand(SPEEDV);v=VF[b];f=v.irr&&Math.random()<.65?rand(["p","pp"]):rand(["s","p","pp","g"]);key=b+f}while(key===sp.last||/\//.test(v[f]));
+      sp.last=key;const ans=v[f];
+      const pool=[v.b,v.s,v.p,v.pp,v.g,v.irr?pastReg(b):null,v.irr&&f==="pp"?v.p:null,f==="g"&&!DOUBLE.has(b)&&/e$/.test(b)?b+"ing":null,f==="s"?b+"s":null].filter(x=>x&&!/\//.test(x));
+      const opts=[ans];shuffle(pool);
+      const pref=[v.irr?pastReg(b):null,f==="pp"?v.p:f==="p"?v.pp:null].filter(Boolean);
+      for(const x of [...pref,...pool]){if(opts.length<4&&!opts.includes(x))opts.push(x)}
+      shuffle(opts);sp.cur={ans};sp.locked=false;
+      stage.innerHTML=`<div class="qhead"><span class="qtype">Speed round · <span id="spTime">60s</span></span><span class="qcount">${sp.score} correct · combo ×${sp.combo}</span></div><div class="speedbar"><span id="spBar" style="transform:scaleX(${Math.max(0,(sp.end-performance.now())/60000)})"></span></div><div class="speed-prompt"><div class="who">${esc(b)}</div><div class="tm"><span>${FORM_LBL[f]}</span></div></div>${mcHTML(opts)}`;
+      $$(".answer",stage).forEach(x=>x.addEventListener("click",()=>speedAnswer(x)));
+    }
+    function speedAnswer(b){const sp=A.speed;if(!sp||!sp.running||sp.locked)return;sp.locked=true;sp.tries++;const ok=b.dataset.v===sp.cur.ans;recordSkill("forms",ok);
+      if(ok){sp.score++;sp.combo++;sp.bestCombo=Math.max(sp.bestCombo,sp.combo);b.classList.add("correct");stage.classList.add("flash-ok");setTimeout(()=>{stage.classList.remove("flash-ok");if(sp.running)nextSpeed()},150)}
+      else{sp.combo=0;b.classList.add("wrong");$$(".answer",stage).forEach(x=>{if(x.dataset.v===sp.cur.ans)x.classList.add("correct")});stage.classList.add("flash-bad");setTimeout(()=>{stage.classList.remove("flash-bad");if(sp.running)nextSpeed()},800)}}
+    function endSpeed(){const sp=A.speed,acc=sp.tries?Math.round(sp.score/sp.tries*100):0,record=sp.score>store.speedBest;if(record)store.speedBest=sp.score;store.speedRuns++;markDay();save();renderProgress();
+      stage.innerHTML=`<div class="result"><div class="qtype">Speed round · time</div><div class="result-number">${sp.score}</div><h3>${record?"New personal record.":sp.score>=25?"Mastery speed.":"Keep the hands fast and the mind quiet."}</h3><p class="sub">${sp.tries} attempts · ${acc}% accuracy · best combo ×${sp.bestCombo} · record ${store.speedBest}</p><div class="res-actions" style="margin-top:24px"><button class="btn btn-amber" id="again">Run it again ↺</button><a class="btn btn-ghost" href="${waLink(`Hi Prof. Germandario! Step 00c · Verb Master Map — Speed round: ${sp.score} correct (${acc}% accuracy). Record: ${store.speedBest}.`)}" target="_blank" rel="noopener">Send result to Prof.</a></div></div>`;
+      $("#again").addEventListener("click",startSpeed)}
+    document.addEventListener("keydown",e=>{if(e.target.closest&&e.target.closest("input,textarea"))return;const r=$("#arena").getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;if(/^[1-4]$/.test(e.key)){const b=$$(".answer",stage)[+e.key-1];if(b&&!b.disabled){e.preventDefault();b.click()}}else if(e.key==="Enter"){const n=$("#nextQ");if(n){e.preventDefault();n.click()}}});
+
+    /* ───────── Progress ───────── */
+    function waLink(t){return `https://wa.me/${WA}?text=${encodeURIComponent(t)}`}
+    const skAcc=k=>{const[c,t]=store.skills[k]||[0,0];return t?c/t:null};
+    function weakest(){let w=null;SK.forEach(k=>{const a=skAcc(k);if(a!==null&&(!w||a<w.a))w={k,a}});return w}
+    function streak(){const set=new Set(store.days);let d=new Date(),n=0;if(!set.has(fmtDate(d)))d.setDate(d.getDate()-1);while(set.has(fmtDate(d))){n++;d.setDate(d.getDate()-1)}return n}
+    function mastery(){const strong=store.sessions.filter(s=>s.mode==="mixed"&&s.acc>=85).length;return{strong,ok:strong>=2&&store.speedBest>=25}}
+    function reportText(){const ss=store.sessions,last=ss[ss.length-1],best=ss.length?Math.max(...ss.map(s=>s.acc)):0,w=weakest(),m=mastery();
+      return `Hi Prof. Germandario! Progress report · Step 00c · Verb Master Map${store.name?"\nStudent: "+store.name:""}\nSessions: ${ss.length} · Best: ${best}%${last?" · Last: "+last.acc+"%":""}\nSpeed record: ${store.speedBest}\nLines said at 80%+: ${store.lab}\n`+SK.map(k=>{const a=skAcc(k);return `${SKILL[k].name}: ${a===null?"—":Math.round(a*100)+"%"}`}).join("\n")+`${w?"\nFocus next: "+SKILL[w.k].name:""}\nMastery: ${m.ok?"UNLOCKED ✓":"in progress ("+m.strong+"/2 sessions ≥85%, speed "+store.speedBest+"/25)"}\nDay streak: ${streak()}`}
+    function renderProgress(){
+      const ss=store.sessions,last=ss[ss.length-1],prev=ss[ss.length-2],best=ss.length?Math.max(...ss.map(s=>s.acc)):null,d=last&&prev?last.acc-prev.acc:null;
+      $("#tiles").innerHTML=[["Sessions",ss.length,ss.length?"tests completed":"start in the arena"],["Best accuracy",best===null?"—":best+"%",last?"last: "+last.acc+"%":"no data yet"],["Vs. previous",d===null?"—":(d>0?"+":"")+d,d===null?"needs two sessions":`<span class="${d>0?"up":d<0?"down":""}">${d>0?"growing":d<0?"dip — review the weak skill":"steady"}</span>`],["Speed record",store.speedBest,store.speedRuns+" run"+(store.speedRuns===1?"":"s")+" · goal 25"],["Day streak",streak(),"days in a row"],["Spoken lines",store.lab,"said at 80%+"]].map(t=>`<div class="tile"><small>${t[0]}</small><b>${t[1]}</b><span>${t[2]}</span></div>`).join("");
+      $("#bars").innerHTML=SK.map(k=>{const[c,t]=store.skills[k]||[0,0],a=t?Math.round(c/t*100):0;return `<div class="bar"><span class="bl">${SKILL[k].name}</span><div class="track2"><div class="fill" style="width:${a}%;background:${SKILL[k].color}"></div></div><span class="pc">${t?a+"%":"—"}</span></div>`}).join("");
+      const pts=ss.slice(-10);
+      if(pts.length<2)$("#spark").innerHTML=`<div class="empty">Complete two sessions to see your growth line.</div>`;
+      else{const W=320,H=90,pad=10,x=i=>pad+i*(W-2*pad)/(pts.length-1),y=v=>H-pad-(v/100)*(H-2*pad);$("#spark").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Accuracy over the last ${pts.length} sessions"><line x1="${pad}" x2="${W-pad}" y1="${y(85)}" y2="${y(85)}" stroke="#ffb627" stroke-dasharray="4 4" stroke-width="1.5"/><polyline fill="none" stroke="#1a1730" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="${pts.map((p,i)=>x(i)+","+y(p.acc)).join(" ")}"/>${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.acc)}" r="4" fill="${p.acc>=85?"#15b79e":"#ff5a3c"}" stroke="#fff" stroke-width="1.5"><title>${p.acc}%</title></circle>`).join("")}</svg>`}
+      const m=mastery();
+      $("#checklist").innerHTML=[[m.strong>=1,"First mixed session at 85%+"],[m.strong>=2,"Second mixed session at 85%+"],[store.speedBest>=25,"Speed round: 25+ correct"],[store.lab>=6,"6 lines said at 80%+ (lab or A1→C2)"]].map(c=>`<li><span class="ck ${c[0]?"ok":""}">${c[0]?"✓":""}</span>${c[1]}</li>`).join("");
+      const w=weakest();$("#seal").className="seal"+(m.ok?" won":"");
+      $("#seal").innerHTML=m.ok?"★ Verb Master Map — mastery unlocked. Continue to Step 00d.":w?`Train next: <b>${SKILL[w.k].name}</b> (${Math.round(w.a*100)}%)`:"Your first session will set your baseline.";
+      $("#sendReport").href=waLink(reportText());
+    }
+    const nameIn=$("#studentName");
+    ["pg_step00b_v2","pg_step00a_v2"].forEach(k=>{try{const o=JSON.parse(localStorage.getItem(k)||"null");if(!store.name&&o&&o.name)store.name=o.name}catch(e){}});
+    nameIn.value=store.name||"";
+    nameIn.addEventListener("input",()=>{store.name=nameIn.value.trim();save();$("#sendReport").href=waLink(reportText())});
+    $("#resetProgress").addEventListener("click",()=>{if(confirm("Reset all progress for this lesson on this device?")){const n=store.name;store=blank();store.name=n;save();renderProgress();if(!A.sess||A.sess.done)renderIntro()}});
+    renderProgress();renderIntro();
+
+    /* ───────── Reveal + nav ───────── */
+    const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("seen");ro.unobserve(e.target)}}),{threshold:.06});$$(".reveal").forEach(e=>ro.observe(e));
+    const links=$$(".nav-shell a");
+    const no=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>{const on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("active",on);if(on){const sh=a.parentElement;sh.scrollTo({left:a.offsetLeft-sh.clientWidth/2+a.clientWidth/2,behavior:"smooth"})}})}}),{rootMargin:"-25% 0px -70%"});
+    $$("section[id]").forEach(s=>no.observe(s));
+  })();
+  </script>
 </body>
 </html>

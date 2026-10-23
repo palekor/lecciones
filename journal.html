@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="pg-access.js"></script>
 <style>
 /* ============================================================
    FLUENCY OS v10 — DESIGN TOKENS
@@ -397,6 +398,93 @@ textarea.textbody{min-height:240px;font-size:17px}
 .mytext:first-child{border-top:1px solid var(--line)}
 .mytext>button{display:flex;align-items:center;gap:14px;width:100%;text-align:left}
 .mytext .grow{flex:1;min-width:0}.mytext .t{font-weight:600}.mytext .s{font-size:14px;color:var(--muted)}
+
+/* ============================================================
+   MEMBERSHIP · REPORT STUDIO · TEACHER CONSOLE (11.1)
+   ============================================================ */
+.tier-chip{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-radius:999px;border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.02em;white-space:nowrap;align-self:center}
+.tier-chip svg{width:13px;height:13px}
+.tier-chip.member{background:var(--gold-soft);border-color:transparent}
+.tier-chip .dia{font-size:10px}
+@media(max-width:430px){.brand span{display:none}}
+.lock-ico{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--gold-soft);color:var(--gold);flex:none}
+.lock-ico svg{width:13px;height:13px}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-line svg{width:15px;height:15px}
+.member-card{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;width:100%;min-height:200px;text-align:left;border-radius:22px;padding:22px 22px 20px;color:#F3EDE2;background:linear-gradient(135deg,#2C2037 0%,#18121F 52%,#0E0A13 100%);border:1px solid rgba(207,168,90,.5);box-shadow:0 26px 60px rgba(8,5,12,.38),inset 0 1px 0 rgba(255,255,255,.07);transition:transform .2s ease}
+.member-card:hover{transform:translateY(-2px)}
+.member-card::before{content:"";position:absolute;z-index:-1;width:80%;height:160%;right:-28%;top:-55%;background:radial-gradient(closest-side,rgba(207,168,90,.30),transparent);transform:rotate(18deg)}
+.member-card::after{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(118deg,rgba(207,168,90,.055) 0 1px,transparent 1px 10px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 65%);mask-image:linear-gradient(90deg,transparent,#000 65%)}
+.mc-top{display:flex;justify-content:space-between;align-items:center}
+.mc-brand{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#CFA85A}
+.mc-chip{width:40px;height:30px;border-radius:7px;background:linear-gradient(135deg,#F0D899,#B8913F 60%,#E6C77F);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.mc-tier{display:block;font-family:var(--display);font-weight:400;font-size:clamp(32px,8.5vw,42px);line-height:1;letter-spacing:-.02em;margin-top:22px}
+.mc-foot{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;margin-top:22px;font-size:12px;color:#B7ACC2}
+.mc-foot>span{display:block}
+.mc-k{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.mc-foot b{display:block;color:#F3EDE2;font-size:15px;font-weight:600;margin-top:2px}
+.mc-code{margin-left:auto;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px;letter-spacing:.18em;color:#E9DDC4}
+.unlock{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:clamp(20px,5vw,28px);background:linear-gradient(160deg,var(--gold-soft),transparent 55%),var(--surface);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);margin-top:14px}
+.unlock h2.display{font-size:clamp(25px,6.4vw,32px)}
+.code-form{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.code-form input{flex:1;min-width:180px;min-height:56px;border-radius:var(--r-md);background:var(--bg);border:1px solid var(--line-strong);padding:0 16px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:18px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.code-form input::placeholder{color:var(--faint);letter-spacing:.14em}
+.code-form input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+.code-form .btn{min-width:124px}
+.code-msg{min-height:20px;margin-top:10px;font-size:14px;color:var(--muted)}
+.code-msg:empty{min-height:0;margin:0}
+.code-msg.bad{color:var(--coral)}
+.shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.preview-strip{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+.preview-strip .grow{flex:1;min-width:0}.preview-strip .t{font-weight:700}
+.incl{list-style:none;display:grid;gap:14px;margin-top:4px}
+.incl li{display:grid;grid-template-columns:24px 1fr;column-gap:12px;align-items:start}
+.incl li::before{content:"";grid-row:span 2;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%231B1307' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.incl b{font-weight:700}.incl span{color:var(--muted);font-size:15px}
+.feature{display:flex;align-items:center;gap:16px;width:100%;text-align:left;margin-top:14px;text-decoration:none}
+.feature .f-ico{width:54px;height:54px;flex:none;border-radius:17px;display:grid;place-items:center;background:linear-gradient(135deg,#E6C77F,var(--gold));color:var(--on-gold);font-size:22px}
+.feature .f-ico svg{width:24px;height:24px}
+.feature.locked .f-ico,.feature.soft .f-ico{background:var(--surface-2);color:var(--gold)}
+.feature .grow{flex:1;min-width:0}
+.feature .f-t{display:block;font-family:var(--display);font-weight:500;font-size:21px;line-height:1.2}
+.feature .s{display:block;color:var(--muted);font-size:14.5px;margin-top:3px}
+.sys-num{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;font-family:var(--display);font-size:16px;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);font-variant-numeric:lining-nums}
+.sys-row .pill{flex:none}
+.sys-row.locked .t{color:var(--muted)}
+.rs-block{margin-top:20px}
+.rs-block:first-of-type{margin-top:4px}
+.rs-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.rs-sum div{background:var(--surface-2);padding:12px 8px;text-align:center}
+.rs-sum b{display:block;font-family:var(--display);font-weight:500;font-size:22px;line-height:1.1;font-variant-numeric:tabular-nums}
+.rs-sum span{font-size:11.5px;color:var(--muted)}
+.rs-frame{display:block;width:100%;height:460px;border:1px solid var(--line);border-radius:var(--r-md);background:#F1ECE3}
+.rs-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rs-actions .btn-line{padding:0 8px;font-size:14px;min-height:46px;text-align:center}
+.parts-box{padding:16px;border-radius:var(--r-md);background:var(--surface-2)}
+.part-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 2px;border-bottom:1px solid var(--line)}
+.part-row:last-child{border-bottom:0}
+.part-row .grow{flex:1;min-width:0}
+.part-row .pn{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line-strong);font-family:var(--display);font-size:15px}
+.part-row.next .pn{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+.part-row.sent .pn{background:var(--sage);border-color:var(--sage);color:var(--bg)}
+.part-row .t{font-weight:600}.part-row .s{font-size:13.5px;color:var(--muted)}
+.code-card{border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:var(--r-md);padding:16px;background:var(--surface-2)}
+.code-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.code-big{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:clamp(19px,5.4vw,24px);font-weight:700;letter-spacing:.14em;color:var(--gold);word-break:break-all}
+.code-mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;letter-spacing:.1em}
+.publish{border-radius:var(--r-md);padding:18px;border:1px dashed color-mix(in srgb,var(--gold) 55%,transparent)}
+.publish h3{font-size:19px}
+.publish ol{margin:12px 0 10px 20px;display:grid;gap:10px}
+.ledger-row{border-bottom:1px solid var(--line)}
+.ledger-row summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 2px}
+.ledger-row summary::-webkit-details-marker{display:none}
+.ledger-row .grow{flex:1;min-width:0}
+.ledger-row .s{font-size:13.5px;color:var(--muted)}
+.list-btn{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px;border-radius:var(--r-md);border:1px solid var(--line)}
+.list-btn:hover{border-color:var(--line-strong)}
+.list-btn .grow{flex:1;min-width:0}
+.list-btn .t{font-weight:600}.list-btn .s{font-size:14px;color:var(--muted)}
+.faint{color:var(--faint)}
 @media(max-width:380px){.cal-day{height:42px}.cal-metrics b{font-size:20px}.tabs button{font-size:11px}}
 </style>
 </head>
@@ -407,6 +495,7 @@ textarea.textbody{min-height:240px;font-size:17px}
     <b>Fluency OS</b><span>ProfGermandario</span>
   </a>
   <div class="top-actions">
+    <button class="tier-chip" id="tierChip" data-act="membership" aria-label="Membership"></button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
     </button>
@@ -755,15 +844,9 @@ const CONFIG = {
   website:"https://www.profgermandario.com",
   base:"https://palekor.github.io/lecciones/",
   cycleDays:28,
-  mirrorEveryDays:28,
-  /* Access codes: SHA-256 of the UPPERCASE code → tier.
-     Current codes: COMPANION-2026 and MASTERY-2026. Change them:
-     open the app, press F12 › Console, run  QK.hash("NEW-CODE")
-     and paste the result here. */
-  accessCodes:{
-    "76fec40ce5565fb429a9cf42073b804c61580dabb0b3d107ac6367fa73aa6113":"companion",
-    "631c4241c6da25c84103470352a93f89c3aec6f2f9659e7541d4d71dd6bebf5a":"mastery"
-  }
+  mirrorEveryDays:28
+  /* Access codes now live in pg-access.js — one registry for the journal and
+     every lesson page. Create them in Toolbox › Teacher console. */
 };
 function waLink(text){ return "https://wa.me/"+CONFIG.whatsappNumber+"?text="+encodeURIComponent(text); }
 
@@ -776,10 +859,23 @@ function waLink(text){ return "https://wa.me/"+CONFIG.whatsappNumber+"?text="+en
    depth 3: + mirror-sample review and portfolio review requests
    ============================================================ */
 const TIERS = {
+  /* Visitors without a code. missionLimit = how many free preview missions. */
+  spectator:{name:"Preview", depth:0, missionLimit:1, next:"essential"},
   essential:{name:"Essential", depth:1, missionLimit:17, next:"companion"},
   companion:{name:"Companion", depth:2, missionLimit:17, next:"mastery"},
   mastery:  {name:"Mastery Program", depth:3, missionLimit:17, next:null}
 };
+
+/* ACCESS — who is a member comes from pg-access.js (shared with every lesson
+   page). If that file can't load, the last known status on this device is used. */
+const PGA = window.PGAccess || (function(){
+  let c = null; try{ c = (JSON.parse(localStorage.getItem("pg_access_v1")||"null")||{}).cache||null; }catch(e){}
+  const st = () => ({tier:c&&c.member?c.tier:"spectator", state:c&&c.member?"active":"none", member:!!(c&&c.member), teacher:!!(c&&c.tier==="teacher"), preview:false, exp:(c&&c.exp)||"", since:"", tail:"", name:c&&c.member?(c.tier==="teacher"?"Teacher":(TIERS[c.tier]||{}).name||"Member"):"Preview"});
+  return {status:st, redeem:()=>Promise.resolve({ok:false, reason:"offline"}), signOut(){}, setPreview(){}, kdf:()=>Promise.reject(new Error("offline")), newCode:()=>"", line:()=>"", isLive:()=>false, inRegistry:()=>false, waLink:(t)=>"https://wa.me/?text="+encodeURIComponent(t), CONFIG:{journal:location.href.split("#")[0], editUrl:"https://github.com/palekor/lecciones/edit/main/pg-access.js"}, offline:true};
+})();
+const access = () => PGA.status();
+const isMember = () => access().member;
+const isTeacher = () => access().teacher;
 
 /* Onboarding options */
 const GOALS = [
@@ -825,20 +921,20 @@ const TOPICS = [
   {id:"argument", title:"Defend a position", prompt:"Do you agree or disagree with an idea? Defend your position.", frames:["I agree / disagree…","The main reason…","For example…","That's why…"]}
 ];
 
-/* Toolbox catalog — one global place for every tool */
+/* Toolbox catalog — one global place for every tool.
+   pro:true = members only (spectators see it with a lock). */
 const TOOLBOX = [
   {group:"Practice", desc:"Keep speaking between missions.", items:[
     {g:"S", t:"Free speaking", s:"Choose a topic, write, speak, reflect.", action:"free"},
     {g:"E", t:"Shadowing", s:"Listen to mission sentences and repeat them aloud.", action:"shadow"},
     {g:"Q", t:"Quick check", s:"Five fast questions from missions you completed.", action:"quiz"},
-    {g:"Tx", t:"Class texts", s:"Every class text by level, plus texts you write or receive.", action:"texts"},
-    {g:"Y", t:"Speak Ya", s:"Your AI speaking partner, available any time.", url:CONFIG.speakYa},
-    {g:"M", t:"Shadowing Masterclass", s:"Level-adjustable texts with live highlighting.", url:"08.html"},
+    {g:"Tx", t:"Class texts", s:"Every class text by level, plus texts you write or receive.", action:"texts", pro:true},
+    {g:"Y", t:"Speak Ya", s:"Your AI speaking partner, available any time.", url:CONFIG.speakYa, pro:true},
+    {g:"M", t:"Shadowing Masterclass", s:"Level-adjustable texts with live highlighting.", url:"08.html", pro:true},
     {g:"I", t:"Intercambio", s:"Language exchange chat, no sign-up.", url:"intercambio.html"},
     {g:"W", t:"WordBlitz", s:"Falling-word speed game.", url:"02.html"}
   ]},
   {group:"Language", desc:"References and masterclasses.", items:[
-    {g:"44", t:"The 44 sounds", s:"Phonemes and minimal pairs.", url:"steps/step04.html"},
     {g:"Co", t:"Cognates", s:"Spanish–English vocabulary patterns.", url:"steps/step07.html"},
     {g:"V", t:"Essential verbs", s:"The verbs you use every day.", url:"01.html"},
     {g:"T", t:"Verb tenses", s:"Complete sentences across tenses.", url:"02b.html"},
@@ -860,7 +956,7 @@ const TOOLBOX = [
   {group:"Support", desc:"When the system isn't enough, a person is.", items:[
     {g:"PG", t:"ProfGermandario", s:"Questions, blocks, feedback, and guidance.", action:"teacher"},
     {g:"Ma", t:"Student Manual", s:"Your complete program reference.", url:CONFIG.manual},
-    {g:"Pl", t:"My program", s:"Your current program and access code.", action:"plan"},
+    {g:"Pl", t:"Membership", s:"Your program, your access code, and your devices.", action:"plan"},
     {g:"Da", t:"My data", s:"Export, import, or reset your progress.", action:"data"},
     {g:"Pf", t:"Profile", s:"Your name, goal, level, and preferences.", action:"profile"}
   ]}
@@ -1224,7 +1320,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "11.0";
+const APP_VERSION = "11.1";
 
 function defaultState(){
   return {
@@ -1238,7 +1334,9 @@ function defaultState(){
     onboarded:false, tier:"essential", placementStart:0,
     speakingAttempts:[], reflections:[], mirrorSamples:[], shadowLog:[], draft:null, ttsRate:0.92,
     /* v4 — classes */
-    classSeries:[], classRecords:{}, myTexts:[], days:{}
+    classSeries:[], classRecords:{}, myTexts:[], days:{},
+    /* 11.1 — Report Studio */
+    reportLog:[]
   };
 }
 function migrate(raw){
@@ -1246,7 +1344,7 @@ function migrate(raw){
   if(!raw || typeof raw!=="object") return s;
   Object.assign(s, raw);
   ["completedMissions","achievements","journalEntries","writingSamples","sessionLog","meditationLog","stuckSignals",
-   "practiceRecords","quizzes","speakingAttempts","reflections","mirrorSamples","shadowLog","classSeries","myTexts"].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; });
+   "practiceRecords","quizzes","speakingAttempts","reflections","mirrorSamples","shadowLog","classSeries","myTexts","reportLog"].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; });
   if(!s.missionProgress || typeof s.missionProgress!=="object") s.missionProgress = {};
   if(!s.classRecords || typeof s.classRecords!=="object" || Array.isArray(s.classRecords)) s.classRecords = {};
   s.classSeries = s.classSeries.filter(x=>x && x.id && Array.isArray(x.days) && x.days.length && /^\d{4}-\d{2}-\d{2}$/.test(x.start||""));
@@ -1294,6 +1392,15 @@ function save(){
   catch(e){ if(!saveWarned){ saveWarned=true; toast("Storage is full. Export a backup from Toolbox › My data."); } }
 }
 let state = load();
+/* One-time move: students who unlocked Companion or Mastery with the old shared
+   codes keep their program. Everyone else starts in preview until they enter a code. */
+(function(){
+  try{
+    if(localStorage.getItem("pg_access_v1")) return;
+    const legacy = {companion:"76fec40ce5565fb429a9cf42073b804c61580dabb0b3d107ac6367fa73aa6113", mastery:"631c4241c6da25c84103470352a93f89c3aec6f2f9659e7541d4d71dd6bebf5a"}[state.tier];
+    if(legacy) localStorage.setItem("pg_access_v1", JSON.stringify({h:legacy, at:nowISO(), tail:"", migrated:true}));
+  }catch(e){}
+})();
 
 /* ============================================================
    AUDIO STORAGE — recordings live in IndexedDB, never in
@@ -1325,7 +1432,7 @@ function hydrateAudio(){
 /* ============================================================
    DERIVED STATE
    ============================================================ */
-const tier = () => TIERS[state.tier] || TIERS.essential;
+const tier = () => { const s = access(); return TIERS[s.tier==="teacher" ? "mastery" : s.tier] || TIERS.spectator; };
 const depth = () => tier().depth;
 const ctx = () => contextOf(state.startingPoint.goal);
 const CTX_LABEL = {work:"your work", travel:"travel", confidence:"speaking with confidence", general:"everyday life"};
@@ -1336,13 +1443,14 @@ function isUnlocked(i){
   return i <= Math.max(state.placementStart, highestDone()+1);
 }
 function lockReason(i){
-  if(i >= tier().missionLimit){ const n = tier().next; return "Included in the "+(n?TIERS[n].name:"next")+" program."; }
+  if(i >= tier().missionLimit){ if(!isMember()) return "Members only. Your access code opens it."; const n = tier().next; return "Included in the "+(n?TIERS[n].name:"next")+" program."; }
   return "Complete Mission "+i+" to open this one.";
 }
 function nextMission(){
   const lim = Math.min(tier().missionLimit, LESSONS.length);
-  for(let i=state.placementStart;i<lim;i++) if(!state.completedMissions.includes(i)) return i;
-  for(let i=0;i<Math.min(state.placementStart,lim);i++) if(!state.completedMissions.includes(i)) return -2; /* only review missions left */
+  const start = state.placementStart < lim ? state.placementStart : 0; /* a preview starts at Mission 1 */
+  for(let i=start;i<lim;i++) if(!state.completedMissions.includes(i)) return i;
+  for(let i=0;i<Math.min(start,lim);i++) if(!state.completedMissions.includes(i)) return -2; /* only review missions left */
   return -1;
 }
 function cycleInfo(){
@@ -1767,6 +1875,7 @@ function render(){
   teardown();
   let r = (location.hash||"#home").slice(1) || "home";
   if(r.startsWith("t=")){ receiveShared(r.slice(2)); r = "classes"; }
+  if(r.startsWith("code=")){ const c = decodeURIComponent(r.slice(5)); r = state.onboarded ? "toolbox" : "onboarding"; setTimeout(()=>redeemLink(c), 80); }
   if(!state.onboarded && !(r==="lesson" && run && run.kind==="mirror")) r = "onboarding";
   else if(r==="onboarding") r = "home";
   if(r==="lesson" && !run){
@@ -1782,6 +1891,7 @@ function render(){
   VIEWS[curRoute]();
   window.scrollTo(0,0);
   if(pendingShare && state.onboarded && curRoute!=="lesson"){ const id = pendingShare; pendingShare = null; sharedSheet(id); }
+  paintTierChip();
 }
 
 /* ---------- action bar ---------- */
@@ -1894,6 +2004,13 @@ VIEWS.home = function(){
     hero = `<p class="kicker">Journey complete</p><h2 class="display">You finished every mission in your program.</h2>
       <p class="obj">Record a new mirror sample to see how far you've come, or review any mission from your path.</p>`;
   }
+  const mem = isMember();
+  if(!mem && nx<0 && !state.draft){
+    cta = {label:"Unlock the full program", act:"membership"};
+    hero = `<p class="kicker">Preview complete</p><h2 class="display">You finished the free mission.</h2>
+      <p class="obj">Your access code opens the other sixteen missions, weekly classes, and every masterclass in The System.</p>`;
+  }
+  const previewStrip = mem ? "" : `<button class="panel preview-strip mt" data-act="membership"><span class="lock-ico">${ICON_LOCK}</span><span class="grow"><span class="t">${access().preview?"Previewing as a spectator":"Preview mode"}</span><br><span class="muted small">Mission 1 is open. Your access code unlocks all 17 missions, classes, The System, and Report Studio.</span></span><span class="chev">›</span></button>`;
   const due = mirrorDue();
   const mirrorNote = due && !state.draft ? `<button class="panel note" style="width:100%;text-align:left" data-act="startMirror">
       <span class="dot"></span><span><b>${due==="first"?"Capture your starting point":"Time for your mirror sample"}</b><br>
@@ -1907,6 +2024,7 @@ VIEWS.home = function(){
   view.innerHTML = `
     <section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${hello}${name}.</h1>
       <p>${today?"You have class today. Your text is ready.":nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
+    ${previewStrip}
     ${today?classBlock:""}
     <section class="panel mission-hero mt">${hero}
       <div class="journey" aria-hidden="true">${ticks}</div>
@@ -2020,19 +2138,31 @@ function archive(title, items){
 /* ---------------- TOOLBOX ---------------- */
 VIEWS.toolbox = function(){
   setBody("");
+  const s = access(), mem = s.member, last = (state.reportLog||[]).slice(-1)[0];
+  const head = mem ? `<section class="mt">${memberCard(s)}</section>`
+    : unlockPanel({kicker:s.preview?"Spectator preview":"Preview mode", title:"Unlock the full Fluency OS", text:"Your access code opens all 17 missions, weekly classes, every masterclass in The System, and Report Studio.", what:"Toolbox"});
+  const report = `<button class="panel feature ${mem?"":"locked"}" data-act="${mem?"report":"locked"}" data-what="Report Studio"><span class="f-ico">${mem?ICON_REPORT:ICON_LOCK}</span><span class="grow"><span class="f-t">Report Studio</span><span class="s">${mem?"Send your progress and writings, by lesson or complete."+(last?" Last sent "+esc(fmtDate(last.date))+".":""):"Members send their progress and writings to ProfGermandario, in order."}</span></span><span class="chev">›</span></button>`;
+  const teacher = s.teacher && !s.preview ? `<button class="panel feature soft" data-act="console"><span class="f-ico">✦</span><span class="grow"><span class="f-t">Teacher console</span><span class="s">Create access codes, send them, and see which ones are live.</span></span><span class="chev">›</span></button>` : "";
   view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">Toolbox</h1>
-    <p>Everything besides today's mission lives here.</p></section>` +
-    TOOLBOX.map(g=>`<section class="tool-group"><h3>${esc(g.group)}</h3><p>${esc(g.desc)}</p><div class="list">${g.items.map(t=>
-      t.url ? `<a href="${esc(toolUrl(t.url))}" target="_blank" rel="noopener"><span class="glyph">${esc(t.g)}</span><span class="grow"><span class="t">${esc(t.t)}</span><br><span class="s">${esc(t.s)}</span></span><span class="chev">↗</span></a>`
-            : `<button data-act="tool" data-tool="${t.action}"><span class="glyph">${esc(t.g)}</span><span class="grow"><span class="t">${esc(t.t)}</span><br><span class="s">${esc(t.s)}</span></span><span class="chev">›</span></button>`
-    ).join("")}</div></section>`).join("") +
-    `<p class="small muted mt-l center">Fluency OS ${APP_VERSION}. ${esc(tier().name)} program.</p>`;
+    <p>${mem?"Everything besides today's mission lives here.":"Explore freely. Members unlock everything marked with a lock."}</p></section>` + head + report + teacher + systemGroup(mem) +
+    TOOLBOX.map(g=>`<section class="tool-group"><h3>${esc(g.group)}</h3><p>${esc(g.desc)}</p><div class="list">${g.items.map(t=>{
+      const inner = `<span class="glyph">${esc(t.g)}</span><span class="grow"><span class="t">${esc(t.t)}</span><br><span class="s">${esc(t.s)}</span></span>`;
+      if(t.pro && !mem) return `<button data-act="locked" data-what="${esc(t.t)}">${inner}${lockGlyph}</button>`;
+      return t.url ? `<a href="${esc(toolUrl(t.url))}" target="_blank" rel="noopener">${inner}<span class="chev">↗</span></a>`
+                   : `<button data-act="tool" data-tool="${t.action}">${inner}<span class="chev">›</span></button>`;
+    }).join("")}</div></section>`).join("") +
+    `<p class="small muted mt-l center">Fluency OS ${APP_VERSION} · ${esc(s.teacher&&!s.preview?"Teacher":tier().name)}</p>`;
 };
 
 /* ---------------- CLASSES ---------------- */
 let calY = new Date().getFullYear(), calM = new Date().getMonth();
 VIEWS.classes = function(){
   setBody("");
+  if(!isMember()){
+    view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">Classes</h1><p>Your weekly classes, a text at your level, and the day star.</p></section>`
+      + unlockPanel({title:"Weekly classes are for members.", text:"Add your class days, receive a text at your level for every class, earn the day star, and send each day's work to ProfGermandario.", what:"Classes"});
+    return;
+  }
   const has = hasClasses(), fc = focusClass(), lv = studentLevel();
   let h = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">Your classes</h1>
     <p>${has ? "Every class comes with a text at your level, and every part you complete is measured." : "Add your weekly classes. Each one comes with a text at your level and five clear parts to complete."}</p></section>`;
@@ -2815,18 +2945,7 @@ function stuckHelp(reason){
       <a class="btn block" href="${waLink("Hola Profe, soy "+(state.name||"estudiante")+". Estoy en "+where+" y me pasa esto: "+reason)}" target="_blank" rel="noopener">Tell ProfGermandario</a>
     </div>`);
 }
-function planSheet(){
-  const t = tier(), d = t.depth;
-  const inc = ["Every mission in your program, with examples built around your goal, Speak Ya, and WhatsApp support."];
-  if(d>=2) inc.push("Speaking targets adjusted to your block, practice matched to how you learn, and personal feedback on the evidence you send.");
-  if(d>=3) inc.push("Mirror-sample and portfolio reviews with ProfGermandario.");
-  openSheet(`${sheetHead("My program", t.name)}
-    <p>${inc.map(esc).join(" ")}</p>
-    <label class="small muted mt-l" style="display:block" for="codeIn">Have an access code?</label>
-    <div class="row-gap mt-s"><input class="field" style="flex:1;min-width:180px" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="Access code"><button class="btn" data-act="applyCode">Apply code</button></div>
-    <p class="mt"><a class="link" href="${waLink("Hola Profe, quiero información sobre los programas de ProfGermandario.")}" target="_blank" rel="noopener">Ask ProfGermandario about programs</a></p>
-    <p class="small muted mt">Payments never happen inside this app.</p>`);
-}
+function planSheet(){ membershipSheet(); }
 function dataSheet(){
   openSheet(`${sheetHead("My data","Your progress lives on this device, in this browser.")}
     <p>Export a backup every week, and before changing phones or browsers. The backup includes your missions, evidence, classes, day notes, and texts. Audio recordings stay on this device and are not included.</p>
@@ -2910,6 +3029,466 @@ function freeSheet(){
 }
 
 /* ============================================================
+   MEMBERSHIP — spectators preview, members unlock.
+   The registry of codes lives in pg-access.js (shared with every
+   lesson page), so one code opens the journal and The System.
+   ============================================================ */
+const ICON_LOCK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3h1.5A1.5 1.5 0 0 1 20 11.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 20.5v-9A1.5 1.5 0 0 1 5.5 10zm2 0h6V7a3 3 0 0 0-6 0z"/></svg>';
+const ICON_WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>';
+const lockGlyph = `<span class="lock-ico" title="Members">${ICON_LOCK}</span>`;
+
+const fmtExp = k => fmtDate(k+"T12:00:00");
+function codeErrorText(r){
+  if(!r) return "Something went wrong. Try again.";
+  if(r.reason==="expired") return "That code ended on "+fmtExp(r.exp)+". Renew it with ProfGermandario.";
+  if(r.reason==="secure") return "Codes need a secure connection (https).";
+  if(r.reason==="short") return "Type the complete code.";
+  if(r.reason==="offline") return "You're offline. Connect to the internet and try again.";
+  return "That code isn't valid. Check it with ProfGermandario.";
+}
+function accessNote(s){
+  if(s.state==="expired") return "Your access ended on "+fmtExp(s.exp)+". Renew it with ProfGermandario to keep going.";
+  if(s.state==="revoked") return "The code on this device is no longer active. Enter your current code.";
+  return "";
+}
+const codeForm = note => `<div class="code-form"><input aria-label="Access code" placeholder="PG-XXXX-XXXX" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false"><button class="btn" data-act="applyCode">Unlock</button></div><p class="code-msg ${note?"bad":""}" role="status">${esc(note||"")}</p>`;
+const requestLink = what => `<a class="link" href="${waLink("Hola Profe, soy "+(state.name||"un visitante")+". Quiero acceso completo al Fluency OS"+(what?" ("+what+")":"")+".")}" target="_blank" rel="noopener">Request access on WhatsApp</a>`;
+
+function memberCard(s){
+  const valid = s.teacher ? "Full access" : s.exp ? fmtExp(s.exp) : "No end date";
+  return `<button class="member-card" data-act="membership" aria-label="Membership details">
+    <span class="mc-top"><span class="mc-brand">Fluency OS · ${s.teacher?"Teacher":"Member"}</span><span class="mc-chip" aria-hidden="true"></span></span>
+    <span class="mc-tier">${esc(s.name)}</span>
+    <span class="mc-foot"><span><span class="mc-k">${s.teacher?"Holder":"Member"}</span><b>${esc(state.name||"—")}</b></span><span><span class="mc-k">${s.teacher?"Access":"Valid until"}</span><b>${esc(valid)}</b></span>${s.tail?`<span class="mc-code">•••• ${esc(s.tail)}</span>`:""}</span>
+  </button>`;
+}
+function unlockPanel(o){
+  const s = access(), note = accessNote(s);
+  return `<section class="unlock">
+    <p class="kicker">${esc(o.kicker||"Members")}</p><h2 class="display">${esc(o.title)}</h2><p class="muted mt-s">${esc(o.text)}</p>
+    ${codeForm(note)}
+    <p class="mt-s small">${requestLink(o.what)}</p>
+  </section>`;
+}
+const INCLUDED = [
+  ["All 17 missions","Every stage of the journey, built around your goal."],
+  ["Weekly classes","Your calendar, a text at your level for every class, and the day star."],
+  ["The System","Every masterclass with voice practice, random arenas and progress."],
+  ["Report Studio","Send your progress and writings to ProfGermandario, in order."],
+  ["Speak Ya and class texts","Your AI speaking partner and the full text library."]
+];
+function membershipSheet(what){
+  const s = access(), t = tier();
+  if(s.member){
+    const inc = ["Every mission in your program, with examples built around your goal, Speak Ya, and WhatsApp support."];
+    if(t.depth>=2) inc.push("Speaking targets adjusted to your block, practice matched to how you learn, and personal feedback on the evidence you send.");
+    if(t.depth>=3) inc.push("Mirror-sample and portfolio reviews with ProfGermandario.");
+    openSheet(`${sheetHead("Membership", s.teacher?"Teacher mode on this device":"Your program on this device")}
+      ${memberCard(s)}
+      <div class="stack mt">
+        <p>${inc.map(esc).join(" ")}</p>
+        <div class="well small"><b>Activated</b> ${s.since?esc(fmtDate(s.since)):"—"}${s.tail?" · code ending "+esc(s.tail):""}<br><span class="muted">Using another phone or computer? Enter the same code there.</span></div>
+        ${s.teacher?`<button class="btn block" data-act="console">Open the teacher console</button>`:""}
+        <details class="more"><summary>Use a different code</summary><div class="inner">${codeForm("")}</div></details>
+        <button class="link" data-act="signOut" style="color:var(--coral)">Remove access from this device</button>
+      </div>`);
+    return;
+  }
+  const note = accessNote(s);
+  openSheet(`${sheetHead(what?what+" is for members":"Unlock the full Fluency OS", "One code opens everything in your program — here and in every masterclass.")}
+    <ul class="incl">${INCLUDED.map(i=>`<li><b>${esc(i[0])}</b><span>${esc(i[1])}</span></li>`).join("")}</ul>
+    <div class="mt">${codeForm(note)}</div>
+    <div class="stack mt"><a class="btn-line" style="width:100%" href="${waLink("Hola Profe, soy "+(state.name||"un visitante")+". Quiero información para acceder al Fluency OS completo.")}" target="_blank" rel="noopener">${ICON_WA} Request access on WhatsApp</a></div>
+    <p class="small muted mt center">Payments never happen inside this app.</p>`);
+}
+function welcomeSheet(s){
+  if(s.teacher){
+    openSheet(`<div class="complete" style="padding-top:10px">${SEAL}<h2 class="display">Teacher mode is on.</h2><p class="lead" style="margin:12px auto 0">Create codes, send them, and see which ones are live — from the teacher console.</p></div>
+      <div class="stack mt"><button class="btn block" data-act="console">Open the teacher console</button><button class="btn-line" style="width:100%" data-act="closeSheet">Not now</button></div>`);
+    return;
+  }
+  openSheet(`<div class="complete" style="padding-top:10px">${SEAL}<p class="kicker">Access unlocked</p><h2 class="display">Welcome to ${esc(s.name)}.</h2>
+    <p class="lead" style="margin:12px auto 0">Your missions, classes, every masterclass in The System and Report Studio are open on this device.</p></div>
+    <div class="mt">${memberCard(s)}</div>
+    <div class="stack mt"><button class="btn block" data-act="welcomeGo">Start exploring</button><p class="small muted center">On another phone or computer, enter the same code.</p></div>`);
+}
+async function redeemLink(code){
+  toast("Checking your access code…");
+  const r = await PGA.redeem(code);
+  $("#toast").classList.remove("show");
+  if(r.ok){ if(state.onboarded) welcomeSheet(r.status); else toast(r.status.name+" unlocked. Let's set up your journal."); }
+  else toast(codeErrorText(r));
+}
+function paintTierChip(){
+  const c = $("#tierChip"); if(!c) return;
+  const s = access();
+  c.classList.toggle("member", s.member);
+  c.innerHTML = s.member ? `<span class="dia" aria-hidden="true">◆</span>${esc(s.teacher?"Teacher":s.name.replace(" Program",""))}` : `${ICON_LOCK}<span>Unlock</span>`;
+  c.setAttribute("aria-label", s.member ? "Membership: "+s.name : "Preview mode. Unlock the full program");
+}
+
+/* ============================================================
+   THE SYSTEM — masterclasses (steps/*.html). Progress is read
+   from each lesson's own storage on this device.
+   gated:true = the page itself shows a free preview + unlock.
+   ============================================================ */
+const SYS_STEPS = [
+  {id:"00a", t:"Pronoun Logic", s:"Who? The first decision of every sentence.", url:"steps/step00a.html", key:"pg_step00a_v2", gated:true, goal:20, by:"trabajo", labels:{sub:"Subject",obj:"Object",adj:"Possessive adjective",pro:"Possessive pronoun",ref:"Reflexive"}},
+  {id:"00b", t:"Verb Mode", s:"Simple or progressive: choose the camera.", url:"steps/step00b.html", key:"pg_step00b_v2", gated:true, goal:15, by:"habilidad", labels:{mode:"Mode choice",form:"Form & agreement",past:"Past forms & sounds",aux:"Questions & negatives",ing:"-ing & state verbs"}},
+  {id:"00c", t:"Verb Master Map", s:"Five forms, one chain rule, twelve tenses.", url:"steps/step00c.html", key:"pg_step00c_v2", gated:true, goal:25, by:"habilidad", labels:{forms:"Forms & chain rule",tenses:"Tense & aspect",aux:"Questions & negatives",patterns:"Verb patterns",types:"Types, voice & mood"}},
+  {id:"00d", t:"Noun Master Map", s:"The things your verbs move.", url:"steps/step00d.html"},
+  {id:"01", t:"The Sentence Engine", s:"Complete sentences, fast.", url:"steps/step01.html"},
+  {id:"02", t:"Chunk Logic", s:"Three connected ideas.", url:"steps/step02.html"},
+  {id:"03", t:"WH Masterclass", s:"Questions that get answers.", url:"steps/step03.html"},
+  {id:"04", t:"The 44 Sounds", s:"Pronunciation hardware.", url:"steps/step04.html"},
+  {id:"05", t:"Prepositions of Place", s:"Where everything is.", url:"steps/step05.html"},
+  {id:"06", t:"Deictic Expressions", s:"This, that, here, there: the reference point.", url:"steps/step06.html"}
+];
+function stepData(S){ if(!S.key) return null; try{ const d = JSON.parse(localStorage.getItem(S.key)||"null"); return d && typeof d==="object" ? d : null; }catch(e){ return null; } }
+function inPeriod(x, p){ if(!p || p==="all") return true; const t = typeof x==="number" ? x : Date.parse(x||""); if(!t) return false; return Date.now()-t <= (+p)*86400000; }
+function stepSummary(S, P){
+  const d = stepData(S); if(!d) return null;
+  const all = Array.isArray(d.sessions) ? d.sessions.filter(x=>x && typeof x.acc==="number") : [], ss = all.filter(x=>inPeriod(x.t, P));
+  const src = d.jobs || d.skills || {};
+  const skills = Object.keys(S.labels||{}).map(k=>{ const v = Array.isArray(src[k]) ? src[k] : [0,0]; return {label:S.labels[k], pct:v[1]?Math.round(v[0]/v[1]*100):null, n:v[1]||0}; });
+  const measured = skills.filter(x=>x.pct!=null), strong = all.filter(x=>x.mode==="mixed" && x.acc>=85).length;
+  const days = Array.isArray(d.days) ? d.days : [];
+  const active = P==="all" || ss.length>0 || days.some(k=>inPeriod(k+"T12:00:00", P));
+  return {sessions:ss.length, total:all.length, best:ss.length?Math.max(...ss.map(x=>x.acc)):null, last:ss.length?ss[ss.length-1].acc:null,
+    speed:d.speedBest||0, runs:d.speedRuns||0, lab:d.lab||0, skills, strong, mastered:strong>=2 && (d.speedBest||0)>=S.goal,
+    weak:measured.length?measured.reduce((a,b)=>b.pct<a.pct?b:a):null, has:!!(all.length||d.lab||d.speedRuns||measured.length), active};
+}
+function systemGroup(mem){
+  const rows = SYS_STEPS.map(S=>{
+    const m = mem ? stepSummary(S,"all") : null;
+    const chip = m && m.has ? (m.mastered?'<span class="pill sage">Mastered</span>':m.best!=null?`<span class="pill gold">Best ${m.best}%</span>`:'<span class="pill">Started</span>') : "";
+    const inner = `<span class="sys-num">${esc(S.id)}</span><span class="grow"><span class="t">${esc(S.t)}</span><br><span class="s">${esc(S.s)}</span></span>`;
+    if(mem) return `<a class="sys-row" href="${esc(toolUrl(S.url))}" target="_blank" rel="noopener">${inner}${chip}<span class="chev">↗</span></a>`;
+    if(S.gated) return `<a class="sys-row" href="${esc(toolUrl(S.url))}" target="_blank" rel="noopener">${inner}<span class="pill">Free preview</span><span class="chev">↗</span></a>`;
+    return `<button class="sys-row locked" data-act="locked" data-what="${esc(S.t)}">${inner}${lockGlyph}</button>`;
+  }).join("");
+  return `<section class="tool-group"><h3>The System</h3><p>${mem?"The masterclasses, in order. Your progress in each one appears here.":"The masterclasses, in order. The first three open as a free preview: see the logic, then unlock the training."}</p><div class="list">${rows}</div></section>`;
+}
+
+/* ============================================================
+   REPORT STUDIO — progress and writings, by lesson or complete.
+   Written for the teacher, in Spanish, like every other message.
+   ============================================================ */
+const PERIODS = {all:["All time","Todo el historial"], "7":["Last 7 days","Últimos 7 días"], "30":["Last 30 days","Últimos 30 días"]};
+let RS = {scope:"full", lesson:"", period:"all", inc:{progress:true, writings:true, notes:true}, parts:null, sent:[]};
+const fmtEs = x => { try{ return new Date(x).toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return ""; } };
+const wordsOf = w => w.wordCount || wc(w.content);
+function writingOut(w){ return {title:w.label||w.topic||"Escrito", meta:wordsOf(w)+" palabras · "+fmtEs(w.createdAt), text:String(w.content||"").trim()}; }
+function reflOut(r){ return {managed:r.managed||"", difficult:r.difficult||"", better:r.better||"", meta:fmtEs(r.date)}; }
+function speakStat(atts){ if(!atts.length) return null; const secs = atts.reduce((a,b)=>a+(b.duration||0),0), lo = Math.max(...atts.map(a=>a.duration||0)); return atts.length+" intento"+(atts.length===1?"":"s")+" · más largo "+mmss(lo)+" · total "+mmss(secs); }
+const isMissionW = (w,i) => w.missionId===i && (w.kind||"mission")==="mission";
+
+function missionItem(i, P, inc){
+  const M = LESSONS[i], mp = state.missionProgress[i]||{}, done = state.completedMissions.includes(i);
+  const ws = state.writingSamples.filter(w=>isMissionW(w,i) && inPeriod(w.createdAt,P));
+  const sp = state.speakingAttempts.filter(a=>a.missionId===i && (a.kind||"mission")==="mission" && inPeriod(a.date,P));
+  const rf = state.reflections.filter(r=>r.missionId===i && (r.kind||"mission")==="mission" && inPeriod(r.date,P));
+  if(!ws.length && !sp.length && !rf.length && !(done && inPeriod(mp.completedAt,P))) return null;
+  const stats = [["Estado", done?"completada"+(mp.completedAt?" el "+fmtEs(mp.completedAt):""):"en progreso"]];
+  if(mp.sessions) stats.push(["Sesiones", mp.sessions]);
+  const sl = speakStat(sp); if(sl) stats.push(["Habla", sl]);
+  if(ws.length) stats.push(["Escritura", ws.length+" texto"+(ws.length===1?"":"s")+" · "+ws.reduce((a,w)=>a+wordsOf(w),0)+" palabras"]);
+  return {key:"mission:"+i, title:"Misión "+M.n+" · "+M.t, sub:M.level+" · "+PHASES[phaseIndex(i)].label, stats:inc.progress?stats:[], bars:[],
+    writings:inc.writings?ws.map(writingOut):[], reflections:inc.notes?rf.map(reflOut):[], notes:[]};
+}
+function stepItem(S, P, inc){
+  const m = stepSummary(S, P); if(!m || !m.has || !m.active || !inc.progress) return null;
+  const stats = [["Sesiones", P!=="all" ? m.sessions+" en el periodo · "+m.total+" en total" : String(m.total)]];
+  if(m.best!=null) stats.push(["Precisión", "mejor "+m.best+"% · última "+m.last+"%"]);
+  stats.push(["Speed round", "récord "+m.speed+" (meta "+S.goal+")"]);
+  if(m.lab) stats.push(["Líneas habladas al 80%+", m.lab]);
+  stats.push(["Maestría", m.mastered?"✓ desbloqueada":"en progreso · "+m.strong+"/2 sesiones al 85%+ · speed "+m.speed+"/"+S.goal]);
+  if(m.weak && !m.mastered) stats.push(["Entrenar ahora", m.weak.label+" ("+m.weak.pct+"%)"]);
+  return {key:"step:"+S.id, title:"Step "+S.id+" · "+S.t, sub:S.s, stats, bars:m.skills.filter(b=>b.pct!=null), barsBy:S.by, writings:[], reflections:[], notes:[]};
+}
+function classItem(rec, P, inc){
+  if(!rec || rec.cancelled || !hasProgress(rec)) return null;
+  const o = occById(rec.id); if(!o || !inPeriod(o.date+"T12:00:00",P)) return null;
+  const T = classText(o), w = state.writingSamples.find(x=>x.id===rec.writingId), rf = state.reflections.find(x=>x.id===rec.reflectionId);
+  const stats = [["Asistencia", rec.attended?"sí":"no marcada"]];
+  if(T) stats.push(["Texto de clase", "“"+T.title+"” · "+wc(T.body)+" palabras"+(rec.readAt?" · leído":"")]);
+  stats.push(["Avance", classDone(o)+" de 5 partes"+(classStar(o)?" · ⭐ estrella del día":"")]);
+  if(rec.bestSecs) stats.push(["Habla", "intento más largo "+mmss(rec.bestSecs)]);
+  if(w){ const tg = writingTarget(w); if(tg) stats.push(["Meta de escritura "+tg.level, tg.range[0]+"–"+tg.range[1]+" palabras · "+(tg.ok?"cumplida":"aún no")]); }
+  return {key:"class:"+rec.id, title:"Clase · "+ucfirst(fmtDayEs(o.date)), sub:o.title+" · "+o.level, stats:inc.progress?stats:[], bars:[],
+    writings:inc.writings&&w?[writingOut(w)]:[], reflections:inc.notes&&rf?[reflOut(rf)]:[], notes:[]};
+}
+function freeItem(P, inc){
+  const ws = state.writingSamples.filter(w=>w.kind==="free" && inPeriod(w.createdAt,P));
+  const sp = state.speakingAttempts.filter(a=>a.kind==="free" && inPeriod(a.date,P));
+  const rf = state.reflections.filter(r=>r.kind==="free" && inPeriod(r.date,P));
+  if(!ws.length && !sp.length && !rf.length) return null;
+  const stats = []; const sl = speakStat(sp); if(sl) stats.push(["Habla", sl]);
+  if(ws.length) stats.push(["Escritura", ws.length+" texto"+(ws.length===1?"":"s")+" · "+ws.reduce((a,w)=>a+wordsOf(w),0)+" palabras"]);
+  return {key:"free", title:"Práctica libre", sub:"Temas elegidos por mí", stats:inc.progress?stats:[], bars:[], writings:inc.writings?ws.map(writingOut):[], reflections:inc.notes?rf.map(reflOut):[], notes:[]};
+}
+function mirrorItem(P, inc){
+  const ms = state.mirrorSamples.filter(m=>inPeriod(m.date,P)); if(!ms.length) return null;
+  const stats = [["Muestras", ms.length+(state.mirrorSamples.length>ms.length?" de "+state.mirrorSamples.length:"")]];
+  if(ms.length>1){ const a = ms[0], b = ms[ms.length-1]; stats.push(["Evolución", a.words+" → "+b.words+" palabras · habla "+mmss(a.seconds)+" → "+mmss(b.seconds)]); }
+  return {key:"mirror", title:"Muestras espejo", sub:"“"+MIRROR_PROMPT+"”", stats:inc.progress?stats:[], bars:[],
+    writings:inc.writings?ms.filter(m=>(m.text||"").trim()).map(m=>({title:"Muestra espejo", meta:m.words+" palabras · habló "+mmss(m.seconds)+" · "+fmtEs(m.date), text:m.text.trim()})):[], reflections:[], notes:[]};
+}
+function notesItem(P){
+  const ks = Object.keys(state.days).filter(k=>(state.days[k].note||"").trim() && inPeriod(k+"T12:00:00",P)).sort();
+  if(!ks.length) return null;
+  return {key:"notes", title:"Notas del día", sub:ks.length+" día"+(ks.length===1?"":"s"), stats:[], bars:[], writings:[], reflections:[], notes:ks.map(k=>ucfirst(fmtDayEs(k))+": "+state.days[k].note.trim())};
+}
+function reportLessons(){
+  const L = [];
+  SYS_STEPS.forEach(S=>{ const m = stepSummary(S,"all"); if(m && m.has) L.push({key:"step:"+S.id, group:"The System", label:"Step "+S.id+" · "+S.t, n:m.total+" sessions"}); });
+  LESSONS.forEach((M,i)=>{ if(missionItem(i,"all",{progress:true,writings:true,notes:true})) L.push({key:"mission:"+i, group:"Missions", label:"Mission "+M.n+" · "+M.t}); });
+  Object.values(state.classRecords).map(r=>({r, o:occById(r.id)})).filter(x=>x.o && !x.r.cancelled && hasProgress(x.r)).sort((a,b)=>a.o.date.localeCompare(b.o.date))
+    .forEach(x=>L.push({key:"class:"+x.r.id, group:"Classes", label:fmtDay(x.o.date)+" · "+x.o.title}));
+  if(freeItem("all",{progress:true,writings:true,notes:true})) L.push({key:"free", group:"More", label:"Free speaking practice"});
+  if(state.mirrorSamples.length) L.push({key:"mirror", group:"More", label:"Mirror samples"});
+  return L;
+}
+function summaryItem(P){
+  const ws = state.writingSamples.filter(w=>inPeriod(w.createdAt,P)), at = state.speakingAttempts.filter(a=>inPeriod(a.date,P));
+  const secs = at.reduce((a,b)=>a+(b.duration||0),0), longest = at.length?Math.max(...at.map(a=>a.duration||0)):0;
+  const doneP = state.completedMissions.filter(i=>inPeriod((state.missionProgress[i]||{}).completedAt,P)).length;
+  const recs = Object.values(state.classRecords).filter(r=>!r.cancelled && inPeriod(r.date+"T12:00:00",P));
+  const att = recs.filter(r=>r.attended).length, stars = recs.map(r=>occById(r.id)).filter(o=>o && classStar(o)).length;
+  const sysS = SYS_STEPS.reduce((a,S)=>{ const m = stepSummary(S,P); return a+(m?m.sessions:0); },0);
+  const mastered = SYS_STEPS.filter(S=>{ const m = stepSummary(S,"all"); return m && m.mastered; }).map(S=>S.id);
+  const words = ws.reduce((a,w)=>a+wordsOf(w),0);
+  return {
+    tiles:[[state.completedMissions.length+"/17","misiones"],[ws.length,"escritos"],[words,"palabras"],[Math.round(secs/60),"min hablados"]],
+    item:{key:"summary", title:"", sub:"", bars:[], writings:[], reflections:[], notes:[], stats:[
+      ["Misiones completadas", state.completedMissions.length+" de 17"+(P!=="all"?" · "+doneP+" en el periodo":"")],
+      ["Escritos", ws.length+" · "+words+" palabras"],
+      ["Habla", at.length+" intentos · "+Math.round(secs/60)+" min · más largo "+mmss(longest)],
+      ["Clases", att+" asistida"+(att===1?"":"s")+(stars?" · ⭐ "+stars:"")],
+      ["The System", sysS+" sesiones"+(mastered.length?" · maestría en "+mastered.join(", "):"")],
+      ["Constancia", "racha de "+liveStreak()+" día"+(liveStreak()===1?"":"s")+" · "+(state.hours||0).toFixed(1)+" h de práctica"]
+    ]}
+  };
+}
+function buildReport(o){
+  const P = o.period, inc = o.inc, full = o.scope==="full";
+  const one = full ? null : (reportLessons().find(l=>l.key===o.lesson)||null);
+  const doc = {student:state.name||"Estudiante", program:tier().name, scopeLabel: full?"Reporte completo":(one?one.label:"Lección"), periodKey:P, periodLabel:PERIODS[P][1], periodEn:PERIODS[P][0],
+    generated:nowISO(), tiles:null, sections:[], empty:true};
+  const add = (title, items) => { items = items.filter(Boolean).filter(it=>it.stats.length||it.bars.length||it.writings.length||it.reflections.length||it.notes.length); if(items.length) doc.sections.push({title, items}); };
+  if(full){
+    if(inc.progress){ const s = summaryItem(P); doc.tiles = s.tiles; add("Resumen", [s.item]); }
+    add("The System · Masterclasses", SYS_STEPS.map(S=>stepItem(S,P,inc)));
+    add("Misiones", LESSONS.map((M,i)=>missionItem(i,P,inc)));
+    add("Clases", Object.values(state.classRecords).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(r=>classItem(r,P,inc)));
+    add("Práctica libre", [freeItem(P,inc)]);
+    add("Muestras espejo", [mirrorItem(P,inc)]);
+    if(inc.notes) add("Notas del día", [notesItem(P)]);
+  } else if(one){
+    const [k,v] = o.lesson.split(":");
+    const it = k==="step" ? stepItem(SYS_STEPS.find(S=>S.id===v),P,inc) : k==="mission" ? missionItem(+v,P,inc) : k==="class" ? classItem(state.classRecords[o.lesson.slice(6)],P,inc) : k==="free" ? freeItem(P,inc) : k==="mirror" ? mirrorItem(P,inc) : null;
+    add(k==="step"?"The System":k==="mission"?"Misión":k==="class"?"Clase":"Práctica", [it]);
+  }
+  doc.empty = !doc.sections.length;
+  doc.counts = {items:doc.sections.reduce((a,s)=>a+s.items.length,0), writings:doc.sections.reduce((a,s)=>a+s.items.reduce((b,i)=>b+i.writings.length,0),0)};
+  doc.counts.words = doc.sections.reduce((a,s)=>a+s.items.reduce((b,i)=>b+i.writings.reduce((c,w)=>c+wc(w.text),0),0),0);
+  return doc;
+}
+function itemText(it){
+  const L = it.title ? ["", "▸ *"+it.title+"*"] : [""];
+  if(it.sub) L.push("_"+it.sub+"_");
+  it.stats.forEach(s=>L.push("• "+s[0]+": "+s[1]));
+  if(it.bars.length) L.push("• Precisión por "+(it.barsBy||"habilidad")+": "+it.bars.map(b=>b.label+" "+b.pct+"%").join(" · "));
+  it.writings.forEach(w=>L.push("", "✍ _"+w.title+" · "+w.meta+"_", w.text));
+  it.reflections.forEach(r=>L.push("", "Reflexión ("+r.meta+")", "- Logré decir: "+(r.managed||"-"), "- Fue difícil: "+(r.difficult||"-"), "- Quiero mejorar: "+(r.better||"-")));
+  it.notes.forEach(n=>L.push("", n));
+  return L.join("\n");
+}
+function reportHeader(doc){
+  return ["*REPORTE DE PROGRESO*", "ProfGermandario · Fluency OS", "", "Estudiante: "+doc.student, "Programa: "+doc.program, "Alcance: "+doc.scopeLabel, "Periodo: "+doc.periodLabel, "Generado: "+fmtEs(doc.generated)].join("\n");
+}
+function reportText(doc){ return reportHeader(doc)+"\n"+doc.sections.map(s=>"\n*"+s.title.toUpperCase()+"*"+s.items.map(itemText).join("\n")).join("\n"); }
+/* Long reports travel in ordered parts; each part stays readable on its own. */
+function reportParts(doc, limit){
+  limit = limit || 2900;
+  const pieces = [];
+  doc.sections.forEach(s=>s.items.forEach((it,k)=>{
+    const t = itemText(it);
+    if(t.length <= limit-260){ pieces.push({sec:s.title, first:k===0, text:t}); return; }
+    let cur = "";
+    t.split(/\n(?=\n)/).forEach(par=>{
+      if(par.length > limit-260){ (par.match(/[^.!?\n]+[.!?]*\s*|\n/g)||[par]).forEach(x=>{ if((cur+x).length > limit-260){ pieces.push({sec:s.title, first:!pieces.some(p=>p.sec===s.title), text:cur}); cur = x; } else cur += x; }); return; }
+      if((cur+"\n"+par).length > limit-260){ pieces.push({sec:s.title, first:!pieces.some(p=>p.sec===s.title), text:cur}); cur = par; } else cur = cur ? cur+"\n"+par : par;
+    });
+    if(cur) pieces.push({sec:s.title, first:!pieces.some(p=>p.sec===s.title), text:cur});
+  }));
+  const parts = []; let cur = reportHeader(doc), lastSec = null;
+  pieces.forEach(p=>{
+    const newSec = p.sec!==lastSec, title = "*"+p.sec.toUpperCase()+(newSec&&p.first?"":" (cont.)")+"*";
+    const add = (newSec ? "\n\n"+title : "\n") + p.text;
+    if((cur+add).length > limit-90 && cur.trim()){ parts.push(cur.trim()); cur = "*"+p.sec.toUpperCase()+(newSec&&p.first?"":" (cont.)")+"*"+p.text; }
+    else cur += add;
+    lastSec = p.sec;
+  });
+  if(cur.trim()) parts.push(cur.trim());
+  if(parts.length<2) return parts;
+  return parts.map((p,i)=>"*Parte "+(i+1)+" de "+parts.length+"* · "+doc.student+"\n"+(i?"\n":"")+p);
+}
+function reportHTML(doc, print){
+  const e = esc, para = t => e(t).replace(/\n{2,}/g,"</p><p>").replace(/\n/g,"<br>");
+  const item = it => `<div class="item">${it.title?`<h3>${e(it.title)}</h3>`:""}${it.sub?`<div class="sub">${e(it.sub)}</div>`:""}
+    ${it.stats.length?`<dl class="stats">${it.stats.map(s=>`<div><dt>${e(s[0])}</dt><dd>${e(s[1])}</dd></div>`).join("")}</dl>`:""}
+    ${it.bars.length?`<div class="bars"><div class="bars-t">Precisión por ${e(it.barsBy||"habilidad")}</div>${it.bars.map(b=>`<div class="bar"><span>${e(b.label)}</span><i><b style="width:${b.pct}%"></b></i><em>${b.pct}%</em></div>`).join("")}</div>`:""}
+    ${it.writings.map(w=>`<figure class="writing"><figcaption>${e(w.title)} · ${e(w.meta)}</figcaption><p>${para(w.text)}</p></figure>`).join("")}
+    ${it.reflections.map(r=>`<div class="refl"><div class="refl-t">Reflexión · ${e(r.meta)}</div><div><b>Logré decir</b> ${e(r.managed||"—")}</div><div><b>Fue difícil</b> ${e(r.difficult||"—")}</div><div><b>Quiero mejorar</b> ${e(r.better||"—")}</div></div>`).join("")}
+    ${it.notes.map(n=>`<p class="note">${para(n)}</p>`).join("")}</div>`;
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reporte · ${e(doc.student)} · ${e(dayKey(doc.generated))}</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1D1624;--muted:#6B6175;--gold:#94732C;--gold2:#CFA85A;--line:#E7DECF;--paper:#FFFDF9;--bg:#F1ECE3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.doc{max-width:840px;margin:28px auto;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,6vw,64px);box-shadow:0 24px 70px rgba(29,22,36,.08)}
+.mast{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;padding-bottom:22px;border-bottom:2px solid var(--gold)}
+.brand{font-weight:600;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(34px,7vw,50px);line-height:1;letter-spacing:-.02em;margin:12px 0 0}
+h1 em{color:var(--gold);font-style:italic}
+.meta{font-size:13.5px;color:var(--muted);text-align:right;line-height:1.7}.meta b{color:var(--ink);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:28px 0 6px}
+.tiles div{background:var(--paper);padding:14px 16px}.tiles b{display:block;font-family:Fraunces,Georgia,serif;font-weight:500;font-size:28px;line-height:1.1}.tiles span{font-size:12px;color:var(--muted)}
+h2{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:42px 0 0;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.item{padding:22px 0;border-bottom:1px solid var(--line);break-inside:avoid-page}
+.item h3{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:23px;line-height:1.2;margin:0}
+.sub{color:var(--muted);font-size:14px;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 22px;margin:14px 0 0}
+.stats dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}.stats dd{margin:1px 0 0;font-size:15px}
+.bars{margin-top:16px;display:grid;gap:7px}.bars-t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bar{display:grid;grid-template-columns:190px 1fr 44px;gap:12px;align-items:center;font-size:13.5px}.bar i{height:7px;background:#EFE7DA;border-radius:9px;overflow:hidden}.bar i b{display:block;height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold))}.bar em{font-style:normal;text-align:right;color:var(--muted)}
+.writing{margin:18px 0 0;border-left:3px solid var(--gold2);background:#FBF7F0;padding:16px 20px;border-radius:0 12px 12px 0}
+.writing figcaption{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.writing p{font-family:Fraunces,Georgia,serif;font-size:18px;line-height:1.7;margin:8px 0 0}
+.refl{margin-top:14px;font-size:14.5px;padding:12px 16px;border:1px solid var(--line);border-radius:12px}.refl-t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}.refl b{color:var(--gold);font-weight:600;margin-right:6px}
+.note{font-size:15px;margin:10px 0 0;padding:10px 14px;background:#FBF7F0;border-radius:10px}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:600px){.mast{flex-direction:column;align-items:flex-start}.meta{text-align:left}.tiles{grid-template-columns:repeat(2,1fr)}.bar{grid-template-columns:118px 1fr 40px}.doc{margin:0;border-radius:0;border:0}}
+@media print{body{background:#fff}.doc{margin:0;border:0;box-shadow:none;padding:0;max-width:none}@page{margin:16mm}}
+</style></head><body><article class="doc">
+<header class="mast"><div><div class="brand">ProfGermandario · Fluency OS</div><h1>Reporte de <em>progreso</em></h1></div>
+<div class="meta"><b>${e(doc.student)}</b><br>Programa ${e(doc.program)}<br>${e(doc.scopeLabel)} · ${e(doc.periodLabel)}<br>${e(fmtEs(doc.generated))}</div></header>
+${doc.tiles?`<div class="tiles">${doc.tiles.map(t=>`<div><b>${e(t[0])}</b><span>${e(t[1])}</span></div>`).join("")}</div>`:""}
+${doc.sections.map(s=>`<h2>${e(s.title)}</h2>${s.items.map(item).join("")}`).join("")}
+<footer><span>Generado en el Fluency OS · ${e(fmtEs(doc.generated))}</span><span>profgermandario.com</span></footer>
+</article>${print?'<script>addEventListener("load",function(){setTimeout(function(){print()},500)})<\/script>':""}</body></html>`;
+}
+const rsOpts = () => ({scope:RS.scope, lesson:RS.lesson, period:RS.period, inc:RS.inc});
+const reportFile = doc => "Reporte-"+(doc.student||"estudiante").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+dayKey(doc.generated)+".html";
+function logReport(doc, via, parts){
+  if(!Array.isArray(state.reportLog)) state.reportLog = [];
+  state.reportLog.push({date:nowISO(), label:doc.scopeLabel+" · "+doc.periodLabel, via, parts:parts||1});
+  state.reportLog = state.reportLog.slice(-40); save();
+}
+function reportSheet(keep){
+  if(!isMember()){ membershipSheet("Report Studio"); return; }
+  const lessons = reportLessons();
+  if(RS.scope==="one" && !lessons.some(l=>l.key===RS.lesson)) RS.lesson = lessons.length ? lessons[lessons.length-1].key : "";
+  const doc = buildReport(rsOpts()), n = doc.empty ? 0 : reportParts(doc).length;
+  const last = (state.reportLog||[]).slice(-1)[0];
+  const seg = (k,v,l) => `<button data-act="rsSet" data-k="${k}" data-v="${v}" aria-pressed="${RS[k]===v}">${l}</button>`;
+  const groups = [...new Set(lessons.map(l=>l.group))];
+  const picker = RS.scope!=="one" ? "" : lessons.length
+    ? `<select class="field mt-s" id="rsLesson" aria-label="Lesson">${groups.map(g=>`<optgroup label="${esc(g)}">${lessons.filter(l=>l.group===g).map(l=>`<option value="${esc(l.key)}" ${l.key===RS.lesson?"selected":""}>${esc(l.label)}</option>`).join("")}</optgroup>`).join("")}</select>`
+    : `<p class="small muted mt-s">No lesson has evidence yet. Finish a mission, a class, or a masterclass session first.</p>`;
+  let send;
+  if(RS.parts){
+    const nextK = RS.parts.findIndex((p,k)=>!RS.sent.includes(k));
+    send = `<div class="parts-box"><p class="small muted">Your report is long, so it travels in ${RS.parts.length} parts. Send them in order — each one opens WhatsApp with the next part ready.</p>
+      <div class="mt-s">${RS.parts.map((p,k)=>{ const sent = RS.sent.includes(k), first = p.split("\n").find(x=>/^\*[A-ZÁÉÍÓÚÑ]/.test(x) && !/^\*Parte|^\*REPORTE/.test(x))||"";
+        return `<button class="part-row ${sent?"sent":""} ${k===nextK?"next":""}" data-act="rsPart" data-i="${k}"><span class="pn">${sent?"✓":k+1}</span><span class="grow"><span class="t">Part ${k+1} of ${RS.parts.length}</span><br><span class="s">${esc(first.replace(/\*/g,"").toLowerCase().replace(/^./,c=>c.toUpperCase())||"Report")} · ${p.length.toLocaleString()} characters</span></span><span class="pill ${sent?"sage":k===nextK?"gold":""}">${sent?"Sent":"Send"}</span></button>`; }).join("")}</div>
+      <p class="mt-s center"><button class="link" data-act="rsReset">Change the report</button></p></div>`;
+  } else {
+    send = `<button class="btn block" data-act="rsSend" ${doc.empty?"disabled":""}>${ICON_WA}<span>Send on WhatsApp${n>1?" · "+n+" parts":""}</span></button>`;
+  }
+  openSheet(`${sheetHead("Report Studio","Your progress and writings, in order, for ProfGermandario.")}
+    <div class="rs-block"><span class="lbl">What to send</span><div class="seg mt-s" style="grid-template-columns:1fr 1fr" role="group" aria-label="Scope">${seg("scope","full","Full report")}${seg("scope","one","One lesson")}</div>${picker}</div>
+    <div class="rs-block"><span class="lbl">Period</span><div class="seg mt-s" role="group" aria-label="Period">${seg("period","all","All time")}${seg("period","7","7 days")}${seg("period","30","30 days")}</div></div>
+    <div class="rs-block"><span class="lbl">Include</span><div class="chips mt-s" role="group" aria-label="Include">${[["progress","Progress"],["writings","Writings"],["notes","Reflections & notes"]].map(x=>`<button class="chip" data-act="rsInc" data-k="${x[0]}" aria-pressed="${!!RS.inc[x[0]]}">${x[1]}</button>`).join("")}</div></div>
+    ${doc.empty ? `<div class="well mt"><p>Nothing to report for this choice yet. Try “All time”, another lesson, or include more.</p></div>`
+      : `<div class="rs-sum mt"><div><b>${doc.counts.items}</b><span>${RS.scope==="full"?"blocks":"lesson"}</span></div><div><b>${doc.counts.writings}</b><span>writings</span></div><div><b>${doc.counts.words.toLocaleString()}</b><span>words</span></div><div><b>${n}</b><span>WhatsApp part${n===1?"":"s"}</span></div></div>
+        <details class="more mt"><summary>Preview the report</summary><div class="inner"><iframe class="rs-frame" title="Report preview" srcdoc="${esc(reportHTML(doc))}"></iframe></div></details>`}
+    <div class="stack mt">${send}
+      <div class="rs-actions"><button class="btn-line" data-act="rsDoc" ${doc.empty?"disabled":""}>Share as document</button><button class="btn-line" data-act="rsCopy" ${doc.empty?"disabled":""}>Copy text</button><button class="btn-line" data-act="rsPrint" ${doc.empty?"disabled":""}>Print / PDF</button></div>
+    </div>
+    ${last?`<p class="small muted mt center">Last report: ${esc(fmtDate(last.date))} · ${esc(last.label)} · ${esc(last.via)}${last.parts>1?" ("+last.parts+" parts)":""}</p>`:""}`, keep);
+}
+
+/* ============================================================
+   TEACHER CONSOLE — create, send and publish access codes.
+   The list of codes you create stays on this device only.
+   ============================================================ */
+const LEDGER_KEY = "pg_teacher_ledger_v1";
+const getLedger = () => { try{ const L = JSON.parse(localStorage.getItem(LEDGER_KEY)||"[]"); return Array.isArray(L) ? L : []; }catch(e){ return []; } };
+const setLedger = L => { try{ localStorage.setItem(LEDGER_KEY, JSON.stringify(L.slice(0,600))); }catch(e){ toast("Couldn't save your code list on this device."); } };
+let TC = {tab:"create", tier:"essential", len:"3", qty:1, name:"", date:"", batch:null, busy:false, master:null};
+const TC_LEN = [["0","No end"],["1","1 month"],["3","3 months"],["6","6 months"],["12","12 months"],["custom","Pick a date"]];
+const addMonthsKey = n => { const d = new Date(); d.setMonth(d.getMonth()+n); return dayKey(d); };
+const initials = n => { const w = String(n||"").trim().split(/\s+/), num = /^\d+$/.test(w[w.length-1]||"") ? w.pop() : ""; return w.filter(x=>/^\p{L}/u.test(x)).slice(0,3).map(x=>x[0].toUpperCase()+".").join("")+(num?" #"+num:""); };
+const codeLine = e => PGA.line(e.h, e.tier, e.exp, TIERS[e.tier].name+" · "+dayKey(e.created)+(e.name?" · "+initials(e.name):""));
+const codeState = e => PGA.isLive(e.h) ? ["Live","sage"] : PGA.inRegistry(e.h) ? ["Ended","coral"] : ["Not published","gold"];
+function studentMessage(e){
+  const first = (e.name||"").trim().split(/\s+/)[0];
+  return `Hola${first?" "+first:""} 👋\n\nTu acceso a *ProfGermandario Fluency OS* está listo.\n\nPrograma: *${TIERS[e.tier].name}*\nCódigo: *${e.code}*\n${e.exp?"Válido hasta el "+fmtDayEs(e.exp)+".":"Sin fecha de vencimiento."}\n\nActívalo con un toque:\n${PGA.CONFIG.journal}#code=${e.code}\n\nEl mismo código abre las masterclasses de The System: escríbelo donde dice “Unlock”.`;
+}
+function codeCard(e){
+  const st = codeState(e);
+  return `<div class="code-card"><div class="code-top"><span class="code-big">${esc(e.code)}</span><span class="pill ${st[1]}">${st[0]}</span></div>
+    <p class="small muted">${esc(e.name||"No name")} · ${esc(TIERS[e.tier].name)} · ${e.exp?"until "+esc(fmtExp(e.exp)):"no end date"}</p>
+    <div class="row-gap mt-s"><a class="btn-line" href="${esc(PGA.waLink(studentMessage(e),""))}" target="_blank" rel="noopener">${ICON_WA} Send</a><button class="btn-line" data-act="tcCopy" data-h="${esc(e.h)}">Copy code</button></div></div>`;
+}
+function consoleSheet(keep){
+  const s = access();
+  if(!s.teacher){ membershipSheet(); return; }
+  const L = getLedger(), tab = (k,l) => `<button data-act="tcTab" data-v="${k}" aria-pressed="${TC.tab===k}">${l}</button>`;
+  let body = "";
+  if(TC.tab==="create"){
+    const batch = TC.batch ? L.filter(e=>TC.batch.includes(e.h)) : [];
+    const seg = (k,v,l) => `<button data-act="tcSet" data-k="${k}" data-v="${v}" aria-pressed="${String(TC[k])===String(v)}">${l}</button>`;
+    body = batch.length ? `<div class="tc-done"><p class="kicker">${batch.length} code${batch.length===1?"":"s"} created</p>
+        <div class="stack">${batch.map(codeCard).join("")}</div>
+        <div class="publish mt"><h3>Publish ${batch.length===1?"it":"them"} — about a minute</h3>
+          <ol><li><button class="btn-line" data-act="tcLines">Copy the line${batch.length===1?"":"s"}</button></li>
+          <li><a class="btn-line" href="${esc(PGA.CONFIG.editUrl)}" target="_blank" rel="noopener">Open pg-access.js on GitHub ↗</a></li>
+          <li>Paste under <b>“paste new lines below this one”</b>, then press <b>Commit changes</b>.</li></ol>
+          <p class="small muted">Codes start working about a minute after you commit. Their status here changes to <b>Live</b> once this page loads the new file.</p></div>
+        <button class="btn block mt" data-act="tcNew">Create more codes</button></div>`
+      : `<div class="stack">
+        <div><span class="lbl">Program</span><div class="seg mt-s" role="group">${seg("tier","essential","Essential")}${seg("tier","companion","Companion")}${seg("tier","mastery","Mastery")}</div></div>
+        <div><span class="lbl">Access length</span><div class="chips mt-s" role="group">${TC_LEN.map(x=>`<button class="chip" data-act="tcSet" data-k="len" data-v="${x[0]}" aria-pressed="${TC.len===x[0]}">${x[1]}</button>`).join("")}</div>
+          ${TC.len==="custom"?`<input class="field mt-s" type="date" id="tcDate" data-in="tcDate" min="${dayKey()}" value="${esc(TC.date)}" aria-label="Last valid day">`:""}</div>
+        <div><span class="lbl">How many</span><div class="seg mt-s" role="group">${seg("qty",1,"1")}${seg("qty",5,"5")}${seg("qty",10,"10")}</div></div>
+        <div><label class="lbl" for="tcName">Student name <span class="faint">(optional · stays on this device; only initials go to the file)</span></label><input class="field mt-s" id="tcName" data-in="tcName" autocomplete="off" placeholder="e.g. Angela Largo" value="${esc(TC.name)}"></div>
+        <button class="btn block" data-act="tcCreate">Create code${TC.qty>1?"s":""}</button></div>`;
+  } else if(TC.tab==="codes"){
+    body = !L.length ? `<p class="muted">No codes yet. Create your first one in the Create tab.</p>` : `<p class="small muted">${L.length} code${L.length===1?"":"s"} · ${L.filter(e=>PGA.isLive(e.h)).length} live. Newest first.</p>
+      <div class="mt-s">${L.map(e=>{ const st = codeState(e); return `<details class="ledger-row"><summary><span class="grow"><span class="code-mono">${esc(e.code)}</span><br><span class="s">${esc(e.name||"No name")} · ${esc(TIERS[e.tier]?TIERS[e.tier].name:e.tier)} · ${e.exp?"until "+esc(fmtExp(e.exp)):"no end"}</span></span><span class="pill ${st[1]}">${st[0]}</span></summary>
+        <div class="row-gap" style="padding:0 2px 16px"><a class="btn-line" href="${esc(PGA.waLink(studentMessage(e),""))}" target="_blank" rel="noopener">${ICON_WA} Send</a><button class="btn-line" data-act="tcCopy" data-h="${esc(e.h)}">Copy code</button><button class="btn-line" data-act="tcLine" data-h="${esc(e.h)}">Copy line</button><button class="btn-line" data-act="tcRevoke" data-h="${esc(e.h)}">Revoke</button><button class="link" data-act="tcForget" data-h="${esc(e.h)}">Remove from list</button></div></details>`; }).join("")}</div>`;
+    body += `<div class="row-gap mt"><button class="btn-line" data-act="tcExport" ${L.length?"":"disabled"}>Back up my code list</button><button class="btn-line" data-act="tcImport">Restore a list</button><input type="file" id="tcImportFile" accept=".json,application/json" class="hide"></div>`;
+  } else {
+    body = `<div class="stack">
+      <button class="list-btn" data-act="tcPreview"><span class="glyph">◐</span><span class="grow"><span class="t">Preview as a spectator</span><br><span class="s">See exactly what visitors without a code see. Exit from the pill at the bottom.</span></span><span class="chev">›</span></button>
+      <button class="list-btn" data-act="tcMaster"><span class="glyph">✦</span><span class="grow"><span class="t">Change my master code</span><br><span class="s">Creates a new teacher code and the line to publish.</span></span><span class="chev">›</span></button>
+      ${TC.master?`<div class="code-card"><p class="kicker">New master code — save it somewhere safe</p><div class="code-big">${esc(TC.master.code)}</div>
+        <ol class="small mt-s" style="padding-left:18px"><li><button class="link" data-act="tcMasterCopy">Copy the new line</button></li><li>In pg-access.js, replace the line inside <b>MASTER</b> with it and commit.</li><li>Then sign in here with the new code. The old one stops working.</li></ol>
+        <div class="row-gap mt-s"><button class="btn-line" data-act="tcMasterCode">Copy the code</button><a class="btn-line" href="${esc(PGA.CONFIG.editUrl)}" target="_blank" rel="noopener">Open pg-access.js ↗</a></div></div>`:""}
+      <button class="list-btn" data-act="signOut"><span class="glyph" style="color:var(--coral)">⏻</span><span class="grow"><span class="t">Sign out of teacher mode</span><br><span class="s">This device returns to preview mode.</span></span><span class="chev">›</span></button></div>`;
+  }
+  openSheet(`${sheetHead("Teacher console","Create codes, send them, and see which ones are live.")}
+    <div class="seg" role="tablist" style="grid-template-columns:repeat(3,1fr)">${tab("create","Create")}${tab("codes","My codes"+(L.length?" · "+L.length:""))}${tab("settings","Settings")}</div>
+    <div class="mt">${body}</div>`, keep);
+}
+
+const ICON_REPORT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7.5 3.5z"/><path d="M14 3.5V8h4M9 12.5h6M9 16h4"/></svg>';
+
+/* ============================================================
    ACTIONS (event delegation)
    ============================================================ */
 const ACT = {
@@ -2971,14 +3550,7 @@ const ACT = {
     openExternal(waLink(`Hola Profe, soy ${state.name}. Quiero que revises mis muestras espejo.\n\nPrimera (${fmtDate(a.date)}, ${a.words} palabras):\n${a.text.slice(0,500)}\n\nÚltima (${fmtDate(b.date)}, ${b.words} palabras, hablé ${mmss(b.seconds)}):\n${b.text.slice(0,500)}`)); },
   tool: el => {
     const t = el.dataset.tool;
-    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, plan:planSheet, data:dataSheet, profile:profileSheet})[t]();
-  },
-  applyCode: async () => {
-    const v = ($("#codeIn").value||"").trim().toUpperCase(); if(!v) return;
-    let h; try{ h = await sha256(v); }catch(e){ toast("Codes need a secure connection (https)."); return; }
-    const t = CONFIG.accessCodes[h];
-    if(t && TIERS[t]){ state.tier = t; save(); toast(TIERS[t].name+" unlocked."); planSheet(); }
-    else toast("That code isn't valid. Check it with ProfGermandario.");
+    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, plan:()=>membershipSheet(), data:dataSheet, profile:profileSheet})[t]();
   },
   export: () => {
     const payload = {format:"qkesl", app:"Fluency OS", appVersion:APP_VERSION, version:state.version, exportedAt:nowISO(), data:state};
@@ -3243,6 +3815,121 @@ Object.assign(INP, {
   ptBody: el => { const m = $("#ptMeter"); if(!m) return; const lv = levelKey(($("#ptLevel")||{}).value); m.innerHTML = meterInner(wc(el.value), CLASS_LEVELS[lv].read, lv+" range"); }
 });
 
+
+Object.assign(ACT, {
+  membership: () => membershipSheet(),
+  locked: el => membershipSheet(el.dataset.what||""),
+  applyCode: async el => {
+    const box = el.closest(".code-form"), inp = box && box.querySelector("input"), msg = box && box.nextElementSibling;
+    const v = inp ? inp.value.trim() : ""; if(!v){ if(inp) inp.focus(); return; }
+    const label = el.textContent; el.disabled = true; el.textContent = "Checking…";
+    let r; try{ r = await PGA.redeem(v); }catch(e){ r = {ok:false, reason:"secure"}; }
+    el.disabled = false; el.textContent = label;
+    if(r.ok){ welcomeSheet(r.status); return; }
+    if(msg && msg.classList.contains("code-msg")){ msg.textContent = codeErrorText(r); msg.classList.add("bad"); }
+    else toast(codeErrorText(r));
+    if(box){ box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
+  },
+  signOut: () => {
+    const s = access();
+    if(!confirm(s.teacher ? "Sign out of teacher mode on this device?" : "Remove your access code from this device? Your progress stays here.")) return;
+    PGA.signOut(); closeSheet(); toast(s.teacher ? "Teacher mode is off on this device." : "Access removed from this device.");
+  },
+  welcomeGo: () => { closeSheet(); go("home"); },
+  report: () => { RS.parts = null; RS.sent = []; reportSheet(); },
+  rsSet: el => { RS[el.dataset.k] = el.dataset.v; RS.parts = null; RS.sent = []; reportSheet(true); },
+  rsInc: el => { const k = el.dataset.k; RS.inc[k] = !RS.inc[k]; if(!RS.inc.progress && !RS.inc.writings && !RS.inc.notes) RS.inc[k] = true; RS.parts = null; RS.sent = []; reportSheet(true); },
+  rsSend: () => {
+    const doc = buildReport(rsOpts()); if(doc.empty) return;
+    const parts = reportParts(doc);
+    if(parts.length===1){ openExternal(waLink(parts[0])); logReport(doc,"WhatsApp",1); toast("Opening WhatsApp with your report."); reportSheet(true); return; }
+    RS.parts = parts; RS.sent = []; RS.doc = doc; reportSheet(true);
+  },
+  rsPart: el => {
+    const k = +el.dataset.i; if(!RS.parts || !RS.parts[k]) return;
+    openExternal(waLink(RS.parts[k]));
+    if(!RS.sent.includes(k)) RS.sent.push(k);
+    if(RS.sent.length===RS.parts.length){ logReport(RS.doc||buildReport(rsOpts()),"WhatsApp",RS.parts.length); toast("All "+RS.parts.length+" parts sent, in order."); }
+    reportSheet(true);
+  },
+  rsReset: () => { RS.parts = null; RS.sent = []; reportSheet(true); },
+  rsCopy: () => { const doc = buildReport(rsOpts()); if(doc.empty) return; copyText(reportText(doc)); logReport(doc,"Copied",1); toast("Report copied. Paste it in WhatsApp or email."); },
+  rsDoc: async () => {
+    const doc = buildReport(rsOpts()); if(doc.empty) return;
+    const html = reportHTML(doc), name = reportFile(doc);
+    try{
+      const f = new File([html], name, {type:"text/html"});
+      if(navigator.canShare && navigator.canShare({files:[f]})){ await navigator.share({files:[f], title:"Reporte de progreso", text:"Reporte de progreso · "+doc.student}); logReport(doc,"Document",1); reportSheet(true); return; }
+    }catch(e){ if(e && e.name==="AbortError") return; }
+    download(name, html, "text/html"); logReport(doc,"Document",1); toast("Report downloaded. Attach it in WhatsApp or email."); reportSheet(true);
+  },
+  rsPrint: () => {
+    const doc = buildReport(rsOpts()); if(doc.empty) return;
+    const w = window.open("", "_blank");
+    if(!w){ download(reportFile(doc), reportHTML(doc), "text/html"); toast("Pop-ups are blocked, so the report was downloaded instead."); return; }
+    w.document.open(); w.document.write(reportHTML(doc, true)); w.document.close();
+    logReport(doc,"PDF",1);
+  },
+  console: () => { TC.batch = null; consoleSheet(); },
+  tcTab: el => { TC.tab = el.dataset.v; consoleSheet(true); },
+  tcSet: el => { const k = el.dataset.k; TC[k] = k==="qty" ? +el.dataset.v : el.dataset.v; consoleSheet(true); },
+  tcNew: () => { TC.batch = null; consoleSheet(true); },
+  tcCreate: async el => {
+    if(TC.busy) return;
+    const name = (TC.name = (($("#tcName")||{}).value||TC.name||"").trim());
+    let exp = "";
+    if(TC.len==="custom"){ const v = ($("#tcDate")||{}).value||TC.date||""; if(!/^\d{4}-\d{2}-\d{2}$/.test(v)){ toast("Pick the last valid day."); return; } if(v<dayKey()){ toast("Pick a day from today on."); return; } exp = v; }
+    else if(TC.len!=="0") exp = addMonthsKey(+TC.len);
+    TC.busy = true; el.disabled = true; el.textContent = "Creating…";
+    try{
+      const out = [], qty = Math.max(1, Math.min(10, TC.qty||1));
+      for(let i=0;i<qty;i++){ const code = PGA.newCode(); out.push({code, h:await PGA.kdf(code), tier:TC.tier, exp, name:qty>1&&name?name+" "+(i+1):name, created:nowISO()}); }
+      setLedger(out.concat(getLedger())); TC.batch = out.map(e=>e.h);
+    }catch(e){ toast("Codes need a secure connection (https)."); }
+    TC.busy = false; TC.name = ""; consoleSheet(true);
+  },
+  tcCopy: el => { const e = getLedger().find(x=>x.h===el.dataset.h); if(e){ copyText(e.code); toast("Code copied: "+e.code); } },
+  tcLine: el => { const e = getLedger().find(x=>x.h===el.dataset.h); if(e){ copyText(codeLine(e)); toast("Line copied. Paste it inside CODES in pg-access.js."); } },
+  tcLines: () => { const L = getLedger().filter(e=>(TC.batch||[]).includes(e.h)); copyText(L.map(codeLine).join("\n")); toast(L.length+" line"+(L.length===1?"":"s")+" copied. Now open pg-access.js."); },
+  tcRevoke: el => {
+    const e = getLedger().find(x=>x.h===el.dataset.h); if(!e) return;
+    if(!confirm("Revoke "+e.code+"?\n\nThe start of its line will be copied. In pg-access.js, find the line that starts with \""+e.h.slice(0,12)+"\", delete it, and commit. The student returns to preview mode on their next visit.")) return;
+    copyText(e.h.slice(0,12)); openExternal(PGA.CONFIG.editUrl); toast("Copied. Find it with Ctrl+F (⌘F) and delete that line.");
+  },
+  tcForget: el => { if(!confirm("Remove this code from your list on this device? This does not deactivate it.")) return; setLedger(getLedger().filter(x=>x.h!==el.dataset.h)); consoleSheet(true); },
+  tcExport: () => { download("fluency-os-codes-"+dayKey()+".json", JSON.stringify({format:"pg-codes", exportedAt:nowISO(), codes:getLedger()}, null, 1)); toast("Code list downloaded. Keep it private."); },
+  tcImport: () => { const f = $("#tcImportFile"); if(f) f.click(); },
+  tcPreview: () => { PGA.setPreview(true); closeSheet(); go("home"); },
+  tcMaster: async () => { try{ const code = "PG-MASTER-"+PGA.newCode().slice(3); TC.master = {code, h:await PGA.kdf(code)}; consoleSheet(true); }catch(e){ toast("This needs a secure connection (https)."); } },
+  tcMasterCopy: () => { if(TC.master){ copyText('    "'+TC.master.h+'"'); toast("Master line copied."); } },
+  tcMasterCode: () => { if(TC.master){ copyText(TC.master.code); toast("Master code copied. Save it somewhere safe."); } }
+});
+Object.assign(INP, { tcName: el => { TC.name = el.value; }, tcDate: el => { TC.date = el.value; } });
+document.addEventListener("keydown", e=>{
+  if(e.key==="Enter" && e.target.matches && e.target.matches(".code-form input")){ e.preventDefault(); const b = e.target.closest(".code-form").querySelector('[data-act="applyCode"]'); if(b) b.click(); }
+});
+document.addEventListener("change", e=>{
+  if(e.target.id==="rsLesson"){ RS.lesson = e.target.value; RS.parts = null; RS.sent = []; reportSheet(true); }
+  if(e.target.id==="tcImportFile" && e.target.files[0]){
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const o = JSON.parse(r.result), list = Array.isArray(o) ? o : o.codes;
+        if(!Array.isArray(list)) throw new Error("bad");
+        const L = getLedger(), have = new Set(L.map(x=>x.h));
+        const add = list.filter(x=>x && x.h && x.code && TIERS[x.tier] && !have.has(x.h));
+        setLedger(add.concat(L)); toast(add.length+" code"+(add.length===1?"":"s")+" restored."); consoleSheet(true);
+      }catch(err){ toast("That file isn't a code list."); }
+    };
+    r.readAsText(e.target.files[0]);
+  }
+});
+window.addEventListener("pg-access", ()=>{
+  paintTierChip();
+  if(document.body.classList.contains("in-lesson") || curRoute==="lesson" || !VIEWS[curRoute]) return;
+  const y = window.scrollY; VIEWS[curRoute](); window.scrollTo(0,y);
+});
+
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]"); if(g){ go(g.dataset.go); return; }
   const el = e.target.closest("[data-act]"); if(!el || el.disabled) return;
@@ -3282,7 +3969,7 @@ $("#themeBtn").addEventListener("click", ()=>{ state.theme = state.theme==="ligh
 
 /* ---------- console helper for the teacher ---------- */
 window.QK = {
-  hash: async code => { const h = await sha256(String(code).trim().toUpperCase()); console.log(h); return h; },
+  hash: async code => { const h = await PGA.kdf(code); console.log(h); return h; },
   version: APP_VERSION
 };
 

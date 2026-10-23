@@ -150,6 +150,7 @@
     @media(hover:none){.answer kbd{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
   </style>
+  <script src="../pg-access.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -239,20 +240,20 @@
     </div></section>
 
     <!-- 04 SIX MESSAGES -->
-    <section id="time"><div class="wrap">
+    <section id="time" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 04 <i>· Tense × mode</i></div><h2>Six different messages.</h2></div><p>Tense answers <strong>when?</strong> Mode answers <strong>how do I see it?</strong> Three times × two cameras = six messages. Each timeline shows the shape of the action around NOW.</p></div>
       <div class="six reveal"><div class="six-head"><span></span><span class="s">Simple · the photo</span><span class="p">Progressive · the video</span></div><div id="sixGrid"></div></div>
     </div></section>
 
     <!-- 05 AGREEMENT -->
-    <section id="pronouns"><div class="wrap">
+    <section id="pronouns" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 05 <i>· Every personal pronoun</i></div><h2>Twenty-four direct comparisons.</h2></div><p>Select a pronoun. Each set has three simple/progressive pairs: routine vs. now, stable vs. temporary, repeated vs. unfolding. Listen to each pair back to back — your ear learns the contrast faster than your eyes.</p></div>
       <div class="tabs reveal" id="pronounTabs"></div>
       <div class="pp reveal" id="pronounPanel"></div>
     </div></section>
 
     <!-- 06 -ING -->
-    <section id="ing"><div class="wrap">
+    <section id="ing" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 06 <i>· The ‑ing decoder</i></div><h2>Not every ‑ing word is progressive.</h2></div><p>Spelling is not enough. Find the conjugated verb, then ask what job the ‑ing form does. Only <b>BE + verb‑ing</b> working as the verb phrase creates the progressive.</p></div>
       <div class="ing-stage reveal">
         <div class="diagnostic"><div class="diag yes"><h3>He is playing soccer. <button class="say sm" data-say="He is playing soccer."></button></h3><p><b>is + playing</b> = one present-progressive verb phrase. The activity is in progress.</p></div><span class="versus">COMPARE</span><div class="diag nope"><h3>He likes playing soccer. <button class="say sm" data-say="He likes playing soccer."></button></h3><p><b>likes</b> is the conjugated verb. <b>playing soccer</b> names the activity he likes.</p></div></div>
@@ -268,7 +269,7 @@
     </div></section>
 
     <!-- 07 TOOLKIT -->
-    <section id="toolkit"><div class="wrap">
+    <section id="toolkit" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Perception · 07 <i>· Verb toolkit</i></div><h2>Regular, irregular, spelling, sound.</h2></div><p>Past simple changes the main verb. Progressive keeps the main verb in ‑ing while BE carries the time. <span class="needs-tts">Tap a row or a word to hear it.</span></p></div>
       <div class="forms">
         <article class="form-block reveal"><h3>Core verb forms</h3><p>Irregularity matters in past simple and participles — never in the progressive pattern.</p><div style="overflow-x:auto"><table class="vtable"><thead><tr><th></th><th>Base</th><th>Past</th><th>Participle</th><th>‑ing</th></tr></thead><tbody id="vtable"></tbody></table></div></article>
@@ -291,7 +292,7 @@
     </div></section>
 
     <!-- 08 LAB -->
-    <section id="lab"><div class="wrap">
+    <section id="lab" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Prosody · 08 <i>· Voice lab</i></div><h2>One verb. Six messages. Your voice.</h2></div><p>Choose a person and a verb. The lab builds all six messages — same verb, different camera and time. Listen, then say each line: it transcribes you and marks every word. <span class="needs-sr">Allow the microphone when your browser asks.</span></p></div>
       <div class="lab reveal">
         <aside class="persona on-dark">
@@ -305,7 +306,7 @@
     </div></section>
 
     <!-- 09 TRAPS -->
-    <section id="traps"><div class="wrap">
+    <section id="traps" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 09 <i>· Interference map</i></div><h2>Eight traps Spanish sets for you.</h2></div><p>These are not random mistakes. Each one is Spanish logic running inside English. Name the leak and it stops — and hear the correct model, never the wrong one.</p></div>
       <div class="traps">
         <article class="trap reveal"><span class="tn">Trap 01 · “I am work”</span><h3>Two systems in one sentence.</h3><div class="tp bad"><span class="mark">×</span><p><s>I am work every day.</s></p><span></span></div><div class="tp good"><span class="mark">✓</span><p>I <b>work</b> every day. I <b>am working</b> now.</p><button class="say sm" data-say="I work every day. I am working now."></button></div><p class="why">“Soy / estoy” tempts you to add BE. Simple uses the verb alone. BE appears only with ‑ing (or before nouns and adjectives).</p></article>
@@ -320,7 +321,7 @@
     </div></section>
 
     <!-- 10 QUESTIONS -->
-    <section id="questions"><div class="wrap">
+    <section id="questions" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Integration · 10 <i>· Questions and negatives</i></div><h2>Two auxiliaries, two systems.</h2></div><p>Simple present and past borrow <b>DO</b>. Progressive already contains <b>BE</b>, so BE moves before the subject for questions and takes <i>not</i> for negatives. Future uses <b>WILL</b> in both.</p></div>
       <div class="q-grid">
         <article class="q-block s reveal"><h3>Simple mode</h3><div class="aux">Auxiliary: do · does · did · will</div><div id="qSimple"></div><div class="note">After <b>do, does, did</b> the main verb is in its base form: “Did she <b>play</b>?” — not “Did she played?”</div></article>
@@ -329,7 +330,7 @@
     </div></section>
 
     <!-- 11 ARENA -->
-    <section id="arena"><div class="wrap"><div class="arena reveal on-dark">
+    <section id="arena" data-tier="member"><div class="wrap"><div class="arena reveal on-dark">
       <div class="arena-top"><div><div class="eyebrow" style="color:var(--amber)">Retrieval · 11 · The arena</div><h2>Test the camera. Randomly.</h2></div><p>Every session is generated fresh from a bank of <span id="bankCount">120+</span> hand-written situations across seven formats. You cannot memorize the test — only the logic.</p></div>
       <div class="modes" role="tablist">
         <button class="mode on" data-mode="mixed"><small>12 questions</small><b>Mixed session</b><span>All seven formats, random order.</span></button>
@@ -341,7 +342,7 @@
     </div></div></section>
 
     <!-- 12 PROGRESS -->
-    <section id="progress"><div class="wrap">
+    <section id="progress" data-tier="member"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Performance · 12 <i>· Visible growth</i></div><h2>Proof you are better than last class.</h2></div><p>Results stay on this device. Every session updates your accuracy per skill, so you always know what to train next — and your teacher can see it in one message.</p></div>
       <div class="growth">
         <div><div class="tiles" id="tiles"></div><div class="panel" style="margin-top:12px"><h3>Accuracy trend</h3><p class="lead">Last 10 sessions · dashed line = 85% mastery standard</p><div class="spark" id="spark"></div></div></div>

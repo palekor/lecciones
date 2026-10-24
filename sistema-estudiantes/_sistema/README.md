@@ -72,7 +72,7 @@ No hay compilación. Para ver las páginas en tu computador:
 
 ```bash
 python3 -m http.server 8000      # desde la raíz del repositorio
-# abre http://localhost:8000/registro/
+# abre http://localhost:8000/sistema-estudiantes/registro/
 ```
 
 Las páginas se conectan al Supabase real configurado en `sistema/config.js`. Para trabajar contra una base de pruebas usa la pila local de la sección 11 (no toca datos reales).
@@ -145,7 +145,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 ## 13. Despliegue
 
 1. Ejecuta el SQL en Supabase (sección 7).
-2. Integra los archivos en la rama que publica GitHub Pages. Páginas resultantes: `/registro/`, `/lista-de-espera/`, `/reservar/`, `/privacidad/`, `/admin/`.
+2. Integra los archivos en la rama que publica GitHub Pages. El sistema vive en la carpeta `sistema-estudiantes/` del repositorio. Páginas: `https://palekor.github.io/lecciones/sistema-estudiantes/` + `registro/`, `lista-de-espera/`, `reservar/`, `privacidad/`, `admin/`.
 3. En Supabase → Authentication → URL Configuration, agrega `https://palekor.github.io/lecciones/**` (y tu dominio propio si lo usas) a **Redirect URLs** para que el enlace del correo vuelva al panel. El código de 6 dígitos funciona aunque no lo agregues.
 4. Verifica que la plantilla del correo de inicio de sesión incluya el código (`{{ .Token }}`); `palekor-sync.js` ya la usa.
 5. Entra a `/admin/`, activa tus franjas en **Agenda** (las de ejemplo vienen inactivas) y revisa **Ajustes**.

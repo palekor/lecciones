@@ -2481,7 +2481,7 @@ on conflict (key) do nothing;
 
 insert into public.sms_settings (id, data) values (1, jsonb_build_object(
   'timezone', 'America/Bogota',
-  'privacy_policy_url', 'https://palekor.github.io/lecciones/privacidad/',
+  'privacy_policy_url', 'https://palekor.github.io/lecciones/sistema-estudiantes/privacidad/',
   'privacy_notice_version', '2026-10-23',
   'controller_name', 'ProfGermandario (Germandario Palekor)',
   'contact_email', (select owner_email from _sms_install),

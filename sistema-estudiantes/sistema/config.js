@@ -21,7 +21,7 @@ const DEFAULTS = {
   storageKey: "palekor-auth",
   brand: "ProfGermandario",
   whatsapp: "+573197894038",
-  siteUrl: "https://palekor.github.io/lecciones/",
+  siteUrl: "https://palekor.github.io/lecciones/sistema-estudiantes/",
   defaultLang: "es"
 };
 

@@ -1,4 +1,4 @@
-# Sistema de Estudiantes ProfGermandario · v1.1
+# Sistema de Estudiantes ProfGermandario · v1.2
 
 Plataforma de gestión educativa y comercial para ProfGermandario: registro de prospectos, lista de espera, reservas, panel administrativo y seguimiento del progreso y de la relación comercial. Está construida dentro de este repositorio (GitHub Pages) sobre el **mismo proyecto Supabase** que ya usa `palekor-sync.js`, sin modificar ninguna app existente.
 
@@ -15,8 +15,9 @@ Plataforma de gestión educativa y comercial para ProfGermandario: registro de p
 | 3. Reservas | `/reservar/` (público) y panel → Agenda | Franjas semanales con duración y pausa entre sesiones, días bloqueados, aperturas especiales, tipos de sesión configurables, zona horaria explícita, solicitudes vs. confirmadas, imposibilidad de cruces (restricción en la base de datos), calendario semanal y lista, confirmar/rechazar/reprogramar/cancelar/realizada/ausencia, política de cancelación. |
 | 4. Panel | `/admin/` | Indicadores calculados con datos reales, directorio con búsqueda, filtros, orden y paginación, ficha individual por pestañas, notificaciones, mensajes por enviar, exportaciones. |
 | 5. Progreso y comercial | Ficha → Progreso, Evaluaciones, Tareas, Pagos | Perfil educativo (nivel inicial/actual estimado, habilidades, observaciones, próximos objetivos, fecha de revisión), ruta de 18 pasos configurable, evaluaciones por habilidad con historial, tareas y recordatorios, plan, fechas, precio acordado, pagos, saldo, renovación. |
+| 6. Acceso y journal (v1.2) | Ficha → Journal · `journal.html` · `pg-access.js` · lecciones `steps/` | Códigos de acceso por estudiante creados en el panel (programa, vigencia, nota), activos al instante, sin editar GitHub; renovar, cambiar programa, revocar y reactivar llegan al dispositivo; hasta 5 dispositivos por código. Con autorización expresa del estudiante, el journal envía su avance, racha y última conexión, sus escritos y reflexiones y sus reportes del día; el profesor corrige cada texto en la ficha y la corrección vuelve al journal. Indicadores en Inicio y filtros en Estudiantes ("En el journal", "Acceso por vencer"). |
 
-**Fuera del alcance de la v1.1** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
+**Fuera del alcance de la v1.2** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
 
 ## 2. Arquitectura general
 
@@ -51,6 +52,8 @@ GitHub Pages es solo alojamiento estático: no guarda datos ni ejecuta lógica p
 | Consentimientos | `sms_consents` |
 | Mensajes para la persona | `sms_outbox` |
 | Avisos al equipo | `sms_notifications` |
+| Códigos de acceso y dispositivos | `sms_access_codes`, `sms_access_devices` (solo la huella SHA-256 de la llave de cada dispositivo) |
+| Journal compartido | `sms_journal` (avance y conexión), `sms_journal_texts` (textos + retroalimentación), `sms_journal_reports` (reporte de cada día) |
 | Técnicas internas (sin acceso desde la API) | `sms_settings`, `sms_secrets`, `sms_submissions`, `sms_rate_events` |
 
 ## 3. Tecnologías
@@ -90,11 +93,11 @@ Todo está en un único archivo: `_sistema/supabase/001_sistema_estudiantes.sql`
 1. Revisa la sección `0. CONFIGURACIÓN INICIAL` del archivo (correo del dueño).
 2. Supabase → **SQL Editor** → pega el archivo completo → **Run**.
 
-El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (por ejemplo, de la v1.0 a la v1.1) sin perder datos. Se puede ejecutar varias veces.
+El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (v1.0 o v1.1 → v1.2) sin perder datos. Se puede ejecutar varias veces. Si Supabase pregunta por RLS al ejecutar, elige **Run without RLS**: el script activa RLS en todas sus tablas por su cuenta (sección 10).
 
 ## 8. Migraciones y creación del esquema
 
-- La sección `1` crea las tablas originales; la sección `1b` agrega columnas, tablas y restricciones nuevas de forma segura (`add column if not exists`, reemplazo de restricciones con nombre).
+- La sección `1` crea las tablas originales; la sección `1b` (v1.1) y la `1c` (v1.2, acceso y journal) agregan columnas, tablas y restricciones nuevas de forma segura (`add column if not exists`, reemplazo de restricciones con nombre). Las funciones del journal están en la sección `8b`.
 - Las funciones se definen con `create or replace`; las vistas se recrean.
 - Para una actualización futura: edita el mismo archivo manteniendo la regla "re-ejecutable", agrega pruebas en `_sistema/tests/` y vuelve a ejecutarlo en Supabase.
 
@@ -110,14 +113,14 @@ Edita los archivos y recarga el navegador (no hay paso de compilación). Para pr
 
 ```bash
 export POSTGREST_BIN=/ruta/postgrest SUPABASE_UMD=/ruta/supabase.js LOGDIR=/tmp
-./_sistema/tests/e2e/start_stack.sh
-# muestra la URL local y una llave de prueba (código de acceso: 123456)
+bash _sistema/tests/e2e/start_stack.sh
+# sirve el repositorio completo en http://127.0.0.1:8787/lecciones/ (código de acceso: 123456)
 ```
 
 ## 11. Ejecución de pruebas
 
 ```bash
-POSTGREST_BIN=… SUPABASE_UMD=… SDK_SRI=… ./_sistema/tests/e2e/run_all.sh
+POSTGREST_BIN=… SUPABASE_UMD=… SDK_SRI=… bash _sistema/tests/e2e/run_all.sh
 ```
 
 Resultados de la última ejecución (Postgres 16 con un entorno equivalente a Supabase + PostgREST 12 + Chromium real, con la versión exacta del SDK y la verificación SRI activa):
@@ -126,13 +129,15 @@ Resultados de la última ejecución (Postgres 16 con un entorno equivalente a Su
 |---|---|
 | SQL v1.0 (`test_schema.sql`) | 94 / 94 |
 | SQL v1.1 (`test_v11.sql`) | 49 / 49 |
+| SQL v1.2 (`test_v12.sql`, acceso y journal) | 83 / 83 |
 | Unitarias del cliente (`core.test.mjs`) | 11 / 11 |
 | E2E páginas públicas (`test_public.py`) | 30 / 30 |
 | E2E panel (`test_admin.py`) | 55 / 55 |
+| E2E journal (`test_journal.py`: código en el panel → teléfono → autorización → envío → corrección → revocar/reactivar/renovar) | 47 / 47 |
 
-Además: actualización v1.0 → v1.1 probada con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
+Las pruebas E2E sirven el repositorio completo con la misma estructura de GitHub Pages (`/lecciones/sistema-estudiantes/…`, `/lecciones/journal.html`, `/lecciones/steps/…`). Además: actualizaciones v1.0 → v1.1 y v1.1 → v1.2 probadas con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
 
-**No probado** (requiere el Supabase real o credenciales): envío real del correo con código, Realtime, cabeceras de IP del proxy de Supabase y `pg_cron`.
+**No probado** (requiere el Supabase real o credenciales): envío real del correo con código, Realtime, cabeceras de IP del proxy de Supabase, `pg_cron` y las llamadas del journal con la llave publicable real (`sb_publishable_…` en la cabecera `apikey`; en las pruebas se usa una llave local equivalente).
 
 ## 12. Construcción de producción
 
@@ -145,7 +150,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 ## 13. Despliegue
 
 1. Ejecuta el SQL en Supabase (sección 7).
-2. Integra los archivos en la rama que publica GitHub Pages. El sistema vive en la carpeta `sistema-estudiantes/` del repositorio. Páginas: `https://palekor.github.io/lecciones/sistema-estudiantes/` + `registro/`, `lista-de-espera/`, `reservar/`, `privacidad/`, `admin/`.
+2. Integra los archivos en la rama que publica GitHub Pages. `journal.html` y `pg-access.js` van en la raíz del repositorio (los usan el journal y todas las lecciones de `steps/`). El sistema vive en la carpeta `sistema-estudiantes/` del repositorio. Páginas: `https://palekor.github.io/lecciones/sistema-estudiantes/` + `registro/`, `lista-de-espera/`, `reservar/`, `privacidad/`, `admin/`.
 3. En Supabase → Authentication → URL Configuration, agrega `https://palekor.github.io/lecciones/**` (y tu dominio propio si lo usas) a **Redirect URLs** para que el enlace del correo vuelva al panel. El código de 6 dígitos funciona aunque no lo agregues.
 4. Verifica que la plantilla del correo de inicio de sesión incluya el código (`{{ .Token }}`); `palekor-sync.js` ya la usa.
 5. Entra a `/admin/`, activa tus franjas en **Agenda** (las de ejemplo vienen inactivas) y revisa **Ajustes**.
@@ -163,6 +168,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 | Avisos al equipo | Activo en el panel (campana + contadores) | Para recibirlos por correo: Supabase → Database Webhooks sobre `sms_notifications` hacia un servicio de correo. |
 | Mensajes para la persona (confirmación, cancelación, reprogramación, recordatorio) | Cola `sms_outbox` + envío con un toque desde **Mensajes** (WhatsApp o correo del equipo) | Para envío automático: una Edge Function que lea los pendientes, envíe con un proveedor (correo o WhatsApp Business API) y los marque. No se incluye porque requiere credenciales y no se puede probar aquí. |
 | Recordatorios automáticos 24 h antes | Se preparan al abrir el panel (y cada 5 min con el panel abierto) | Opcional, sin probar aquí: `create extension if not exists pg_cron;` y `select cron.schedule('sms-recordatorios', '*/15 * * * *', $$select public.sms__enqueue_reminders()$$);` |
+| Journal (Fluency OS) | Activo con códigos del panel y autorización del estudiante | El journal envía cada 3 minutos mientras está abierto, al guardar y al cerrar; sin conexión, reintenta. Las grabaciones de audio nunca salen del dispositivo. |
 | Google Calendar, pasarela de pagos, analítica, app móvil | No implementadas | La arquitectura está desacoplada (todo pasa por la base de datos y funciones); cada integración requiere cuenta y credenciales propias. |
 
 ## 16. Respaldos y recuperación
@@ -174,14 +180,15 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 
 ## 17. Consideraciones de seguridad
 
-- El público (rol `anon`) **no puede leer ni escribir ninguna tabla**. Solo puede llamar a 5 funciones (`sms_public_config`, `sms_register`, `sms_join_waitlist`, `sms_public_slots`, `sms_request_booking`), que validan en el servidor y nunca devuelven datos de otras personas.
+- El público (rol `anon`) **no puede leer ni escribir ninguna tabla**. Solo puede llamar a 9 funciones: las 5 de los formularios (`sms_public_config`, `sms_register`, `sms_join_waitlist`, `sms_public_slots`, `sms_request_booking`) y las 4 del journal (`sms_access_redeem`, `sms_access_status`, `sms_journal_consent`, `sms_journal_sync`, que exigen la llave del dispositivo). Todas validan en el servidor y nunca devuelven datos de otras personas.
 - Anti-spam: campo trampa, tiempo mínimo de llenado, límites de frecuencia (10 envíos / 10 min por IP, 6 / hora por correo, 10 / hora por enlace de seguimiento). La IP se guarda solo como *hash* con sal secreta. Los intentos de inicio de sesión están limitados por Supabase Auth.
 - Idempotencia: un doble clic o un reintento de red no duplica registros.
 - Duplicados: el correo es único; un formulario público **no sobrescribe** la identidad de una ficha existente (marca "Revisar"). WhatsApp repetido → "Posible duplicado" con opción de fusionar.
 - Roles: Dueño y Administrador (todo); Equipo (leads, estudiantes, agenda, tareas, mensajes; sin pagos, ajustes, respaldos ni borrados). Todo se verifica en la base de datos, no ocultando botones.
 - Historial inalterable; borrados reales solo de notas y por un administrador. La eliminación de datos personales conserva lo contable sin identificar a la persona.
 - XSS: todo el contenido se escapa al pintarlo; los enlaces guardados deben ser `https://`. CSV protegido contra inyección de fórmulas. CSRF no aplica (autenticación por token, no por cookies).
-- Consentimiento: privacidad obligatoria, marketing separado y nunca premarcado; cada autorización se guarda con versión, fecha y origen.
+- Consentimiento: privacidad obligatoria, marketing separado y nunca premarcado; compartir el journal es una tercera autorización aparte (se pide en el journal, se puede retirar desde Membership y el retiro también queda registrado). Cada autorización se guarda con versión, fecha y origen.
+- Códigos de acceso: se validan en el servidor; cada dispositivo recibe su propia llave aleatoria de 244 bits y en la base solo queda su huella SHA-256 (ni el equipo puede leerla). Límites: 20 intentos cada 10 min por IP y 300 intentos fallidos por hora en total (hay 31⁸ ≈ 850 mil millones de códigos posibles), 240 llamadas por hora por dispositivo. Crear, renovar y revocar: solo Dueño y Administrador; el rol Equipo ve el journal y corrige textos. El código legible lo ve solo el equipo, para reenviarlo.
 - SDK cargado con SRI; todas las funciones con `search_path` fijo; vistas con `security_invoker`.
 
 ## 18. Limitaciones conocidas
@@ -193,6 +200,9 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 - **Política de privacidad:** borrador para Colombia (Ley 1581 de 2012); debe revisarla un abogado antes del lanzamiento. No es asesoría jurídica.
 - **Ruta de 18 pasos:** los pasos 1–11 toman su nombre de `steps/` y `steps/map.txt`; del 12 al 18 quedan "por definir". Descripción, objetivo, recursos y criterios se completan en Ajustes (no se inventaron).
 - **Idioma:** español completo; inglés preparado parcialmente en `sistema/i18n.js`.
+- **Códigos antiguos (`pg-access.js`):** siguen funcionando igual, pero esos dispositivos no se conectan al panel. Para conectarlos, registra el código en la ficha (Journal → Nuevo código → "Registrar un código que ya existe") o crea uno nuevo, y pide al estudiante que lo escriba en Membership → "Use a different code".
+- **Journal:** envía mientras está abierto (el "En línea" tiene un margen de unos 7 minutos). Los datos viven primero en el teléfono del estudiante: si borra el navegador sin haber compartido, el panel no tiene copia. La retroalimentación se escribe en el panel y se lee en el journal; el estudiante no responde desde ahí.
+- **Vencimiento sin conexión:** un dispositivo sin internet conserva el último estado conocido; la fecha de vencimiento se aplica igual, pero una revocación llega en su próxima conexión.
 
 ## 19. Costos potenciales
 
@@ -224,14 +234,17 @@ No se asumen precios; verifica en el sitio de cada proveedor antes de decidir.
 4. Verificar que llegue la IP del visitante a la base (una llamada de prueba a `sms_register` debe generar un `ip_hash` en `sms_consents`); si no llega, siguen activos los límites por correo y por enlace, pero conviene evaluar un CAPTCHA (por ejemplo, Cloudflare Turnstile).
 5. Definir dónde y cada cuánto se guardan los respaldos.
 6. Confirmar quién más tendrá acceso al panel y con qué rol.
+7. Con el SQL v1.2 ejecutado: crear un código de prueba en una ficha, activarlo en tu teléfono, autorizar y comprobar que el avance aparece en la ficha → Journal.
 
 ## Estructura
 
 ```
+../journal.html      Fluency OS del estudiante (envía su avance con autorización)
+../pg-access.js      acceso por código del journal y de las lecciones steps/ (servidor + respaldo local)
 registro/ lista-de-espera/ reservar/ privacidad/ admin/   páginas
 sistema/            configuración, textos (i18n), validación, API, UI, estilos
 sistema/admin/      panel: acceso y navegación, formularios, vistas
 _sistema/supabase/  001_sistema_estudiantes.sql (instalación y actualización)
-_sistema/tests/     pruebas SQL, unitarias y E2E (+ servidor local de pruebas)
+_sistema/tests/     pruebas SQL, unitarias y E2E (+ servidor local de pruebas); córrelas con `bash`
 .env.example        variables de la pila de pruebas e integraciones futuras (sin secretos)
 ```

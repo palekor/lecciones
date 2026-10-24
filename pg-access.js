@@ -1,16 +1,19 @@
-/*! ProfGermandario · Access layer · pg-access.js
+/*! ProfGermandario · Access layer · pg-access.js · v2.0
  * One file decides who sees what — in journal.html and in every lesson page.
  *
- * ADD CODES ─ Open journal.html › Toolbox › Teacher console › Create codes.
- *             Copy the lines it gives you, paste them inside CODES (below the
- *             marker line) and commit. Codes go live about a minute later.
- * REMOVE    ─ Delete the code's line and commit. That student returns to
- *             preview mode on their next visit.
- * EXPIRY    ─ The second value is the last valid day (YYYY-MM-DD). "" = no end.
+ * CODES FROM THE PANEL (recommended) ─ Create, renew or revoke a student's
+ *   code in the admin panel (sistema-estudiantes/admin › student › Journal).
+ *   They work at once — no GitHub step. The server checks them, and each
+ *   phone or computer gets its own key. Renewals and revocations reach the
+ *   device on its next visit; offline, the last known status and end date
+ *   are used.
  *
- * Codes are stored only as slow PBKDF2 hashes: nobody can read or rebuild a
- * code from this file. This is a front-end lock — it separates members from
- * spectators; it is not bank-grade security (that needs a server).
+ * CODES IN THIS FILE (legacy, still supported) ─ journal.html › Toolbox ›
+ *   Teacher console › Create codes, then paste the lines inside CODES and
+ *   commit. EXPIRY: the second value is the last valid day (YYYY-MM-DD).
+ *   These are stored only as slow PBKDF2 hashes: nobody can rebuild a code
+ *   from this file. This list is a front-end lock; codes from the panel are
+ *   checked by the server.
  */
 (function () {
   "use strict";
@@ -35,8 +38,15 @@
   var CONFIG = {
     whatsapp: "573197894038",
     journal: "https://palekor.github.io/lecciones/journal.html",
-    editUrl: "https://github.com/palekor/lecciones/edit/main/pg-access.js"
+    editUrl: "https://github.com/palekor/lecciones/edit/main/pg-access.js",
+    panel: "https://palekor.github.io/lecciones/sistema-estudiantes/admin/",
+    privacy: "https://palekor.github.io/lecciones/sistema-estudiantes/privacidad/",
+    /* Supabase project of the student system. The publishable key is made for
+       browsers: it opens nothing by itself; the server functions decide. */
+    api: { url: "https://bbrdmddytqvwpbuuaqsc.supabase.co", key: "sb_publishable_0rvgSNuKBN-ZTY_Y3n89dg_Kj_FAm4W" }
   };
+  if (window.PG_ACCESS_API && window.PG_ACCESS_API.url) CONFIG.api = window.PG_ACCESS_API; /* tests / staging */
+  var RECHECK_MS = 5 * 60 * 1000;
   var SALT = "profgermandario/lecciones/v1", ITER = 120000;
   var KEY = "pg_access_v1", PREV = "pg_access_preview";
   var RANK = { spectator: 0, essential: 1, companion: 2, mastery: 3, teacher: 9 };
@@ -53,7 +63,15 @@
   function enc(s) { return new TextEncoder().encode(s); }
 
   function status() {
-    var a = read(), base = { tier: "spectator", state: "none", member: false, teacher: false, preview: false, exp: "", since: (a && a.at) || "", tail: (a && a.tail) || "", name: NAMES.spectator, lastTier: "" };
+    var a = read(), base = { tier: "spectator", state: "none", member: false, teacher: false, preview: false, exp: "", since: (a && a.at) || "", tail: (a && a.tail) || "", name: NAMES.spectator, lastTier: "", server: false, canShare: false, sharing: false, first: "" };
+    if (a && a.src === "srv" && a.token) {
+      var st = a.tier && RANK[a.tier] ? a.tier : "essential", sx = a.exp || "";
+      base.server = true; base.canShare = !!a.can; base.sharing = !!a.share; base.first = a.first || "";
+      if (a.st === "revoked") { base.state = "revoked"; return base; }
+      if (a.st === "expired" || (sx && sx < today())) { base.state = "expired"; base.exp = sx; base.lastTier = st; return base; }
+      base.tier = st; base.state = "active"; base.member = true; base.exp = sx; base.name = NAMES[st];
+      return base;
+    }
     if (!a || !a.h) return base;
     if (MASTER.indexOf(a.h) >= 0) {
       if (previewOn()) { base.state = "preview"; base.teacher = true; base.preview = true; return base; }
@@ -76,13 +94,78 @@
   }
   function sha(code) { return crypto.subtle.digest("SHA-256", enc(String(code || "").trim().toUpperCase())).then(hex); }
 
+  /* ---------- server (codes from the panel) ---------- */
+  function api(fn, args, opt) {
+    var A = CONFIG.api;
+    if (!A || !A.url || !window.fetch) return Promise.reject(new Error("no api"));
+    var ctl = window.AbortController ? new AbortController() : null, tm = null;
+    if (ctl) tm = setTimeout(function () { ctl.abort(); }, (opt && opt.timeout) || 9000);
+    return fetch(A.url.replace(/\/$/, "") + "/rest/v1/rpc/" + fn, {
+      method: "POST", headers: { "apikey": A.key, "Content-Type": "application/json" },
+      body: JSON.stringify(args || {}), signal: ctl ? ctl.signal : undefined, keepalive: !!(opt && opt.keepalive), cache: "no-store"
+    }).then(function (r) {
+      if (tm) clearTimeout(tm);
+      if (!r.ok) { var er = new Error("http " + r.status); er.status = r.status; throw er; }
+      return r.json();
+    }, function (e) { if (tm) clearTimeout(tm); throw e; });
+  }
+  function device() {
+    var ua = navigator.userAgent || "", b = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Browser";
+    var o = /iPhone|iPad|iPod/.test(ua) ? "iPhone/iPad" : /Android/.test(ua) ? "Android" : /Mac OS X/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : /Linux/.test(ua) ? "Linux" : "";
+    return (b + (o ? " · " + o : "")).slice(0, 60);
+  }
+  /* Apply a server answer (status, sync or consent) to the record on this device. */
+  function applyServer(r) {
+    var a = read();
+    if (!a || a.src !== "srv" || !r || !r.state) return status();
+    var before = JSON.stringify([a.st, a.tier, a.exp, a.can, a.share]);
+    a.st = r.state;
+    if (r.tier) a.tier = r.tier;
+    if ("valid_until" in r) a.exp = r.valid_until || "";
+    if ("can_share" in r) a.can = !!r.can_share;
+    if ("sharing" in r) a.share = !!r.sharing;
+    a.checked = new Date().toISOString();
+    write(a);
+    var s = status(); cache(s);
+    if (JSON.stringify([a.st, a.tier, a.exp, a.can, a.share]) !== before) emit();
+    return s;
+  }
+  var checking = null;
+  function refresh(force) {
+    var a = read();
+    if (!a || a.src !== "srv" || !a.token) return Promise.resolve(status());
+    if (!force && a.checked && Date.now() - Date.parse(a.checked) < RECHECK_MS) return Promise.resolve(status());
+    if (checking) return checking;
+    checking = api("sms_access_status", { p_token: a.token }).then(function (r) { checking = null; return applyServer(r); },
+      function () { checking = null; return status(); }); /* offline: keep the last known status */
+    return checking;
+  }
+  function token() { var a = read(); return a && a.src === "srv" ? a.token || "" : ""; }
+
   function redeem(code) {
-    if (!window.crypto || !crypto.subtle) return Promise.resolve({ ok: false, reason: "secure" });
     var c = canon(code);
     if (c.length < 6) return Promise.resolve({ ok: false, reason: "short" });
+    /* null = no answer (offline); an HTTP error means the server answered, so it is not "offline" */
+    return api("sms_access_redeem", { p_code: c, p_device: device() }).then(function (r) { return r; }, function (e) { return e && e.status ? { ok: false, reason: "invalid" } : null; }).then(function (r) {
+      if (r && r.ok && r.token) {
+        write({ src: "srv", token: r.token, tier: r.tier, exp: r.valid_until || "", st: "active", can: !!r.can_share, share: !!r.sharing,
+                first: r.first_name || "", at: new Date().toISOString(), checked: new Date().toISOString(), tail: c.slice(-4) });
+        try { localStorage.removeItem(PREV); } catch (x) {}
+        var s = status(); cache(s); emit();
+        return { ok: true, status: s, server: true };
+      }
+      if (r && r.reason === "expired") return { ok: false, reason: "expired", exp: r.valid_until || "" };
+      if (r && r.reason === "revoked") return { ok: false, reason: "revoked" };
+      if (r && r.reason === "rate_limited") return { ok: false, reason: "busy" };
+      return legacyRedeem(code, !r);
+    });
+  }
+  /* Codes in this file (and the teacher master code). */
+  function legacyRedeem(code, offline) {
+    if (!window.crypto || !crypto.subtle) return Promise.resolve({ ok: false, reason: offline ? "offline" : "secure" });
     return Promise.all([kdf(code), sha(code)]).then(function (h) {
       var hit = MASTER.indexOf(h[0]) >= 0 ? h[0] : CODES[h[0]] ? h[0] : CODES[h[1]] ? h[1] : null;
-      if (!hit) return { ok: false, reason: "invalid" };
+      if (!hit) return { ok: false, reason: offline ? "offline" : "invalid" };
       var e = CODES[hit];
       if (e && e[1] && e[1] < today()) return { ok: false, reason: "expired", exp: e[1] };
       write({ h: hit, at: new Date().toISOString(), tail: c.slice(-4) });
@@ -198,9 +281,18 @@
     });
   }
   function messageFor(s) {
-    if (s.state === "expired") return "Your access ended on " + fmt(s.exp) + ". Renew it with ProfGermandario to continue.";
+    if (s.state === "expired") return s.exp ? "Your access ended on " + fmt(s.exp) + ". Renew it with ProfGermandario to continue." : "Your access ended. Renew it with ProfGermandario to continue.";
     if (s.state === "revoked") return "The code on this device is no longer active. Enter your current code.";
     return "";
+  }
+  function codeError(r) {
+    if (r.reason === "expired") return r.exp ? "That code ended on " + fmt(r.exp) + "." : "That code has ended.";
+    if (r.reason === "revoked") return "That code is no longer active. Ask ProfGermandario for your current code.";
+    if (r.reason === "busy") return "Too many attempts. Wait a few minutes and try again.";
+    if (r.reason === "offline") return "You're offline. Connect to the internet and try again.";
+    if (r.reason === "secure") return "Open this page with https to use codes.";
+    if (r.reason === "short") return "Type the complete code.";
+    return "That code isn't valid. Check it with ProfGermandario.";
   }
   function fmt(k) { try { var p = k.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }); } catch (e) { return k; } }
   function mountPanel(s) {
@@ -230,7 +322,7 @@
         btn.disabled = false; btn.textContent = "Unlock";
         if (r.ok) return;
         msg.className = "pga-msg bad";
-        msg.textContent = r.reason === "expired" ? "That code ended on " + fmt(r.exp) + "." : r.reason === "secure" ? "Open this page with https to use codes." : r.reason === "short" ? "Type the complete code." : "That code isn't valid. Check it with ProfGermandario.";
+        msg.textContent = codeError(r);
         var card = panel.querySelector(".pga-card"); card.classList.remove("pga-shake"); void card.offsetWidth; card.classList.add("pga-shake");
       });
     });
@@ -272,19 +364,22 @@
       try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
       if (document.querySelector("[data-tier=member]")) {
         applyGate(status());
-        redeem(code).then(function (r) { if (!r.ok) { var m = panel && panel.querySelector(".pga-msg"); if (m) { m.className = "pga-msg bad"; m.textContent = r.reason === "expired" ? "That code ended on " + fmt(r.exp) + "." : "That link's code isn't valid."; } } });
+        redeem(code).then(function (r) { if (!r.ok) { var m = panel && panel.querySelector(".pga-msg"); if (m) { m.className = "pga-msg bad"; m.textContent = r.reason === "invalid" ? "That link's code isn't valid." : codeError(r); } } });
         return;
       }
     }
     var s = status(); cache(s); applyGate(s);
+    refresh(false);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(false); });
 
   /* ─────────────────────────── PUBLIC API ─────────────────────────── */
   window.PGAccess = {
     status: status, redeem: redeem, signOut: signOut, setPreview: setPreview,
     kdf: kdf, sha: sha, canon: canon, newCode: newCode, line: line,
     isLive: isLive, inRegistry: inRegistry, isMaster: isMaster, waLink: waLink,
-    NAMES: NAMES, RANK: RANK, CONFIG: CONFIG, today: today, version: "1.0"
+    api: api, token: token, refresh: refresh, applyServer: applyServer, codeError: codeError,
+    NAMES: NAMES, RANK: RANK, CONFIG: CONFIG, today: today, version: "2.0"
   };
 })();

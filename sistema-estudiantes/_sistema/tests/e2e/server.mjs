@@ -1,6 +1,7 @@
 // =====================================================================
 // Servidor local de pruebas (sin dependencias):
-//   /lecciones/*  → archivos estáticos del repo (como GitHub Pages)
+//   /lecciones/*  → archivos estáticos del repositorio completo (como GitHub
+//                   Pages): el sistema queda en /lecciones/sistema-estudiantes/
 //   /rest/v1/*    → PostgREST (misma API que usa Supabase)
 //   /auth/v1/*    → simulador mínimo de Supabase Auth (código 123456)
 //   /sdk/supabase.js → SDK local (variable SUPABASE_UMD)
@@ -13,7 +14,7 @@ import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+const ROOT = path.resolve(process.env.SITE_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../.."));
 const PORT = Number(process.env.PORT || 8787);
 const SECRET = process.env.JWT_SECRET;
 const PGRST = new URL(process.env.PGRST_URL || "http://127.0.0.1:3001");
@@ -120,9 +121,9 @@ const server = http.createServer((req, res) => {
     return fs.createReadStream(UMD).pipe(res);
   }
   if (url.pathname.startsWith("/lecciones")) return serveStatic(req, res, url);
-  res.writeHead(302, { location: "/lecciones/registro/" }); res.end();
+  res.writeHead(302, { location: "/lecciones/sistema-estudiantes/registro/" }); res.end();
 });
 server.listen(PORT, "127.0.0.1", () => {
   const anon = sign({ role: "anon", iss: "test", iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 86400 * 30 });
-  console.log(`READY http://127.0.0.1:${PORT}/lecciones/  ANON_KEY=${anon}`);
+  console.log(`READY http://127.0.0.1:${PORT}/lecciones/sistema-estudiantes/  ANON_KEY=${anon}`);
 });

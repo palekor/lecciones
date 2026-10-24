@@ -955,6 +955,7 @@ const TOOLBOX = [
   ]},
   {group:"Support", desc:"When the system isn't enough, a person is.", items:[
     {g:"PG", t:"ProfGermandario", s:"Questions, blocks, feedback, and guidance.", action:"teacher"},
+    {g:"Fb", t:"Teacher feedback", s:"ProfGermandario's corrections on your writing.", action:"feedback", pro:true},
     {g:"Ma", t:"Student Manual", s:"Your complete program reference.", url:CONFIG.manual},
     {g:"Pl", t:"Membership", s:"Your program, your access code, and your devices.", action:"plan"},
     {g:"Da", t:"My data", s:"Export, import, or reset your progress.", action:"data"},
@@ -1320,7 +1321,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "11.1";
+const APP_VERSION = "11.2";
 
 function defaultState(){
   return {
@@ -1336,7 +1337,9 @@ function defaultState(){
     /* v4 — classes */
     classSeries:[], classRecords:{}, myTexts:[], days:{},
     /* 11.1 — Report Studio */
-    reportLog:[]
+    reportLog:[],
+    /* 11.2 — Teacher link: ProfGermandario's feedback on each writing */
+    teacherFeedback:{}
   };
 }
 function migrate(raw){
@@ -1351,6 +1354,7 @@ function migrate(raw){
   Object.keys(s.classRecords).forEach(k=>{ const r = s.classRecords[k]; if(!r || typeof r!=="object" || !/^\d{4}-\d{2}-\d{2}$/.test(r.date||"")) delete s.classRecords[k]; else r.id = k; });
   s.myTexts = s.myTexts.filter(t=>t && t.id && t.title && typeof t.body==="string");
   if(!s.days || typeof s.days!=="object" || Array.isArray(s.days)) s.days = {};
+  if(!s.teacherFeedback || typeof s.teacherFeedback!=="object" || Array.isArray(s.teacherFeedback)) s.teacherFeedback = {};
   Object.keys(s.days).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.days[k] || typeof s.days[k]!=="object") delete s.days[k]; });
   /* class notes from the first 11.0 build become day notes */
   Object.values(s.classRecords).forEach(r=>{ if((r.notes||"").trim()){ const d = s.days[r.date] || (s.days[r.date] = {}); d.note = d.note ? d.note+"\n"+r.notes : r.notes; } delete r.notes; });
@@ -1390,6 +1394,7 @@ let saveWarned = false;
 function save(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
   catch(e){ if(!saveWarned){ saveWarned=true; toast("Storage is full. Export a backup from Toolbox › My data."); } }
+  if(SYNC) scheduleSync();
 }
 let state = load();
 /* One-time move: students who unlocked Companion or Mastery with the old shared
@@ -2025,6 +2030,7 @@ VIEWS.home = function(){
     <section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${hello}${name}.</h1>
       <p>${today?"You have class today. Your text is ready.":nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
     ${previewStrip}
+    ${teacherStrip()}
     ${today?classBlock:""}
     <section class="panel mission-hero mt">${hero}
       <div class="journey" aria-hidden="true">${ticks}</div>
@@ -3040,14 +3046,16 @@ const lockGlyph = `<span class="lock-ico" title="Members">${ICON_LOCK}</span>`;
 const fmtExp = k => fmtDate(k+"T12:00:00");
 function codeErrorText(r){
   if(!r) return "Something went wrong. Try again.";
-  if(r.reason==="expired") return "That code ended on "+fmtExp(r.exp)+". Renew it with ProfGermandario.";
+  if(r.reason==="expired") return r.exp ? "That code ended on "+fmtExp(r.exp)+". Renew it with ProfGermandario." : "That code has ended. Renew it with ProfGermandario.";
+  if(r.reason==="revoked") return "That code is no longer active. Ask ProfGermandario for your current code.";
+  if(r.reason==="busy") return "Too many attempts. Wait a few minutes and try again.";
   if(r.reason==="secure") return "Codes need a secure connection (https).";
   if(r.reason==="short") return "Type the complete code.";
   if(r.reason==="offline") return "You're offline. Connect to the internet and try again.";
   return "That code isn't valid. Check it with ProfGermandario.";
 }
 function accessNote(s){
-  if(s.state==="expired") return "Your access ended on "+fmtExp(s.exp)+". Renew it with ProfGermandario to keep going.";
+  if(s.state==="expired") return s.exp ? "Your access ended on "+fmtExp(s.exp)+". Renew it with ProfGermandario to keep going." : "Your access ended. Renew it with ProfGermandario to keep going.";
   if(s.state==="revoked") return "The code on this device is no longer active. Enter your current code.";
   return "";
 }
@@ -3088,6 +3096,7 @@ function membershipSheet(what){
       <div class="stack mt">
         <p>${inc.map(esc).join(" ")}</p>
         <div class="well small"><b>Activated</b> ${s.since?esc(fmtDate(s.since)):"—"}${s.tail?" · code ending "+esc(s.tail):""}<br><span class="muted">Using another phone or computer? Enter the same code there.</span></div>
+        ${shareRow(s)}
         ${s.teacher?`<button class="btn block" data-act="console">Open the teacher console</button>`:""}
         <details class="more"><summary>Use a different code</summary><div class="inner">${codeForm("")}</div></details>
         <button class="link" data-act="signOut" style="color:var(--coral)">Remove access from this device</button>
@@ -3107,10 +3116,11 @@ function welcomeSheet(s){
       <div class="stack mt"><button class="btn block" data-act="console">Open the teacher console</button><button class="btn-line" style="width:100%" data-act="closeSheet">Not now</button></div>`);
     return;
   }
+  const ask = s.server && s.canShare && !s.sharing;
   openSheet(`<div class="complete" style="padding-top:10px">${SEAL}<p class="kicker">Access unlocked</p><h2 class="display">Welcome to ${esc(s.name)}.</h2>
     <p class="lead" style="margin:12px auto 0">Your missions, classes, every masterclass in The System and Report Studio are open on this device.</p></div>
     <div class="mt">${memberCard(s)}</div>
-    <div class="stack mt"><button class="btn block" data-act="welcomeGo">Start exploring</button><p class="small muted center">On another phone or computer, enter the same code.</p></div>`);
+    ${ask ? `<div class="mt">${shareBlock(true)}</div>` : `<div class="stack mt"><button class="btn block" data-act="welcomeGo">Start exploring</button><p class="small muted center">On another phone or computer, enter the same code.</p></div>`}`);
 }
 async function redeemLink(code){
   toast("Checking your access code…");
@@ -3125,6 +3135,185 @@ function paintTierChip(){
   c.classList.toggle("member", s.member);
   c.innerHTML = s.member ? `<span class="dia" aria-hidden="true">◆</span>${esc(s.teacher?"Teacher":s.name.replace(" Program",""))}` : `${ICON_LOCK}<span>Unlock</span>`;
   c.setAttribute("aria-label", s.member ? "Membership: "+s.name : "Preview mode. Unlock the full program");
+}
+
+/* ============================================================
+   TEACHER LINK — with a personal code from ProfGermandario's
+   panel, the student can share this journal with him: progress,
+   when they practice, writings, reflections and day reports.
+   Nothing is sent until the student says yes, and they can stop
+   at any time (Membership). Audio recordings never leave the
+   device. His feedback on each writing comes back here.
+   ============================================================ */
+const SYNC_KEY = "pg_sync_v1";
+var SYNC = null; /* var on purpose: save() can run before this block initialises */
+const SYNC_EVERY = 3*60*1000, SYNC_BUDGET = 450000;
+function syncMeta(){ let m = null; try{ m = JSON.parse(localStorage.getItem(SYNC_KEY)||"null"); }catch(e){} m = m && typeof m==="object" ? m : {}; if(!m.t || typeof m.t!=="object") m.t = {}; if(!m.d || typeof m.d!=="object") m.d = {}; return m; }
+function setSyncMeta(m){ try{ localStorage.setItem(SYNC_KEY, JSON.stringify(m)); }catch(e){} }
+function fp(str){ let h = 0x811c9dc5; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return (h>>>0).toString(36)+"."+str.length; }
+const canShare = () => { const s = access(); return !!(s.server && s.member && s.canShare && !s.teacher && PGA.api && PGA.token); };
+const sharingOn = () => canShare() && !!access().sharing;
+
+function syncTexts(){
+  const out = [];
+  state.writingSamples.forEach(w=>{
+    if(!w || !w.id || !String(w.content||"").trim()) return;
+    out.push({id:w.id, kind:"writing", sub:w.kind||"", title:w.label||w.topic||"Writing", prompt:w.prompt||"", content:w.content, words:w.wordCount||wc(w.content), at:w.createdAt||null});
+  });
+  state.reflections.forEach(r=>{
+    if(!r || !r.id) return;
+    const parts = [["What I managed to say", r.managed], ["What was difficult", r.difficult], ["Next time", r.better]].filter(x=>String(x[1]||"").trim());
+    if(!parts.length) return;
+    const content = parts.map(x=>x[0]+": "+String(x[1]).trim()).join("\n");
+    out.push({id:r.id, kind:"reflection", sub:r.kind||"", title:r.topic||"Reflection", prompt:"", content, words:wc(content), at:r.date||null});
+  });
+  /* Mirror samples written in this app are already writing samples; only the old starting point is separate. */
+  state.mirrorSamples.forEach(m=>{
+    if(!m || !m.id || !m.legacy || !String(m.text||"").trim()) return;
+    out.push({id:m.id, kind:"mirror", sub:"", title:"Starting point", prompt:MIRROR_PROMPT, content:m.text, words:m.words||wc(m.text), at:m.date||null});
+  });
+  return out;
+}
+function syncDays(){
+  const t = dayKey(), min = addDays(t, -60), keys = new Set(Object.keys(state.days));
+  Object.values(state.classRecords).forEach(r=>{ if(r && r.date) keys.add(r.date); });
+  state.writingSamples.forEach(w=>{ if(w && w.createdAt) keys.add(dayKey(w.createdAt)); });
+  state.speakingAttempts.forEach(a=>{ if(a && a.date) keys.add(dayKey(a.date)); });
+  return [...keys].filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k) && k>=min && k<=t).sort().reverse();
+}
+function syncPayload(){
+  const m = syncMeta(), texts = [], reports = [], tmap = {}, dmap = {};
+  let budget = SYNC_BUDGET, more = false;
+  syncTexts().forEach(x=>{
+    const f = fp(JSON.stringify([x.kind, x.title, x.prompt, x.content]));
+    if(m.t[x.id]===f) return;
+    const size = x.content.length + (x.prompt||"").length + 200;
+    if(texts.length>=40 || size>budget){ more = true; return; }
+    budget -= size; tmap[x.id] = f; texts.push(x);
+  });
+  syncDays().forEach(k=>{
+    let c = ""; try{ c = dayReport(k); }catch(e){ return; }
+    if(c.indexOf("\n")<0) return; /* greeting only: nothing happened that day */
+    const sent = (state.days[k]||{}).sentAt||null, f = fp(c+"|"+(sent||""));
+    if(m.d[k]===f) return;
+    if(reports.length>=30 || c.length+200>budget){ more = true; return; }
+    budget -= c.length+200; dmap[k] = f; reports.push({day:k, content:c, sent_at:sent});
+  });
+  const sp = state.startingPoint||{}, st = stats();
+  return {more, tmap, dmap, body:{
+    app:APP_VERSION, name:state.name||"", streak:liveStreak(), last_active:state.lastActiveDate||null,
+    mission:state.currentMission, completed:state.completedMissions,
+    profile:{level:sp.level||"", goal:sp.goal||"", block:sp.fear||"", style:sp.learningStyle||"", program:tier().name, cycle:cycleInfo().n},
+    stats:Object.assign({}, st, {hours:+(st.hours||0).toFixed(2), journalEntries:state.journalEntries.length, achievements:state.achievements.length}),
+    since:m.since||null, texts, reports}};
+}
+function scheduleSync(ms){
+  if(!SYNC || !sharingOn()) return;
+  clearTimeout(SYNC.timer);
+  SYNC.timer = setTimeout(()=>syncNow(), ms==null ? 15000 : ms);
+}
+async function syncNow(){
+  if(!SYNC || SYNC.busy || !sharingOn() || navigator.onLine===false) return false;
+  const tok = PGA.token(); if(!tok) return false;
+  SYNC.busy = true; clearTimeout(SYNC.timer);
+  let ok = false;
+  try{
+    for(let round=0; round<8; round++){
+      const P = syncPayload();
+      const r = await PGA.api("sms_journal_sync", {p_token:tok, p_payload:P.body}, {timeout:20000});
+      if(PGA.applyServer) PGA.applyServer(r);
+      if(!r || !r.ok) break;
+      const m = syncMeta();
+      Object.keys(P.tmap).forEach(id=>{ m.t[id] = P.tmap[id]; });
+      Object.keys(P.dmap).forEach(k=>{ m.d[k] = P.dmap[k]; });
+      if(Array.isArray(r.feedback) && r.feedback.length){ m.since = r.feedback[r.feedback.length-1].at; takeFeedback(r.feedback); }
+      m.last = nowISO(); setSyncMeta(m); ok = true;
+      if(!P.more) break;
+    }
+  }catch(e){ /* offline or server unavailable: the next round tries again */ }
+  finally{ SYNC.busy = false; }
+  return ok;
+}
+function takeFeedback(list){
+  const F = state.teacherFeedback; let fresh = 0;
+  list.forEach(f=>{
+    if(!f || !f.id) return;
+    if(!f.feedback){ delete F[f.id]; return; }
+    const old = F[f.id];
+    if(!old || old.text!==f.feedback){ F[f.id] = {text:f.feedback, at:f.at, read:false}; fresh++; }
+  });
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  if(fresh){ toast("ProfGermandario left feedback on "+fresh+" of your texts."); repaint(); }
+}
+const unreadFeedback = () => Object.values(state.teacherFeedback||{}).filter(f=>!f.read).length;
+function feedbackTarget(id){
+  const w = state.writingSamples.find(x=>x.id===id); if(w) return {title:w.label||w.topic||"Writing", date:w.createdAt, text:w.content};
+  const r = state.reflections.find(x=>x.id===id); if(r) return {title:"Reflection · "+(r.topic||""), date:r.date, text:[r.managed,r.difficult,r.better].filter(Boolean).join(" · ")};
+  const m = state.mirrorSamples.find(x=>x.id===id); if(m) return {title:"Starting point", date:m.date, text:m.text};
+  return null;
+}
+function feedbackSheet(){
+  const F = state.teacherFeedback||{}, ids = Object.keys(F).sort((a,b)=>String(F[b].at||"").localeCompare(String(F[a].at||"")));
+  const items = ids.map(id=>{
+    const f = F[id], t = feedbackTarget(id), ex = t ? String(t.text||"") : "";
+    return `<article class="panel" style="margin-top:12px">
+      <div class="meta-row" style="margin-top:0">${f.read?"":`<span class="pill gold">New</span>`}<span class="small muted">${esc(t?t.title:"Your text")}${t&&t.date?" · "+esc(fmtDate(t.date)):""}</span></div>
+      ${ex?`<p class="small muted mt-s">“${esc(ex.length>220?ex.slice(0,220).replace(/\s+\S*$/,"")+"…":ex)}”</p>`:""}
+      <div class="well mt-s" style="white-space:pre-wrap">${esc(f.text)}</div>
+      <p class="small muted mt-s">ProfGermandario · ${esc(fmtDate(f.at))}</p></article>`;
+  }).join("");
+  openSheet(`${sheetHead("Teacher feedback", "Corrections and comments from ProfGermandario on your writing.")}
+    ${items || (sharingOn() ? `<p class="muted">No feedback yet. When ProfGermandario reviews one of your texts, it appears here.</p>`
+                            : `<p class="muted">Share your journal with ProfGermandario and his feedback on your writing will appear here.</p>${canShare()?`<button class="btn block mt" data-act="shareAsk">Share my journal</button>`:""}`)}`);
+  let changed = false;
+  ids.forEach(id=>{ if(!F[id].read){ F[id].read = true; changed = true; } });
+  if(changed){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} repaint(); }
+}
+function shareBlock(fromWelcome){
+  return `<div class="panel">
+    <p class="kicker">Your teacher, closer</p>
+    <h3 style="margin:4px 0 8px">Share your journal with ProfGermandario?</h3>
+    <p class="small">He will see your progress (missions, classes, stars, streak and when you practice), your writings and reflections, and your day reports — so he can follow you closely and correct your texts. His feedback comes back here. Your audio recordings stay on this device.</p>
+    <p class="small muted mt-s">Si aceptas, tu profesor verá tu avance, tus escritos y tus reportes del día para acompañarte. Puedes dejar de compartir cuando quieras en Membership. <a class="link" href="${esc((PGA.CONFIG&&PGA.CONFIG.privacy)||"#")}" target="_blank" rel="noopener">Política de tratamiento de datos</a>.</p>
+    <div class="stack mt"><button class="btn block" data-act="shareYes">Yes, share my journal</button>
+    <button class="btn-line" style="width:100%" data-act="${fromWelcome?"shareLater":"shareNo"}">Not now</button></div></div>`;
+}
+function shareRow(s){
+  if(s.teacher) return "";
+  if(!s.server) return `<p class="small muted">Want ProfGermandario to follow your journal? Ask him for your personal code and enter it under “Use a different code”.</p>`;
+  if(!s.canShare) return "";
+  const m = syncMeta();
+  return s.sharing
+    ? `<div class="well small"><b>Shared with ProfGermandario</b> · ${m.last?"last sent "+esc(ago(m.last)):"sending soon"}<br><span class="muted">Your progress, writings and day reports reach him automatically.</span><div class="row-gap mt-s"><button class="btn-line" data-act="shareNow">Send now</button><button class="link" data-act="shareStop" style="color:var(--coral)">Stop sharing</button></div></div>`
+    : `<div class="well small"><b>Not shared with ProfGermandario</b><br><span class="muted">Share your journal so he can follow your progress and correct your writing.</span><div class="mt-s"><button class="btn-line" data-act="shareAsk">Share my journal</button></div></div>`;
+}
+function teacherStrip(){
+  if(!isMember()) return "";
+  const n = unreadFeedback();
+  if(n) return `<button class="panel note mt" style="width:100%;text-align:left" data-act="feedback"><span class="dot"></span><span><b>ProfGermandario left feedback on ${n} of your texts</b><br><span class="muted small">Open it to see his corrections.</span></span></button>`;
+  if(canShare() && !access().sharing && !syncMeta().later) return `<button class="panel note mt" style="width:100%;text-align:left" data-act="shareAsk"><span class="dot" style="background:var(--sage)"></span><span><b>Let ProfGermandario follow your journal</b><br><span class="muted small">Share your progress and writing, and get his feedback here.</span></span></button>`;
+  return "";
+}
+async function setSharing(on){
+  const tok = PGA.token(); if(!tok) return false;
+  let r = null;
+  try{ r = await PGA.api("sms_journal_consent", {p_token:tok, p_granted:!!on}); }catch(e){ r = null; }
+  if(!r){ toast("You're offline. Try again when you're connected."); return false; }
+  if(PGA.applyServer) PGA.applyServer(r);
+  if(!r.ok){ toast(r.reason==="expired" ? "Your access ended. Renew it to share your journal." : "Couldn't change sharing now. Try again later."); return false; }
+  const m = syncMeta();
+  if(!on){ m.t = {}; m.d = {}; } else delete m.later;
+  setSyncMeta(m);
+  return true;
+}
+function startSync(){
+  if(SYNC) return;
+  SYNC = {busy:false, timer:null};
+  const kick = () => { if(PGA.refresh) PGA.refresh(false).then(()=>{ if(sharingOn()) syncNow(); }, ()=>{}); };
+  setTimeout(kick, 1500);
+  setInterval(()=>{ if(!document.hidden && sharingOn()) syncNow(); }, SYNC_EVERY);
+  document.addEventListener("visibilitychange", ()=>{ if(document.hidden){ if(sharingOn()) syncNow(); } else kick(); });
+  window.addEventListener("online", kick);
 }
 
 /* ============================================================
@@ -3482,6 +3671,7 @@ function consoleSheet(keep){
       <button class="list-btn" data-act="signOut"><span class="glyph" style="color:var(--coral)">⏻</span><span class="grow"><span class="t">Sign out of teacher mode</span><br><span class="s">This device returns to preview mode.</span></span><span class="chev">›</span></button></div>`;
   }
   openSheet(`${sheetHead("Teacher console","Create codes, send them, and see which ones are live.")}
+    ${PGA.CONFIG && PGA.CONFIG.panel ? `<div class="well small" style="margin-bottom:14px"><b>New:</b> codes you create in your student panel work at once — no GitHub step — and connect each student's journal to you. <a class="link" href="${esc(PGA.CONFIG.panel)}" target="_blank" rel="noopener">Open the panel ↗</a></div>` : ""}
     <div class="seg" role="tablist" style="grid-template-columns:repeat(3,1fr)">${tab("create","Create")}${tab("codes","My codes"+(L.length?" · "+L.length:""))}${tab("settings","Settings")}</div>
     <div class="mt">${body}</div>`, keep);
 }
@@ -3550,7 +3740,7 @@ const ACT = {
     openExternal(waLink(`Hola Profe, soy ${state.name}. Quiero que revises mis muestras espejo.\n\nPrimera (${fmtDate(a.date)}, ${a.words} palabras):\n${a.text.slice(0,500)}\n\nÚltima (${fmtDate(b.date)}, ${b.words} palabras, hablé ${mmss(b.seconds)}):\n${b.text.slice(0,500)}`)); },
   tool: el => {
     const t = el.dataset.tool;
-    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, plan:()=>membershipSheet(), data:dataSheet, profile:profileSheet})[t]();
+    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, feedback:feedbackSheet, plan:()=>membershipSheet(), data:dataSheet, profile:profileSheet})[t]();
   },
   export: () => {
     const payload = {format:"qkesl", app:"Fluency OS", appVersion:APP_VERSION, version:state.version, exportedAt:nowISO(), data:state};
@@ -3836,6 +4026,26 @@ Object.assign(ACT, {
     PGA.signOut(); closeSheet(); toast(s.teacher ? "Teacher mode is off on this device." : "Access removed from this device.");
   },
   welcomeGo: () => { closeSheet(); go("home"); },
+  feedback: () => feedbackSheet(),
+  shareAsk: () => openSheet(`${sheetHead("Share your journal","With ProfGermandario only.")}${shareBlock(false)}`),
+  shareYes: async el => {
+    el.disabled = true; el.textContent = "Saving…";
+    const ok = await setSharing(true);
+    if(ok){ closeSheet(); toast("Sharing is on. ProfGermandario will follow your journal."); syncNow().then(()=>repaint()); repaint(); }
+    else { el.disabled = false; el.textContent = "Yes, share my journal"; }
+  },
+  shareNo: () => { const m = syncMeta(); m.later = nowISO(); setSyncMeta(m); closeSheet(); repaint(); },
+  shareLater: () => { const m = syncMeta(); m.later = nowISO(); setSyncMeta(m); closeSheet(); go("home"); },
+  shareStop: async () => {
+    if(!confirm("Stop sharing your journal with ProfGermandario? What he already received stays with him; you can ask him to delete it.")) return;
+    if(await setSharing(false)){ toast("Sharing is off."); membershipSheet(); repaint(); }
+  },
+  shareNow: async el => {
+    el.disabled = true; el.textContent = "Sending…";
+    const ok = await syncNow();
+    toast(ok ? "Sent to ProfGermandario." : "Couldn't send now. It will try again automatically.");
+    membershipSheet();
+  },
   report: () => { RS.parts = null; RS.sent = []; reportSheet(); },
   rsSet: el => { RS[el.dataset.k] = el.dataset.v; RS.parts = null; RS.sent = []; reportSheet(true); },
   rsInc: el => { const k = el.dataset.k; RS.inc[k] = !RS.inc[k]; if(!RS.inc.progress && !RS.inc.writings && !RS.inc.notes) RS.inc[k] = true; RS.parts = null; RS.sent = []; reportSheet(true); },
@@ -3926,6 +4136,7 @@ document.addEventListener("change", e=>{
 });
 window.addEventListener("pg-access", ()=>{
   paintTierChip();
+  if(sharingOn()) scheduleSync(2000);
   if(document.body.classList.contains("in-lesson") || curRoute==="lesson" || !VIEWS[curRoute]) return;
   const y = window.scrollY; VIEWS[curRoute](); window.scrollTo(0,y);
 });
@@ -3977,6 +4188,7 @@ window.QK = {
 applyTheme();
 save();
 render();
+startSync();
 </script>
 </body>
 </html>

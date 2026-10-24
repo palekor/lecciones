@@ -238,3 +238,13 @@ dialog.dlg::backdrop { background: rgba(22, 9, 31, .5); }
 .money-row div { background: var(--tint); border-radius: 12px; padding: 8px 10px; }
 .money-row b { display: block; font-size: 16px; }
 .money-row span { font-size: 12px; color: var(--muted); }
+
+/* ---------- journal y códigos de acceso (v1.2) ---------- */
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .06em; font-size: 15px; }
+.stack-s { display: grid; gap: 10px; }
+.code-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #fff; }
+.fb-form { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.fb-form textarea { width: 100%; min-height: 76px; margin-top: 6px; resize: vertical; }
+.online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); margin-right: 5px; box-shadow: 0 0 0 3px var(--ok-bg); vertical-align: 1px; }
+details.msg > summary { list-style: none; }
+details.msg > summary::-webkit-details-marker { display: none; }

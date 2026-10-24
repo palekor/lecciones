@@ -10,6 +10,7 @@ import { S, dt, d, tm, relative, isOverdue, money, staffName, sessionName } from
 import { badge, openDialog, confirmDialog, userError, selectOptions, availabilityText, apiErrorText } from "../widgets.js";
 import { bookingDialog, bookingButtons, bookingAction, paymentDialog, contactDialog, taskDialog, assessmentDialog } from "../forms.js";
 import { taskItem, bindTaskList } from "./tasks.js";
+import { journalTab, accessState, mainCode, presence } from "./journal.js";
 
 const opt = (group, list) => list.map((v) => ({ value: v, label: label(group, v) }));
 const SOURCES = { register: "formulario de registro", registro: "formulario de registro", waitlist: "formulario de lista de espera",
@@ -24,7 +25,7 @@ export async function render(el, params, ctx) {
   let data;
 
   async function load() {
-    const [stu, leads, activity, bookings, progress, consents, payments, assessments, tasks] = await Promise.all([
+    const [stu, leads, activity, bookings, progress, consents, payments, assessments, tasks, codes, journal] = await Promise.all([
       q((c) => c.from("sms_students_v").select("*").eq("id", id).maybeSingle()),
       q((c) => c.from("sms_leads").select("*").eq("student_id", id).order("registered_at", { ascending: false })),
       q((c) => c.from("sms_activity").select("*").eq("student_id", id).order("created_at", { ascending: false }).limit(200)),
@@ -33,13 +34,16 @@ export async function render(el, params, ctx) {
       q((c) => c.from("sms_consents").select("*").eq("student_id", id).order("created_at", { ascending: false })),
       S.isAdmin ? q((c) => c.from("sms_payments").select("*").eq("student_id", id).order("created_at", { ascending: false })) : Promise.resolve([]),
       q((c) => c.from("sms_assessments").select("*").eq("student_id", id).order("assessed_on", { ascending: false }).order("created_at", { ascending: false })),
-      q((c) => c.from("sms_tasks").select("*").eq("student_id", id).order("due_at"))
+      q((c) => c.from("sms_tasks").select("*").eq("student_id", id).order("due_at")),
+      // Si el SQL v1.2 aún no se ejecutó, la ficha funciona igual (sin journal).
+      q((c) => c.from("sms_access_codes").select("*").eq("student_id", id).order("created_at", { ascending: false })).catch(() => []),
+      q((c) => c.from("sms_journal").select("*").eq("student_id", id).maybeSingle()).catch(() => null)
     ]);
     let dup = null;
     if (stu && stu.possible_duplicate_of) {
       dup = await q((c) => c.from("sms_students").select("id,full_name,email,whatsapp").eq("id", stu.possible_duplicate_of).maybeSingle());
     }
-    data = { stu, leads, activity, bookings, progress, consents, payments, assessments, tasks, dup, openLead: leads.find((l) => !CLOSED.includes(l.status)) || null };
+    data = { stu, leads, activity, bookings, progress, consents, payments, assessments, tasks, codes, journal, dup, openLead: leads.find((l) => !CLOSED.includes(l.status)) || null };
   }
 
   async function refresh(keepTab = true) {
@@ -56,6 +60,7 @@ export async function render(el, params, ctx) {
     const first = stu.full_name.split(" ")[0];
     const steps = S.steps.filter((s) => s.active);
     const done = data.progress.filter((p) => p.status === "completed").length;
+    const code = mainCode(data.codes), acc = accessState(code), pr = presence(data.journal);
     mount(el, html`
       <div class="person-head">
         <div>
@@ -65,6 +70,8 @@ export async function render(el, params, ctx) {
             ${data.openLead ? badge("lead", data.openLead.status) : ""}
             ${stu.plan_name ? html`<span class="badge">${stu.plan_name}</span>` : ""}
             ${stu.anonymized_at ? html`<span class="flag err">Datos eliminados</span>` : ""}
+            ${acc ? html`<button class="badge ${acc.cls}" type="button" data-goto="journal" title="${acc.line}" style="border:0;cursor:pointer">Acceso: ${acc.label.toLowerCase()}</button>` : ""}
+            ${pr ? html`<button class="badge ${pr.on ? "b-active" : ""}" type="button" data-goto="journal" style="border:0;cursor:pointer">${pr.text}</button>` : ""}
           </div>
         </div>
         <div class="actions">
@@ -85,7 +92,7 @@ export async function render(el, params, ctx) {
       <div class="tabs" role="tablist">
         ${[["resumen", "Resumen"], ["historial", `Historial (${data.activity.length})`], ["sesiones", `Sesiones (${data.bookings.length})`],
            ["progreso", `Progreso (${done}/${steps.length})`], ["evaluaciones", `Evaluaciones (${data.assessments.length})`],
-           ["tareas", `Tareas (${data.tasks.filter((t) => t.status === "open").length})`],
+           ["tareas", `Tareas (${data.tasks.filter((t) => t.status === "open").length})`], ["journal", "Journal"],
            ...(S.isAdmin ? [["pagos", `Pagos (${data.payments.length})`]] : []), ["privacidad", "Privacidad"]]
           .map(([k, t]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${tab === k}">${t}</button>`)}
       </div>
@@ -96,6 +103,9 @@ export async function render(el, params, ctx) {
       $$("[data-tab]", el).forEach((x) => x.setAttribute("aria-selected", String(x === b)));
       paintTab();
     }));
+    $$("[data-goto]", el).forEach((b) => b.addEventListener("click", () => {
+      const t = $(`[data-tab="${b.dataset.goto}"]`, el); if (t) t.click();
+    }));
   }
 
   function paintTab() {
@@ -103,7 +113,8 @@ export async function render(el, params, ctx) {
     const old = $("#tab-body", el);
     const body = old.cloneNode(false);
     old.replaceWith(body);
-    ({ resumen, historial, sesiones, progreso, evaluaciones, tareas, pagos, privacidad })[tab](body);
+    const journal = (b) => journalTab(b, { stu: data.stu, codes: data.codes, journal: data.journal }, () => refresh(), ctx.isCurrent).catch((e) => toast(apiErrorText(e), "err"));
+    ({ resumen, historial, sesiones, progreso, evaluaciones, tareas, journal, pagos, privacidad })[tab](body);
   }
 
   /* ---------- Resumen ---------- */
@@ -553,7 +564,7 @@ export async function render(el, params, ctx) {
         <p class="small muted">Registro de cada autorización con la versión del aviso vigente y la fecha.</p>
         ${data.consents.length ? html`<div class="rows">${data.consents.map((c) => html`
           <div class="row" style="--cols: 1fr 1fr 1.2fr">
-            <span>${c.kind === "privacy" ? "Tratamiento de datos" : "Marketing"}</span>
+            <span>${c.kind === "privacy" ? "Tratamiento de datos" : c.kind === "journal_sharing" ? "Compartir su journal" : "Marketing"}</span>
             <span>${c.granted ? "Otorgado" : "No otorgado"}</span>
             <span class="small">${dt(c.created_at)} · aviso ${c.notice_version} · ${c.source}</span>
           </div>`)}</div>` : html`<div class="empty-state">Sin registros de consentimiento (ficha creada en el panel).</div>`}

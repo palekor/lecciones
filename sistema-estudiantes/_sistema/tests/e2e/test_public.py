@@ -7,6 +7,7 @@ import os, subprocess, json, time, uuid, sys
 from playwright.sync_api import sync_playwright, expect
 
 BASE = os.environ.get("BASE", "http://127.0.0.1:8787")
+PAGES = BASE + "/lecciones/sistema-estudiantes"
 ANON = os.environ["ANON_KEY"]
 SHOTS = os.environ.get("SHOTS", "/tmp")
 PSQL = ["psql", "-h", "127.0.0.1", "-p", os.environ.get("PGPORT", "54329"), "-U", "postgres", "-d", "smstest", "-At", "-c"]
@@ -55,7 +56,7 @@ with sync_playwright() as p:
 
     # ---------------------------------------------------------- registro
     ctx, page, errs = new_page(browser, "10.0.0.1")
-    page.goto(BASE + "/lecciones/registro/")
+    page.goto(PAGES + "/registro/")
     page.wait_for_selector("#form:not([hidden])")
     check(page.locator("#country option").count() > 200, "lista de países cargada")
     check(page.locator("#consent_marketing").is_checked() is False, "marketing NO premarcado")
@@ -91,7 +92,7 @@ with sync_playwright() as p:
 
     # ---------------------------------------------------------- lista de espera (formulario dedicado)
     ctx, page, errs = new_page(browser, "10.0.0.2", mobile=False)
-    page.goto(BASE + "/lecciones/lista-de-espera/")
+    page.goto(PAGES + "/lista-de-espera/")
     page.wait_for_selector("#full:not([hidden])")
     page.wait_for_timeout(2600)
     page.fill("#full_name", "Mateo Ríos")
@@ -117,7 +118,7 @@ with sync_playwright() as p:
     sql("insert into sms_availability_rules (weekday, start_time, end_time, slot_minutes, session_type, active) "
         "select d, '14:00', '17:00', 60, 'diagnostic', true from generate_series(1,7) d")
     ctx, page, errs = new_page(browser, "10.0.0.3")
-    page.goto(BASE + "/lecciones/reservar/")
+    page.goto(PAGES + "/reservar/")
     page.wait_for_selector("#form:not([hidden])")
     n_days = page.locator(".day-btn").count()
     check(n_days >= 10, "días con horarios disponibles (%d)" % n_days)
@@ -149,7 +150,7 @@ with sync_playwright() as p:
 
     # El horario ya no se ofrece a otra persona
     ctx, page, errs = new_page(browser, "10.0.0.4")
-    page.goto(BASE + "/lecciones/reservar/")
+    page.goto(PAGES + "/reservar/")
     page.wait_for_selector("#form:not([hidden])")
     page.locator(".day-btn").nth(1).click()
     times = page.locator(".time-btn").all_inner_texts()
@@ -159,7 +160,7 @@ with sync_playwright() as p:
     # Reserva con ref (después de registrarse): sin volver a escribir datos
     ctx, page, errs = new_page(browser, "10.0.0.5")
     ref = sql("select token from sms_submissions where kind='register' limit 1")
-    page.goto(BASE + "/lecciones/reservar/#ref=" + ref)
+    page.goto(PAGES + "/reservar/#ref=" + ref)
     page.wait_for_selector("#form:not([hidden])")
     check(page.locator("#contact-set").is_hidden() and page.locator("#as-ref").is_visible(), "con ref no pide datos de nuevo")
     check("#ref=" not in page.url, "el ref se retira de la URL")
@@ -172,7 +173,7 @@ with sync_playwright() as p:
 
     # Privacidad
     ctx, page, errs = new_page(browser, "10.0.0.6")
-    page.goto(BASE + "/lecciones/privacidad/")
+    page.goto(PAGES + "/privacidad/")
     check("1581 de 2012" in page.content(), "política de privacidad publicada")
     ctx.close()
     browser.close()

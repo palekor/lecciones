@@ -6,6 +6,7 @@ import os, subprocess, sys, re
 from playwright.sync_api import sync_playwright
 
 BASE = os.environ.get("BASE", "http://127.0.0.1:8787")
+PAGES = BASE + "/lecciones/sistema-estudiantes"
 ANON = os.environ["ANON_KEY"]
 SHOTS = os.environ.get("SHOTS", "/tmp")
 PSQL = ["psql", "-h", "127.0.0.1", "-p", os.environ.get("PGPORT", "54329"), "-U", "postgres", "-d", "smstest", "-At", "-c"]
@@ -30,7 +31,7 @@ def ctx_page(browser, mobile=False):
     return ctx, page, errs
 
 def login(page, email):
-    page.goto(BASE + "/lecciones/admin/")
+    page.goto(PAGES + "/admin/")
     page.wait_for_selector("#login:not([hidden])")
     page.fill("#login-email-input", email)
     page.click("#login-email button[type=submit]")
@@ -50,7 +51,7 @@ with sync_playwright() as p:
     login(page, "intruso@correo.com")
     page.wait_for_selector("#noaccess:not([hidden])")
     check("intruso@correo.com" in page.inner_text("#noaccess"), "cuenta sin invitación no entra al panel")
-    page.goto(BASE + "/lecciones/admin/")
+    page.goto(PAGES + "/admin/")
     page.wait_for_selector("#noaccess:not([hidden])")
     page.click("#noaccess-out")
     page.wait_for_selector("#login:not([hidden])")
@@ -82,7 +83,7 @@ with sync_playwright() as p:
     page.screenshot(path=f"{SHOTS}/admin-inicio.png", full_page=True)
 
     # Leads: búsqueda y filtros
-    page.goto(BASE + "/lecciones/admin/#/leads")
+    page.goto(PAGES + "/admin/#/leads")
     page.wait_for_selector("#rows .row.head")
     n_all = page.locator("#rows a.row").count()
     check(n_all >= 3, "leads abiertos listados (%d)" % n_all)
@@ -117,7 +118,7 @@ with sync_playwright() as p:
     check(sql("select s.source||'|'||l.status||'|'||l.urgency from sms_students s join sms_leads l on l.student_id=s.id where s.email='pablo@correo.com'") == "panel|contacted|asap", "alta manual guardada como lead")
 
     # Lista de espera: orden transparente y prioridad manual
-    page.goto(BASE + "/lecciones/admin/#/lista")
+    page.goto(PAGES + "/admin/#/lista")
     page.wait_for_selector("#rows .row.head")
     rows = page.locator("#rows .row:not(.head)")
     check("Mateo" in rows.nth(0).inner_text() and "Nora" in rows.nth(1).inner_text(), "lista ordenada por fecha de registro")
@@ -128,7 +129,7 @@ with sync_playwright() as p:
 
     # Ficha de Laura
     laura = sql("select id from sms_students where email='laura.gomez@correo.com'")
-    page.goto(BASE + f"/lecciones/admin/#/persona/{laura}")
+    page.goto(PAGES + f"/admin/#/persona/{laura}")
     page.wait_for_selector(".person-head")
     page.screenshot(path=f"{SHOTS}/admin-ficha.png", full_page=True)
     page.click("[data-act=contact]")
@@ -213,7 +214,7 @@ with sync_playwright() as p:
     check(sql(f"select plan_renews_at from sms_students where id='{laura}'") == "2026-11-30", "renovación tomada del período pagado")
 
     # Agenda: confirmar la solicitud de Sofía
-    page.goto(BASE + "/lecciones/admin/#/agenda?f=requested")
+    page.goto(PAGES + "/admin/#/agenda?f=requested")
     page.wait_for_selector("#bookings .booking")
     page.click("#bookings [data-bk=confirm]")
     page.wait_for_timeout(1000)
@@ -251,7 +252,7 @@ with sync_playwright() as p:
     page.screenshot(path=f"{SHOTS}/admin-agenda.png", full_page=True)
 
     # Mensajes: el aviso de confirmación quedó en la cola
-    page.goto(BASE + "/lecciones/admin/#/mensajes")
+    page.goto(PAGES + "/admin/#/mensajes")
     page.wait_for_selector("#msgs .msg")
     check("Sofía" in page.inner_text("#msgs") and "Confirmación de sesión" in page.inner_text("#msgs"), "aviso de confirmación listo para enviar")
     msg = page.locator("#msgs .msg", has_text="Sofía").first
@@ -260,12 +261,12 @@ with sync_playwright() as p:
     check(sql("select count(*) from sms_outbox o join sms_students s on s.id=o.student_id where s.email='sofia@correo.com' and o.status='sent'") == "1", "mensaje marcado como enviado")
 
     # Tareas: vista general
-    page.goto(BASE + "/lecciones/admin/#/tareas?f=done")
+    page.goto(PAGES + "/admin/#/tareas?f=done")
     page.wait_for_selector("#task-list .task")
     check("Enviar material de entrevistas" in page.inner_text("#task-list"), "vista general de tareas")
 
     # Ajustes: pregunta adicional e invitación al equipo
-    page.goto(BASE + "/lecciones/admin/#/ajustes")
+    page.goto(PAGES + "/admin/#/ajustes")
     page.wait_for_selector("#team .rows")
     page.click("#add-q")
     page.locator("#questions [data-k=label]").last.fill("¿En qué empresa trabajas?")
@@ -293,7 +294,7 @@ with sync_playwright() as p:
 
     # El registro público ahora muestra la pregunta adicional
     ctx, page, e2 = ctx_page(browser, mobile=True)
-    page.goto(BASE + "/lecciones/registro/")
+    page.goto(PAGES + "/registro/")
     page.wait_for_selector("#form:not([hidden])")
     check("¿En qué empresa trabajas?" in page.inner_text("#extra-questions"), "pregunta configurable aparece en /registro")
     ctx.close()
@@ -305,14 +306,14 @@ with sync_playwright() as p:
     page.wait_for_selector(".kpis")
     check(page.locator("#tabbar a").count() == 5, "navegación inferior en móvil")
     check("Cobrado este mes" not in page.inner_text(".kpis"), "staff no ve ingresos")
-    page.goto(BASE + "/lecciones/admin/#/pagos")
+    page.goto(PAGES + "/admin/#/pagos")
     page.wait_for_timeout(800)
     check("solo para administradores" in page.inner_text("#view"), "staff no entra a pagos")
-    page.goto(BASE + f"/lecciones/admin/#/persona/{laura}")
+    page.goto(PAGES + f"/admin/#/persona/{laura}")
     page.wait_for_selector(".person-head")
     check(page.locator("[data-tab=pagos]").count() == 0, "staff no ve pestaña de pagos")
     page.screenshot(path=f"{SHOTS}/admin-ficha-movil.png", full_page=True)
-    page.goto(BASE + "/lecciones/admin/#/inicio")
+    page.goto(PAGES + "/admin/#/inicio")
     page.wait_for_selector(".kpis")
     page.screenshot(path=f"{SHOTS}/admin-inicio-movil.png", full_page=True)
     check(not errs, "sin errores de JavaScript (staff): %s" % errs[:3])

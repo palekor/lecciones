@@ -17,8 +17,9 @@ const sumMoney = (obj) => {
 };
 
 export async function render(el, _params, ctx) {
-  const k = await rpc("sms_dashboard");
+  const [k, jo] = await Promise.all([rpc("sms_dashboard"), rpc("sms_journal_overview").catch(() => null)]);
   if (!ctx.isCurrent()) return;
+  const accessDue = jo ? (jo.codes_expiring_7d || 0) + (jo.codes_expired_30d || 0) : 0;
   const conv = k.conversion_90d || {};
   const rate = conv.leads ? Math.round((conv.converted / conv.leads) * 100) : 0;
   const pipeTotal = LEAD_STATUSES.reduce((a, s) => a + ((k.pipeline || {})[s] || 0), 0);
@@ -40,6 +41,9 @@ export async function render(el, _params, ctx) {
       ${kpi("#/agenda?view=list", k.sessions_completed_30d, "Sesiones realizadas (30 días)")}
       <div class="kpi"><b>${rate}%</b><span>Conversión a estudiante, 90 días (${conv.converted} de ${conv.leads})</span></div>
       ${kpi("#/estudiantes?f=renewals", k.renewals_7d, "Renovaciones en 7 días")}
+      ${jo ? kpi("#/estudiantes?f=journal", jo.online_now, "En el journal ahora") : ""}
+      ${jo ? kpi("#/estudiantes?f=journal", jo.texts_pending, "Textos del journal por revisar", jo.texts_pending) : ""}
+      ${jo ? kpi("#/estudiantes?f=access", accessDue, "Accesos por vencer o vencidos", accessDue) : ""}
     </div>
 
     ${k.revenue_month ? html`<section class="panel" style="margin-bottom:16px">
@@ -82,6 +86,16 @@ export async function render(el, _params, ctx) {
             ${f.whatsapp ? html`<a class="btn btn-soft btn-sm" target="_blank" rel="noopener" href="${waLink(f.whatsapp)}">WhatsApp</a>` : ""}
           </div>`)}</div>` : html`<div class="empty-state"><b>Todo al día.</b>Programa seguimientos desde la ficha de cada persona.</div>`}
       </section>
+
+      ${jo ? html`<section class="panel">
+        <h2>Journal · últimas 24 horas <span class="spacer"></span><a class="small" href="#/estudiantes?f=journal">Ver todos</a></h2>
+        ${jo.recent.length ? html`<div>${jo.recent.map((r) => {
+          const on = Date.now() - Date.parse(r.last_seen_at) < 7 * 60 * 1000;
+          return html`<a class="row" style="--cols: 1fr auto; padding:10px 0; border-top:1px solid var(--line)" href="#/persona/${r.student_id}?tab=journal">
+            <span class="name">${on ? html`<span class="online-dot" aria-hidden="true"></span>` : ""}${r.full_name}<span class="sub">${on ? "En línea ahora" : "Conectado " + relative(r.last_seen_at)}${r.streak ? " · racha " + r.streak : ""}</span></span>
+            <span class="small muted">Ver journal ›</span>
+          </a>`; })}</div>` : html`<div class="empty-state"><b>Nadie conectado en las últimas 24 horas.</b>Crea el código de cada estudiante en su ficha → Journal.</div>`}
+      </section>` : ""}
 
       <section class="panel">
         <h2>Embudo de leads</h2>

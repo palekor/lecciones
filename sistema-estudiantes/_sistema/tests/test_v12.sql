@@ -326,7 +326,7 @@ do $$ declare e jsonb; b jsonb; begin
                      and jsonb_array_length(e->'journal_reports') = 1 and e->'journal'->>'streak' = '4',
                      'la exportación de la persona incluye códigos y journal');
   b := public.sms_backup_export();
-  perform pg_temp.ok(b->>'version' = '1.2' and jsonb_array_length(b->'journal_texts') = 3
+  perform pg_temp.ok((b->>'version')::numeric >= 1.2 and jsonb_array_length(b->'journal_texts') = 3
                      and not (b->'access_devices'->0) ? 'token_hash', 'respaldo con journal y sin huellas de llaves');
 end $$;
 -- Fusionar: el duplicado trae un texto propio que debe pasar a la ficha que queda

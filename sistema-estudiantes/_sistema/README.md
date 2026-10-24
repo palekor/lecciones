@@ -1,4 +1,4 @@
-# Sistema de Estudiantes ProfGermandario · v1.2
+# Sistema de Estudiantes ProfGermandario · v1.3
 
 Plataforma de gestión educativa y comercial para ProfGermandario: registro de prospectos, lista de espera, reservas, panel administrativo y seguimiento del progreso y de la relación comercial. Está construida dentro de este repositorio (GitHub Pages) sobre el **mismo proyecto Supabase** que ya usa `palekor-sync.js`, sin modificar ninguna app existente.
 
@@ -15,9 +15,9 @@ Plataforma de gestión educativa y comercial para ProfGermandario: registro de p
 | 3. Reservas | `/reservar/` (público) y panel → Agenda | Franjas semanales con duración y pausa entre sesiones, días bloqueados, aperturas especiales, tipos de sesión configurables, zona horaria explícita, solicitudes vs. confirmadas, imposibilidad de cruces (restricción en la base de datos), calendario semanal y lista, confirmar/rechazar/reprogramar/cancelar/realizada/ausencia, política de cancelación. |
 | 4. Panel | `/admin/` | Indicadores calculados con datos reales, directorio con búsqueda, filtros, orden y paginación, ficha individual por pestañas, notificaciones, mensajes por enviar, exportaciones. |
 | 5. Progreso y comercial | Ficha → Progreso, Evaluaciones, Tareas, Pagos | Perfil educativo (nivel inicial/actual estimado, habilidades, observaciones, próximos objetivos, fecha de revisión), ruta de 18 pasos configurable, evaluaciones por habilidad con historial, tareas y recordatorios, plan, fechas, precio acordado, pagos, saldo, renovación. |
-| 6. Acceso y journal (v1.2) | Ficha → Journal · `journal.html` · `pg-access.js` · lecciones `steps/` | Códigos de acceso por estudiante creados en el panel (programa, vigencia, nota), activos al instante, sin editar GitHub; renovar, cambiar programa, revocar y reactivar llegan al dispositivo; hasta 5 dispositivos por código. Con autorización expresa del estudiante, el journal envía su avance, racha y última conexión, sus escritos y reflexiones y sus reportes del día; el profesor corrige cada texto en la ficha y la corrección vuelve al journal. Indicadores en Inicio y filtros en Estudiantes ("En el journal", "Acceso por vencer"). |
+| 6. Acceso y journal (v1.2) | Ficha → Journal · `journal.html` · `pg-access.js` · lecciones `steps/` | Códigos de acceso por estudiante creados en el panel (programa, vigencia, nota), activos al instante, sin editar GitHub; renovar, cambiar programa, revocar y reactivar llegan al dispositivo; hasta 5 dispositivos por código. Con autorización expresa del estudiante, el journal envía su avance, racha y última conexión, sus escritos y reflexiones y sus reportes del día; el profesor corrige cada texto en la ficha y la corrección vuelve al journal. **Mensajes directos (v1.3):** escribes en la ficha → Journal y al estudiante le aparece en pantalla al abrir su journal (no requiere que comparta); la ficha muestra *Entregado* y *Leído*, y puedes retirar un mensaje antes de que lo lea. Indicadores en Inicio y filtros en Estudiantes ("En el journal", "Acceso por vencer"). |
 
-**Fuera del alcance de la v1.2** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
+**Fuera del alcance de la v1.3** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
 
 ## 2. Arquitectura general
 
@@ -54,6 +54,7 @@ GitHub Pages es solo alojamiento estático: no guarda datos ni ejecuta lógica p
 | Avisos al equipo | `sms_notifications` |
 | Códigos de acceso y dispositivos | `sms_access_codes`, `sms_access_devices` (solo la huella SHA-256 de la llave de cada dispositivo) |
 | Journal compartido | `sms_journal` (avance y conexión), `sms_journal_texts` (textos + retroalimentación), `sms_journal_reports` (reporte de cada día) |
+| Mensajes del profesor | `sms_journal_messages` (texto, enviado, entregado, leído, retirado) |
 | Técnicas internas (sin acceso desde la API) | `sms_settings`, `sms_secrets`, `sms_submissions`, `sms_rate_events` |
 
 ## 3. Tecnologías
@@ -93,7 +94,7 @@ Todo está en un único archivo: `_sistema/supabase/001_sistema_estudiantes.sql`
 1. Revisa la sección `0. CONFIGURACIÓN INICIAL` del archivo (correo del dueño).
 2. Supabase → **SQL Editor** → pega el archivo completo → **Run**.
 
-El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (v1.0 o v1.1 → v1.2) sin perder datos. Se puede ejecutar varias veces. Si Supabase pregunta por RLS al ejecutar, elige **Run without RLS**: el script activa RLS en todas sus tablas por su cuenta (sección 10).
+El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (v1.0, v1.1 o v1.2 → v1.3) sin perder datos. Se puede ejecutar varias veces. Si Supabase pregunta por RLS al ejecutar, elige **Run without RLS**: el script activa RLS en todas sus tablas por su cuenta (sección 10).
 
 ## 8. Migraciones y creación del esquema
 
@@ -130,12 +131,13 @@ Resultados de la última ejecución (Postgres 16 con un entorno equivalente a Su
 | SQL v1.0 (`test_schema.sql`) | 94 / 94 |
 | SQL v1.1 (`test_v11.sql`) | 49 / 49 |
 | SQL v1.2 (`test_v12.sql`, acceso y journal) | 83 / 83 |
+| SQL v1.3 (`test_v13.sql`, mensajes) | 23 / 23 |
 | Unitarias del cliente (`core.test.mjs`) | 11 / 11 |
 | E2E páginas públicas (`test_public.py`) | 30 / 30 |
 | E2E panel (`test_admin.py`) | 55 / 55 |
-| E2E journal (`test_journal.py`: código en el panel → teléfono → autorización → envío → corrección → revocar/reactivar/renovar) | 47 / 47 |
+| E2E journal (`test_journal.py`: código en el panel → teléfono → autorización → envío → corrección → mensajes → revocar/reactivar/renovar) | 55 / 55 |
 
-Las pruebas E2E sirven el repositorio completo con la misma estructura de GitHub Pages (`/lecciones/sistema-estudiantes/…`, `/lecciones/journal.html`, `/lecciones/steps/…`). Además: actualizaciones v1.0 → v1.1 y v1.1 → v1.2 probadas con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
+Las pruebas E2E sirven el repositorio completo con la misma estructura de GitHub Pages (`/lecciones/sistema-estudiantes/…`, `/lecciones/journal.html`, `/lecciones/steps/…`). Además: actualizaciones v1.0 → v1.1, v1.1 → v1.2 y v1.2 → v1.3 probadas con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
 
 **No probado** (requiere el Supabase real o credenciales): envío real del correo con código, Realtime, cabeceras de IP del proxy de Supabase, `pg_cron` y las llamadas del journal con la llave publicable real (`sb_publishable_…` en la cabecera `apikey`; en las pruebas se usa una llave local equivalente).
 
@@ -180,7 +182,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 
 ## 17. Consideraciones de seguridad
 
-- El público (rol `anon`) **no puede leer ni escribir ninguna tabla**. Solo puede llamar a 9 funciones: las 5 de los formularios (`sms_public_config`, `sms_register`, `sms_join_waitlist`, `sms_public_slots`, `sms_request_booking`) y las 4 del journal (`sms_access_redeem`, `sms_access_status`, `sms_journal_consent`, `sms_journal_sync`, que exigen la llave del dispositivo). Todas validan en el servidor y nunca devuelven datos de otras personas.
+- El público (rol `anon`) **no puede leer ni escribir ninguna tabla**. Solo puede llamar a 10 funciones: las 5 de los formularios (`sms_public_config`, `sms_register`, `sms_join_waitlist`, `sms_public_slots`, `sms_request_booking`) y las 5 del journal (`sms_access_redeem`, `sms_access_status`, `sms_journal_consent`, `sms_journal_sync`, `sms_journal_inbox`, que exigen la llave del dispositivo). Todas validan en el servidor y nunca devuelven datos de otras personas.
 - Anti-spam: campo trampa, tiempo mínimo de llenado, límites de frecuencia (10 envíos / 10 min por IP, 6 / hora por correo, 10 / hora por enlace de seguimiento). La IP se guarda solo como *hash* con sal secreta. Los intentos de inicio de sesión están limitados por Supabase Auth.
 - Idempotencia: un doble clic o un reintento de red no duplica registros.
 - Duplicados: el correo es único; un formulario público **no sobrescribe** la identidad de una ficha existente (marca "Revisar"). WhatsApp repetido → "Posible duplicado" con opción de fusionar.
@@ -202,6 +204,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 - **Idioma:** español completo; inglés preparado parcialmente en `sistema/i18n.js`.
 - **Códigos antiguos (`pg-access.js`):** siguen funcionando igual, pero esos dispositivos no se conectan al panel. Para conectarlos, registra el código en la ficha (Journal → Nuevo código → "Registrar un código que ya existe") o crea uno nuevo, y pide al estudiante que lo escriba en Membership → "Use a different code".
 - **Journal:** envía mientras está abierto (el "En línea" tiene un margen de unos 7 minutos). Los datos viven primero en el teléfono del estudiante: si borra el navegador sin haber compartido, el panel no tiene copia. La retroalimentación se escribe en el panel y se lee en el journal; el estudiante no responde desde ahí.
+- **Mensajes:** van en una sola dirección (el estudiante responde por WhatsApp con un botón). Aparecen al abrir el journal o al volver a él; si lo tiene abierto, a más tardar en 3 minutos. Con el acceso vencido los sigue recibiendo (útil para renovar); con el código revocado, no.
 - **Vencimiento sin conexión:** un dispositivo sin internet conserva el último estado conocido; la fecha de vencimiento se aplica igual, pero una revocación llega en su próxima conexión.
 
 ## 19. Costos potenciales

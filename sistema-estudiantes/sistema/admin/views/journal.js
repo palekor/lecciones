@@ -4,7 +4,7 @@
 import { q, rpc } from "../../api.js";
 import { waLink } from "../../core.js";
 import { $, $$, html, raw, mount, toast } from "../../ui.js";
-import { S, d, dt, relative } from "../state.js";
+import { S, d, dt, relative, staffName } from "../state.js";
 import { openDialog, confirmDialog, userError, selectOptions, apiErrorText } from "../widgets.js";
 
 export const TIERS = { essential: "Essential", companion: "Companion", mastery: "Mastery Program" };
@@ -113,10 +113,11 @@ function codeDialog({ stu, code, onDone }) {
 export async function journalTab(body, { stu, codes, journal }, refresh, isCurrent) {
   mount(body, html`<div class="loading"><span class="spinner"></span> Cargando journal…</div>`);
   const ids = codes.map((c) => c.id);
-  const [devices, texts, reports] = await Promise.all([
+  const [devices, texts, reports, messages] = await Promise.all([
     ids.length ? q((c) => c.from("sms_access_devices").select("id,code_id,label,created_at,last_seen_at,revoked_at").in("code_id", ids).order("last_seen_at", { ascending: false })) : Promise.resolve([]),
     q((c) => c.from("sms_journal_texts").select("*").eq("student_id", stu.id).order("written_at", { ascending: false, nullsFirst: false }).order("received_at", { ascending: false }).limit(300)),
-    q((c) => c.from("sms_journal_reports").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(120))
+    q((c) => c.from("sms_journal_reports").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(120)),
+    q((c) => c.from("sms_journal_messages").select("*").eq("student_id", stu.id).order("created_at", { ascending: false }).limit(30)).catch(() => [])
   ]);
   if (isCurrent && !isCurrent()) return;
   let sub = "texts", textFilter = texts.some((t) => !t.feedback_at) ? "pending" : "all";
@@ -182,6 +183,30 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
       </dl>`;
   };
 
+  const activated = devices.some((x) => !x.revoked_at);
+  const msgStatus = (m) => m.withdrawn_at ? html`<span class="badge b-cancelled">Retirado</span>`
+    : m.read_at ? html`<span class="badge b-active">Leído ${dt(m.read_at)}</span>`
+    : m.delivered_at ? html`<span class="badge b-booking_confirmed">Entregado ${dt(m.delivered_at)}</span>`
+    : html`<span class="badge b-pending">Le llega al abrir su journal</span>`;
+  const messagesPanel = () => html`<section class="panel">
+    <h2>Mensajes a su journal</h2>
+    ${locked ? html`<p class="small muted">Ficha con datos eliminados.</p>` : html`
+      <p class="small muted" style="margin:0 0 10px">${activated
+        ? `Le aparece a ${first} en cuanto abra el journal. Aquí ves si ya le llegó y si lo leyó.`
+        : codes.length ? `${first} aún no ha activado su código: el mensaje le llegará cuando lo active.`
+                       : `Necesita un código de acceso para recibir mensajes en su journal.`}</p>
+      <form id="msg-form">
+        <label class="sr-only" for="msg-body">Mensaje</label>
+        <textarea class="input" id="msg-body" name="body" rows="3" maxlength="4000" placeholder="Ej.: ${first}, mañana repasamos el pasado simple. Trae tu texto de la clase 3."></textarea>
+        <div class="btn-row" style="margin-top:8px"><button class="btn btn-primary btn-sm" type="submit">Enviar a su journal</button></div>
+      </form>`}
+    ${messages.length ? html`<div style="margin-top:12px">${messages.map((m) => html`<div class="msg" style="${m.withdrawn_at ? "opacity:.6" : ""}">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${msgStatus(m)}
+          <span class="small muted">Enviado ${relative(m.created_at)}${m.created_by ? " · " + staffName(m.created_by) : ""}</span>
+          ${!m.read_at && !m.withdrawn_at && !locked ? html`<button class="btn btn-soft btn-sm" type="button" data-withdraw="${m.id}" style="margin-left:auto">Retirar</button>` : ""}</div>
+        <pre>${m.body}</pre></div>`)}</div>` : ""}
+  </section>`;
+
   const pendingCount = texts.filter((t) => !t.feedback_at).length;
   const textCard = (t) => html`<article class="msg" data-text="${t.id}">
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -222,12 +247,15 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
 
   mount(body, html`
     <div class="cols">
+      <div class="stack-s" style="gap:16px;align-content:start">
       <section class="panel">
         <h2>Acceso al journal <span class="spacer"></span>
           ${S.isAdmin && !locked ? html`<button class="btn btn-primary btn-sm" type="button" data-act="new-code">${codes.length ? "Nuevo código" : "Crear código"}</button>` : ""}</h2>
         ${sorted.length ? html`<div class="stack-s">${sorted.map(codeCard)}</div>`
           : html`<div class="empty-state"><b>Sin código de acceso.</b>${S.isAdmin ? "Crea uno: abre el journal completo y las masterclasses hasta la fecha que elijas." : "Un administrador puede crearlo."}</div>`}
       </section>
+      ${messagesPanel()}
+      </div>
       <section class="panel">
         <h2>Journal</h2>
         ${journalPanel()}
@@ -277,6 +305,13 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
       catch (err) { toast(apiErrorText(err), "err"); }
       return;
     }
+    if (t.closest("[data-withdraw]")) {
+      const id = t.closest("[data-withdraw]").dataset.withdraw;
+      if (!(await confirmDialog({ title: "Retirar mensaje", text: `Desaparece del journal de ${first} en su próxima conexión. Si ya lo vio en pantalla, no se puede “desver”.`, confirmLabel: "Retirar", danger: true }))) return;
+      try { await rpc("sms_journal_message_withdraw", { p_id: id }); toast("Mensaje retirado.", "ok"); refresh(); }
+      catch (err) { toast(apiErrorText(err), "err"); }
+      return;
+    }
     if (t.closest("[data-clear]")) {
       const id = t.closest("[data-clear]").dataset.clear;
       try { await rpc("sms_journal_feedback", { p_text: id, p_feedback: "" }); toast("Retroalimentación retirada.", "ok"); refresh(); }
@@ -290,6 +325,15 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
     }
   });
   body.addEventListener("submit", async (e) => {
+    if (e.target.id === "msg-form") {
+      e.preventDefault();
+      const fm = e.target, v = fm.elements.body.value.trim(), btn = fm.querySelector("button[type=submit]");
+      if (!v) { toast("Escribe el mensaje.", "err"); return; }
+      btn.disabled = true;
+      try { await rpc("sms_journal_message_send", { p_student: stu.id, p_body: v }); toast(activated ? "Enviado. Le aparece al abrir su journal." : "Guardado. Le llegará cuando active su código.", "ok"); refresh(); }
+      catch (err) { btn.disabled = false; toast(apiErrorText(err), "err"); }
+      return;
+    }
     const f = e.target.closest("[data-fb]");
     if (!f) return;
     e.preventDefault();

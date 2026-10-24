@@ -956,6 +956,7 @@ const TOOLBOX = [
   {group:"Support", desc:"When the system isn't enough, a person is.", items:[
     {g:"PG", t:"ProfGermandario", s:"Questions, blocks, feedback, and guidance.", action:"teacher"},
     {g:"Fb", t:"Teacher feedback", s:"ProfGermandario's corrections on your writing.", action:"feedback", pro:true},
+    {g:"✉", t:"Messages", s:"Notes from ProfGermandario, just for you.", action:"messages"},
     {g:"Ma", t:"Student Manual", s:"Your complete program reference.", url:CONFIG.manual},
     {g:"Pl", t:"Membership", s:"Your program, your access code, and your devices.", action:"plan"},
     {g:"Da", t:"My data", s:"Export, import, or reset your progress.", action:"data"},
@@ -1321,7 +1322,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "11.2";
+const APP_VERSION = "11.3";
 
 function defaultState(){
   return {
@@ -1339,7 +1340,9 @@ function defaultState(){
     /* 11.1 — Report Studio */
     reportLog:[],
     /* 11.2 — Teacher link: ProfGermandario's feedback on each writing */
-    teacherFeedback:{}
+    teacherFeedback:{},
+    /* 11.3 — direct messages from ProfGermandario */
+    teacherMessages:{}
   };
 }
 function migrate(raw){
@@ -1355,6 +1358,7 @@ function migrate(raw){
   s.myTexts = s.myTexts.filter(t=>t && t.id && t.title && typeof t.body==="string");
   if(!s.days || typeof s.days!=="object" || Array.isArray(s.days)) s.days = {};
   if(!s.teacherFeedback || typeof s.teacherFeedback!=="object" || Array.isArray(s.teacherFeedback)) s.teacherFeedback = {};
+  if(!s.teacherMessages || typeof s.teacherMessages!=="object" || Array.isArray(s.teacherMessages)) s.teacherMessages = {};
   Object.keys(s.days).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.days[k] || typeof s.days[k]!=="object") delete s.days[k]; });
   /* class notes from the first 11.0 build become day notes */
   Object.values(s.classRecords).forEach(r=>{ if((r.notes||"").trim()){ const d = s.days[r.date] || (s.days[r.date] = {}); d.note = d.note ? d.note+"\n"+r.notes : r.notes; } delete r.notes; });
@@ -3126,7 +3130,7 @@ async function redeemLink(code){
   toast("Checking your access code…");
   const r = await PGA.redeem(code);
   $("#toast").classList.remove("show");
-  if(r.ok){ if(state.onboarded) welcomeSheet(r.status); else toast(r.status.name+" unlocked. Let's set up your journal."); }
+  if(r.ok){ if(state.onboarded) welcomeSheet(r.status); else toast(r.status.name+" unlocked. Let's set up your journal."); setTimeout(checkInbox, 600); }
   else toast(codeErrorText(r));
 }
 function paintTierChip(){
@@ -3150,6 +3154,8 @@ var SYNC = null; /* var on purpose: save() can run before this block initialises
 const SYNC_EVERY = 3*60*1000, SYNC_BUDGET = 450000;
 function syncMeta(){ let m = null; try{ m = JSON.parse(localStorage.getItem(SYNC_KEY)||"null"); }catch(e){} m = m && typeof m==="object" ? m : {}; if(!m.t || typeof m.t!=="object") m.t = {}; if(!m.d || typeof m.d!=="object") m.d = {}; return m; }
 function setSyncMeta(m){ try{ localStorage.setItem(SYNC_KEY, JSON.stringify(m)); }catch(e){} }
+/* Save without scheduling a sync (for things that came from the server). */
+function persistQuiet(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
 function fp(str){ let h = 0x811c9dc5; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return (h>>>0).toString(36)+"."+str.length; }
 const canShare = () => { const s = access(); return !!(s.server && s.member && s.canShare && !s.teacher && PGA.api && PGA.token); };
 const sharingOn = () => canShare() && !!access().sharing;
@@ -3242,7 +3248,7 @@ function takeFeedback(list){
     const old = F[f.id];
     if(!old || old.text!==f.feedback){ F[f.id] = {text:f.feedback, at:f.at, read:false}; fresh++; }
   });
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  persistQuiet();
   if(fresh){ toast("ProfGermandario left feedback on "+fresh+" of your texts."); repaint(); }
 }
 const unreadFeedback = () => Object.values(state.teacherFeedback||{}).filter(f=>!f.read).length;
@@ -3267,8 +3273,54 @@ function feedbackSheet(){
                             : `<p class="muted">Share your journal with ProfGermandario and his feedback on your writing will appear here.</p>${canShare()?`<button class="btn block mt" data-act="shareAsk">Share my journal</button>`:""}`)}`);
   let changed = false;
   ids.forEach(id=>{ if(!F[id].read){ F[id].read = true; changed = true; } });
-  if(changed){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} repaint(); }
+  if(changed){ persistQuiet(); repaint(); }
 }
+/* ---------- Direct messages from ProfGermandario ----------
+   Written in his panel, delivered when the journal opens. Receiving them
+   doesn't need sharing to be on: it only needs a code from his panel. */
+const canUseInbox = () => { const s = access(); return !!(s.server && s.canShare && !s.teacher && (s.state==="active" || s.state==="expired") && PGA.api && PGA.token); };
+const inboxList = () => Object.keys(state.teacherMessages||{}).map(id=>Object.assign({id}, state.teacherMessages[id])).sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+const unreadMessages = () => inboxList().filter(m=>!m.read).length;
+const fmtWhen = iso => { try{ return new Date(iso).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }catch(e){ return ""; } };
+async function checkInbox(){
+  if(!SYNC || SYNC.inbox || !canUseInbox() || navigator.onLine===false) return false;
+  const tok = PGA.token(); if(!tok) return false;
+  const M = state.teacherMessages, toAck = Object.keys(M).filter(id=>M[id].read && !M[id].acked).slice(0,200);
+  SYNC.inbox = true;
+  try{
+    const r = await PGA.api("sms_journal_inbox", {p_token:tok, p_read:toAck});
+    if(PGA.applyServer) PGA.applyServer(r);
+    if(!r || !r.ok || !Array.isArray(r.messages)) return false;
+    const next = {}; let fresh = 0;
+    r.messages.forEach(m=>{
+      const old = M[m.id], read = !!(m.read || (old && old.read));
+      next[m.id] = {body:m.body, at:m.at, read, acked:!!m.read};
+      if(!read) fresh++;
+    });
+    const changed = JSON.stringify(next)!==JSON.stringify(M);
+    state.teacherMessages = next;
+    if(changed) persistQuiet();
+    if(fresh){
+      const busy = $("#scrim").classList.contains("open") || document.body.classList.contains("in-lesson") || document.body.classList.contains("in-onboarding");
+      if(busy) repaint(); else messagesSheet();
+    } else if(changed) repaint();
+    return true;
+  }catch(e){ return false; }
+  finally{ SYNC.inbox = false; }
+}
+function messagesSheet(){
+  const L = inboxList();
+  openSheet(`${sheetHead("Messages", "From ProfGermandario, just for you.")}
+    ${L.length ? L.map(m=>`<article class="panel" style="margin-top:12px">
+        <div class="meta-row" style="margin-top:0">${m.read?"":`<span class="pill gold">New</span>`}<span class="small muted">ProfGermandario · ${esc(fmtWhen(m.at))}</span></div>
+        <div class="mt-s" style="white-space:pre-wrap">${esc(m.body)}</div></article>`).join("")
+      : `<p class="muted">No messages yet. When ProfGermandario writes to you, it appears here.</p>`}
+    <div class="stack mt"><a class="btn-line" style="width:100%" href="${waLink("Hola Profe, soy "+(state.name||"tu estudiante")+". Sobre tu mensaje: ")}" target="_blank" rel="noopener">${ICON_WA} Reply on WhatsApp</a></div>`);
+  let changed = false;
+  Object.values(state.teacherMessages||{}).forEach(m=>{ if(!m.read){ m.read = true; changed = true; } });
+  if(changed){ persistQuiet(); repaint(); setTimeout(checkInbox, 800); }
+}
+
 function shareBlock(fromWelcome){
   return `<div class="panel">
     <p class="kicker">Your teacher, closer</p>
@@ -3288,6 +3340,8 @@ function shareRow(s){
     : `<div class="well small"><b>Not shared with ProfGermandario</b><br><span class="muted">Share your journal so he can follow your progress and correct your writing.</span><div class="mt-s"><button class="btn-line" data-act="shareAsk">Share my journal</button></div></div>`;
 }
 function teacherStrip(){
+  const um = unreadMessages();
+  if(um) return `<button class="panel note mt" style="width:100%;text-align:left" data-act="messages"><span class="dot"></span><span><b>${um===1?"New message":um+" new messages"} from ProfGermandario</b><br><span class="muted small">Tap to read.</span></span></button>`;
   if(!isMember()) return "";
   const n = unreadFeedback();
   if(n) return `<button class="panel note mt" style="width:100%;text-align:left" data-act="feedback"><span class="dot"></span><span><b>ProfGermandario left feedback on ${n} of your texts</b><br><span class="muted small">Open it to see his corrections.</span></span></button>`;
@@ -3309,9 +3363,9 @@ async function setSharing(on){
 function startSync(){
   if(SYNC) return;
   SYNC = {busy:false, timer:null};
-  const kick = () => { if(PGA.refresh) PGA.refresh(false).then(()=>{ if(sharingOn()) syncNow(); }, ()=>{}); };
-  setTimeout(kick, 1500);
-  setInterval(()=>{ if(!document.hidden && sharingOn()) syncNow(); }, SYNC_EVERY);
+  const kick = () => { if(PGA.refresh) PGA.refresh(false).then(()=>{ checkInbox(); if(sharingOn()) syncNow(); }, ()=>{}); };
+  setTimeout(kick, 1200);
+  setInterval(()=>{ if(document.hidden) return; checkInbox(); if(sharingOn()) syncNow(); }, SYNC_EVERY);
   document.addEventListener("visibilitychange", ()=>{ if(document.hidden){ if(sharingOn()) syncNow(); } else kick(); });
   window.addEventListener("online", kick);
 }
@@ -3740,7 +3794,7 @@ const ACT = {
     openExternal(waLink(`Hola Profe, soy ${state.name}. Quiero que revises mis muestras espejo.\n\nPrimera (${fmtDate(a.date)}, ${a.words} palabras):\n${a.text.slice(0,500)}\n\nÚltima (${fmtDate(b.date)}, ${b.words} palabras, hablé ${mmss(b.seconds)}):\n${b.text.slice(0,500)}`)); },
   tool: el => {
     const t = el.dataset.tool;
-    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, feedback:feedbackSheet, plan:()=>membershipSheet(), data:dataSheet, profile:profileSheet})[t]();
+    ({free:freeSheet, shadow:()=>shadowSheet(), quiz:()=>{ quiz=null; quizSheet(); }, texts:()=>textPickerSheet(null,"library"), meditate:meditateSheet, teacher:teacherSheet, feedback:feedbackSheet, messages:messagesSheet, plan:()=>membershipSheet(), data:dataSheet, profile:profileSheet})[t]();
   },
   export: () => {
     const payload = {format:"qkesl", app:"Fluency OS", appVersion:APP_VERSION, version:state.version, exportedAt:nowISO(), data:state};
@@ -4015,7 +4069,7 @@ Object.assign(ACT, {
     const label = el.textContent; el.disabled = true; el.textContent = "Checking…";
     let r; try{ r = await PGA.redeem(v); }catch(e){ r = {ok:false, reason:"secure"}; }
     el.disabled = false; el.textContent = label;
-    if(r.ok){ welcomeSheet(r.status); return; }
+    if(r.ok){ welcomeSheet(r.status); setTimeout(checkInbox, 600); return; }
     if(msg && msg.classList.contains("code-msg")){ msg.textContent = codeErrorText(r); msg.classList.add("bad"); }
     else toast(codeErrorText(r));
     if(box){ box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
@@ -4027,6 +4081,7 @@ Object.assign(ACT, {
   },
   welcomeGo: () => { closeSheet(); go("home"); },
   feedback: () => feedbackSheet(),
+  messages: () => messagesSheet(),
   shareAsk: () => openSheet(`${sheetHead("Share your journal","With ProfGermandario only.")}${shareBlock(false)}`),
   shareYes: async el => {
     el.disabled = true; el.textContent = "Saving…";

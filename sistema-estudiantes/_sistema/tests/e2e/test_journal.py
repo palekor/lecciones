@@ -122,7 +122,7 @@ with sync_playwright() as p:
     check(wait_sql(f"select count(*) from public.sms_journal_reports where student_id = '{stu}' and content like '%Great class today.%'", "1"),
           "el reporte del día llega al servidor")
     check(sql(f"select (stats->>'missions')::int || '|' || streak || '|' || app_version || '|' || (profile->>'level') from public.sms_journal where student_id = '{stu}'")
-          == "2|3|11.2|B1", "avance, racha, versión y perfil guardados")
+          in ("2|3|11.2|B1", "2|3|11.3|B1"), "avance, racha, versión y perfil guardados")
     check(sql(f"select count(*) from public.sms_consents where student_id = '{stu}' and kind = 'journal_sharing' and granted") == "1",
           "consentimiento con fecha y versión del aviso")
 
@@ -177,6 +177,35 @@ with sync_playwright() as p:
     check(wait_sql(f"select count(*) from public.sms_journal_texts where student_id = '{stu}'", "3"), "un escrito nuevo llega al panel")
     check(sql(f"select max(updated_at)::text from public.sms_journal_texts where client_id = 'w-e2e-1'") == before, "los textos sin cambios no se reenvían")
 
+    # ------------------------------------------------ 4b. Mensajes directos del profesor
+    panel.reload(); panel.wait_for_selector("#msg-form")
+    panel.fill("#msg-body", "Valentina, mañana repasamos el pasado simple.\nTrae tu texto de la clase 3.")
+    panel.click("#msg-form button[type=submit]")
+    panel.wait_for_selector("text=Le llega al abrir su journal")
+    check(sql(f"select count(*) from public.sms_journal_messages where student_id = '{stu}'") == "1", "mensaje enviado desde la ficha")
+    panel.fill("#msg-body", "Este lo voy a retirar")
+    panel.click("#msg-form button[type=submit]")
+    panel.wait_for_function("document.querySelectorAll('[data-withdraw]').length === 2")
+    panel.locator("[data-withdraw]").first.click()   # el más reciente
+    panel.wait_for_selector("dialog[open]"); panel.click("dialog[open] footer button[type=submit]")
+    panel.wait_for_selector("text=Retirado")
+    jr.reload()   # el estudiante abre (o vuelve a abrir) su journal
+    jr.wait_for_selector("#scrim.open #sheet:has-text('From ProfGermandario')", timeout=15000)
+    sheet = jr.inner_text("#sheet")
+    check("mañana repasamos el pasado simple" in sheet and "Trae tu texto" in sheet, "al abrir el journal le aparece el mensaje")
+    check("Este lo voy a retirar" not in sheet, "el mensaje retirado no le aparece")
+    check(jr.locator("#sheet a[href^='https://wa.me/']").count() == 1, "puede responder por WhatsApp")
+    jr.wait_for_timeout(500)
+    jr.screenshot(path=f"{SHOTS}/v13-journal-mensaje.png")
+    check(wait_sql(f"select read_at is not null from public.sms_journal_messages where student_id = '{stu}' and withdrawn_at is null", "t"),
+          "el panel registra que lo leyó")
+    jr.keyboard.press("Escape")
+    jr.reload(); jr.wait_for_selector("#view"); jr.wait_for_timeout(2200)
+    check(not jr.locator("#scrim.open").count(), "un mensaje leído no vuelve a abrirse solo")
+    panel.reload(); panel.wait_for_selector("#msg-form")
+    check("Leído" in panel.inner_text("#view"), "la ficha muestra 'Leído'")
+    panel.screenshot(path=f"{SHOTS}/v13-ficha-mensajes.png", full_page=True)
+
     # ------------------------------------------------ 5. Revocar y reactivar llega al dispositivo
     panel.reload()
     panel.wait_for_selector("[data-revoke]")
@@ -218,6 +247,10 @@ with sync_playwright() as p:
     check(wait_sql(f"select sharing from public.sms_journal where student_id = '{stu}'", "f"), "dejar de compartir desde el journal")
     check(sql(f"select count(*) from public.sms_consents where student_id = '{stu}' and kind = 'journal_sharing' and not granted") == "1",
           "el retiro queda registrado")
+    sql(f"insert into public.sms_journal_messages (student_id, body) values ('{stu}', 'Llega aunque no compartas')")
+    n = jr.evaluate("""async () => { for (let i = 0; i < 30 && SYNC.inbox; i++) await new Promise(r => setTimeout(r, 100));
+                         await checkInbox(); return inboxList().filter(m => m.body === 'Llega aunque no compartas').length; }""")
+    check(n == 1, "los mensajes llegan aunque el estudiante no comparta su journal")
     check(not jerrs, "sin errores de JavaScript en el journal: %s" % jerrs[:3])
     jctx.close()
 

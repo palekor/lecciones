@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reservar sesión · ProfGermandario</title>
+  <meta name="description" content="Elige día y hora para tu sesión de diagnóstico de inglés con ProfGermandario.">
+  <meta name="theme-color" content="#16091F">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" href="../profgermandario-logo-clean.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../sistema/sistema.css">
+</head>
+<body>
+<div class="pub">
+  <aside class="pub-aside" aria-label="Cómo funciona">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div>
+      <h1>Elige tu hora. Nosotros preparamos el resto.</h1>
+      <p style="margin-top:14px">En la sesión de diagnóstico medimos cómo hablas hoy y definimos tu ruta. Te confirmamos por WhatsApp.</p>
+    </div>
+    <ol class="journey" data-at="2">
+      <li class="done"><span class="dot">1</span><b>Registro</b><span>Tus datos y tu objetivo</span></li>
+      <li class="now"><span class="dot">2</span><b>Lista de espera o reserva</b><span>Eliges cómo seguir</span></li>
+      <li><span class="dot">3</span><b>Sesión de diagnóstico</b><span>Medimos tu punto de partida</span></li>
+      <li><span class="dot">4</span><b>Tu ruta de 18 pasos</b><span>Empiezas a entrenar</span></li>
+    </ol>
+    <p class="aside-foot">¿Ningún horario te sirve? <a href="../lista-de-espera/">Únete a la lista de espera</a></p>
+  </aside>
+
+  <header class="pub-top">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div class="mini-journey" aria-hidden="true"><i class="done"></i><i class="now"></i><i></i><i></i></div>
+    <p class="mini-label">Paso 2 de 4: reserva tu sesión</p>
+  </header>
+
+  <main class="pub-main">
+    <div class="pub-col" id="app">
+      <h2 id="title">Reserva tu sesión de diagnóstico</h2>
+      <p class="lede" id="lede">Los horarios se muestran en tu zona horaria.</p>
+      <div class="loading" id="loading"><span class="spinner" aria-hidden="true"></span> Buscando horarios disponibles…</div>
+
+      <form id="form" class="form-card" novalidate hidden>
+        <div id="form-alert" class="form-alert err" role="alert" hidden></div>
+        <fieldset>
+          <legend>Día y hora</legend>
+          <div class="field" id="types-wrap" hidden>
+            <span class="label" id="lbl-types">Tipo de sesión</span>
+            <div class="chips" id="types" role="radiogroup" aria-labelledby="lbl-types"></div>
+          </div>
+          <div class="field" data-field="slot">
+            <div class="days-strip" id="days" role="group" aria-label="Días con horarios"></div>
+            <div class="times" id="times" role="group" aria-label="Horas disponibles"></div>
+            <p class="tz-note" id="tz-note"></p>
+            <p class="picked" id="picked" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset id="contact-set">
+          <legend>Tus datos</legend>
+          <div class="field" data-field="full_name">
+            <label for="full_name">Nombre completo</label>
+            <input class="input" id="full_name" name="full_name" autocomplete="name" maxlength="120">
+          </div>
+          <div class="grid2">
+            <div class="field" data-field="email">
+              <label for="email">Correo electrónico</label>
+              <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254">
+            </div>
+            <div class="field" data-field="country">
+              <label for="country">País</label>
+              <select class="input" id="country" name="country" autocomplete="country"></select>
+            </div>
+          </div>
+          <div class="field" data-field="whatsapp">
+            <label for="whatsapp">WhatsApp con indicativo</label>
+            <input class="input" id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" placeholder="+57 300 123 4567">
+          </div>
+        </fieldset>
+
+        <p class="form-alert info" id="as-ref" hidden></p>
+
+        <fieldset>
+          <legend>Mensaje <span class="opt" style="font-weight:600;color:var(--muted)">(opcional)</span></legend>
+          <div class="field" data-field="message">
+            <label for="message" class="sr-only">Mensaje</label>
+            <textarea class="input" id="message" name="message" maxlength="500" placeholder="¿Algo que debamos saber antes de la sesión?"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset id="consent-set">
+          <legend>Privacidad</legend>
+          <div id="consent"></div>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true"><label for="website">Sitio web</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="form-alert info" id="policy" hidden></p>
+        <button class="btn btn-primary btn-block" id="submit" type="submit" disabled>Elige un horario</button>
+      </form>
+
+      <section id="done" hidden></section>
+    </div>
+  </main>
+</div>
+<script type="module" src="../sistema/reservar.js"></script>
+</body>
+</html>

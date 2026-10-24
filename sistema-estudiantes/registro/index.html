@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Registro · ProfGermandario</title>
+  <meta name="description" content="Regístrate para empezar tu proceso de inglés con ProfGermandario: lista de espera o reserva de tu sesión de diagnóstico.">
+  <meta name="theme-color" content="#16091F">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" href="../profgermandario-logo-clean.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../sistema/sistema.css">
+</head>
+<body>
+<div class="pub">
+  <aside class="pub-aside" aria-label="Cómo funciona">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div>
+      <h1>Tu inglés empieza con un buen diagnóstico.</h1>
+      <p style="margin-top:14px">Cuéntanos dónde estás y a dónde quieres llegar. Con eso preparamos tu ruta.</p>
+    </div>
+    <ol class="journey" data-at="1">
+      <li class="now"><span class="dot">1</span><b>Registro</b><span>Tus datos y tu objetivo</span></li>
+      <li><span class="dot">2</span><b>Lista de espera o reserva</b><span>Eliges cómo seguir</span></li>
+      <li><span class="dot">3</span><b>Sesión de diagnóstico</b><span>Medimos tu punto de partida</span></li>
+      <li><span class="dot">4</span><b>Tu ruta de 18 pasos</b><span>Empiezas a entrenar</span></li>
+    </ol>
+    <p class="aside-foot">¿Prefieres hablar primero? <a href="https://wa.me/573197894038" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></p>
+  </aside>
+
+  <header class="pub-top">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div class="mini-journey" aria-hidden="true"><i class="now"></i><i></i><i></i><i></i></div>
+    <p class="mini-label" id="mini-label">Paso 1 de 4 · Registro</p>
+  </header>
+
+  <main class="pub-main">
+    <div class="pub-col" id="app">
+      <h2>Regístrate</h2>
+      <p class="lede">Toma unos 3 minutos. Usamos tus respuestas para recomendarte el formato y el horario adecuados.</p>
+      <div class="loading" id="loading"><span class="spinner" aria-hidden="true"></span> Cargando el formulario…</div>
+
+      <form id="form" class="form-card" novalidate hidden>
+        <div id="form-alert" class="form-alert err" role="alert" hidden></div>
+
+        <fieldset>
+          <legend>Tus datos</legend>
+          <p class="legend-hint">Te contactaremos por el medio que prefieras.</p>
+          <div class="field" data-field="full_name">
+            <label for="full_name">Nombre completo</label>
+            <input class="input" id="full_name" name="full_name" autocomplete="name" maxlength="120" required>
+          </div>
+          <div class="field" data-field="email">
+            <label for="email">Correo electrónico</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required>
+          </div>
+          <div class="grid2">
+            <div class="field" data-field="country">
+              <label for="country">País</label>
+              <select class="input" id="country" name="country" autocomplete="country" required></select>
+            </div>
+            <div class="field" data-field="timezone">
+              <label for="timezone">Zona horaria</label>
+              <select class="input" id="timezone" name="timezone"></select>
+            </div>
+          </div>
+          <div class="field" data-field="whatsapp">
+            <label for="whatsapp">WhatsApp con indicativo</label>
+            <input class="input" id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" placeholder="+57 300 123 4567" required>
+            <p class="help">Incluye el indicativo de tu país. Lo proponemos al elegir el país.</p>
+          </div>
+          <div class="field" data-field="occupation">
+            <label for="occupation">Ocupación o profesión <span class="opt">(opcional)</span></label>
+            <input class="input" id="occupation" name="occupation" autocomplete="organization-title" maxlength="120" placeholder="Ej.: contadora, ingeniero de software, estudiante">
+          </div>
+          <div class="field" data-field="preferred_contact">
+            <span class="label" id="lbl-contact">¿Cómo prefieres que te contactemos?</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-contact" data-chips="preferred_contact" data-group="contact"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Tu inglés hoy</legend>
+          <p class="legend-hint">No hay respuestas incorrectas: es para ubicarte bien.</p>
+          <div class="field" data-field="english_level">
+            <span class="label" id="lbl-level">Nivel de inglés</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-level" data-chips="english_level" data-group="level"></div>
+          </div>
+          <div class="field" data-field="objective">
+            <span class="label" id="lbl-obj">Objetivo principal</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-obj" data-chips="objective" data-group="objective"></div>
+          </div>
+          <div class="field" data-field="objective_other" id="objective-other-wrap" hidden>
+            <label for="objective_other">¿Cuál es tu objetivo?</label>
+            <input class="input" id="objective_other" name="objective_other" maxlength="200">
+          </div>
+          <div class="field" data-field="preferred_format">
+            <span class="label" id="lbl-fmt">Formato preferido</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-fmt" data-chips="preferred_format" data-group="format"></div>
+          </div>
+          <div class="field" data-field="urgency">
+            <span class="label" id="lbl-urg">¿Para cuándo necesitas avanzar? <span class="opt">(opcional)</span></span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-urg" data-chips="urgency" data-group="urgency"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Tu disponibilidad</legend>
+          <p class="legend-hint">Marca los días y franjas en los que normalmente puedes entrenar.</p>
+          <div class="field" data-field="availability">
+            <span class="label" id="lbl-days">Días</span>
+            <div class="chips days" role="group" aria-labelledby="lbl-days" data-checks="av_day" data-group="day"></div>
+            <span class="label" id="lbl-times" style="margin-top:12px">Franjas</span>
+            <div class="chips" role="group" aria-labelledby="lbl-times" data-checks="av_time" data-group="time"></div>
+            <label for="av_notes" style="margin-top:12px;font-weight:600">Detalles <span class="opt">(opcional)</span></label>
+            <input class="input" id="av_notes" name="av_notes" maxlength="300" placeholder="Ej.: martes y jueves después de las 7 p. m.">
+          </div>
+        </fieldset>
+
+        <fieldset id="optional-set">
+          <legend>Algo más <span class="opt" style="font-weight:600;color:var(--muted)">(opcional)</span></legend>
+          <div class="field" data-field="professional_goals" data-optional="professional_goals">
+            <label for="professional_goals">Metas profesionales específicas</label>
+            <textarea class="input" id="professional_goals" name="professional_goals" maxlength="1000" placeholder="Ej.: presentar resultados en inglés a mi equipo en Estados Unidos"></textarea>
+          </div>
+          <div class="field" data-field="comments" data-optional="comments">
+            <label for="comments">Comentarios adicionales</label>
+            <textarea class="input" id="comments" name="comments" maxlength="1000" placeholder="¿Qué te bloquea hoy cuando hablas inglés?"></textarea>
+          </div>
+          <div class="field" data-field="referral_source" data-optional="referral_source">
+            <label for="referral_source">¿Cómo nos conociste?</label>
+            <select class="input" id="referral_source" name="referral_source"></select>
+          </div>
+          <div id="extra-questions"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Privacidad</legend>
+          <div id="consent"></div>
+        </fieldset>
+
+        <!-- Campo trampa para bots: las personas no lo ven ni lo llenan. -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Sitio web</label>
+          <input id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary btn-block" id="submit" type="submit">Enviar mi registro</button>
+      </form>
+
+      <section id="done" hidden></section>
+    </div>
+  </main>
+</div>
+<script type="module" src="../sistema/registro.js"></script>
+</body>
+</html>

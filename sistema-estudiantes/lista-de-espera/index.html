@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lista de espera · ProfGermandario</title>
+  <meta name="description" content="Únete a la lista de espera de ProfGermandario y te avisamos apenas se abra un cupo.">
+  <meta name="theme-color" content="#16091F">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" href="../profgermandario-logo-clean.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../sistema/sistema.css">
+</head>
+<body>
+<div class="pub">
+  <aside class="pub-aside" aria-label="Cómo funciona">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div>
+      <h1>Los cupos 1:1 son limitados. Tu lugar, no.</h1>
+      <p style="margin-top:14px">Entras a la lista en orden de registro y te avisamos por WhatsApp cuando haya un espacio para ti.</p>
+    </div>
+    <ol class="journey" data-at="2">
+      <li class="done"><span class="dot">1</span><b>Registro</b><span>Tus datos y tu objetivo</span></li>
+      <li class="now"><span class="dot">2</span><b>Lista de espera o reserva</b><span>Eliges cómo seguir</span></li>
+      <li><span class="dot">3</span><b>Sesión de diagnóstico</b><span>Medimos tu punto de partida</span></li>
+      <li><span class="dot">4</span><b>Tu ruta de 18 pasos</b><span>Empiezas a entrenar</span></li>
+    </ol>
+    <p class="aside-foot">¿Prefieres elegir un horario ya? <a href="../reservar/">Ver horarios disponibles</a></p>
+  </aside>
+
+  <header class="pub-top">
+    <a class="brandmark" href="../embudo.html"><img src="../profgermandario-logo-clean.png" alt="ProfGermandario"></a>
+    <div class="mini-journey" aria-hidden="true"><i class="done"></i><i class="now"></i><i></i><i></i></div>
+    <p class="mini-label">Paso 2 de 4: lista de espera</p>
+  </header>
+
+  <main class="pub-main">
+    <div class="pub-col" id="app">
+      <div class="loading" id="loading"><span class="spinner" aria-hidden="true"></span> Cargando…</div>
+
+      <!-- Modo 1: viene del registro (un toque) -->
+      <section id="quick" hidden>
+        <h2 id="quick-title">¿Te sumamos a la lista de espera?</h2>
+        <p class="lede">Ya tenemos tus datos del registro. Solo confirma y te guardamos el lugar.</p>
+        <div class="form-card">
+          <div id="quick-alert" class="form-alert err" role="alert" hidden></div>
+          <button class="btn btn-primary btn-block" id="quick-btn" type="button">Unirme a la lista de espera</button>
+          <p class="help" style="margin:12px 0 0;color:var(--muted);font-size:14px">¿No eres tú? <a href="#" id="not-me">Usa el formulario</a>.</p>
+        </div>
+      </section>
+
+      <!-- Modo 2: formulario dedicado, solo lo necesario -->
+      <section id="full" hidden>
+        <h2>Únete a la lista de espera</h2>
+        <p class="lede">Solo pedimos lo necesario para avisarte cuando se abra tu cupo. ¿Quieres contarnos más? <a href="../registro/">Haz el registro completo</a>.</p>
+        <form id="form" class="form-card" novalidate>
+          <div id="form-alert" class="form-alert err" role="alert" hidden></div>
+          <fieldset>
+            <legend>Tus datos</legend>
+            <div class="field" data-field="full_name">
+              <label for="full_name">Nombre completo</label>
+              <input class="input" id="full_name" name="full_name" autocomplete="name" maxlength="120" required>
+            </div>
+            <div class="grid2">
+              <div class="field" data-field="email">
+                <label for="email">Correo electrónico</label>
+                <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required>
+              </div>
+              <div class="field" data-field="country">
+                <label for="country">País</label>
+                <select class="input" id="country" name="country" autocomplete="country" required></select>
+              </div>
+            </div>
+            <div class="field" data-field="whatsapp">
+              <label for="whatsapp">WhatsApp con indicativo</label>
+              <input class="input" id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" placeholder="+57 300 123 4567" required>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Lo que buscas</legend>
+            <div class="field" data-field="objective">
+              <span class="label" id="lbl-obj">Objetivo principal</span>
+              <div class="chips" role="radiogroup" aria-labelledby="lbl-obj" data-chips="objective" data-group="objective"></div>
+            </div>
+            <div class="field" data-field="objective_other" id="objective-other-wrap" hidden>
+              <label for="objective_other">¿Cuál es tu objetivo?</label>
+              <input class="input" id="objective_other" name="objective_other" maxlength="200">
+            </div>
+            <div class="field" data-field="preferred_format">
+              <span class="label" id="lbl-fmt">Formato preferido</span>
+              <div class="chips" role="radiogroup" aria-labelledby="lbl-fmt" data-chips="preferred_format" data-group="format"></div>
+            </div>
+            <div class="field" data-field="urgency">
+              <span class="label" id="lbl-urg">¿Para cuándo necesitas avanzar? <span class="opt">(opcional)</span></span>
+              <div class="chips" role="radiogroup" aria-labelledby="lbl-urg" data-chips="urgency" data-group="urgency"></div>
+            </div>
+            <div class="field" data-field="availability">
+              <span class="label" id="lbl-days">Días disponibles</span>
+              <div class="chips days" role="group" aria-labelledby="lbl-days" data-checks="av_day" data-group="day"></div>
+              <span class="label" id="lbl-times" style="margin-top:12px">Franjas</span>
+              <div class="chips" role="group" aria-labelledby="lbl-times" data-checks="av_time" data-group="time"></div>
+              <label for="av_notes" style="margin-top:12px;font-weight:600">Detalles <span class="opt">(opcional)</span></label>
+              <input class="input" id="av_notes" name="av_notes" maxlength="300">
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Privacidad</legend>
+            <div id="consent"></div>
+          </fieldset>
+          <div class="hp" aria-hidden="true"><label for="website">Sitio web</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+          <button class="btn btn-primary btn-block" id="submit" type="submit">Unirme a la lista de espera</button>
+        </form>
+      </section>
+
+      <section id="done" hidden></section>
+    </div>
+  </main>
+</div>
+<script type="module" src="../sistema/lista.js"></script>
+</body>
+</html>

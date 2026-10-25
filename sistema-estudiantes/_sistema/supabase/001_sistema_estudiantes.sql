@@ -1,5 +1,5 @@
 -- =====================================================================
---  ProfGermandario · Sistema de Gestión de Estudiantes (SMS) · v1.3
+--  ProfGermandario · Sistema de Gestión de Estudiantes (SMS) · v1.4
 --  Migración 001 — esquema completo (instala desde cero o actualiza
 --  una instalación anterior sin perder datos; se puede re-ejecutar)
 --
@@ -577,6 +577,20 @@ create table if not exists public.sms_journal_messages (
   withdrawn_at  timestamptz
 );
 create index if not exists sms_journal_messages_student_idx on public.sms_journal_messages (student_id, created_at desc);
+
+-- Entradas al journal (v1.4): una fila por estudiante y día, solo de quienes
+-- comparten su journal. Sesión nueva si pasaron más de 7 minutos sin señal;
+-- el tiempo activo es aproximado (el journal envía cada ~3 min mientras está abierto).
+create table if not exists public.sms_journal_visits (
+  student_id      uuid not null references public.sms_students(id) on delete cascade,
+  day             date not null,
+  first_at        timestamptz not null default now(),
+  last_at         timestamptz not null default now(),
+  sessions        int not null default 1 check (sessions >= 0),
+  active_seconds  int not null default 0 check (active_seconds >= 0),
+  primary key (student_id, day)
+);
+create index if not exists sms_journal_visits_last_idx on public.sms_journal_visits (last_at desc);
 
 
 -- ---------------------------------------------------------------------
@@ -1845,6 +1859,7 @@ begin
     'journal', (select to_jsonb(j) - 'code_id' from public.sms_journal j where j.student_id = p_id),
     'journal_texts', coalesce((select jsonb_agg(to_jsonb(x) - 'feedback_by' order by x.written_at) from public.sms_journal_texts x where x.student_id = p_id), '[]'::jsonb),
     'journal_reports', coalesce((select jsonb_agg(to_jsonb(x) order by x.day) from public.sms_journal_reports x where x.student_id = p_id), '[]'::jsonb),
+    'journal_visits', coalesce((select jsonb_agg(to_jsonb(x) order by x.day) from public.sms_journal_visits x where x.student_id = p_id), '[]'::jsonb),
     'journal_messages', coalesce((select jsonb_agg(jsonb_build_object('message', x.body, 'sent_at', x.created_at, 'read_at', x.read_at) order by x.created_at)
                           from public.sms_journal_messages x where x.student_id = p_id and x.withdrawn_at is null), '[]'::jsonb),
     'activity', coalesce((select jsonb_agg(jsonb_build_object('kind', a.kind, 'summary', a.summary, 'at', a.created_at) order by a.created_at)
@@ -1893,6 +1908,7 @@ begin
   delete from public.sms_journal_reports where student_id = p_id;
   delete from public.sms_journal where student_id = p_id;
   delete from public.sms_journal_messages where student_id = p_id;
+  delete from public.sms_journal_visits where student_id = p_id;
   delete from public.sms_activity where student_id = p_id and kind = 'journal';
   insert into public.sms_activity (student_id, kind, summary) values (p_id, 'system', 'Datos personales eliminados a solicitud');
   return jsonb_build_object('ok', true);
@@ -1926,6 +1942,11 @@ begin
   update public.sms_outbox set student_id = p_keep where student_id = p_drop;
   update public.sms_access_codes set student_id = p_keep where student_id = p_drop;
   update public.sms_journal_messages set student_id = p_keep where student_id = p_drop;
+  insert into public.sms_journal_visits (student_id, day, first_at, last_at, sessions, active_seconds)
+    select p_keep, day, first_at, last_at, sessions, active_seconds from public.sms_journal_visits where student_id = p_drop
+  on conflict (student_id, day) do update set
+    first_at = least(public.sms_journal_visits.first_at, excluded.first_at), last_at = greatest(public.sms_journal_visits.last_at, excluded.last_at),
+    sessions = public.sms_journal_visits.sessions + excluded.sessions, active_seconds = public.sms_journal_visits.active_seconds + excluded.active_seconds;
   insert into public.sms_journal (student_id, code_id, sharing, consent_at, withdrawn_at, app_version, journal_name, profile, stats,
                                   streak, last_active_day, current_mission, completed_missions, last_seen_at, last_sync_at)
     select p_keep, code_id, sharing, consent_at, withdrawn_at, app_version, journal_name, profile, stats,
@@ -2128,7 +2149,7 @@ declare out jsonb;
 begin
   perform public.sms__require_admin();
   select jsonb_build_object(
-    'format', 'profgermandario-sms-backup', 'version', '1.3', 'exported_at', now(),
+    'format', 'profgermandario-sms-backup', 'version', '1.4', 'exported_at', now(),
     'settings',           (select data from public.sms_settings where id = 1),
     'staff',              coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_staff x), '[]'),
     'staff_invites',      coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_staff_invites x), '[]'),
@@ -2153,7 +2174,8 @@ begin
     'journal',            coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal x), '[]'),
     'journal_texts',      coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal_texts x), '[]'),
     'journal_reports',    coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal_reports x), '[]'),
-    'journal_messages',   coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal_messages x), '[]')
+    'journal_messages',   coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal_messages x), '[]'),
+    'journal_visits',     coalesce((select jsonb_agg(to_jsonb(x)) from public.sms_journal_visits x), '[]')
   ) into out;
   insert into public.sms_activity (kind, summary, data)
   values ('export', 'Respaldo completo descargado', jsonb_build_object('entity', 'backup'));
@@ -2366,6 +2388,14 @@ begin
   end if;
 
   update public.sms_access_devices set last_seen_at = now() where id = d.device_id;
+  insert into public.sms_journal_visits (student_id, day) values (d.student_id, today)
+  on conflict (student_id, day) do update set
+    sessions       = public.sms_journal_visits.sessions
+                     + case when now() - public.sms_journal_visits.last_at > interval '7 minutes' then 1 else 0 end,
+    active_seconds = public.sms_journal_visits.active_seconds
+                     + case when now() - public.sms_journal_visits.last_at <= interval '7 minutes'
+                            then greatest(0, extract(epoch from now() - public.sms_journal_visits.last_at)::int) else 0 end,
+    last_at        = now();
   update public.sms_journal set
     code_id         = d.code_id,
     app_version     = coalesce(public.sms__clean_text(p->>'app', 20), app_version),
@@ -2592,6 +2622,7 @@ begin
   perform public.sms__require_admin();
   delete from public.sms_journal_texts where student_id = p_student; get diagnostics n_t = row_count;
   delete from public.sms_journal_reports where student_id = p_student; get diagnostics n_r = row_count;
+  delete from public.sms_journal_visits where student_id = p_student;
   update public.sms_journal set sharing = false, withdrawn_at = coalesce(withdrawn_at, now()), profile = '{}'::jsonb, stats = '{}'::jsonb,
          streak = null, last_active_day = null, current_mission = null, completed_missions = '{}', journal_name = null
    where student_id = p_student;
@@ -2599,6 +2630,49 @@ begin
   values (p_student, 'journal', 'Datos del journal borrados en el servidor (' || n_t || ' textos, ' || n_r || ' reportes)',
           jsonb_build_object('texts', n_t, 'reports', n_r));
   return jsonb_build_object('ok', true, 'texts', n_t, 'reports', n_r);
+end $$;
+
+-- Tablero del journal: todos los estudiantes con código o journal, su acceso,
+-- su progreso y sus entradas (solo de quienes comparten), y las entradas recientes.
+create or replace function public.sms_journal_board(p_days int default 14) returns jsonb
+language plpgsql stable security definer set search_path = public, pg_temp as $$
+declare today date := public.sms__today(); n int := least(greatest(coalesce(p_days, 14), 1), 60);
+begin
+  perform public.sms__require_staff();
+  return jsonb_build_object(
+    'today', today, 'days', n,
+    'students', coalesce((select jsonb_agg(x order by x.last_seen desc nulls last, x.full_name) from (
+      select s.id as student_id, s.full_name, s.status,
+             c.id as code_id, c.code, c.tier, c.valid_until, c.status as code_status,
+             (select count(*) from public.sms_access_devices dv join public.sms_access_codes cc on cc.id = dv.code_id
+               where cc.student_id = s.id and dv.revoked_at is null) as devices,
+             coalesce(j.sharing, false) as sharing,
+             case when j.sharing then j.last_seen_at end as last_seen,
+             case when j.sharing then j.streak end as streak,
+             case when j.sharing then cardinality(j.completed_missions) end as missions,
+             case when j.sharing then j.current_mission end as current_mission,
+             case when j.sharing then jsonb_build_object('stars', j.stats->'stars', 'classes', j.stats->'classesAttended',
+                    'minutes_spoken', round(coalesce((j.stats->>'secs')::numeric, 0) / 60), 'words', j.stats->'words',
+                    'writings', j.stats->'samples') end as stats,
+             (select count(*) from public.sms_journal_texts t where t.student_id = s.id and t.feedback_at is null) as texts_pending,
+             case when j.sharing then coalesce((select jsonb_agg(jsonb_build_object('day', v.day, 'sessions', v.sessions,
+                    'minutes', round(v.active_seconds / 60.0), 'first', v.first_at, 'last', v.last_at) order by v.day)
+                    from public.sms_journal_visits v where v.student_id = s.id and v.day > today - n), '[]'::jsonb)
+                  else '[]'::jsonb end as visits
+        from public.sms_students s
+        left join lateral (select * from public.sms_access_codes c where c.student_id = s.id
+                            order by (c.status = 'active' and (c.valid_until is null or c.valid_until >= today)) desc, c.created_at desc
+                            limit 1) c on true
+        left join public.sms_journal j on j.student_id = s.id
+       where s.anonymized_at is null and (c.id is not null or j.student_id is not null)) x), '[]'::jsonb),
+    'entries', coalesce((select jsonb_agg(jsonb_build_object('student_id', v.student_id, 'full_name', v.full_name, 'day', v.day,
+                  'first', v.first_at, 'last', v.last_at, 'sessions', v.sessions, 'minutes', round(v.active_seconds / 60.0))
+                  order by v.last_at desc)
+        from (select v.*, s.full_name from public.sms_journal_visits v
+                join public.sms_students s on s.id = v.student_id
+                join public.sms_journal j on j.student_id = v.student_id and j.sharing
+               where v.day > today - 7 order by v.last_at desc limit 80) v), '[]'::jsonb)
+  );
 end $$;
 
 -- Resumen para Inicio y Estudiantes.
@@ -2611,6 +2685,8 @@ begin
   return jsonb_build_object(
     'online_now',   (select count(*) from public.sms_journal where sharing and last_seen_at > now() - interval '7 minutes'),
     'active_today', (select count(*) from public.sms_journal where sharing and last_seen_at >= day_start),
+    'active_7d',    (select count(distinct v.student_id) from public.sms_journal_visits v join public.sms_journal j on j.student_id = v.student_id and j.sharing
+                      where v.day > today - 7),
     'codes_expiring_7d', (select count(*) from public.sms_access_codes
                            where status = 'active' and valid_until between today and today + 7),
     'codes_expired_30d', (select count(*) from public.sms_access_codes c
@@ -2955,7 +3031,7 @@ do $$ declare t text; begin
     'sms_leads','sms_consents','sms_submissions','sms_rate_events','sms_journey_steps','sms_progress',
     'sms_availability_rules','sms_availability_exceptions','sms_bookings','sms_payments','sms_activity','sms_notifications',
     'sms_session_types','sms_tasks','sms_assessments','sms_outbox',
-    'sms_access_codes','sms_access_devices','sms_journal','sms_journal_texts','sms_journal_reports','sms_journal_messages'] loop
+    'sms_access_codes','sms_access_devices','sms_journal','sms_journal_texts','sms_journal_reports','sms_journal_messages','sms_journal_visits'] loop
     execute format('alter table public.%I enable row level security', t);
   end loop;
 end $$;
@@ -3020,7 +3096,7 @@ create policy sms_outbox_sel on public.sms_outbox for select to authenticated
 -- Acceso y journal: el equipo lee; los cambios solo pasan por las funciones
 -- sms_access_* y sms_journal_* (que validan rol y dejan historial).
 do $$ declare t text; begin
-  foreach t in array array['sms_access_codes','sms_access_devices','sms_journal','sms_journal_texts','sms_journal_reports','sms_journal_messages'] loop
+  foreach t in array array['sms_access_codes','sms_access_devices','sms_journal','sms_journal_texts','sms_journal_reports','sms_journal_messages','sms_journal_visits'] loop
     execute format('create policy %I on public.%I for select to authenticated using ((select public.sms_is_staff()))', t || '_sel', t);
   end loop;
 end $$;
@@ -3053,7 +3129,8 @@ do $$ declare r record; begin
 end $$;
 revoke insert, update, delete on public.sms_settings, public.sms_consents, public.sms_outbox from authenticated;
 revoke insert, update, delete on public.sms_access_codes, public.sms_access_devices, public.sms_journal,
-                                 public.sms_journal_texts, public.sms_journal_reports, public.sms_journal_messages from authenticated;
+                                 public.sms_journal_texts, public.sms_journal_reports, public.sms_journal_messages,
+                                 public.sms_journal_visits from authenticated;
 -- La huella de la llave de cada dispositivo no se expone ni al equipo.
 revoke select on public.sms_access_devices from authenticated;
 grant select (id, code_id, label, created_at, last_seen_at, revoked_at) on public.sms_access_devices to authenticated;
@@ -3103,6 +3180,7 @@ grant execute on function public.sms_access_update(uuid, jsonb) to authenticated
 grant execute on function public.sms_journal_feedback(uuid, text) to authenticated;
 grant execute on function public.sms_journal_purge(uuid)        to authenticated;
 grant execute on function public.sms_journal_overview()         to authenticated;
+grant execute on function public.sms_journal_board(int)         to authenticated;
 grant execute on function public.sms_journal_message_send(uuid, text) to authenticated;
 grant execute on function public.sms_journal_message_withdraw(uuid) to authenticated;
 

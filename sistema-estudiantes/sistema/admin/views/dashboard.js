@@ -41,8 +41,8 @@ export async function render(el, _params, ctx) {
       ${kpi("#/agenda?view=list", k.sessions_completed_30d, "Sesiones realizadas (30 días)")}
       <div class="kpi"><b>${rate}%</b><span>Conversión a estudiante, 90 días (${conv.converted} de ${conv.leads})</span></div>
       ${kpi("#/estudiantes?f=renewals", k.renewals_7d, "Renovaciones en 7 días")}
-      ${jo ? kpi("#/estudiantes?f=journal", jo.online_now, "En el journal ahora") : ""}
-      ${jo ? kpi("#/estudiantes?f=journal", jo.texts_pending, "Textos del journal por revisar", jo.texts_pending) : ""}
+      ${jo ? kpi("#/journal?f=online", jo.online_now, "En el journal ahora") : ""}
+      ${jo ? kpi("#/journal?f=pending", jo.texts_pending, "Textos del journal por revisar", jo.texts_pending) : ""}
       ${jo ? kpi("#/estudiantes?f=access", accessDue, "Accesos por vencer o vencidos", accessDue) : ""}
     </div>
 
@@ -88,7 +88,7 @@ export async function render(el, _params, ctx) {
       </section>
 
       ${jo ? html`<section class="panel">
-        <h2>Journal · últimas 24 horas <span class="spacer"></span><a class="small" href="#/estudiantes?f=journal">Ver todos</a></h2>
+        <h2>Journal · últimas 24 horas <span class="spacer"></span><a class="small" href="#/journal">Ver tablero</a></h2>
         ${jo.recent.length ? html`<div>${jo.recent.map((r) => {
           const on = Date.now() - Date.parse(r.last_seen_at) < 7 * 60 * 1000;
           return html`<a class="row" style="--cols: 1fr auto; padding:10px 0; border-top:1px solid var(--line)" href="#/persona/${r.student_id}?tab=journal">

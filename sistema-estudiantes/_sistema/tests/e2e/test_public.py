@@ -3,7 +3,7 @@ Pruebas E2E de las páginas públicas (/registro, /lista-de-espera, /reservar)
 contra la pila local (Postgres + PostgREST + server.mjs).
 Uso: BASE=http://127.0.0.1:8787 ANON_KEY=... SHOTS=/ruta python3 test_public.py
 """
-import os, subprocess, json, time, uuid, sys
+import os, subprocess, json, time, uuid, sys, re
 from playwright.sync_api import sync_playwright, expect
 
 BASE = os.environ.get("BASE", "http://127.0.0.1:8787")
@@ -88,6 +88,21 @@ with sync_playwright() as p:
     check("1" in page.locator("#wl-card b").inner_text(), "unirse a la lista desde la confirmación (posición 1)")
     check(sql("select l.status from sms_leads l join sms_students s on s.id=l.student_id where s.email='laura.gomez@correo.com'") == "waitlist", "lead en lista de espera")
     check(not [e for e in errs if "fonts" not in e and "net::ERR_FAILED" not in e], "sin errores de JavaScript en /registro: %s" % errs[:3])
+    ctx.close()
+
+    # ---------------------------------------------------------- campo trampa vs. autocompletado del celular
+    ctx, page, errs = new_page(browser, "10.0.0.9")
+    page.goto(PAGES + "/registro/")
+    page.wait_for_selector("#form:not([hidden])")
+    names = page.eval_on_selector_all("form input", "els => els.map(e => (e.name || '') + '|' + (e.id || ''))")
+    check(not any(re.search(r"web|url|site|homepage|company", n, re.I) for n in names),
+          "ningún campo oculto tiene un nombre que el autocompletado del celular llene (antes: 'website')")
+    page.wait_for_timeout(2600)
+    fill_registration(page, "robot@correo.com")
+    page.evaluate("document.querySelector('#hp-check').value = 'http://spam.example'")
+    page.click("#submit")
+    page.wait_for_selector("#done:not([hidden])", timeout=10000)
+    check(sql("select count(*) from sms_students where email='robot@correo.com'") == "0", "un robot que llena el campo trampa no queda guardado")
     ctx.close()
 
     # ---------------------------------------------------------- lista de espera (formulario dedicado)

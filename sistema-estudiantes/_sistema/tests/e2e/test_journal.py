@@ -17,7 +17,7 @@ ANON = os.environ["ANON_KEY"]
 SHOTS = os.environ.get("SHOTS", "/tmp")
 PSQL = ["psql", "-h", "127.0.0.1", "-p", os.environ.get("PGPORT", "54329"), "-U", "postgres", "-d", "smstest", "-At", "-c"]
 sql = lambda q: subprocess.check_output(PSQL + [q]).decode().strip()
-PANEL_INIT = "window.SMS_CONFIG = { supabaseUrl: '%s', supabaseKey: '%s', sdkUrl: '%s/sdk/supabase.js', sdkIntegrity: '%s' };" % (BASE, ANON, BASE, os.environ.get("SDK_SRI", ""))
+PANEL_INIT = "window.SMS_CONFIG = { supabaseUrl: '%s', supabaseKey: '%s', sdkUrl: '%s/sdk/supabase.js', sdkIntegrity: '%s', prospectsPopup: false };" % (BASE, ANON, BASE, os.environ.get("SDK_SRI", ""))
 NOW = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 TODAY = subprocess.check_output(["date", "+%Y-%m-%d"]).decode().strip()
 SEED = {
@@ -173,7 +173,8 @@ with sync_playwright() as p:
     # Un texto nuevo se envía solo (sin reenviar los anteriores)
     before = sql(f"select max(updated_at)::text from public.sms_journal_texts where client_id = 'w-e2e-1'")
     jr.evaluate("""() => { state.writingSamples.push({id:'w-e2e-2', createdAt:new Date().toISOString(), kind:'free', prompt:'Explain something.',
-                    content:'First I open my laptop. Then I check the data.', wordCount:10, topic:'Explain', label:'Explain'}); save(); return syncNow(); }""")
+                    content:'First I open my laptop. Then I check the data.', wordCount:10, topic:'Explain', label:'Explain'}); save(); }""")
+    jr.evaluate("""async () => { for (let i = 0; i < 50 && SYNC.busy; i++) await new Promise(r => setTimeout(r, 100)); return syncNow(); }""")
     check(wait_sql(f"select count(*) from public.sms_journal_texts where student_id = '{stu}'", "3"), "un escrito nuevo llega al panel")
     check(sql(f"select max(updated_at)::text from public.sms_journal_texts where client_id = 'w-e2e-1'") == before, "los textos sin cambios no se reenvían")
 
@@ -205,6 +206,25 @@ with sync_playwright() as p:
     panel.reload(); panel.wait_for_selector("#msg-form")
     check("Leído" in panel.inner_text("#view"), "la ficha muestra 'Leído'")
     panel.screenshot(path=f"{SHOTS}/v13-ficha-mensajes.png", full_page=True)
+
+    # ------------------------------------------------ 4c. Tablero: quién entra y cómo va
+    jtxt = panel.inner_text("#view")
+    check("Entradas" in jtxt and "Hoy ·" in jtxt and panel.locator(".days-strip i.l1, .days-strip i.l2, .days-strip i.l3").count() >= 1,
+          "ficha: entradas de hoy y tira de días")
+    panel.goto(PAGES + "/admin/#/journal"); panel.wait_for_selector("#jb-rows .row")
+    board = panel.inner_text("#view")
+    check("Entradas recientes" in board and "Valentina Ríos" in board and "Hoy ·" in board, "tablero: entradas recientes con hora")
+    row = panel.locator("#jb-rows a.row", has_text="Valentina Ríos").inner_text()
+    check("En línea ahora" in row and "2/17" in row, "tablero: en línea y misiones en la fila del estudiante")
+    check(panel.locator("#jb-rows a.row", has_text="Valentina Ríos").locator(".days-strip i").count() == 14, "tablero: tira de 14 días")
+    kp = panel.inner_text(".kpis")
+    check("Entraron hoy" in kp and "En el journal ahora" in kp, "tablero: indicadores")
+    panel.click("[data-f=today]")
+    check("Valentina Ríos" in panel.inner_text("#jb-rows"), "filtro 'Entraron hoy'")
+    panel.click("[data-f=notsharing]")
+    check("Valentina Ríos" not in panel.inner_text("#jb-rows"), "filtro 'No comparten' la excluye (sí comparte)")
+    panel.screenshot(path=f"{SHOTS}/v14-tablero-desk.png", full_page=True)
+    panel.goto(PAGES + f"/admin/#/persona/{stu}?tab=journal"); panel.wait_for_selector("#msg-form")
 
     # ------------------------------------------------ 5. Revocar y reactivar llega al dispositivo
     panel.reload()
@@ -264,7 +284,12 @@ with sync_playwright() as p:
     check("offline" in off.inner_text(".code-msg"), "sin conexión al servidor: avisa en vez de decir 'código inválido'")
     octx.close()
 
-    # ------------------------------------------------ 8. Panel: Inicio y Estudiantes
+    # ------------------------------------------------ 8. Panel: Inicio, Journal y Estudiantes
+    panel.goto(PAGES + "/admin/#/journal?f=notsharing"); panel.wait_for_selector("#jb-rows")
+    panel.wait_for_timeout(300)
+    rtxt = panel.inner_text("#jb-rows")
+    check("Valentina Ríos" in rtxt and "No comparte su journal" in rtxt and "2/17" not in rtxt,
+          "tablero: al dejar de compartir solo se ve su acceso, sin conexión ni progreso")
     panel.goto(PAGES + "/admin/#/inicio"); panel.wait_for_selector(".kpis")
     k = panel.inner_text(".kpis")
     check("En el journal ahora" in k and "Textos del journal por revisar" in k and "Accesos por vencer" in k, "Inicio: indicadores del journal")
@@ -288,6 +313,9 @@ with sync_playwright() as p:
     check(sp.locator("[data-act=new-code], [data-renew], [data-revoke]").count() == 0, "el rol Equipo no crea, renueva ni revoca códigos")
     check(sp.locator("form[data-fb]").count() >= 1, "el rol Equipo sí puede corregir textos")
     sp.screenshot(path=f"{SHOTS}/v12-ficha-journal-movil.png", full_page=True)
+    sp.goto(PAGES + "/admin/#/journal"); sp.wait_for_selector("#jb-rows")
+    check("Valentina Ríos" in sp.inner_text("#jb-rows"), "el rol Equipo ve el tablero del journal")
+    sp.screenshot(path=f"{SHOTS}/v14-tablero-movil.png", full_page=True)
     check(not serrs, "sin errores de JavaScript (Equipo): %s" % serrs[:3])
     sctx.close()
     browser.close()

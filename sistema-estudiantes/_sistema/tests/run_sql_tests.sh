@@ -13,3 +13,4 @@ $P -d smstest -f _sistema/tests/test_schema.sql 2>&1 | grep -E "PASS|FAIL|ERROR|
 $P -d smstest -f _sistema/tests/test_v11.sql 2>&1 | grep -E "PASS|FAIL|ERROR|V11_TESTS_PASSED" | sed 's/^psql:[^:]*:[0-9]*: //'
 $P -d smstest -f _sistema/tests/test_v12.sql 2>&1 | grep -E "PASS|FAIL|ERROR|V12_TESTS_PASSED" | sed 's/^psql:[^:]*:[0-9]*: //'
 $P -d smstest -f _sistema/tests/test_v13.sql 2>&1 | grep -E "PASS|FAIL|ERROR|V13_TESTS_PASSED" | sed 's/^psql:[^:]*:[0-9]*: //'
+$P -d smstest -f _sistema/tests/test_v14.sql 2>&1 | grep -E "PASS|FAIL|ERROR|V14_TESTS_PASSED" | sed 's/^psql:[^:]*:[0-9]*: //'

@@ -2,6 +2,7 @@
    Panel de administración — arranque, acceso, navegación y avisos.
    ===================================================================== */
 import { client, rpc, q, currentSession, sendLoginCode, verifyLoginCode, signOut } from "../api.js";
+import { checkProspects, openProspects } from "./prospects.js";
 import { label } from "../i18n.js";
 import { $, $$, esc, html, raw, mount, toast, setBusy } from "../ui.js";
 import { S, loadBasics, relative } from "./state.js";
@@ -16,6 +17,7 @@ const ICONS = {
   pagos: '<rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/>',
   tareas: '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   mensajes: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  journal: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/>',
   mas: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
   ajustes: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
 };
@@ -27,6 +29,7 @@ const ROUTES = {
   lista:       { title: "Lista de espera",  load: () => import("./views/leads.js"), params: { mode: "waitlist" } },
   estudiantes: { title: "Estudiantes",      load: () => import("./views/students.js") },
   persona:     { title: "Ficha",            load: () => import("./views/person.js") },
+  journal:     { title: "Journal",          load: () => import("./views/journalboard.js") },
   agenda:      { title: "Agenda",           load: () => import("./views/agenda.js") },
   tareas:      { title: "Tareas",           load: () => import("./views/tasks.js") },
   mensajes:    { title: "Mensajes",         load: () => import("./views/messages.js") },
@@ -34,9 +37,9 @@ const ROUTES = {
   pagos:       { title: "Pagos",            load: () => import("./views/payments.js"), admin: true },
   ajustes:     { title: "Ajustes",          load: () => import("./views/settings.js") }
 };
-const NAV = ["inicio", "leads", "lista", "estudiantes", "agenda", "tareas", "mensajes", "pagos", "ajustes"];
+const NAV = ["inicio", "leads", "lista", "estudiantes", "journal", "agenda", "tareas", "mensajes", "pagos", "ajustes"];
 const TABBAR = ["inicio", "leads", "agenda", "estudiantes", "mas"];
-const MORE = ["lista", "tareas", "mensajes", "pagos", "ajustes"];
+const MORE = ["journal", "lista", "tareas", "mensajes", "pagos", "ajustes"];
 
 function renderMore(el) {
   mount(el, html`<nav class="more-menu" aria-label="Más secciones">${MORE.filter((k) => !ROUTES[k].admin || S.isAdmin).map((k) => html`
@@ -135,10 +138,10 @@ function renderNav(current) {
 
 async function refreshCounts() {
   try {
-    const d = await rpc("sms_dashboard");
+    const [d, jo] = await Promise.all([rpc("sms_dashboard"), rpc("sms_journal_overview").catch(() => null)]);
     counts = { leads: (d.pipeline && d.pipeline.new) || 0, agenda: d.pending_bookings || 0, lista: d.waitlist || 0,
-               tareas: d.tasks_overdue || 0, mensajes: d.outbox_pending || 0 };
-    counts.mas = counts.lista + counts.tareas + counts.mensajes;
+               tareas: d.tasks_overdue || 0, mensajes: d.outbox_pending || 0, journal: (jo && jo.texts_pending) || 0 };
+    counts.mas = counts.journal + counts.lista + counts.tareas + counts.mensajes;
     setBell(d.unread_notifications || 0);
     renderNav(currentRoute().name);
   } catch (e) { /* sin bloqueo */ }
@@ -227,6 +230,8 @@ async function subscribeNotifications() {
         const n = p.new || {};
         toast(n.title || "Nueva notificación", "info", 6000);
         refreshCounts();
+        // Alguien nuevo se registró: la ventana de prospectos aparece al frente.
+        if (["register", "waitlist", "booking"].includes(n.kind)) checkProspects({ force: true, onChange: refreshCounts });
       })
       .subscribe();
   } catch (e) { /* el sondeo periódico cubre este caso */ }
@@ -240,6 +245,7 @@ function startShell() {
   started = true;
   window.addEventListener("hashchange", route);
   $("#bell").addEventListener("click", openNotifications);
+  $("#pros-btn").addEventListener("click", () => openProspects(refreshCounts));
   document.addEventListener("click", (e) => {
     const panel = $("#notif-panel");
     if (!panel.hidden && !e.target.closest("#notif-panel") && !e.target.closest("#bell")) panel.hidden = true;
@@ -252,6 +258,11 @@ function startShell() {
   subscribeNotifications();
   setInterval(refreshCounts, 60000);
   setInterval(outbox, 5 * 60000);
+  // Prospectos sin atender: al entrar, cada minuto (por si el tiempo real no llega) y al volver a la pestaña.
+  const pros = () => checkProspects({ onChange: refreshCounts });
+  setTimeout(pros, 700);
+  setInterval(pros, 60000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) pros(); });
 }
 
 async function boot() {

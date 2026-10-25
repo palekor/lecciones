@@ -30,6 +30,7 @@ body.admin { background: #FBF8FD; font-size: 15px; }
 .topbar h1 { font-size: 20px; letter-spacing: -.03em; margin: 0; font-weight: 900; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .icon-btn { position: relative; width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; cursor: pointer; }
 .icon-btn svg { width: 20px; height: 20px; }
+.topbar #pros-btn { margin-right: 8px; }
 .icon-btn .dot-count { position: absolute; top: -5px; right: -5px; min-width: 20px; height: 20px; border-radius: 10px; background: var(--pink); color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; padding: 0 5px; }
 .content { padding: 22px clamp(14px, 3vw, 32px) 110px; max-width: 1240px; }
 
@@ -248,3 +249,19 @@ dialog.dlg::backdrop { background: rgba(22, 9, 31, .5); }
 .online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); margin-right: 5px; box-shadow: 0 0 0 3px var(--ok-bg); vertical-align: 1px; }
 details.msg > summary { list-style: none; }
 details.msg > summary::-webkit-details-marker { display: none; }
+.days-strip { display: inline-flex; gap: 3px; vertical-align: middle; }
+.days-strip i { width: 9px; height: 16px; border-radius: 3px; background: #EEE9F3; }
+.days-strip i.l1 { background: #D9C6F2; }
+.days-strip i.l2 { background: #9C6ADE; }
+.days-strip i.l3 { background: var(--plum); }
+
+/* ---------- ventana de prospectos (v1.4.2) ---------- */
+dialog.prospects .pros-wrap { display: flex; flex-direction: column; max-height: calc(100vh - 32px); }
+dialog.prospects header { padding: 18px 20px 0; display: flex; align-items: center; gap: 10px; }
+dialog.prospects header h2 { margin: 0; font-size: 19px; letter-spacing: -.03em; flex: 1; display: flex; gap: 8px; align-items: center; }
+.pros-list { display: grid; gap: 10px; }
+.pros { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #fff; }
+.pros.hot { border-color: #F5B48C; background: #FFF8F3; }
+.pros-top { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pros-hint { margin: 8px 0 0; padding: 8px 10px; border-radius: 10px; background: var(--ok-bg); color: var(--ok); }
+.pros [data-archive] { background: none; border: 0; padding: 4px 2px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; font-size: 13px; }

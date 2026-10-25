@@ -4,7 +4,7 @@
 import { q, rpc } from "../../api.js";
 import { waLink } from "../../core.js";
 import { $, $$, html, raw, mount, toast } from "../../ui.js";
-import { S, d, dt, relative, staffName } from "../state.js";
+import { S, d, dt, tm, relative, staffName } from "../state.js";
 import { openDialog, confirmDialog, userError, selectOptions, apiErrorText } from "../widgets.js";
 
 export const TIERS = { essential: "Essential", companion: "Companion", mastery: "Mastery Program" };
@@ -36,6 +36,25 @@ export function accessState(c) {
   if (left <= 7) return { key: "soon", label: left === 0 ? "Vence hoy" : `Vence en ${left} día${left === 1 ? "" : "s"}`, cls: "b-pending", line: "Vigente hasta el " + fmtDay(c.valid_until), left };
   return { key: "active", label: "Vigente", cls: "b-active", line: `Vigente hasta el ${fmtDay(c.valid_until)} · quedan ${left} días`, left };
 }
+export const addDays = (k, n) => new Date(Date.parse(k + "T12:00:00Z") + n * 86400000).toISOString().slice(0, 10);
+export const dayName = (k, today) => (k === today ? "Hoy" : k === addDays(today, -1) ? "Ayer" : fmtDay(k));
+export const minutes = (m) => (m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")} min` : `${m} min`);
+/** Tira de días con entradas (más intensa = más minutos). */
+export function strip(visits, today, days = 14) {
+  const by = Object.fromEntries((visits || []).map((v) => [v.day, v]));
+  const keys = Array.from({ length: days }, (_, i) => addDays(today, i - days + 1));
+  const n = keys.filter((k) => by[k]).length;
+  return html`<span class="days-strip" role="img" aria-label="${n} de ${days} días con entradas">${keys.map((k) => {
+    const v = by[k], lvl = !v ? 0 : v.minutes >= 30 ? 3 : v.minutes >= 10 ? 2 : 1;
+    return html`<i class="l${lvl}" title="${dayName(k, today)}: ${v ? `${v.sessions} entrada${v.sessions === 1 ? "" : "s"} · ~${minutes(v.minutes)}` : "sin entrar"}"></i>`;
+  })}</span>`;
+}
+export function entryLine(v, today) {
+  const a = tm(v.first_at || v.first), b = tm(v.last_at || v.last);
+  const m = v.minutes != null ? v.minutes : Math.round((v.active_seconds || 0) / 60);
+  return `${dayName(v.day, today)} · ${a === b ? a : a + "–" + b} · ${v.sessions} entrada${v.sessions === 1 ? "" : "s"} · ~${minutes(m)}`;
+}
+
 /** El código que manda: el vigente más reciente; si no hay, el último creado. */
 export function mainCode(codes) {
   const live = codes.filter((c) => ["active", "open", "soon"].includes(accessState(c).key));
@@ -113,11 +132,12 @@ function codeDialog({ stu, code, onDone }) {
 export async function journalTab(body, { stu, codes, journal }, refresh, isCurrent) {
   mount(body, html`<div class="loading"><span class="spinner"></span> Cargando journal…</div>`);
   const ids = codes.map((c) => c.id);
-  const [devices, texts, reports, messages] = await Promise.all([
+  const [devices, texts, reports, messages, visits] = await Promise.all([
     ids.length ? q((c) => c.from("sms_access_devices").select("id,code_id,label,created_at,last_seen_at,revoked_at").in("code_id", ids).order("last_seen_at", { ascending: false })) : Promise.resolve([]),
     q((c) => c.from("sms_journal_texts").select("*").eq("student_id", stu.id).order("written_at", { ascending: false, nullsFirst: false }).order("received_at", { ascending: false }).limit(300)),
     q((c) => c.from("sms_journal_reports").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(120)),
-    q((c) => c.from("sms_journal_messages").select("*").eq("student_id", stu.id).order("created_at", { ascending: false }).limit(30)).catch(() => [])
+    q((c) => c.from("sms_journal_messages").select("*").eq("student_id", stu.id).order("created_at", { ascending: false }).limit(30)).catch(() => []),
+    q((c) => c.from("sms_journal_visits").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(30)).catch(() => [])
   ]);
   if (isCurrent && !isCurrent()) return;
   let sub = "texts", textFilter = texts.some((t) => !t.feedback_at) ? "pending" : "all";
@@ -134,7 +154,7 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <b class="mono">${c.code}</b><span class="badge ${a.cls}">${a.label}</span><span class="badge">${TIERS[c.tier]}</span>
       </div>
-      <p class="small muted" style="margin:6px 0 0">${a.line}${dv.length ? html` · ${dv.length} dispositivo${dv.length === 1 ? "" : "s"}${last ? " · último uso " + relative(last.last_seen_at) : ""}` : " · aún sin activar"}</p>
+      <p class="small muted" style="margin:6px 0 0">${a.line}${dv.length ? html` · ${dv.length} dispositivo${dv.length === 1 ? "" : "s"}${last && j && j.sharing ? " · último uso " + relative(last.last_seen_at) : ""}` : " · aún sin activar"}</p>
       ${c.note ? html`<p class="small" style="margin:4px 0 0">${c.note}</p>` : ""}
       ${locked ? "" : html`<div class="btn-row" style="margin-top:10px">
         ${a.key !== "revoked" && a.key !== "expired" && stu.whatsapp ? html`<a class="btn btn-primary btn-sm" target="_blank" rel="noopener" href="${waLink(stu.whatsapp, codeMessage(stu, c))}">Enviar por WhatsApp</a>` : ""}
@@ -160,6 +180,12 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
         ${j.streak ? html`<span class="badge">Racha: ${j.streak} día${j.streak === 1 ? "" : "s"}</span>` : ""}
         ${j.app_version ? html`<span class="small muted">Journal ${j.app_version}</span>` : ""}
       </p>
+      ${j.sharing ? html`<div style="margin:0 0 12px">
+        <p class="small" style="margin:0 0 6px"><b>Entradas</b> <span class="muted">· últimos 14 días</span></p>
+        ${strip(visits.map((v) => ({ day: v.day, sessions: v.sessions, minutes: Math.round(v.active_seconds / 60) })), todayKey())}
+        ${visits.length ? html`<ul class="small muted" style="margin:8px 0 0;padding-left:18px">${visits.slice(0, 5).map((v) => html`<li>${entryLine(v, todayKey())}</li>`)}</ul>`
+                        : html`<p class="small muted" style="margin:6px 0 0">Sin entradas registradas todavía.</p>`}
+      </div>` : ""}
       <div class="money-row">
         ${statBox(`${(j.completed_missions || []).length}/17`, "misiones")}
         ${statBox(st.classesAttended, "clases asistidas")}

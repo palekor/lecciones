@@ -11,7 +11,7 @@ ANON = os.environ["ANON_KEY"]
 SHOTS = os.environ.get("SHOTS", "/tmp")
 PSQL = ["psql", "-h", "127.0.0.1", "-p", os.environ.get("PGPORT", "54329"), "-U", "postgres", "-d", "smstest", "-At", "-c"]
 sql = lambda q: subprocess.check_output(PSQL + [q]).decode().strip()
-INIT = "window.SMS_CONFIG = { supabaseUrl: '%s', supabaseKey: '%s', sdkUrl: '%s/sdk/supabase.js', sdkIntegrity: '%s' };" % (BASE, ANON, BASE, os.environ.get("SDK_SRI", ""))
+INIT = "window.SMS_CONFIG = { supabaseUrl: '%s', supabaseKey: '%s', sdkUrl: '%s/sdk/supabase.js', sdkIntegrity: '%s', prospectsPopup: false };" % (BASE, ANON, BASE, os.environ.get("SDK_SRI", ""))
 
 results = []
 def check(cond, name):

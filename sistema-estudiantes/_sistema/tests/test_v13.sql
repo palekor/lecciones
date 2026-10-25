@@ -125,7 +125,7 @@ do $$ declare e jsonb; b jsonb; begin
   e := public.sms_student_export(pg_temp.get('stu')::uuid);
   perform pg_temp.ok(jsonb_array_length(e->'journal_messages') = 1, 'la exportación incluye los mensajes vigentes');
   b := public.sms_backup_export();
-  perform pg_temp.ok(b->>'version' = '1.3' and jsonb_array_length(b->'journal_messages') >= 3, 'el respaldo incluye los mensajes');
+  perform pg_temp.ok((b->>'version')::numeric >= 1.3 and jsonb_array_length(b->'journal_messages') >= 3, 'el respaldo incluye los mensajes');
   perform public.sms_merge_students(pg_temp.get('stu')::uuid, pg_temp.get('otra')::uuid);
   perform pg_temp.ok((select count(*) from public.sms_journal_messages where student_id = pg_temp.get('stu')::uuid) = 3, 'fusión: los mensajes pasan a la ficha que queda');
   perform public.sms_anonymize_student(pg_temp.get('stu')::uuid);

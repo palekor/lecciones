@@ -107,7 +107,9 @@ export function contactPayload(form, cfg) {
     consent_marketing: form.elements.consent_marketing ? form.elements.consent_marketing.checked : false,
     notice_version: cfg.privacy_notice_version,
     timezone: form.elements.timezone && form.elements.timezone.value ? form.elements.timezone.value : browserTimeZone(),
-    website: form.elements.website ? form.elements.website.value : ""
+    // Campo trampa para bots. Su nombre no coincide con nada que el autocompletado
+    // del celular conozca (antes se llamaba "website" y el autocompletado lo llenaba).
+    website: form.elements.hp_check ? form.elements.hp_check.value : ""
   };
 }
 

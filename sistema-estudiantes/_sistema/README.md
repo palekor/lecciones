@@ -1,4 +1,4 @@
-# Sistema de Estudiantes ProfGermandario · v1.3
+# Sistema de Estudiantes ProfGermandario · v1.4
 
 Plataforma de gestión educativa y comercial para ProfGermandario: registro de prospectos, lista de espera, reservas, panel administrativo y seguimiento del progreso y de la relación comercial. Está construida dentro de este repositorio (GitHub Pages) sobre el **mismo proyecto Supabase** que ya usa `palekor-sync.js`, sin modificar ninguna app existente.
 
@@ -13,11 +13,11 @@ Plataforma de gestión educativa y comercial para ProfGermandario: registro de p
 | 1. Registro | `/registro/` (público) | Datos de contacto, país, zona horaria, ocupación opcional, nivel, objetivo, formato, urgencia, disponibilidad, medio de contacto, preguntas configurables, consentimiento separado para marketing. Detección de duplicados, anti-spam, confirmación con siguiente paso. |
 | 2. Lista de espera e interesados | `/lista-de-espera/` (público) y panel → Leads / Lista de espera | 11 estados (con nombres configurables), prioridad manual transparente, filtros por estado, fecha, objetivo, urgencia, disponibilidad; orden por registro, último contacto, seguimiento, incorporación estimada; historial de interacciones con canal, resumen y próxima acción; alta manual; "Necesitan atención"; CSV. |
 | 3. Reservas | `/reservar/` (público) y panel → Agenda | Franjas semanales con duración y pausa entre sesiones, días bloqueados, aperturas especiales, tipos de sesión configurables, zona horaria explícita, solicitudes vs. confirmadas, imposibilidad de cruces (restricción en la base de datos), calendario semanal y lista, confirmar/rechazar/reprogramar/cancelar/realizada/ausencia, política de cancelación. |
-| 4. Panel | `/admin/` | Indicadores calculados con datos reales, directorio con búsqueda, filtros, orden y paginación, ficha individual por pestañas, notificaciones, mensajes por enviar, exportaciones. |
+| 4. Panel | `/admin/` | **Ventana de prospectos (v1.4.2):** al entrar al panel y cada vez que alguien se registra, aparece al frente la lista de quienes nadie ha contactado (primero "lo antes posible"), con WhatsApp con saludo listo (plantilla "Primer contacto" en Ajustes), llamar, correo, ficha, "✓ Ya lo contacté" y "No es prospecto"; "Más tarde" la pospone 2 h salvo que llegue alguien nuevo; botón con contador junto a la campana, contador en la pestaña del navegador y aviso opcional del navegador. Indicadores calculados con datos reales, directorio con búsqueda, filtros, orden y paginación, ficha individual por pestañas, notificaciones, mensajes por enviar, exportaciones. |
 | 5. Progreso y comercial | Ficha → Progreso, Evaluaciones, Tareas, Pagos | Perfil educativo (nivel inicial/actual estimado, habilidades, observaciones, próximos objetivos, fecha de revisión), ruta de 18 pasos configurable, evaluaciones por habilidad con historial, tareas y recordatorios, plan, fechas, precio acordado, pagos, saldo, renovación. |
-| 6. Acceso y journal (v1.2) | Ficha → Journal · `journal.html` · `pg-access.js` · lecciones `steps/` | Códigos de acceso por estudiante creados en el panel (programa, vigencia, nota), activos al instante, sin editar GitHub; renovar, cambiar programa, revocar y reactivar llegan al dispositivo; hasta 5 dispositivos por código. Con autorización expresa del estudiante, el journal envía su avance, racha y última conexión, sus escritos y reflexiones y sus reportes del día; el profesor corrige cada texto en la ficha y la corrección vuelve al journal. **Mensajes directos (v1.3):** escribes en la ficha → Journal y al estudiante le aparece en pantalla al abrir su journal (no requiere que comparta); la ficha muestra *Entregado* y *Leído*, y puedes retirar un mensaje antes de que lo lea. Indicadores en Inicio y filtros en Estudiantes ("En el journal", "Acceso por vencer"). |
+| 6. Acceso y journal (v1.2) | Ficha → Journal · `journal.html` · `pg-access.js` · lecciones `steps/` | Códigos de acceso por estudiante creados en el panel (programa, vigencia, nota), activos al instante, sin editar GitHub; renovar, cambiar programa, revocar y reactivar llegan al dispositivo; hasta 5 dispositivos por código. Con autorización expresa del estudiante, el journal envía su avance, racha y última conexión, sus escritos y reflexiones y sus reportes del día; el profesor corrige cada texto en la ficha y la corrección vuelve al journal. **Mensajes directos (v1.3):** escribes en la ficha → Journal y al estudiante le aparece en pantalla al abrir su journal (no requiere que comparta); la ficha muestra *Entregado* y *Leído*, y puedes retirar un mensaje antes de que lo lea. **Tablero Journal (v1.4):** en el menú del panel, todos los estudiantes juntos: quién está en línea, quién entró hoy, entradas recientes con hora y tiempo aproximado, tira de días activos (14 días), misiones, racha, estrellas y textos por revisar; además "Necesitan tu atención" (no entran hace 3+ días, acceso por vencer, con acceso pero sin compartir). Indicadores en Inicio y filtros en Estudiantes. |
 
-**Fuera del alcance de la v1.3** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
+**Fuera del alcance de la v1.4** (decisiones documentadas en la sección 18): cuentas de estudiante, sesiones grupales con capacidad mayor a uno, envío automático real de correos/WhatsApp y cobros en línea.
 
 ## 2. Arquitectura general
 
@@ -55,6 +55,7 @@ GitHub Pages es solo alojamiento estático: no guarda datos ni ejecuta lógica p
 | Códigos de acceso y dispositivos | `sms_access_codes`, `sms_access_devices` (solo la huella SHA-256 de la llave de cada dispositivo) |
 | Journal compartido | `sms_journal` (avance y conexión), `sms_journal_texts` (textos + retroalimentación), `sms_journal_reports` (reporte de cada día) |
 | Mensajes del profesor | `sms_journal_messages` (texto, enviado, entregado, leído, retirado) |
+| Entradas al journal | `sms_journal_visits` (por estudiante y día: primera y última señal, entradas, tiempo activo aproximado; solo de quienes comparten) |
 | Técnicas internas (sin acceso desde la API) | `sms_settings`, `sms_secrets`, `sms_submissions`, `sms_rate_events` |
 
 ## 3. Tecnologías
@@ -94,7 +95,7 @@ Todo está en un único archivo: `_sistema/supabase/001_sistema_estudiantes.sql`
 1. Revisa la sección `0. CONFIGURACIÓN INICIAL` del archivo (correo del dueño).
 2. Supabase → **SQL Editor** → pega el archivo completo → **Run**.
 
-El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (v1.0, v1.1 o v1.2 → v1.3) sin perder datos. Se puede ejecutar varias veces. Si Supabase pregunta por RLS al ejecutar, elige **Run without RLS**: el script activa RLS en todas sus tablas por su cuenta (sección 10).
+El script es **idempotente**: sirve para instalar desde cero y para actualizar una instalación anterior (v1.0 a v1.3 → v1.4) sin perder datos. Se puede ejecutar varias veces. Si Supabase pregunta por RLS al ejecutar, elige **Run without RLS**: el script activa RLS en todas sus tablas por su cuenta (sección 10).
 
 ## 8. Migraciones y creación del esquema
 
@@ -132,12 +133,14 @@ Resultados de la última ejecución (Postgres 16 con un entorno equivalente a Su
 | SQL v1.1 (`test_v11.sql`) | 49 / 49 |
 | SQL v1.2 (`test_v12.sql`, acceso y journal) | 83 / 83 |
 | SQL v1.3 (`test_v13.sql`, mensajes) | 23 / 23 |
+| SQL v1.4 (`test_v14.sql`, entradas y tablero) | 22 / 22 |
 | Unitarias del cliente (`core.test.mjs`) | 11 / 11 |
-| E2E páginas públicas (`test_public.py`) | 30 / 30 |
+| E2E páginas públicas (`test_public.py`, incluye el campo trampa vs. autocompletado) | 32 / 32 |
 | E2E panel (`test_admin.py`) | 55 / 55 |
-| E2E journal (`test_journal.py`: código en el panel → teléfono → autorización → envío → corrección → mensajes → revocar/reactivar/renovar) | 55 / 55 |
+| E2E prospectos (`test_prospects.py`: aparece al entrar y al llegar alguien nuevo, saludo por WhatsApp, contactado, archivar, posponer, celular) | 18 / 18 |
+| E2E journal (`test_journal.py`: código en el panel → teléfono → autorización → envío → corrección → mensajes → tablero → revocar/reactivar/renovar) | 64 / 64 |
 
-Las pruebas E2E sirven el repositorio completo con la misma estructura de GitHub Pages (`/lecciones/sistema-estudiantes/…`, `/lecciones/journal.html`, `/lecciones/steps/…`). Además: actualizaciones v1.0 → v1.1, v1.1 → v1.2 y v1.2 → v1.3 probadas con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
+Las pruebas E2E sirven el repositorio completo con la misma estructura de GitHub Pages (`/lecciones/sistema-estudiantes/…`, `/lecciones/journal.html`, `/lecciones/steps/…`). Además: actualizaciones v1.0 → v1.1, v1.1 → v1.2, v1.2 → v1.3 y v1.3 → v1.4 probadas con datos existentes; auditoría automática de que todas las tablas tienen RLS, todas las funciones tienen `search_path` fijo y el rol público no tiene permisos directos sobre ninguna tabla.
 
 **No probado** (requiere el Supabase real o credenciales): envío real del correo con código, Realtime, cabeceras de IP del proxy de Supabase, `pg_cron` y las llamadas del journal con la llave publicable real (`sb_publishable_…` en la cabecera `apikey`; en las pruebas se usa una llave local equivalente).
 
@@ -204,6 +207,7 @@ for f in sistema/*.js sistema/admin/*.js sistema/admin/views/*.js; do node --exp
 - **Idioma:** español completo; inglés preparado parcialmente en `sistema/i18n.js`.
 - **Códigos antiguos (`pg-access.js`):** siguen funcionando igual, pero esos dispositivos no se conectan al panel. Para conectarlos, registra el código en la ficha (Journal → Nuevo código → "Registrar un código que ya existe") o crea uno nuevo, y pide al estudiante que lo escriba en Membership → "Use a different code".
 - **Journal:** envía mientras está abierto (el "En línea" tiene un margen de unos 7 minutos). Los datos viven primero en el teléfono del estudiante: si borra el navegador sin haber compartido, el panel no tiene copia. La retroalimentación se escribe en el panel y se lee en el journal; el estudiante no responde desde ahí.
+- **Entradas:** se registran solo de quienes aceptaron compartir su journal (así lo dice la política). De quien no comparte ves su acceso y que activó su código, pero no cuándo entra. El tiempo activo es aproximado (el journal da señal cada ~3 min mientras está abierto); una pausa de más de 7 minutos cuenta como otra entrada.
 - **Mensajes:** van en una sola dirección (el estudiante responde por WhatsApp con un botón). Aparecen al abrir el journal o al volver a él; si lo tiene abierto, a más tardar en 3 minutos. Con el acceso vencido los sigue recibiendo (útil para renovar); con el código revocado, no.
 - **Vencimiento sin conexión:** un dispositivo sin internet conserva el último estado conocido; la fecha de vencimiento se aplica igual, pero una revocación llega en su próxima conexión.
 

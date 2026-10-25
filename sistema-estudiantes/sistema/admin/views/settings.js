@@ -1,4 +1,5 @@
 /* Ajustes — configuración del sistema, planes, ruta, equipo y enlaces públicos */
+import { DEFAULT_WELCOME } from "../prospects.js";
 import { q, rpc } from "../../api.js";
 import { label, setLabelOverrides } from "../../i18n.js";
 import { $, $$, html, raw, mount, toast, download } from "../../ui.js";
@@ -114,6 +115,8 @@ export async function render(el, params, ctx) {
     <section class="panel" style="margin-top:16px"><h2>Plantillas de WhatsApp</h2>
       <form class="inline-form" data-section="wa">
         <p class="small muted" style="margin:0">Variables: <code>{nombre}</code>, <code>{link}</code> (página de reservas, solo en la invitación), <code>{fecha}</code>, <code>{tipo}</code> y <code>{enlace}</code> (enlace de la sesión). Los avisos de sesión se preparan solos en Mensajes.</p>
+        <div class="field"><label for="w-wel">Primer contacto (ventana de prospectos)</label><textarea class="input" id="w-wel" name="welcome" maxlength="800" placeholder="${DEFAULT_WELCOME}">${wa.welcome || ""}</textarea>
+          <p class="small muted" style="margin:4px 0 0">Variables: <code>{nombre}</code> y <code>{objetivo}</code>. Vacío = saludo predeterminado.</p></div>
         <div class="field"><label for="w-inv">Invitación a reservar</label><textarea class="input" id="w-inv" name="invite" maxlength="800">${wa.invite || ""}</textarea></div>
         <div class="field"><label for="w-fu">Seguimiento</label><textarea class="input" id="w-fu" name="followup" maxlength="800">${wa.followup || ""}</textarea></div>
         <div class="field"><label for="w-cf">Sesión confirmada</label><textarea class="input" id="w-cf" name="confirm" maxlength="800">${wa.confirm || ""}</textarea></div>
@@ -203,7 +206,7 @@ export async function render(el, params, ctx) {
         booking_min_notice_hours: Number(v("booking_min_notice_hours")), booking_max_days_ahead: Number(v("booking_max_days_ahead")),
         booking_max_pending_per_student: Number(v("booking_max_pending_per_student"))
       };
-      else if (s === "wa") patch = { wa_templates: { invite: v("invite"), followup: v("followup"), confirm: v("confirm"), reschedule: v("reschedule"), cancel: v("cancel"), reminder: v("reminder") } };
+      else if (s === "wa") patch = { wa_templates: { welcome: v("welcome"), invite: v("invite"), followup: v("followup"), confirm: v("confirm"), reschedule: v("reschedule"), cancel: v("cancel"), reminder: v("reminder") } };
       else if (s === "labels") {
         const lead = {}, student = {};
         $$('[data-label-lead]', form).forEach((i) => { if (i.value.trim()) lead[i.dataset.labelLead] = i.value.trim().slice(0, 40); });

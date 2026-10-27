@@ -16,7 +16,7 @@ const SNOOZE_KEY = "sms_prospects_snooze";
 const SNOOZE_MS = 2 * 60 * 60 * 1000;
 export const DEFAULT_WELCOME = "Hola {nombre} 👋 Soy Germandario de ProfGermandario. Recibí tu registro{objetivo}. ¿Tienes 10 minutos hoy o mañana para conversar sobre tu inglés?";
 
-let open = false, busy = false, lastIds = [];
+let open = false, running = null, lastIds = [];
 
 function snooze() { try { return JSON.parse(localStorage.getItem(SNOOZE_KEY) || "null") || {}; } catch (e) { return {}; } }
 function setSnooze(v) { try { localStorage.setItem(SNOOZE_KEY, JSON.stringify(v)); } catch (e) { /* sin almacenamiento: vuelve a aparecer */ } }
@@ -58,9 +58,21 @@ function notifyBrowser(rows, fresh) {
  * Revisa si hay prospectos sin atender y abre la ventana cuando corresponde.
  * force: abrirla aunque esté pospuesta (botón o llegada de alguien nuevo).
  */
-export async function checkProspects({ force = false, onChange } = {}) {
-  if (busy) return;
-  busy = true;
+export async function checkProspects({ force = false, manual = false, onChange } = {}) {
+  if (running) {
+    if (!manual) return;                       // ya hay una revisión en curso
+    await running.catch(() => {});             // el botón espera a que termine y abre igual
+  }
+  running = run({ force: force || manual, manual, onChange });
+  try { await running; } finally { running = null; }
+}
+
+async function recentLeads() {
+  return q((c) => c.from("sms_leads_v").select("id,student_id,full_name,status,registered_at,last_contact_at")
+    .order("registered_at", { ascending: false }).limit(6));
+}
+
+async function run({ force, manual, onChange }) {
   try {
     const rows = await pending();
     const ids = rows.map((r) => r.id);
@@ -68,18 +80,22 @@ export async function checkProspects({ force = false, onChange } = {}) {
     const fresh = ids.filter((id) => !lastIds.includes(id));
     if (lastIds.length || fresh.length) notifyBrowser(rows, lastIds.length ? fresh : []);
     lastIds = ids;
-    if (open || !rows.length) return;
+    if (open) return;
+    if (!rows.length && !manual) return;
     if (!force && CONFIG.prospectsPopup === false) return;   // solo lo usan las pruebas automáticas
     const sn = snooze();
     const snoozed = sn.until && Date.parse(sn.until) > Date.now() && ids.every((id) => (sn.ids || []).includes(id));
     if (!force && snoozed) return;
-    if (document.querySelector("dialog[open]")) return;   // no tapar otro diálogo; se reintenta en la próxima revisión
-    show(rows, onChange);
-  } catch (e) { /* sin bloqueo: el panel sigue funcionando */ }
-  finally { busy = false; }
+    if (!manual && document.querySelector("dialog[open]")) return;   // no tapar otro diálogo; se reintenta en la próxima revisión
+    const recent = rows.length ? [] : await recentLeads().catch(() => []);
+    show(rows, onChange, recent);
+  } catch (e) {
+    // En segundo plano no molesta; si lo pediste con el botón, te dice qué pasó.
+    if (manual) toast("No se pudieron cargar los prospectos: " + apiErrorText(e), "err", 7000);
+  }
 }
 
-function show(rows, onChange) {
+function show(rows, onChange, recent = []) {
   open = true;
   const dlg = document.createElement("dialog");
   dlg.className = "dlg prospects";
@@ -118,7 +134,11 @@ function show(rows, onChange) {
         <button class="icon-btn" type="button" data-later aria-label="Cerrar">✕</button></header>
       <div class="dlg-body">
         <p class="small muted" style="margin:0 0 10px">Se registraron y nadie les ha escrito todavía. Mientras más rápido les escribas, más probable es que respondan.</p>
-        ${list.length ? html`<div class="pros-list">${list.map(card)}</div>` : html`<div class="empty-state"><b>¡Todos atendidos!</b>Buen trabajo.</div>`}
+        ${list.length ? html`<div class="pros-list">${list.map(card)}</div>` : html`<div class="empty-state" style="padding:18px 10px"><b>¡Todos atendidos!</b>Nadie está esperando tu primer mensaje.</div>
+          ${recent.length ? html`<h3 class="small" style="margin:6px 0">Últimos registros</h3><div>${recent.map((r) => html`
+            <a class="row" style="--cols: 1fr auto; padding:8px 0" href="#/persona/${r.student_id}" data-go>
+              <span class="name">${r.full_name}<span class="sub">${relative(r.registered_at)}${r.last_contact_at ? " · contactado " + relative(r.last_contact_at) : ""}</span></span>
+              <span class="badge b-${r.status}">${label("lead", r.status)}</span></a>`)}</div>` : ""}`}
       </div>
       <footer>
         ${canNotify ? html`<button class="btn btn-soft btn-sm" type="button" data-notify style="margin-right:auto">Avisarme aunque el panel esté en otra pestaña</button>` : ""}
@@ -182,5 +202,5 @@ function show(rows, onChange) {
 /** Abre la ventana a pedido (botón del encabezado), aunque esté pospuesta. */
 export function openProspects(onChange) {
   setSnooze({});
-  return checkProspects({ force: true, onChange });
+  return checkProspects({ manual: true, onChange });
 }

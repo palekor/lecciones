@@ -265,3 +265,17 @@ dialog.prospects header h2 { margin: 0; font-size: 19px; letter-spacing: -.03em;
 .pros-top { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .pros-hint { margin: 8px 0 0; padding: 8px 10px; border-radius: 10px; background: var(--ok-bg); color: var(--ok); }
 .pros [data-archive] { background: none; border: 0; padding: 4px 2px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; font-size: 13px; }
+
+/* ---------- códigos: validez y resultado (v1.4.4) ---------- */
+.row.clickable { cursor: pointer; }
+.row.clickable:hover { background: #FBF7FE; }
+.dur-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.dur { position: relative; display: block; }
+.dur input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.dur span { display: block; height: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 9px 11px; cursor: pointer; background: #fff; }
+.dur span b { display: block; font-size: 14px; }
+.dur span small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.dur input:checked + span { border-color: var(--plum); background: #F4EEFB; box-shadow: inset 0 0 0 1px var(--plum); }
+.dur input:focus-visible + span { outline: 3px solid rgba(122, 43, 209, .45); outline-offset: 2px; }
+.code-created { text-align: center; padding: 6px 0 4px; }
+.code-big { font-size: clamp(26px, 6vw, 34px); font-weight: 800; margin: 8px 0 6px; letter-spacing: .08em; }

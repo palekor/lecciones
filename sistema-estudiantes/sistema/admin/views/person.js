@@ -79,6 +79,7 @@ export async function render(el, params, ctx) {
           ${stu.email && !stu.anonymized_at ? html`<a class="btn btn-soft btn-sm" href="mailto:${stu.email}">Correo</a>` : ""}
           ${stu.whatsapp ? html`<a class="btn btn-soft btn-sm" href="tel:${stu.whatsapp}">Llamar</a>` : ""}
           <button class="btn btn-soft btn-sm" type="button" data-act="contact">Registrar contacto</button>
+          <button class="btn btn-dark btn-sm" type="button" data-goto="journal">🔑 Acceso al journal</button>
         </div>
       </div>
       ${data.dup ? html`<div class="form-alert info" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">

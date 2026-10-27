@@ -96,6 +96,12 @@ with sync_playwright() as p:
     page.click("dialog.prospects footer [data-later]")
     page.wait_for_function("!document.querySelector('dialog.prospects')")
     check(page.locator("#pros-count").is_hidden(), "sin prospectos pendientes, el contador desaparece")
+    page.click("#pros-btn")
+    page.wait_for_selector("dialog.prospects[open]", timeout=8000)
+    t = page.inner_text("dialog.prospects")
+    check("Todos atendidos" in t and "Últimos registros" in t and "Camila Torres" in t, "el botón abre la ventana aunque no haya pendientes (con los últimos registros)")
+    page.click("dialog.prospects footer [data-later]")
+    page.wait_for_function("!document.querySelector('dialog.prospects')")
 
     # 4. Llega alguien nuevo: la ventana vuelve a aparecer sola
     check(register("Daniel Ruiz", "daniel.pros@correo.com", "+573004441144", urgency="1_3_months"), "llega un registro nuevo")

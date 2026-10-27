@@ -184,6 +184,7 @@ async function route() {
     await mod.render(view, { ...(r.params || {}), ...params, id }, {
       setTitle: (t) => { $("#page-title").textContent = t; document.title = t + " · Panel ProfGermandario"; },
       refreshCounts,
+      reload: () => route(),
       isCurrent: () => seq === renderSeq
     });
     view.focus({ preventScroll: true });
@@ -237,6 +238,31 @@ async function subscribeNotifications() {
   } catch (e) { /* el sondeo periódico cubre este caso */ }
 }
 
+/* Si el SQL de Supabase quedó en una versión anterior a la de estos archivos,
+   lo dice arriba (en vez de pantallas que no cargan). */
+async function schemaCheck() {
+  let state = "ok", detail = "";
+  try {
+    const o = await rpc("sms_journal_overview");
+    if (!o || !("active_7d" in o)) state = "old";
+  } catch (e) {
+    detail = e.message || "";
+    state = /schema cache|does not exist|Could not find|PGRST20[25]|42883/i.test(detail) ? "old" : "ok";
+  }
+  const old = $("#schema-banner");
+  if (old) old.remove();
+  if (state === "ok") return;
+  const b = document.createElement("div");
+  b.id = "schema-banner";
+  b.className = "form-alert err";
+  b.style.cssText = "margin:12px 16px 0;display:block";
+  mount(b, html`<b>Falta actualizar la base de datos.</b> Journal, códigos de acceso, mensajes y entradas no funcionan hasta que
+    ejecutes en Supabase el archivo <code>001_sistema_estudiantes.sql</code> (SQL Editor → pegar → «Run without RLS»). No borra nada.
+    <a class="btn btn-soft btn-sm" style="margin-left:8px" href="https://supabase.com/dashboard/project/bbrdmddytqvwpbuuaqsc/sql/new" target="_blank" rel="noopener">Abrir SQL Editor</a>`);
+  const main = document.querySelector(".main");
+  main.insertBefore(b, $("#view"));
+}
+
 let started = false;
 function startShell() {
   show("shell");
@@ -258,6 +284,7 @@ function startShell() {
   subscribeNotifications();
   setInterval(refreshCounts, 60000);
   setInterval(outbox, 5 * 60000);
+  schemaCheck();
   // Prospectos sin atender: al entrar, cada minuto (por si el tiempo real no llega) y al volver a la pestaña.
   const pros = () => checkProspects({ onChange: refreshCounts });
   setTimeout(pros, 700);

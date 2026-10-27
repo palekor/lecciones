@@ -5,7 +5,7 @@ import { STUDENT_STATUSES, countryName, countryList, normalizePhone, isValidEmai
 import { $, html, raw, mount, toast } from "../../ui.js";
 import { S, d, dt, isOverdue } from "../state.js";
 import { badge, exportCSV, safeTerm, selectOptions, openDialog, userError, apiErrorText } from "../widgets.js";
-import { accessState, mainCode, presence, todayKey } from "./journal.js";
+import { accessState, mainCode, presence, todayKey, TIERS, giveAccess, openCodeFor, renewFor } from "./journal.js";
 
 const PAGE = 50;
 
@@ -55,11 +55,27 @@ export async function render(el, params, ctx) {
       <select class="input" name="plan" aria-label="Plan">${selectOptions(S.plans.map((p) => ({ value: p.id, label: p.name })), "", { empty: "Todos los planes" })}</select>
       <select class="input" name="sort" aria-label="Ordenar">${selectOptions([{ value: "recent", label: "Actividad reciente" }, { value: "name", label: "Nombre" }, { value: "renewal", label: "Próxima renovación" }], "recent")}</select>
       <button class="btn btn-soft" type="button" id="csv">Exportar CSV</button>
+      ${S.isAdmin ? html`<button class="btn btn-dark" type="button" id="give-access">🔑 Crear código</button>` : ""}
       <button class="btn btn-primary" type="button" id="new">Nuevo estudiante</button>
     </form>
     <div class="rows" id="rows"></div>`);
 
   const list = $("#rows", el);
+  const COLS = "1.9fr .9fr 1.3fr 1.1fr 1.2fr 1.1fr";
+  // Fila completa abre la ficha; los botones de la columna Acceso hacen lo suyo.
+  list.addEventListener("click", (e) => {
+    const nb = e.target.closest("[data-code-new]"), rb = e.target.closest("[data-code-renew]");
+    if (nb || rb) {
+      e.preventDefault(); e.stopPropagation();
+      const r = rows.find((x) => x.id === (nb ? nb.dataset.codeNew : rb.dataset.codeRenew));
+      if (!r) return;
+      const stu = { id: r.id, full_name: r.full_name, whatsapp: r.whatsapp, email: r.email, plan_renews_at: r.plan_renews_at };
+      if (nb) return openCodeFor(stu, () => load());
+      return renewFor(stu, mainCode(codesBy[r.id] || []), () => load());
+    }
+    const row = e.target.closest(".row.clickable");
+    if (row && !e.target.closest("a,button")) location.hash = row.dataset.href;
+  });
   let codesBy = {}, journalBy = {}, seenOrder = null;
   async function idsForFilter() {
     if (f.f === "journal") {
@@ -88,9 +104,18 @@ export async function render(el, params, ctx) {
     js.forEach((x) => { journalBy[x.student_id] = x; });
   }
   const access = (r) => {
-    const a = accessState(mainCode(codesBy[r.id] || [])), p = presence(journalBy[r.id]);
-    return html`${a && a.key === "expired" ? html`<span class="flag err">Acceso vencido</span>` : a && a.key === "soon" ? html`<span class="flag">${a.label}</span>` : ""}
-      ${p ? html`<span class="sub">${p.on ? html`<span class="online-dot" aria-hidden="true"></span>` : ""}${p.text}</span>` : a && (a.key === "active" || a.key === "open") ? html`<span class="sub">Acceso ${a.key === "open" ? "sin vencimiento" : "hasta " + d(mainCode(codesBy[r.id]).valid_until + "T12:00:00")}</span>` : ""}`;
+    const p = presence(journalBy[r.id]);
+    return p ? html`<span class="sub">${p.on ? html`<span class="online-dot" aria-hidden="true"></span>` : ""}${p.text}</span>` : "";
+  };
+  // Columna "Acceso al journal": estado del código + botón para crearlo o renovarlo.
+  const accessCell = (r) => {
+    const c = mainCode(codesBy[r.id] || []), a = accessState(c);
+    if (!c) return html`<span><span class="cell-label">Acceso:</span>${S.isAdmin
+      ? html`<button class="btn btn-soft btn-sm" type="button" data-code-new="${r.id}">🔑 Crear código</button>` : html`<span class="small muted">Sin código</span>`}</span>`;
+    const sub = a.key === "open" ? "sin vencimiento" : a.key === "revoked" ? "revocado" : (a.key === "expired" ? "venció " : "hasta ") + d(c.valid_until + "T12:00:00");
+    return html`<span><span class="cell-label">Acceso:</span><span class="badge ${a.cls}">${a.key === "active" || a.key === "open" ? TIERS[c.tier] : a.label}</span>
+      <span class="sub">${sub}</span>
+      ${S.isAdmin ? html`<button class="btn btn-soft btn-sm" type="button" style="margin-top:4px" data-code-renew="${r.id}">${a.key === "expired" || a.key === "soon" || a.key === "revoked" ? "Renovar" : "Cambiar validez"}</button>` : ""}</span>`;
   };
   async function load(reset = true) {
     if (reset) { f.offset = 0; rows = []; f.ids = await idsForFilter(); }
@@ -99,15 +124,16 @@ export async function render(el, params, ctx) {
     if (seenOrder && f.f === "journal") res = res.slice().sort((a, b) => seenOrder.indexOf(a.id) - seenOrder.indexOf(b.id));
     rows = reset ? res : rows.concat(res);
     mount(list, rows.length ? html`
-      <div class="row head" style="--cols: 2fr 1fr 1.2fr 1.4fr 1.2fr"><span>Estudiante</span><span>Estado</span><span>Plan</span><span>Ruta</span><span>Próxima sesión</span></div>
-      ${rows.map((r) => html`<a class="row" href="#/persona/${r.id}" style="--cols: 2fr 1fr 1.2fr 1.4fr 1.2fr">
+      <div class="row head" style="--cols: ${COLS}"><span>Estudiante</span><span>Estado</span><span>Acceso al journal</span><span>Plan</span><span>Ruta</span><span>Próxima sesión</span></div>
+      ${rows.map((r) => html`<div class="row clickable" data-href="#/persona/${r.id}" style="--cols: ${COLS}">
         <span class="name">${r.full_name}${r.payments_overdue ? html`<span class="flag err">Pago vencido</span>` : ""}<span class="sub">${r.email}</span>${access(r)}</span>
         ${badge("student", r.status)}
+        ${accessCell(r)}
         <span><span class="cell-label">Plan:</span>${r.plan_name || "—"}${r.plan_renews_at ? html`<span class="sub ${isOverdue(r.plan_renews_at + "T23:59:59") ? "overdue" : ""}">Renueva ${d(r.plan_renews_at + "T12:00:00")}</span>` : ""}</span>
         <span><span class="cell-label">Ruta:</span>${r.steps_completed}/${steps} pasos
           <span class="progress-bar" style="display:block;margin-top:4px;max-width:160px"><i style="width:${steps ? (100 * r.steps_completed / steps).toFixed(0) : 0}%"></i></span></span>
         <span><span class="cell-label">Próxima:</span>${r.next_session_at ? dt(r.next_session_at) : "—"}</span>
-      </a>`)}
+      </div>`)}
       ${res.length === PAGE ? html`<button class="more" type="button" id="more">Cargar más</button>` : ""}`
       : html`<div class="empty-state"><b>No hay estudiantes con estos filtros.</b>Convierte un lead desde su ficha o crea uno con “Nuevo estudiante”.</div>`);
     const more = $("#more", el);
@@ -130,6 +156,8 @@ export async function render(el, params, ctx) {
     const all = await q((c) => buildQuery(c, f, true));
     exportCSV("students", `estudiantes-${new Date().toISOString().slice(0, 10)}.csv`, all, CSV);
   });
+  const ga = $("#give-access", el);
+  if (ga) ga.addEventListener("click", () => giveAccess(() => load()));
   $("#new", el).addEventListener("click", () => {
     const { priority, rest } = countryList("es");
     openDialog({

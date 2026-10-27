@@ -3,14 +3,21 @@
    journal; de los demás se ve su acceso y que no comparten. */
 import { rpc } from "../../api.js";
 import { $, $$, html, raw, mount } from "../../ui.js";
-import { relative } from "../state.js";
-import { accessState, todayKey, TIERS, addDays, strip as dayStrip, entryLine as line } from "./journal.js";
+import { S, relative } from "../state.js";
+import { accessState, todayKey, TIERS, addDays, strip as dayStrip, entryLine as line, schemaHelp, giveAccess } from "./journal.js";
 
 const ONLINE_MS = 7 * 60 * 1000;
 const DAYS = 14;
 const isOnline = (iso) => iso && Date.now() - Date.parse(iso) < ONLINE_MS;
 export async function render(el, params, ctx) {
-  const [b, ov] = await Promise.all([rpc("sms_journal_board", { p_days: DAYS }), rpc("sms_journal_overview").catch(() => null)]);
+  let b, ov;
+  try {
+    [b, ov] = await Promise.all([rpc("sms_journal_board", { p_days: DAYS }), rpc("sms_journal_overview").catch(() => null)]);
+  } catch (e) {
+    if (!ctx.isCurrent()) return;
+    mount(el, schemaHelp(e));
+    return;
+  }
   if (!ctx.isCurrent()) return;
   const today = b.today || todayKey();
   const rows = b.students.map((r) => {
@@ -33,7 +40,10 @@ export async function render(el, params, ctx) {
   const strip = (v) => dayStrip(v, today, DAYS);
 
   mount(el, html`
-    <p class="muted" style="margin:0 0 14px">Quién entra a su journal y cómo va cada uno. La conexión y el progreso solo se ven de quienes aceptaron compartir su journal contigo.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:0 0 14px">
+      <p class="muted" style="margin:0;flex:1;min-width:240px">Quién entra a su journal y cómo va cada uno. La conexión y el progreso solo se ven de quienes aceptaron compartir su journal contigo.</p>
+      ${S.isAdmin ? html`<button class="btn btn-primary btn-sm" type="button" id="give-access">🔑 Dar acceso a un estudiante</button>` : ""}
+    </div>
     <div class="kpis">
       ${kpi("online", online.length, "En el journal ahora")}
       ${kpi("today", todayIn.length, "Entraron hoy")}
@@ -109,7 +119,7 @@ export async function render(el, params, ctx) {
         <span>${r.sharing && r.stats ? html`<span class="cell-label">Estrellas:</span>${r.stats.stars || 0}` : ""}</span>
         <span>${r.texts_pending ? html`<span class="cell-label">Textos por revisar:</span><span class="badge b-pending">${r.texts_pending}</span>` : ""}</span>
       </a>`)}`
-      : html`<div class="empty-state"><b>Nadie con este filtro.</b>${rows.length ? "" : "Crea el código de cada estudiante en su ficha → Journal."}</div>`);
+      : html`<div class="empty-state"><b>${rows.length ? "Nadie con este filtro." : "Todavía nadie tiene código de acceso."}</b>${rows.length ? "" : S.isAdmin ? "Toca «🔑 Dar acceso a un estudiante» (arriba) o abre su ficha → Journal → Crear código." : "Un administrador puede crear los códigos."}</div>`);
   }
   paint();
   $$("[data-f]", el).forEach((btn) => btn.addEventListener("click", () => {
@@ -118,6 +128,8 @@ export async function render(el, params, ctx) {
     paint();
   }));
   $("#jb-sort", el).addEventListener("change", (e) => { sort = e.target.value; paint(); });
+  const ga = $("#give-access", el);
+  if (ga) ga.addEventListener("click", () => giveAccess(() => ctx.reload()));
   // Los KPIs filtran la tabla sin recargar
   $$(".kpis a", el).forEach((a) => a.addEventListener("click", (e) => {
     e.preventDefault();

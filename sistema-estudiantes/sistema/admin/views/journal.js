@@ -5,7 +5,7 @@ import { q, rpc } from "../../api.js";
 import { waLink } from "../../core.js";
 import { $, $$, html, raw, mount, toast } from "../../ui.js";
 import { S, d, dt, tm, relative, staffName } from "../state.js";
-import { openDialog, confirmDialog, userError, selectOptions, apiErrorText } from "../widgets.js";
+import { openDialog, confirmDialog, userError, selectOptions, apiErrorText, studentPicker } from "../widgets.js";
 
 export const TIERS = { essential: "Essential", companion: "Companion", mastery: "Mastery Program" };
 const KIND = { writing: "Escrito", reflection: "Reflexión", mirror: "Muestra inicial" };
@@ -75,54 +75,157 @@ function codeMessage(stu, c) {
     `\nEl mismo código abre las masterclasses de The System: escríbelo donde dice “Unlock”.`;
 }
 
-function codeDialog({ stu, code, onDone }) {
-  const renew = !!code;
-  const base = renew && code.valid_until && code.valid_until > todayKey() ? code.valid_until : todayKey();
-  const planEnd = stu.plan_renews_at && stu.plan_renews_at >= todayKey() ? stu.plan_renews_at : null;
-  const initial = renew ? (code.valid_until || "") : (planEnd || addMonths(todayKey(), 1));
-  const quick = [1, 3, 6, 12].map((n) => ({ n, v: addMonths(base, n) }));
+export const SQL_HELP = "Falta actualizar la base de datos: en Supabase abre SQL Editor, pega el archivo 001_sistema_estudiantes.sql y ejecútalo con «Run without RLS». No borra nada.";
+export const SQL_URL = "https://supabase.com/dashboard/project/bbrdmddytqvwpbuuaqsc/sql/new";
+export const isMissingSchema = (e) => /schema cache|does not exist|PGRST20[25]|42P01|42883|Could not find/i.test(String((e && e.message) || "") + " " + String((e && e.details && e.details.code) || ""));
+export function schemaHelp(e) {
+  return html`<div class="form-alert err" style="display:block">
+    <b>${isMissingSchema(e) ? "El journal todavía no está activado en tu base de datos." : "No se pudo cargar el journal."}</b>
+    <p style="margin:6px 0 0">${isMissingSchema(e) ? SQL_HELP : "Revisa tu conexión y recarga. Si sigue igual, " + SQL_HELP.charAt(0).toLowerCase() + SQL_HELP.slice(1)}</p>
+    <p style="margin:8px 0 0"><a class="btn btn-soft btn-sm" href="${SQL_URL}" target="_blank" rel="noopener">Abrir el SQL Editor de Supabase</a></p>
+    <p class="small muted" style="margin:6px 0 0">Detalle técnico: ${(e && e.message) || ""}</p></div>`;
+}
+
+/* Opciones de validez del código. "base" es hoy (código nuevo) o el
+   vencimiento actual si todavía no ha pasado (renovación: se suma). */
+function durations(base, { renew, planEnd, current }) {
+  const opts = [];
+  if (renew) opts.push({ k: "keep", label: "Sin cambios", until: current || null, sub: current ? "hasta el " + fmtDay(current) : "sin vencimiento" });
+  if (!renew && planEnd) opts.push({ k: "plan", label: "Hasta la renovación de su plan", until: planEnd, sub: "hasta el " + fmtDay(planEnd) });
+  const add = (k, label, until) => opts.push({ k, label: (renew ? "+ " : "") + label, until, sub: "hasta el " + fmtDay(until) });
+  add("7d", "1 semana", addDays(base, 7));
+  add("1m", "1 mes", addMonths(base, 1));
+  add("3m", "3 meses", addMonths(base, 3));
+  add("6m", "6 meses", addMonths(base, 6));
+  add("12m", "1 año", addMonths(base, 12));
+  opts.push({ k: "none", label: "Sin vencimiento", until: null, sub: "hasta que lo revoques" });
+  opts.push({ k: "date", label: "Otra fecha", until: undefined, sub: "eliges el día" });
+  return opts;
+}
+
+/** Crear (sin code) o renovar/editar (con code). onDone(fila del código). */
+export function codeDialog({ stu, code, onDone }) {
+  const renew = !!code, today = todayKey();
+  const base = renew && code.valid_until && code.valid_until > today ? code.valid_until : today;
+  const planEnd = stu.plan_renews_at && stu.plan_renews_at >= today ? stu.plan_renews_at : null;
+  const opts = durations(base, { renew, planEnd, current: renew ? code.valid_until : null });
+  const def = renew ? "keep" : planEnd ? "plan" : "1m";
+  const first = (stu.full_name || "").split(" ")[0];
   const { dlg } = openDialog({
-    title: renew ? `Renovar o editar ${code.code}` : "Crear código de acceso",
-    submitLabel: renew ? "Guardar" : "Crear código",
+    title: renew ? `Renovar o editar ${code.code}` : `Crear código para ${first}`,
+    submitLabel: renew ? "Guardar cambios" : "Crear código",
+    wide: true,
     body: html`
-      ${renew ? "" : html`<p class="small muted">El código abre el journal y las masterclasses según el programa, hasta la fecha que elijas. Funciona en cuanto lo creas.</p>`}
-      <div class="field"><label for="ac-tier">Programa en el journal</label>
+      ${renew ? "" : html`<p class="small muted" style="margin:0 0 12px">El código abre el journal y las lecciones según el programa, hasta el último día de validez. Funciona en cuanto lo creas; después se lo envías por WhatsApp.</p>`}
+      <div class="field"><label for="ac-tier">Programa (qué abre el código)</label>
         <select class="input" id="ac-tier" name="tier">${selectOptions(Object.entries(TIERS).map(([value, label]) => ({ value, label })), renew ? code.tier : "essential")}</select></div>
-      <div class="field"><label for="ac-until">Vigente hasta (último día válido)</label>
-        <input class="input" id="ac-until" name="valid_until" type="date" value="${initial}">
-        <div class="filters" style="margin:8px 0 0">${quick.map((x) => html`<button class="filter-chip" type="button" data-q="${x.v}">+${x.n} ${x.n === 1 ? "mes" : "meses"}</button>`)}
-          <button class="filter-chip" type="button" data-q="">Sin vencimiento</button></div>
-        ${planEnd && !renew ? html`<p class="small muted" style="margin:6px 0 0">Propuesta: la renovación de su plan (${fmtDay(planEnd)}).</p>` : ""}</div>
+      <fieldset class="field" style="border:0;padding:0;margin:0 0 12px">
+        <legend class="lbl" style="font-weight:700;margin-bottom:6px">Validez${renew && code.valid_until && code.valid_until >= today ? html` <span class="small muted">(se suma al vencimiento actual: ${fmtDay(code.valid_until)})</span>` : ""}</legend>
+        <div class="dur-grid" role="radiogroup">${opts.map((o) => html`<label class="dur">
+          <input type="radio" name="dur" value="${o.k}" ${raw(o.k === def ? "checked" : "")}>
+          <span><b>${o.label}</b><small>${o.sub}</small></span></label>`)}</div>
+        <div id="ac-date-wrap" hidden style="margin-top:8px"><label class="small" for="ac-until">Último día válido</label>
+          <input class="input" id="ac-until" name="valid_until" type="date" min="${today}" value="${renew && code.valid_until ? code.valid_until : addMonths(today, 1)}"></div>
+        <p class="small" id="ac-sum" style="margin:8px 0 0"></p>
+      </fieldset>
       <div class="field"><label for="ac-note">Nota interna <span class="opt">(opcional)</span></label>
         <input class="input" id="ac-note" name="note" maxlength="300" value="${renew ? code.note || "" : ""}" placeholder="Ej.: pagó 3 meses del plan Impulso"></div>
       ${renew ? "" : html`<details class="more"><summary class="small">Registrar un código que ya existe</summary>
         <div class="field" style="margin-top:8px"><label for="ac-code">Código actual del estudiante</label>
           <input class="input" id="ac-code" name="code" autocomplete="off" placeholder="PG-XXXX-XXXX" style="text-transform:uppercase">
           <p class="small muted" style="margin:6px 0 0">Útil si ya le diste un código desde la consola del journal. Después pídele que lo escriba de nuevo en Membership para conectarse.</p></div></details>`}`,
-    onOpen: (dl) => {
-      $$("[data-q]", dl).forEach((b) => b.addEventListener("click", () => { dl.querySelector("#ac-until").value = b.dataset.q; }));
+    onOpen: (fm) => {
+      const sum = fm.querySelector("#ac-sum"), wrap = fm.querySelector("#ac-date-wrap"), date = fm.querySelector("#ac-until");
+      const paint = () => {
+        const k = (fm.querySelector("input[name=dur]:checked") || {}).value;
+        const o = opts.find((x) => x.k === k);
+        wrap.hidden = k !== "date";
+        const until = k === "date" ? date.value : o ? o.until : null;
+        sum.textContent = until ? `Válido hasta el ${fmtDay(until)} (inclusive); deja de funcionar al día siguiente.`
+                                : k === "date" ? "Elige la fecha." : "Sin fecha de vencimiento: funciona hasta que lo revoques.";
+      };
+      fm.addEventListener("change", paint);
+      date.addEventListener("input", paint);
+      paint();
     },
     onSubmit: async (fm) => {
       const v = (n) => (fm.elements[n] ? fm.elements[n].value.trim() : "");
-      const until = v("valid_until") || null;
-      if (until && !renew && until < todayKey()) throw userError("La fecha de vigencia ya pasó.");
+      const k = (fm.querySelector("input[name=dur]:checked") || {}).value;
+      const o = opts.find((x) => x.k === k);
+      if (!o) throw userError("Elige la validez del código.");
+      const until = k === "date" ? v("valid_until") : o.until;
+      if (k === "date" && !until) throw userError("Elige el último día válido.");
+      if (until && until < today) throw userError("Esa fecha ya pasó.");
+      let row;
       try {
         if (renew) {
-          await rpc("sms_access_update", { p_id: code.id, p_patch: { tier: v("tier"), valid_until: until, note: v("note") || null } });
+          const patch = { tier: v("tier"), note: v("note") || null };
+          if (k !== "keep") patch.valid_until = until || null;
+          row = await rpc("sms_access_update", { p_id: code.id, p_patch: patch });
           toast("Código actualizado. Le llega al estudiante en su próxima conexión.", "ok");
         } else {
-          await rpc("sms_access_create", { p_student: stu.id, p_tier: v("tier"), p_valid_until: until, p_note: v("note") || null, p_code: v("code") || null });
-          toast("Código creado. Envíaselo por WhatsApp.", "ok");
+          row = await rpc("sms_access_create", { p_student: stu.id, p_tier: v("tier"), p_valid_until: until || null, p_note: v("note") || null, p_code: v("code") || null });
         }
       } catch (e) {
         if (e.code === "duplicate") throw userError("Ese código ya está registrado.");
         if (/invalid_code/.test(e.message)) throw userError("El código debe tener entre 6 y 20 letras o números.");
+        if (e.code === "forbidden") throw userError("Solo el dueño o un administrador puede crear y renovar códigos.");
+        if (isMissingSchema(e)) throw userError(SQL_HELP);
         throw e;
       }
-      onDone();
+      onDone(row);
     }
   });
   return dlg;
+}
+
+/** Después de crear: el código en grande, con WhatsApp y copiar. */
+export function codeCreatedDialog(stu, c) {
+  const a = accessState(c);
+  openDialog({
+    title: "Código creado",
+    body: html`<div class="code-created">
+      <p class="small muted" style="margin:0">${stu.full_name} · ${TIERS[c.tier]}</p>
+      <p class="mono code-big">${c.code}</p>
+      <p class="small" style="margin:0">${a.line}</p>
+      <div class="btn-row" style="margin-top:14px;justify-content:center">
+        ${stu.whatsapp ? html`<a class="btn btn-primary btn-sm" target="_blank" rel="noopener" href="${waLink(stu.whatsapp, codeMessage(stu, c))}">Enviar por WhatsApp</a>` : ""}
+        <button class="btn btn-soft btn-sm" type="button" data-copy-created>Copiar mensaje</button>
+        <a class="btn btn-soft btn-sm" href="#/persona/${stu.id}?tab=journal" data-close>Ver en su ficha</a>
+      </div>
+      ${stu.whatsapp ? "" : html`<p class="small muted" style="margin:10px 0 0">No tiene WhatsApp registrado: copia el mensaje y envíaselo por otro medio.</p>`}
+    </div>`,
+    onOpen: (fm) => {
+      fm.querySelector("[data-copy-created]").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(codeMessage(stu, c)); toast("Mensaje copiado con el código y el enlace.", "ok", 2200); }
+        catch (e) { toast("Código: " + c.code, "ok", 6000); }
+      });
+    }
+  });
+}
+
+/** Elegir a una persona y crearle su código (desde Estudiantes o Journal). */
+export function giveAccess(onDone) {
+  let picked = null;
+  openDialog({
+    title: "Crear código de acceso",
+    submitLabel: "Continuar",
+    body: html`<p class="small muted" style="margin:0 0 10px">Busca a la persona (debe tener ficha: registrada en la web o creada en Estudiantes). Después eliges el programa y la validez.</p><div id="ga-pick"></div>`,
+    onOpen: (form) => studentPicker(form.querySelector("#ga-pick"), (s) => { picked = s; }),
+    onSubmit: async () => {
+      if (!picked) throw userError("Elige a la persona de la lista.");
+      const stu = await q((c) => c.from("sms_students").select("id,full_name,whatsapp,email,plan_renews_at").eq("id", picked.id).single());
+      setTimeout(() => openCodeFor(stu, onDone), 0);
+    }
+  });
+}
+/** Crear código para una persona ya conocida y mostrar el resultado. */
+export function openCodeFor(stu, onDone) {
+  codeDialog({ stu, onDone: (row) => { codeCreatedDialog(stu, row); if (onDone) onDone(row); } });
+}
+/** Renovar el código principal de una persona y refrescar. */
+export function renewFor(stu, code, onDone) {
+  codeDialog({ stu, code, onDone: (row) => { if (onDone) onDone(row); } });
 }
 
 /**
@@ -132,13 +235,19 @@ function codeDialog({ stu, code, onDone }) {
 export async function journalTab(body, { stu, codes, journal }, refresh, isCurrent) {
   mount(body, html`<div class="loading"><span class="spinner"></span> Cargando journal…</div>`);
   const ids = codes.map((c) => c.id);
-  const [devices, texts, reports, messages, visits] = await Promise.all([
+  let loaded;
+  try { loaded = await Promise.all([
     ids.length ? q((c) => c.from("sms_access_devices").select("id,code_id,label,created_at,last_seen_at,revoked_at").in("code_id", ids).order("last_seen_at", { ascending: false })) : Promise.resolve([]),
     q((c) => c.from("sms_journal_texts").select("*").eq("student_id", stu.id).order("written_at", { ascending: false, nullsFirst: false }).order("received_at", { ascending: false }).limit(300)),
     q((c) => c.from("sms_journal_reports").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(120)),
     q((c) => c.from("sms_journal_messages").select("*").eq("student_id", stu.id).order("created_at", { ascending: false }).limit(30)).catch(() => []),
     q((c) => c.from("sms_journal_visits").select("*").eq("student_id", stu.id).order("day", { ascending: false }).limit(30)).catch(() => [])
-  ]);
+  ]); } catch (e) {
+    if (isCurrent && !isCurrent()) return;
+    mount(body, schemaHelp(e));
+    return;
+  }
+  const [devices, texts, reports, messages, visits] = loaded;
   if (isCurrent && !isCurrent()) return;
   let sub = "texts", textFilter = texts.some((t) => !t.feedback_at) ? "pending" : "all";
   const j = journal, pr = presence(j), st = (j && j.stats) || {}, pf = (j && j.profile) || {};
@@ -310,7 +419,7 @@ export async function journalTab(body, { stu, codes, journal }, refresh, isCurre
     const tf = t.closest("[data-tf]");
     if (tf) { textFilter = tf.dataset.tf; return paintList(); }
     const byId = (attr) => codes.find((c) => c.id === t.closest(`[${attr}]`).getAttribute(attr));
-    if (t.closest("[data-act=new-code]")) return codeDialog({ stu, onDone: refresh });
+    if (t.closest("[data-act=new-code]")) return openCodeFor(stu, refresh);
     if (t.closest("[data-renew]")) return codeDialog({ stu, code: byId("data-renew"), onDone: refresh });
     if (t.closest("[data-copy]")) {
       const c = byId("data-copy");

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#140E1A">
 <title>Fluency OS · ProfGermandario</title>
-<meta name="description" content="Your English. Your journey. Your evidence. The ProfGermandario Fluency OS.">
+<meta name="description" content="Your English. Your journey. Your evidence. Tu inglés, tu ruta, tu evidencia: Fluency OS de ProfGermandario, bilingüe, con plan de estudio y micro-metas.">
 <link rel="icon" href="https://palekor.github.io/lecciones/profgermandario-logo-clean.png">
 <link rel="apple-touch-icon" href="https://palekor.github.io/lecciones/profgermandario-logo-clean.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -486,6 +486,167 @@ textarea.textbody{min-height:240px;font-size:17px}
 .list-btn .t{font-weight:600}.list-btn .s{font-size:14px;color:var(--muted)}
 .faint{color:var(--faint)}
 @media(max-width:380px){.cal-day{height:42px}.cal-metrics b{font-size:20px}.tabs button{font-size:11px}}
+
+/* ============================================================
+   BILINGUAL LAYER (12.0)
+   ============================================================ */
+.es-tr{display:block;font-family:var(--body);font-size:.84em;font-weight:500;font-style:normal;line-height:1.4;letter-spacing:0;text-transform:none;color:var(--muted);margin-top:.18em;text-decoration:none}
+.es-tr::before{content:"";}
+.es-tr.inl,.pill .es-tr,.chip .es-tr,.kicker .es-tr,.seg button .es-tr,.step-name .es-tr,.ob-step .es-tr,.mg-meta .es-tr,.wk-cap .es-tr,.cal-legend .es-tr{display:inline;margin:0;font-size:.92em}
+.es-tr.inl::before,.pill .es-tr::before,.chip .es-tr::before,.kicker .es-tr::before,.step-name .es-tr::before,.ob-step .es-tr::before,.mg-meta .es-tr::before,.wk-cap .es-tr::before{content:" · ";opacity:.7}
+.seg button .es-tr{display:block;font-size:.78em}
+.seg button .es-tr::before{content:none}
+.kicker .es-tr{color:inherit;opacity:.75;font-weight:600}
+h1 .es-tr,h2 .es-tr{font-size:clamp(15px,.46em,21px);line-height:1.35;margin-top:.55em;font-weight:500;letter-spacing:0;color:var(--muted)}
+h3 .es-tr{font-size:.72em;margin-top:.3em}
+.display .es-tr{font-family:var(--body)}
+.btn .es-tr,.btn-line .es-tr{color:inherit;opacity:.78;font-size:.76em;font-weight:600;margin-top:1px;text-align:center}
+.btn:has(> .es-tr),.btn-line:has(> .es-tr){flex-wrap:wrap;row-gap:0;padding-top:7px;padding-bottom:7px;line-height:1.2}
+.btn > .es-tr,.btn-line > .es-tr{flex-basis:100%}
+.link .es-tr{display:inline;font-size:.9em}
+.link .es-tr::before{content:" · "}
+.tabs .es-tr{font-size:9.5px;font-weight:600;margin-top:0;line-height:1.1;color:inherit;opacity:.8}
+.tabs button{min-width:0}
+.toast .es-tr{color:inherit;opacity:.75;font-size:.86em}
+details.more summary,details.guide summary{flex-wrap:wrap}
+details.more summary::after{order:1}
+details.more summary .es-tr{order:2;flex-basis:100%;margin-top:2px}
+.en .es-tr,.pattern li .es-tr,.archive-item .es-tr{font-size:15px;font-family:var(--body)}
+.choice .es-tr{color:var(--text);opacity:.82;font-size:.9em}
+.choice small .es-tr{color:var(--muted);opacity:1}
+.mistake .r .es-tr{margin-top:4px}
+html[data-lang="es"] .en-only{display:none}
+.notr .es-tr{display:block}
+.pill .notr .es-tr,.kicker .notr .es-tr,.mg-meta .notr .es-tr,.wk-cap .notr .es-tr,.link .notr .es-tr,.mg-go .notr .es-tr{display:inline}
+.icon-btn.lang-btn{min-width:42px;width:auto;height:38px;align-self:center;padding:0 10px;border-radius:999px;border:1px solid var(--line-strong);font-weight:700;font-size:12.5px;letter-spacing:.04em;color:var(--text)}
+.lang-btn:hover{border-color:var(--gold);color:var(--gold)}
+.lang-choices{display:grid;gap:10px}
+.lang-opt{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--r-md);border:1px solid var(--line-strong);text-align:left;width:100%}
+.lang-opt[aria-checked="true"]{border-color:var(--gold);background:var(--gold-soft)}
+.lang-opt .grow{flex:1;min-width:0}
+.lang-opt b{display:block;font-size:17px}
+.lang-opt small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.lang-badge{flex:none;min-width:54px;height:40px;padding:0 8px;border-radius:12px;display:grid;place-items:center;background:var(--surface-2);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.04em}
+.lang-opt[aria-checked="true"] .lang-badge{background:var(--gold);color:var(--on-gold)}
+.lang-rec{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.03em}
+.ob-lang{margin-bottom:26px}
+@media(max-width:400px){.brand b{display:none}.top-actions{gap:4px}.icon-btn{width:38px;height:38px}}
+
+/* ============================================================
+   GUIDANCE
+   ============================================================ */
+details.guide{margin:4px 0 18px;border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);background:var(--gold-soft);border-radius:var(--r-md);padding:0 16px}
+details.guide summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 0;font-weight:700;font-size:15px;color:var(--gold)}
+details.guide summary::-webkit-details-marker{display:none}
+details.guide summary::after{content:"+";margin-left:auto;font-family:var(--display);font-size:22px;line-height:1}
+details.guide[open] summary::after{content:"–"}
+details.guide ol{margin:0 0 14px 20px;display:grid;gap:7px;font-size:15px;line-height:1.5}
+details.guide b,.help-list b{color:var(--text)}
+.g-ico{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--on-gold);font-size:13px;font-weight:800;flex:none}
+.help-list{margin:0 0 0 20px;display:grid;gap:12px;font-size:16px}
+.help-list li::marker{color:var(--gold);font-weight:700}
+
+/* ============================================================
+   MY PLAN — micro-goals, week, habits, cronogram, badges
+   ============================================================ */
+.plan-cta{display:flex;align-items:center;gap:16px;width:100%;text-align:left;border-color:color-mix(in srgb,var(--gold) 45%,transparent);background:linear-gradient(150deg,var(--gold-soft),transparent 60%),var(--surface)}
+.plan-cta .f-ico{width:50px;height:50px;flex:none;border-radius:16px;display:grid;place-items:center;background:var(--gold);color:var(--on-gold);font-size:22px;font-weight:800}
+.plan-cta .grow{flex:1;min-width:0}.plan-cta .f-t{display:block;font-family:var(--display);font-size:20px;font-weight:500}.plan-cta .s{display:block;color:var(--muted);font-size:14.5px;margin-top:3px}
+.plan-today{border-color:color-mix(in srgb,var(--gold) 38%,transparent)}
+.pt-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pt-head .kicker{margin-bottom:6px}
+.pt-count{font-family:var(--display);font-size:26px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+.plan-today h3{margin-bottom:12px}
+.mg-bar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-top:12px}
+.mg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#E6C77F);border-radius:4px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.pt-win{margin-top:14px;padding:12px 14px;border-radius:var(--r-md);background:var(--gold-soft);border:1px solid var(--gold);font-weight:700;color:var(--gold)}
+.mg-list{border-top:1px solid var(--line)}
+.mg-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.mg-row .grow{flex:1;min-width:0}
+.mg-row .t{display:block;font-weight:650;font-size:16px;line-height:1.35}
+.mg-row .s{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.mg-meta{display:block;font-size:12.5px;color:var(--faint);margin-top:4px;font-weight:600}
+.mg-row.on .t{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--sage) 70%,transparent);text-decoration-thickness:1.5px}
+.mg-num{width:36px;height:36px;flex:none;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:16px;font-weight:600;transition:transform .15s,background .2s}
+.mg-num:active{transform:scale(.9)}
+.mg-row.on .mg-num{background:var(--sage);border-color:var(--sage);color:var(--bg);font-family:var(--body);font-weight:800}
+.mg-num[disabled]{cursor:default}
+.mg-go{flex:none;align-self:center;display:inline-flex;align-items:center;gap:4px;min-height:38px;padding:0 14px;border-radius:999px;background:var(--gold);color:var(--on-gold);font-weight:700;font-size:14px}
+.mg-go .es-tr{color:inherit;opacity:.8}
+.plan-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.plan-stats>div{background:var(--surface);padding:14px 12px;text-align:center}
+.plan-stats b{display:block;font-family:var(--display);font-weight:500;font-size:24px;line-height:1.1}
+.plan-stats span{font-size:12.5px;color:var(--muted)}
+.wk-cap{font-size:14px;color:var(--muted)}
+.wk-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.wk-day{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0;border-radius:14px;min-width:0}
+.wk-day:hover{background:var(--surface-2)}
+.wk-dow{font-size:11.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
+.wk-ring{--p:0;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p)*1%),var(--surface-2) 0)}
+.wk-ring b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--bg);font-size:13.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.wk-day.win .wk-ring{background:var(--gold)}
+.wk-day.win .wk-ring b{background:var(--gold);color:var(--on-gold);font-size:16px}
+.wk-day.today .wk-dow{color:var(--gold)}
+.wk-day.today .wk-ring{box-shadow:0 0 0 2px var(--gold)}
+.wk-day.rest .wk-ring b{color:var(--faint)}
+.wk-day.future{opacity:.75}
+.wk-type{font-size:11px;font-weight:800;color:var(--gold);height:12px;line-height:12px}
+.habit-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.habit-row .grow{flex:1;min-width:0}
+.habit-row .t{display:block;font-weight:600;font-size:15.5px}
+.habit-check{width:40px;height:40px;flex:none;border-radius:12px;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:17px;color:var(--gold)}
+.habit-row.on .habit-check{background:var(--sage);border-color:var(--sage);color:var(--bg);font-weight:800}
+.habit-dots{display:flex;gap:5px;margin-top:7px}
+.habit-dots i{width:14px;height:14px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line)}
+.habit-dots i.on{background:var(--sage);border-color:var(--sage)}
+.habit-dots i.now{outline:1.5px solid var(--gold);outline-offset:1px}
+.habit-streak{flex:none;font-size:14px;font-weight:700;color:var(--gold);min-width:40px;text-align:right}
+.crono{list-style:none;border-top:1px solid var(--line)}
+.crono li button{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 2px;border-bottom:1px solid var(--line)}
+.crono .grow{flex:1;min-width:0}
+.crono .t{display:block;font-weight:600;font-size:15.5px}
+.crono .s{display:block;font-size:13.5px;color:var(--muted)}
+.cr-date{width:46px;flex:none;text-align:center;border-radius:12px;padding:5px 0;background:var(--surface-2)}
+.cr-date b{display:block;font-family:var(--display);font-size:19px;font-weight:500;line-height:1.1}
+.cr-date span{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.04em}
+.crono .today .cr-date{background:var(--gold);color:var(--on-gold)}
+.crono .today .cr-date span{color:var(--on-gold)}
+.crono .rest .t{color:var(--muted);font-weight:500}
+.crono .class .cr-date{box-shadow:inset 0 0 0 1.5px var(--coral)}
+.crono .win .cr-date{background:var(--sage-soft)}
+.pc-class{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);z-index:2;width:7px;height:7px;border-radius:2px;background:var(--coral)}
+.lg.pc-class-lg{width:8px;height:8px;border-radius:2px;background:var(--coral)}
+.badge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.badge-grid{grid-template-columns:repeat(4,1fr)}}
+.badge{padding:14px;border-radius:var(--r-md);border:1px dashed var(--line-strong);opacity:.5;display:flex;flex-direction:column;gap:3px}
+.badge.on{opacity:1;border:1px solid var(--gold);background:var(--gold-soft)}
+.badge .b-ico{font-size:24px;line-height:1.1;filter:grayscale(1)}
+.badge.on .b-ico{filter:none}
+.badge b{font-size:14.5px}
+.badge span{font-size:12.5px;color:var(--muted)}
+.intro-steps{margin:0 0 0 22px;display:grid;gap:10px;font-size:16.5px}
+.intro-steps li::marker{color:var(--gold);font-family:var(--display);font-weight:600}
+.plan-intro h2.display{font-size:clamp(25px,6.4vw,32px)}
+.habit-choice{align-items:flex-start}
+.habit-choice .h-ico{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--gold);font-size:16px}
+.habit-choice[aria-pressed="true"] .h-ico{background:var(--gold);color:var(--on-gold)}
+.celebrate{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:rgba(10,6,14,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease}
+.celebrate.show{opacity:1}
+.cel-card{position:relative;z-index:2;width:min(420px,100%);text-align:center;background:var(--surface);border:1px solid var(--gold);border-radius:24px;padding:30px 24px 24px;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:seal .6s cubic-bezier(.2,.8,.2,1.2) both}
+.cel-card h2.display{font-size:clamp(26px,7vw,34px)}
+.cel-trophy{font-size:64px;line-height:1;margin-bottom:12px;animation:pop 1.2s ease-in-out infinite alternate}
+@keyframes pop{to{transform:translateY(-6px) rotate(-4deg)}}
+.cel-badge{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 14px;border-radius:999px;background:var(--gold-soft);color:var(--gold);font-weight:700;font-size:14px}
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti i{position:absolute;top:-20px;left:var(--x);width:9px;height:14px;border-radius:2px;background:var(--c);transform:rotate(var(--r));animation:fall 2.6s cubic-bezier(.25,.6,.4,1) var(--d) forwards;opacity:.95}
+@keyframes fall{to{transform:translateY(105vh) rotate(calc(var(--r) + 540deg));opacity:.6}}
+@media(max-width:380px){.tabs button{font-size:10.5px;padding:7px 1px}.tabs button svg{width:20px;height:20px}.wk-ring{width:34px;height:34px}.wk-ring b{width:27px;height:27px}}
+body.in-lesson .toast{bottom:calc(168px + var(--safe-b))}
+.tabs button{font-size:11.5px}
+@media(max-width:400px){.icon-btn.lang-btn{width:auto}}
+.step-name b .es-tr{display:inline;font-weight:500}
+.step-name b .es-tr::before{content:" · "}
+.mg-go .notr .es-tr::before,.link .notr .es-tr::before{content:" · ";opacity:.7}
 </style>
 </head>
 <body>
@@ -496,6 +657,10 @@ textarea.textbody{min-height:240px;font-size:17px}
   </a>
   <div class="top-actions">
     <button class="tier-chip" id="tierChip" data-act="membership" aria-label="Membership"></button>
+    <button class="icon-btn lang-btn notr" id="langBtn" data-act="langSheet" aria-label="Language · Idioma">ES·EN</button>
+    <button class="icon-btn" id="helpBtn" data-act="help" aria-label="Help · Ayuda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></svg>
+    </button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
     </button>
@@ -506,6 +671,7 @@ textarea.textbody{min-height:240px;font-size:17px}
 
 <nav class="tabs" id="tabs" aria-label="Main">
   <button data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Home</button>
+  <button data-go="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="m7.5 9 1.5 1.5L12 7.5M7.5 15l1.5 1.5L12 13.5M14.5 9.5H17M14.5 15.5H17"/></svg>Plan</button>
   <button data-go="path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17c6 0 2-9 8-10"/></svg>Path</button>
   <button data-go="classes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg>Classes</button>
   <button data-go="evolution"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V14M10 20V9M16 20v-6M22 20V4"/></svg>Evolution</button>
@@ -1322,7 +1488,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "11.3";
+const APP_VERSION = "12.0";
 
 function defaultState(){
   return {
@@ -1342,7 +1508,9 @@ function defaultState(){
     /* 11.2 — Teacher link: ProfGermandario's feedback on each writing */
     teacherFeedback:{},
     /* 11.3 — direct messages from ProfGermandario */
-    teacherMessages:{}
+    teacherMessages:{},
+    /* 12.0 — language of the instructions, study plan (cronograma), guidance */
+    lang:"bi", plan:null, planLog:{}, planBadges:[], guideSeen:{}
   };
 }
 function migrate(raw){
@@ -1359,6 +1527,12 @@ function migrate(raw){
   if(!s.days || typeof s.days!=="object" || Array.isArray(s.days)) s.days = {};
   if(!s.teacherFeedback || typeof s.teacherFeedback!=="object" || Array.isArray(s.teacherFeedback)) s.teacherFeedback = {};
   if(!s.teacherMessages || typeof s.teacherMessages!=="object" || Array.isArray(s.teacherMessages)) s.teacherMessages = {};
+  if(!["es","bi","en"].includes(s.lang)) s.lang = "bi";
+  if(!s.planLog || typeof s.planLog!=="object" || Array.isArray(s.planLog)) s.planLog = {};
+  Object.keys(s.planLog).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.planLog[k] || typeof s.planLog[k]!=="object") delete s.planLog[k]; });
+  if(s.plan && (typeof s.plan!=="object" || !Array.isArray(s.plan.days) || !Array.isArray(s.plan.habits))) s.plan = null;
+  if(!Array.isArray(s.planBadges)) s.planBadges = [];
+  if(!s.guideSeen || typeof s.guideSeen!=="object" || Array.isArray(s.guideSeen)) s.guideSeen = {};
   Object.keys(s.days).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.days[k] || typeof s.days[k]!=="object") delete s.days[k]; });
   /* class notes from the first 11.0 build become day notes */
   Object.values(s.classRecords).forEach(r=>{ if((r.notes||"").trim()){ const d = s.days[r.date] || (s.days[r.date] = {}); d.note = d.note ? d.note+"\n"+r.notes : r.notes; } delete r.notes; });
@@ -1677,16 +1851,17 @@ let readTok = 0;
 function stopReading(){
   readTok++;
   document.querySelectorAll(".snt.on").forEach(s=>s.classList.remove("on"));
-  document.querySelectorAll('[data-act="readAll"] span').forEach(s=>s.textContent="Listen to the text");
+  document.querySelectorAll('[data-act="readAll"]').forEach(b=>{ b.dataset.on = ""; const s = b.querySelector("span"); if(s) s.textContent = "Listen to the text"; });
   if("speechSynthesis" in window) speechSynthesis.cancel();
 }
 function readerScope(){ return $("#scrim").classList.contains("open") && $("#sheet").querySelector(".reader") ? $("#sheet") : view; }
 function readAll(btn){
   const scope = readerScope(), spans = [...scope.querySelectorAll(".snt")];
   const lbl = btn && btn.querySelector("span");
-  if(lbl && lbl.textContent==="Stop"){ stopReading(); return; }
+  if(btn && btn.dataset.on==="1"){ stopReading(); return; }
   stopReading();
   const tok = readTok;
+  if(btn) btn.dataset.on = "1";
   if(lbl) lbl.textContent = "Stop";
   let k = 0;
   const next = () => {
@@ -1859,18 +2034,807 @@ const ICON_PLAY = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v
 const listenBtn = t => `<button class="listen" data-act="say" data-text="${esc(t)}" aria-label="Listen: ${esc(t)}">${ICON_PLAY}</button>`;
 
 /* ============================================================
+   BILINGUAL LAYER · DATA — Spanish for every instruction.
+   English stays the learning target; Spanish is the guide.
+   Keys are the exact English text shown on screen.
+   ============================================================ */
+const ES_MISSIONS = [
+ {t:"Pronombres personales", desc:"Conoce los pronombres de 1.ª, 2.ª y 3.ª persona que sostienen toda oración en inglés.", obj:"Hoy vas a nombrar quién hace la acción en cada oración en inglés.",
+  speak:"Habla de ti y de tres personas de tu vida. Usa un pronombre diferente en cada oración.",
+  topics:{work:"Preséntate a ti y a dos colegas: quiénes son y qué hacen.",travel:"Preséntate a ti y a las personas con quienes viajas.",confidence:"Preséntate a ti y a las personas que más te importan.",general:"Preséntate a ti y a tres personas de tu vida."},
+  explain:"El inglés marca a quien hace la acción con un pronombre sujeto antes del verbo: I, you, he, she, it, we, they. El español suele omitir el pronombre porque la terminación del verbo ya dice quién habla; el inglés nunca lo omite, aunque suene repetitivo.",
+  vocab:["1.ª, 2.ª y 3.ª persona — singular","1.ª, 2.ª y 3.ª persona — plural","la palabra que muestra quién hace la acción"],
+  mistakes:["I am a student. — El inglés nunca omite el pronombre sujeto, aunque el español sí puede.","He likes coffee. — La tercera persona del singular (he/she/it) necesita una -s en el verbo."]},
+ {t:"Verbos regulares e irregulares", desc:"Distingue las dos familias de verbos y cómo cambia cada una en pasado.", obj:"Hoy vas a hablar de tu pasado con verbos regulares e irregulares.",
+  speak:"Cuéntame qué hiciste ayer, de la mañana a la noche.",
+  topics:{work:"Describe lo que hiciste ayer en el trabajo, paso a paso.",travel:"Describe tu último viaje: adónde fuiste y qué hiciste.",confidence:"Describe algo difícil que hiciste el mes pasado.",general:"Describe todo lo que hiciste ayer."},
+  explain:"Los verbos regulares agregan -ed en pasado (walk → walked). Los irregulares cambian por completo y hay que memorizarlos (go → went, eat → ate): no hay regla de ortografía que te salve, solo repetición hasta que salga automático.",
+  vocab:["agrega -ed en pasado — walk → walked","cambia de forma sin regla — go → went","la forma de diccionario del verbo, antes de agregarle terminaciones"],
+  mistakes:["I went to the store. — \"go\" es irregular, nunca se convierte en \"goed\".","She ate lunch. — \"eat\" es irregular: eat / ate / eaten."]},
+ {t:"Oración con complemento", desc:"Construye oraciones completas: sujeto + verbo + complemento.", obj:"Hoy vas a construir oraciones completas: sujeto, verbo y complemento.",
+  speak:"Describe tu día típico. Cada oración necesita sujeto, verbo y complemento.",
+  topics:{work:"Describe tu trabajo: qué haces, qué necesitas y qué usas.",travel:"Describe qué empacas para un viaje y por qué.",confidence:"Describe qué necesitas para sentirte seguro en inglés.",general:"Describe tu día típico con oraciones completas."},
+  explain:"Toda oración completa en inglés necesita sujeto, verbo y, casi siempre, un complemento que termine la idea. En español puedes armar una oración solo con el verbo (\"Tengo\"); en inglés casi nunca (\"I have\" necesita algo después).",
+  vocab:["la parte de la oración que completa su significado","de quién o de qué trata la oración","sujeto + verbo + complemento, sin que falte ninguna pieza"],
+  mistakes:["I have a car. — El inglés necesita el complemento para terminar la idea: \"tengo\" solo funciona en español, \"I have\" solo no funciona en inglés.","It is difficult. — El inglés necesita el sujeto \"it\"; en español puedes decir \"es difícil\" sin sujeto."]},
+ {t:"Lógica de bloques (chunks)", desc:"Agrupa palabras en bloques para que tu habla fluya en vez de detenerse palabra por palabra.", obj:"Hoy vas a hablar con bloques listos en vez de palabra por palabra.",
+  speak:"Haz en voz alta un plan para este fin de semana. Usa al menos cuatro bloques.",
+  topics:{work:"Escribe tres peticiones que podrías hacer en el trabajo usando bloques.",travel:"Escribe lo que dirías en un hotel, en un restaurante y en un taxi.",confidence:"Escribe cómo empezarías una conversación con alguien nuevo.",general:"Escribe un plan corto para este fin de semana usando bloques."},
+  explain:"Quien habla con fluidez no construye oraciones palabra por palabra: recupera bloques ya hechos como \"I'd like to...\" o \"Can you...\" como una sola unidad. Por eso el inglés nativo suena rápido: se arma con bloques, no se traduce pieza por pieza.",
+  vocab:["un grupo pequeño de palabras que se usan juntas como una unidad","una frase memorizada que se usa como un solo bloque, p. ej. \"I'd like to…\"","sacar un bloque completo de la memoria en vez de construirlo palabra por palabra"],
+  mistakes:["Memoriza el bloque como una sola unidad — \"I'd like to\" es una unidad en tu boca, no cuatro palabras para reconstruir."]},
+ {t:"Preguntas WH", desc:"Domina who, what, where, when, why y how para obtener información rápido.", obj:"Hoy vas a hacer preguntas claras para obtener la información que necesitas.",
+  speak:"Entrevista a una persona imaginaria. Haz seis preguntas y respóndelas tú mismo.",
+  topics:{work:"Escribe seis preguntas que harías en una entrevista de trabajo.",travel:"Escribe seis preguntas que harías en el aeropuerto o en un hotel.",confidence:"Escribe seis preguntas para empezar una conversación real con una persona nueva.",general:"Escribe seis preguntas para conocer a alguien."},
+  explain:"Las palabras WH inician preguntas de información y casi siempre necesitan un verbo auxiliar —do, does o did— antes del sujeto. Las preguntas en español no necesitan ese auxiliar; por eso es la pieza que más olvidamos los hispanohablantes.",
+  vocab:["una palabra de pregunta: who, what, where, when, why, how","hacer una pregunta directa para obtener información","do / does / did: se usan para construir la mayoría de preguntas WH"],
+  mistakes:["Where do you live? — No omitas el auxiliar \"do\".","What does this word mean? — El patrón es WH + does + sujeto + verbo, no el verbo primero."]},
+ {t:"Los 44 sonidos", desc:"Conoce los 44 fonemas que forman el inglés hablado.", obj:"Hoy vas a escuchar y producir los sonidos del inglés que cambian el significado.",
+  speak:"Dime tres cosas que piensas de tu inglés. Pronuncia cada th clara y lentamente.",
+  topics:{work:"Escribe cinco oraciones con palabras de trabajo que te cuesta pronunciar.",travel:"Escribe cinco oraciones con los nombres de lugares y palabras de viaje que necesitas.",confidence:"Escribe cinco oraciones sobre ti usando los sonidos th, sh y la ee larga.",general:"Escribe cinco oraciones usando think, this, ship, sheep y three."},
+  explain:"El inglés tiene 44 sonidos distintos (fonemas) en solo 26 letras, así que la misma letra puede sonar completamente diferente según la palabra. Entrenar el oído con pares mínimos —palabras que difieren en un solo sonido— afina la escucha y la pronunciación al mismo tiempo.",
+  vocab:["la unidad de sonido más pequeña que cambia el significado","dos palabras que difieren en un solo sonido, p. ej. ship / sheep"],
+  mistakes:["Pon la lengua suavemente entre los dientes para la \"th\" — /θ/ en think, /ð/ en this.","El inglés acentúa fuerte una sílaba y suaviza las demás — comFORtable, no com-for-ta-ble parejo."]},
+ {t:"Preposiciones", desc:"Ubica personas, cosas y tiempo correctamente con preposiciones.", obj:"Hoy vas a ubicar personas, cosas y momentos con in, on y at.",
+  speak:"Describe dónde vives y tu rutina semanal. Usa in, on y at.",
+  topics:{work:"Describe tu semana laboral: dónde estás y cuándo.",travel:"Describe dónde están las cosas en tu ciudad favorita.",confidence:"Describe tu lugar y tu momento ideales para practicar inglés.",general:"Describe tu habitación y tu horario semanal."},
+  explain:"Las preposiciones de lugar y tiempo (in, on, at) no se traducen palabra por palabra desde el español —\"en\" puede ser in, on o at según el contexto—, así que es mejor aprenderlas como patrones fijos en vez de traducirlas cada vez.",
+  vocab:["una palabra que muestra lugar, tiempo o dirección — in, on, at","in / on / at usadas con fechas, días y horas"],
+  mistakes:["I arrived at the airport. — Usa \"at\" para puntos y lugares específicos.","In the morning — \"in\" se usa para partes del día; \"on\" para días y fechas específicos."]},
+ {t:"Deícticos", desc:"Usa las palabras que señalan: this, that, here, there, now, then.", obj:"Hoy vas a señalar cosas, lugares y momentos como un hablante nativo.",
+  speak:"Habla de tu vida antes y ahora. Usa this, that, here, there, now y then.",
+  topics:{work:"Compara tu trabajo antes y ahora.",travel:"Compara un lugar que visitaste antes con donde estás ahora.",confidence:"Compara tu inglés de antes con tu inglés de ahora.",general:"Compara tu vida de hace cinco años con tu vida de ahora."},
+  explain:"This/that/here/there/now/then señalan algo según la posición de quien habla en el espacio o en el tiempo. La elección correcta depende de dónde están tú y quien te escucha cuando hablas, no de una regla fija.",
+  vocab:["una palabra cuyo significado depende de quién, dónde o cuándo se dice","el momento o lugar desde donde señala una palabra deíctica"],
+  mistakes:["Usa \"that\" para lo que está lejos de ti — \"this\" es para lo que está cerca, física o conversacionalmente."]},
+ {t:"Vocabulario y cognados", desc:"Usa los cognados español–inglés para ampliar tu vocabulario rápido.", obj:"Hoy vas a multiplicar tu vocabulario con patrones español–inglés.",
+  speak:"Explica tu profesión o tus estudios. Usa tantos cognados como puedas.",
+  topics:{work:"Describe tu profesión usando al menos ocho palabras con -tion, -ty o -ly.",travel:"Describe una ciudad usando al menos ocho cognados.",confidence:"Describe tu motivación usando al menos ocho cognados.",general:"Describe tu educación y tus metas usando cognados."},
+  explain:"El español y el inglés comparten miles de cognados por sus raíces latinas: las palabras terminadas en -ción suelen ser -tion en inglés, y eso te da un atajo instantáneo de vocabulario en cuanto aprendes el patrón.",
+  vocab:["una palabra que se ve y significa casi lo mismo en dos idiomas","un patrón confiable de cognados del español al inglés"],
+  mistakes:["\"Actualmente\" significa \"currently\" — un falso amigo clásico de \"actually\" (en realidad).","\"Realizar\" significa \"to carry out / do\"; \"realize\" significa \"darse cuenta\" — otro par de falsos amigos."]},
+ {t:"Contar historias", desc:"Estructura tus ideas para que la gente quiera seguir escuchando.", obj:"Hoy vas a contar una historia con un inicio, un giro y un final.",
+  speak:"Cuenta una historia de 90 segundos: inicio, giro y resultado.",
+  topics:{work:"Cuenta la historia de un día difícil en el trabajo que terminó bien.",travel:"Cuenta la historia de algo inesperado en un viaje.",confidence:"Cuenta la historia de un momento en que te sentiste orgulloso de ti.",general:"Cuenta la historia de un día memorable."},
+  explain:"Una historia necesita forma, no solo una secuencia de hechos: algo cambia del principio al final. En inglés, esa forma se plantea rápido —una oración de contexto antes de que empiece la acción—, mientras que al narrar en español solemos quedarnos más tiempo en el planteamiento.",
+  vocab:["sustantivo · un relato hablado o escrito de unos hechos","sustantivo · la forma que toma una historia de principio a fin"],
+  mistakes:["Elige el pasado y quédate en él durante toda la narración — mezclar tiempos rompe la línea temporal para quien escucha."]},
+ {t:"Inglés de negocios", desc:"Comunícate con claridad en entornos profesionales.", obj:"Hoy vas a escribir y decir mensajes profesionales cortos y claros.",
+  speak:"Deja un mensaje de voz de 60 segundos a un colega pidiéndole una reunión.",
+  topics:{work:"Escribe un correo pidiéndole una reunión a tu jefe.",travel:"Escribe un correo a un hotel para cambiar tu reserva.",confidence:"Escribe un mensaje presentándote de forma profesional.",general:"Escribe un mensaje profesional solicitando información."},
+  explain:"El inglés de negocios prefiere oraciones cortas y directas en lugar de las fórmulas de cortesía más elaboradas del español profesional. La cortesía viene de la elección de palabras (\"Would you be able to...\"), no de oraciones más largas.",
+  vocab:["sustantivo · una persona interesada en un resultado","sustantivo · un resultado concreto del trabajo"],
+  mistakes:["La escritura de negocios en inglés es más corta y directa — ve al punto en la primera oración."]},
+ {t:"Presentaciones", desc:"Habla ante un grupo con estructura y presencia.", obj:"Hoy vas a estructurar una charla corta que quien escucha pueda seguir.",
+  speak:"Da una charla de dos minutos con tres puntos señalizados.",
+  topics:{work:"Haz el esquema de una actualización de dos minutos sobre un proyecto.",travel:"Haz el esquema de una recomendación de dos minutos de un lugar para visitar.",confidence:"Haz el esquema de una charla de dos minutos sobre algo que conoces bien.",general:"Haz el esquema de una charla de dos minutos sobre un tema que te importa."},
+  explain:"Las presentaciones en inglés suelen organizarse en tres puntos claros que se anuncian en voz alta (\"First… Second… Finally…\"). Eso ayuda al público a saber dónde vas, algo que un lector ve con los ojos pero un oyente no.",
+  vocab:["sustantivo · cómo se posiciona la información para el público","sustantivo · el ritmo y la fluidez del habla"],
+  mistakes:["El público angloparlante espera la idea principal al inicio — empieza con la conclusión y luego sustenta."]},
+ {t:"Negociación", desc:"Defiende resultados con tacto y claridad.", obj:"Hoy vas a sostener tu posición con cortesía y firmeza.",
+  speak:"Negocia en voz alta: plantea tu posición, haz una concesión y cierra el trato.",
+  topics:{work:"Negocia un salario, una fecha de entrega o un precio.",travel:"Negocia una mejor habitación o un precio más bajo.",confidence:"Di no a una petición que no quieres aceptar.",general:"Negocia algo que quieras este mes."},
+  explain:"El lenguaje de negociación en inglés une firmeza y frases suavizadoras en la misma oración —\"I understand, but I'd need...\"— en vez de separar cortesía y firmeza en oraciones distintas, como suele hacerse en español.",
+  vocab:["sustantivo · una ventaja que se usa para negociar","sustantivo · algo que se cede para llegar a un acuerdo"],
+  mistakes:["Plantea tu posición primero — en una negociación en inglés, firmeza y cortesía no son opuestas."]},
+ {t:"Fluidez cultural", desc:"Lee el ambiente en distintas culturas y contextos.", obj:"Hoy vas a usar expresiones idiomáticas en las situaciones donde corresponden.",
+  speak:"Describe una diferencia cultural que hayas notado. Usa dos expresiones idiomáticas con naturalidad.",
+  topics:{work:"Escribe un mensaje corto a tu equipo usando tres expresiones idiomáticas.",travel:"Describe una sorpresa cultural que tuviste viajando.",confidence:"Describe cómo rompes el hielo con personas nuevas.",general:"Describe una diferencia cultural que hayas notado."},
+  explain:"Las expresiones idiomáticas llevan una lógica cultural que la traducción literal destruye: \"break the ice\" no tiene nada que ver con hielo. Aprenderlas significa aprender la situación a la que pertenecen, no solo las palabras.",
+  vocab:["sustantivo · una expresión que no se toma literalmente","sustantivo · una norma social o profesional aceptada"],
+  mistakes:["Aprende la expresión como una unidad fija ligada a su situación — la traducción literal casi nunca tiene sentido en inglés."]},
+ {t:"Conversación avanzada", desc:"Debate, discrepa y persuade con soltura.", obj:"Hoy vas a discrepar con respeto y defender tu punto.",
+  speak:"Defiende una postura durante un minuto y luego defiende la contraria.",
+  topics:{work:"Argumenta a favor o en contra del trabajo desde casa.",travel:"Argumenta a favor o en contra de viajar solo.",confidence:"Argumenta a favor o en contra de la idea de que los errores te ayudan a aprender.",general:"Argumenta a favor o en contra de una opinión popular."},
+  explain:"Para discrepar en inglés se suele empezar con una pequeña concesión —\"That's fair, but...\"— antes del contraargumento. Entrar directo al desacuerdo sin esa apertura suele sonar más confrontacional de lo que quieres.",
+  vocab:["sustantivo · un argumento o perspectiva contraria","sustantivo · tacto para manejar conversaciones delicadas"],
+  mistakes:["Abre con una pequeña concesión antes del contraargumento — así la conversación sigue siendo colaborativa, no combativa."]},
+ {t:"Presencia ejecutiva", desc:"Domina una sala con tono, ritmo y postura.", obj:"Hoy vas a hablar con ritmo, pausas y autoridad.",
+  speak:"Graba una actualización de 60 segundos como si informaras a un equipo directivo.",
+  topics:{work:"Escribe un informe de 60 segundos para tu equipo directivo.",travel:"Escribe un informe de 60 segundos para un viaje en grupo que lideras.",confidence:"Escribe una actualización de 60 segundos sobre tu propio progreso en inglés.",general:"Escribe una actualización de 60 segundos sobre un proyecto que te importa."},
+  explain:"La presencia ejecutiva en inglés viene del ritmo, no del volumen: bajar la velocidad, hacer pausas entre ideas y usar oraciones afirmativas cortas transmite más credibilidad que hablar rápido para demostrar fluidez.",
+  vocab:["sustantivo · seriedad y peso en la forma de ser","sustantivo · seguridad serena y elegante"],
+  mistakes:["En inglés, un ritmo pausado transmite más credibilidad que la velocidad — baja el ritmo, sobre todo antes de los puntos clave."]},
+ {t:"Maestría e integración", desc:"Une todas tus habilidades en una sola voz fluida.", obj:"Hoy vas a unir todas tus habilidades en una charla sin guion.",
+  speak:"Da una charla de tres minutos sobre cualquier tema, sin guion.",
+  topics:{work:"Escribe el esquema de una charla de tres minutos sobre tu carrera.",travel:"Escribe el esquema de una charla de tres minutos sobre un lugar que te cambió.",confidence:"Escribe el esquema de una charla de tres minutos sobre tu camino con el inglés.",general:"Escribe el esquema de una charla de tres minutos sobre el tema que elijas."},
+  explain:"Esta misión no tiene gramática nueva: es donde los pronombres, los bloques, las preguntas, los sonidos, las preposiciones, el vocabulario, las historias y el tono profesional funcionan al mismo tiempo, sin guion, como pasa en una conversación real.",
+  vocab:["sustantivo · combinar partes en un todo unificado","adjetivo · capaz de hablar con facilidad y precisión"],
+  mistakes:["Confía en los bloques y las estructuras que construiste — ahora importa más la velocidad de producción que la precisión perfecta."]}
+];
+const ES_PHASES = [
+ {label:"Base", desc:"Las piezas de toda oración en inglés."},
+ {label:"Estructura", desc:"Sonido, lugar, referencia, vocabulario e historia."},
+ {label:"Automaticidad", desc:"Inglés profesional que sale sin traducir."},
+ {label:"Fluidez", desc:"Debate, presencia y una sola voz integrada."}
+];
+/* Class-text prompts for the levels where Spanish support matters most (A1–B1). */
+const ES_CLASS_TEXTS = {
+ "a1-work":{write:"Escribe sobre tu día de trabajo. ¿A qué hora empiezas? ¿Qué haces primero? ¿Qué te gusta de tu trabajo?", speak:"Describe tu día de trabajo, de la mañana a la noche.", questions:["¿A qué hora empieza a trabajar Laura?","¿Qué hace en la tarde?","¿Por qué estudia inglés Laura?"]},
+ "a1-travel":{write:"Escribe sobre un viaje que quieres hacer. ¿Adónde quieres ir? ¿Qué llevas contigo?", speak:"Cuéntame qué haces en el aeropuerto, paso a paso.", questions:["¿Adónde va Diego?","¿Qué pide la mujer?","¿Cómo se siente Diego?"]},
+ "a1-confidence":{write:"Escribe sobre ti y el inglés. ¿Quién eres? ¿Por qué estudias inglés? ¿Cómo te sientes en clase?", speak:"Preséntate y di por qué el inglés es importante para ti.", questions:["¿Cuál es el trabajo de Sofía?","¿Cómo se siente antes de la clase?","¿Qué dice su profesor sobre los errores?"]},
+ "a1-general":{write:"Escribe sobre tu rutina de la mañana. Usa first, then y after that.", speak:"Describe tu mañana, desde el momento en que te levantas.", questions:["¿A qué hora se levanta la persona?","¿Qué desayuna?","¿Qué hace en el bus?"]},
+ "a2-work":{write:"Escribe sobre un primer día que recuerdes: un trabajo nuevo, el colegio o una ciudad. ¿Qué pasó? ¿Cómo te sentiste?", speak:"Cuenta la historia de tu primer día en un trabajo o en un colegio.", questions:["¿Por qué se despertó temprano quien escribe?","¿Quién le ayudó con el software?","¿Cómo se sintió al final del día?"]},
+ "a2-travel":{write:"Escribe sobre un viaje que hiciste. ¿Adónde fuiste? ¿Qué hiciste? ¿Cuál fue tu parte favorita?", speak:"Cuéntame sobre el mejor viaje de tu vida.", questions:["¿Cuánto duró el viaje en bus?","¿Qué hicieron el sábado en la mañana?","¿Qué tenía de especial el café favorito de quien escribe?"]},
+ "a2-confidence":{write:"Escribe sobre un momento en que usaste el inglés y te sentiste nervioso. ¿Qué pasó? ¿Qué hiciste?", speak:"Cuéntame de una vez que estabas nervioso pero lo hiciste de todos modos.", questions:["¿Por qué llamó al hotel quien escribe?","¿Qué hizo antes de la llamada?","¿Qué aprendió de la experiencia?"]},
+ "a2-general":{write:"Escribe sobre tu lugar favorito. ¿Dónde está? ¿Qué hay allí? ¿Por qué es especial para ti?", speak:"Describe tu lugar favorito y explica por qué te gusta.", questions:["¿Qué puedes ver en el parque?","¿Qué hacía allí quien escribe cuando era niño?","¿Por qué va al parque hoy?"]},
+ "b1-work":{write:"¿Prefieres trabajar o estudiar desde casa o en una oficina? Da dos razones y un ejemplo de tu vida.", speak:"Explica las ventajas y desventajas de trabajar desde casa y luego da tu opinión.", questions:["¿Cuáles son dos ventajas de trabajar desde casa?","¿Por qué son importantes las conversaciones cortas con los colegas?","¿Qué hábitos recomienda el texto?"]},
+ "b1-travel":{write:"Cuenta la historia de un día en que algo salió mal. ¿Qué pasó, cómo reaccionaste y qué aprendiste?", speak:"Cuenta una historia sobre un problema que tuviste viajando o en el trabajo, y cómo lo resolviste.", questions:["¿Por qué perdió la conexión quien escribe?","¿Qué decidió hacer en el mostrador de la aerolínea?","¿Qué cosa positiva salió del problema?"]},
+ "b1-confidence":{write:"Escribe sobre un error que te enseñó algo, en inglés o en la vida. ¿Qué pasó y qué aprendiste?", speak:"¿Estás de acuerdo en que los errores te ayudan a aprender? Da tu opinión con un ejemplo personal.", questions:["¿Por qué muchos adultos se quedan callados en inglés?","¿Qué pasa en el cerebro cuando cometemos un error?","¿Qué tres cosas pueden hacer distinto los adultos?"]},
+ "b1-general":{write:"Elige un hábito pequeño que quieras empezar. Descríbelo, explica por qué es lo bastante pequeño y conéctalo con algo que ya haces.", speak:"Describe un hábito que cambió tu vida, o uno que quieras construir, y explica por qué.", questions:["¿Por qué suelen fallar los grandes cambios?","¿Cuáles son las dos razones por las que funcionan los hábitos pequeños?","¿Cómo puedes conectar un hábito nuevo con uno viejo?"]}
+};
+
+const ES_DICT = {
+/* ---------- shell ---------- */
+"Home":"Inicio","Path":"Ruta","Classes":"Clases","Evolution":"Evolución","Toolbox":"Herramientas","Plan":"Plan",
+"Unlock":"Desbloquear","Membership":"Membresía","Switch light or dark mode":"Cambiar a modo claro u oscuro","Main":"Principal","Fluency OS home":"Inicio de Fluency OS",
+"Close":"Cerrar","Back":"Atrás","Continue":"Continuar","Done":"Listo","Teacher":"Profesor","Member":"Miembro","Members":"Miembros",
+"Previewing as a spectator":"Vista previa como espectador","Exit preview":"Salir de la vista previa",
+/* ---------- onboarding ---------- */
+"Welcome to your English.":"Bienvenido a tu inglés.",
+"You don't need to know where to start. That's our job.":"No necesitas saber por dónde empezar. Ese es nuestro trabajo.",
+"We'll discover where you are, build your route, and give you one clear mission at a time.":"Vamos a descubrir dónde estás, construir tu ruta y darte una misión clara a la vez.",
+"What should we call you?":"¿Cómo te llamamos?","Your first name":"Tu nombre","Begin":"Empezar",
+"Your examples and topics will be built around this.":"Tus ejemplos y temas se construirán alrededor de esto.",
+"Work & professional communication":"Trabajo y comunicación profesional","Meetings, email, clients, and colleagues.":"Reuniones, correos, clientes y colegas.",
+"Job interviews":"Entrevistas de trabajo","Present yourself and your experience with clarity.":"Preséntate a ti y tu experiencia con claridad.",
+"Travel & everyday life":"Viajes y vida diaria","Airports, hotels, directions, and daily situations.":"Aeropuertos, hoteles, direcciones y situaciones cotidianas.",
+"Speaking without freezing":"Hablar sin bloquearme","Opinions, stories, and saying what you mean.":"Opiniones, historias y decir lo que piensas.",
+"Exams & academic English":"Exámenes e inglés académico","Structured writing and precise expression.":"Escritura estructurada y expresión precisa.",
+"General fluency":"Fluidez general","A little of everything, built around your life.":"Un poco de todo, construido alrededor de tu vida.",
+"Where are you now?":"¿Dónde estás ahora?","Choose what feels closest. This is not an exam.":"Elige lo que más se parezca a ti. Esto no es un examen.",
+"I know basic words.":"Conozco palabras básicas.","I can handle familiar situations.":"Puedo manejar situaciones conocidas.","I can communicate, but I hesitate.":"Puedo comunicarme, pero dudo.",
+"I can discuss ideas, but I need precision.":"Puedo discutir ideas, pero necesito precisión.","I want refinement and executive fluency.":"Quiero refinamiento y fluidez ejecutiva.",
+"Not sure":"No estoy seguro","We'll find out together.":"Lo descubriremos juntos.",
+"What gets in your way?":"¿Qué te frena?","How do you learn best?":"¿Cómo aprendes mejor?",
+"I freeze when I have to speak":"Me bloqueo cuando tengo que hablar","I'm afraid of making mistakes":"Me da miedo equivocarme","I translate everything in my head":"Traduzco todo en mi cabeza",
+"I don't understand fast speech":"No entiendo cuando hablan rápido","I don't have time to practice":"No tengo tiempo para practicar","I don't know where to start":"No sé por dónde empezar",
+"Seeing patterns & visuals":"Viendo patrones e imágenes","Listening & repeating":"Escuchando y repitiendo","Speaking & doing":"Hablando y haciendo","Writing & reflecting":"Escribiendo y reflexionando","A mix of everything":"Una mezcla de todo",
+"Start from the foundation":"Empezar desde la base","Your first mission":"Tu primera misión","Your route":"Tu ruta","Save my route":"Guardar mi ruta",
+"your work":"tu trabajo","travel":"viajes","speaking with confidence":"hablar con confianza","everyday life":"la vida diaria",
+"Your route is ready":"Tu ruta está lista","Before your first mission, capture your starting point.":"Antes de tu primera misión, captura tu punto de partida.",
+"Write a few sentences and speak for 30 seconds about yourself. In four weeks you'll answer the same prompt, and you'll see the difference.":"Escribe unas frases y habla 30 segundos sobre ti. En cuatro semanas responderás la misma pregunta y verás la diferencia.",
+/* ---------- home ---------- */
+"You have class today. Your text is ready.":"Tienes clase hoy. Tu texto está listo.",
+"Here is where you are, and here is today's mission.":"Aquí es donde estás, y esta es la misión de hoy.","Look at what you've built.":"Mira lo que has construido.",
+"In progress":"En progreso","Mirror sample":"Muestra espejo","Free practice":"Práctica libre","Class work":"Trabajo de clase",
+"Continue my journey":"Continuar mi recorrido","Start my first mission":"Empezar mi primera misión","of 17":"de 17",
+"See my evolution":"Ver mi evolución","Journey complete":"Recorrido completo","You finished every mission in your program.":"Terminaste todas las misiones de tu programa.",
+"Record a new mirror sample to see how far you've come, or review any mission from your path.":"Graba una nueva muestra espejo para ver cuánto has avanzado, o repasa cualquier misión de tu ruta.",
+"Unlock the full program":"Desbloquear el programa completo","Preview complete":"Vista previa completa","You finished the free mission.":"Terminaste la misión gratuita.",
+"Your access code opens the other sixteen missions, weekly classes, and every masterclass in The System.":"Tu código de acceso abre las otras dieciséis misiones, las clases semanales y todas las masterclasses de The System.",
+"Preview mode":"Modo vista previa",
+"Mission 1 is open. Your access code unlocks all 17 missions, classes, The System, and Report Studio.":"La Misión 1 está abierta. Tu código de acceso desbloquea las 17 misiones, las clases, The System y Report Studio.",
+"Capture your starting point":"Captura tu punto de partida","Time for your mirror sample":"Es hora de tu muestra espejo",
+"Five sentences and 30 seconds of speaking. In four weeks you'll answer the same prompt and compare.":"Cinco frases y 30 segundos hablando. En cuatro semanas responderás la misma pregunta y compararás.",
+"Same prompt as last time. This is how you see your progress, not guess it.":"La misma pregunta de la última vez. Así ves tu progreso, no lo adivinas.",
+"Last completed:":"Última completada:","See the evidence":"Ver la evidencia","Today's class":"Clase de hoy","Next class":"Próxima clase",
+"Your evidence":"Tu evidencia","missions complete":"misiones completas","writing samples":"muestras de escritura","minutes spoken":"minutos hablados","longest attempt":"intento más largo",
+"Weekly classes":"Clases semanales","Add your class days. Each class comes with a text at your level.":"Agrega tus días de clase. Cada clase trae un texto a tu nivel.",
+"Practice, language, mind, and support.":"Práctica, idioma, mente y apoyo.","Tap to read.":"Toca para leer.","New message from ProfGermandario":"Nuevo mensaje de ProfGermandario",
+"Open it to see his corrections.":"Ábrelo para ver sus correcciones.","Let ProfGermandario follow your journal":"Deja que ProfGermandario siga tu diario",
+"Share your progress and writing, and get his feedback here.":"Comparte tu progreso y tus escritos, y recibe su retroalimentación aquí.",
+/* ---------- classes: status, parts ---------- */
+"Scheduled":"Programada","Today":"Hoy","Mark attendance":"Marcar asistencia","Attended":"Asistí","Complete":"Completa","Not attended":"No asistida","Cancelled":"Cancelada","Moved":"Movida",
+"★ Star":"★ Estrella","★ Star earned":"★ Estrella ganada","Next: read the text":"Siguiente: leer el texto","Next: write":"Siguiente: escribir","Next: speak":"Siguiente: hablar","Next: reflect":"Siguiente: reflexionar",
+"Ready for class":"Listo para la clase","All five done":"Las cinco hechas","Read the text":"Leí el texto","Wrote my text":"Escribí mi texto","Spoke":"Hablé","Reflected":"Reflexioné",
+"English class with ProfGermandario":"Clase de inglés con ProfGermandario",
+"Beginner":"Principiante","Elementary":"Elemental","Intermediate":"Intermedio","Upper intermediate":"Intermedio alto","Advanced":"Avanzado",
+/* ---------- path ---------- */
+"Your path":"Tu ruta","Current":"Actual","Members only. Your access code opens it.":"Solo para miembros. Tu código de acceso la abre.",
+/* ---------- evolution ---------- */
+"Look what you can do now.":"Mira lo que puedes hacer ahora.","No invented percentages. Only what you wrote, what you said, and when.":"Sin porcentajes inventados. Solo lo que escribiste, lo que dijiste y cuándo.",
+"Your starting point":"Tu punto de partida","Same prompt, now":"La misma pregunta, ahora","Your latest writing":"Tu escrito más reciente","Your first sample":"Tu primera muestra","Your latest sample":"Tu muestra más reciente",
+"Your next sample will appear beside this one, so you can compare.":"Tu próxima muestra aparecerá al lado de esta, para que compares.",
+"Your first writing sample will appear here. Complete a mission or record your starting point, and this page starts filling with evidence.":"Tu primera muestra de escritura aparecerá aquí. Completa una misión o graba tu punto de partida, y esta página empezará a llenarse de evidencia.",
+"Speaking over time":"Tu habla en el tiempo","Each bar is one attempt. Longer bars mean you kept your thought alive longer.":"Cada barra es un intento. Barras más largas significan que mantuviste viva tu idea por más tiempo.",
+"Record my starting point":"Grabar mi punto de partida","Record a mirror sample":"Grabar una muestra espejo","Request a portfolio review":"Solicitar una revisión de portafolio",
+"Evidence":"Evidencia","words written":"palabras escritas","speaking attempts":"intentos hablados","practice hours":"horas de práctica","topics explored":"temas explorados","reflections":"reflexiones",
+"shadowing sessions":"sesiones de shadowing","meditations":"meditaciones","day streak":"días de racha","classes attended":"clases asistidas","stars earned":"estrellas ganadas","class texts read":"textos de clase leídos","words in class texts":"palabras en textos de clase",
+"Archive":"Archivo","Everything is kept exactly as you produced it.":"Todo se guarda exactamente como lo produjiste.",
+"Writing samples":"Muestras de escritura","Speaking attempts":"Intentos hablados","Reflections":"Reflexiones","Day notes":"Notas del día","Notebook entries":"Entradas del cuaderno","Earlier practice records":"Registros de práctica anteriores",
+"Nothing here yet.":"Aún no hay nada aquí.","I managed to say:":"Logré decir:","Difficult:":"Difícil:","Next time:":"La próxima vez:","Writing":"Escritura","Entry":"Entrada",
+/* ---------- toolbox ---------- */
+"Spectator preview":"Vista previa de espectador","Unlock the full Fluency OS":"Desbloquea el Fluency OS completo",
+"Your access code opens all 17 missions, weekly classes, every masterclass in The System, and Report Studio.":"Tu código de acceso abre las 17 misiones, las clases semanales, todas las masterclasses de The System y Report Studio.",
+"Members send their progress and writings to ProfGermandario, in order.":"Los miembros envían su progreso y sus escritos a ProfGermandario, en orden.",
+"Teacher console":"Consola del profesor","Create access codes, send them, and see which ones are live.":"Crea códigos de acceso, envíalos y mira cuáles están activos.",
+"Everything besides today's mission lives here.":"Todo lo que no es la misión de hoy vive aquí.","Explore freely. Members unlock everything marked with a lock.":"Explora libremente. Los miembros desbloquean todo lo que tiene candado.",
+"Practice":"Práctica","Keep speaking between missions.":"Sigue hablando entre misiones.","Free speaking":"Habla libre","Choose a topic, write, speak, reflect.":"Elige un tema, escribe, habla, reflexiona.",
+"Listen to mission sentences and repeat them aloud.":"Escucha frases de las misiones y repítelas en voz alta.","Quick check":"Repaso rápido","Five fast questions from missions you completed.":"Cinco preguntas rápidas de las misiones que completaste.",
+"Class texts":"Textos de clase","Every class text by level, plus texts you write or receive.":"Todos los textos de clase por nivel, más los que escribes o recibes.",
+"Your AI speaking partner, available any time.":"Tu compañero de conversación con IA, disponible cuando quieras.","Shadowing Masterclass":"Masterclass de shadowing","Level-adjustable texts with live highlighting.":"Textos ajustables por nivel con resaltado en vivo.",
+"Language exchange chat, no sign-up.":"Chat de intercambio de idiomas, sin registro.","Falling-word speed game.":"Juego de velocidad con palabras que caen.",
+"Language":"Idioma","References and masterclasses.":"Referencias y masterclasses.","Cognates":"Cognados","Spanish–English vocabulary patterns.":"Patrones de vocabulario español–inglés.",
+"Essential verbs":"Verbos esenciales","The verbs you use every day.":"Los verbos que usas todos los días.","Verb tenses":"Tiempos verbales","Complete sentences across tenses.":"Oraciones completas en todos los tiempos.",
+"Present simple vs progressive":"Presente simple vs. progresivo","When to use each one.":"Cuándo usar cada uno.","The verbs natives actually use.":"Los verbos que de verdad usan los nativos.",
+"Connectors":"Conectores","Link ideas with precision.":"Une ideas con precisión.","WH Masterclass":"Masterclass WH","Questions that get answers.":"Preguntas que consiguen respuestas.",
+"Paragraph Lab":"Laboratorio de párrafos","Describe your world in structured paragraphs.":"Describe tu mundo en párrafos estructurados.","Word Vault":"Bóveda de palabras","Vocabulary with pronunciation.":"Vocabulario con pronunciación.",
+"Gold Words":"Palabras de oro","High-level vocabulary.":"Vocabulario de alto nivel.","CEFR pathway":"Ruta MCER","What each level really means.":"Lo que de verdad significa cada nivel.",
+"Mind":"Mente","Focus, memory, and calm before you speak.":"Enfoque, memoria y calma antes de hablar.","Meditation Center":"Centro de Meditación","Guided sessions. Mark each one as done here.":"Sesiones guiadas. Marca cada una como hecha aquí.",
+"Visual memory":"Memoria visual","Remember vocabulary with images.":"Recuerda vocabulario con imágenes.","Fast memory recovery":"Recuperación rápida de memoria","Retrieval training.":"Entrenamiento de recuperación.",
+"Fluency Laboratory":"Laboratorio de Fluidez","ProfGermandario's lab.":"El laboratorio de ProfGermandario.",
+"Support":"Apoyo","When the system isn't enough, a person is.":"Cuando el sistema no alcanza, una persona sí.","Questions, blocks, feedback, and guidance.":"Preguntas, bloqueos, retroalimentación y orientación.",
+"Teacher feedback":"Retroalimentación del profesor","ProfGermandario's corrections on your writing.":"Las correcciones de ProfGermandario a tus escritos.","Messages":"Mensajes","Notes from ProfGermandario, just for you.":"Notas de ProfGermandario, solo para ti.",
+"Student Manual":"Manual del estudiante","Your complete program reference.":"La referencia completa de tu programa.","Your program, your access code, and your devices.":"Tu programa, tu código de acceso y tus dispositivos.",
+"My data":"Mis datos","Export, import, or reset your progress.":"Exporta, importa o reinicia tu progreso.","Profile":"Perfil","Your name, goal, level, and preferences.":"Tu nombre, meta, nivel y preferencias.",
+"The masterclasses, in order. Your progress in each one appears here.":"Las masterclasses, en orden. Tu progreso en cada una aparece aquí.",
+"The masterclasses, in order. The first three open as a free preview: see the logic, then unlock the training.":"Las masterclasses, en orden. Las tres primeras abren como vista previa gratuita: mira la lógica y luego desbloquea el entrenamiento.",
+"Mastered":"Dominada","Started":"Iniciada","Free preview":"Vista previa gratis",
+"Pronoun Logic":"Lógica de pronombres","Who? The first decision of every sentence.":"¿Quién? La primera decisión de toda oración.","Verb Mode":"Modo verbal","Simple or progressive: choose the camera.":"Simple o progresivo: elige la cámara.",
+"Verb Master Map":"Mapa maestro del verbo","Five forms, one chain rule, twelve tenses.":"Cinco formas, una regla de cadena, doce tiempos.","Noun Master Map":"Mapa maestro del sustantivo","The things your verbs move.":"Las cosas que mueven tus verbos.",
+"The Sentence Engine":"El motor de oraciones","Complete sentences, fast.":"Oraciones completas, rápido.","Three connected ideas.":"Tres ideas conectadas.","Pronunciation hardware.":"El hardware de la pronunciación.",
+"Prepositions of Place":"Preposiciones de lugar","Where everything is.":"Dónde está todo.","Deictic Expressions":"Expresiones deícticas","This, that, here, there: the reference point.":"This, that, here, there: el punto de referencia.",
+"Fluency OS · Member":"Fluency OS · Miembro","Fluency OS · Teacher":"Fluency OS · Profesor","Holder":"Titular","Access":"Acceso","Valid until":"Válido hasta","Full access":"Acceso total","No end date":"Sin fecha de fin",
+"Access code":"Código de acceso","Request access on WhatsApp":"Solicitar acceso por WhatsApp","Membership details":"Detalles de la membresía",
+/* ---------- classes view ---------- */
+"Your weekly classes, a text at your level, and the day star.":"Tus clases semanales, un texto a tu nivel y la estrella del día.","Weekly classes are for members.":"Las clases semanales son para miembros.",
+"Add your class days, receive a text at your level for every class, earn the day star, and send each day's work to ProfGermandario.":"Agrega tus días de clase, recibe un texto a tu nivel para cada clase, gana la estrella del día y envía el trabajo de cada día a ProfGermandario.",
+"Your classes":"Tus clases","Every class comes with a text at your level, and every part you complete is measured.":"Cada clase trae un texto a tu nivel, y cada parte que completas se mide.",
+"Add your weekly classes. Each one comes with a text at your level and five clear parts to complete.":"Agrega tus clases semanales. Cada una trae un texto a tu nivel y cinco partes claras para completar.",
+"Start here":"Empieza aquí","Set up your weekly classes":"Configura tus clases semanales","Add my weekly classes":"Agregar mis clases semanales","Add a single class instead":"Mejor agregar una sola clase",
+"This week":"Esta semana","Your month":"Tu mes","Back to today":"Volver a hoy","Previous month":"Mes anterior","Next month":"Mes siguiente","Stars":"Estrellas","Average":"Promedio",
+"Class progress":"Avance de clase","Star: attended + wrote":"Estrella: asistió + escribió","Class to do":"Clase pendiente","Note":"Nota",
+"Tap any day to see its writings, leave a note, or send it to ProfGermandario.":"Toca cualquier día para ver sus escritos, dejar una nota o enviarlo a ProfGermandario.",
+"Weekly schedule":"Horario semanal","Your classes repeat every week. Change them any time; past classes keep their evidence.":"Tus clases se repiten cada semana. Cámbialas cuando quieras; las clases pasadas conservan su evidencia.",
+"No weekly classes yet.":"Aún no hay clases semanales.","Add weekly class":"Agregar clase semanal","Add single class":"Agregar clase única","Add to my phone calendar":"Agregar al calendario de mi teléfono","Finished schedules":"Horarios terminados",
+"How classes are measured":"Cómo se miden las clases",
+"Each class has five parts: attend, read the class text, write your own text, speak, and reflect. The lengths grow with the level of the class.":"Cada clase tiene cinco partes: asistir, leer el texto de clase, escribir tu propio texto, hablar y reflexionar. Las longitudes crecen con el nivel de la clase.",
+"Level":"Nivel","Class text":"Texto de clase","You write":"Escribes","You speak":"Hablas","Browse every class text":"Ver todos los textos de clase",
+"Star earned":"Estrella ganada","Earn this day's star":"Gana la estrella de este día",
+"Homework, new words, a question for your teacher, how the class went…":"Tarea, palabras nuevas, una pregunta para tu profesor, cómo te fue en la clase…",
+"Saved automatically. It travels with your day report.":"Se guarda automáticamente. Viaja con tu reporte del día.",
+"Writing instructions":"Instrucciones de escritura","Write my class text":"Escribir mi texto de clase","Read the text, then write":"Lee el texto y luego escribe","I attended this class":"Asistí a esta clase",
+"No class was scheduled. If you had one, add it to keep the record.":"No había clase programada. Si tuviste una, agrégala para guardar el registro.","Nothing scheduled yet.":"Aún no hay nada programado.",
+"Writings":"Escritos","Writings from this day will appear here.":"Los escritos de este día aparecerán aquí.","No writing saved this day.":"No se guardó ningún escrito este día.","No class":"Sin clase",
+"✓ Sent to ProfGermandario":"✓ Enviado a ProfGermandario","Send again on WhatsApp":"Enviar de nuevo por WhatsApp","Send to ProfGermandario":"Enviar a ProfGermandario","Share or copy the full report":"Compartir o copiar el reporte completo","Add a class on this day":"Agregar una clase este día",
+"This class is cancelled. It doesn't count in your measures.":"Esta clase está cancelada. No cuenta en tus medidas.","Open the new date":"Abrir la nueva fecha","Restore this class":"Restaurar esta clase",
+"Resume class work":"Continuar el trabajo de clase","Practice this class again":"Practicar esta clase otra vez","Continue class work":"Continuar el trabajo de clase","Prepare for class":"Prepararme para la clase","Start class work":"Empezar el trabajo de clase",
+"Attended the class":"Asistí a la clase","Marked. Tap to undo.":"Marcado. Toca para deshacer.","Tap after your class.":"Toca después de tu clase.","Read the class text":"Leí el texto de clase",
+"Saved in your evidence.":"Guardado en tu evidencia.","Three short answers at the end.":"Tres respuestas cortas al final.","shared with you":"compartido contigo","my text":"mi texto","written here":"escrito aquí",
+"Read it now":"Léelo ahora","Change text":"Cambiar texto","In range":"En rango",
+"Edit or move this class":"Editar o mover esta clase","Edit or move this date":"Editar o mover esta fecha","Time, duration, title, level, date.":"Hora, duración, título, nivel, fecha.","Time, duration, title, level, or a new date.":"Hora, duración, título, nivel o una nueva fecha.",
+"Edit the weekly schedule":"Editar el horario semanal","Message ProfGermandario":"Escribir a ProfGermandario","Questions, rescheduling, or homework.":"Preguntas, cambios de horario o tareas.",
+"Send my class work":"Enviar mi trabajo de clase","Your text, speaking time, and reflection on WhatsApp.":"Tu texto, tiempo hablado y reflexión por WhatsApp.",
+"Delete this class":"Eliminar esta clase","Cancel this date":"Cancelar esta fecha","Your writing and speaking stay in your evidence.":"Tus escritos y tu habla permanecen en tu evidencia.","Other weeks are not affected.":"Las otras semanas no se afectan.",
+"Listen to the text":"Escuchar el texto","Stop":"Detener","Reading speed":"Velocidad de lectura","Slow":"Lento","Natural":"Natural","Tap any sentence to hear it on its own.":"Toca cualquier frase para escucharla sola.",
+"Key words":"Palabras clave","Back to the class":"Volver a la clase","Back to class texts":"Volver a los textos de clase",
+"Original class texts at every level. Tap one to read it.":"Textos de clase originales en todos los niveles. Toca uno para leerlo.","Other levels":"Otros niveles",
+"Edit":"Editar","Copy share link":"Copiar enlace para compartir","Delete":"Eliminar","Texts you paste, write, or receive by link appear here.":"Los textos que pegues, escribas o recibas por enlace aparecen aquí.",
+"Paste the text from your teacher, or write one. The meter shows if its length fits the level.":"Pega el texto de tu profesor o escribe uno. El medidor muestra si su longitud se ajusta al nivel.",
+"Title":"Título","Title of the text":"Título del texto","Text":"Texto","Paste or write the class text here. Leave an empty line between paragraphs.":"Pega o escribe aquí el texto de clase. Deja una línea vacía entre párrafos.",
+"Writing and speaking prompts (optional)":"Instrucciones de escritura y habla (opcional)","Writing prompt":"Instrucción de escritura","Speaking prompt":"Instrucción de habla",
+"Summarize the class text in your own words. Then explain what it means for you.":"Resume el texto de clase con tus propias palabras. Luego explica qué significa para ti.",
+"Retell the class text in your own words, then give your opinion.":"Vuelve a contar el texto de clase con tus palabras y luego da tu opinión.",
+"Use this text for the class":"Usar este texto para la clase","Save to my texts":"Guardar en mis textos","Save and copy a share link":"Guardar y copiar un enlace para compartir",
+"A share link carries the whole text. Anyone who opens it gets the text in their Fluency OS.":"Un enlace para compartir lleva el texto completo. Quien lo abra recibe el texto en su Fluency OS.",
+"Library, your texts, and texts to share.":"Biblioteca, tus textos y textos para compartir.","Library":"Biblioteca","My texts":"Mis textos","Add text":"Agregar texto","Source":"Fuente",
+"A class text was shared with you":"Te compartieron un texto de clase","Keep it in My texts":"Guardarlo en Mis textos",
+"Edit this class":"Editar esta clase","Edit this date":"Editar esta fecha","Date":"Fecha","Time":"Hora","Duration":"Duración","Save changes":"Guardar cambios",
+"Add a single class":"Agregar una clase única","For an extra class, a make-up class, or one you already had.":"Para una clase extra, una de recuperación o una que ya tuviste.","Add class":"Agregar clase",
+"Weekly class":"Clase semanal","Add weekly classes":"Agregar clases semanales","Pick your days and time once. They repeat every week.":"Elige tus días y tu hora una sola vez. Se repiten cada semana.",
+"Class days":"Días de clase","Starts":"Empieza","How long":"¿Por cuánto tiempo?","Every week":"Cada semana","Set number of weeks":"Número fijo de semanas","Number of weeks":"Número de semanas","Number of weeks, counted from the first class":"Número de semanas, contadas desde la primera clase",
+"Add to my calendar":"Agregar a mi calendario","Stop this weekly class":"Detener esta clase semanal",
+/* ---------- lesson engine ---------- */
+"Arrival":"Llegada","Read it":"Léelo","Understand":"Entiende","See it":"Míralo","Build it":"Constrúyelo","Write it":"Escríbelo","Speak it":"Dilo","Reflect":"Reflexiona",
+"Save and exit":"Guardar y salir","Stuck?":"¿Atascado?","Let's begin":"Comencemos","See yourself, then and now.":"Mírate: antes y ahora.",
+"You'll answer one prompt in writing and out loud. Every few weeks you answer the same prompt again, and the difference becomes visible.":"Vas a responder una pregunta por escrito y en voz alta. Cada pocas semanas respondes la misma pregunta otra vez, y la diferencia se vuelve visible.",
+"Tell me about yourself and what English will make possible for you.":"Háblame de ti y de lo que el inglés hará posible para ti.",
+"About 8 minutes. Nothing is corrected or graded.":"Unos 8 minutos. Nada se corrige ni se califica.","Review":"Repaso",
+"Understand, see it, build it, write it, speak it, reflect. Your work is saved as you go.":"Entiende, míralo, constrúyelo, escríbelo, dilo, reflexiona. Tu trabajo se guarda mientras avanzas.",
+"I've read it":"Ya lo leí","Continue to writing":"Continuar a escribir","Read":"Leído","Think about it":"Piénsalo",
+"Answer in your head or out loud. You'll use these ideas when you write and speak.":"Responde en tu mente o en voz alta. Usarás estas ideas cuando escribas y hables.",
+"I understand":"Entiendo","See the pattern":"Ver el patrón","Mistakes Spanish speakers make":"Errores que cometemos los hispanohablantes","Open the full class for this mission ↗":"Abrir la clase completa de esta misión ↗",
+"Tap to listen. Then say each sentence out loud once.":"Toca para escuchar. Luego di cada frase en voz alta una vez.","Listen to all examples":"Escuchar todos los ejemplos","More examples":"Más ejemplos",
+"Shadow these sentences":"Haz shadowing con estas frases","Listen, then repeat immediately with the same rhythm.":"Escucha y repite de inmediato con el mismo ritmo.",
+"Grow the sentence, then order the words to continue.":"Haz crecer la frase y luego ordena las palabras para continuar.","Watch a sentence grow":"Mira cómo crece una frase","Same structure, more information each time.":"La misma estructura, más información cada vez.",
+"The core":"El núcleo","Add detail":"Agrega detalle","Add a link":"Agrega un conector","The complete idea":"La idea completa","Add a layer":"Agregar una capa","Now you build":"Ahora construyes tú",
+"Tap the words in the right order. Tap a placed word to return it.":"Toca las palabras en el orden correcto. Toca una palabra colocada para devolverla.","Your sentence":"Tu frase","Your sentence appears here.":"Tu frase aparece aquí.",
+"Correct.":"¡Correcto!","Not quite. Check the order of the subject and the verb.":"Casi. Revisa el orden del sujeto y el verbo.","Try again":"Intentar de nuevo","Show the answer":"Mostrar la respuesta",
+"Saved as evidence":"Guardado como evidencia","Your original stays exactly as you wrote it. Nothing is corrected or overwritten.":"Tu original queda exactamente como lo escribiste. Nada se corrige ni se sobrescribe.",
+"Continue to speaking":"Continuar a hablar","Start from a structure. Tap one to add it, then complete it.":"Empieza con una estructura. Toca una para agregarla y luego complétala.",
+"Write about this topic in your own way.":"Escribe sobre este tema a tu manera.","Your topic, your words.":"Tu tema, tus palabras.","Save and continue":"Guardar y continuar",
+"Guided":"Guiada","Suggested":"Sugerida","Open":"Libre","How much guidance":"Cuánta guía",
+"Write about anything from today's class, in your own words.":"Escribe sobre cualquier cosa de la clase de hoy, con tus palabras.","Write about anything from your life today.":"Escribe sobre cualquier cosa de tu vida hoy.",
+"Write in English. Don't translate, don't worry about mistakes.":"Escribe en inglés. No traduzcas, no te preocupes por los errores.","Saved exactly as you write it":"Se guarda exactamente como lo escribes",
+"Use your ideas. Don't read a script. Keep your thought alive.":"Usa tus ideas. No leas un guion. Mantén viva tu idea.","Ready":"Listo","Speaking":"Hablando","Recording":"Grabando",
+"Start recording":"Empezar a grabar","Speak without recording":"Hablar sin grabar","Start the timer":"Iniciar el cronómetro","Your attempts":"Tus intentos","Peek at what I wrote":"Ver lo que escribí",
+"Practice this prompt with Speak Ya":"Practicar esta pregunta con Speak Ya","Save my mirror sample":"Guardar mi muestra espejo","Continue to reflection":"Continuar a la reflexión","Press stop when you finish.":"Presiona detener cuando termines.",
+"Microphone not available. The timer will still save your time.":"El micrófono no está disponible. El cronómetro igual guardará tu tiempo.","Too short to save. Try again.":"Muy corto para guardar. Inténtalo de nuevo.",
+"The recording couldn't be stored. Your time was saved.":"No se pudo guardar la grabación. Tu tiempo sí se guardó.",
+"Complete mission":"Completar misión","Save my practice":"Guardar mi práctica","Answer the first question in a few words to finish.":"Responde la primera pregunta con pocas palabras para terminar.",
+"Short answers. English or Spanish, whatever keeps it honest.":"Respuestas cortas. En inglés o en español, lo que te permita ser honesto.",
+"What did you manage to say?":"¿Qué lograste decir?","What was difficult?":"¿Qué fue difícil?","What would you like to say better next time?":"¿Qué te gustaría decir mejor la próxima vez?",
+"I explained…":"Expliqué…","It was hard to…":"Me costó…","Next time I want to…":"La próxima vez quiero…",
+"No writing sample":"Sin muestra de escritura","1 reflection":"1 reflexión","Compare in Evolution":"Comparar en Evolución","Back to home":"Volver al inicio","Mirror sample saved":"Muestra espejo guardada",
+"You answered the same prompt again. Open Evolution to see both side by side.":"Respondiste la misma pregunta otra vez. Abre Evolución para ver las dos lado a lado.",
+"This is your starting point. In four weeks you'll answer the same prompt and see the difference.":"Este es tu punto de partida. En cuatro semanas responderás la misma pregunta y verás la diferencia.",
+"Ask ProfGermandario to review it":"Pedir a ProfGermandario que la revise","Practice complete":"Práctica completa","Back to my classes":"Volver a mis clases","Class work complete":"Trabajo de clase completo",
+"Send my class work to ProfGermandario":"Enviar mi trabajo de clase a ProfGermandario","Next mission":"Siguiente misión",
+"You completed every mission in your program. Record a mirror sample to see the whole journey.":"Completaste todas las misiones de tu programa. Graba una muestra espejo para ver todo el recorrido.",
+"Record my mirror sample":"Grabar mi muestra espejo","Mission complete":"Misión completa","Understanding":"Comprensión","Building":"Construcción","Reflection":"Reflexión",
+"Send this mission to ProfGermandario":"Enviar esta misión a ProfGermandario","Personal feedback on your evidence is part of the Companion program.":"La retroalimentación personal sobre tu evidencia es parte del programa Companion.","See programs":"Ver programas",
+/* ---------- sheets ---------- */
+"Resume mission":"Continuar misión","Practice this mission again":"Practicar esta misión otra vez","Start mission":"Empezar misión",
+"Your teacher, for what the system can't solve.":"Tu profesor, para lo que el sistema no puede resolver.",
+"Write when you have a question the lesson didn't answer, a block that lasts more than a day, or you want personal guidance on your progress.":"Escribe cuando tengas una pregunta que la lección no respondió, un bloqueo que dure más de un día o quieras orientación personal sobre tu progreso.",
+"Message on WhatsApp":"Escribir por WhatsApp","I'm stuck on something":"Estoy atascado en algo","Send my latest mission evidence":"Enviar la evidencia de mi última misión",
+"What's happening?":"¿Qué está pasando?","Choose the closest one. It's normal, and it's fixable.":"Elige la más cercana. Es normal y tiene solución.",
+"I don't understand the idea.":"No entiendo la idea.","I understand, but I can't remember it.":"La entiendo, pero no la recuerdo.","I remember it, but I can't say it.":"La recuerdo, pero no la puedo decir.",
+"I can say it, but very slowly.":"La puedo decir, pero muy lento.","I keep making the same mistake.":"Sigo cometiendo el mismo error.","I feel blocked.":"Me siento bloqueado.",
+"Here's how to get unstuck":"Así puedes desatascarte","Review the idea again":"Repasar la idea otra vez","Practice it with Speak Ya":"Practicarlo con Speak Ya","Tell ProfGermandario":"Contarle a ProfGermandario",
+"Your progress lives on this device, in this browser.":"Tu progreso vive en este dispositivo, en este navegador.",
+"Export a backup every week, and before changing phones or browsers. The backup includes your missions, evidence, classes, day notes, and texts. Audio recordings stay on this device and are not included.":"Exporta una copia de seguridad cada semana y antes de cambiar de teléfono o de navegador. La copia incluye tus misiones, evidencia, clases, notas del día y textos. Las grabaciones de audio se quedan en este dispositivo y no se incluyen.",
+"Export my backup":"Exportar mi copia de seguridad","Import a backup":"Importar una copia de seguridad","Reset mission progress":"Reiniciar el progreso de misiones","Delete everything on this device":"Borrar todo en este dispositivo",
+"This shapes your examples, topics, and speaking targets.":"Esto define tus ejemplos, temas y metas de habla.","Name":"Nombre","Main goal":"Meta principal","Biggest block":"Mayor bloqueo","How I learn best":"Cómo aprendo mejor","Choose one":"Elige una","Save profile":"Guardar perfil",
+"A calm mind retrieves words faster. Open a guided session, then come back and mark it as done.":"Una mente tranquila recupera las palabras más rápido. Abre una sesión guiada y luego vuelve y márcala como hecha.",
+"Open the Meditation Center":"Abrir el Centro de Meditación","I finished a session":"Terminé una sesión",
+"Listen, then repeat at the same time and rhythm.":"Escucha y repite al mismo tiempo y con el mismo ritmo.","Sentences from":"Frases de","Speed":"Velocidad","Play all with pauses":"Reproducir todo con pausas","I finished this set":"Terminé este grupo",
+"Complete a few more missions and your quick checks will appear here.":"Completa algunas misiones más y tus repasos rápidos aparecerán aquí.","Quick check complete":"Repaso rápido completo",
+"Any you missed are worth one more look in the mission's Understand step.":"Las que fallaste merecen una mirada más en el paso Entiende de la misión.","Which one is correct?":"¿Cuál es la correcta?",
+"Pick a topic. Write, speak, and reflect.":"Elige un tema. Escribe, habla y reflexiona.",
+"Myself":"Yo mismo","Tell me about yourself.":"Háblame de ti.","My home and my world":"Mi casa y mi mundo","Tell me about your home and the world around you.":"Háblame de tu casa y del mundo que te rodea.",
+"A memorable experience":"Una experiencia memorable","Tell me about a memorable experience.":"Cuéntame una experiencia memorable.","Explain something":"Explica algo","Explain something you know well.":"Explica algo que conoces bien.",
+"My opinion":"Mi opinión","What is something you have a strong opinion about? Why?":"¿Sobre qué tienes una opinión fuerte? ¿Por qué?","Defend a position":"Defiende una postura","Do you agree or disagree with an idea? Defend your position.":"¿Estás de acuerdo o en desacuerdo con una idea? Defiende tu postura.",
+/* ---------- membership ---------- */
+"Something went wrong. Try again.":"Algo salió mal. Inténtalo de nuevo.","That code has ended. Renew it with ProfGermandario.":"Ese código terminó. Renuévalo con ProfGermandario.",
+"That code is no longer active. Ask ProfGermandario for your current code.":"Ese código ya no está activo. Pídele a ProfGermandario tu código actual.",
+"Too many attempts. Wait a few minutes and try again.":"Demasiados intentos. Espera unos minutos e inténtalo de nuevo.","Codes need a secure connection (https).":"Los códigos necesitan una conexión segura (https).",
+"Type the complete code.":"Escribe el código completo.","You're offline. Connect to the internet and try again.":"No tienes conexión. Conéctate a internet e inténtalo de nuevo.",
+"That code isn't valid. Check it with ProfGermandario.":"Ese código no es válido. Verifícalo con ProfGermandario.",
+"Your access ended. Renew it with ProfGermandario to keep going.":"Tu acceso terminó. Renuévalo con ProfGermandario para continuar.",
+"The code on this device is no longer active. Enter your current code.":"El código de este dispositivo ya no está activo. Ingresa tu código actual.",
+"All 17 missions":"Las 17 misiones","Every stage of the journey, built around your goal.":"Cada etapa del recorrido, construida alrededor de tu meta.",
+"Your calendar, a text at your level for every class, and the day star.":"Tu calendario, un texto a tu nivel para cada clase y la estrella del día.",
+"Every masterclass with voice practice, random arenas and progress.":"Cada masterclass con práctica de voz, arenas aleatorias y progreso.",
+"Send your progress and writings to ProfGermandario, in order.":"Envía tu progreso y tus escritos a ProfGermandario, en orden.","Speak Ya and class texts":"Speak Ya y textos de clase",
+"Your AI speaking partner and the full text library.":"Tu compañero de conversación con IA y la biblioteca completa de textos.",
+"Teacher mode on this device":"Modo profesor en este dispositivo","Your program on this device":"Tu programa en este dispositivo",
+"Every mission in your program, with examples built around your goal, Speak Ya, and WhatsApp support.":"Todas las misiones de tu programa, con ejemplos construidos alrededor de tu meta, Speak Ya y apoyo por WhatsApp.",
+"Speaking targets adjusted to your block, practice matched to how you learn, and personal feedback on the evidence you send.":"Metas de habla ajustadas a tu bloqueo, práctica adaptada a cómo aprendes y retroalimentación personal sobre la evidencia que envías.",
+"Mirror-sample and portfolio reviews with ProfGermandario.":"Revisiones de muestras espejo y de portafolio con ProfGermandario.",
+"Activated":"Activado","Using another phone or computer? Enter the same code there.":"¿Usas otro teléfono o computador? Ingresa allí el mismo código.",
+"Open the teacher console":"Abrir la consola del profesor","Use a different code":"Usar otro código","Remove access from this device":"Quitar el acceso de este dispositivo",
+"One code opens everything in your program — here and in every masterclass.":"Un código abre todo tu programa: aquí y en cada masterclass.","Payments never happen inside this app.":"Los pagos nunca se hacen dentro de esta app.",
+"Teacher mode is on.":"El modo profesor está activado.","Create codes, send them, and see which ones are live — from the teacher console.":"Crea códigos, envíalos y mira cuáles están activos, desde la consola del profesor.",
+"Not now":"Ahora no","Access unlocked":"Acceso desbloqueado","Your missions, classes, every masterclass in The System and Report Studio are open on this device.":"Tus misiones, clases, todas las masterclasses de The System y Report Studio están abiertas en este dispositivo.",
+"Start exploring":"Empezar a explorar","On another phone or computer, enter the same code.":"En otro teléfono o computador, ingresa el mismo código.","Checking your access code…":"Verificando tu código de acceso…",
+"Corrections and comments from ProfGermandario on your writing.":"Correcciones y comentarios de ProfGermandario sobre tus escritos.","New":"Nuevo","Your text":"Tu texto",
+"No feedback yet. When ProfGermandario reviews one of your texts, it appears here.":"Aún no hay retroalimentación. Cuando ProfGermandario revise uno de tus textos, aparecerá aquí.",
+"Share your journal with ProfGermandario and his feedback on your writing will appear here.":"Comparte tu diario con ProfGermandario y su retroalimentación a tus escritos aparecerá aquí.",
+"Share my journal":"Compartir mi diario","From ProfGermandario, just for you.":"De ProfGermandario, solo para ti.","No messages yet. When ProfGermandario writes to you, it appears here.":"Aún no hay mensajes. Cuando ProfGermandario te escriba, aparecerá aquí.",
+"Reply on WhatsApp":"Responder por WhatsApp","Your teacher, closer":"Tu profesor, más cerca","Share your journal with ProfGermandario?":"¿Compartir tu diario con ProfGermandario?",
+"Yes, share my journal":"Sí, compartir mi diario","Shared with ProfGermandario":"Compartido con ProfGermandario","sending soon":"se enviará pronto",
+"Your progress, writings and day reports reach him automatically.":"Tu progreso, escritos y reportes del día le llegan automáticamente.","Send now":"Enviar ahora","Stop sharing":"Dejar de compartir",
+"Not shared with ProfGermandario":"No compartido con ProfGermandario","Share your journal so he can follow your progress and correct your writing.":"Comparte tu diario para que siga tu progreso y corrija tus escritos.",
+"Want ProfGermandario to follow your journal? Ask him for your personal code and enter it under “Use a different code”.":"¿Quieres que ProfGermandario siga tu diario? Pídele tu código personal e ingrésalo en “Usar otro código”.",
+"Share your journal":"Comparte tu diario","With ProfGermandario only.":"Solo con ProfGermandario.",
+/* ---------- report studio ---------- */
+"Your progress and writings, in order, for ProfGermandario.":"Tu progreso y tus escritos, en orden, para ProfGermandario.","What to send":"Qué enviar","Full report":"Reporte completo","One lesson":"Una lección","Scope":"Alcance",
+"Period":"Periodo","All time":"Todo el historial","7 days":"7 días","30 days":"30 días","Include":"Incluir","Progress":"Progreso","Reflections & notes":"Reflexiones y notas",
+"Nothing to report for this choice yet. Try “All time”, another lesson, or include more.":"Aún no hay nada que reportar con esta opción. Prueba “Todo el historial”, otra lección o incluye más.",
+"blocks":"bloques","lesson":"lección","writings":"escritos","words":"palabras","WhatsApp part":"parte de WhatsApp","WhatsApp parts":"partes de WhatsApp","Preview the report":"Vista previa del reporte","Report preview":"Vista previa del reporte",
+"Send on WhatsApp":"Enviar por WhatsApp","Share as document":"Compartir como documento","Copy text":"Copiar texto","Print / PDF":"Imprimir / PDF","Sent":"Enviado","Send":"Enviar","Change the report":"Cambiar el reporte",
+"No lesson has evidence yet. Finish a mission, a class, or a masterclass session first.":"Ninguna lección tiene evidencia todavía. Termina primero una misión, una clase o una sesión de masterclass.",
+"Free speaking practice":"Práctica de habla libre","Mirror samples":"Muestras espejo","Report":"Reporte",
+/* ---------- toasts & dialogs ---------- */
+"Saved. Resume any time from Home.":"Guardado. Continúa cuando quieras desde Inicio.","Saved. Resume any time from the class.":"Guardado. Continúa cuando quieras desde la clase.",
+"Mission brief copied. Paste it into Speak Ya.":"Resumen de la misión copiado. Pégalo en Speak Ya.","Backup downloaded.":"Copia de seguridad descargada.","Mission progress reset.":"Progreso de misiones reiniciado.",
+"Profile saved.":"Perfil guardado.","Session saved.":"Sesión guardada.","Shadowing session saved.":"Sesión de shadowing guardada.","You can mark attendance on the day of the class.":"Puedes marcar asistencia el día de la clase.",
+"Class complete. All five parts done.":"Clase completa. Las cinco partes hechas.","Attendance saved.":"Asistencia guardada.","Attendance removed.":"Asistencia eliminada.","Text set for this class.":"Texto asignado a esta clase.",
+"Give the text a title.":"Ponle un título al texto.","The text needs at least 20 words.":"El texto necesita al menos 20 palabras.","Saved. Share link copied.":"Guardado. Enlace copiado.","Saved to My texts.":"Guardado en Mis textos.",
+"Share link copied. Paste it in WhatsApp.":"Enlace copiado. Pégalo en WhatsApp.","Text deleted.":"Texto eliminado.","Class updated.":"Clase actualizada.","Class cancelled.":"Clase cancelada.","Class restored.":"Clase restaurada.","Class deleted.":"Clase eliminada.",
+"Choose a date.":"Elige una fecha.","Choose at least one day.":"Elige al menos un día.","Weekly schedule updated.":"Horario semanal actualizado.","Weekly class stopped.":"Clase semanal detenida.",
+"No upcoming classes to add.":"No hay próximas clases para agregar.","Calendar file downloaded. Open it to add your classes with reminders.":"Archivo de calendario descargado. Ábrelo para agregar tus clases con recordatorios.",
+"Long report: WhatsApp gets a shorter version. The full text is copied, paste it if needed.":"Reporte largo: WhatsApp recibe una versión más corta. El texto completo quedó copiado; pégalo si lo necesitas.",
+"Opening WhatsApp with your day report.":"Abriendo WhatsApp con tu reporte del día.","Full report copied. Paste it in WhatsApp or email.":"Reporte completo copiado. Pégalo en WhatsApp o en un correo.",
+"That class text link is incomplete. Ask for it again.":"Ese enlace del texto de clase está incompleto. Pídelo otra vez.","Storage is full. Export a backup from Toolbox › My data.":"El almacenamiento está lleno. Exporta una copia desde Herramientas › Mis datos.",
+"Audio isn't available in this browser.":"El audio no está disponible en este navegador.","This class no longer exists.":"Esta clase ya no existe.","That class was removed from your schedule.":"Esa clase se quitó de tu horario.",
+"Opening WhatsApp with your report.":"Abriendo WhatsApp con tu reporte.","Report copied. Paste it in WhatsApp or email.":"Reporte copiado. Pégalo en WhatsApp o en un correo.",
+"Report downloaded. Attach it in WhatsApp or email.":"Reporte descargado. Adjúntalo en WhatsApp o en un correo.","Pop-ups are blocked, so the report was downloaded instead.":"Las ventanas emergentes están bloqueadas, así que el reporte se descargó.",
+"Sharing is on. ProfGermandario will follow your journal.":"Compartir está activado. ProfGermandario seguirá tu diario.","Sharing is off.":"Compartir está desactivado.","Sent to ProfGermandario.":"Enviado a ProfGermandario.",
+"Couldn't send now. It will try again automatically.":"No se pudo enviar ahora. Se intentará de nuevo automáticamente.","You're offline. Try again when you're connected.":"No tienes conexión. Inténtalo cuando estés conectado.",
+"Your access ended. Renew it to share your journal.":"Tu acceso terminó. Renuévalo para compartir tu diario.","Couldn't change sharing now. Try again later.":"No se pudo cambiar ahora. Inténtalo más tarde.",
+"Teacher mode is off on this device.":"El modo profesor está desactivado en este dispositivo.","Access removed from this device.":"Acceso eliminado de este dispositivo.","Backup imported.":"Copia de seguridad importada.",
+"That file isn't a Fluency OS backup.":"Ese archivo no es una copia de seguridad de Fluency OS.","Checking…":"Verificando…","Saving…":"Guardando…","Sending…":"Enviando…",
+"You have unfinished work in progress. Start this instead? Everything you already saved stays in your evidence.":"Tienes trabajo sin terminar. ¿Empezar esto en su lugar? Todo lo que ya guardaste se queda en tu evidencia.",
+"Reset mission progress? Your writing, speaking, reflections, and mirror samples are kept.":"¿Reiniciar el progreso de misiones? Tus escritos, tu habla, tus reflexiones y tus muestras espejo se conservan.",
+"Delete everything on this device? This removes all missions, evidence, and recordings.":"¿Borrar todo en este dispositivo? Esto elimina todas las misiones, la evidencia y las grabaciones.",
+"Type DELETE to confirm.":"Escribe DELETE para confirmar.","Delete this class?":"¿Eliminar esta clase?","Your writing, speaking, and reflections stay in your evidence.":"Tus escritos, tu habla y tus reflexiones se quedan en tu evidencia.",
+"Classes before today keep their evidence. Future dates are removed.":"Las clases anteriores a hoy conservan su evidencia. Las fechas futuras se eliminan.",
+"Sign out of teacher mode on this device?":"¿Salir del modo profesor en este dispositivo?","Remove your access code from this device? Your progress stays here.":"¿Quitar tu código de acceso de este dispositivo? Tu progreso se queda aquí.",
+"Stop sharing your journal with ProfGermandario? What he already received stays with him; you can ask him to delete it.":"¿Dejar de compartir tu diario con ProfGermandario? Lo que ya recibió se queda con él; puedes pedirle que lo borre.",
+"Listen":"Escuchar","Completed":"Completada","Mon":"Lun","Tue":"Mar","Wed":"Mié","Thu":"Jue","Fri":"Vie","Sat":"Sáb","Sun":"Dom"
+};
+/* Same English word, different Spanish depending on where it appears. */
+const ES_CTX = [
+ [".tabs", {"Evolution":"Avance","Toolbox":"Recursos"}],
+ [".cal-metrics", {"Attended":"Asistencia","Classes":"Clases"}],
+ [".pill,.lvl-table", {"Attended":"Asistida","Complete":"Completa","Today":"Hoy","Done":"Hecha","Read":"Leído"}],
+ [".checks", {"Attended":"Asistí","Writing":"Escritura","Speaking":"Habla"}],
+ [".evidence", {"words":"palabras"}]
+];
+
+/* ============================================================
+   BILINGUAL LAYER · ENGINE
+   Three modes, chosen by the student (header button, onboarding):
+     es → instructions in Spanish (English stays in the content)
+     bi → English with a Spanish line under each instruction
+     en → English only (full immersion)
+   Every screen is still written in English in the code. After each
+   render, a MutationObserver translates what reached the page, so
+   every view, sheet, toast and dialog follows the mode with no
+   change to the rendering code. Learning content (example
+   sentences, class texts, the student's own writing) is never
+   replaced: when a translation exists, it appears underneath.
+   ============================================================ */
+const LANG_MODES = {
+  es:{short:"ES", en:"Spanish instructions", es:"Instrucciones en español", sub:"Todo lo que tienes que hacer, explicado en español. El contenido de práctica sigue en inglés."},
+  bi:{short:"ES·EN", en:"Bilingual", es:"Bilingüe", sub:"Inglés con la traducción al español debajo. Recomendado para empezar."},
+  en:{short:"EN", en:"English only", es:"Solo inglés", sub:"Inmersión total. Para cuando ya no necesites la ayuda."}
+};
+const lang = () => (state && LANG_MODES[state.lang]) ? state.lang : "bi";
+/* Small helpers for new screens written in both languages at once. */
+function T(en, es){
+  const l = lang();
+  if(l==="en" || es==null) return `<span class="notr">${en}</span>`;
+  if(l==="es") return `<span class="notr" lang="es">${es}</span>`;
+  return `<span class="notr">${en}<span class="es-tr" lang="es">${es}</span></span>`;
+}
+const tt = (en, es) => lang()==="es" ? es : en;                       /* plain text: attributes, file text */
+const tb = (en, es) => lang()==="en" ? en : lang()==="es" ? es : en+" · "+es; /* short labels both ways */
+function toastT(en, es){ toast(""); $("#toast").innerHTML = T(esc(en), esc(es)); }
+
+const LOC = (function(){
+  let dict = null;
+  const norm = s => String(s).replace(/\s+/g," ").trim();
+  const ucfirst = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+
+  /* ---------- dates written in English → Spanish ---------- */
+  const DOW = {Sunday:"domingo",Monday:"lunes",Tuesday:"martes",Wednesday:"miércoles",Thursday:"jueves",Friday:"viernes",Saturday:"sábado",Sun:"dom",Mon:"lun",Tue:"mar",Wed:"mié",Thu:"jue",Fri:"vie",Sat:"sáb"};
+  const MON = {January:"enero",February:"febrero",March:"marzo",April:"abril",May:"mayo",June:"junio",July:"julio",August:"agosto",September:"septiembre",October:"octubre",November:"noviembre",December:"diciembre",
+    Jan:"ene",Feb:"feb",Mar:"mar",Apr:"abr",Jun:"jun",Jul:"jul",Aug:"ago",Sep:"sep",Oct:"oct",Nov:"nov",Dec:"dic"};
+  const W = "Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat";
+  const M = "January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec";
+  const reWMD = new RegExp("\\b("+W+"),\\s("+M+")\\s(\\d{1,2})\\b","g");
+  const reMDY = new RegExp("\\b("+M+")\\s(\\d{1,2}),\\s(\\d{4})\\b","g");
+  const reMY  = new RegExp("\\b("+M+")\\s(\\d{4})\\b","g");
+  const reMD  = new RegExp("\\b("+M+")\\s(\\d{1,2})\\b","g");
+  const reW   = new RegExp("\\b("+W+")\\b","g");
+  function D(s){
+    return String(s).replace(reWMD,(m,w,mo,d)=>DOW[w]+" "+d+" de "+MON[mo]).replace(reMDY,(m,mo,d,y)=>d+" de "+MON[mo]+" de "+y)
+      .replace(reMY,(m,mo,y)=>MON[mo]+" de "+y).replace(reMD,(m,mo,d)=>d+" de "+MON[mo]).replace(reW,m=>DOW[m]).replace(/ & /g," y ");
+  }
+  const dateish = s => !/[A-Za-z]/.test(s.replace(new RegExp("\\b("+W+"|"+M+"|AM|PM|Today)\\b","g"),""));
+  const AGO = s => s==="today" ? "hoy" : s==="yesterday" ? "ayer" : String(s).replace(/^(\d+) days ago$/,"hace $1 días");
+  const plural = (n, one, many) => +n===1 ? one : many;
+  const CTXE = {"your work":"tu trabajo", "travel":"viajes", "speaking with confidence":"hablar con confianza", "everyday life":"la vida diaria"};
+  const SEE = {"your work":"Míralo en tu trabajo", "travel":"Míralo en los viajes", "speaking with confidence":"Míralo al hablar con confianza", "everyday life":"Míralo en la vida diaria"};
+  const tv = s => { const t = tr(s); return t==null ? s : t; };
+  const tvl = s => { const k = norm(s).toLowerCase(); for(const [en,es] of dict) if(en.toLowerCase()===k) return es.toLowerCase(); return s; };
+
+  /* ---------- dynamic text: pattern → Spanish ---------- */
+  const RX = [
+   [/^Step (\d+) of (\d+)$/, m=>"Paso "+m[1]+" de "+m[2]],
+   [/^(.+), what do you want English to help you accomplish\?$/, m=>m[1]+", ¿qué quieres lograr con el inglés?"],
+   [/^Mission (\d+): (.+?)\. Recommended if you want a solid base\.$/, m=>"Misión "+m[1]+": "+tv(m[2])+". Recomendado si quieres una base sólida."],
+   [/^Start at Mission (\d+)$/, m=>"Empezar en la Misión "+m[1]],
+   [/^(.+)\. Earlier missions stay open for review\.$/, m=>tv(m[1])+". Las misiones anteriores quedan abiertas para repasar."],
+   [/^Seventeen missions in four stages\. Your examples will focus on (.+)\.$/, m=>"Diecisiete misiones en cuatro etapas. Tus ejemplos se enfocarán en "+(CTXE[m[1]]||m[1])+"."],
+   [/^Seventeen missions in four stages\. (\d+) complete\.$/, m=>"Diecisiete misiones en cuatro etapas. "+m[1]+" completa"+(m[1]==="1"?"":"s")+"."],
+   [/^Skip for now and start Mission (\d+): (.+)$/, m=>"Omitir por ahora y empezar la Misión "+m[1]+": "+tv(m[2])],
+   [/^Good (morning|afternoon|evening)(?:, (.+))?\.$/, m=>({morning:"Buenos días",afternoon:"Buenas tardes",evening:"Buenas noches"})[m[1]]+(m[2]?", "+m[2]:"")+"."],
+   [/^Mission (\d+)$/, m=>"Misión "+m[1]],
+   [/^Mission (\d+): (.+)$/, m=>"Misión "+m[1]+": "+tv(m[2])],
+   [/^Mission (\d+) · (.+)$/, m=>"Misión "+m[1]+" · "+tv(m[2])],
+   [/^Mission (\d+), (.+?)(?:, (today|yesterday|\d+ days ago))?\.$/, m=>"Misión "+m[1]+", "+tv(m[2])+(m[3]?", "+AGO(m[3]):"")+"."],
+   [/^Class work: (.+)$/, m=>"Trabajo de clase: "+m[1]],
+   [/^Resume at (.+)$/, m=>"Continuar en "+tv(m[1])],
+   [/^You stopped at (.+)\. Everything you did is saved\.$/, m=>"Te quedaste en "+tv(m[1])+". Todo lo que hiciste está guardado."],
+   [/^(\d+) of (\d+) missions complete$/, m=>m[1]+" de "+m[2]+" misiones completas"],
+   [/^Cycle (\d+), day (\d+) of (\d+)$/, m=>"Ciclo "+m[1]+", día "+m[2]+" de "+m[3]],
+   [/^Cycle (\d+), day (\d+)\. (\d+) mirror samples? recorded\.$/, m=>"Ciclo "+m[1]+", día "+m[2]+". "+m[3]+" muestra"+(m[3]==="1"?"":"s")+" espejo registrada"+(m[3]==="1"?"":"s")+"."],
+   [/^(\d+) new messages from ProfGermandario$/, m=>m[1]+" mensajes nuevos de ProfGermandario"],
+   [/^ProfGermandario left feedback on (\d+) of your texts\.?$/, m=>"ProfGermandario comentó "+m[1]+" de tus textos."],
+   [/^(\d+) of (\d+)$/, m=>m[1]+" de "+m[2]],
+   [/^(\d+) of (\d+) done$/, m=>m[1]+" de "+m[2]+" hechas"],
+   [/^Class (\d+) of (\d+)$/, m=>"Clase "+m[1]+" de "+m[2]],
+   [/^Class (\d+)$/, m=>"Clase "+m[1]],
+   [/^(Today's class|Next class) · Class (\d+)(?: of (\d+))?$/, m=>tv(m[1])+" · Clase "+m[2]+(m[3]?" de "+m[3]:"")],
+   [/^Completed (.+?)\. (\d+) writing samples?, (\d+) speaking attempts?(?:, longest (\d+:\d\d))?\.$/, m=>"Completada el "+D(m[1])+". "+m[2]+" muestra"+(m[2]==="1"?"":"s")+" de escritura, "+m[3]+" intento"+(m[3]==="1"?"":"s")+" hablado"+(m[3]==="1"?"":"s")+(m[4]?", el más largo "+m[4]:"")+"."],
+   [/^Completed (.+?)(?:\. (\d+) writing, (\d+) speaking)?$/, m=>"Completada "+D(m[1])+(m[2]!=null?". "+m[2]+" de escritura, "+m[3]+" de habla":"")],
+   [/^Included in the (.+) program\.$/, m=>"Incluida en el programa "+m[1]+"."],
+   [/^Complete Mission (\d+) to open this one\.$/, m=>"Completa la Misión "+m[1]+" para abrir esta."],
+   [/^(\d+) words(?:, spoke (\d+:\d\d))?$/, m=>m[1]+" palabras"+(m[2]?", hablaste "+m[2]:"")],
+   [/^(.+) \((\d+)\)$/, m=>{ const t = tr(m[1]); return t==null ? null : t+" ("+m[2]+")"; }],
+   [/^Sent (.+)$/, m=>"Enviado "+D(m[1])],
+   [/^Send your progress and writings, by lesson or complete\.(?: Last sent (.+)\.)?$/, m=>"Envía tu progreso y tus escritos, por lección o completos."+(m[1]?" Último envío: "+D(m[1])+".":"")],
+   [/^Best (\d+)%$/, m=>"Mejor "+m[1]+"%"],
+   [/^Choose your class days and time once\. They repeat every week on your calendar, and each class brings a ([A-C][12]) text of (\d+)–(\d+) words\.$/, m=>"Elige tus días y tu hora de clase una sola vez. Se repiten cada semana en tu calendario, y cada clase trae un texto "+m[1]+" de "+m[2]+"–"+m[3]+" palabras."],
+   [/^(\d+)–(\d+) words$/, m=>m[1]+"–"+m[2]+" palabras"],
+   [/^Your level \(([^)]+)\) comes from your profile\. Each class can have its own level\.$/, m=>"Tu nivel ("+m[1]+") viene de tu perfil. Cada clase puede tener su propio nivel."],
+   [/^You attended and wrote (\d+) words\. The ([A-C][12]) target is (\d+)–(\d+)\.$/, m=>"Asististe y escribiste "+m[1]+" palabras. La meta "+m[2]+" es "+m[3]+"–"+m[4]+"."],
+   [/^Note for today$/, m=>"Nota para hoy"],
+   [/^Note for (.+)$/, m=>"Nota para el "+D(m[1])],
+   [/^Today · (.+)$/, m=>"Hoy · "+(tr(m[1])||D(m[1]))],
+   [/^(\d+) class(es)?$/, m=>m[1]+" clase"+(m[2]?"s":"")],
+   [/^(\d+) writings?$/, m=>m[1]+" escrito"+(m[1]==="1"?"":"s")],
+   [/^(\d+)–(\d+) words, based on “(.+)”\.$/, m=>m[1]+"–"+m[2]+" palabras, basado en “"+m[3]+"”."],
+   [/^([A-C][12]) target (\d+)–(\d+)( ✓)?$/, m=>"meta "+m[1]+" "+m[2]+"–"+m[3]+(m[4]||"")],
+   [/^Speaking: (\d+) attempts?, longest (\d+:\d\d)\.$/, m=>"Habla: "+m[1]+" intento"+(m[1]==="1"?"":"s")+", el más largo "+m[2]+"."],
+   [/^This class was moved to (.+) at (.+)\.$/, m=>"Esta clase se movió al "+D(m[1])+" a las "+m[2]+"."],
+   [/^You can mark this on (.+)\.$/, m=>"Puedes marcarlo el "+D(m[1])+"."],
+   [/^target (\d+)–(\d+)$/, m=>"meta "+m[1]+"–"+m[2]],
+   [/^Target (\d+)–(\d+) words$/, m=>"Meta: "+m[1]+"–"+m[2]+" palabras"],
+   [/^Longest (\d+:\d\d)$/, m=>"El más largo "+m[1]],
+   [/^minimum (\d+:\d\d)$/, m=>"mínimo "+m[1]],
+   [/^Minimum (\d+:\d\d), target (\d+:\d\d)$/, m=>"Mínimo "+m[1]+", meta "+m[2]],
+   [/^words · (.+)$/, m=>"palabras · "+(m[1]==="In range"?"En rango":m[1].replace(/^(\d+) to go$/,"faltan $1").replace(/^(\d+) over$/,"$1 de más"))],
+   [/^([A-C][12]) range (\d+)–(\d+)$/, m=>"Rango "+m[1]+" "+m[2]+"–"+m[3]],
+   [/^See everything from (.+) and send it$/, m=>"Ver todo lo del "+D(m[1])+" y enviarlo"],
+   [/^about (\d+) min$/, m=>"unos "+m[1]+" min"],
+   [/^About (\d+) min$/, m=>"Unos "+m[1]+" min"],
+   [/^Texts written for ([A-C][12]), (\d+)–(\d+) words\. Tap one to use it for this class\.$/, m=>"Textos escritos para "+m[1]+", de "+m[2]+"–"+m[3]+" palabras. Toca uno para usarlo en esta clase."],
+   [/^Use it for my class on (.+)$/, m=>"Usarlo para mi clase del "+D(m[1])],
+   [/^Changes apply to (.+) only\. A new date moves the class and its work\.$/, m=>"Los cambios aplican solo al "+D(m[1])+". Una nueva fecha mueve la clase y su trabajo."],
+   [/^Started (.+)\. Changes apply from today; past classes stay as they were\.$/, m=>"Empezó el "+D(m[1])+". Los cambios aplican desde hoy; las clases pasadas quedan como estaban."],
+   [/^See it in (.+)$/, m=>SEE[m[1]]||("Míralo en "+tv(m[1]))],
+   [/^Listen: (.+)$/, m=>"Escuchar: "+m[1]],
+   [/^Write at least (\d+) words to continue\.$/, m=>"Escribe al menos "+m[1]+" palabras para continuar."],
+   [/^Write about anything from your life today\. Try to use today's idea: (.+)\.$/, m=>"Escribe sobre cualquier cosa de tu vida hoy. Intenta usar la idea de hoy: "+tvl(m[1])+"."],
+   [/^Try to use: (.+)\.$/, m=>"Intenta usar: "+m[1]+"."],
+   [/^of (\d+(?:–\d+)?) words(?: \(([A-C][12])\))?$/, m=>"de "+m[1]+" palabras"+(m[2]?" ("+m[2]+")":"")],
+   [/^Minimum (\d+:\d\d), target (\d+:\d\d)\.( We lowered the minimum to help you start\. Speak first; precision comes later\.)?$/, m=>"Mínimo "+m[1]+", meta "+m[2]+"."+(m[3]?" Bajamos el mínimo para ayudarte a empezar. Primero habla; la precisión llega después.":"")],
+   [/^Attempt (\d+)(, minimum reached)?$/, m=>"Intento "+m[1]+(m[2]?", mínimo alcanzado":"")],
+   [/^Reach (\d+:\d\d) in one attempt to continue\.$/, m=>"Llega a "+m[1]+" en un intento para continuar."],
+   [/^1 writing sample, (\d+) words$/, m=>"1 muestra de escritura, "+m[1]+" palabras"],
+   [/^(\d+) speaking attempts?, longest (\d+:\d\d)$/, m=>m[1]+" intento"+(m[1]==="1"?"":"s")+" hablado"+(m[1]==="1"?"":"s")+", el más largo "+m[2]],
+   [/^Start Mission (\d+)$/, m=>"Empezar la Misión "+m[1]],
+   [/^You're prepared\. Mark your attendance after class on (.+)\.$/, m=>"Estás preparado. Marca tu asistencia después de la clase del "+D(m[1])+"."],
+   [/^([A-C][12]), about (\d+) min, (.+)$/, m=>m[1]+", unos "+m[2]+" min, "+tv(m[3])],
+   [/^(\d+) sessions? completed$/, m=>m[1]+" sesi"+(m[1]==="1"?"ón completada":"ones completadas")],
+   [/^(\d+) of (\d+) correct\.$/, m=>m[1]+" de "+m[2]+" correctas."],
+   [/^Question (\d+) of (\d+)$/, m=>"Pregunta "+m[1]+" de "+m[2]],
+   [/^That code ended on (.+)\. Renew it with ProfGermandario\.$/, m=>"Ese código terminó el "+D(m[1])+". Renuévalo con ProfGermandario."],
+   [/^Your access ended on (.+)\. Renew it with ProfGermandario to keep going\.$/, m=>"Tu acceso terminó el "+D(m[1])+". Renuévalo con ProfGermandario para continuar."],
+   [/^code ending (.+)$/, m=>"código terminado en "+m[1]],
+   [/^(.+) is for members$/, m=>tv(m[1])+" es para miembros"],
+   [/^Welcome to (.+)\.$/, m=>"Bienvenido a "+m[1]+"."],
+   [/^(.+) unlocked\. Let's set up your journal\.$/, m=>m[1]+" desbloqueado. Configuremos tu diario."],
+   [/^last sent (.+)$/, m=>"último envío "+AGO(m[1])],
+   [/^Your report is long, so it travels in (\d+) parts\. Send them in order — each one opens WhatsApp with the next part ready\.$/, m=>"Tu reporte es largo, así que viaja en "+m[1]+" partes. Envíalas en orden: cada una abre WhatsApp con la siguiente lista."],
+   [/^Part (\d+) of (\d+)$/, m=>"Parte "+m[1]+" de "+m[2]],
+   [/^(\d+) parts$/, m=>m[1]+" partes"],
+   [/^(\d[\d,.]*) characters$/, m=>m[1]+" caracteres"],
+   [/^Last report: (.+)$/, m=>"Último reporte: "+D(m[1])],
+   [/^Text set for (.+)\.$/, m=>"Texto asignado para el "+D(m[1])+"."],
+   [/^Class moved to (.+)\.$/, m=>"Clase movida al "+D(m[1])+"."],
+   [/^Class added for (.+)\.$/, m=>"Clase agregada para el "+D(m[1])+"."],
+   [/^Weekly classes added: (.+) at (.+)\.$/, m=>"Clases semanales agregadas: "+D(m[1])+" a las "+m[2]+"."],
+   [/^★ Star earned for (.+)!$/, m=>"★ ¡Estrella ganada para el "+D(m[1])+"!"],
+   [/^All (\d+) parts sent, in order\.$/, m=>"Las "+m[1]+" partes enviadas, en orden."],
+   [/^Code copied: (.+)$/, m=>"Código copiado: "+m[1]],
+   [/^Replace the progress on this device with this backup(?: \((.+)\))?\?$/, m=>"¿Reemplazar el progreso de este dispositivo con esta copia"+(m[1]?" ("+m[1]+")":"")+"?"],
+   [/^Cancel the class on (.+)\? Other weeks are not affected\.$/, m=>"¿Cancelar la clase del "+D(m[1])+"? Las otras semanas no se afectan."],
+   [/^Stop "(.+)"\? Classes before today keep their evidence\. Future dates are removed\.$/, m=>"¿Detener \""+m[1]+"\"? Las clases anteriores a hoy conservan su evidencia. Las fechas futuras se eliminan."],
+   [/^Delete "(.+)"\?(?: (\d+) class(?:es)? uses? it; a library text will replace it\.)?$/, m=>"¿Eliminar \""+m[1]+"\"?"+(m[2]?" "+m[2]+" clase"+(m[2]==="1"?" lo usa":"s lo usan")+"; un texto de la biblioteca lo reemplazará.":"")],
+   [/^(?:(Today|.+?)) · (\d{1,2}:\d\d [AP]M) · (\d+) min(?: · ([A-C][12]))?$/, m=>(m[1]==="Today"?"Hoy":D(m[1]))+" · "+m[2]+" · "+m[3]+" min"+(m[4]?" · "+m[4]:"")],
+   [/^(.+) · (\d{1,2}:\d\d [AP]M) · (\d+) min · ([A-C][12]) · (every week|until .+|ended .+)$/, m=>D(m[1])+" · "+m[2]+" · "+m[3]+" min · "+m[4]+" · "+(m[5]==="every week"?"cada semana":m[5].replace(/^until (.+)$/,(x,d)=>"hasta el "+D(d)).replace(/^ended (.+)$/,(x,d)=>"terminó el "+D(d)))],
+   [/^Class · (.+)$/, m=>"Clase · "+D(m[1])]
+  ];
+  /* "attend the class on … and write your class text (35–80 words)." */
+  const NEED = [[/^attend the class on (.+)$/i, m=>"asiste a la clase del "+D(m[1])], [/^mark that you attended$/i, ()=>"marca que asististe"],
+    [/^write your class text \((\d+)–(\d+) words\)$/i, m=>"escribe tu texto de clase ("+m[1]+"–"+m[2]+" palabras)"], [/^write at least (\d+) words$/i, m=>"escribe al menos "+m[1]+" palabras"]];
+  function needs(s){
+    const body = s.replace(/\.$/,""); const parts = body.split(" and ");
+    const out = parts.map(p=>{ for(const [re,fn] of NEED){ const m = p.match(re); if(m) return fn(m); } return null; });
+    return out.every(x=>x!=null) ? ucfirst(out.join(" y "))+"." : null;
+  }
+
+  function build(){
+    dict = new Map();
+    const add = (en, es) => { if(en && es && String(en)!==String(es)) dict.set(norm(en), es); };
+    Object.keys(ES_DICT).forEach(k=>add(k, ES_DICT[k]));
+    LESSONS.forEach((L,i)=>{
+      const E = ES_MISSIONS[i]; if(!E) return;
+      add(L.t,E.t); add(L.desc,E.desc); add(L.obj,E.obj); add(L.speak,E.speak); add(L.kit.explain,E.explain);
+      Object.keys(L.topics||{}).forEach(c=>add(L.topics[c], E.topics[c]));
+      L.vocab.forEach((v,j)=>add(v[1], E.vocab[j]));
+      L.kit.mistakes.forEach((m,j)=>{
+        const es = E.mistakes[j]; if(!es) return; add(m.right, es);
+        const a = m.right.split(" — "), b = es.split(" — ");
+        if(a.length>1 && b.length>1) add(a.slice(1).join(" — "), b.slice(1).join(" — "));
+      });
+    });
+    PHASES.forEach((p,i)=>{ add(p.label, ES_PHASES[i].label); add(p.desc, ES_PHASES[i].desc); });
+    CLASS_TEXTS.forEach(T=>{ const E = ES_CLASS_TEXTS[T.id]; if(!E) return; add(T.write,E.write); add(T.speak,E.speak); (T.questions||[]).forEach((q,i)=>add(q,(E.questions||[])[i])); });
+  }
+
+  /* English → Spanish, or null when there is nothing to translate. */
+  function tr(raw, el){
+    const s = norm(raw);
+    if(!s || !/[A-Za-z]{2}/.test(s)) return null;
+    if(!dict) build();
+    if(el && el.closest) for(const [sel,map] of ES_CTX){ if(map[s]!=null && el.closest(sel)) return map[s]; }
+    const v = dict.get(s); if(v!=null) return v;
+    if(/^(Attend|Mark|Write) /i.test(s)){ const n = needs(s); if(n) return n; }
+    for(const [re,fn] of RX){ const m = s.match(re); if(m){ const o = fn(m); if(o!=null) return o; } }
+    if(s.includes(" · ")){ let any = false; const o = s.split(" · ").map(p=>{ const t = tr(p, el); if(t!=null){ any = true; return t; } return p; }); if(any) return o.join(" · "); }
+    const sents = s.replace(/([.!?…])\s+(?=[A-Z¿¡"“(])/g, "$1\u0002").split("\u0002");
+    if(sents.length>1){ let any = false; const o = sents.map(p=>{ const t = tr(p, el); if(t!=null){ any = true; return t; } return p; }); if(any) return o.join(" "); }
+    if(dateish(s)){ const d = D(s); if(d!==s) return ucfirst(d); }
+    return null;
+  }
+
+  /* ---------- DOM ---------- */
+  const SKIP = "script,style,textarea,input,svg,iframe,.notr,.es-tr,.word,.snt,.code-big,.code-mono,.mc-code,.brand,.cal-dow,.code-form";
+  const CONTENT = ".en,.pattern li,.reader,.cues,.sample,.archive-item,.day-writing,.quiz-opt,.mistake .w";
+  const CONTENT_UI = ".ladder li > span,.archive-item header span,.sample header span";
+  const INLINE = ".pill,.chip,.seg button,.kicker,.step-name,.ob-step,.sent-badge,.meter-cap span,.parts-cap span,.counter span,.journey-label span,.phase-head span,.mc-k,.mc-brand,.rs-sum span,.cal-legend span,.bars-caption span,.archive-item header span,.sample header span,.cal-month,.wk-cap,.mg-meta";
+  const BI_SKIP = ".glyph,.sys-num,.idx,.pct,.tier-chip,.mc-tier,.cal-num,.wk-day,.num";
+  const FMT = {B:1, STRONG:1, EM:1, I:1, U:1};
+  let mode = "bi";
+  const isContent = el => !!el.closest(CONTENT) && !el.closest(CONTENT_UI);
+  function unitOf(node){
+    let el = node.parentElement;
+    const mixed = e => !!e && [...e.childNodes].some(c=>c.nodeType===3 && /[A-Za-z]/.test(c.nodeValue));
+    while(el && ((FMT[el.tagName] && mixed(el.parentElement)) || (el.matches("a.link,button.link") && el.parentElement && /^(P|LI|SPAN|DIV)$/.test(el.parentElement.tagName) && el.parentElement.childNodes.length>1))) el = el.parentElement;
+    return el;
+  }
+  const skipped = el => !el || !!el.closest(SKIP);
+  function textNodes(root){
+    const out = [];
+    if(root.nodeType===3){ if(!skipped(root.parentElement)) out.push(root); return out; }
+    if(root.nodeType!==1 || skipped(root)) return out;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>{
+      if(!/[A-Za-z]/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+      return skipped(n.parentElement) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; }});
+    let n; while((n = w.nextNode())) out.push(n);
+    return out;
+  }
+  const keep = (orig, t) => orig.match(/^\s*/)[0] + t + orig.match(/\s*$/)[0];
+  function subSpan(t, unit, inline){
+    const s = document.createElement("span"); s.className = "es-tr"+(inline?" inl":""); s.lang = "es"; s.textContent = t; s.__unit = unit; return s;
+  }
+  function clearSubs(unit){ [...unit.querySelectorAll(".es-tr")].forEach(s=>{ if(s.__unit===unit) s.remove(); }); }
+
+  /* es: replace in place · bi/content: add a Spanish line under it */
+  function doNode(n){
+    const p = n.parentElement; if(!p) return;
+    if(p.tagName==="OPTION"){
+      if(n.__es===n.nodeValue) return;
+      const t = tr(n.nodeValue, p); if(t==null) return;
+      if(!p.hasAttribute("value")) p.setAttribute("value", n.nodeValue.trim());
+      n.__en = n.nodeValue; n.__es = mode==="es" ? keep(n.nodeValue,t) : n.nodeValue.trim()+" · "+t; n.nodeValue = n.__es; return;
+    }
+    if(mode==="es" && !isContent(p)){
+      if(n.__es===n.nodeValue) return;
+      const t = tr(n.nodeValue, p); if(t==null) return;
+      n.__en = n.nodeValue; n.__es = keep(n.nodeValue, t); n.nodeValue = n.__es;
+    }
+  }
+  function doUnit(unit, nodes){
+    if(!unit || (mode==="es" && !isContent(unit))) return;
+    if(mode==="bi" && unit.closest(BI_SKIP)){ if(mode==="bi" && unit.matches(".glyph")) nodes.forEach(n=>{ const t = tr(n.nodeValue, unit); if(t && t.length<=4 && n.__es!==n.nodeValue){ n.__en = n.nodeValue; n.__es = t; n.nodeValue = t; } }); return; }
+    const sig = nodes.map(n=>n.nodeValue).join("\u0001");
+    if(unit.__bi===sig) return;
+    clearSubs(unit); unit.__bi = sig;
+    const inline = !!unit.closest(INLINE) && !isContent(unit);
+    if(nodes.length===1){
+      const n = nodes[0], orig = n.nodeValue;
+      if(mode==="bi" && orig.replace(/[^A-Za-z]/g,"").length<=3 && !/^[A-Za-z]{3,}$/.test(orig.trim())) return;
+      const t = tr(orig, unit); if(t==null) return;
+      if(mode==="bi" && dateish(norm(orig)) && norm(orig)!=="Today") return;
+      let anchor = n; while(anchor.parentNode && anchor.parentNode!==unit) anchor = anchor.parentNode;
+      const s = subSpan(t, unit, inline);
+      anchor.parentNode.insertBefore(s, anchor.nextSibling);
+      return;
+    }
+    let any = false;
+    const txt = nodes.map(n=>{ const t = tr(n.nodeValue, unit); if(t!=null){ any = true; return keep(n.nodeValue, t); } return n.nodeValue; }).join("");
+    if(any) unit.appendChild(subSpan(norm(txt), unit, inline));
+  }
+  const ATTRS = ["placeholder","aria-label","title"];
+  function doAttrs(el){
+    ATTRS.forEach(a=>{
+      if(!el.hasAttribute(a)) return;
+      const cur = el.getAttribute(a); el.__tra = el.__tra || {};
+      if(el.__tra[a]===cur) return;
+      if(mode==="bi" && a!=="placeholder") return;
+      const t = tr(cur, el); if(t==null) return;
+      el.__ena = el.__ena || {}; el.__ena[a] = cur;
+      const v = mode==="bi" ? cur+" / "+t : t;
+      el.__tra[a] = v; el.setAttribute(a, v);
+    });
+  }
+  function localize(root){
+    if(mode==="en" || !root) return;
+    const nodes = textNodes(root), units = new Map();
+    nodes.forEach(n=>{ doNode(n); const u = unitOf(n); if(!u) return; if(!units.has(u)) units.set(u, []); });
+    /* collect every direct text of each unit (not only the changed ones) */
+    units.forEach((list, u)=>{ textNodes(u).forEach(n=>{ if(unitOf(n)===u && n.parentElement.tagName!=="OPTION") list.push(n); }); doUnit(u, list); });
+    const els = root.nodeType===1 ? [root, ...root.querySelectorAll("[placeholder],[aria-label],[title]")] : [];
+    els.forEach(el=>{ if(el.nodeType===1 && !el.closest(".notr,.brand")) doAttrs(el); });
+  }
+  /* ---------- live: every change on the page ---------- */
+  let obs = null;
+  function onMut(list){
+    const roots = new Set();
+    list.forEach(m=>{
+      if(m.type==="childList") m.addedNodes.forEach(n=>{ if(n.nodeType===1 && !n.classList.contains("es-tr")) roots.add(n); else if(n.nodeType===3 && n.parentElement) roots.add(n.parentElement); });
+      else if(m.type==="characterData" && m.target.parentElement) roots.add(m.target.parentElement);
+      else if(m.type==="attributes") roots.add(m.target);
+    });
+    roots.forEach(r=>{ if(r.isConnected) localize(r); });
+    obs.takeRecords();
+  }
+  function start(){
+    mode = lang(); paintHtml();
+    localize(document.body);
+    obs = new MutationObserver(onMut);
+    obs.observe(document.body, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:ATTRS});
+  }
+  function paintHtml(){ const h = document.documentElement; h.dataset.lang = mode; h.lang = mode==="es" ? "es" : "en"; }
+  /* switching modes: put the English back, then translate again */
+  function relocalize(){
+    if(obs) obs.disconnect();
+    document.querySelectorAll(".es-tr:not(.notr .es-tr)").forEach(s=>s.remove());
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n;
+    while((n = w.nextNode())){ if(n.__en!=null && n.nodeValue===n.__es) n.nodeValue = n.__en; delete n.__en; delete n.__es; }
+    document.querySelectorAll("*").forEach(el=>{ delete el.__bi; if(el.__ena){ Object.keys(el.__ena).forEach(a=>{ if(el.getAttribute(a)===el.__tra[a]) el.setAttribute(a, el.__ena[a]); }); delete el.__ena; delete el.__tra; } });
+    mode = lang(); paintHtml();
+    if(obs) obs.observe(document.body, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:ATTRS});
+    localize(document.body); if(obs) obs.takeRecords();
+  }
+  /* native confirm / prompt boxes */
+  function dialog(msg){
+    if(lang()==="en" || !msg) return msg;
+    const parts = String(msg).split(/\n{2,}/), out = parts.map(p=>tr(p)||null);
+    if(!out.some(x=>x)) return msg;
+    const es = parts.map((p,i)=>out[i]||p).join("\n\n");
+    return lang()==="es" ? es : msg+"\n\n— "+es;
+  }
+  return {tr, localize, relocalize, start, dialog, D};
+})();
+(function(){
+  const c = window.confirm.bind(window), p = window.prompt.bind(window);
+  window.confirm = m => c(LOC.dialog(m));
+  window.prompt = (m, d) => p(LOC.dialog(m), d);
+})();
+
+/* ---------- language chooser (header + onboarding) ---------- */
+function langChoices(cur){
+  return `<div class="lang-choices" role="radiogroup" aria-label="Language">${["es","bi","en"].map(k=>{ const L = LANG_MODES[k];
+    return `<button class="lang-opt notr" role="radio" data-act="setLang" data-v="${k}" aria-checked="${cur===k}" aria-pressed="${cur===k}">
+      <span class="lang-badge">${L.short}</span><span class="grow"><b>${k==="en"?L.en:L.es}</b>${k==="bi"?`<span class="lang-rec">Recomendado · Recommended</span>`:""}<small>${k==="en"?"Full immersion. For when you no longer need the help.":L.sub}</small></span></button>`; }).join("")}</div>`;
+}
+function langSheet(){
+  openSheet(`${sheetHead("Language · Idioma", "")}
+    <p class="muted notr" style="margin-top:-6px">¿En qué idioma quieres las instrucciones? · How do you want your instructions?</p>
+    <div class="mt">${langChoices(lang())}</div>
+    <p class="small muted mt notr">${lang()==="en"?"You can change this at any time from the button at the top.":"Puedes cambiarlo cuando quieras desde el botón de arriba. · Change it any time from the top button."}</p>`);
+}
+function setLang(v){
+  if(!LANG_MODES[v] || v===state.lang) return;
+  state.lang = v; save();
+  paintLangBtn();
+  LOC.relocalize();
+}
+function paintLangBtn(){ const b = $("#langBtn"); if(b){ b.textContent = LANG_MODES[lang()].short; b.setAttribute("aria-label", "Language: "+LANG_MODES[lang()].en+" · Idioma: "+LANG_MODES[lang()].es); } }
+
+/* ============================================================
    ROUTER + SHELL
    ============================================================ */
 const view = $("#view");
 let run = null;           /* active lesson / practice / mirror */
 let SP = null;            /* active speaking session */
-let ob = {step:0, name:"", goal:"", level:"", block:"", style:"", placement:null};
+let ob = {step:0, name:"", goal:"", level:"", block:"", style:"", placement:null, plan:null};
 
 let curRoute = "home";
 function go(r){ if(location.hash !== "#"+r) location.hash = r; else render(); }
 /* re-draw the current page behind an open sheet, keeping the scroll position */
 function repaint(){
-  if(!["home","classes","evolution"].includes(curRoute) || document.body.classList.contains("in-lesson")) return;
+  if(!["home","plan","classes","evolution"].includes(curRoute) || document.body.classList.contains("in-lesson")) return;
   const y = window.scrollY; VIEWS[curRoute](); window.scrollTo(0,y);
 }
 function setBody(cls){ document.body.classList.remove("in-lesson","in-onboarding"); if(cls) document.body.classList.add(cls); }
@@ -1897,6 +2861,7 @@ function render(){
   closeSheet();
   setTab(r);
   curRoute = VIEWS[r] ? r : "home";
+  if(state.onboarded && planOn()) todaySpec();
   VIEWS[curRoute]();
   window.scrollTo(0,0);
   if(pendingShare && state.onboarded && curRoute!=="lesson"){ const id = pendingShare; pendingShare = null; sharedSheet(id); }
@@ -1924,7 +2889,7 @@ function openSheet(html, keep){
   $("#sheet").innerHTML = html; $("#scrim").classList.add("open");
   if(!keep){ $("#sheet").scrollTop = 0; const f=$("#sheet").querySelector("button,input,select,a"); if(f) setTimeout(()=>f.focus({preventScroll:true}),60); }
 }
-function closeSheet(){ if($("#scrim").classList.contains("open")){ stopReading(); if(openDayKey||openClassId) setTimeout(repaint,0); } $("#scrim").classList.remove("open"); shadowPlaying=false; openClassId=null; openDayKey=null; }
+function closeSheet(){ if($("#scrim").classList.contains("open")){ stopReading(); if(openDayKey||openClassId) setTimeout(repaint,0); else if(curRoute==="plan"||curRoute==="home") setTimeout(repaintPlan,0); } $("#scrim").classList.remove("open"); shadowPlaying=false; openClassId=null; openDayKey=null; }
 const sheetHead = (title, sub) => `<div class="sheet-head"><div><h3>${esc(title)}</h3>${sub?`<p class="muted small mt-s">${esc(sub)}</p>`:""}</div><button class="icon-btn" data-act="closeSheet" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
 
 /* ============================================================
@@ -1940,6 +2905,7 @@ VIEWS.onboarding = function(){
   const choice = (key,val,label,sub) => `<button class="choice" data-act="obPick" data-k="${key}" data-v="${esc(val)}" aria-pressed="${ob[key]===val}"><span>${esc(label)}${sub?`<small>${esc(sub)}</small>`:""}</span></button>`;
   if(s===0){
     h = `<section class="arrival stack">
+      <div class="ob-lang"><p class="kicker notr">Idioma de las instrucciones · Language</p>${langChoices(lang())}</div>
       <h1 class="display">Welcome to your English.</h1>
       <p class="lead">You don't need to know where to start. That's our job.</p>
       <p class="muted">We'll discover where you are, build your route, and give you one clear mission at a time.</p>
@@ -1951,19 +2917,19 @@ VIEWS.onboarding = function(){
     return;
   }
   if(s===1){
-    h = `<p class="ob-step mt">Step 1 of 4</p><h2 class="display">${esc(ob.name)}, what do you want English to help you accomplish?</h2>
+    h = `<p class="ob-step mt">Step 1 of 5</p><h2 class="display">${esc(ob.name)}, what do you want English to help you accomplish?</h2>
     <p class="muted mt-s">Your examples and topics will be built around this.</p>
     <div class="choices mt">${GOALS.map(g=>choice("goal",g.v,g.v,g.s)).join("")}</div>`;
     view.innerHTML = h; setAction({label:"Continue", act:"obNext", back:"obBack", disabled:!ob.goal}); return;
   }
   if(s===2){
-    h = `<p class="ob-step mt">Step 2 of 4</p><h2 class="display">Where are you now?</h2>
+    h = `<p class="ob-step mt">Step 2 of 5</p><h2 class="display">Where are you now?</h2>
     <p class="muted mt-s">Choose what feels closest. This is not an exam.</p>
     <div class="choices mt">${LEVELS.map(l=>choice("level",l.v,l.v,l.s)).join("")}</div>`;
     view.innerHTML = h; setAction({label:"Continue", act:"obNext", back:"obBack", disabled:!ob.level}); return;
   }
   if(s===3){
-    h = `<p class="ob-step mt">Step 3 of 4</p><h2 class="display">What gets in your way?</h2>
+    h = `<p class="ob-step mt">Step 3 of 5</p><h2 class="display">What gets in your way?</h2>
     <div class="choices mt">${BLOCKS.map(b=>choice("block",b,b)).join("")}</div>
     <h3 class="mt-l">How do you learn best?</h3>
     <div class="choices mt-s">${STYLES.map(b=>choice("style",b,b)).join("")}</div>`;
@@ -1979,9 +2945,16 @@ VIEWS.onboarding = function(){
         </div>`
       : `<div class="panel mt"><p class="kicker">Your first mission</p><h3>Mission 1: ${esc(LESSONS[0].t)}</h3><p class="muted mt-s">${esc(LESSONS[0].obj)}</p></div>`;
     if(!(adv||mid)) ob.placement = "0";
-    h = `<p class="ob-step mt">Step 4 of 4</p><h2 class="display">Your route</h2>
+    h = `<p class="ob-step mt">Step 4 of 5</p><h2 class="display">Your route</h2>
     <p class="muted mt-s">Seventeen missions in four stages. Your examples will focus on ${esc(CTX_LABEL[contextOf(ob.goal)])}.</p>${route}`;
-    view.innerHTML = h; setAction({label:"Save my route", act:"obFinish", back:"obBack", disabled:ob.placement===null}); return;
+    view.innerHTML = h; setAction({label:"Continue", act:"obNext", back:"obBack", disabled:ob.placement===null}); return;
+  }
+  if(s===5){
+    if(!ob.plan) ob.plan = defaultPlanFor(ob.level);
+    h = `<p class="ob-step mt">Step 5 of 5</p><h2 class="display">${T("Your study rhythm","Tu ritmo de estudio")}</h2>
+    <p class="muted mt-s">${T("Small daily goals beat long weekends. Every mission becomes short, numbered micro-goals on your calendar — each one you check is a victory.","Las metas pequeñas diarias le ganan a los maratones de fin de semana. Cada misión se vuelve micro-metas cortas y numeradas en tu calendario: cada una que cumples es una victoria.")}</p>
+    <div class="mt">${planSetupBody(ob.plan, "ob")}</div>`;
+    view.innerHTML = h; setAction({label:"Save my route", act:"obFinish", back:"obBack", disabled:!ob.plan.days.length || ob.plan.habits.length<2}); return;
   }
 };
 
@@ -2035,6 +3008,7 @@ VIEWS.home = function(){
       <p>${today?"You have class today. Your text is ready.":nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
     ${previewStrip}
     ${teacherStrip()}
+    ${planHomeCard()}
     ${today?classBlock:""}
     <section class="panel mission-hero mt">${hero}
       <div class="journey" aria-hidden="true">${ticks}</div>
@@ -2538,14 +3512,18 @@ function renderLesson(){
       ${key!=="complete"?'<button class="link" style="margin-left:6px" data-act="stuck">Stuck?</button>':""}
     </div>
     ${key!=="complete"&&key!=="arrive"?`<p class="step-name"><b>${STEP_NAMES[key]}</b><span>${esc(title)}</span></p>`:""}`;
-  view.innerHTML = top + STEPS[key]();
+  view.innerHTML = top + stepGuideHTML(key) + STEPS[key]();
   if(STEP_AFTER[key]) STEP_AFTER[key]();
 }
 function nextStep(){
   tickActive();
+  if(planOn()) todaySpec();
+  const leaving = stepsFor(run)[run.stepIdx], who = run.kind==="mission" ? run.mi : run.kind;
+  markGuideSeen(leaving);
   run.stepIdx = Math.min(run.stepIdx+1, stepsFor(run).length-1);
   if(stepsFor(run)[run.stepIdx]==="complete") finalize();
   else saveRun();
+  planEvent("step:"+leaving+":"+who);
   renderLesson(); window.scrollTo(0,0);
 }
 function prevStep(){ if(SP) return; run.stepIdx = Math.max(0, run.stepIdx-1); saveRun(); renderLesson(); window.scrollTo(0,0); }
@@ -2824,6 +3802,8 @@ function finalize(){
     state.mirrorSamples.push({id:uid("mir"), date:nowISO(), text:w?w.content:"", words:w?w.wordCount:0, seconds:best?best.duration:0, recordingId:best?best.recordingId:null, cycle:cycleInfo().n});
   }
   touch(); state.draft = null; save();
+  if(run.kind==="mission") planEvent("done:mission:"+run.mi);
+  if(run.kind==="free") planEvent("done:free");
 }
 const SEAL = '<div class="seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21l7 7 14-15"/></svg></div>';
 STEPS.complete = function(){
@@ -3022,7 +4002,7 @@ function quizPool(){
 function quizSheet(){
   if(!quiz){ const qs = quizPool(); if(qs.length<2){ openSheet(`${sheetHead("Quick check")}<p>Complete a few more missions and your quick checks will appear here.</p>`); return; } quiz = {qs, k:0, correct:0, answered:null, order:qs.map(()=>Math.random()<.5)}; }
   if(quiz.k>=quiz.qs.length){
-    state.quizzes.push({date:nowISO(), correct:quiz.correct, total:quiz.qs.length}); touch(); save();
+    state.quizzes.push({date:nowISO(), correct:quiz.correct, total:quiz.qs.length}); touch(); save(); planEvent("quiz");
     const r = quiz; quiz = null;
     openSheet(`${sheetHead("Quick check complete")}<p class="en">${r.correct} of ${r.total} correct.</p><p class="muted mt-s">Any you missed are worth one more look in the mission's Understand step.</p><button class="btn block mt" data-act="closeSheet">Done</button>`);
     return;
@@ -3325,7 +4305,7 @@ function shareBlock(fromWelcome){
   return `<div class="panel">
     <p class="kicker">Your teacher, closer</p>
     <h3 style="margin:4px 0 8px">Share your journal with ProfGermandario?</h3>
-    <p class="small">He will see your progress (missions, classes, stars, streak and when you practice), your writings and reflections, and your day reports — so he can follow you closely and correct your texts. His feedback comes back here. Your audio recordings stay on this device.</p>
+    <p class="small en-only notr">He will see your progress (missions, classes, stars, streak and when you practice), your writings and reflections, and your day reports — so he can follow you closely and correct your texts. His feedback comes back here. Your audio recordings stay on this device.</p>
     <p class="small muted mt-s">Si aceptas, tu profesor verá tu avance, tus escritos y tus reportes del día para acompañarte. Puedes dejar de compartir cuando quieras en Membership. <a class="link" href="${esc((PGA.CONFIG&&PGA.CONFIG.privacy)||"#")}" target="_blank" rel="noopener">Política de tratamiento de datos</a>.</p>
     <div class="stack mt"><button class="btn block" data-act="shareYes">Yes, share my journal</button>
     <button class="btn-line" style="width:100%" data-act="${fromWelcome?"shareLater":"shareNo"}">Not now</button></div></div>`;
@@ -3812,7 +4792,7 @@ const ACT = {
     try{ localStorage.setItem("qkesl_backup_before_wipe", JSON.stringify(state)); }catch(e){}
     try{ localStorage.removeItem(STORE_KEY); }catch(e){}
     try{ await AudioDB.clear(); }catch(e){}
-    state = defaultState(); run = null; ob = {step:0,name:"",goal:"",level:"",block:"",style:"",placement:null}; closeSheet(); go("onboarding");
+    const keepLang = state.lang; state = defaultState(); state.lang = keepLang; run = null; ob = {step:0,name:"",goal:"",level:"",block:"",style:"",placement:null,plan:null}; closeSheet(); go("onboarding");
   },
   saveProfile: () => {
     state.name = $("#pfName").value.trim() || state.name;
@@ -3820,10 +4800,10 @@ const ACT = {
     sp.goal = $("#pfGoal").value || sp.goal; sp.level = $("#pfLevel").value || sp.level; sp.fear = $("#pfBlock").value || sp.fear; sp.learningStyle = $("#pfStyle").value || sp.learningStyle;
     save(); closeSheet(); toast("Profile saved."); render();
   },
-  meditated: () => { state.meditationLog.push({date:nowISO()}); state.meditationsCompleted = (state.meditationsCompleted||0)+1; touch(); save(); toast("Session saved."); meditateSheet(); },
+  meditated: () => { state.meditationLog.push({date:nowISO()}); state.meditationsCompleted = (state.meditationsCompleted||0)+1; touch(); save(); toast("Session saved."); planEvent("meditate"); meditateSheet(); },
   rate: el => { state.ttsRate = +el.dataset.v; save(); shadowSheet(+$("#shMission").value); },
   shadowAll: el => { shadowPlaying = true; playShadow(LESSONS[+el.dataset.i].kit.shadow, 0); },
-  shadowDone: el => { shadowPlaying=false; if("speechSynthesis" in window) speechSynthesis.cancel(); state.shadowLog.push({date:nowISO(), missionId:+el.dataset.i}); touch(); save(); toast("Shadowing session saved."); closeSheet(); },
+  shadowDone: el => { shadowPlaying=false; if("speechSynthesis" in window) speechSynthesis.cancel(); state.shadowLog.push({date:nowISO(), missionId:+el.dataset.i}); touch(); save(); toast("Shadowing session saved."); planEvent("shadow"); closeSheet(); },
   quizAns: el => { const q = quiz.qs[quiz.k]; quiz.answered = el.dataset.v; if(el.dataset.v===q.right) quiz.correct++; quizSheet(); },
   quizNext: () => { quiz.k++; quiz.answered = null; quizSheet(); },
   /* onboarding */
@@ -3834,6 +4814,7 @@ const ACT = {
     state.name = ob.name.trim();
     Object.assign(state.startingPoint, {goal:ob.goal, level:ob.level, fear:ob.block, learningStyle:ob.style||"A mix of everything"});
     state.placementStart = +ob.placement||0; state.currentMission = state.placementStart;
+    if(ob.plan && ob.plan.days.length){ state.plan = {v:1, created:nowISO(), days:ob.plan.days.slice().sort(), minutes:ob.plan.minutes, time:ob.plan.time||"07:30", habits:ob.plan.habits.slice()}; }
     state.onboarded = true; if(!state.createdAt) state.createdAt = nowISO(); save();
     const L = LESSONS[state.placementStart];
     view.innerHTML = `<section class="arrival stack"><p class="kicker">Your route is ready</p>
@@ -3922,7 +4903,7 @@ Object.assign(ACT, {
     if(r.attended) touch();
     save();
     toast(r.attended ? (classPct(o)>=1 ? "Class complete. All five parts done." : "Attendance saved.") : "Attendance removed.");
-    celebrate();
+    celebrate(); planAfterChange();
     if(location.hash==="#lesson" && run){ renderLesson(); return; }
     if(inDay) daySheet(inDay); else classSheet(o.id);
     repaint();
@@ -4054,7 +5035,7 @@ Object.assign(INP, {
   dayNote: el => {
     const k = el.dataset.k, v = el.value;
     if(v.trim()) dayRec(k).note = v; else if(state.days[k]){ delete state.days[k].note; if(!Object.keys(state.days[k]).length) delete state.days[k]; }
-    clearTimeout(INP._n); INP._n = setTimeout(save, 500);
+    clearTimeout(INP._n); INP._n = setTimeout(()=>{ save(); planAfterChange(); }, 500);
   },
   ptBody: el => { const m = $("#ptMeter"); if(!m) return; const lv = levelKey(($("#ptLevel")||{}).value); m.innerHTML = meterInner(wc(el.value), CLASS_LEVELS[lv].read, lv+" range"); }
 });
@@ -4066,7 +5047,7 @@ Object.assign(ACT, {
   applyCode: async el => {
     const box = el.closest(".code-form"), inp = box && box.querySelector("input"), msg = box && box.nextElementSibling;
     const v = inp ? inp.value.trim() : ""; if(!v){ if(inp) inp.focus(); return; }
-    const label = el.textContent; el.disabled = true; el.textContent = "Checking…";
+    const label = "Unlock"; el.disabled = true; el.textContent = "Checking…";
     let r; try{ r = await PGA.redeem(v); }catch(e){ r = {ok:false, reason:"secure"}; }
     el.disabled = false; el.textContent = label;
     if(r.ok){ welcomeSheet(r.status); setTimeout(checkInbox, 600); return; }
@@ -4226,6 +5207,645 @@ window.addEventListener("scroll", ()=>$("#top").classList.toggle("scrolled", win
 window.addEventListener("pagehide", ()=>{ if(run && !run.finalized){ tickActive(); saveRun(); } else save(); });
 document.addEventListener("visibilitychange", ()=>{ if(document.hidden && run && !run.finalized){ tickActive(); saveRun(); } else if(run) run.lastTick = Date.now(); });
 
+/* ============================================================
+   GUIDANCE — for students who don't understand English yet.
+   1. Inside every lesson step, a short numbered guide in Spanish
+      ("what to do here"), open the first 3 times, then folded.
+   2. A "?" button in the header explains the current screen.
+   Button names appear exactly as the student sees them on screen
+   ({{English|Español}} picks the right one for the mode).
+   ============================================================ */
+const STEP_GUIDE = {
+  arrive:["Lee el título de la misión y el objetivo de hoy (está en grande).","Mira cuántos minutos toma y en qué etapa vas.","Toca {{Let's begin|Comencemos}} abajo. Todo se guarda solo: puedes salir con la X y continuar después."],
+  mirror:["Lee la pregunta en inglés; debajo tienes la traducción.","Vas a escribir unas frases y luego hablar 30 segundos.","No hay notas ni correcciones: es la foto de tu punto de partida."],
+  read:["Toca {{Listen to the text|Escuchar el texto}} para oír todo el texto, o toca una frase para oírla sola.","Si va muy rápido, elige {{Slow|Lento}}.","Abre {{Key words|Palabras clave}} para ver las palabras importantes en español.","Cuando termines, toca {{I've read it|Ya lo leí}} abajo."],
+  understand:["Lee la idea principal (el título grande) y la explicación debajo.","Abre {{See the pattern|Ver el patrón}} para ver la regla, y {{Mistakes Spanish speakers make|Errores que cometemos los hispanohablantes}} para no caer en los errores típicos.","Cuando lo entiendas, toca {{I understand|Entiendo}}. Si no, toca {{Stuck?|¿Atascado?}} arriba a la derecha."],
+  see:["Toca el botón ▶ de cada frase para escucharla.","Repite cada frase en voz alta una vez, imitando el ritmo.","Toca {{Continue|Continuar}} cuando termines."],
+  build:["Toca {{Add a layer|Agregar una capa}} varias veces para ver cómo crece la frase.","Luego ordena las palabras: tócalas en el orden correcto.","Si te equivocas, toca {{Try again|Intentar de nuevo}}. Cuando las dos frases estén bien, toca {{Continue to writing|Continuar a escribir}}."],
+  write:["Lee la instrucción del recuadro (tiene traducción debajo).","En {{Guided|Guiada}}, toca una estructura para agregarla y completa los espacios ___.","Escribe en inglés hasta llegar al mínimo de palabras del contador. Equivocarse está bien.","Toca {{Save and continue|Guardar y continuar}}."],
+  speak:["Lee la pregunta. Las palabras de abajo son tus pistas.","Toca {{Start recording|Empezar a grabar}} (o {{Speak without recording|Hablar sin grabar}}) y habla sin leer.","Toca {{Stop|Detener}} al terminar. Debes llegar al tiempo mínimo en un intento; puedes intentar varias veces.","Luego toca el botón de abajo para continuar."],
+  reflect:["Responde en pocas palabras, en inglés o en español.","Solo la primera pregunta es obligatoria.","Toca el botón de abajo para terminar. Todo queda guardado como evidencia."]
+};
+function guideText(s){
+  return esc(s).replace(/\{\{(.+?)\|(.+?)\}\}/g, (m,en,es)=>`<b>“${lang()==="es"?es:en}”</b>`+(lang()==="bi"?` <span class="muted">(${es})</span>`:""));
+}
+function stepGuideHTML(key){
+  if(lang()==="en" || !key || key==="complete") return "";
+  const k = key==="arrive" && run && run.kind==="mirror" ? "mirror" : key;
+  const list = STEP_GUIDE[k]; if(!list) return "";
+  state.guideSeen = state.guideSeen || {};
+  const seen = state.guideSeen[k] || 0;
+  return `<details class="guide notr" lang="es" ${seen<3?"open":""} data-g="${k}"><summary><span class="g-ico" aria-hidden="true">?</span>Qué hacer en este paso</summary>
+    <ol>${list.map(x=>`<li>${guideText(x)}</li>`).join("")}</ol></details>`;
+}
+function markGuideSeen(key){
+  if(!key) return; const k = key==="arrive" && run && run.kind==="mirror" ? "mirror" : key;
+  state.guideSeen = state.guideSeen || {};
+  state.guideSeen[k] = (state.guideSeen[k]||0) + 1;
+}
+
+/* ---------- "?" help: what this screen is for ---------- */
+const HELP = {
+  home:{en:"Home", es:"Inicio", items:[
+    ["Your plan for today is at the top: short, numbered micro-goals. Do them in order.","Arriba está tu plan de hoy: micro-metas cortas y numeradas. Hazlas en orden."],
+    ["“Go” takes you to the exact place of each micro-goal. Your work checks it automatically.","“Ir” te lleva al lugar exacto de cada micro-meta. Tu trabajo la marca automáticamente."],
+    ["The big card is your current mission. The gold button always continues where you left off.","La tarjeta grande es tu misión actual. El botón dorado siempre continúa donde quedaste."],
+    ["“Your evidence” counts what you really did: missions, writing, minutes spoken.","“Tu evidencia” cuenta lo que de verdad hiciste: misiones, escritos, minutos hablados."]]},
+  plan:{en:"My plan", es:"Mi plan", items:[
+    ["Today: your numbered micro-goals. Finish all of them = victory of the day 🏆.","Hoy: tus micro-metas numeradas. Si las cumples todas = victoria del día 🏆."],
+    ["Tap the number of a micro-goal to check it by hand; tap “Go” to do it now.","Toca el número de una micro-meta para marcarla a mano; toca “Ir” para hacerla ya."],
+    ["Habits: 2–4 tiny actions every day. Each dot is a day; the chain is the reward.","Hábitos: 2–4 acciones pequeñas cada día. Cada punto es un día; la cadena es el premio."],
+    ["Next 14 days and the month calendar show your cronogram. If you go faster or slower, it re-plans itself.","Los próximos 14 días y el calendario del mes muestran tu cronograma. Si vas más rápido o más lento, se reorganiza solo."],
+    ["“Add to my phone calendar” puts each session with its micro-goals in your phone, with a reminder.","“Agregar al calendario del teléfono” pone cada sesión con sus micro-metas en tu celular, con recordatorio."]]},
+  path:{en:"Path", es:"Ruta", items:[
+    ["17 missions in 4 stages, from the base to fluency.","17 misiones en 4 etapas, desde la base hasta la fluidez."],
+    ["A gold circle is your current mission; a check is a finished one (you can review it any time).","El círculo dorado es tu misión actual; el visto bueno es una terminada (puedes repasarla cuando quieras)."],
+    ["Tap a mission to see its goal and start it.","Toca una misión para ver su objetivo y empezarla."]]},
+  classes:{en:"Classes", es:"Clases", items:[
+    ["Add your class days once; they repeat every week.","Agrega tus días de clase una vez; se repiten cada semana."],
+    ["Each class has 5 parts: attend, read the text, write, speak, reflect.","Cada clase tiene 5 partes: asistir, leer el texto, escribir, hablar y reflexionar."],
+    ["Attend + write your text = the star of the day ★.","Asistir + escribir tu texto = la estrella del día ★."],
+    ["Tap a day in the calendar to leave a note or send your report to ProfGermandario.","Toca un día del calendario para dejar una nota o enviar tu reporte a ProfGermandario."]]},
+  evolution:{en:"Evolution", es:"Evolución", items:[
+    ["Here you see your progress with evidence, not guesses.","Aquí ves tu progreso con evidencia, no con suposiciones."],
+    ["Your first text and your latest one appear side by side.","Tu primer texto y el más reciente aparecen lado a lado."],
+    ["Every 4 weeks, record a mirror sample: the same question, to compare.","Cada 4 semanas graba una muestra espejo: la misma pregunta, para comparar."]]},
+  toolbox:{en:"Toolbox", es:"Herramientas", items:[
+    ["Extra practice when you finish your plan: free speaking, shadowing, quick checks.","Práctica extra cuando termines tu plan: habla libre, shadowing, repasos rápidos."],
+    ["Masterclasses and references for grammar and vocabulary.","Masterclasses y referencias de gramática y vocabulario."],
+    ["“My data”: export a backup every week. Your progress lives on this phone.","“Mis datos”: exporta una copia cada semana. Tu progreso vive en este teléfono."]]},
+  lesson:{en:"Lesson", es:"Lección", items:[
+    ["Each mission has 7 short steps. The bar at the top shows where you are.","Cada misión tiene 7 pasos cortos. La barra de arriba muestra dónde vas."],
+    ["The gold button at the bottom always takes you to the next step.","El botón dorado de abajo siempre te lleva al siguiente paso."],
+    ["The X saves and exits. You continue exactly where you stopped.","La X guarda y sale. Continúas exactamente donde quedaste."],
+    ["“Stuck?” gives you help or a direct line to ProfGermandario.","“¿Atascado?” te da ayuda o una línea directa con ProfGermandario."]]}
+};
+function helpSheet(){
+  const r = document.body.classList.contains("in-lesson") ? "lesson" : curRoute, H = HELP[r] || HELP.home;
+  const stepKey = r==="lesson" && run ? stepsFor(run)[run.stepIdx] : null;
+  const guide = stepKey && STEP_GUIDE[stepKey==="arrive"&&run.kind==="mirror"?"mirror":stepKey];
+  openSheet(`${sheetHead(tt("How this works","Cómo funciona"), tt(H.en, H.es))}
+    <ol class="help-list">${H.items.map(x=>`<li>${T(esc(x[0]), esc(x[1]))}</li>`).join("")}</ol>
+    ${guide ? `<div class="well mt notr" lang="es"><p class="kicker">Este paso</p><ol class="help-list" style="margin-top:4px">${guide.map(x=>`<li>${guideText(x)}</li>`).join("")}</ol></div>` : ""}
+    <div class="well mt notr"><p class="small"><b>${lang()==="en"?"Language":"Idioma"}:</b> ${lang()==="en"?"the button":"el botón"} <b>${LANG_MODES[lang()].short}</b> ${lang()==="en"?"at the top switches between Spanish, bilingual and English.":"de arriba cambia entre español, bilingüe e inglés."}</p></div>
+    <div class="stack mt"><button class="btn-line" style="width:100%" data-act="langSheet">${T("Change language","Cambiar idioma")}</button>
+      <a class="btn-line" style="width:100%" href="${waLink("Hola Profe, soy "+(state.name||"estudiante")+" del Fluency OS. Tengo una duda: ")}" target="_blank" rel="noopener">${T("Ask ProfGermandario on WhatsApp","Preguntarle a ProfGermandario por WhatsApp")}</a></div>`);
+}
+
+/* ============================================================
+   MY PLAN — the study cronograma.
+   The student picks study days, minutes per day, a time and 2–4
+   habits. Every mission is cut into sessions that fit those
+   minutes, and every session into numbered micro-goals (3–10 min
+   each). Today's list is frozen the first time it is shown, so it
+   doesn't move while the student works; tomorrow is re-planned
+   from where they really are (ahead or behind — no guilt, the plan
+   adjusts). Lesson steps, class parts, shadowing, quick checks and
+   meditation tick micro-goals automatically. All micro-goals of
+   the day done = the victory of the day.
+   ============================================================ */
+const HABITS = [
+  {id:"shadow",  en:"Shadow 5 sentences", es:"Haz shadowing de 5 frases", hen:"Listen and repeat with the same rhythm.", hes:"Escucha y repite con el mismo ritmo.", min:5, ev:"shadow", go:"shadow", ico:"◎"},
+  {id:"think",   en:"Think in English for 1 minute", es:"Piensa en inglés 1 minuto", hen:"Describe in your head what you see around you.", hes:"Describe en tu mente lo que ves a tu alrededor.", min:1, ico:"✦"},
+  {id:"words",   en:"Write 3 new words in today's note", es:"Escribe 3 palabras nuevas en la nota de hoy", hen:"Words you heard or needed today.", hes:"Palabras que escuchaste o necesitaste hoy.", min:3, auto:"note", go:"note", ico:"✎"},
+  {id:"listen",  en:"Listen to English for 10 minutes", es:"Escucha inglés 10 minutos", hen:"A song, a podcast, or a video you enjoy.", hes:"Una canción, un pódcast o un video que te guste.", min:10, ico:"♪"},
+  {id:"say",     en:"Say one sentence about your day out loud", es:"Di en voz alta una frase sobre tu día", hen:"Short and true. Start with “Today I…”.", hes:"Corta y real. Empieza con “Today I…”.", min:1, ico:"❝"},
+  {id:"quiz",    en:"Do a quick check", es:"Haz un repaso rápido", hen:"Five questions from your missions.", hes:"Cinco preguntas de tus misiones.", min:3, ev:"quiz", go:"quiz", ico:"?"},
+  {id:"breathe", en:"Breathe or meditate before practice", es:"Respira o medita antes de practicar", hen:"A calm mind finds words faster.", hes:"Una mente tranquila encuentra las palabras más rápido.", min:5, ev:"meditate", go:"meditate", ico:"◐"}
+];
+const HABIT_DEFAULT = ["shadow","think","words"];
+const MGOALS = {
+  understand:{en:"Open Mission {n} and understand the idea", es:"Abre la Misión {n} y entiende la idea", hen:"Read the goal, the explanation and the pattern.", hes:"Lee el objetivo, la explicación y el patrón.", min:5},
+  see:{en:"Listen to the examples and repeat them", es:"Escucha los ejemplos y repítelos", hen:"Say each sentence out loud once.", hes:"Di cada frase en voz alta una vez.", min:4},
+  build:{en:"Build the sentences in order", es:"Construye las frases en orden", hen:"Grow the sentence, then order the words.", hes:"Haz crecer la frase y luego ordena las palabras.", min:4},
+  write:{en:"Write at least {w} words", es:"Escribe al menos {w} palabras", hen:"Tap a guided structure if you need a start.", hes:"Toca una estructura guiada si necesitas cómo empezar.", min:7},
+  speak:{en:"Speak for at least {s}", es:"Habla al menos {s}", hen:"One attempt, without reading.", hes:"Un intento, sin leer.", min:4},
+  reflect:{en:"Reflect and complete the mission", es:"Reflexiona y completa la misión", hen:"Three short answers. Spanish is OK.", hes:"Tres respuestas cortas. Puedes usar español.", min:3}
+};
+const MSTEPS = ["understand","see","build","write","speak","reflect"];
+const SEGS = {1:[MSTEPS], 2:[["understand","see","build"],["write","speak","reflect"]], 3:[["understand","see"],["build","write"],["speak","reflect"]]};
+const SEG_LABELS = {1:[["The whole mission","La misión completa"]], 2:[["Understand & build","Entender y construir"],["Write, speak & reflect","Escribir, hablar y reflexionar"]],
+  3:[["Understand & see","Entender y ver"],["Build & write","Construir y escribir"],["Speak & reflect","Hablar y reflexionar"]]};
+const PLAN_MINUTES = [10,15,20,30,45];
+const DOW_ES = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"], DOW_ES_LONG = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MONTHS_ES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const BADGES = [
+  {id:"first-goal", ico:"✓", en:"First micro-goal", es:"Primera micro-meta", hen:"You started.", hes:"Empezaste."},
+  {id:"first-win",  ico:"🏆", en:"First victory", es:"Primera victoria", hen:"A whole day, done.", hes:"Un día completo, cumplido."},
+  {id:"streak3",    ico:"🔥", en:"3 victories in a row", es:"3 victorias seguidas", hen:"The rhythm is forming.", hes:"El ritmo se está formando."},
+  {id:"mission",    ico:"◆", en:"A mission on plan", es:"Una misión con plan", hen:"Micro-goals add up.", hes:"Las micro-metas suman."},
+  {id:"habit7",     ico:"⛓", en:"7-day habit chain", es:"Cadena de 7 días", hen:"One habit, seven days.", hes:"Un hábito, siete días."},
+  {id:"week",       ico:"★", en:"A full week", es:"Una semana completa", hen:"Every planned day won.", hes:"Cada día planeado, ganado."},
+  {id:"wins10",     ico:"⚡", en:"10 victories", es:"10 victorias", hen:"Consistency beats talent.", hes:"La constancia le gana al talento."},
+  {id:"wins30",     ico:"👑", en:"30 victories", es:"30 victorias", hen:"The habit is yours.", hes:"El hábito es tuyo."}
+];
+
+const planOn = () => !!(state.plan && Array.isArray(state.plan.days));
+const habitById = id => HABITS.find(h=>h.id===id);
+const sessionsPer = () => { const m = (state.plan||{}).minutes||15; return m<=15 ? 3 : m<=25 ? 2 : 1; };
+function planRec(k){ if(!state.planLog[k]) state.planLog[k] = {}; return state.planLog[k]; }
+const planDow = k => parseKey(k).getDay();
+const fmtShortDay = k => { const d = parseKey(k); return lang()==="es" ? DOW_ES[d.getDay()]+" "+d.getDate() : DOW_SHORT[d.getDay()]+" "+d.getDate(); };
+const fmtLongDay = k => { const d = parseKey(k); return lang()==="es" ? ucfirst(DOW_ES_LONG[d.getDay()])+" "+d.getDate()+" de "+MONTHS_ES[d.getMonth()] : fmtDay(k,true); };
+function defaultPlanFor(level){
+  const lv = String(level||"").toUpperCase();
+  const minutes = lv.startsWith("B2")||lv.startsWith("C") ? 30 : lv.startsWith("B1") ? 20 : 15;
+  return {v:1, created:nowISO(), days:[1,2,3,4,5], minutes, time:"07:30", habits:HABIT_DEFAULT.slice()};
+}
+
+/* ---------- where the student really is ---------- */
+const missionLimit = () => Math.min(tier().missionLimit, LESSONS.length);
+function nextIncomplete(from){ for(let i=Math.max(0,from); i<missionLimit(); i++) if(!state.completedMissions.includes(i)) return i; return -1; }
+function missionPos(){
+  const d = state.draft;
+  if(d && d.kind==="mission" && d.mi!=null && !state.completedMissions.includes(d.mi)){
+    const order = ["arrive","understand","see","build","write","speak","reflect","complete"];
+    return {mi:d.mi, step:Math.max(0, order.indexOf(stepsFor(d)[d.stepIdx]) - 1)};
+  }
+  const nx = nextMission();
+  return nx>=0 ? {mi:nx, step:0} : null;
+}
+function segOf(step){ const segs = SEGS[sessionsPer()]; let c = 0; for(let i=0;i<segs.length;i++){ if(step < c+segs[i].length) return {idx:i, start:c, end:c+segs[i].length}; c += segs[i].length; } return {idx:segs.length-1, start:c, end:c}; }
+function advance(pos){
+  if(!pos) return null;
+  const sg = segOf(pos.step);
+  if(sg.end < MSTEPS.length) return {mi:pos.mi, step:sg.end};
+  const n = nextIncomplete(pos.mi+1);
+  return n>=0 ? {mi:n, step:0} : null;
+}
+const posKey = p => p ? p.mi*10 + p.step : -1;
+function dayType(k){
+  if(isMember() && occurrencesBetween(k,k).some(o=>!o.rec.cancelled)) return "class";
+  return state.plan.days.includes(planDow(k)) ? "study" : "rest";
+}
+function specFor(type, pos, k){
+  if(type==="class"){ const o = occurrencesBetween(k,k).find(x=>!x.rec.cancelled); return {type, cid:o?o.id:null}; }
+  if(type==="rest") return {type};
+  if(!pos) return {type:"study", practice:true};
+  const sg = segOf(pos.step);
+  return {type:"study", mi:pos.mi, n:sessionsPer(), seg:sg.idx, steps:MSTEPS.slice(pos.step, sg.end)};
+}
+function tasksOf(spec){
+  const L = [];
+  if(spec.type==="class" && spec.cid){ ["read","write","attend"].forEach(p=>L.push({id:"c:"+p+":"+spec.cid, kind:"class", part:p, cid:spec.cid})); }
+  else if(spec.type==="study"){
+    if(spec.practice){ L.push({id:"free", kind:"free"}); if(!state.plan.habits.includes("quiz")) L.push({id:"quizp", kind:"quiz"}); }
+    else spec.steps.forEach(st=>L.push({id:"m"+spec.mi+":"+st, kind:"mstep", mi:spec.mi, step:st}));
+  }
+  state.plan.habits.forEach(h=>{ if(habitById(h)) L.push({id:"h:"+h, kind:"habit", h}); });
+  return L;
+}
+/* today's list is frozen at first sight; the rest is projected from it */
+function todaySpec(){
+  const k = dayKey(), rec = planRec(k);
+  if(!rec.spec || rec.pv!==state.plan.created){
+    const spec = specFor(dayType(k), missionPos(), k);
+    rec.spec = spec; rec.tasks = tasksOf(spec); rec.pv = state.plan.created;
+    save();
+  }
+  return rec.spec;
+}
+function projection(days){
+  const out = {}, t = dayKey(), ts = todaySpec();
+  let pos = missionPos();
+  if(ts.type==="study" && ts.mi!=null){ const after = advance({mi:ts.mi, step:MSTEPS.indexOf(ts.steps[0])}); if(posKey(after)>posKey(pos)) pos = after; }
+  for(let i=1;i<=days;i++){
+    const k = addDays(t,i), type = dayType(k), sp = specFor(type, pos, k);
+    out[k] = sp;
+    if(type==="study" && sp.mi!=null) pos = advance(pos);
+  }
+  return out;
+}
+function specTitle(sp){
+  if(!sp) return ["",""];
+  if(sp.type==="rest") return ["Rest day · habits only","Descanso activo · solo hábitos"];
+  if(sp.type==="class"){ const o = sp.cid && occById(sp.cid); return ["Class day"+(o?" · "+fmtTime(o.time):""), "Día de clase"+(o?" · "+fmtTime(o.time):"")]; }
+  if(sp.practice) return ["Practice day","Día de práctica"];
+  const L = LESSONS[sp.mi], lab = SEG_LABELS[sp.n][sp.seg]||SEG_LABELS[sp.n][0], part = sp.n>1 ? " · "+(sp.seg+1)+"/"+sp.n : "";
+  return ["Mission "+L.n+part+" · "+lab[0], "Misión "+L.n+part+" · "+lab[1]];
+}
+const specMinutes = sp => tasksOf(sp).reduce((a,t)=>a+taskInfo(t,null).min,0);
+
+/* ---------- micro-goals ---------- */
+function taskInfo(t, k){
+  if(t.kind==="mstep"){
+    const L = LESSONS[t.mi], g = MGOALS[t.step], f = s => s.replace("{n}", L.n).replace("{w}", minWords(t.mi)).replace("{s}", mmss(speakRule(t.mi).min));
+    return {en:f(g.en), es:f(g.es), hen:g.hen, hes:g.hes, min:g.min, auto:true, go:()=>startMission(t.mi)};
+  }
+  if(t.kind==="class"){
+    const o = occById(t.cid);
+    if(!o) return {en:"Class removed", es:"Clase eliminada", hen:"", hes:"", min:0, auto:true};
+    const Lv = CLASS_LEVELS[o.level];
+    if(t.part==="read"){ const T0 = textById((o.rec||{}).textId); return {en:"Read your class text", es:"Lee tu texto de clase", hen:T0?"“"+T0.title+"”":"A text at your level.", hes:T0?"“"+T0.title+"”":"Un texto a tu nivel.", min:Math.max(3,Math.round(Lv.read[1]/Lv.wpm)), auto:true, go:()=>startClassWork(o.id)}; }
+    if(t.part==="write") return {en:"Write your class text ("+Lv.write[0]+"–"+Lv.write[1]+" words)", es:"Escribe tu texto de clase ("+Lv.write[0]+"–"+Lv.write[1]+" palabras)", hen:"With attendance, it earns the day star.", hes:"Con la asistencia, gana la estrella del día.", min:10, auto:true, go:()=>startClassWork(o.id)};
+    return {en:"Attend your class at "+fmtTime(o.time), es:"Asiste a tu clase a las "+fmtTime(o.time), hen:o.duration+"-minute class. Mark it when it ends.", hes:"Clase de "+o.duration+" minutos. Márcala cuando termine.", min:0, auto:true, go:()=>classSheet(o.id)};
+  }
+  if(t.kind==="free") return {en:"Free speaking practice", es:"Práctica de habla libre", hen:"Pick a topic: write, speak, reflect.", hes:"Elige un tema: escribe, habla, reflexiona.", min:12, auto:true, go:()=>freeSheet()};
+  if(t.kind==="quiz") return {en:"Do a quick check", es:"Haz un repaso rápido", hen:"Five questions from your missions.", hes:"Cinco preguntas de tus misiones.", min:3, auto:true, go:()=>{ quiz = null; quizSheet(); }};
+  const H = habitById(t.h) || HABITS[0];
+  const go = H.go==="shadow" ? ()=>shadowSheet() : H.go==="quiz" ? ()=>{ quiz = null; quizSheet(); } : H.go==="meditate" ? ()=>meditateSheet() : H.go==="note" ? ()=>noteSheet(k||dayKey()) : null;
+  return {en:H.en, es:H.es, hen:H.hen, hes:H.hes, min:H.min, auto:!!(H.ev||H.auto), go, habit:true};
+}
+function autoDone(t, k){
+  const ev = (state.planLog[k]||{}).ev || [];
+  if(t.kind==="mstep") return ev.includes("step:"+t.step+":"+t.mi) || (ev.includes("done:mission:"+t.mi) && MSTEPS.indexOf(t.step)>=0 && t.step==="reflect");
+  if(t.kind==="class"){
+    const o = occById(t.cid); if(!o) return true;
+    const r = o.rec||{};
+    if(t.part==="read") return !!r.readAt;
+    if(t.part==="attend") return !!r.attended;
+    const w = state.writingSamples.find(x=>x.id===r.writingId); return !!w && (w.wordCount||0) >= CLASS_LEVELS[o.level].write[0];
+  }
+  if(t.kind==="free") return ev.includes("done:free");
+  if(t.kind==="quiz") return ev.includes("quiz");
+  const H = habitById(t.h); if(!H) return false;
+  if(H.ev && ev.includes(H.ev)) return true;
+  if(H.auto==="note") return wc(dayNote(k))>=3;
+  return false;
+}
+function taskDone(t, k){ const d = (state.planLog[k]||{}).done||{}; if(d[t.id]) return "manual"; return autoDone(t,k) ? "auto" : false; }
+function dayStatus(k){
+  const rec = state.planLog[k];
+  if(k===dayKey() && planOn()) todaySpec();
+  const tasks = (rec && rec.tasks) || null;
+  if(!tasks) return null;
+  const done = tasks.filter(t=>taskDone(t,k)).length;
+  return {tasks, done, total:tasks.length, victory:!!(state.planLog[k]||{}).victory};
+}
+
+/* ---------- events from the rest of the app ---------- */
+function planEvent(name){
+  if(!planOn()) return;
+  const r = planRec(dayKey()); r.ev = r.ev || [];
+  if(!r.ev.includes(name)) r.ev.push(name);
+  planAfterChange();
+}
+function planAfterChange(silent){
+  if(!planOn()) return;
+  const k = dayKey(), st = dayStatus(k), rec = planRec(k);
+  if(!st) return;
+  const before = rec.n||0;
+  rec.n = st.done; rec.t = st.total;
+  if(st.total && st.done>=st.total){
+    if(!rec.victory){ rec.victory = nowISO(); save(); if(!silent) setTimeout(()=>celebrate(newBadges()), 380); return; }
+  } else if(rec.victory){ delete rec.victory; }
+  if(!silent && st.done>before) toastT("✓ Micro-goal done · "+st.done+" of "+st.total, "✓ Micro-meta cumplida · "+st.done+" de "+st.total);
+  const nb = newBadges(); if(nb.length && !silent) setTimeout(()=>toastT(nb[0].ico+" New badge: "+nb[0].en, nb[0].ico+" Nueva insignia: "+nb[0].es), 1400);
+  save();
+}
+
+/* ---------- victories, streaks, badges ---------- */
+function victoryStreak(){
+  let k = dayKey(), n = 0;
+  if(!(state.planLog[k]||{}).victory) k = addDays(k,-1);
+  while((state.planLog[k]||{}).victory){ n++; k = addDays(k,-1); }
+  return n;
+}
+function bestStreak(){
+  const ks = Object.keys(state.planLog).filter(k=>state.planLog[k].victory).sort();
+  let best = 0, run = 0, prev = null;
+  ks.forEach(k=>{ run = prev && addDays(prev,1)===k ? run+1 : 1; best = Math.max(best, run); prev = k; });
+  return best;
+}
+const weekStart = k => addDays(k, -((parseKey(k).getDay()+6)%7));
+function weekInfo(k){
+  const mon = weekStart(k||dayKey()), days = [...Array(7)].map((_,i)=>addDays(mon,i));
+  let target = 0, wins = 0;
+  days.forEach(d=>{ if(dayType(d)!=="rest") target++; if((state.planLog[d]||{}).victory) wins++; });
+  return {mon, days, target:Math.max(1,target), wins};
+}
+function habitDone(h, k){ return !!taskDone({id:"h:"+h, kind:"habit", h}, k); }
+function habitStreak(h){ let k = dayKey(), n = 0; if(!habitDone(h,k)) k = addDays(k,-1); while(habitDone(h,k) && n<400){ n++; k = addDays(k,-1); } return n; }
+function earnedBadges(){
+  const L = state.planLog, ks = Object.keys(L);
+  const wins = ks.filter(k=>L[k].victory).length;
+  const e = new Set();
+  if(ks.some(k=>(L[k].n||0)>0 || Object.keys(L[k].done||{}).length)) e.add("first-goal");
+  if(wins>=1) e.add("first-win");
+  if(bestStreak()>=3) e.add("streak3");
+  if(ks.some(k=>(L[k].ev||[]).some(x=>x.startsWith("done:mission:")))) e.add("mission");
+  if((state.plan.habits||[]).some(h=>habitStreak(h)>=7)) e.add("habit7");
+  const weeks = new Set(ks.filter(k=>L[k].victory).map(weekStart));
+  if([...weeks].some(m=>{ const w = weekInfo(m); return w.wins>=w.target && addDays(m,6)<=dayKey(); })) e.add("week");
+  if(wins>=10) e.add("wins10");
+  if(wins>=30) e.add("wins30");
+  return e;
+}
+function newBadges(){
+  if(!planOn()) return [];
+  const have = new Set(state.planBadges||[]), out = [];
+  earnedBadges().forEach(id=>{ if(!have.has(id)){ have.add(id); out.push(BADGES.find(b=>b.id===id)); } });
+  if(out.length){ state.planBadges = [...have]; save(); }
+  return out.filter(Boolean);
+}
+function celebrate(badges){
+  const old = $("#celebrate"); if(old) old.remove();
+  const st = victoryStreak(), wk = weekInfo();
+  const el = document.createElement("div"); el.className = "celebrate"; el.id = "celebrate"; el.setAttribute("role","dialog"); el.setAttribute("aria-modal","true");
+  const bits = [...Array(28)].map((_,i)=>`<i style="--x:${(i*37)%100}%;--d:${(i%7)*0.12}s;--c:${["var(--gold)","var(--sage)","var(--coral)","var(--violet)"][i%4]};--r:${(i*53)%360}deg"></i>`).join("");
+  el.innerHTML = `<div class="confetti" aria-hidden="true">${bits}</div><div class="cel-card">
+    <div class="cel-trophy" aria-hidden="true">🏆</div>
+    <p class="kicker">${T("Victory of the day","Victoria del día")}</p>
+    <h2 class="display">${T("Every micro-goal, done.","Todas tus micro-metas, cumplidas.")}</h2>
+    <p class="muted mt-s">${T((st>1?st+" victories in a row · ":"")+wk.wins+" of "+wk.target+" this week", (st>1?st+" victorias seguidas · ":"")+wk.wins+" de "+wk.target+" esta semana")}</p>
+    ${(badges||[]).map(b=>`<div class="cel-badge"><span>${b.ico}</span>${T("New badge: "+b.en, "Nueva insignia: "+b.es)}</div>`).join("")}
+    <button class="btn block mt" data-act="celebrateClose">${T("Keep going","Seguir adelante")}</button></div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add("show"));
+  setTimeout(()=>{ const b = el.querySelector(".btn"); if(b) b.focus({preventScroll:true}); }, 200);
+}
+
+/* ---------- UI pieces ---------- */
+function mgRow(t, i, k, interactive){
+  const info = taskInfo(t, k), done = taskDone(t, k);
+  return `<div class="mg-row ${done?"on":""}">
+    <button class="mg-num" ${interactive?`data-act="mgToggle" data-k="${k}" data-id="${esc(t.id)}"`:"disabled"} aria-label="${esc(tt(done?"Done":"Mark as done", done?"Hecha":"Marcar como hecha"))}" aria-pressed="${!!done}">${done?"✓":i+1}</button>
+    <div class="grow"><span class="t">${T(esc(info.en), esc(info.es))}</span>
+      <span class="s">${T(esc(info.hen), esc(info.hes))}</span>
+      <span class="mg-meta">${info.min?info.min+" min":""}${info.auto?` · ${done==="auto"?T("checked by your work","marcada por tu trabajo"):T("checks itself","se marca sola")}`:""}</span></div>
+    ${interactive && info.go && !done ? `<button class="mg-go" data-act="mgGo" data-k="${k}" data-id="${esc(t.id)}">${T("Go","Ir")}<span aria-hidden="true">›</span></button>` : ""}
+  </div>`;
+}
+function progressBar(done, total){ const p = total ? Math.round(done/total*100) : 0; return `<div class="mg-bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%"></i></div>`; }
+function planHomeCard(){
+  if(!planOn()) return `<button class="panel plan-cta mt" data-act="planSetup"><span class="f-ico" aria-hidden="true">✓</span><span class="grow"><span class="f-t">${T("Create your study plan","Crea tu plan de estudio")}</span><span class="s">${T("One minute. Small daily goals on your calendar — every one you check is a victory.","Un minuto. Metas pequeñas cada día en tu calendario: cada una que cumples es una victoria.")}</span></span><span class="chev">›</span></button>`;
+  const k = dayKey(), sp = todaySpec(), st = dayStatus(k), ti = specTitle(sp);
+  const pending = st.tasks.map((t,i)=>({t,i})).filter(x=>!taskDone(x.t,k));
+  const show = (pending.length ? pending : st.tasks.map((t,i)=>({t,i}))).slice(0,3);
+  return `<section class="panel plan-today mt">
+    <div class="pt-head"><p class="kicker">${T("Today's micro-goals","Micro-metas de hoy")}</p><span class="pt-count">${st.done}/${st.total}</span></div>
+    <h3>${T(esc(ti[0]), esc(ti[1]))}</h3>
+    ${progressBar(st.done, st.total)}
+    ${st.victory ? `<div class="pt-win">🏆 ${T("Victory of the day. See you tomorrow!","Victoria del día. ¡Nos vemos mañana!")}</div>` : ""}
+    <div class="mg-list mt-s">${show.map(x=>mgRow(x.t, x.i, k, true)).join("")}</div>
+    <a class="link mt-s" href="#plan" style="display:inline-block">${T("See my whole plan","Ver todo mi plan")} ›</a>
+  </section>`;
+}
+function weekStrip(){
+  const w = weekInfo(), t = dayKey();
+  return `<section class="mt-l"><div class="phase-head"><h3>${T("This week","Esta semana")}</h3><span class="wk-cap">${T(w.wins+" of "+w.target+" victories", w.wins+" de "+w.target+" victorias")}</span></div>
+    <div class="wk-strip mt-s">${w.days.map(k=>{
+      const rec = state.planLog[k]||{}, type = k<=t ? ((rec.spec||{}).type || (planOn()?dayType(k):"rest")) : dayType(k);
+      const ratio = rec.t ? rec.n/rec.t : 0, d = parseKey(k);
+      const cls = "wk-day"+(k===t?" today":"")+(rec.victory?" win":ratio>0?" part":"")+(type==="rest"?" rest":"")+(k>t?" future":"");
+      return `<button class="${cls}" data-act="planDay" data-k="${k}" style="--p:${Math.round(ratio*100)}"><span class="wk-dow">${lang()==="es"?DOW_ES[d.getDay()]:DOW_SHORT[d.getDay()]}</span><span class="wk-ring"><b>${rec.victory?"✓":d.getDate()}</b></span><span class="wk-type">${type==="class"?"C":type==="study"?"•":""}</span></button>`;
+    }).join("")}</div>
+    ${progressBar(Math.min(w.wins,w.target), w.target)}</section>`;
+}
+function habitsBlock(){
+  const t = dayKey(), days = [...Array(7)].map((_,i)=>addDays(t, i-6));
+  return `<section class="mt-l"><div class="phase-head"><h3>${T("My habits","Mis hábitos")}</h3><button class="link" data-act="planSetup">${T("Change","Cambiar")}</button></div>
+    <p class="muted small mt-s">${T("Small, daily, and always the same. The chain is the reward.","Pequeños, diarios y siempre iguales. La cadena es el premio.")}</p>
+    <div class="mt-s">${state.plan.habits.map(id=>{ const H = habitById(id); if(!H) return ""; const on = habitDone(id,t), s = habitStreak(id);
+      return `<div class="habit-row ${on?"on":""}"><button class="habit-check" data-act="mgToggle" data-k="${t}" data-id="h:${id}" aria-pressed="${on}" aria-label="${esc(tt(H.en,H.es))}">${on?"✓":H.ico}</button>
+        <div class="grow"><span class="t">${T(esc(H.en),esc(H.es))}</span><span class="habit-dots" aria-hidden="true">${days.map(d=>`<i class="${habitDone(id,d)?"on":""}${d===t?" now":""}"></i>`).join("")}</span></div>
+        <span class="habit-streak">${s?"🔥 "+s:""}</span></div>`; }).join("")}</div></section>`;
+}
+let pcY = new Date().getFullYear(), pcM = new Date().getMonth();
+function planCalendar(){
+  const t = dayKey(), first = new Date(pcY, pcM, 1), off = (first.getDay()+6)%7, dim = new Date(pcY, pcM+1, 0).getDate();
+  const proj = projection(70), cells = [];
+  for(let e=0;e<off;e++) cells.push('<div class="cal-day cal-blank" aria-hidden="true"></div>');
+  for(let d=1; d<=dim; d++){
+    const k = dayKey(new Date(pcY, pcM, d)), rec = state.planLog[k]||{};
+    const sp = k===t ? todaySpec() : k>t ? proj[k] : rec.spec, type = sp ? sp.type : null;
+    const ratio = rec.t ? rec.n/rec.t : 0;
+    let cls = "cal-day"+(k>t?" future":"")+(k===t?" today":"")+(rec.victory?" full":ratio>0?" partial":"")+(type==="study"||type==="class"?" has-class":"");
+    const fill = ratio>0 ? Math.round(18+ratio*82) : 0;
+    const ti = specTitle(sp);
+    cells.push(`<button type="button" class="${cls}" data-act="planDay" data-k="${k}" aria-label="${esc(fmtLongDay(k)+(sp?" · "+tt(ti[0],ti[1]):""))}">${fill?`<span class="cal-fill" style="height:${fill}%"></span>`:""}<span class="cal-num">${d}</span>${rec.victory?'<span class="cal-mark">✓</span>':""}${type==="class"?'<span class="pc-class"></span>':type==="study"&&!rec.victory?'<span class="cal-dot"></span>':""}</button>`);
+  }
+  const isNow = pcY===new Date().getFullYear() && pcM===new Date().getMonth();
+  const arrow = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="${p}"/></svg>`;
+  const monthName = lang()==="es" ? ucfirst(MONTHS_ES[pcM])+" "+pcY : MONTHS[pcM]+" "+pcY;
+  const letters = lang()==="es" ? ["L","M","M","J","V","S","D"] : ["M","T","W","T","F","S","S"];
+  return `<section class="mt-l"><div class="phase-head"><h3>${T("My cronogram","Mi cronograma")}</h3>${isNow?"":`<button class="link" data-act="pcToday">${T("Back to today","Volver a hoy")}</button>`}</div>
+    <div class="cal-card mt-s">
+      <div class="cal-nav-row"><button class="icon-btn" data-act="pcShift" data-d="-1" aria-label="${esc(tt("Previous month","Mes anterior"))}">${arrow("M15 6l-6 6 6 6")}</button><div class="cal-month notr">${monthName}</div><button class="icon-btn" data-act="pcShift" data-d="1" aria-label="${esc(tt("Next month","Mes siguiente"))}">${arrow("M9 6l6 6-6 6")}</button></div>
+      <div class="cal-grid notr" aria-hidden="true">${letters.map(x=>`<div class="cal-dow">${x}</div>`).join("")}</div>
+      <div class="cal-grid">${cells.join("")}</div>
+      <div class="cal-legend notr">${[["lg lg-fill",tb("Progress","Avance")],["lg-star",""],["lg lg-dot",tb("Study day","Día de estudio")],["lg pc-class-lg",tb("Class","Clase")],["lg lg-today",tb("Today","Hoy")]].map(x=>x[0]==="lg-star"?`<span><b class="lg-star">✓</b>${tb("Victory","Victoria")}</span>`:`<span><i class="${x[0]}"></i>${x[1]}</span>`).join("")}</div>
+      <p class="cal-tip">${T("Tap a day to see its micro-goals. Future days adjust to your real pace.","Toca un día para ver sus micro-metas. Los días futuros se ajustan a tu ritmo real.")}</p>
+    </div></section>`;
+}
+function cronoList(){
+  const t = dayKey(), proj = projection(13), rows = [[t, todaySpec()]].concat(Object.keys(proj).sort().map(k=>[k,proj[k]]));
+  return `<section class="mt-l"><h3>${T("Next 14 days","Próximos 14 días")}</h3>
+    <p class="muted small mt-s">${T("Your route, one numbered session at a time. If you go faster or slower, it re-plans itself.","Tu ruta, una sesión numerada a la vez. Si vas más rápido o más lento, se vuelve a planear sola.")}</p>
+    <ol class="crono mt-s">${rows.map(([k,sp],i)=>{ const ti = specTitle(sp), rec = state.planLog[k]||{}, mins = sp.type==="rest" ? state.plan.habits.reduce((a,h)=>a+(habitById(h)||{min:0}).min,0) : specMinutes(sp);
+      return `<li><button data-act="planDay" data-k="${k}" class="${sp.type}${k===t?" today":""}${rec.victory?" win":""}"><span class="cr-date"><b>${parseKey(k).getDate()}</b><span>${lang()==="es"?DOW_ES[planDow(k)]:DOW_SHORT[planDow(k)]}</span></span>
+        <span class="grow"><span class="t">${T(esc(ti[0]),esc(ti[1]))}</span><span class="s">${T(tasksOf(sp).length+" micro-goals · about "+mins+" min", tasksOf(sp).length+" micro-metas · unos "+mins+" min")}</span></span>
+        ${rec.victory?'<span class="pill sage">✓</span>':k===t?`<span class="pill gold">${T("Today","Hoy")}</span>`:'<span class="chev">›</span>'}</button></li>`; }).join("")}</ol></section>`;
+}
+function badgesBlock(){
+  const e = earnedBadges();
+  return `<section class="mt-l"><h3>${T("Small victories","Pequeñas victorias")}</h3>
+    <div class="badge-grid mt-s">${BADGES.map(b=>`<div class="badge ${e.has(b.id)?"on":""}"><span class="b-ico" aria-hidden="true">${b.ico}</span><b>${T(esc(b.en),esc(b.es))}</b><span>${T(esc(b.hen),esc(b.hes))}</span></div>`).join("")}</div></section>`;
+}
+
+/* ---------- the Plan page ---------- */
+VIEWS.plan = function(){
+  setBody("");
+  if(!planOn()){
+    view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${T("My plan","Mi plan")}</h1>
+      <p>${T("Learning a language is a habit, not a sprint.","Aprender un idioma es un hábito, no una carrera.")}</p></section>
+      <section class="panel mt plan-intro">
+        <p class="kicker">${T("Your study cronogram","Tu cronograma de estudio")}</p>
+        <h2 class="display">${T("Small goals. Every day. Visible victories.","Metas pequeñas. Cada día. Victorias visibles.")}</h2>
+        <ol class="intro-steps mt">
+          <li>${T("Choose your days and your minutes.","Eliges tus días y tus minutos.")}</li>
+          <li>${T("Each mission becomes short, numbered micro-goals on your calendar.","Cada misión se convierte en micro-metas cortas y numeradas en tu calendario.")}</li>
+          <li>${T("Your work checks them for you. Finish the day's list: victory.","Tu trabajo las marca solo. Terminas la lista del día: victoria.")}</li>
+          <li>${T("Two or three tiny habits build the chain.","Dos o tres hábitos pequeños construyen la cadena.")}</li>
+        </ol>
+        <button class="btn block mt" data-act="planSetup">${T("Create my plan","Crear mi plan")}</button>
+      </section>`;
+    return;
+  }
+  const k = dayKey(), sp = todaySpec(), st = dayStatus(k), ti = specTitle(sp), vs = victoryStreak();
+  const P = state.plan, daysTxt = DOW_MON_FIRST.filter(d=>P.days.includes(d));
+  view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${T("My plan","Mi plan")}</h1>
+      <p>${T("Small goals every day. Each one you check is a victory.","Metas pequeñas cada día. Cada una que cumples es una victoria.")}</p></section>
+    <section class="panel plan-today">
+      <div class="pt-head"><p class="kicker">${T("Today","Hoy")} · <span class="notr">${esc(fmtLongDay(k))}</span></p><span class="pt-count">${st.done}/${st.total}</span></div>
+      <h2 class="display" style="font-size:clamp(24px,6vw,30px)">${T(esc(ti[0]),esc(ti[1]))}</h2>
+      ${progressBar(st.done, st.total)}
+      ${st.victory ? `<div class="pt-win">🏆 ${T("Victory of the day! Everything else today is a bonus.","¡Victoria del día! Todo lo demás hoy es un extra.")}</div>`
+        : `<p class="small muted mt-s">${T("Do them in order. Tap “Go” and the app takes you to the exact place. Tap the number to check one by hand.","Hazlas en orden. Toca “Ir” y la app te lleva al lugar exacto. Toca el número para marcar una a mano.")}</p>`}
+      <div class="mg-list mt">${st.tasks.map((t,i)=>mgRow(t,i,k,true)).join("")}</div>
+    </section>
+    <div class="plan-stats mt">
+      <div><b>🔥 ${vs}</b><span>${T("victory streak","racha de victorias")}</span></div>
+      <div><b>${Object.values(state.planLog).filter(r=>r.victory).length}</b><span>${T("victories","victorias")}</span></div>
+      <div><b>${Object.values(state.planLog).reduce((a,r)=>a+(r.n||0),0)}</b><span>${T("micro-goals done","micro-metas cumplidas")}</span></div>
+    </div>
+    ${weekStrip()}
+    ${habitsBlock()}
+    ${cronoList()}
+    ${planCalendar()}
+    ${badgesBlock()}
+    <section class="mt-l"><h3>${T("My rhythm","Mi ritmo")}</h3>
+      <p class="muted mt-s"><span class="notr">${daysTxt.map(d=>lang()==="es"?DOW_ES[d]:DOW_SHORT[d]).join(" · ")}</span> · ${P.minutes} min · ${fmtTime(P.time)} · ${T(sessionsPer()+(sessionsPer()===1?" session":" sessions")+" per mission", sessionsPer()+(sessionsPer()===1?" sesión":" sesiones")+" por misión")}</p>
+      <div class="row-gap mt"><button class="btn-line" data-act="planSetup">${T("Adjust my plan","Ajustar mi plan")}</button><button class="btn-line" data-act="planIcs">${T("Add to my phone calendar","Agregar al calendario del teléfono")}</button><button class="btn-line" data-act="planWeek">${T("Send my week to ProfGermandario","Enviar mi semana a ProfGermandario")}</button></div>
+    </section>`;
+};
+
+/* ---------- sheets ---------- */
+function planDaySheet(k){
+  if(!planOn()){ planSetupSheet(); return; }
+  const t = dayKey(), rec = state.planLog[k]||{};
+  let sp, tasks, note = "";
+  if(k===t){ sp = todaySpec(); tasks = planRec(k).tasks; }
+  else if(k<t){ sp = rec.spec; tasks = rec.tasks; if(!tasks) note = tt("No plan was recorded this day. Days count from the moment you open your plan.","Este día no se registró plan. Los días cuentan desde que abres tu plan."); }
+  else { sp = projection(Math.max(1, daysBetween(t+"T12:00:00", k+"T12:00:00")))[k]; tasks = sp ? tasksOf(sp) : []; note = tt("Planned. It adjusts automatically if you go faster or slower.","Planeado. Se ajusta solo si vas más rápido o más lento."); }
+  const ti = specTitle(sp), done = tasks ? tasks.filter(x=>taskDone(x,k)).length : 0;
+  openSheet(`${sheetHead(fmtLongDay(k), sp ? tt(ti[0],ti[1]) : "")}
+    ${rec.victory?`<div class="pt-win">🏆 ${T("Victory of the day","Victoria del día")}</div>`:""}
+    ${tasks && tasks.length ? `${k<=t?progressBar(done,tasks.length):""}<div class="mg-list mt">${tasks.map((x,i)=>mgRow(x,i,k,k===t)).join("")}</div>` : ""}
+    ${note?`<p class="small muted mt">${esc(note)}</p>`:""}
+    ${k===t?`<button class="btn block mt" data-act="closeSheet">${T("Done","Listo")}</button>`:""}`);
+}
+function noteSheet(k){
+  openSheet(`${sheetHead(tt("Today's note","Nota de hoy"), tt("Three new words count as today's habit.","Tres palabras nuevas cuentan como el hábito de hoy."))}
+    ${noteField(k)}<button class="btn block mt" data-act="closeSheet">${T("Done","Listo")}</button>`);
+}
+let PS = null;
+function planSetupSheet(){
+  const P = state.plan || defaultPlanFor(state.startingPoint.level);
+  PS = {days:P.days.slice(), minutes:P.minutes, time:P.time, habits:P.habits.slice()};
+  paintPlanSetup();
+}
+function planSetupBody(o, prefix){
+  return `<div class="stack">
+    <div><span class="lbl">${T("1. Which days do you study?","1. ¿Qué días estudias?")}</span>
+      <div class="chips mt-s" role="group" aria-label="${esc(tt("Study days","Días de estudio"))}">${DOW_MON_FIRST.map(d=>`<button class="chip notr" data-act="${prefix}Day" data-d="${d}" aria-pressed="${o.days.includes(d)}">${lang()==="es"?DOW_ES[d]:DOW_SHORT[d]}</button>`).join("")}</div>
+      <p class="small muted mt-s">${T("Days without study keep only your habits (2–5 min). Class days become class micro-goals.","Los días sin estudio solo tienen tus hábitos (2–5 min). Los días de clase se vuelven micro-metas de la clase.")}</p></div>
+    <div><span class="lbl">${T("2. How many minutes a day?","2. ¿Cuántos minutos al día?")}</span>
+      <div class="seg mt-s notr" style="grid-template-columns:repeat(5,1fr)" role="group">${PLAN_MINUTES.map(m=>`<button data-act="${prefix}Min" data-v="${m}" aria-pressed="${o.minutes===m}">${m}</button>`).join("")}</div>
+      <p class="small muted mt-s">${o.minutes<=15?T("Each mission takes 3 short sessions. Ideal to start.","Cada misión toma 3 sesiones cortas. Ideal para empezar."):o.minutes<=25?T("Each mission takes 2 sessions.","Cada misión toma 2 sesiones."):T("One full mission per session.","Una misión completa por sesión.")}</p></div>
+    <div><label class="lbl" for="${prefix}Time">${T("3. At what time? (for your phone reminder)","3. ¿A qué hora? (para el recordatorio del teléfono)")}</label><input type="time" class="field mt-s" id="${prefix}Time" data-in="${prefix}Time" value="${esc(o.time)}"></div>
+    <div><span class="lbl">${T("4. Choose 2 to 4 tiny habits","4. Elige de 2 a 4 hábitos pequeños")}</span>
+      <div class="choices mt-s">${HABITS.map(H=>`<button class="choice habit-choice" data-act="${prefix}Habit" data-h="${H.id}" aria-pressed="${o.habits.includes(H.id)}"><span class="h-ico" aria-hidden="true">${H.ico}</span><span>${T(esc(H.en),esc(H.es))}<small>${H.min} min · ${T(esc(H.hen),esc(H.hes))}</small></span></button>`).join("")}</div></div>
+  </div>`;
+}
+function paintPlanSetup(){
+  const keep = $("#scrim").classList.contains("open") && $("#sheet").querySelector("#psTime"), y = keep ? $("#sheet").scrollTop : 0;
+  openSheet(`${sheetHead(tt("My study plan","Mi plan de estudio"), tt("Four quick choices. You can change them any time.","Cuatro elecciones rápidas. Puedes cambiarlas cuando quieras."))}
+    ${planSetupBody(PS, "ps")}
+    <button class="btn block mt" data-act="planSave">${T(planOn()?"Save my plan":"Create my plan", planOn()?"Guardar mi plan":"Crear mi plan")}</button>
+    ${planOn()?`<p class="mt center"><button class="link" data-act="planRemove" style="color:var(--coral)">${T("Turn off my plan","Desactivar mi plan")}</button></p>`:""}`, keep);
+  if(keep) $("#sheet").scrollTop = y;
+}
+function savePlan(o){
+  const fresh = !planOn();
+  state.plan = {v:1, created:nowISO(), days:o.days.slice().sort(), minutes:o.minutes, time:o.time||"07:30", habits:o.habits.slice()};
+  const r = planRec(dayKey()); delete r.spec; delete r.tasks;
+  save(); planAfterChange(true);
+  return fresh;
+}
+
+/* ---------- phone calendar: the cronogram, day by day ---------- */
+function planIcs(){
+  if(!planOn()) return;
+  const t = dayKey(), proj = Object.assign({[t]:todaySpec()}, projection(27)), es = lang()!=="en";
+  const stamp = new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const P = state.plan, url = location.href.split("#")[0]+"#plan";
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ProfGermandario//Fluency OS Plan//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:"+(es?"Mi plan de inglés":"My English plan")];
+  let n = 0;
+  Object.keys(proj).sort().forEach(k=>{
+    const sp = proj[k]; if(!sp) return;
+    const ti = specTitle(sp), tasks = tasksOf(sp), mins = sp.type==="rest" ? Math.max(5, P.habits.reduce((a,h)=>a+(habitById(h)||{min:0}).min,0)) : Math.max(P.minutes, specMinutes(sp));
+    const d = parseKey(k), p = P.time.split(":").map(Number); d.setHours(p[0]||7, p[1]||0, 0, 0);
+    const e = new Date(d.getTime()+mins*60000), f = x => dayKey(x).replace(/-/g,"")+"T"+pad2(x.getHours())+pad2(x.getMinutes())+"00";
+    const list = tasks.map((x,i)=>{ const inf = taskInfo(x,k); return (i+1)+". "+(es?inf.es:inf.en)+" ("+inf.min+" min)"; }).join("\n");
+    const sum = (sp.type==="rest" ? (es?"Inglés · hábitos (":"English · habits (")+mins+" min)" : (es?"Inglés · ":"English · ")+(es?ti[1]:ti[0]));
+    L.push("BEGIN:VEVENT","UID:plan-"+k+"@fluency-os","DTSTAMP:"+stamp,"SEQUENCE:"+Math.floor(Date.now()/60000),"DTSTART:"+f(d),"DTEND:"+f(e),"SUMMARY:"+icsText(sum),
+      "DESCRIPTION:"+icsText((es?"Micro-metas de hoy:\n":"Today's micro-goals:\n")+list+"\n\n"+(es?"Abre tu plan: ":"Open your plan: ")+url),
+      "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsText(sum),"TRIGGER:-PT10M","END:VALARM","END:VEVENT");
+    n++;
+  });
+  L.push("END:VCALENDAR");
+  download(es?"mi-plan-de-ingles.ics":"my-english-plan.ics", L.join("\r\n")+"\r\n", "text/calendar");
+  toastT("Calendar file with the next 4 weeks downloaded. Open it to add your sessions.", "Archivo con las próximas 4 semanas descargado. Ábrelo para agregar tus sesiones.");
+}
+function planWeekMessage(){
+  const w = weekInfo(), P = state.plan;
+  const lines = ["Hola Profe, soy "+(state.name||"tu estudiante")+". Este es mi plan de la semana ("+fmtEsShort(w.days[0])+" – "+fmtEsShort(w.days[6])+").", "",
+    "🏆 Victorias: "+w.wins+" de "+w.target+" días planeados", "🔥 Racha de victorias: "+victoryStreak()+" día(s)"];
+  let dn = 0, dt = 0; w.days.forEach(k=>{ const r = state.planLog[k]||{}; dn += r.n||0; dt += r.t||0; });
+  lines.push("✓ Micro-metas cumplidas: "+dn+(dt?" de "+dt:""), "", "Mis hábitos (últimos 7 días):");
+  P.habits.forEach(h=>{ const H = habitById(h); if(!H) return; const c = [...Array(7)].map((_,i)=>addDays(dayKey(),i-6)).filter(k=>habitDone(h,k)).length; lines.push("- "+H.es+": "+c+"/7"); });
+  const pos = missionPos(); lines.push("", pos ? "Voy en la Misión "+(pos.mi+1)+": "+(ES_MISSIONS[pos.mi]||{}).t+"." : "Terminé las misiones de mi programa.");
+  lines.push("Mi ritmo: "+P.days.length+" días por semana, "+P.minutes+" min al día.");
+  return lines.join("\n");
+}
+const fmtEsShort = k => { const d = parseKey(k); return d.getDate()+" "+MONTHS_ES[d.getMonth()].slice(0,3); };
+
+/* ---------- actions ---------- */
+Object.assign(ACT, {
+  planSetup: () => planSetupSheet(),
+  psDay: el => { const d = +el.dataset.d; PS.days = PS.days.includes(d) ? PS.days.filter(x=>x!==d) : PS.days.concat(d); paintPlanSetup(); },
+  psMin: el => { PS.minutes = +el.dataset.v; paintPlanSetup(); },
+  psHabit: el => { const h = el.dataset.h; if(PS.habits.includes(h)) PS.habits = PS.habits.filter(x=>x!==h); else if(PS.habits.length<4) PS.habits.push(h); else { toastT("Four habits is the maximum. Remove one first.","Cuatro hábitos es el máximo. Quita uno primero."); return; } paintPlanSetup(); },
+  planSave: () => {
+    if(!PS.days.length){ toastT("Choose at least one study day.","Elige al menos un día de estudio."); return; }
+    if(PS.habits.length<2){ toastT("Choose at least 2 habits.","Elige al menos 2 hábitos."); return; }
+    const t = $("#psTime"); if(t && t.value) PS.time = t.value;
+    const fresh = savePlan(PS); closeSheet();
+    toastT(fresh?"Your plan is ready. Today's micro-goals are waiting.":"Plan updated.", fresh?"Tu plan está listo. Las micro-metas de hoy te esperan.":"Plan actualizado.");
+    go("plan"); render();
+  },
+  planRemove: () => {
+    if(!confirm(tt("Turn off your plan? Your victories and history stay saved.","¿Desactivar tu plan? Tus victorias y tu historial quedan guardados."))) return;
+    state.plan = null; save(); closeSheet(); render();
+  },
+  mgToggle: el => {
+    const k = el.dataset.k, id = el.dataset.id, st = dayStatus(k);
+    let task = st && st.tasks.find(x=>x.id===id);
+    if(!task && id.startsWith("h:")) task = {id, kind:"habit", h:id.slice(2)};
+    if(!task) return;
+    if(taskDone(task,k)==="auto"){ toastT("Your work already checked this one.","Tu trabajo ya marcó esta."); return; }
+    const r = planRec(k); r.done = r.done || {};
+    if(r.done[id]) delete r.done[id]; else r.done[id] = nowISO();
+    touchPlan(k);
+  },
+  mgGo: el => {
+    const k = el.dataset.k, st = dayStatus(k), task = st && st.tasks.find(x=>x.id===el.dataset.id);
+    if(!task) return;
+    const info = taskInfo(task,k);
+    if(info.go){ if(!info.habit) closeSheet(); info.go(); }
+  },
+  planDay: el => planDaySheet(el.dataset.k),
+  pcShift: el => { pcM += +el.dataset.d; if(pcM<0){ pcM = 11; pcY--; } if(pcM>11){ pcM = 0; pcY++; } repaintPlan(); },
+  pcToday: () => { const d = new Date(); pcY = d.getFullYear(); pcM = d.getMonth(); repaintPlan(); },
+  planIcs: () => planIcs(),
+  planWeek: () => openExternal(waLink(planWeekMessage())),
+  celebrateClose: () => { const c = $("#celebrate"); if(c){ c.classList.remove("show"); setTimeout(()=>c.remove(), 250); } repaintPlan(); },
+  langSheet: () => langSheet(),
+  setLang: el => { const v = el.dataset.v; const inOb = document.body.classList.contains("in-onboarding"); if(!inOb) closeSheet(); setLang(v); if(inOb) VIEWS.onboarding(); else render(); },
+  help: () => helpSheet()
+});
+Object.assign(INP, { psTime: el => { if(PS) PS.time = el.value; } });
+function repaintPlan(){
+  if(curRoute==="plan" && !document.body.classList.contains("in-lesson")){ const y = window.scrollY; VIEWS.plan(); window.scrollTo(0,y); }
+  else if(curRoute==="home" && !document.body.classList.contains("in-lesson")){ const y = window.scrollY; VIEWS.home(); window.scrollTo(0,y); }
+}
+function touchPlan(k){
+  save();
+  if(k===dayKey()) planAfterChange();
+  const sheetOpen = $("#scrim").classList.contains("open");
+  if(sheetOpen && $("#sheet").querySelector(".mg-list")) planDaySheet(k);
+  repaintPlan();
+}
+
+/* onboarding: study rhythm (step 5) */
+Object.assign(ACT, {
+  obDay: el => { const d = +el.dataset.d, P = ob.plan; P.days = P.days.includes(d) ? P.days.filter(x=>x!==d) : P.days.concat(d); const y = window.scrollY; VIEWS.onboarding(); window.scrollTo(0,y); },
+  obMin: el => { ob.plan.minutes = +el.dataset.v; const y = window.scrollY; VIEWS.onboarding(); window.scrollTo(0,y); },
+  obHabit: el => { const h = el.dataset.h, P = ob.plan; if(P.habits.includes(h)) P.habits = P.habits.filter(x=>x!==h); else if(P.habits.length<4) P.habits.push(h); else { toastT("Four habits is the maximum. Remove one first.","Cuatro hábitos es el máximo. Quita uno primero."); return; } const y = window.scrollY; VIEWS.onboarding(); window.scrollTo(0,y); }
+});
+Object.assign(INP, { obTime: el => { if(ob.plan) ob.plan.time = el.value; } });
+
 /* ---------- theme ---------- */
 function applyTheme(){
   document.documentElement.dataset.theme = state.theme==="light" ? "light" : "dark";
@@ -4242,6 +5862,8 @@ window.QK = {
 /* ---------- boot ---------- */
 applyTheme();
 save();
+LOC.start();
+paintLangBtn();
 render();
 startSync();
 </script>

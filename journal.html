@@ -25,6 +25,10 @@
   --text:#F3EDE2; --muted:#A89DB2; --faint:#6E6478;
   --gold:#CFA85A; --gold-soft:rgba(207,168,90,.14); --on-gold:#1B1307;
   --sage:#93B89C; --sage-soft:rgba(147,184,156,.14); --coral:#E0917A; --violet:#8A76C2;
+  /* skill colors — one hue per skill; gold stays for victories and brand */
+  --sk-speak:#E8957D; --sk-speak-d:#5E2C22; --sk-listen:#A994E6; --sk-listen-d:#382A66;
+  --sk-write:#8FC7A0; --sk-write-d:#21483A; --sk-review:#7FB4EA; --sk-review-d:#1D3A5C;
+  --sk-mind:#E0A3D6; --sk-mind-d:#522650; --on-sk:#140E1A; --sk-ink:#F3EDE2;
   --display:"Fraunces", Georgia, "Times New Roman", serif;
   --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --r-lg:22px; --r-md:14px; --r-sm:10px;
@@ -37,6 +41,9 @@
   --text:#1D1624; --muted:#655B6E; --faint:#9A90A2;
   --gold:#94732C; --gold-soft:rgba(148,115,44,.12); --on-gold:#FFFDF9;
   --sage:#4E7C59; --sage-soft:rgba(78,124,89,.12); --coral:#B45A43; --violet:#5E4A9A;
+  --sk-speak:#B04E38; --sk-speak-d:#F6DCD3; --sk-listen:#6A52B8; --sk-listen-d:#E5DEF7;
+  --sk-write:#3B7550; --sk-write-d:#D6ECDD; --sk-review:#2D66A1; --sk-review-d:#D7E6F5;
+  --sk-mind:#954588; --sk-mind-d:#F1DCEC; --on-sk:#FFFDF9; --sk-ink:#1D1624;
   color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -221,8 +228,8 @@ input.field:focus,select.field:focus{outline:none;border-color:var(--gold)}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:6}
 .ring .bg{stroke:var(--line-strong)}
-.ring .fg{stroke:var(--gold);stroke-linecap:round;transition:stroke-dashoffset .5s linear}
-.ring .fg.min{stroke:var(--sage)}
+.ring .fg{stroke:var(--sk-speak);stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .4s}
+.ring .fg.min{stroke:var(--gold)}
 .ring .t{position:absolute;inset:0;display:grid;place-items:center;align-content:center}
 .ring .t b{font-family:var(--display);font-weight:400;font-size:clamp(48px,13vw,64px);line-height:1;font-variant-numeric:tabular-nums}
 .ring .t span{font-size:14px;color:var(--muted);margin-top:6px}
@@ -559,19 +566,38 @@ details.guide b,.help-list b{color:var(--text)}
 .plan-today h3{margin-bottom:12px}
 .mg-bar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-top:12px}
 .mg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#E6C77F);border-radius:4px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.sk-bar{display:flex;gap:4px;margin-top:14px}
+.sk-bar i{flex:var(--w,1) 1 0;min-width:10px;height:8px;border-radius:4px;background:var(--surface-2);position:relative;overflow:hidden}
+.sk-bar i.on{background:var(--sk)}
+.sk-bar.win i{background:var(--gold)}
 .pt-win{margin-top:14px;padding:12px 14px;border-radius:var(--r-md);background:var(--gold-soft);border:1px solid var(--gold);font-weight:700;color:var(--gold)}
-.mg-list{border-top:1px solid var(--line)}
-.mg-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.sk-speak{--sk:var(--sk-speak);--skd:var(--sk-speak-d)}.sk-listen{--sk:var(--sk-listen);--skd:var(--sk-listen-d)}
+.sk-write{--sk:var(--sk-write);--skd:var(--sk-write-d)}.sk-review{--sk:var(--sk-review);--skd:var(--sk-review-d)}
+.sk-mind{--sk:var(--sk-mind);--skd:var(--sk-mind-d)}
+.mg-list{display:grid;gap:10px}
+.mg-row{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:flex-start;gap:12px;padding:13px 12px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line)}
+.mg-row::before{content:"";position:absolute;inset:0;z-index:-1;width:0;background:var(--skd)}
+.mg-row.on{border-color:color-mix(in srgb,var(--sk) 55%,transparent)}
+.mg-row.on::before{width:100%}
+.mg-row.fresh::before{animation:mgFill .65s cubic-bezier(.2,.8,.2,1) both}
+.mg-row.fresh .mg-num{animation:mgPop .45s cubic-bezier(.2,.8,.2,1.4) both}
+@keyframes mgFill{from{width:0}}
+@keyframes mgPop{from{transform:scale(.6)}}
+@media (prefers-reduced-motion:reduce){.mg-row.fresh::before,.mg-row.fresh .mg-num{animation:none}}
 .mg-row .grow{flex:1;min-width:0}
 .mg-row .t{display:block;font-weight:650;font-size:16px;line-height:1.35}
 .mg-row .s{display:block;font-size:14px;color:var(--muted);margin-top:2px}
-.mg-meta{display:block;font-size:12.5px;color:var(--faint);margin-top:4px;font-weight:600}
-.mg-row.on .t{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--sage) 70%,transparent);text-decoration-thickness:1.5px}
-.mg-num{width:36px;height:36px;flex:none;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:16px;font-weight:600;transition:transform .15s,background .2s}
+.mg-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:600}
+.sk-tag{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;color:var(--sk);font-weight:700}
+.sk-tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sk)}
+.mg-row.on .t{color:var(--sk-ink);text-decoration:line-through;text-decoration-color:var(--sk);text-decoration-thickness:2px}
+.mg-row.on .s,.mg-row.on .mg-meta,.mg-row.on .es-tr{color:color-mix(in srgb,var(--sk-ink) 76%,transparent)}
+.mg-row.on .sk-tag{color:var(--sk-ink)}
+.mg-num{width:40px;height:40px;flex:none;border-radius:50%;border:2px solid var(--sk);color:var(--sk);display:grid;place-items:center;font-family:var(--display);font-size:16px;font-weight:600;transition:transform .15s}
 .mg-num:active{transform:scale(.9)}
-.mg-row.on .mg-num{background:var(--sage);border-color:var(--sage);color:var(--bg);font-family:var(--body);font-weight:800}
+.mg-row.on .mg-num{background:var(--sk);border-color:var(--sk);color:var(--on-sk);font-family:var(--body);font-weight:800}
 .mg-num[disabled]{cursor:default}
-.mg-go{flex:none;align-self:center;display:inline-flex;align-items:center;gap:4px;min-height:38px;padding:0 14px;border-radius:999px;background:var(--gold);color:var(--on-gold);font-weight:700;font-size:14px}
+.mg-go{flex:none;align-self:center;display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 15px;border-radius:999px;background:var(--sk);color:var(--on-sk);font-weight:700;font-size:14px}
 .mg-go .es-tr{color:inherit;opacity:.8}
 .plan-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
 .plan-stats>div{background:var(--surface);padding:14px 12px;text-align:center}
@@ -582,7 +608,9 @@ details.guide b,.help-list b{color:var(--text)}
 .wk-day{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0;border-radius:14px;min-width:0}
 .wk-day:hover{background:var(--surface-2)}
 .wk-dow{font-size:11.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
-.wk-ring{--p:0;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p)*1%),var(--surface-2) 0)}
+.wk-rw{position:relative;width:100%;display:grid;place-items:center}
+.wk-day.chain .wk-rw::before{content:"";position:absolute;left:50%;top:calc(50% - 1.5px);width:calc(100% + 6px);height:3px;border-radius:2px;background:var(--gold)}
+.wk-ring{--p:0;position:relative;z-index:1;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p)*1%),var(--surface-2) 0)}
 .wk-ring b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--bg);font-size:13.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .wk-day.win .wk-ring{background:var(--gold)}
 .wk-day.win .wk-ring b{background:var(--gold);color:var(--on-gold);font-size:16px}
@@ -594,13 +622,13 @@ details.guide b,.help-list b{color:var(--text)}
 .habit-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .habit-row .grow{flex:1;min-width:0}
 .habit-row .t{display:block;font-weight:600;font-size:15.5px}
-.habit-check{width:40px;height:40px;flex:none;border-radius:12px;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:17px;color:var(--gold)}
-.habit-row.on .habit-check{background:var(--sage);border-color:var(--sage);color:var(--bg);font-weight:800}
+.habit-check{width:44px;height:44px;flex:none;border-radius:14px;border:1.5px solid color-mix(in srgb,var(--sk) 55%,transparent);background:color-mix(in srgb,var(--sk) 12%,transparent);display:grid;place-items:center;font-size:17px;color:var(--sk)}
+.habit-row.on .habit-check{background:var(--sk);border-color:var(--sk);color:var(--on-sk);font-weight:800}
 .habit-dots{display:flex;gap:5px;margin-top:7px}
 .habit-dots i{width:14px;height:14px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line)}
-.habit-dots i.on{background:var(--sage);border-color:var(--sage)}
-.habit-dots i.now{outline:1.5px solid var(--gold);outline-offset:1px}
-.habit-streak{flex:none;font-size:14px;font-weight:700;color:var(--gold);min-width:40px;text-align:right}
+.habit-dots i.on{background:var(--sk);border-color:var(--sk)}
+.habit-dots i.now{outline:1.5px solid var(--sk);outline-offset:1px}
+.habit-streak{flex:none;font-size:14px;font-weight:800;color:var(--sk);min-width:40px;text-align:right}
 .crono{list-style:none;border-top:1px solid var(--line)}
 .crono li button{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 2px;border-bottom:1px solid var(--line)}
 .crono .grow{flex:1;min-width:0}
@@ -628,8 +656,8 @@ details.guide b,.help-list b{color:var(--text)}
 .intro-steps li::marker{color:var(--gold);font-family:var(--display);font-weight:600}
 .plan-intro h2.display{font-size:clamp(25px,6.4vw,32px)}
 .habit-choice{align-items:flex-start}
-.habit-choice .h-ico{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--gold);font-size:16px}
-.habit-choice[aria-pressed="true"] .h-ico{background:var(--gold);color:var(--on-gold)}
+.habit-choice .h-ico{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--sk,var(--gold)) 14%,transparent);color:var(--sk,var(--gold));font-size:16px}
+.habit-choice[aria-pressed="true"] .h-ico{background:var(--sk,var(--gold));color:var(--on-sk)}
 .celebrate{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:rgba(10,6,14,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease}
 .celebrate.show{opacity:1}
 .cel-card{position:relative;z-index:2;width:min(420px,100%);text-align:center;background:var(--surface);border:1px solid var(--gold);border-radius:24px;padding:30px 24px 24px;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:seal .6s cubic-bezier(.2,.8,.2,1.2) both}
@@ -1488,7 +1516,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "12.0";
+const APP_VERSION = "12.1";
 
 function defaultState(){
   return {
@@ -5305,15 +5333,29 @@ function helpSheet(){
    the day done = the victory of the day.
    ============================================================ */
 const HABITS = [
-  {id:"shadow",  en:"Shadow 5 sentences", es:"Haz shadowing de 5 frases", hen:"Listen and repeat with the same rhythm.", hes:"Escucha y repite con el mismo ritmo.", min:5, ev:"shadow", go:"shadow", ico:"◎"},
-  {id:"think",   en:"Think in English for 1 minute", es:"Piensa en inglés 1 minuto", hen:"Describe in your head what you see around you.", hes:"Describe en tu mente lo que ves a tu alrededor.", min:1, ico:"✦"},
-  {id:"words",   en:"Write 3 new words in today's note", es:"Escribe 3 palabras nuevas en la nota de hoy", hen:"Words you heard or needed today.", hes:"Palabras que escuchaste o necesitaste hoy.", min:3, auto:"note", go:"note", ico:"✎"},
-  {id:"listen",  en:"Listen to English for 10 minutes", es:"Escucha inglés 10 minutos", hen:"A song, a podcast, or a video you enjoy.", hes:"Una canción, un pódcast o un video que te guste.", min:10, ico:"♪"},
-  {id:"say",     en:"Say one sentence about your day out loud", es:"Di en voz alta una frase sobre tu día", hen:"Short and true. Start with “Today I…”.", hes:"Corta y real. Empieza con “Today I…”.", min:1, ico:"❝"},
-  {id:"quiz",    en:"Do a quick check", es:"Haz un repaso rápido", hen:"Five questions from your missions.", hes:"Cinco preguntas de tus misiones.", min:3, ev:"quiz", go:"quiz", ico:"?"},
-  {id:"breathe", en:"Breathe or meditate before practice", es:"Respira o medita antes de practicar", hen:"A calm mind finds words faster.", hes:"Una mente tranquila encuentra las palabras más rápido.", min:5, ev:"meditate", go:"meditate", ico:"◐"}
+  {id:"shadow",  en:"Shadow 5 sentences", es:"Haz shadowing de 5 frases", hen:"Listen and repeat with the same rhythm.", hes:"Escucha y repite con el mismo ritmo.", min:5, ev:"shadow", go:"shadow", ico:"◎", sk:"listen"},
+  {id:"think",   en:"Think in English for 1 minute", es:"Piensa en inglés 1 minuto", hen:"Describe in your head what you see around you.", hes:"Describe en tu mente lo que ves a tu alrededor.", min:1, ico:"✦", sk:"mind"},
+  {id:"words",   en:"Write 3 new words in today's note", es:"Escribe 3 palabras nuevas en la nota de hoy", hen:"Words you heard or needed today.", hes:"Palabras que escuchaste o necesitaste hoy.", min:3, auto:"note", go:"note", ico:"✎", sk:"write"},
+  {id:"listen",  en:"Listen to English for 10 minutes", es:"Escucha inglés 10 minutos", hen:"A song, a podcast, or a video you enjoy.", hes:"Una canción, un pódcast o un video que te guste.", min:10, ico:"♪", sk:"listen"},
+  {id:"say",     en:"Say one sentence about your day out loud", es:"Di en voz alta una frase sobre tu día", hen:"Short and true. Start with “Today I…”.", hes:"Corta y real. Empieza con “Today I…”.", min:1, ico:"❝", sk:"speak"},
+  {id:"quiz",    en:"Do a quick check", es:"Haz un repaso rápido", hen:"Five questions from your missions.", hes:"Cinco preguntas de tus misiones.", min:3, ev:"quiz", go:"quiz", ico:"?", sk:"review"},
+  {id:"breathe", en:"Breathe or meditate before practice", es:"Respira o medita antes de practicar", hen:"A calm mind finds words faster.", hes:"Una mente tranquila encuentra las palabras más rápido.", min:5, ev:"meditate", go:"meditate", ico:"◐", sk:"mind"}
 ];
 const HABIT_DEFAULT = ["shadow","think","words"];
+/* Skill colors: every micro-goal and habit belongs to one skill, painted with its own hue (--sk-*). */
+const SKILLS = {
+  speak:{en:"Speaking", es:"Habla"}, listen:{en:"Listening", es:"Escucha"}, write:{en:"Writing", es:"Escritura"},
+  review:{en:"Review", es:"Repaso"}, mind:{en:"Mind", es:"Mente"}
+};
+const MSTEP_SK = {understand:"review", see:"listen", build:"write", write:"write", speak:"speak", reflect:"mind"};
+function taskSkill(t){
+  if(t.kind==="mstep") return MSTEP_SK[t.step] || "review";
+  if(t.kind==="class") return t.part==="read" ? "review" : t.part==="write" ? "write" : "speak";
+  if(t.kind==="free") return "speak";
+  if(t.kind==="quiz") return "review";
+  const H = habitById(t.h); return (H && H.sk) || "mind";
+}
+let mgFresh = null;   /* the micro-goal just checked by hand: only that card plays the fill */
 const MGOALS = {
   understand:{en:"Open Mission {n} and understand the idea", es:"Abre la Misión {n} y entiende la idea", hen:"Read the goal, the explanation and the pattern.", hes:"Lee el objetivo, la explicación y el patrón.", min:5},
   see:{en:"Listen to the examples and repeat them", es:"Escucha los ejemplos y repítelos", hen:"Say each sentence out loud once.", hes:"Di cada frase en voz alta una vez.", min:4},
@@ -5542,7 +5584,7 @@ function celebrate(badges){
   const old = $("#celebrate"); if(old) old.remove();
   const st = victoryStreak(), wk = weekInfo();
   const el = document.createElement("div"); el.className = "celebrate"; el.id = "celebrate"; el.setAttribute("role","dialog"); el.setAttribute("aria-modal","true");
-  const bits = [...Array(28)].map((_,i)=>`<i style="--x:${(i*37)%100}%;--d:${(i%7)*0.12}s;--c:${["var(--gold)","var(--sage)","var(--coral)","var(--violet)"][i%4]};--r:${(i*53)%360}deg"></i>`).join("");
+  const bits = [...Array(28)].map((_,i)=>`<i style="--x:${(i*37)%100}%;--d:${(i%7)*0.12}s;--c:${["var(--gold)","var(--sk-speak)","var(--sk-listen)","var(--sk-write)","var(--sk-review)","var(--sk-mind)"][i%6]};--r:${(i*53)%360}deg"></i>`).join("");
   el.innerHTML = `<div class="confetti" aria-hidden="true">${bits}</div><div class="cel-card">
     <div class="cel-trophy" aria-hidden="true">🏆</div>
     <p class="kicker">${T("Victory of the day","Victoria del día")}</p>
@@ -5557,14 +5599,25 @@ function celebrate(badges){
 
 /* ---------- UI pieces ---------- */
 function mgRow(t, i, k, interactive){
-  const info = taskInfo(t, k), done = taskDone(t, k);
-  return `<div class="mg-row ${done?"on":""}">
+  const info = taskInfo(t, k), done = taskDone(t, k), sk = taskSkill(t), S = SKILLS[sk];
+  return `<div class="mg-row sk-${sk}${done?" on":""}${done && mgFresh===t.id?" fresh":""}">
     <button class="mg-num" ${interactive?`data-act="mgToggle" data-k="${k}" data-id="${esc(t.id)}"`:"disabled"} aria-label="${esc(tt(done?"Done":"Mark as done", done?"Hecha":"Marcar como hecha"))}" aria-pressed="${!!done}">${done?"✓":i+1}</button>
     <div class="grow"><span class="t">${T(esc(info.en), esc(info.es))}</span>
       <span class="s">${T(esc(info.hen), esc(info.hes))}</span>
-      <span class="mg-meta">${info.min?info.min+" min":""}${info.auto?` · ${done==="auto"?T("checked by your work","marcada por tu trabajo"):T("checks itself","se marca sola")}`:""}</span></div>
+      <span class="mg-meta notr"><span class="sk-tag">${esc(tb(S.en,S.es))}</span>${info.min?`<span>${info.min} min</span>`:""}${info.auto?`<span>${done==="auto"?tb("checked by your work","marcada por tu trabajo"):tb("checks itself","se marca sola")}</span>`:""}</span></div>
     ${interactive && info.go && !done ? `<button class="mg-go" data-act="mgGo" data-k="${k}" data-id="${esc(t.id)}">${T("Go","Ir")}<span aria-hidden="true">›</span></button>` : ""}
   </div>`;
+}
+function skillBar(tasks, k){
+  const all = tasks.length && tasks.every(t=>taskDone(t,k));
+  return `<div class="sk-bar${all?" win":""}" role="progressbar" aria-valuenow="${tasks.filter(t=>taskDone(t,k)).length}" aria-valuemin="0" aria-valuemax="${tasks.length}">${tasks.map(t=>`<i class="sk-${taskSkill(t)}${taskDone(t,k)?" on":""}" style="--w:${Math.max(1,taskInfo(t,k).min||1)}"></i>`).join("")}</div>`;
+}
+/* today's ring on the week strip: one colored slice per micro-goal */
+function skillRing(tasks, k){
+  const n = tasks.length; if(!n) return "";
+  const step = 100/n, gap = Math.min(1.2, step*0.12);
+  return "conic-gradient("+tasks.map((t,i)=>{ const a = i*step, b = a+step, c = taskDone(t,k) ? `var(--sk-${taskSkill(t)})` : "var(--surface-2)";
+    return `var(--bg) ${a.toFixed(2)}% ${(a+gap).toFixed(2)}%, ${c} ${(a+gap).toFixed(2)}% ${b.toFixed(2)}%`; }).join(", ")+")";
 }
 function progressBar(done, total){ const p = total ? Math.round(done/total*100) : 0; return `<div class="mg-bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%"></i></div>`; }
 function planHomeCard(){
@@ -5575,7 +5628,7 @@ function planHomeCard(){
   return `<section class="panel plan-today mt">
     <div class="pt-head"><p class="kicker">${T("Today's micro-goals","Micro-metas de hoy")}</p><span class="pt-count">${st.done}/${st.total}</span></div>
     <h3>${T(esc(ti[0]), esc(ti[1]))}</h3>
-    ${progressBar(st.done, st.total)}
+    ${skillBar(st.tasks, k)}
     ${st.victory ? `<div class="pt-win">🏆 ${T("Victory of the day. See you tomorrow!","Victoria del día. ¡Nos vemos mañana!")}</div>` : ""}
     <div class="mg-list mt-s">${show.map(x=>mgRow(x.t, x.i, k, true)).join("")}</div>
     <a class="link mt-s" href="#plan" style="display:inline-block">${T("See my whole plan","Ver todo mi plan")} ›</a>
@@ -5587,8 +5640,10 @@ function weekStrip(){
     <div class="wk-strip mt-s">${w.days.map(k=>{
       const rec = state.planLog[k]||{}, type = k<=t ? ((rec.spec||{}).type || (planOn()?dayType(k):"rest")) : dayType(k);
       const ratio = rec.t ? rec.n/rec.t : 0, d = parseKey(k);
-      const cls = "wk-day"+(k===t?" today":"")+(rec.victory?" win":ratio>0?" part":"")+(type==="rest"?" rest":"")+(k>t?" future":"");
-      return `<button class="${cls}" data-act="planDay" data-k="${k}" style="--p:${Math.round(ratio*100)}"><span class="wk-dow">${lang()==="es"?DOW_ES[d.getDay()]:DOW_SHORT[d.getDay()]}</span><span class="wk-ring"><b>${rec.victory?"✓":d.getDate()}</b></span><span class="wk-type">${type==="class"?"C":type==="study"?"•":""}</span></button>`;
+      const chain = rec.victory && (state.planLog[addDays(k,1)]||{}).victory;
+      const cls = "wk-day"+(k===t?" today":"")+(rec.victory?" win":ratio>0?" part":"")+(chain?" chain":"")+(type==="rest"?" rest":"")+(k>t?" future":"");
+      const ring = k===t && !rec.victory && rec.tasks ? ` style="background:${skillRing(rec.tasks,k)}"` : "";
+      return `<button class="${cls}" data-act="planDay" data-k="${k}" style="--p:${Math.round(ratio*100)}"><span class="wk-dow">${lang()==="es"?DOW_ES[d.getDay()]:DOW_SHORT[d.getDay()]}</span><span class="wk-rw"><span class="wk-ring"${ring}><b>${rec.victory?"✓":d.getDate()}</b></span></span><span class="wk-type">${type==="class"?"C":type==="study"?"•":""}</span></button>`;
     }).join("")}</div>
     ${progressBar(Math.min(w.wins,w.target), w.target)}</section>`;
 }
@@ -5597,7 +5652,7 @@ function habitsBlock(){
   return `<section class="mt-l"><div class="phase-head"><h3>${T("My habits","Mis hábitos")}</h3><button class="link" data-act="planSetup">${T("Change","Cambiar")}</button></div>
     <p class="muted small mt-s">${T("Small, daily, and always the same. The chain is the reward.","Pequeños, diarios y siempre iguales. La cadena es el premio.")}</p>
     <div class="mt-s">${state.plan.habits.map(id=>{ const H = habitById(id); if(!H) return ""; const on = habitDone(id,t), s = habitStreak(id);
-      return `<div class="habit-row ${on?"on":""}"><button class="habit-check" data-act="mgToggle" data-k="${t}" data-id="h:${id}" aria-pressed="${on}" aria-label="${esc(tt(H.en,H.es))}">${on?"✓":H.ico}</button>
+      return `<div class="habit-row sk-${H.sk||"mind"}${on?" on":""}"><button class="habit-check" data-act="mgToggle" data-k="${t}" data-id="h:${id}" aria-pressed="${on}" aria-label="${esc(tt(H.en,H.es))}">${on?"✓":H.ico}</button>
         <div class="grow"><span class="t">${T(esc(H.en),esc(H.es))}</span><span class="habit-dots" aria-hidden="true">${days.map(d=>`<i class="${habitDone(id,d)?"on":""}${d===t?" now":""}"></i>`).join("")}</span></div>
         <span class="habit-streak">${s?"🔥 "+s:""}</span></div>`; }).join("")}</div></section>`;
 }
@@ -5669,7 +5724,7 @@ VIEWS.plan = function(){
     <section class="panel plan-today">
       <div class="pt-head"><p class="kicker">${T("Today","Hoy")} · <span class="notr">${esc(fmtLongDay(k))}</span></p><span class="pt-count">${st.done}/${st.total}</span></div>
       <h2 class="display" style="font-size:clamp(24px,6vw,30px)">${T(esc(ti[0]),esc(ti[1]))}</h2>
-      ${progressBar(st.done, st.total)}
+      ${skillBar(st.tasks, k)}
       ${st.victory ? `<div class="pt-win">🏆 ${T("Victory of the day! Everything else today is a bonus.","¡Victoria del día! Todo lo demás hoy es un extra.")}</div>`
         : `<p class="small muted mt-s">${T("Do them in order. Tap “Go” and the app takes you to the exact place. Tap the number to check one by hand.","Hazlas en orden. Toca “Ir” y la app te lleva al lugar exacto. Toca el número para marcar una a mano.")}</p>`}
       <div class="mg-list mt">${st.tasks.map((t,i)=>mgRow(t,i,k,true)).join("")}</div>
@@ -5701,7 +5756,7 @@ function planDaySheet(k){
   const ti = specTitle(sp), done = tasks ? tasks.filter(x=>taskDone(x,k)).length : 0;
   openSheet(`${sheetHead(fmtLongDay(k), sp ? tt(ti[0],ti[1]) : "")}
     ${rec.victory?`<div class="pt-win">🏆 ${T("Victory of the day","Victoria del día")}</div>`:""}
-    ${tasks && tasks.length ? `${k<=t?progressBar(done,tasks.length):""}<div class="mg-list mt">${tasks.map((x,i)=>mgRow(x,i,k,k===t)).join("")}</div>` : ""}
+    ${tasks && tasks.length ? `${k<=t?skillBar(tasks,k):""}<div class="mg-list mt">${tasks.map((x,i)=>mgRow(x,i,k,k===t)).join("")}</div>` : ""}
     ${note?`<p class="small muted mt">${esc(note)}</p>`:""}
     ${k===t?`<button class="btn block mt" data-act="closeSheet">${T("Done","Listo")}</button>`:""}`);
 }
@@ -5725,7 +5780,7 @@ function planSetupBody(o, prefix){
       <p class="small muted mt-s">${o.minutes<=15?T("Each mission takes 3 short sessions. Ideal to start.","Cada misión toma 3 sesiones cortas. Ideal para empezar."):o.minutes<=25?T("Each mission takes 2 sessions.","Cada misión toma 2 sesiones."):T("One full mission per session.","Una misión completa por sesión.")}</p></div>
     <div><label class="lbl" for="${prefix}Time">${T("3. At what time? (for your phone reminder)","3. ¿A qué hora? (para el recordatorio del teléfono)")}</label><input type="time" class="field mt-s" id="${prefix}Time" data-in="${prefix}Time" value="${esc(o.time)}"></div>
     <div><span class="lbl">${T("4. Choose 2 to 4 tiny habits","4. Elige de 2 a 4 hábitos pequeños")}</span>
-      <div class="choices mt-s">${HABITS.map(H=>`<button class="choice habit-choice" data-act="${prefix}Habit" data-h="${H.id}" aria-pressed="${o.habits.includes(H.id)}"><span class="h-ico" aria-hidden="true">${H.ico}</span><span>${T(esc(H.en),esc(H.es))}<small>${H.min} min · ${T(esc(H.hen),esc(H.hes))}</small></span></button>`).join("")}</div></div>
+      <div class="choices mt-s">${HABITS.map(H=>`<button class="choice habit-choice sk-${H.sk||"mind"}" data-act="${prefix}Habit" data-h="${H.id}" aria-pressed="${o.habits.includes(H.id)}"><span class="h-ico" aria-hidden="true">${H.ico}</span><span>${T(esc(H.en),esc(H.es))}<small>${H.min} min · ${T(esc(H.hen),esc(H.hes))}</small></span></button>`).join("")}</div></div>
   </div>`;
 }
 function paintPlanSetup(){
@@ -5806,7 +5861,7 @@ Object.assign(ACT, {
     if(!task) return;
     if(taskDone(task,k)==="auto"){ toastT("Your work already checked this one.","Tu trabajo ya marcó esta."); return; }
     const r = planRec(k); r.done = r.done || {};
-    if(r.done[id]) delete r.done[id]; else r.done[id] = nowISO();
+    if(r.done[id]) delete r.done[id]; else { r.done[id] = nowISO(); mgFresh = id; setTimeout(()=>{ if(mgFresh===id) mgFresh = null; }, 900); }
     touchPlan(k);
   },
   mgGo: el => {

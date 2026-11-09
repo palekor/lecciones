@@ -1012,6 +1012,82 @@ body{position:relative;z-index:1;background:transparent;}
 .ae-reset:hover{color:var(--coral);}
 
 @media(prefers-reduced-motion:reduce){#starsCanvas{display:none;}}
+
+/* ============================================================
+   MONEY — fixed fees, movements, month balance
+   ============================================================ */
+.navbtn .navbadge{position:absolute;top:2px;left:calc(50% + 7px);min-width:16px;height:16px;padding:0 4px;border-radius:100px;background:var(--coral);color:#fff;font-family:var(--font-numeric);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;}
+.navbtn .navbadge[hidden]{display:none;}
+.money-card{margin-top:18px;padding:18px;border-radius:var(--radius-l);background:var(--bg-card);border:1px solid var(--border);box-shadow:var(--card-shadow);}
+.money-hero{text-align:center;padding:4px 0 16px;}
+.money-hero-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);}
+.money-hero-num{font-family:var(--font-numeric);font-size:38px;font-weight:800;line-height:1.1;margin-top:6px;color:var(--text);font-variant-numeric:tabular-nums;word-break:break-word;}
+.money-hero-num.is-neg{color:var(--coral);}
+.money-hero-sub{font-size:13px;color:var(--text-faint);margin-top:7px;line-height:1.45;}
+.money-hero-sub u{cursor:pointer;color:var(--cyan);text-underline-offset:3px;}
+.money-bar-txt{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--text-faint);margin-top:7px;font-variant-numeric:tabular-nums;}
+.money-lines{margin-top:14px;border-top:1px solid var(--border);}
+.money-line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-soft);}
+.money-line b{font-family:var(--font-numeric);color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.money-line.is-tap{cursor:pointer;}
+.money-line.is-tap span::after{content:' ✎';color:var(--text-faint);font-size:12px;}
+.money-line.total{border-bottom:none;font-weight:700;color:var(--text);padding-bottom:0;}
+.money-line.total b{font-size:16px;}
+.money-line b.is-neg{color:var(--coral);}
+.money-block{margin-top:24px;}
+.money-block-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;min-height:32px;}
+.money-block-head .space-eyebrow{margin-bottom:0;}
+.fee-list{border-radius:var(--radius-l);background:var(--bg-card);border:1px solid var(--border);padding:4px 14px;}
+.fee-row{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--border);}
+.fee-row:last-child{border-bottom:none;}
+.fee-box{width:36px;height:36px;border-radius:11px;border:1.5px solid var(--border-strong);background:var(--bg-sunken);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;padding:0;color:var(--text);transition:transform .2s var(--ease-spring),background .2s var(--ease);}
+.fee-box:active{transform:scale(.88);}
+.fee-row.is-paid .fee-box{background:var(--emerald);border-color:var(--emerald);color:#05070E;font-weight:800;font-size:15px;}
+.fee-row.is-overdue .fee-box{border-color:var(--coral);}
+.fee-body{flex:1;min-width:0;cursor:pointer;}
+.fee-name{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fee-row.is-paid .fee-name{color:var(--text-soft);}
+.fee-sub{font-size:12.5px;color:var(--text-faint);margin-top:2px;}
+.fee-row.is-overdue .fee-sub{color:var(--coral);font-weight:600;}
+.fee-row.is-today .fee-sub{color:var(--cyan);font-weight:700;}
+.fee-amt{font-family:var(--font-numeric);font-size:14.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;flex-shrink:0;}
+.fee-row.is-paid .fee-amt{color:var(--text-faint);}
+.fee-paybtn{flex-shrink:0;padding:8px 13px;border-radius:100px;border:none;background:var(--accent-soft);color:var(--cyan);font-size:12px;font-weight:700;}
+.fee-row.is-overdue .fee-paybtn{background:rgba(255,107,107,.14);color:var(--coral);}
+.fee-paybtn:active{transform:scale(.92);}
+.fee-empty{font-size:13.5px;color:var(--text-faint);padding:14px 0;line-height:1.5;}
+.fee-def-freq{font-size:12px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;text-align:right;}
+.move-add{display:flex;flex-direction:column;gap:8px;margin-bottom:6px;}
+.move-add-line{display:flex;gap:8px;align-items:center;}
+.move-add-line .input-field{flex:1;min-width:0;}
+.seg{display:inline-flex;flex-shrink:0;border:1px solid var(--border);border-radius:100px;overflow:hidden;}
+.seg button{padding:9px 12px;font-size:12px;font-weight:700;background:none;border:none;color:var(--text-faint);}
+.seg button.active{background:var(--accent-soft);color:var(--cyan);}
+.amt-in{color:var(--emerald)!important;}
+.money-home{margin-top:20px;padding:16px 18px;border-radius:var(--radius-l);background:var(--bg-card);border:1px solid var(--border);}
+.money-home-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
+.money-home-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);opacity:.9;}
+.money-home-chip{flex-shrink:0;font-family:var(--font-numeric);font-size:12.5px;font-weight:700;color:var(--text-soft);padding:5px 11px;border-radius:100px;border:1px solid var(--border);background:var(--bg-sunken);white-space:nowrap;}
+.money-home-chip.is-neg{color:var(--coral);}
+.money-home-note{font-size:13.5px;color:var(--text-faint);padding:10px 0 4px;line-height:1.5;}
+.money-home-note b{color:var(--text-soft);}
+.money-home-link{display:block;width:100%;margin-top:8px;padding:10px;border-radius:12px;border:1px dashed var(--border-strong);background:none;color:var(--cyan);font-size:12.5px;font-weight:700;}
+.cal-fee{position:absolute;top:4px;left:4px;z-index:2;width:7px;height:7px;border-radius:2px;transform:rotate(45deg);background:var(--amber);box-shadow:0 0 0 1.5px var(--bg-card);}
+.cal-fee.is-paid{background:var(--emerald);}
+.cal-fee.is-over{background:var(--coral);}
+.cal-day.future.has-fee{opacity:1;}
+.cal-legend .lg-fee{width:7px;height:7px;border-radius:2px;transform:rotate(45deg);background:var(--amber);}
+.cal-money{display:flex;flex-wrap:wrap;width:100%;justify-content:center;gap:4px 14px;margin:0 0 12px;padding:9px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-sunken);font-size:12.5px;color:var(--text-faint);}
+.cal-money[hidden]{display:none;}
+.cal-money b{font-family:var(--font-numeric);color:var(--text-soft);font-weight:700;}
+.cal-money b.is-left{color:var(--coral);}
+.day-recap{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.day-recap:empty{display:none;}
+.day-recap span{font-size:12px;font-weight:600;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:var(--bg-sunken);color:var(--text-soft);white-space:nowrap;}
+.freq-row{display:flex;flex-wrap:wrap;gap:6px;}
+.auto-row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text-soft);line-height:1.45;cursor:pointer;}
+.auto-row input{width:18px;height:18px;margin-top:1px;accent-color:var(--cyan);flex-shrink:0;}
+.amount-big{font-family:var(--font-numeric)!important;font-size:22px!important;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;}
 </style>
 </head>
 <body>
@@ -1087,6 +1163,9 @@ body{position:relative;z-index:1;background:transparent;}
       <div id="todayItemsList"></div>
     </div>
 
+    <!-- 3. FEES COMING UP — filled by renderMoneyHome() -->
+    <div class="money-home" id="moneyHome"></div>
+
     <!-- 4. STILL CARRYING THIS? -->
     <div class="carrying-section" id="carryingSection" hidden>
       <div class="carrying-eyebrow">Still carrying this?</div>
@@ -1126,15 +1205,17 @@ body{position:relative;z-index:1;background:transparent;}
           <div><div class="cal-metric-num" id="calPartial">—</div><div class="cal-metric-label">Partial</div></div>
           <div><div class="cal-metric-num" id="calAvg">—</div><div class="cal-metric-label">Average</div></div>
         </div>
+        <button class="cal-money" id="calMoney" onclick="showView('money')" hidden></button>
         <div class="cal-grid cal-dow-row" id="calDow"></div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-legend">
           <span><i class="lg-fill"></i>Day's progress</span>
           <span><b class="lg-star">★</b>Complete day</span>
           <span><i class="lg-dot"></i>Tasks</span>
+          <span><i class="lg-fee"></i>Fee due</span>
           <span><i class="lg-today"></i>Today</span>
         </div>
-        <div class="cal-tip">Tap a past day to correct habits, or a future day to schedule tasks.</div>
+        <div class="cal-tip">Tap any day to see what happened on it — habits, tasks, ideas, fees and spending — or a future day to plan it.</div>
       </div>
     </div>
 
@@ -1282,11 +1363,67 @@ body{position:relative;z-index:1;background:transparent;}
     <div class="idea-list" id="ideaList"></div>
   </section>
 
+  <!-- MONEY VIEW -->
+  <section class="view" id="viewMoney" hidden>
+    <div class="section-title">Money</div>
+    <div class="section-sub">Your unavoidable fees, anticipated. See what's coming, mark what's paid, know what's truly free.</div>
+    <div class="money-card">
+      <div class="cal-nav-row">
+        <button class="cal-nav" onclick="shiftCalMonth(-1)" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <div class="cal-month" id="moneyMonthLabel"></div>
+        <button class="cal-nav" onclick="shiftCalMonth(1)" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <div class="money-hero">
+        <div class="money-hero-label" id="moneyHeroLabel">Free after fees</div>
+        <div class="money-hero-num" id="moneyHeroNum">—</div>
+        <div class="money-hero-sub" id="moneyHeroSub"></div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="moneyPaidBar" style="width:0%"></div></div>
+      <div class="money-bar-txt"><span id="moneyBarPaid"></span><span id="moneyBarLeft"></span></div>
+      <div class="money-lines" id="moneyLines"></div>
+    </div>
+
+    <div class="money-block">
+      <div class="money-block-head">
+        <div class="space-eyebrow" id="moneyFeesTitle">Fees this month</div>
+        <button class="btn btn-cyan btn-sm" onclick="openBill()">➕ Add fee</button>
+      </div>
+      <div class="fee-list" id="moneyFeeList"></div>
+    </div>
+
+    <div class="money-block">
+      <div class="money-block-head"><div class="space-eyebrow">Other money moves</div></div>
+      <div class="move-add">
+        <div class="move-add-line">
+          <input type="text" class="input-field" id="mvMoveText" placeholder="What was it? e.g. Groceries" maxlength="80">
+        </div>
+        <div class="move-add-line">
+          <input type="text" inputmode="decimal" class="input-field" id="mvMoveAmt" placeholder="Amount" oninput="fmtAmountInput(this)">
+          <div class="seg" id="mvMoveKind"><button class="active" data-kind="out" onclick="setMoveKind('mv','out')">Spent</button><button data-kind="in" onclick="setMoveKind('mv','in')">Received</button></div>
+          <button class="btn btn-cyan btn-sm" onclick="addMove('mv')">Add</button>
+        </div>
+      </div>
+      <div class="fee-list" id="moneyMoveList"></div>
+    </div>
+
+    <div class="money-block">
+      <div class="money-block-head"><div class="space-eyebrow">All your fixed fees</div></div>
+      <div class="fee-list" id="moneyBillDefs"></div>
+    </div>
+
+    <div class="money-block">
+      <button class="btn btn-ghost btn-block btn-sm" onclick="exportFeesIcs()">📲 Put fee reminders in my phone calendar</button>
+      <div class="data-hint" style="margin-top:8px;text-align:center;">Downloads a calendar file. Open it and your phone will alert you the day before and the morning each fee is due.</div>
+      <button class="btn btn-outline btn-block btn-sm" style="margin-top:6px;" onclick="openMoneySetup()">⚙️ Income &amp; currency</button>
+    </div>
+  </section>
+
   <!-- Bottom Nav -->
   <nav class="bottomnav">
     <div class="bottomnav-inner">
       <button class="navbtn active" data-view="wallet" onclick="showView('wallet')"><span class="navicon">👜</span><span class="navlabel">Wallet</span></button>
       <button class="navbtn" data-view="todos" onclick="showView('todos')"><span class="navicon">✅</span><span class="navlabel">Todos</span></button>
+      <button class="navbtn" data-view="money" onclick="showView('money')"><span class="navicon">💰</span><span class="navlabel">Money</span><span class="navbadge" id="moneyBadge" hidden></span></button>
       <button class="navbtn" data-view="habits" onclick="showView('habits')"><span class="navicon">🔄</span><span class="navlabel">Habits</span></button>
       <button class="navbtn" data-view="ideas" onclick="showView('ideas')"><span class="navicon">💡</span><span class="navlabel">Ideas</span></button>
     </div>
@@ -1385,12 +1522,88 @@ body{position:relative;z-index:1;background:transparent;}
   </div>
 </div>
 
+<!-- FEE MODAL -->
+<div class="modal-backdrop" id="billModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title" id="billModalTitle">New fixed fee</div>
+    <div class="section-sub">Rent, utilities, subscriptions, loans — anything you can't avoid.</div>
+    <div class="personalize-section" style="margin-top:18px;">
+      <div class="personalize-label">Icon</div>
+      <div class="avatar-options" id="billEmojiOptions"></div>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Name</div>
+      <input type="text" class="input-field" id="billName" placeholder="e.g. Rent" maxlength="40">
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Amount</div>
+      <input type="text" inputmode="decimal" class="input-field" id="billAmount" placeholder="0" oninput="fmtAmountInput(this)">
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Repeats</div>
+      <div class="freq-row" id="billFreqRow"></div>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label" id="billStartLabel">Next due date</div>
+      <input type="date" class="input-field" id="billStart">
+      <div class="chunk-picker-hint" id="billStartHint"></div>
+    </div>
+    <div class="personalize-section">
+      <label class="auto-row"><input type="checkbox" id="billAuto"><span><b>Automatic debit.</b> It's charged on its own, so mark it paid automatically when the day arrives.</span></label>
+    </div>
+    <button class="btn btn-cyan btn-block" style="margin-top:14px;" onclick="saveBill()">Save fee</button>
+    <div id="billEditActions" hidden>
+      <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="stopBill()">⏹ Stop from today (keep history)</button>
+      <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;border-color:rgba(255,107,107,0.3);color:var(--coral);" onclick="deleteBill()">🗑️ Delete fee and its history</button>
+    </div>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closeBill()">Cancel</button>
+  </div>
+</div>
+
+<!-- PAY MODAL -->
+<div class="modal-backdrop" id="payModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title" id="payTitle">Mark as paid</div>
+    <div class="section-sub" id="paySub"></div>
+    <div class="personalize-section" style="margin-top:18px;">
+      <div class="personalize-label">Amount paid</div>
+      <input type="text" inputmode="decimal" class="input-field amount-big" id="payAmount" oninput="fmtAmountInput(this)">
+      <div class="chunk-picker-hint">Change it if this time the bill came different.</div>
+    </div>
+    <button class="btn btn-cyan btn-block" style="margin-top:14px;" onclick="confirmPay()">✓ Paid</button>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closePay()">Cancel</button>
+  </div>
+</div>
+
+<!-- MONEY SETUP MODAL -->
+<div class="modal-backdrop" id="moneySetupModal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="section-title">Income &amp; currency</div>
+    <div class="section-sub">Your monthly income is the starting point for your balance. It stays on this device.</div>
+    <div class="personalize-section" style="margin-top:18px;">
+      <div class="personalize-label">Currency</div>
+      <select class="input-field" id="moneyCurrency" onchange="onCurrencyPick()"></select>
+    </div>
+    <div class="personalize-section">
+      <div class="personalize-label">Monthly income</div>
+      <input type="text" inputmode="decimal" class="input-field amount-big" id="moneyIncome" placeholder="0" oninput="fmtAmountInput(this)">
+      <div class="chunk-picker-hint">Income that changes month to month? Leave this at 0 and add each payment as "Received".</div>
+    </div>
+    <button class="btn btn-cyan btn-block" style="margin-top:14px;" onclick="saveMoneySetup()">Save</button>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px;" onclick="closeMoneySetup()">Cancel</button>
+  </div>
+</div>
+
 <!-- DAY SHEET (calendar) -->
 <div class="modal-backdrop" id="dayModal">
   <div class="modal-content">
     <div class="modal-handle"></div>
     <div class="section-title" id="dayTitle">Day</div>
     <div class="section-sub" id="daySub"></div>
+    <div class="day-recap" id="dayRecap"></div>
     <div id="dayHabitsWrap">
       <div class="day-section-label">Habits</div>
       <div class="day-progress" id="dayProgress"><div class="progress-track"><div class="progress-fill" id="dayProgressFill" style="width:0%"></div></div><div class="day-progress-txt" id="dayProgressTxt">0/0</div></div>
@@ -1404,6 +1617,32 @@ body{position:relative;z-index:1;background:transparent;}
       </div>
       <div id="dayTaskList"></div>
     </div>
+    <div id="dayFeesWrap">
+      <div class="day-section-label">Fees</div>
+      <div id="dayFeeList"></div>
+    </div>
+    <div id="dayMovesWrap">
+      <div class="day-section-label">Money moves</div>
+      <div class="move-add" id="dayMoveAdd">
+        <div class="move-add-line">
+          <input type="text" class="input-field" id="dayMoveText" placeholder="What was it?" maxlength="80">
+        </div>
+        <div class="move-add-line">
+          <input type="text" inputmode="decimal" class="input-field" id="dayMoveAmt" placeholder="Amount" oninput="fmtAmountInput(this)">
+          <div class="seg" id="dayMoveKind"><button class="active" data-kind="out" onclick="setMoveKind('day','out')">Spent</button><button data-kind="in" onclick="setMoveKind('day','in')">Received</button></div>
+          <button class="btn btn-cyan btn-sm" onclick="addMove('day')">Add</button>
+        </div>
+      </div>
+      <div id="dayMoveList"></div>
+    </div>
+    <div id="dayDoneWrap">
+      <div class="day-section-label">Finished this day</div>
+      <div id="dayDoneList"></div>
+    </div>
+    <div id="dayIdeasWrap">
+      <div class="day-section-label">Ideas captured</div>
+      <div id="dayIdeaList"></div>
+    </div>
     <button class="btn btn-outline btn-block btn-sm" style="margin-top:18px;" onclick="closeDay()">Close</button>
   </div>
 </div>
@@ -1416,7 +1655,7 @@ body{position:relative;z-index:1;background:transparent;}
     <div class="section-sub">Save your progress, transfer between devices, or restore from a backup.</div>
     <div class="data-section" style="margin-top:18px;">
       <div class="personalize-label">Export Data</div>
-      <div class="data-hint">Download a backup file with all your todos, habits, ideas and settings. Open it on another device and use Import to restore.</div>
+      <div class="data-hint">Download a backup file with all your todos, habits, ideas, fees, money moves and settings. Open it on another device and use Import to restore.</div>
       <button class="btn btn-cyan btn-block btn-sm" onclick="exportDataFile()">📥 Download Backup File</button>
     </div>
     <div class="data-section">
@@ -1446,7 +1685,7 @@ body{position:relative;z-index:1;background:transparent;}
 <div class="onboard-overlay" id="onboardOverlay">
   <div class="onboard-icon">👜</div>
   <div class="onboard-title">Things<span>Wallet</span></div>
-  <div class="onboard-sub">Your pocket companion for todos, habits, ideas — and brain games that make English fluency feel alive.</div>
+  <div class="onboard-sub">Your pocket companion for todos, habits, ideas and fixed fees — and brain games that make English fluency feel alive.</div>
   <input type="text" class="input-field onboard-input" id="onboardName" placeholder="What should we call you?" maxlength="30">
   <button class="btn btn-cyan btn-block" style="max-width:280px;" onclick="finishOnboard()">Let's Go ✨</button>
 </div>
@@ -1518,6 +1757,7 @@ function defaultState(){
     accentHex:DEFAULT_GOLD,accentHexLight:DEFAULT_EMERALD,
     streak:0,lastActiveDate:null,
     todos:[],habits:[],ideas:[],customGames:[],arcade:null,selectedHabitId:null,timerDur:180,
+    bills:[],moves:[],money:{currency:'COP',income:0},
     onboarded:false,challengeSeeded:false
   };
 }
@@ -1537,6 +1777,12 @@ function load(){
   });
   if(!state.accentHexLight){state.accentHexLight=DEFAULT_EMERALD;touched=true;}
   if(!state.habits)state.habits=[];
+  // Money (added later): older saves simply start with empty lists.
+  if(!Array.isArray(state.bills))state.bills=[];
+  if(!Array.isArray(state.moves))state.moves=[];
+  if(!state.money||typeof state.money!=='object')state.money={currency:'COP',income:0};
+  if(!state.money.currency)state.money.currency='COP';
+  state.bills.forEach(b=>{if(!b.paid)b.paid={};});
   if(!state.challengeSeeded&&state.habits.length===0){
     state.habits=seedChallengeHabits();
     state.challengeSeeded=true;touched=true;
@@ -1745,7 +1991,7 @@ function escAttr(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"
 let currentView='wallet';
 function showView(name){
   currentView=name;
-  const viewMap={wallet:'viewWallet',todos:'viewTodos',habits:'viewHabits',ideas:'viewIdeas'};
+  const viewMap={wallet:'viewWallet',todos:'viewTodos',habits:'viewHabits',ideas:'viewIdeas',money:'viewMoney'};
   Object.values(viewMap).forEach(id=>{document.getElementById(id).hidden=true;});
   const target=viewMap[name];
   if(target){
@@ -1763,6 +2009,8 @@ function refreshView(name){
   if(name==='todos')renderTodos();
   if(name==='habits')renderHabits();
   if(name==='ideas')renderIdeas();
+  if(name==='money')renderMoney();
+  updateMoneyBadge();
 }
 
 /* ============================================================
@@ -1823,6 +2071,7 @@ function renderWallet(){
   document.getElementById('heroAvatar').textContent=state.avatar;
   renderTodayDate();
   renderTodayCard();
+  renderMoneyHome();
   renderCarrying();
   renderRhythm();
   renderCalendar();
@@ -2112,8 +2361,9 @@ function shiftCalMonth(delta){
   if(calMonth<0){calMonth=11;calYear--;}
   if(calMonth>11){calMonth=0;calYear++;}
   renderCalendar();
+  if(currentView==='money')renderMoney();
 }
-function calGoToday(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();renderCalendar();}
+function calGoToday(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();renderCalendar();if(currentView==='money')renderMoney();}
 function scrollToCalendar(){
   const el=document.getElementById('calSection');if(!el)return;
   window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});
@@ -2129,6 +2379,12 @@ function renderCalendar(){
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const today=todayStr();
   const taskMap=tasksByDay();
+  // Fees due this month, by day: paid / still due / overdue.
+  const mm=monthMoney(calYear,calMonth),feeMap={};
+  mm.items.forEach(i=>{const f=feeMap[i.key]||(feeMap[i.key]={n:0,unpaid:0,over:0,sum:0});f.n++;f.sum+=i.amount;if(!i.paid)f.unpaid++;if(i.status==='overdue')f.over++;});
+  const calMoney=document.getElementById('calMoney');
+  calMoney.hidden=mm.items.length===0;
+  if(mm.items.length)calMoney.innerHTML='<span>💰 Fees <b>'+fmtMoney(mm.fixed)+'</b></span><span>Paid <b>'+fmtMoney(mm.paid)+'</b></span>'+(mm.left>0?'<span>Left <b class="is-left">'+fmtMoney(mm.left)+'</b></span>':'<span>All paid ✓</span>');
   let full=0,partial=0,pctSum=0,counted=0;
   const cells=[];
   for(let e=0;e<startOffset;e++)cells.push('<div class="cal-day cal-blank"></div>');
@@ -2137,22 +2393,25 @@ function renderCalendar(){
     const isToday=key===today,isFuture=key>today;
     const frac=isFuture?null:habitFractionOn(key);
     const pct=frac?frac.pct:0;
-    const tk=taskMap[key];
+    const tk=taskMap[key],fee=feeMap[key];
     let cls='cal-day';
     if(isFuture)cls+=' future';
     if(isToday)cls+=' today';
     if(pct>=1)cls+=' full';else if(pct>0)cls+=' partial';
     if(tk)cls+=' has-tasks';
+    if(fee)cls+=' has-fee';
     if(frac){counted++;pctSum+=pct;if(pct>=1)full++;else if(pct>0)partial++;}
     const fillH=pct>0?Math.round(18+pct*82):0;
     let aria=MONTHS_LONG[calMonth]+' '+d;
     if(frac)aria+=', '+frac.done+' of '+frac.total+' habits';
     if(tk)aria+=', '+tk.total+(tk.total===1?' task':' tasks');
+    if(fee)aria+=', '+fee.n+(fee.n===1?' fee ':' fees ')+fmtMoney(fee.sum)+(fee.unpaid?(fee.over?' overdue':' due'):' paid');
     cells.push('<button type="button" class="'+cls+'" onclick="openDay(\''+key+'\')" aria-label="'+escAttr(aria)+'">'+
       (fillH?'<span class="cal-fill" style="height:'+fillH+'%"></span>':'')+
       '<span class="cal-num">'+d+'</span>'+
       (pct>=1?'<span class="cal-mark">★</span>':'')+
       (tk?'<span class="cal-dot'+(tk.pending===0?' all-done':'')+'"></span>':'')+
+      (fee?'<span class="cal-fee'+(fee.unpaid===0?' is-paid':(fee.over?' is-over':''))+'"></span>':'')+
     '</button>');
   }
   grid.innerHTML=cells.join('');
@@ -2185,8 +2444,9 @@ function renderDayModal(){
   const isToday=key===today,isFuture=key>today,isPast=key<today;
   document.getElementById('dayTitle').textContent=(isToday?'Today · ':'')+formatDayKey(key);
   document.getElementById('daySub').textContent=isFuture
-    ?'Plan this day. Tasks you add wait here and show up in Today when the day arrives.'
-    :(isToday?'Check off your habits and add what today needs.':'Forgot to mark something? Tap a habit to correct that day.');
+    ?'Plan this day. Tasks and fees wait here and show up when the day arrives.'
+    :(isToday?'Check off your habits, pay what is due and log what today needs.':'This is what that day held. Forgot to mark something? Tap it to correct the record.');
+  renderDayRecord(key);
 
   // Habits — today and past days only
   document.getElementById('dayHabitsWrap').hidden=isFuture;
@@ -3051,6 +3311,22 @@ function mergeImportedData(data){
     const existingIds=new Set(state.ideas.map(i=>i.id));
     data.ideas.forEach(i=>{if(!existingIds.has(i.id))state.ideas.push(i);});
   }
+  if(Array.isArray(data.bills)){
+    data.bills.forEach(b=>{
+      if(!b||!b.id)return;
+      const mine=state.bills.find(x=>x.id===b.id);
+      if(!mine){if(!b.paid)b.paid={};state.bills.push(b);}
+      else mine.paid=Object.assign({},b.paid||{},mine.paid||{}); // keep payments from both devices
+    });
+  }
+  if(Array.isArray(data.moves)){
+    const existingIds=new Set(state.moves.map(v=>v.id));
+    data.moves.forEach(v=>{if(v&&v.id&&!existingIds.has(v.id))state.moves.push(v);});
+  }
+  if(data.money){
+    if(CURRENCIES[data.money.currency])state.money.currency=data.money.currency;
+    if(Number(data.money.income)>0)state.money.income=Number(data.money.income);
+  }
   if(!Array.isArray(state.arcade))state.arcade=defaultArcade();
   const arcIds=new Set(state.arcade.map(g=>g.id));
   const arcKeys=new Set(state.arcade.map(g=>g.key).filter(Boolean));
@@ -3078,6 +3354,517 @@ function clearAllData(){
 }
 
 /* ============================================================
+   MONEY — fixed fees ("unavoidable"), other money moves and the
+   month balance. A fee is a rule (amount + rhythm + first due
+   date); its due dates are computed, never stored, so the
+   calendar can show them months ahead. Payments are stored per
+   due date, which is what turns the calendar into a record.
+   ============================================================ */
+const CURRENCIES={
+  COP:{s:'$',l:'es-CO',d:0,n:'Colombian peso (COP)'},
+  USD:{s:'$',l:'en-US',d:2,n:'US dollar (USD)'},
+  EUR:{s:'€',l:'de-DE',d:2,n:'Euro (EUR)'},
+  MXN:{s:'$',l:'es-MX',d:2,n:'Mexican peso (MXN)'},
+  PEN:{s:'S/',l:'es-PE',d:2,n:'Peruvian sol (PEN)'},
+  CLP:{s:'$',l:'es-CL',d:0,n:'Chilean peso (CLP)'},
+  ARS:{s:'$',l:'es-AR',d:2,n:'Argentine peso (ARS)'},
+  BRL:{s:'R$',l:'pt-BR',d:2,n:'Brazilian real (BRL)'},
+  GBP:{s:'£',l:'en-GB',d:2,n:'British pound (GBP)'},
+  CAD:{s:'$',l:'en-CA',d:2,n:'Canadian dollar (CAD)'}
+};
+const BILL_EMOJIS=['🏠','💡','💧','🔥','📶','📱','🚗','🛡️','🎓','💳','🏦','🩺','🎬','🧾','💼','🐾'];
+const FREQS=[
+  {k:'monthly',label:'Monthly',each:'every month'},
+  {k:'biweekly',label:'Every 2 weeks',each:'every 2 weeks'},
+  {k:'weekly',label:'Weekly',each:'every week'},
+  {k:'quarterly',label:'Every 3 months',each:'every 3 months'},
+  {k:'yearly',label:'Yearly',each:'every year'},
+  {k:'once',label:'One time',each:'one time'}
+];
+const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function cur(){return CURRENCIES[state.money&&state.money.currency]||CURRENCIES.COP;}
+function fmtMoney(n){
+  const c=cur();n=Number(n)||0;
+  const abs=Math.abs(n),whole=Math.abs(abs-Math.round(abs))<0.005;
+  let txt;
+  try{txt=abs.toLocaleString(c.l,{minimumFractionDigits:whole?0:c.d,maximumFractionDigits:c.d});}
+  catch(e){txt=String(Math.round(abs));}
+  return (n<0?'−':'')+c.s+txt;
+}
+function parseAmount(raw){
+  let s=String(raw==null?'':raw).replace(/[^\d.,]/g,'');
+  if(!s)return 0;
+  if(cur().d===0)return Number(s.replace(/[.,]/g,''))||0;
+  const m=s.match(/[.,](\d{1,2})$/);
+  let dec='';
+  if(m){dec=m[1];s=s.slice(0,-m[0].length);}
+  const n=Number(s.replace(/[.,]/g,'')+(dec?'.'+dec:''));
+  return isFinite(n)?n:0;
+}
+/* Whole-unit currencies get thousands separators while typing, so 1200000 reads as 1.200.000. */
+function fmtAmountInput(el){
+  const c=cur();if(c.d!==0)return;
+  const digits=el.value.replace(/\D/g,'').slice(0,13);
+  el.value=digits?Number(digits).toLocaleString(c.l):'';
+}
+function amountForInput(n){
+  const c=cur();n=Number(n)||0;if(!n)return '';
+  return c.d===0?Math.round(n).toLocaleString(c.l):String(n);
+}
+
+function keyToDate(key){const p=key.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function dayNum(key){const p=key.split('-');return Math.round(Date.UTC(+p[0],+p[1]-1,+p[2])/86400000);}
+function addDaysKey(key,n){const d=keyToDate(key);d.setDate(d.getDate()+n);return dateKey(d);}
+function shortDate(key){const d=keyToDate(key);return MONTHS_SHORT[d.getMonth()]+' '+d.getDate();}
+function monthRange(y,m){return [dateKey(new Date(y,m,1)),dateKey(new Date(y,m+1,0))];}
+function freqOf(b){return FREQS.find(f=>f.k===b.freq)||FREQS[0];}
+
+/* Every due date of one fee inside [from,to]. A monthly fee set for the 31st
+   lands on the last day of shorter months. */
+function billOccurrences(b,from,to){
+  const out=[];if(!b||!b.start)return out;
+  const lo=from>b.start?from:b.start;
+  const hi=(b.end&&b.end<to)?b.end:to;
+  if(lo>hi)return out;
+  const f=b.freq||'monthly';
+  if(f==='once'){if(b.start>=lo&&b.start<=hi)out.push(b.start);return out;}
+  if(f==='weekly'||f==='biweekly'){
+    const step=f==='weekly'?7:14,s=dayNum(b.start);
+    let k=Math.max(0,Math.ceil((dayNum(lo)-s)/step));
+    for(let guard=0;guard<800;guard++,k++){
+      const key=addDaysKey(b.start,k*step);
+      if(key>hi)break;
+      out.push(key);
+    }
+    return out;
+  }
+  const n=f==='yearly'?12:(f==='quarterly'?3:1);
+  const sp=b.start.split('-').map(Number),sIdx=sp[0]*12+sp[1]-1;
+  const lp=lo.split('-').map(Number),hp=hi.split('-').map(Number);
+  const hIdx=hp[0]*12+hp[1]-1;
+  for(let idx=lp[0]*12+lp[1]-1;idx<=hIdx;idx++){
+    if(idx<sIdx||(idx-sIdx)%n)continue;
+    const y=Math.floor(idx/12),m=idx%12;
+    const dim=new Date(y,m+1,0).getDate();
+    const key=dateKey(new Date(y,m,Math.min(sp[2],dim)));
+    if(key>=lo&&key<=hi)out.push(key);
+  }
+  return out;
+}
+function nextDue(b){
+  const today=todayStr();
+  return billOccurrences(b,today,addDaysKey(today,800)).find(k=>!(b.paid&&b.paid[k]))||null;
+}
+
+/* Every fee due date in a range, soonest first, with its payment if there is one. */
+function feeItems(from,to){
+  const today=todayStr(),items=[];
+  state.bills.forEach(b=>billOccurrences(b,from,to).forEach(key=>{
+    const p=(b.paid&&b.paid[key])||null;
+    items.push({bill:b,key:key,paid:p,
+      amount:p?Number(p.amount)||0:Number(b.amount)||0,
+      status:p?'paid':(key<today?'overdue':(key===today?'today':'upcoming'))});
+  }));
+  items.sort((a,b)=>a.key<b.key?-1:(a.key>b.key?1:String(a.bill.name).localeCompare(String(b.bill.name))));
+  return items;
+}
+function monthMoney(y,m){
+  const r=monthRange(y,m),items=feeItems(r[0],r[1]);
+  let fixed=0,paid=0,left=0;
+  items.forEach(i=>{fixed+=i.amount;if(i.paid)paid+=i.amount;else left+=i.amount;});
+  let out=0,inn=0;
+  const moves=state.moves.filter(v=>v.date>=r[0]&&v.date<=r[1]);
+  moves.forEach(v=>{if(v.kind==='in')inn+=Number(v.amount)||0;else out+=Number(v.amount)||0;});
+  const base=Number(state.money.income)||0,income=base+inn;
+  return {items:items,moves:moves,fixed:fixed,paid:paid,left:left,out:out,extraIn:inn,base:base,income:income,
+    balance:income-paid-out,free:income-fixed-out};
+}
+/* What needs a decision now: unpaid fees from the last 60 days through the next 7. */
+function attentionItems(){
+  const today=todayStr();
+  return feeItems(addDaysKey(today,-60),addDaysKey(today,7)).filter(i=>!i.paid);
+}
+function settleAutoBills(){
+  const today=todayStr();let touched=false;
+  state.bills.forEach(b=>{
+    if(!b.auto)return;
+    billOccurrences(b,addDaysKey(today,-60),today).forEach(key=>{
+      if(!b.paid)b.paid={};
+      if(!b.paid[key]){b.paid[key]={on:key,amount:Number(b.amount)||0,auto:true};touched=true;}
+    });
+  });
+  if(touched)save();
+}
+
+function feeWhen(i){
+  const diff=dayNum(i.key)-dayNum(todayStr());
+  if(i.paid)return 'Paid '+shortDate(i.paid.on||i.key)+(i.paid.auto?' · automatic':'');
+  if(diff===0)return 'Due today';
+  if(diff<0)return 'Overdue · was due '+shortDate(i.key)+' ('+(-diff)+(diff===-1?' day':' days')+' late)';
+  return 'Due '+shortDate(i.key)+' · '+(diff===1?'tomorrow':'in '+diff+' days');
+}
+function feeRowHtml(i,sub){
+  const b=i.bill,id=b.id,k=i.key;
+  return '<div class="fee-row is-'+i.status+'">'+
+    '<button class="fee-box" onclick="tapFee(\''+id+'\',\''+k+'\')" aria-label="'+escAttr((i.paid?'Mark unpaid: ':'Mark paid: ')+b.name)+'">'+(i.paid?'✓':escHtml(b.emoji||'🧾'))+'</button>'+
+    '<div class="fee-body" onclick="openBill(\''+id+'\')">'+
+      '<div class="fee-name">'+escHtml(b.name)+'</div>'+
+      '<div class="fee-sub">'+escHtml(sub||feeWhen(i))+'</div>'+
+    '</div>'+
+    '<div class="fee-amt">'+fmtMoney(i.amount)+'</div>'+
+    (i.paid?'':'<button class="fee-paybtn" onclick="tapFee(\''+id+'\',\''+k+'\')">Pay</button>')+
+  '</div>';
+}
+function moveRowHtml(v){
+  const isIn=v.kind==='in';
+  return '<div class="day-row">'+
+    '<div class="day-row-box">'+(isIn?'↓':'↑')+'</div>'+
+    '<div class="day-row-text">'+escHtml(v.text)+'</div>'+
+    '<div class="fee-amt'+(isIn?' amt-in':'')+'">'+(isIn?'+':'−')+fmtMoney(v.amount)+'</div>'+
+    '<button class="day-row-del" onclick="deleteMove(\''+v.id+'\')" title="Delete">🗑️</button>'+
+  '</div>';
+}
+
+function dayModalIsOpen(){return document.getElementById('dayModal').classList.contains('open');}
+function refreshMoney(){
+  if(dayModalIsOpen())renderDayModal();
+  refreshView(currentView);
+}
+function updateMoneyBadge(){
+  const el=document.getElementById('moneyBadge');if(!el)return;
+  const today=todayStr();
+  const n=attentionItems().filter(i=>i.key<=today).length;
+  el.hidden=n===0;el.textContent=n>9?'9+':n;
+}
+
+/* --- Money view --- */
+function renderMoney(){
+  settleAutoBills();
+  const now=new Date(),isThis=calYear===now.getFullYear()&&calMonth===now.getMonth();
+  const mm=monthMoney(calYear,calMonth);
+  document.getElementById('moneyMonthLabel').textContent=MONTHS_LONG[calMonth]+' '+calYear;
+  const label=document.getElementById('moneyHeroLabel'),num=document.getElementById('moneyHeroNum'),sub=document.getElementById('moneyHeroSub');
+  if(mm.income>0){
+    label.textContent='Free after fees';
+    num.textContent=fmtMoney(mm.free);num.classList.toggle('is-neg',mm.free<0);
+    sub.innerHTML=mm.left>0
+      ?'You hold <b>'+fmtMoney(mm.balance)+'</b> now · <b>'+fmtMoney(mm.left)+'</b> is already spoken for.'
+      :(mm.fixed>0?'Every fee this month is paid. This is yours.':'No fixed fees this month.');
+  }else{
+    label.textContent='Committed this month';
+    num.textContent=fmtMoney(mm.fixed+mm.out);num.classList.remove('is-neg');
+    sub.innerHTML='<u onclick="openMoneySetup()">Set your monthly income</u> to see what is truly free.';
+  }
+  const pct=mm.fixed>0?Math.round(mm.paid/mm.fixed*100):0;
+  document.getElementById('moneyPaidBar').style.width=pct+'%';
+  document.getElementById('moneyBarPaid').textContent=mm.fixed>0?'Paid '+fmtMoney(mm.paid)+' · '+pct+'%':'';
+  document.getElementById('moneyBarLeft').textContent=mm.fixed>0?(mm.left>0?'Left '+fmtMoney(mm.left):'All paid ✓'):'';
+
+  document.getElementById('moneyLines').innerHTML=
+    '<div class="money-line is-tap" onclick="openMoneySetup()"><span>Monthly income</span><b>'+fmtMoney(mm.base)+'</b></div>'+
+    (mm.extraIn?'<div class="money-line"><span>Received</span><b class="amt-in">+'+fmtMoney(mm.extraIn)+'</b></div>':'')+
+    '<div class="money-line"><span>Fixed fees ('+mm.items.length+')</span><b>−'+fmtMoney(mm.fixed)+'</b></div>'+
+    '<div class="money-line"><span>Other spending</span><b>−'+fmtMoney(mm.out)+'</b></div>'+
+    '<div class="money-line total"><span>Free after fees</span><b class="'+(mm.free<0?'is-neg':'')+'">'+fmtMoney(mm.free)+'</b></div>';
+
+  // Fees of the month in view; in the current month, older unpaid ones come along so nothing hides.
+  let items=mm.items.slice();
+  if(isThis){
+    const first=monthRange(calYear,calMonth)[0];
+    items=attentionItems().filter(i=>i.key<first).concat(items);
+  }
+  const order={overdue:0,today:1,upcoming:2,paid:3};
+  items.sort((a,b)=>(order[a.status]-order[b.status])||(a.key<b.key?-1:a.key>b.key?1:0));
+  document.getElementById('moneyFeesTitle').textContent=isThis?'Fees this month':'Fees in '+MONTHS_LONG[calMonth];
+  document.getElementById('moneyFeeList').innerHTML=items.map(i=>feeRowHtml(i)).join('')||
+    '<div class="fee-empty">'+(state.bills.length?'Nothing is due this month.':'No fees yet. Add your rent, utilities, phone plan, subscriptions or loans, and they will appear on your calendar every time they are due.')+'</div>';
+
+  const moves=mm.moves.slice().sort((a,b)=>a.date<b.date?1:(a.date>b.date?-1:String(b.createdAt).localeCompare(String(a.createdAt))));
+  document.getElementById('moneyMoveList').innerHTML=moves.map(v=>
+    '<div class="fee-row">'+
+      '<div class="fee-box" style="font-size:14px;">'+(v.kind==='in'?'↓':'↑')+'</div>'+
+      '<div class="fee-body" style="cursor:default;"><div class="fee-name">'+escHtml(v.text)+'</div><div class="fee-sub">'+shortDate(v.date)+'</div></div>'+
+      '<div class="fee-amt'+(v.kind==='in'?' amt-in':'')+'">'+(v.kind==='in'?'+':'−')+fmtMoney(v.amount)+'</div>'+
+      '<button class="day-row-del" onclick="deleteMove(\''+v.id+'\')" title="Delete">🗑️</button>'+
+    '</div>').join('')||'<div class="fee-empty">Nothing logged this month. Add what you spend or receive beyond your fixed fees and it joins the balance.</div>';
+
+  const today=todayStr();
+  const defs=state.bills.slice().sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  document.getElementById('moneyBillDefs').innerHTML=defs.map(b=>{
+    const stopped=b.end&&b.end<=today&&!nextDue(b);
+    const nd=stopped?null:nextDue(b);
+    return '<div class="fee-row" style="cursor:pointer;" onclick="openBill(\''+b.id+'\')">'+
+      '<div class="fee-box">'+escHtml(b.emoji||'🧾')+'</div>'+
+      '<div class="fee-body"><div class="fee-name">'+escHtml(b.name)+'</div>'+
+        '<div class="fee-sub">'+(stopped?'Stopped':(nd?'Next: '+shortDate(nd):'All paid'))+(b.auto?' · automatic':'')+'</div></div>'+
+      '<div class="fee-def-freq"><div class="fee-amt">'+fmtMoney(b.amount)+'</div>'+freqOf(b).each+'</div>'+
+    '</div>';
+  }).join('')||'<div class="fee-empty">Your fee rules will be listed here.</div>';
+  updateMoneyBadge();
+}
+
+/* --- Home card --- */
+function renderMoneyHome(){
+  const el=document.getElementById('moneyHome');if(!el)return;
+  settleAutoBills();
+  const empty=!state.bills.length&&!state.moves.length&&!(Number(state.money.income)>0);
+  if(empty){
+    el.innerHTML='<div class="money-home-head"><div class="money-home-title">Money</div></div>'+
+      '<div class="money-home-note">Bring your <b>unavoidable fees</b> here — rent, utilities, subscriptions. You will see them coming on the calendar and know what is truly free.</div>'+
+      '<button class="money-home-link" onclick="showView(\'money\');openBill()">➕ Add your first fee</button>';
+    updateMoneyBadge();return;
+  }
+  const now=new Date(),mm=monthMoney(now.getFullYear(),now.getMonth());
+  const att=attentionItems();
+  const chip=mm.income>0
+    ?'<div class="money-home-chip'+(mm.free<0?' is-neg':'')+'" title="Free after fees this month">'+fmtMoney(mm.free)+' free</div>'
+    :'<div class="money-home-chip" title="Fees still to pay this month">'+fmtMoney(mm.left)+' to pay</div>';
+  let body;
+  if(att.length){
+    body=att.slice(0,4).map(i=>feeRowHtml(i)).join('')+
+      (att.length>4?'<div class="today-more">+ '+(att.length-4)+' more in Money</div>':'');
+  }else{
+    const upcoming=feeItems(todayStr(),addDaysKey(todayStr(),62)).filter(i=>!i.paid)[0];
+    body='<div class="money-home-note">All clear — nothing is due in the next 7 days.'+
+      (upcoming?' Next up: <b>'+escHtml(upcoming.bill.name)+'</b>, '+shortDate(upcoming.key)+' · '+fmtMoney(upcoming.amount)+'.':'')+'</div>';
+  }
+  el.innerHTML='<div class="money-home-head"><div class="money-home-title">Fees coming up</div>'+chip+'</div>'+body+
+    '<button class="money-home-link" onclick="calGoToday();showView(\'money\')">Open Money · '+fmtMoney(mm.paid)+' paid of '+fmtMoney(mm.fixed)+'</button>';
+  updateMoneyBadge();
+}
+
+/* --- Paying --- */
+let payCtx=null;
+function tapFee(id,key){
+  const b=state.bills.find(x=>x.id===id);if(!b)return;
+  if(b.paid&&b.paid[key]){
+    delete b.paid[key];save();refreshMoney();toast('Marked as not paid');return;
+  }
+  payCtx={id:id,key:key};
+  document.getElementById('payTitle').textContent=(b.emoji||'🧾')+' '+b.name;
+  document.getElementById('paySub').textContent='Due '+formatDayKey(key)+' · planned '+fmtMoney(b.amount);
+  document.getElementById('payAmount').value=amountForInput(b.amount);
+  document.getElementById('payModal').classList.add('open');
+}
+function closePay(){document.getElementById('payModal').classList.remove('open');payCtx=null;}
+function confirmPay(){
+  if(!payCtx)return;
+  const b=state.bills.find(x=>x.id===payCtx.id);if(!b){closePay();return;}
+  const amt=parseAmount(document.getElementById('payAmount').value);
+  if(!(amt>0)){toast('Enter the amount you paid');return;}
+  if(!b.paid)b.paid={};
+  b.paid[payCtx.key]={on:todayStr(),amount:amt};
+  save();closePay();
+  boostVoyage&&boostVoyage();
+  const left=attentionItems().filter(i=>i.key<=todayStr()).length;
+  toast(left?'Paid ✓ · '+left+' still waiting':'Paid ✓ · you are up to date');
+  refreshMoney();
+}
+
+/* --- Fee editor --- */
+let editBillId=null,tempBillEmoji='🧾',tempBillFreq='monthly';
+function renderBillEmojiOptions(){
+  document.getElementById('billEmojiOptions').innerHTML=BILL_EMOJIS.map(e=>
+    '<div class="avatar-option'+(e===tempBillEmoji?' active':'')+'" onclick="pickBillEmoji(\''+e+'\')">'+e+'</div>').join('');
+}
+function pickBillEmoji(e){tempBillEmoji=e;renderBillEmojiOptions();}
+function renderBillFreq(){
+  document.getElementById('billFreqRow').innerHTML=FREQS.map(f=>
+    '<button class="filter-btn'+(f.k===tempBillFreq?' active':'')+'" onclick="pickBillFreq(\''+f.k+'\')">'+f.label+'</button>').join('');
+  const once=tempBillFreq==='once';
+  document.getElementById('billStartLabel').textContent=once?'Due date':(editBillId?'First due date':'Next due date');
+  const v=document.getElementById('billStart').value;
+  let hint='';
+  if(v&&!once){
+    const d=keyToDate(v).getDate();
+    if(tempBillFreq==='monthly'||tempBillFreq==='quarterly')hint='Repeats on day '+d+(d>28?' (or the last day of shorter months)':'')+'.';
+    else if(tempBillFreq==='yearly')hint='Repeats every '+shortDate(v)+'.';
+    else hint='Repeats '+freqOf({freq:tempBillFreq}).each+' from this date.';
+  }
+  document.getElementById('billStartHint').textContent=hint;
+}
+function pickBillFreq(k){tempBillFreq=k;renderBillFreq();}
+function openBill(id){
+  const b=id?state.bills.find(x=>x.id===id):null;
+  editBillId=b?b.id:null;
+  tempBillEmoji=b?(b.emoji||'🧾'):'🏠';
+  tempBillFreq=b?(b.freq||'monthly'):'monthly';
+  document.getElementById('billModalTitle').textContent=b?'Edit fee':'New fixed fee';
+  document.getElementById('billName').value=b?b.name:'';
+  document.getElementById('billAmount').value=b?amountForInput(b.amount):'';
+  document.getElementById('billStart').value=b?b.start:(dayModalIsOpen()&&openDayKey>=todayStr()?openDayKey:todayStr());
+  document.getElementById('billAuto').checked=!!(b&&b.auto);
+  document.getElementById('billEditActions').hidden=!b;
+  renderBillEmojiOptions();renderBillFreq();
+  document.getElementById('billModal').classList.add('open');
+}
+function closeBill(){document.getElementById('billModal').classList.remove('open');}
+function saveBill(){
+  const name=document.getElementById('billName').value.trim();
+  const amount=parseAmount(document.getElementById('billAmount').value);
+  const start=document.getElementById('billStart').value;
+  if(!name){toast('Give the fee a name');document.getElementById('billName').focus();return;}
+  if(!(amount>0)){toast('Enter the amount');document.getElementById('billAmount').focus();return;}
+  if(!start){toast('Pick the due date');return;}
+  const auto=document.getElementById('billAuto').checked;
+  let b=editBillId?state.bills.find(x=>x.id===editBillId):null;
+  if(b){
+    b.emoji=tempBillEmoji;b.name=name;b.amount=amount;b.freq=tempBillFreq;b.start=start;b.auto=auto;
+    if(b.end&&b.end<=todayStr())b.end=null; // saving a stopped fee brings it back
+  }else{
+    b={id:uid(),emoji:tempBillEmoji,name:name,amount:amount,freq:tempBillFreq,start:start,end:null,auto:auto,paid:{},createdAt:new Date().toISOString()};
+    state.bills.push(b);
+  }
+  save();closeBill();
+  const nd=nextDue(b);
+  toast(editBillId?'Fee updated ✓':(nd?'Saved ✓ · next due '+shortDate(nd):'Saved ✓'));
+  refreshMoney();
+}
+function stopBill(){
+  const b=state.bills.find(x=>x.id===editBillId);if(!b)return;
+  b.end=todayStr();save();closeBill();toast('Stopped. Past payments stay on your calendar.');refreshMoney();
+}
+function deleteBill(){
+  const b=state.bills.find(x=>x.id===editBillId);if(!b)return;
+  if(!confirm('Delete "'+b.name+'" and every payment recorded for it?'))return;
+  state.bills=state.bills.filter(x=>x.id!==b.id);save();closeBill();toast('Fee deleted');refreshMoney();
+}
+
+/* --- Other money moves --- */
+const moveKind={mv:'out',day:'out'};
+function setMoveKind(prefix,kind){
+  moveKind[prefix]=kind;
+  document.querySelectorAll('#'+prefix+'MoveKind button').forEach(b=>b.classList.toggle('active',b.dataset.kind===kind));
+}
+function addMove(prefix){
+  const t=document.getElementById(prefix+'MoveText'),a=document.getElementById(prefix+'MoveAmt');
+  const text=t.value.trim(),amount=parseAmount(a.value);
+  if(!text){toast('Say what it was');t.focus();return;}
+  if(!(amount>0)){toast('Enter the amount');a.focus();return;}
+  const date=prefix==='day'&&openDayKey?openDayKey:todayStr();
+  state.moves.push({id:uid(),kind:moveKind[prefix],text:text,amount:amount,date:date,createdAt:new Date().toISOString()});
+  save();t.value='';a.value='';
+  toast((moveKind[prefix]==='in'?'Received ':'Spent ')+fmtMoney(amount)+' ✓');
+  refreshMoney();
+}
+function deleteMove(id){
+  state.moves=state.moves.filter(v=>v.id!==id);save();refreshMoney();toast('Removed');
+}
+
+/* --- Income & currency --- */
+function openMoneySetup(){
+  const sel=document.getElementById('moneyCurrency');
+  sel.innerHTML=Object.keys(CURRENCIES).map(k=>'<option value="'+k+'"'+(k===state.money.currency?' selected':'')+'>'+CURRENCIES[k].n+'</option>').join('');
+  document.getElementById('moneyIncome').value=amountForInput(state.money.income);
+  document.getElementById('moneySetupModal').classList.add('open');
+}
+function closeMoneySetup(){document.getElementById('moneySetupModal').classList.remove('open');}
+function onCurrencyPick(){
+  // re-read the typed income under the old currency, then show it in the new one
+  const n=parseAmount(document.getElementById('moneyIncome').value);
+  state.money.currency=document.getElementById('moneyCurrency').value;
+  document.getElementById('moneyIncome').value=amountForInput(n);
+}
+function saveMoneySetup(){
+  state.money.currency=document.getElementById('moneyCurrency').value;
+  state.money.income=parseAmount(document.getElementById('moneyIncome').value);
+  save();closeMoneySetup();toast('Saved ✓');refreshMoney();
+}
+
+/* --- Day sheet: the record of that day --- */
+function feesPaidOn(key){ // payments made on this day for fees due on another day
+  const out=[];
+  state.bills.forEach(b=>Object.keys(b.paid||{}).forEach(k=>{
+    const p=b.paid[k];
+    if(p&&p.on===key&&k!==key)out.push({bill:b,key:k,paid:p,amount:Number(p.amount)||0,status:'paid'});
+  }));
+  return out;
+}
+function renderDayRecord(key){
+  const today=todayStr(),isFuture=key>today;
+  const due=feeItems(key,key),paidHere=feesPaidOn(key);
+  const moves=state.moves.filter(v=>v.date===key);
+  const done=state.todos.filter(t=>t.done&&t.doneDate===key&&t.dueDate!==key);
+  const doneAll=state.todos.filter(t=>t.done&&t.doneDate===key).length;
+  const ideas=state.ideas.filter(i=>keyOfIso(i.createdAt)===key);
+  const frac=isFuture?null:habitFractionOn(key);
+
+  document.getElementById('dayFeesWrap').hidden=!due.length&&!paidHere.length;
+  document.getElementById('dayFeeList').innerHTML=
+    due.map(i=>feeRowHtml(i,i.paid?null:(isFuture?'Due this day':null))).join('')+
+    paidHere.map(i=>feeRowHtml(i,'Paid this day · was due '+shortDate(i.key))).join('');
+
+  document.getElementById('dayMoveAdd').hidden=isFuture;
+  document.getElementById('dayMovesWrap').hidden=isFuture&&!moves.length;
+  document.getElementById('dayMoveList').innerHTML=moves.map(moveRowHtml).join('')||
+    (isFuture?'':'<div class="day-empty">No spending or income logged.</div>');
+
+  document.getElementById('dayDoneWrap').hidden=!done.length;
+  document.getElementById('dayDoneList').innerHTML=done.map(t=>
+    '<div class="day-row done"><div class="day-row-box">✓</div><div class="day-row-text">'+escHtml(t.text)+'</div></div>').join('');
+
+  document.getElementById('dayIdeasWrap').hidden=!ideas.length;
+  document.getElementById('dayIdeaList').innerHTML=ideas.map(i=>
+    '<div class="day-row"><div class="day-row-box">💡</div><div class="day-row-text">'+escHtml(i.text)+'</div></div>').join('');
+
+  // Recap chips — the day at a glance
+  const chips=[];
+  if(frac&&frac.done)chips.push('🔄 '+frac.done+'/'+frac.total+' habits');
+  if(doneAll)chips.push('✅ '+doneAll+(doneAll===1?' task done':' tasks done'));
+  if(ideas.length)chips.push('💡 '+ideas.length+(ideas.length===1?' idea':' ideas'));
+  let paidSum=0;
+  due.forEach(i=>{if(i.paid&&(i.paid.on||i.key)===key)paidSum+=i.amount;});
+  paidHere.forEach(i=>paidSum+=i.amount);
+  const dueSum=due.filter(i=>!i.paid).reduce((s,i)=>s+i.amount,0);
+  if(paidSum)chips.push('🧾 '+fmtMoney(paidSum)+' in fees paid');
+  if(dueSum)chips.push((isFuture||key===today?'⏳ ':'⚠️ ')+fmtMoney(dueSum)+(isFuture||key===today?' due':' unpaid'));
+  const spent=moves.filter(v=>v.kind!=='in').reduce((s,v)=>s+(Number(v.amount)||0),0);
+  const got=moves.filter(v=>v.kind==='in').reduce((s,v)=>s+(Number(v.amount)||0),0);
+  if(spent)chips.push('↑ '+fmtMoney(spent)+' spent');
+  if(got)chips.push('↓ '+fmtMoney(got)+' received');
+  document.getElementById('dayRecap').innerHTML=chips.map(c=>'<span>'+escHtml(c)+'</span>').join('');
+}
+
+/* --- Phone calendar reminders (.ics): each fee becomes a repeating event
+   with an alert the day before and the morning it is due. --- */
+function exportFeesIcs(){
+  const today=todayStr();
+  const active=state.bills.filter(b=>nextDue(b));
+  if(!active.length){toast('Add a fee first');return;}
+  const esc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+  const ymd=k=>k.replace(/-/g,'');
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//ThingsWallet//Fees//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:ThingsWallet fees'];
+  active.forEach(b=>{
+    const first=nextDue(b),day=keyToDate(b.start).getDate();
+    let rule='';
+    if(b.freq==='weekly')rule='FREQ=WEEKLY';
+    else if(b.freq==='biweekly')rule='FREQ=WEEKLY;INTERVAL=2';
+    else if(b.freq==='yearly')rule='FREQ=YEARLY';
+    else if(b.freq==='monthly'||b.freq==='quarterly'){
+      rule='FREQ=MONTHLY'+(b.freq==='quarterly'?';INTERVAL=3':'');
+      if(day>28){const days=[];for(let d=28;d<=day;d++)days.push(d);rule+=';BYMONTHDAY='+days.join(',')+';BYSETPOS=-1';}
+    }
+    if(rule&&b.end&&b.end>today)rule+=';UNTIL='+ymd(b.end);
+    const title=(b.emoji||'🧾')+' '+b.name+' — '+fmtMoney(b.amount);
+    L.push('BEGIN:VEVENT','UID:'+b.id+'@thingswallet','DTSTAMP:'+stamp,
+      'DTSTART;VALUE=DATE:'+ymd(first),'DTEND;VALUE=DATE:'+ymd(addDaysKey(first,1)),
+      'SUMMARY:'+esc(title),'DESCRIPTION:'+esc('Fixed fee tracked in ThingsWallet. Mark it paid there.'),'TRANSP:TRANSPARENT');
+    if(rule)L.push('RRULE:'+rule);
+    L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+esc('Tomorrow: '+title),'TRIGGER:-PT15H','END:VALARM',
+      'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+esc('Due today: '+title),'TRIGGER:PT9H','END:VALARM','END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  const blob=new Blob([L.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='thingswallet-fees.ics';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  toast('Calendar file ready — open it to add the reminders');
+}
+
+/* ============================================================
    MODAL CLOSE ON BACKDROP CLICK
    ============================================================ */
 document.querySelectorAll('.modal-backdrop').forEach(bd=>{
@@ -3097,6 +3884,9 @@ document.getElementById('btnSync').addEventListener('click',openDataSync);
 document.getElementById('quickCaptureInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitQuickCapture();});
 document.getElementById('dayTaskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addDayTask();});
 document.getElementById('arcadeNewUrl').addEventListener('keydown',e=>{if(e.key==='Enter')saveArcadeForm();});
+['mv','day'].forEach(p=>document.getElementById(p+'MoveAmt').addEventListener('keydown',e=>{if(e.key==='Enter')addMove(p);}));
+document.getElementById('payAmount').addEventListener('keydown',e=>{if(e.key==='Enter')confirmPay();});
+document.getElementById('billStart').addEventListener('change',renderBillFreq);
 
 /* ============================================================
    ONBOARDING
@@ -3119,7 +3909,13 @@ function init(){
   }
   timerRemaining=timerTotal=state.timerDur;
   document.querySelectorAll('.dur-chip').forEach(c=>c.classList.toggle('active',Number(c.dataset.dur)===state.timerDur));
+  settleAutoBills();
   showView('wallet');
+  // The daily nudge: say it once when the app opens.
+  if(state.onboarded){
+    const due=attentionItems().filter(i=>i.key<=todayStr());
+    if(due.length)setTimeout(()=>toast('💰 '+due.length+(due.length===1?' fee needs':' fees need')+' your attention today'),900);
+  }
 }
 init();
 </script>

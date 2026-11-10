@@ -537,6 +537,60 @@ html[data-lang="es"] .en-only{display:none}
 .lang-opt[aria-checked="true"] .lang-badge{background:var(--gold);color:var(--on-gold)}
 .lang-rec{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.03em}
 .ob-lang{margin-bottom:26px}
+
+/* ============================================================
+   WELCOME (13.0) — the first screen: a note from the teacher,
+   one line at a time, with audio in a British or American voice.
+   ============================================================ */
+.welcome{position:relative;isolation:isolate;padding:clamp(6px,2.5vh,26px) 0 10px}
+.welcome::before{content:"";position:absolute;left:0;right:0;top:-10px;height:420px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 38% 46% at 38% 52%,color-mix(in srgb,var(--gold) 13%,transparent),transparent 100%),radial-gradient(ellipse 26% 30% at 74% 30%,color-mix(in srgb,var(--violet) 15%,transparent),transparent 100%)}
+.wl-top{display:flex;justify-content:flex-end;margin-bottom:clamp(22px,5vh,44px)}
+.wl-seg{padding:4px;border-radius:999px;gap:2px}
+.wl-seg button{padding:8px 13px;border-radius:999px;font-size:13.5px;min-height:36px}
+.wl-top .wl-seg{grid-template-columns:repeat(3,auto)}
+.wl-h{font-size:clamp(34px,9vw,54px);margin-top:4px;transition:color .3s ease}
+.wl-h.on > span:first-child{color:var(--gold)}
+.wl-h .es-tr{display:block}
+.wl-audio{display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;margin-top:26px}
+.wl-play{min-height:52px;padding:0 22px 0 8px;gap:12px;border-color:color-mix(in srgb,var(--gold) 55%,transparent);font-size:16px;font-weight:700}
+.wl-play .ico{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--on-gold)}
+.wl-play .ico svg{width:15px;height:15px}
+.wl-play[data-on="1"]{background:var(--gold-soft)}
+.wl-play .lbl .es-tr{display:block;font-size:.76em;font-weight:600;margin-top:0}
+.wl-voice{display:flex;align-items:center;gap:10px}
+.wl-voice > span{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--faint)}
+.wl-voice .wl-seg{grid-template-columns:repeat(2,auto)}
+.wl-letter{margin-top:22px;padding:8px 0 4px;border-top:1px solid var(--line)}
+.wl-line{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;padding:13px 12px 13px 10px;margin:2px -10px;width:calc(100% + 20px);border-radius:var(--r-md);border:1px solid transparent;transition:background .25s ease,border-color .25s ease}
+.wl-line:hover{background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.wl-line.on{background:var(--gold-soft);border-color:color-mix(in srgb,var(--gold) 42%,transparent)}
+.wl-ico{flex:none;width:30px;height:30px;margin-top:2px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-strong);color:var(--gold);transition:background .25s ease,color .25s ease}
+.wl-ico svg{width:12px;height:12px}
+.wl-line.on .wl-ico{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+.wl-txt{flex:1;min-width:0}
+.wl-en{display:block;font-family:var(--display);font-size:clamp(18.5px,4.9vw,21px);line-height:1.34;letter-spacing:-.005em}
+.wl-es{display:block;margin-top:5px;font-size:15px;line-height:1.42;color:var(--muted)}
+html[data-lang="en"] .wl-es,html[data-lang="en"] .wl-h .es-tr{display:none}
+html[data-lang="es"] .wl-es{color:var(--text);opacity:.9;font-size:15.5px}
+.wl-sign{margin:10px 0 0 44px;font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold)}
+.wl-sign small{display:block;font-family:var(--body);font-style:normal;font-size:13px;color:var(--muted);margin-top:2px}
+.wl-route{margin-top:34px}
+.wl-route ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.wl-route li{padding:14px 12px 13px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:14.5px;font-weight:600;line-height:1.3}
+.wl-route li b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1;margin-bottom:8px;color:var(--c)}
+.wl-route li .es-tr{font-weight:500;font-size:.88em}
+.wl-name{margin-top:34px;padding-top:26px;border-top:1px solid var(--line)}
+.wl-name label{display:block;font-family:var(--display);font-size:22px;line-height:1.25}
+.wl-name label .es-tr{font-family:var(--body);font-size:15px}
+.wl-name .field{margin-top:14px}
+.wl-anim > *{animation:wlIn .7s cubic-bezier(.2,.7,.2,1) both}
+.wl-anim > *:nth-child(2){animation-delay:.05s}.wl-anim > *:nth-child(3){animation-delay:.12s}.wl-anim > *:nth-child(4){animation-delay:.2s}
+.wl-anim > *:nth-child(5){animation-delay:.28s}.wl-anim > *:nth-child(6){animation-delay:.36s}.wl-anim > *:nth-child(7){animation-delay:.44s}
+@keyframes wlIn{from{opacity:0;transform:translateY(10px)}}
+.voice-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.voice-row .wl-seg{grid-template-columns:repeat(2,auto)}
+@media(max-width:360px){.wl-route ol{grid-template-columns:1fr}.wl-route li{display:flex;align-items:center;gap:12px}.wl-route li b{margin:0}}
 @media(max-width:400px){.brand b{display:none}.top-actions{gap:4px}.icon-btn{width:38px;height:38px}}
 
 /* ============================================================
@@ -1879,6 +1933,7 @@ let readTok = 0;
 function stopReading(){
   readTok++;
   document.querySelectorAll(".snt.on").forEach(s=>s.classList.remove("on"));
+  welcomeIdle();
   document.querySelectorAll('[data-act="readAll"]').forEach(b=>{ b.dataset.on = ""; const s = b.querySelector("span"); if(s) s.textContent = "Listen to the text"; });
   if("speechSynthesis" in window) speechSynthesis.cancel();
 }
@@ -2041,11 +2096,31 @@ function receiveShared(code){
 /* ============================================================
    SPEECH (text-to-speech for examples and shadowing)
    ============================================================ */
-let voice = null;
+/* Two accents, one choice for the whole app: British (en-GB) or American (en-US).
+   The phone or computer supplies the voices; we pick the clearest one it has. */
+const ACCENTS = { uk:{lang:"en-GB", en:"British", es:"Británica"}, us:{lang:"en-US", en:"American", es:"Americana"} };
+const accent = () => (state && ACCENTS[state.accent]) ? state.accent : "us";
+let voice = null, voiceMiss = false;
+const VOICE_GOOD = /\b(samantha|ava|allison|evan|zoe|nicky|aria|jenny|guy|michelle|emma|andrew|daniel|kate|serena|stephanie|arthur|martha|sonia|ryan|libby|oliver)\b/i;
+const VOICE_TOY = /\b(albert|bad news|bahh|bells|boing|bubbles|cellos|wobble|fred|good news|jester|junior|kathy|organ|ralph|superstar|trinoids|whisper|zarvox|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)\b/i;
+const voiceLang = v => String(v.lang||"").replace("_","-").toLowerCase();
+function voiceScore(v, want){
+  const l = voiceLang(v), n = String(v.name||"");
+  if(!/^en/.test(l)) return -1000;
+  let s = l===want ? 100 : 0;
+  if(/natural|neural|premium|enhanced|siri/i.test(n)) s += 40;
+  if(/google/i.test(n)) s += 30;
+  if(VOICE_GOOD.test(n)) s += 20;
+  if(VOICE_TOY.test(n)) s -= 200;
+  return s;
+}
 function pickVoice(){
   if(!("speechSynthesis" in window)) return;
-  const v = speechSynthesis.getVoices();
-  voice = v.find(x=>/en-US/i.test(x.lang) && /natural|google|samantha|aria|jenny/i.test(x.name)) || v.find(x=>/en-US/i.test(x.lang)) || v.find(x=>/^en/i.test(x.lang)) || null;
+  const want = ACCENTS[accent()].lang.toLowerCase(), all = speechSynthesis.getVoices();
+  let best = null, top = -1;
+  all.forEach(v=>{ const s = voiceScore(v, want); if(s>top){ top = s; best = v; } });
+  voice = best;
+  voiceMiss = all.length>0 && !all.some(v=>voiceLang(v)===want);
 }
 if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function say(text, btn, onend){
@@ -2053,10 +2128,57 @@ function say(text, btn, onend){
   speechSynthesis.cancel();
   document.querySelectorAll(".listen.playing").forEach(b=>b.classList.remove("playing"));
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US"; if(voice) u.voice = voice; u.rate = state.ttsRate||0.92;
+  const want = ACCENTS[accent()].lang;
+  if(voice && (voiceLang(voice)===want.toLowerCase() || voiceMiss)){ u.voice = voice; u.lang = voice.lang.replace("_","-"); } else u.lang = want;
+  u.rate = state.ttsRate||0.92;
   if(btn) btn.classList.add("playing");
-  u.onend = u.onerror = () => { if(btn) btn.classList.remove("playing"); if(onend) onend(); };
+  u.onend = u.onerror = ev => { if(btn) btn.classList.remove("playing"); if(onend) onend(ev); };
   speechSynthesis.speak(u);
+}
+const ICON_STOP = '<svg viewBox="0 0 16 16" fill="currentColor"><rect x="3.5" y="3.5" width="9" height="9" rx="1.6"/></svg>';
+function accentSeg(){
+  return `<div class="seg wl-seg notr" role="group" aria-label="Voice · Voz">${["uk","us"].map(k=>`<button data-act="accent" data-v="${k}" aria-pressed="${accent()===k}">${lang()==="es"?ACCENTS[k].es:ACCENTS[k].en}</button>`).join("")}</div>`;
+}
+
+/* ---------- the welcome: read line by line, each line lights up as it is spoken ---------- */
+const WELCOME = [
+  {en:"Welcome. You are in the right place.", es:"Te doy la bienvenida. Estás en el lugar correcto."},
+  {en:"You don't need perfect English to begin. You need one clear target and a few minutes a day.", es:"No necesitas un inglés perfecto para empezar. Necesitas un objetivo claro y unos minutos al día."},
+  {en:"Here, fluency has an order. First you write your ideas. Then you train your ear to catch complete expressions.", es:"Aquí la fluidez tiene un orden. Primero escribes tus ideas. Después entrenas el oído para reconocer expresiones completas."},
+  {en:"Every class connects to the one before. Your memory and your logic do the work, so nothing gets lost.", es:"Cada clase se conecta con la anterior. Tu memoria y tu lógica hacen el trabajo, y nada se pierde."},
+  {en:"You are not doing this alone. You have a teacher, a map, and people like you on the same route.", es:"No vas a hacer esto en solitario. Tienes un profesor, un mapa y personas como tú en la misma ruta."},
+  {en:"Take a breath. Tell me your name, and let's begin.", es:"Respira. Dime tu nombre y empezamos."}
+];
+let welcomeOn = false, welcomeAt = 0;
+function welcomeIdle(){
+  welcomeOn = false;
+  document.querySelectorAll("[data-wl].on").forEach(e=>e.classList.remove("on"));
+  const b = document.getElementById("wlPlay");
+  if(b && b.dataset.on==="1"){ b.dataset.on = ""; b.querySelector(".ico").innerHTML = ICON_PLAY; b.querySelector(".lbl").innerHTML = T("Listen to the welcome","Escucha la bienvenida"); }
+}
+function welcomePlay(from, single){
+  if(!("speechSynthesis" in window)){ toastT("Audio isn't available in this browser.","El audio no está disponible en este navegador."); return; }
+  stopReading();
+  const tok = readTok; let i = from||0;
+  if(!single){
+    welcomeOn = true;
+    const b = document.getElementById("wlPlay");
+    if(b){ b.dataset.on = "1"; b.querySelector(".ico").innerHTML = ICON_STOP; b.querySelector(".lbl").innerHTML = T("Stop","Detener"); }
+  }
+  const next = () => {
+    if(tok!==readTok) return;
+    if(i>=WELCOME.length || (single && i!==from)){ welcomeIdle(); return; }
+    welcomeAt = i;
+    document.querySelectorAll("[data-wl]").forEach(e=>e.classList.toggle("on", +e.dataset.wl===i));
+    const el = document.querySelector(`[data-wl="${i}"]`);
+    if(el && !single && i>0) el.scrollIntoView({block:"center", behavior:"smooth"});
+    say(WELCOME[i++].en, null, ev => {
+      if(tok!==readTok) return;
+      if(ev && ev.type==="error" && ev.error!=="interrupted" && ev.error!=="canceled"){ welcomeIdle(); toastT("Audio didn't start. Tap a sentence to try again.","El audio no inició. Toca una frase para intentar de nuevo."); return; }
+      setTimeout(next, single ? 0 : 420);
+    });
+  };
+  next();
 }
 const ICON_PLAY = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg>';
 const listenBtn = t => `<button class="listen" data-act="say" data-text="${esc(t)}" aria-label="Listen: ${esc(t)}">${ICON_PLAY}</button>`;
@@ -2840,6 +2962,7 @@ function langSheet(){
   openSheet(`${sheetHead("Language · Idioma", "")}
     <p class="muted notr" style="margin-top:-6px">¿En qué idioma quieres las instrucciones? · How do you want your instructions?</p>
     <div class="mt">${langChoices(lang())}</div>
+    <div class="voice-row"><div class="notr"><b>${tb("Audio voice","Voz del audio")}</b><br><span class="small muted">${tt("The accent you hear in every example.","El acento que escuchas en cada ejemplo.")}</span></div>${accentSeg()}</div>
     <p class="small muted mt notr">${lang()==="en"?"You can change this at any time from the button at the top.":"Puedes cambiarlo cuando quieras desde el botón de arriba. · Change it any time from the top button."}</p>`);
 }
 function setLang(v){
@@ -2928,20 +3051,38 @@ const VIEWS = {};
 /* ---------------- ONBOARDING ---------------- */
 VIEWS.onboarding = function(){
   setBody("in-onboarding");
+  stopReading();
   const s = ob.step;
   let h = "";
   const choice = (key,val,label,sub) => `<button class="choice" data-act="obPick" data-k="${key}" data-v="${esc(val)}" aria-pressed="${ob[key]===val}"><span>${esc(label)}${sub?`<small>${esc(sub)}</small>`:""}</span></button>`;
   if(s===0){
-    h = `<section class="arrival stack">
-      <div class="ob-lang"><p class="kicker notr">Idioma de las instrucciones · Language</p>${langChoices(lang())}</div>
-      <h1 class="display">Welcome to your English.</h1>
-      <p class="lead">You don't need to know where to start. That's our job.</p>
-      <p class="muted">We'll discover where you are, build your route, and give you one clear mission at a time.</p>
-      <div class="mt-l"><label for="obName" class="small muted">What should we call you?</label>
-      <input class="field mt-s" id="obName" data-in="obName" autocomplete="given-name" value="${esc(ob.name)}" placeholder="Your first name"></div>
+    const lg = lang(), W = WELCOME;
+    const langSeg = `<div class="seg wl-seg" role="group" aria-label="Idioma · Language">${[["es","Español"],["bi","Bilingüe"],["en","English"]].map(([k,l])=>`<button data-act="setLang" data-v="${k}" aria-pressed="${lg===k}">${l}</button>`).join("")}</div>`;
+    const line = i => `<button class="wl-line notr" data-act="welcomeLine" data-wl="${i}" aria-label="${esc(tt("Listen: ","Escuchar: ")+W[i].en)}">
+        <span class="wl-ico" aria-hidden="true">${ICON_PLAY}</span>
+        <span class="wl-txt"><span class="wl-en" lang="en">${esc(W[i].en)}</span><span class="wl-es" lang="es">${esc(W[i].es)}</span></span></button>`;
+    h = `<section class="welcome${ob.seen?"":" wl-anim"}">
+      <div class="wl-top notr">${langSeg}</div>
+      <p class="kicker">${T("A note from your teacher","Una nota de tu profesor")}</p>
+      <h1 class="display wl-h notr" data-wl="0"><span lang="en">Welcome.<br>You are in the right place.</span><span class="es-tr" lang="es">${esc(W[0].es)}</span></h1>
+      <div class="wl-audio">
+        <button class="btn-line wl-play" id="wlPlay" data-act="welcomePlay"><span class="ico" aria-hidden="true">${ICON_PLAY}</span><span class="lbl">${T("Listen to the welcome","Escucha la bienvenida")}</span></button>
+        <div class="wl-voice notr"><span>${tb("Voice","Voz")}</span>${accentSeg()}</div>
+      </div>
+      <div class="wl-letter">${[1,2,3,4,5].map(line).join("")}
+        <p class="wl-sign notr">ProfGermandario<small>${tt("Your teacher on this route","Tu profesor en esta ruta")}</small></p>
+      </div>
+      <div class="wl-route"><p class="kicker">${T("How every class works","Cómo funciona cada clase")}</p>
+        <ol>
+          <li style="--c:var(--sk-write)"><b>1</b>${T("Write your idea","Escribe tu idea")}</li>
+          <li style="--c:var(--sk-listen)"><b>2</b>${T("Hear it complete","Escúchala completa")}</li>
+          <li style="--c:var(--sk-speak)"><b>3</b>${T("Say it with confidence","Dila con seguridad")}</li>
+        </ol></div>
+      <div class="wl-name"><label for="obName">${T("What should I call you?","¿Cómo te llamo?")}</label>
+      <input class="field" id="obName" data-in="obName" autocomplete="given-name" value="${esc(ob.name)}" placeholder="Your first name"></div>
     </section>`;
-    view.innerHTML = h;
-    setAction({label:"Begin", act:"obNext", disabled:!ob.name.trim()});
+    view.innerHTML = h; ob.seen = true;
+    setAction({label:"Begin", act:"obNext"});
     return;
   }
   if(s===1){
@@ -4762,6 +4903,17 @@ const ACT = {
   next: () => nextStep(),
   prev: () => prevStep(),
   say: el => say(el.dataset.text, el),
+  welcomePlay: () => { if(welcomeOn) stopReading(); else welcomePlay(0, false); },
+  welcomeLine: el => { const i = +el.dataset.wl; if(el.classList.contains("on") && !welcomeOn){ stopReading(); return; } welcomePlay(i, true); },
+  accent: el => {
+    if(!ACCENTS[el.dataset.v]) return;
+    const was = welcomeOn, at = welcomeAt;
+    state.accent = el.dataset.v; save(); pickVoice();
+    document.querySelectorAll('[data-act="accent"]').forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.v===state.accent)));
+    if(voiceMiss) toastT("This device has no "+ACCENTS[state.accent].en+" voice installed. Using its closest English voice.","Este dispositivo no tiene una voz "+ACCENTS[state.accent].es.toLowerCase()+" instalada. Usa la voz en inglés más cercana.");
+    if(document.querySelector(".welcome")) welcomePlay(was ? at : 0, !was);
+    else say("This is the voice you will hear in your classes.");
+  },
   sayAll: () => { const t=[...view.querySelectorAll(".example .en")].slice(0,4).map(e=>e.textContent); const b=[...view.querySelectorAll(".listen")]; let k=0; const nx=()=>{ if(k<t.length){ say(t[k],b[k],()=>setTimeout(nx,900)); k++; } }; nx(); },
   ladder: () => { run.ladder++; saveRun(); renderLesson(); },
   place: el => { const sc = run.scr[el.dataset.k]; const words = scrambleSentences(runLesson())[+el.dataset.k].split(" "); sc.placed.push(+el.dataset.i);
@@ -4836,7 +4988,13 @@ const ACT = {
   quizNext: () => { quiz.k++; quiz.answered = null; quizSheet(); },
   /* onboarding */
   obPick: el => { ob[el.dataset.k] = el.dataset.v; if(el.dataset.k==="level") ob.placement = null; VIEWS.onboarding(); },
-  obNext: () => { if(ob.step===0 && !ob.name.trim()) return; ob.step++; VIEWS.onboarding(); window.scrollTo(0,0); },
+  obNext: () => {
+    if(ob.step===0 && !ob.name.trim()){
+      const f = $("#obName");
+      if(f){ f.scrollIntoView({block:"center", behavior:"smooth"}); setTimeout(()=>f.focus({preventScroll:true}), 350); }
+      toastT("First, tell me your name.","Primero, dime tu nombre."); return;
+    }
+    ob.step++; VIEWS.onboarding(); window.scrollTo(0,0); },
   obBack: () => { ob.step = Math.max(0, ob.step-1); VIEWS.onboarding(); window.scrollTo(0,0); },
   obFinish: () => {
     state.name = ob.name.trim();
@@ -4855,7 +5013,7 @@ const ACT = {
 };
 
 const INP = {
-  obName: el => { ob.name = el.value; const b=$("#abMain"); if(b) b.disabled = !ob.name.trim(); },
+  obName: el => { ob.name = el.value; },
   write: el => {
     run.write.text = el.value;
     const n = wc(el.value), min = writeConfig().min, c = $("#wcount");

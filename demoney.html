@@ -336,6 +336,36 @@ tr.clk{cursor:pointer} tr.clk:hover td{background:var(--plate2)}
 .rsbar i.pos{background:var(--pos)} .rsbar i.neg{background:var(--neg)}
 .tag.spike{color:var(--amber);border-color:var(--amber);background:var(--amberDim)}
 
+/* ---------- zonas de pesca + archivo de eventos ---------- */
+.fishsec{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:14px 0 0;padding-bottom:5px;
+  border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+.fishsec b{color:var(--text);font-size:12.5px;margin-right:7px}
+.fishnote{font-size:10.5px;color:var(--faint);line-height:1.4;padding:5px 0 0}
+.fishrow{display:grid;grid-template-columns:1fr auto 34px;gap:10px;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--soft);cursor:pointer}
+.fishrow .fs{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:13px}
+.fishrow .fd{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.fishrow .fw{text-align:right;font-size:12.5px;white-space:nowrap}
+.fishrow .fw small{display:block;font-size:9.5px;color:var(--faint);margin-top:1px}
+.fishrow .fadd{width:34px;height:34px;padding:0;font-size:15px}
+.fishrow .fwarn{color:var(--amber);font-size:11px}
+.tag.deep{color:var(--sky);border-color:var(--sky);background:rgba(86,182,240,.12)}
+.fishbar{height:3px;background:var(--plate3);border-radius:2px;overflow:hidden;margin:0 0 10px}
+.fishbar i{display:block;height:100%;background:var(--purple);transition:width .25s}
+.fishstrip{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;
+  font-size:12.5px;color:var(--text2);cursor:pointer}
+.fishstrip b{color:var(--text)}
+.fishstrip .eyebrow{white-space:nowrap}
+.lnk{background:none;border:0;padding:0;color:var(--purple2);text-decoration:underline;text-underline-offset:2px;font-size:inherit}
+.gaterow{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--soft);font-size:12px}
+.gaterow .gwhy{color:var(--muted);line-height:1.4}
+.reprow{display:grid;grid-template-columns:1fr 30px 58px 46px;gap:8px;padding:6px 0;border-bottom:1px solid var(--soft);
+  font-size:12px;align-items:baseline}
+.reprow span:not(:first-child){text-align:right}
+.reprow.rhd{font-family:var(--m);font-size:9.5px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;padding-bottom:3px}
+.reprow.two{grid-template-columns:1fr auto}
+
 .legal{font-size:11px;color:var(--faint);line-height:1.5;text-align:center;padding:16px 4px 4px}
 .legal button{background:none;border:0;color:var(--brass);text-decoration:underline;font-size:11px;padding:0}
 
@@ -1801,9 +1831,40 @@ DL.MKT = (function () {
     return s || null;
   }
 
+  /* escaneo masivo SIN caché (Zonas de pesca): cierres diarios de muchos símbolos.
+     No escribe en la caché de la app: ~120 series desalojarían las de tu watchlist.
+     Primero en lotes de 20 (spark); lo que falte, uno por uno. */
+  function scan(symbols, range, onEach) {
+    range = range || "6mo";
+    var syms = symbols.map(norm), out = {};
+    function take(s, d) {
+      if (!d || out[s]) return;
+      out[s] = d;
+      if (onEach) { try { onEach(s, d); } catch (e) { console.warn("scan", s, e); } }
+    }
+    var chunks = [];
+    for (var i = 0; i < syms.length; i += 20) chunks.push(syms.slice(i, i + 20));
+    var batch = sparkOff() ? Promise.resolve() : Promise.all(chunks.map(function (ch) {
+      var url = BASE + "/v7/finance/spark?symbols=" + encodeURIComponent(ch.join(",")) +
+        "&range=" + range + "&interval=1d&indicators=close&includeTimestamps=true&includePrePost=false";
+      return slot(function () { return getJSON(url, 15000); }).then(function (j) {
+        var m = parseSpark(j);
+        Object.keys(m).forEach(function (s) { take(s, m[s]); });
+      }).catch(function () { /* los que falten se piden uno por uno */ });
+    }));
+    return batch.then(function () {
+      var miss = syms.filter(function (s) { return !out[s]; });
+      return Promise.all(miss.map(function (s) {
+        return slot(function () { return getJSON(chartURL(s, "range=" + range + "&interval=1d&includePrePost=false"), 12000); })
+          .then(function (j) { var d = parseChart(j, true); if (d) { d.symbol = s; take(s, d); } })
+          .catch(function () {});
+      }));
+    }).then(function () { return out; });
+  }
+
   return {
     daily: daily, intraday: intraday, history: history, search: search, refresh: refresh,
-    spark: spark, quick: quick, peek: peek, peekSpark: peekSpark, week: week, peekWeek: peekWeek,
+    spark: spark, scan: scan, quick: quick, peek: peek, peekSpark: peekSpark, week: week, peekWeek: peekWeek,
     clock: clock, openInstant: openInstant, lastFailure: lastFailure,
     route: function () { return pref || "—"; },
     clearCache: function () {
@@ -3573,7 +3634,7 @@ DL.VIEW_home = function (root) {
   var dayPct = dayBase > 0 ? (dayPL / dayBase) * 100 : 0;
   var clock = DL.MKT.clock();
 
-  var html = DL.regimeCard() + DL.eventRadarCard(5) + DL.modeCard(M);
+  var html = DL.regimeCard() + DL.eventRadarCard(5) + DL.fishStrip() + DL.modeCard(M);
   if (market) html += DL.marketCards();
 
   /* --- tarjeta de portafolio --- */
@@ -3716,6 +3777,11 @@ DL.VIEW_home = function (root) {
     b.onclick = function () { DL.setMode(b.dataset.mode); };
   });
   DL.bindEventRadar(root);
+  var fsx = DL.$("#fishStrip", root);
+  if (fsx) {
+    fsx.onclick = function () { DL.go("radar"); };
+    fsx.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); DL.go("radar"); } };
+  }
   var lk = DL.$("#legalLink", root);
   if (lk) lk.onclick = DL.legalSheet;
   DL.$$(".idx, .mv", root).forEach(function (b) { b.onclick = function () { DL.openAsset(b.dataset.sym); }; });
@@ -4869,7 +4935,7 @@ DL.VIEW_diary = function (root) {
   var KIND = {
     watch: ["Watchlist", "watch"], entry: [T("Compra", "Buy"), "buy"], follow: [T("Seguimiento", "Follow-up"), "hold"],
     stop: ["Stop", "wait"], exit: [T("Cierre", "Exit"), "sell"], note: [T("Nota", "Note"), ""],
-    event: [T("Evento", "Event"), "spike"]
+    event: [T("Evento", "Event"), "spike"], report: [T("Reporte", "Report"), "hold"]
   };
   html += DL.S.diary.slice(0, 120).map(function (e) {
     var d = DL.data.bySym[e.sym];
@@ -5194,7 +5260,7 @@ DL.setupScreen = function (root) {
 DL.RADAR_RANGES = [[1, "1D"], [5, "1S", "1W"], [21, "1M"], [63, "3M"], [126, "6M"], [252, "1A", "1Y"]];
 DL.VIEW_radar = function (root) {
   var R = DL.RADAR;
-  var html = "";
+  var html = DL.fishCard();
   var bench = R.data[DL.BENCH];
 
   /* --- rotación sectorial --- */
@@ -5279,6 +5345,7 @@ DL.VIEW_radar = function (root) {
   html += "</section>";
 
   root.innerHTML = html;
+  DL.bindFish(root);
 
   DL.$$("#secRange button", root).forEach(function (b) {
     b.onclick = function () { R.days = parseInt(b.dataset.d, 10); DL.render(); };
@@ -5299,6 +5366,7 @@ DL.VIEW_radar = function (root) {
   // carga (o refresca en segundo plano) si no hay datos o si envejecieron
   var old = !R.updatedAt || Date.now() - R.updatedAt > (DL.MKT.clock().open ? 5 : 30) * 60000;
   if (!R.loading && old) DL.loadRadar(false);
+  if (DL.FISH.isStale()) DL.FISH.scan(false);        // el escáner se refresca solo al entrar al Radar
 };
 /* ============================================================
    Módulo 6/6 — arranque, idioma y navegación
@@ -5669,6 +5737,210 @@ DL.EVENTS = (function () {
     }
   }
 
+
+  /* ---------- ARCHIVO MENSUAL ----------
+     Los eventos viejos no se borran: se PLIEGAN en el reporte de su mes
+     (conteos, decisiones y qué hizo el precio después) y salen de la lista viva.
+     Clave aparte (dlab.evarch.v1): unos pocos KB por mes, sin límite práctico. */
+  var AKEY = "dlab.evarch.v1", KEEP_DAYS = 7;
+  var arch = { months: {} };
+  try { var rawA = localStorage.getItem(AKEY); if (rawA) arch = Object.assign(arch, JSON.parse(rawA)); } catch (e) {}
+  if (!arch.months) arch.months = {};
+  function persistArch() { try { localStorage.setItem(AKEY, JSON.stringify(arch)); } catch (e) {} }
+  function ymOf(ts) { var d = new Date(ts); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2); }
+  function pxNow(sym) {
+    var d = DL.data.bySym[sym] || (DL.FISH ? DL.FISH.quote(sym) : null) || DL.MOVERS.data[sym] || DL.RADAR.data[sym];
+    return d && d.price != null ? d.price : null;
+  }
+  /* tipo con dirección: "cruce sobre SMA20" y "pérdida de SMA20" no son el mismo evento */
+  function typeKey(e) {
+    var t = e.type || "?";
+    if (t === "pct") return e.threshold > 0 ? "pctUp" : "pctDn";
+    if (/^sma\d+$/.test(t)) return t + (e.triggerValue >= e.threshold ? "Up" : "Dn");
+    if (t === "rsi") return e.threshold >= 50 ? "rsi70" : "rsi30";
+    if (t === "macd") return e.triggerValue >= e.threshold ? "macdUp" : "macdDn";
+    return t;
+  }
+  function typeLabel(k) {
+    var m = /^sma(\d+)(Up|Dn)$/.exec(k);
+    if (m) return m[2] === "Up" ? T("Cruce sobre SMA" + m[1], "Cross above SMA" + m[1]) : T("Pérdida de SMA" + m[1], "Loss of SMA" + m[1]);
+    var MAP = {
+      pctUp: ["Subida fuerte del día", "Strong up day"], pctDn: ["Caída fuerte del día", "Strong down day"],
+      vol: ["Pico de volumen", "Volume spike"], rsi30: ["RSI en sobreventa", "RSI oversold"], rsi70: ["RSI en sobrecompra", "RSI overbought"],
+      macdUp: ["Cruce alcista del MACD", "MACD bullish cross"], macdDn: ["Cruce bajista del MACD", "MACD bearish cross"],
+      hi52: ["Máximo de 52 semanas", "52-week high"], lo52: ["Mínimo de 52 semanas", "52-week low"],
+      stopNear: ["Cerca del stop", "Near stop"], stopHit: ["Stop alcanzado", "Stop reached"],
+      targetNear: ["Cerca del target", "Near target"], targetHit: ["Target alcanzado", "Target reached"],
+      pl: ["Umbral de P/L", "P/L threshold"], dd: ["Drawdown", "Drawdown"], thesis: ["Tesis invalidada", "Thesis invalidated"],
+      fish: ["Señal de pesca", "Fishing signal"]
+    };
+    return MAP[k] ? T(MAP[k][0], MAP[k][1]) : k;
+  }
+  function fold(e) {
+    var ym = ymOf(e.timestamp);
+    var m = arch.months[ym] || (arch.months[ym] = { n: 0, sev: {}, type: {}, sym: {}, dec: {}, out: {}, notes: [], first: e.timestamp, last: e.timestamp });
+    var tk = typeKey(e), dk = e.decision || "NONE";
+    m.n++;
+    m.sev[e.severity] = (m.sev[e.severity] || 0) + 1;
+    m.type[tk] = (m.type[tk] || 0) + 1;
+    m.sym[e.symbol] = (m.sym[e.symbol] || 0) + 1;
+    m.dec[dk] = (m.dec[dk] || 0) + 1;
+    m.first = Math.min(m.first, e.timestamp); m.last = Math.max(m.last, e.timestamp);
+    var o = null;
+    if (e.type !== "dd" && e.priceAtEvent) {
+      var p = pxNow(e.symbol);
+      if (p != null) o = ((p - e.priceAtEvent) / e.priceAtEvent) * 100;
+    }
+    if (o != null) {
+      var q = m.out[tk] || (m.out[tk] = { n: 0, sum: 0, up: 0, hit: 0 });
+      q.n++; q.sum += o; if (o > 0) q.up++; if (o >= 2) q.hit++;
+    }
+    if (((e.decision && e.decision !== "IGNORE") || e.notes) && m.notes.length < 40) {
+      m.notes.push({ t: e.timestamp, s: e.symbol, h: e.title, d: e.decision || null, n: e.notes || "",
+        p: e.priceAtEvent, o: o == null ? null : +o.toFixed(2) });
+    }
+    m.at = Date.now();
+  }
+  /* mueve al archivo lo que cumpla fn. Devuelve cuántos. */
+  function archive(fn) {
+    var keep = [], n = 0;
+    st.list.forEach(function (e) { if (fn(e)) { fold(e); n++; } else keep.push(e); });
+    if (n) { st.list = keep; persist(); persistArch(); closeMonths(); }
+    return n;
+  }
+  /* la lista viva sigue acotada, pero lo que desborda se pliega en vez de perderse */
+  function trim() {
+    if (st.list.length <= MAX) return;
+    st.list.sort(function (a, b) { return b.timestamp - a.timestamp; });
+    st.list.slice(MAX).forEach(fold);
+    st.list.length = MAX;
+    persistArch();
+  }
+  var RULES = {
+    read7: function (e) { return e.status !== "NEW" && Date.now() - e.timestamp > 7 * 86400000; },
+    resolved: function (e) { return e.status === "RESOLVED"; },
+    prev: function (e) { return ymOf(e.timestamp) < ymOf(Date.now()); },
+    all: function () { return true; }
+  };
+  function archiveBy(rule) { return RULES[rule] ? archive(RULES[rule]) : 0; }
+  function archCounts() {
+    var o = { live: st.list.length };
+    Object.keys(RULES).forEach(function (k) { o[k] = st.list.filter(RULES[k]).length; });
+    return o;
+  }
+  /* cierre automático: al cambiar el mes, lo que ya tiene más de 7 días pasa al reporte de su mes */
+  var lastAuto = 0;
+  function autoArchive() {
+    var now = Date.now();
+    if (now - lastAuto < 3600000) return 0;
+    lastAuto = now;
+    var cur = ymOf(now), cut = now - KEEP_DAYS * 86400000;
+    var n = archive(function (e) { return ymOf(e.timestamp) < cur && e.timestamp < cut; });
+    closeMonths();
+    return n;
+  }
+  function monthName(ym) {
+    var p = ym.split("-");
+    return new Date(+p[0], +p[1] - 1, 1).toLocaleDateString(DL.loc(), { month: "long", year: "numeric" });
+  }
+  function topN(obj, k) {
+    return Object.keys(obj || {}).map(function (x) { return [x, obj[x]]; })
+      .sort(function (a, b) { return b[1] - a[1]; }).slice(0, k || 5);
+  }
+  /* un mes queda cerrado cuando ya terminó y no le quedan eventos vivos: se anota en el diario
+     (el diario sí viaja con la cuenta). El id fijo evita duplicados entre dispositivos. */
+  function closeMonths() {
+    var cur = ymOf(Date.now()), live = {}, any = false;
+    st.list.forEach(function (e) { live[ymOf(e.timestamp)] = 1; });
+    Object.keys(arch.months).forEach(function (ym) {
+      var m = arch.months[ym];
+      if (ym >= cur || live[ym] || m.logged) return;
+      m.logged = true; m.closed = Date.now(); any = true;
+      var id = "jrep-" + ym;
+      if (DL.S.diary.some(function (x) { return x.id === id; })) return;
+      var dec = m.dec || {};
+      var text = "📦 " + T("Reporte de eventos · ", "Event report · ") + monthName(ym) + ": " + m.n + T(" eventos", " events") +
+        " (" + (m.sev.CRITICAL || 0) + T(" críticos, ", " critical, ") + (m.sev.IMPORTANT || 0) + T(" importantes)", " important)") +
+        " · " + T("decisiones: ", "decisions: ") + (dec.ACT || 0) + " ACT, " + (dec.WATCH || 0) + " WATCH, " + (dec.IGNORE || 0) + " IGNORE" +
+        " · " + T("más activos: ", "most active: ") + topN(m.sym, 4).map(function (x) { return x[0] + " " + x[1]; }).join(", ");
+      DL.S.diary.unshift({ id: id, sym: "PORT", kind: "report", text: text, pxAt: null, t: Date.now() });
+      DL.save();
+    });
+    if (any) persistArch();
+  }
+  function months() {
+    return Object.keys(arch.months).sort().reverse().map(function (ym) {
+      return { ym: ym, name: monthName(ym), m: arch.months[ym] };
+    });
+  }
+  function month(ym) { return arch.months[ym] || null; }
+  function dropMonth(ym) { delete arch.months[ym]; persistArch(); }
+
+  function csvCell(v) { v = v == null ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  /* eventos vivos, crudos, para guardarlos antes de limpiar */
+  function liveCSV() {
+    var rows = [["fecha", "simbolo", "tipo", "severidad", "titulo", "precio_evento", "umbral", "estado", "decision", "notas", "precio_ahora", "cambio_pct"]];
+    all().forEach(function (e) {
+      var p = e.type === "dd" ? null : pxNow(e.symbol);
+      var o = p != null && e.priceAtEvent ? ((p - e.priceAtEvent) / e.priceAtEvent) * 100 : null;
+      rows.push([new Date(e.timestamp).toISOString(), e.symbol, typeKey(e), e.severity, L(e.title), e.priceAtEvent,
+        e.threshold, e.status, e.decision || "", e.notes || "", p, o == null ? "" : o.toFixed(2)]);
+    });
+    return rows.map(function (r) { return r.map(csvCell).join(","); }).join("\n");
+  }
+  /* reporte de un mes en texto (Markdown): se puede copiar, descargar o pegar en un doc */
+  function reportMD(ym) {
+    var m = arch.months[ym];
+    if (!m) return "";
+    var day = function (ts) { return new Date(ts).toLocaleDateString(DL.loc(), { day: "numeric", month: "short" }); };
+    var out = [];
+    out.push("# " + T("Reporte de eventos — ", "Event report — ") + monthName(ym));
+    out.push("Decision Lab · ProfGermandario · " + T("generado ", "generated ") + new Date().toLocaleDateString(DL.loc(), { day: "numeric", month: "short", year: "numeric" }));
+    out.push("");
+    out.push("**" + m.n + T(" eventos", " events") + "** (" + day(m.first) + " – " + day(m.last) + ")");
+    out.push("");
+    out.push("## " + T("Por severidad", "By severity"));
+    ["CRITICAL", "IMPORTANT", "WATCH", "INFO"].forEach(function (s) { if (m.sev[s]) out.push("- " + s + ": " + m.sev[s]); });
+    out.push("");
+    out.push("## " + T("Por tipo — y qué hizo el precio después", "By type — and what price did next"));
+    out.push("| " + T("Tipo", "Type") + " | " + T("Eventos", "Events") + " | " + T("Cambio medio", "Avg change") + " | " + T("Subió", "Rose") + " | ≥ +2% |");
+    out.push("|---|---:|---:|---:|---:|");
+    topN(m.type, 99).forEach(function (x) {
+      var q = (m.out || {})[x[0]];
+      out.push("| " + typeLabel(x[0]) + " | " + x[1] + " | " + (q && q.n ? DL.pct(q.sum / q.n, 1) : "—") + " | " +
+        (q && q.n ? Math.round(q.up / q.n * 100) + "%" : "—") + " | " + (q && q.n ? Math.round(q.hit / q.n * 100) + "%" : "—") + " |");
+    });
+    out.push("");
+    out.push("_" + T("Cambio medido desde el precio del evento hasta el momento en que se archivó.", "Change measured from the event price to the moment it was archived.") + "_");
+    out.push("");
+    out.push("## " + T("Activos con más eventos", "Assets with most events"));
+    topN(m.sym, 10).forEach(function (x) { out.push("- " + x[0] + ": " + x[1]); });
+    out.push("");
+    out.push("## " + T("Decisiones", "Decisions"));
+    [["ACT", "ACT"], ["WATCH", "WATCH"], ["IGNORE", "IGNORE"], ["NONE", T("sin decisión", "no decision")]].forEach(function (d) {
+      if (m.dec[d[0]]) out.push("- " + d[1] + ": " + m.dec[d[0]]);
+    });
+    if (m.notes && m.notes.length) {
+      out.push("");
+      out.push("## " + T("Eventos con decisión o notas", "Events with a decision or notes"));
+      m.notes.slice().sort(function (a, b) { return a.t - b.t; }).forEach(function (x) {
+        out.push("- " + day(x.t) + " · " + x.s + " · " + L(x.h) + (x.d ? " · " + x.d : "") +
+          (x.p != null ? " · " + DL.money(x.p) : "") + (x.o != null ? " · " + T("después ", "after ") + DL.pct(x.o, 1) : "") +
+          (x.n ? " · “" + x.n + "”" : ""));
+      });
+    }
+    return out.join("\n");
+  }
+  /* eventos que nacen fuera de la watchlist (p. ej. una señal del escáner de pesca) */
+  function push(key, ev) {
+    if (!DL.S.profile.setup) return false;
+    var out = [];
+    if (!fire(out, key, ev)) return false;
+    st.list = out.concat(st.list);
+    trim(); persist();
+    return true;
+  }
+
   /* ---------- API ---------- */
   function detect() {
     if (!DL.S.profile.setup) return [];
@@ -5678,9 +5950,9 @@ DL.EVENTS = (function () {
     // poda: estado de disparos de más de 10 días y lista acotada
     var cut = Date.now() - 10 * 86400000;
     Object.keys(st.fired).forEach(function (k) { if (st.fired[k] < cut) delete st.fired[k]; });
-    if (out.length) {
-      st.list = out.concat(st.list).slice(0, MAX);
-    }
+    if (out.length) st.list = out.concat(st.list);
+    trim();                                   // lo que desborda se pliega en su reporte mensual, no se pierde
+    if (!DL.data.loading) autoArchive();      // con los precios ya cargados, para medir el "después"
     persist();
     return out;
   }
@@ -5815,7 +6087,10 @@ DL.EVENTS = (function () {
     acknowledge: acknowledge, ackAll: ackAll, resolve: resolve, next: next, forSymbol: forSymbol,
     all: all, get: get, unread: unread, settings: settings, setSettings: setSettings,
     regime: regime, signal: signal, why: why, ctxOf: ctxOf, breakdown: breakdown, track: track,
-    RANK: RANK, L: L, _state: function () { return st; }
+    RANK: RANK, L: L, _state: function () { return st; },
+    push: push, archiveBy: archiveBy, archCounts: archCounts, months: months, month: month, dropMonth: dropMonth,
+    monthName: monthName, typeLabel: typeLabel, topN: topN, liveCSV: liveCSV, reportMD: reportMD,
+    _arch: function () { return arch; }
   };
 })();
 
@@ -5883,6 +6158,7 @@ DL.eventRadarCard = function (limit) {
   var html = '<section class="card"><div class="head" style="margin-bottom:8px"><h3>' + DL.esc(T("Radar de eventos", "Event radar")) + "</h3>" +
     '<span class="row" style="gap:6px">' + (un ? '<span class="sev important">' + un + T(" nuevos", " new") + "</span>" : "") +
     '<span class="eyebrow">' + total + "</span>" +
+    '<button type="button" class="btn sm g" id="evArch" title="' + DL.esc(T("Archivo y reportes", "Archive and reports")) + '" aria-label="' + DL.esc(T("Archivo y reportes", "Archive and reports")) + '">📦</button>' +
     '<button type="button" class="btn sm g" id="evCfg" title="' + DL.esc(T("Alertas", "Alerts")) + '" aria-label="' + DL.esc(T("Alertas", "Alerts")) + '">⚙</button></span></div>' +
     '<div class="pills" id="evFilter" style="margin-bottom:8px">' +
     [["ALL", T("Todos", "All")], ["CRITICAL", T("Críticos", "Critical")], ["IMPORTANT", T("Importantes", "Important")],
@@ -5908,6 +6184,7 @@ DL.bindEventRadar = function (root) {
   var m = DL.$("#evMore", root); if (m) m.onclick = function () { DL.current.evAll = !DL.current.evAll; DL.render(); };
   var a = DL.$("#evAck", root); if (a) a.onclick = function () { DL.EVENTS.ackAll(); DL.render(); };
   var c = DL.$("#evCfg", root); if (c) c.onclick = DL.alertsSheet;
+  var ar = DL.$("#evArch", root); if (ar) ar.onclick = DL.archiveSheet;
   DL.bindEvRows(root);
 };
 
@@ -5974,7 +6251,7 @@ DL.eventSheet = function (id) {
   var e = DL.EVENTS.acknowledge(id) || DL.EVENTS.get(id);
   if (!e) return;
   var L = DL.EVENTS.L;
-  var d = DL.data.bySym[e.symbol];
+  var d = DL.data.bySym[e.symbol] || (DL.FISH ? DL.FISH.quote(e.symbol) : null);
   var since = (d && e.priceAtEvent && e.type !== "dd") ? ((d.price - e.priceAtEvent) / e.priceAtEvent) * 100 : null;
   var body = DL.el("<div></div>");
   body.innerHTML =
@@ -6070,6 +6347,656 @@ DL.alertsSheet = function () {
   };
   foot.appendChild(ok);
   var s = DL.sheet(T("Alertas", "Alerts"), body, foot);
+};
+
+
+/* ============================================================
+   Módulo 6c/6 — ZONAS DE PESCA (escáner sobreventa → cruce SMA 20)
+   Un estanque acotado en vez del océano: ~120 large caps repartidas
+   en los 11 sectores, con un filtro de calidad (caja, deuda, frente
+   legal) que NO es un dato en vivo: es una lista curada con fecha,
+   editable por ti y pensada para revisarse una vez al mes.
+
+   Nota de método: RSI(14) < 30 y precio sobre la SMA 20 casi nunca
+   ocurren el mismo día (un RSI así de bajo exige varias sesiones de
+   caída, y eso deja el precio BAJO su media). La señal útil es la
+   SECUENCIA: estuvo en sobreventa hace pocos días y acaba de
+   recuperar la SMA 20.
+   ============================================================ */
+DL.FISH = (function () {
+  var KEY = "dlab.fish.v1", TAIL = 20;
+  var REVIEWED = "2026-11-11";      // última revisión del filtro de calidad
+
+  var UNIVERSE = {
+    XLK: "AAPL MSFT AVGO CSCO ADBE CRM ACN TXN QCOM AMAT AMD IBM NVDA ORCL INTC",
+    XLC: "NFLX DIS TMUS CMCSA GOOGL META",
+    XLY: "HD LOW MCD SBUX BKNG TJX NKE ORLY CMG MAR AMZN TSLA",
+    XLP: "WMT COST PG KO PEP MDLZ CL MNST TGT",
+    XLE: "XOM CVX COP EOG SLB BKR MPC PSX VLO",
+    XLF: "JPM BAC WFC GS MS AXP BLK SPGI SCHW PGR CB BRK-B MA V",
+    XLV: "LLY ABBV MRK TMO AMGN ISRG DHR BSX SYK GILD VRTX MDT ABT JNJ UNH",
+    XLI: "CAT GE HON UNP DE ETN LMT ADP WM PH TT GD ITW EMR RTX MMM BA",
+    XLB: "LIN SHW ECL FCX NEM VMC MLM CTVA",
+    XLU: "NEE SO DUK AEP CEG",
+    XLRE: "PLD AMT EQIX WELL SPG PSA O DLR"
+  };
+  Object.keys(UNIVERSE).forEach(function (k) { UNIVERSE[k] = UNIVERSE[k].split(" "); });
+
+  /* filtro de calidad por defecto · [nivel, ES, EN, verificado en la revisión (1) o por confirmar (0)]
+     out  = fuera del estanque (caja o deuda fuera de control, o investigación abierta)
+     warn = sigue dentro, con aviso (frente legal civil o liquidaciones pendientes) */
+  var FLAGS = {
+    NVDA: ["out", "El directorio abrió una investigación independiente que involucra al CEO (8 nov 2026)", "The board opened an independent investigation involving the CEO (Nov 8, 2026)", 1],
+    GOOGL: ["out", "Flujo de caja libre negativo en el 3T 2026 por el gasto en IA", "Negative free cash flow in Q3 2026 on AI spending", 1],
+    AMZN: ["out", "Flujo de caja libre negativo dos trimestres seguidos por el gasto en IA", "Negative free cash flow two quarters in a row on AI spending", 1],
+    TSLA: ["out", "Flujo de caja libre negativo en el 2T 2026", "Negative free cash flow in Q2 2026", 1],
+    ORCL: ["out", "Flujo de caja libre negativo en el año fiscal 2026 y deuda creciente", "Negative free cash flow in fiscal 2026 and rising debt", 1],
+    INTC: ["out", "No prevé flujo de caja libre positivo en 2027", "Doesn't expect positive free cash flow in 2027", 1],
+    META: ["warn", "Se espera flujo de caja libre negativo por el gasto en IA", "Negative free cash flow expected on AI spending", 1],
+    UNH: ["out", "Investigación penal y civil del DOJ por Medicare (revelada en jul 2025)", "DOJ criminal and civil investigation over Medicare (disclosed Jul 2025)", 0],
+    BA: ["out", "Deuda elevada y caja históricamente negativa", "Heavy debt and historically negative cash flow", 0],
+    JNJ: ["warn", "Litigio masivo por talco sin cierre definitivo", "Talc mass litigation without a final resolution", 0],
+    MMM: ["warn", "Pagos pendientes por acuerdos de PFAS y tapones auditivos", "Outstanding PFAS and earplug settlement payments", 0],
+    RTX: ["warn", "Acuerdos de enjuiciamiento diferido con el DOJ desde 2024", "Deferred prosecution agreements with the DOJ since 2024", 0],
+    AAPL: ["warn", "Demanda antimonopolio del DOJ presentada en 2024", "DOJ antitrust lawsuit filed in 2024", 0],
+    V: ["warn", "Demanda antimonopolio del DOJ por débito presentada en 2024", "DOJ antitrust lawsuit over debit filed in 2024", 0],
+    ABT: ["warn", "Litigios por fórmula infantil (NEC)", "Infant formula (NEC) litigation", 0]
+  };
+  /* sectores donde "caja y deuda" se leen con otra vara */
+  var SECNOTE = {
+    XLF: ["Bancos y aseguradoras: el apalancamiento es el negocio; se mira capital regulatorio, no flujo de caja libre.",
+          "Banks and insurers: leverage is the business; look at regulatory capital, not free cash flow."],
+    XLU: ["Utilities reguladas: caja libre negativa y deuda alta por diseño. Están como sector defensivo, no porque pasen el filtro de caja.",
+          "Regulated utilities: negative free cash flow and high debt by design. Listed as a defensive sector, not because they pass the cash filter."],
+    XLRE: ["REITs: la caja se mide con FFO y la deuda es estructural.",
+           "REITs: cash is measured by FFO and debt is structural."]
+  };
+
+  var st = { rows: {}, at: 0 };
+  try { var raw = localStorage.getItem(KEY); if (raw) st = Object.assign(st, JSON.parse(raw)); } catch (e) {}
+  if (!st.rows) st.rows = {};
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  var S = { loading: false, done: 0, total: 0, lastTry: 0, failed: false, filter: "hot" };
+
+  var DEF = { rsi: 30, look: 15, cross: 3, minWeek: 0, alert: true };
+  function cfg() {
+    var a = DL.S.profile.fish || {}, o = {};
+    Object.keys(DEF).forEach(function (k) { o[k] = a[k] !== undefined ? a[k] : DEF[k]; });
+    return o;
+  }
+  function setCfg(o) { DL.S.profile.fish = o; DL.save(); }
+
+  function allSyms() {
+    var out = [];
+    Object.keys(UNIVERSE).forEach(function (k) { out = out.concat(UNIVERSE[k]); });
+    return out;
+  }
+  function sectorOf(sym) {
+    var out = null;
+    Object.keys(UNIVERSE).forEach(function (k) { if (UNIVERSE[k].indexOf(sym) >= 0) out = k; });
+    return out;
+  }
+
+  /* ---------- filtro de calidad: lo tuyo manda sobre la lista por defecto ---------- */
+  function gate(sym) {
+    var u = (DL.S.profile.fishGate || {})[sym], f = FLAGS[sym];
+    if (u) return { lvl: u.s === "out" ? "out" : "ok", why: u.r || "", user: true, t: u.t };
+    if (f) return { lvl: f[0], why: T(f[1], f[2]), verified: !!f[3], user: false };
+    return { lvl: "ok", why: "", user: false };
+  }
+  function setGate(sym, s, reason) {
+    var g = Object.assign({}, DL.S.profile.fishGate || {});
+    if (s == null) delete g[sym]; else g[sym] = { s: s, r: reason || "", t: Date.now() };
+    DL.S.profile.fishGate = g;
+    DL.save();
+  }
+
+  /* ---------- cálculo por símbolo: solo cierres ---------- */
+  function compute(sym, d) {
+    if (!d || !d.bars || d.bars.length < 45 || d.price == null) return null;
+    var nyd = DL.MKT.clock().nyDate;
+    var bars = d.bars.map(function (b) { return { c: b.c, t: b.t }; });
+    var n = bars.length;
+    // el precio actual es la última observación (sesión en curso o último cierre)
+    if (d.sessionT && nyd(d.sessionT) > nyd(bars[n - 1].t)) bars.push({ c: d.price, t: d.sessionT });
+    else bars[n - 1] = { c: d.price, t: bars[n - 1].t };
+    n = bars.length;
+    var rsi = DL.IND.rsi(bars, 14), sma = DL.IND.sma(bars, 20);
+    var px = bars[n - 1].c, s20 = sma[n - 1];
+    if (s20 == null || rsi[n - 1] == null) return null;
+    // último cruce al alza de la SMA 20 que SIGUE vigente (hace cuántas sesiones)
+    var x = null, xt = null;
+    if (px > s20) {
+      for (var k = n - 1; k >= 21 && k >= n - 12; k--) {
+        if (bars[k].c <= sma[k]) break;
+        if (bars[k - 1].c <= sma[k - 1]) { x = n - 1 - k; xt = bars[k].t; break; }
+      }
+    }
+    var tail = rsi.slice(-TAIL).map(function (v) { return v == null ? null : Math.round(v * 10) / 10; });
+    // movimiento semanal típico: media del |cambio diario| de 14 sesiones, llevada a 5 sesiones
+    var sum = 0, cnt = 0;
+    for (var i = n - 14; i < n; i++) {
+      if (i > 0 && bars[i - 1].c) { sum += Math.abs(bars[i].c / bars[i - 1].c - 1) * 100; cnt++; }
+    }
+    var prev = bars[n - 2].c, wk = bars[n - 6] ? bars[n - 6].c : null;
+    return {
+      p: +px.toPrecision(7),
+      c: prev ? +(((px - prev) / prev) * 100).toFixed(2) : null,
+      w: wk ? +(((px - wk) / wk) * 100).toFixed(2) : null,
+      s: +s20.toPrecision(7), x: x, xt: xt, r: tail,
+      v: cnt ? +((sum / cnt) * 2.8).toFixed(1) : null,
+      t: bars[n - 1].t
+    };
+  }
+
+  /* ---------- etapa: se decide al pintar, así cambiar el umbral no exige volver a escanear ---------- */
+  function stage(row, c) {
+    c = c || cfg();
+    var rs = row.r || [], n = rs.length, now = n ? rs[n - 1] : null;
+    var min = null, ago = null;
+    for (var i = n - 1; i >= 0 && i >= n - c.look; i--) {
+      if (rs[i] != null && (min == null || rs[i] < min)) { min = rs[i]; ago = n - 1 - i; }
+    }
+    var was = min != null && min < c.rsi;
+    var dist = row.s ? ((row.p - row.s) / row.s) * 100 : null;
+    var s = "none";
+    if (was && row.x != null && row.x < c.cross && ago >= row.x) s = "signal";
+    else if (was && row.x != null && row.x < c.cross + 5 && ago >= row.x) s = "late";
+    else if (now != null && now < c.rsi) s = "oversold";
+    else if (was && dist != null && dist <= 0 && dist >= -2.5 && now - min >= 4) s = "turn";
+    else if (was && dist != null && dist <= 0) s = "base";
+    return { st: s, min: min, ago: ago, now: now, dist: dist };
+  }
+  var RANK = { signal: 0, turn: 1, late: 2, oversold: 3, base: 4, none: 9 };
+  var STAGE = {
+    signal: [["SEÑAL", "SIGNAL"], "buy"], turn: [["GIRANDO", "TURNING"], "wait"],
+    late: [["EN MARCHA", "UNDERWAY"], "hold"], oversold: [["SOBREVENTA", "OVERSOLD"], "deep"],
+    base: [["SALIENDO", "BASING"], "deep"], none: [["", ""], ""]
+  };
+  function stageTag(k) { return k === "none" ? "" : DL.tag(T(STAGE[k][0][0], STAGE[k][0][1]), STAGE[k][1]); }
+  function sess(n) { return n === 0 ? T("hoy", "today") : T("hace " + n + " ses.", n + " sess. ago"); }
+  function detail(row, sg) {
+    var r0 = sg.now == null ? "—" : sg.now.toFixed(0), rm = sg.min == null ? "—" : sg.min.toFixed(0);
+    var ds = sg.dist == null ? "—" : DL.pct(sg.dist, 1);
+    if (sg.st === "signal" || sg.st === "late") {
+      return T("Cruzó la SMA 20 ", "Crossed SMA 20 ") + sess(row.x) + " · RSI " + r0 + T(" · mín ", " · low ") + rm + " (" + sess(sg.ago) + ")";
+    }
+    if (sg.st === "turn") return T("A ", "") + DL.pctp(Math.abs(sg.dist), 1) + T(" de la SMA 20 · RSI ", " from SMA 20 · RSI ") + r0 + T(" ↑ desde ", " ↑ from ") + rm;
+    if (sg.st === "oversold") return "RSI " + r0 + " · " + ds + T(" vs SMA 20 · espera el giro", " vs SMA 20 · wait for the turn");
+    if (sg.st === "base") return "RSI " + r0 + T(" (mín ", " (low ") + rm + ") · " + ds + " vs SMA 20";
+    return "RSI " + r0 + " · " + ds + " vs SMA 20";
+  }
+
+  /* ---------- vista: todo el universo ya clasificado ---------- */
+  function classify() {
+    var c = cfg(), inWatch = {};
+    DL.S.watch.forEach(function (w) { inWatch[w.sym] = 1; });
+    var items = [];
+    Object.keys(UNIVERSE).forEach(function (etf) {
+      UNIVERSE[etf].forEach(function (sym) {
+        var row = st.rows[sym];
+        if (!row) return;
+        items.push({ sym: sym, etf: etf, row: row, sg: stage(row, c), gate: gate(sym), watch: !!inWatch[sym] });
+      });
+    });
+    return items;
+  }
+  function inFilter(it, f, c) {
+    if (it.gate.lvl === "out") return false;
+    if (f === "all") return true;
+    if (it.sg.st === "none") return false;
+    if (c.minWeek > 0 && it.row.v != null && it.row.v < c.minWeek) return false;
+    if (f === "hot") return true;
+    if (f === "deep") return it.sg.st === "oversold" || it.sg.st === "base";
+    return it.sg.st === f;
+  }
+  function counts(items, c) {
+    var o = { hot: 0, signal: 0, turn: 0, deep: 0, late: 0, all: 0, out: 0 };
+    items.forEach(function (it) {
+      if (it.gate.lvl === "out") { o.out++; return; }
+      ["hot", "signal", "turn", "deep", "late", "all"].forEach(function (f) { if (inFilter(it, f, c)) o[f]++; });
+    });
+    return o;
+  }
+
+  /* ---------- escaneo ---------- */
+  function isStale() {
+    if (!st.at) return true;
+    return Date.now() - st.at > (DL.MKT.clock().open ? 15 : 180) * 60000;
+  }
+  var paintT = null;
+  function scan(force) {
+    if (S.loading) return Promise.resolve();
+    if (!force && Date.now() - S.lastTry < 5 * 60000) return Promise.resolve();
+    var syms = allSyms(), got = 0;
+    S.loading = true; S.done = 0; S.total = syms.length; S.failed = false; S.lastTry = Date.now();
+    DL.renderSoon();
+    return DL.MKT.scan(syms, "6mo", function (sym, d) {
+      S.done++;
+      var r = compute(sym, d);
+      if (r) { st.rows[sym] = r; got++; }
+      if (!paintT) paintT = setTimeout(function () { paintT = null; if (DL.route === "radar") DL.renderSoon(); }, 400);
+    }).catch(function () {}).then(function () {
+      S.loading = false;
+      if (got) { st.at = Date.now(); persist(); fireSignals(); }
+      else S.failed = true;
+      DL.renderSoon();
+    });
+  }
+  /* una señal nueva también entra al radar de eventos: decisión → diario → reporte mensual */
+  function fireSignals() {
+    var c = cfg();
+    if (!c.alert || !DL.EVENTS || !DL.EVENTS.push) return;
+    classify().forEach(function (it) {
+      if (it.sg.st !== "signal" || it.gate.lvl === "out" || !it.row.xt) return;
+      var day = new Date(it.row.xt).toISOString().slice(0, 10);
+      DL.EVENTS.push("fish|" + it.sym + "|" + day, {
+        symbol: it.sym, type: "fish", severity: "WATCH", icon: "🎣",
+        priceAtEvent: it.row.p, stale: false, sessLabel: "", ctx: null,
+        title: ["Señal de pesca: recuperó la SMA 20 tras sobreventa", "Fishing signal: reclaimed SMA 20 after oversold"],
+        description: ["RSI(14) mínimo " + it.sg.min.toFixed(0) + " (" + sess(it.sg.ago) + ") y cierre sobre la SMA 20 (" + DL.px(it.row.s) + ") " + sess(it.row.x) +
+                      " · " + DL.sectorName(it.etf) + (it.row.v != null ? " · movimiento semanal típico ±" + it.row.v + "%" : ""),
+                      "RSI(14) low " + it.sg.min.toFixed(0) + " (" + sess(it.sg.ago) + ") and close above SMA 20 (" + DL.px(it.row.s) + ") " + sess(it.row.x) +
+                      " · " + DL.sectorName(it.etf) + (it.row.v != null ? " · typical weekly move ±" + it.row.v + "%" : "")],
+        triggerValue: it.row.p, threshold: it.row.s, previousValue: null,
+        action: ["Confirma volumen y sector antes de planear la entrada", "Confirm volume and sector before planning the entry"]
+      });
+    });
+  }
+
+  /* ---------- a la watchlist, en su propia lista "Pesca" ---------- */
+  function toWatch(sym) {
+    if (DL.S.watch.some(function (w) { return w.sym === sym; })) { DL.openAsset(sym); return; }
+    var row = st.rows[sym], sg = row ? stage(row) : null;
+    DL.toast(T("Cargando ", "Loading ") + sym + "…");
+    DL.MKT.daily(sym, true).then(function (d) {
+      var s2 = d.symbol || sym;
+      DL.data.bySym[s2] = d;
+      var list = DL.S.lists.filter(function (l) { return DL.listKey(l.name) === "pesca"; })[0];
+      if (!list) {
+        list = { id: DL.uid("l"), name: "Pesca", order: DL.S.lists.length, _u: Date.now() };
+        DL.S.lists.push(list);
+      }
+      var note = sg ? detail(row, sg) : "";
+      DL.S.watch.push({ sym: s2, name: d.name || sym, note: note, addedAt: Date.now(), goalBuy: null, goalSell: null, list: list.id });
+      DL.addDiary(s2, "watch", T("Agregado desde Zonas de pesca", "Added from Fishing spots") + (note ? " · " + note : ""), d.price);
+      DL.save(); DL.recomputeOne(s2); DL.render();
+      DL.toast("✓ " + sym + T(" → lista “Pesca”", " → “Pesca” list"));
+    }).catch(function (e) {
+      DL.toast(T("No se pudo cargar ", "Couldn't load ") + sym + " (" + ((e && e.message) || "error") + ")");
+    });
+  }
+
+  function quote(sym) { var r = st.rows[sym]; return r ? { price: r.p } : null; }
+  function reviewPrompt() {
+    return T(
+      "Actúa como analista de crédito y legal. Para cada ticker de la lista revisa, con datos de los dos últimos trimestres y fuentes primarias (10-Q, 10-K, 8-K, comunicados del DOJ/SEC): (1) flujo de caja libre del último trimestre y de los últimos 12 meses; (2) deuda neta / EBITDA y vencimientos de los próximos 24 meses; (3) investigaciones penales o regulatorias abiertas, demandas colectivas materiales o acuerdos de enjuiciamiento diferido. Devuelve una tabla: ticker · caja (ok / alerta) · deuda (ok / alerta) · legal (ok / alerta) · veredicto (DENTRO / AVISO / FUERA) · motivo en una línea con fecha y fuente. En bancos usa capital CET1, en REITs usa FFO y en utilities reguladas señala que la deuda es estructural. Lista: ",
+      "Act as a credit and legal analyst. For each ticker in the list review, with the last two quarters of data and primary sources (10-Q, 10-K, 8-K, DOJ/SEC releases): (1) free cash flow for the latest quarter and trailing 12 months; (2) net debt / EBITDA and maturities over the next 24 months; (3) open criminal or regulatory investigations, material class actions or deferred prosecution agreements. Return a table: ticker · cash (ok / alert) · debt (ok / alert) · legal (ok / alert) · verdict (IN / CAUTION / OUT) · one-line reason with date and source. For banks use CET1 capital, for REITs use FFO, and for regulated utilities note that debt is structural. List: "
+    ) + allSyms().join(", ");
+  }
+
+  return {
+    UNIVERSE: UNIVERSE, FLAGS: FLAGS, SECNOTE: SECNOTE, REVIEWED: REVIEWED, S: S,
+    cfg: cfg, setCfg: setCfg, gate: gate, setGate: setGate, allSyms: allSyms, sectorOf: sectorOf,
+    compute: compute, stage: stage, stageTag: stageTag, detail: detail, classify: classify,
+    inFilter: inFilter, counts: counts, RANK: RANK, scan: scan, isStale: isStale,
+    toWatch: toWatch, quote: quote, reviewPrompt: reviewPrompt,
+    updatedAt: function () { return st.at; }, _state: function () { return st; }
+  };
+})();
+
+/* descarga un texto como archivo; si el navegador no deja, lo copia */
+DL.download = function (name, text, mime) {
+  try {
+    var blob = new Blob([text], { type: (mime || "text/plain") + ";charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = name; a.style.display = "none";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { a.remove(); URL.revokeObjectURL(url); }, 1500);
+    return true;
+  } catch (e) { DL.copy(text); return false; }
+};
+DL.copy = function (text, okMsg) {
+  var done = function () { DL.toast(okMsg || T("Copiado", "Copied")); };
+  var fallback = function () {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { DL.toast(T("No se pudo copiar", "Couldn't copy")); }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+  else fallback();
+};
+
+/* ---------- tarjeta del escáner (vista Radar) ---------- */
+DL.fishCard = function () {
+  var F = DL.FISH, S = F.S, c = F.cfg();
+  var items = F.classify(), n = F.counts(items, c), total = F.allSyms().length;
+  var have = items.length > 0;
+  var html = '<section class="card" id="fishCard"><div class="head" style="margin-bottom:6px"><h3>' + DL.esc(T("Zonas de pesca", "Fishing spots")) + "</h3>" +
+    '<span class="row" style="gap:6px">' +
+    '<button type="button" class="btn sm g" id="fishGate" title="' + DL.esc(T("Filtro de calidad", "Quality filter")) + '" aria-label="' + DL.esc(T("Filtro de calidad", "Quality filter")) + '">🛡</button>' +
+    '<button type="button" class="btn sm g" id="fishCfg" title="' + DL.esc(T("Ajustes del escáner", "Scanner settings")) + '" aria-label="' + DL.esc(T("Ajustes del escáner", "Scanner settings")) + '">⚙</button>' +
+    '<button type="button" class="btn sm g" id="fishScan" title="' + DL.esc(T("Escanear", "Scan")) + '" aria-label="' + DL.esc(T("Escanear", "Scan")) + '">' +
+    (S.loading ? '<span class="spin"></span>' : "⟳") + "</button></span></div>" +
+    '<div class="eyebrow" style="margin-bottom:10px">' +
+    DL.esc(T("RSI < ", "RSI < ") + c.rsi + T(" → cruce SMA 20 · ", " → SMA 20 cross · ") + (total - n.out) + " large caps" +
+      (F.updatedAt() ? " · " + DL.evTime(F.updatedAt()) : "")) + "</div>";
+
+  if (S.loading) {
+    html += '<div class="fishbar"><i style="width:' + (S.total ? Math.round(S.done / S.total * 100) : 0) + '%"></i></div>';
+  }
+  if (!have) {
+    html += S.loading
+      ? '<p class="mute" style="font-size:12.5px">' + DL.esc(T("Escaneando " + total + " large caps en 11 sectores…", "Scanning " + total + " large caps across 11 sectors…")) + "</p>"
+      : DL.empty(S.failed ? T("No llegaron datos", "No data came back") : T("Estanque sin escanear", "Pond not scanned yet"),
+          S.failed ? T("Yahoo o el proxy no respondieron. Toca ⟳ para reintentar.", "Yahoo or the proxy didn't answer. Tap ⟳ to retry.")
+                   : T("Toca ⟳ para revisar las " + total + " large caps.", "Tap ⟳ to check the " + total + " large caps."));
+    return html + "</section>";
+  }
+
+  var f = S.filter;
+  html += '<div class="pills" id="fishFilter" style="margin-bottom:4px">' +
+    [["hot", T("Pesca", "Catch")], ["signal", T("Señal", "Signal")], ["turn", T("Girando", "Turning")],
+     ["deep", T("Sobreventa", "Oversold")], ["late", T("En marcha", "Underway")], ["all", T("Universo", "Universe")]].map(function (x) {
+      return '<button type="button" class="pill' + (f === x[0] ? " on" : "") + '" data-f="' + x[0] + '">' + DL.esc(x[1]) +
+        ' <span class="n">' + n[x[0]] + "</span></button>";
+    }).join("") + "</div>";
+
+  var shown = items.filter(function (it) { return F.inFilter(it, f, c); });
+  if (!shown.length) {
+    html += '<p style="font-size:12.5px;color:var(--muted);line-height:1.5;padding:12px 0 4px">' +
+      DL.esc(f === "hot"
+        ? T("Hoy no hay pesca: ninguna pasó por RSI < " + c.rsi + " en las últimas " + c.look + " sesiones. No forzar una entrada también es una decisión.",
+            "No catch today: none went through RSI < " + c.rsi + " in the last " + c.look + " sessions. Not forcing an entry is a decision too.")
+        : T("Nada en esta etapa ahora mismo.", "Nothing at this stage right now.")) + "</p>";
+  } else {
+    // sectores: primero donde hay señal, luego por cantidad de candidatos
+    var bySec = {};
+    shown.forEach(function (it) { (bySec[it.etf] = bySec[it.etf] || []).push(it); });
+    var secs = Object.keys(bySec).sort(function (a, b) {
+      var sa = bySec[a].filter(function (x) { return x.sg.st === "signal"; }).length;
+      var sb = bySec[b].filter(function (x) { return x.sg.st === "signal"; }).length;
+      return sb - sa || bySec[b].length - bySec[a].length || (a < b ? -1 : 1);
+    });
+    secs.forEach(function (etf) {
+      var rd = DL.RADAR.data[etf], wk = rd ? DL.ENG.ret(rd, 5) : null;
+      html += '<div class="fishsec"><span><b class="n">' + DL.esc(etf) + "</b>" + DL.esc(DL.sectorName(etf)) + "</span>" +
+        '<span class="n ' + DL.tone(wk) + '">' + (wk == null ? "" : DL.pct(wk, 1) + T(" 1S", " 1W")) + "</span></div>";
+      if (F.SECNOTE[etf]) html += '<div class="fishnote">' + DL.esc(T(F.SECNOTE[etf][0], F.SECNOTE[etf][1])) + "</div>";
+      bySec[etf].sort(function (a, b) {
+        return F.RANK[a.sg.st] - F.RANK[b.sg.st] || (a.sg.now || 0) - (b.sg.now || 0);
+      }).forEach(function (it) {
+        var r = it.row;
+        html += '<div class="fishrow" data-sym="' + DL.esc(it.sym) + '" role="button" tabindex="0">' +
+          '<div><div class="fs"><b class="n">' + DL.esc(it.sym) + "</b>" + F.stageTag(it.sg.st) +
+          (it.gate.lvl === "warn" ? '<span class="fwarn" title="' + DL.esc(it.gate.why) + '">⚠</span>' : "") + "</div>" +
+          '<div class="fd n">' + DL.esc(F.detail(r, it.sg)) +
+          (it.gate.lvl === "warn" ? '<br><span style="color:var(--amber)">⚠ ' + DL.esc(it.gate.why) + "</span>" : "") + "</div></div>" +
+          '<div class="fw n ' + DL.tone(r.w) + '">' + (r.w == null ? "—" : DL.pct(r.w, 1)) +
+          "<small>" + DL.esc(T("1S", "1W")) + (r.v != null ? " · ±" + r.v + "%" : "") + "</small></div>" +
+          '<button type="button" class="btn sm g fadd" data-add="' + DL.esc(it.sym) + '" aria-label="' +
+          DL.esc(it.watch ? T("Abrir ", "Open ") + it.sym : T("Agregar " + it.sym + " a la watchlist", "Add " + it.sym + " to the watchlist")) + '">' +
+          (it.watch ? "✓" : "+") + "</button></div>";
+      });
+    });
+  }
+
+  html += '<p style="margin-top:12px;font-size:11.5px;color:var(--faint);line-height:1.5">' +
+    DL.esc(T("La señal es una secuencia, no un instante: RSI(14) bajo " + c.rsi + " en las últimas " + c.look + " sesiones y cierre que recupera la SMA 20 en las últimas " + c.cross +
+             ". «±» es el movimiento semanal típico de cada acción. ",
+             "The signal is a sequence, not an instant: RSI(14) under " + c.rsi + " in the last " + c.look + " sessions and a close that reclaims SMA 20 in the last " + c.cross +
+             ". “±” is each stock's typical weekly move. ")) +
+    '<button type="button" class="lnk" id="fishGate2">' +
+    DL.esc(T("Filtro de calidad: " + n.out + " fuera, revisado el ", "Quality filter: " + n.out + " out, reviewed ") +
+      new Date(F.REVIEWED + "T12:00:00").toLocaleDateString(DL.loc(), { day: "numeric", month: "short", year: "numeric" })) + "</button>" +
+    DL.esc(T(" — es una lista curada, no un dato en vivo.", " — a curated list, not live data.")) + "</p>";
+  return html + "</section>";
+};
+DL.bindFish = function (root) {
+  var F = DL.FISH;
+  var b = DL.$("#fishScan", root); if (b) b.onclick = function () { F.scan(true); };
+  var c = DL.$("#fishCfg", root); if (c) c.onclick = DL.fishSheet;
+  DL.$$("#fishGate, #fishGate2", root).forEach(function (g) { g.onclick = DL.fishGateSheet; });
+  DL.$$("#fishFilter button", root).forEach(function (p) { p.onclick = function () { F.S.filter = p.dataset.f; DL.render(); }; });
+  DL.$$(".fishrow", root).forEach(function (row) {
+    var go = function (e) {
+      if (e && e.target && e.target.closest && e.target.closest(".fadd")) return;
+      DL.openAsset(row.dataset.sym);
+    };
+    row.onclick = go;
+    row.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+  DL.$$(".fadd", root).forEach(function (a) { a.onclick = function (e) { e.stopPropagation(); F.toWatch(a.dataset.add); }; });
+};
+
+/* franja de la pantalla Hoy: cuántas hay en cada etapa, con lo que ya está escaneado */
+DL.fishStrip = function () {
+  var F = DL.FISH;
+  if (!F.updatedAt()) return "";
+  var n = F.counts(F.classify(), F.cfg());
+  return '<section class="card fishstrip" id="fishStrip" role="button" tabindex="0">' +
+    "<span>🎣 <b>" + DL.esc(T("Zonas de pesca", "Fishing spots")) + "</b> · " +
+    '<span class="n">' + n.signal + "</span> " + DL.esc(T(n.signal === 1 ? "señal" : "señales", n.signal === 1 ? "signal" : "signals")) + " · " +
+    '<span class="n">' + n.turn + "</span> " + DL.esc(T("girando", "turning")) + " · " +
+    '<span class="n">' + n.deep + "</span> " + DL.esc(T("en sobreventa", "oversold")) + "</span>" +
+    '<span class="eyebrow">' + DL.esc(DL.evTime(F.updatedAt())) + " →</span></section>";
+};
+
+/* ajustes del escáner */
+DL.fishSheet = function () {
+  var F = DL.FISH, c = F.cfg();
+  function sel(id, label, opts, val) {
+    return '<div class="fld"><label for="' + id + '">' + DL.esc(label) + '</label><select id="' + id + '">' +
+      opts.map(function (o) { return '<option value="' + o[0] + '"' + (String(o[0]) === String(val) ? " selected" : "") + ">" + DL.esc(o[1]) + "</option>"; }).join("") +
+      "</select></div>";
+  }
+  var body = DL.el("<div></div>");
+  body.innerHTML =
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    sel("fRsi", T("Sobreventa: RSI(14) bajo", "Oversold: RSI(14) under"), [[30, "30"], [35, "35"], [40, "40"]], c.rsi) +
+    sel("fLook", T("…en las últimas", "…within the last"), [[10, T("10 sesiones", "10 sessions")], [15, T("15 sesiones", "15 sessions")], [20, T("20 sesiones", "20 sessions")]], c.look) +
+    "</div>" +
+    '<div class="grid g2" style="margin-bottom:12px">' +
+    sel("fCross", T("Cruce de SMA 20 hace máx.", "SMA 20 cross at most"), [[2, T("2 sesiones", "2 sessions")], [3, T("3 sesiones", "3 sessions")], [5, T("5 sesiones", "5 sessions")]], c.cross) +
+    sel("fWeek", T("Movimiento semanal típico mín.", "Min. typical weekly move"), [[0, T("sin mínimo", "no minimum")], [2, "±2%"], [3, "±3%"], [4, "±4%"]], c.minWeek) +
+    "</div>" +
+    '<label class="chk" style="margin-bottom:12px"><input type="checkbox" id="fAlert"' + (c.alert ? " checked" : "") + "> " +
+    DL.esc(T("Registrar cada señal nueva en el radar de eventos", "Log each new signal in the event radar")) + "</label>" +
+    '<div class="note">' + DL.esc(T("Con RSI 30 las large caps dan pocas señales y más limpias; 35 abre el estanque. Para buscar 2–5% por semana, pide un movimiento típico de ±3% o más: una acción que se mueve ±1.5% por semana no llega a ese objetivo sin apalancamiento.",
+      "At RSI 30 large caps give fewer, cleaner signals; 35 widens the pond. To look for 2–5% a week, require a typical move of ±3% or more: a stock that moves ±1.5% a week won't reach that target without leverage.")) + "</div>";
+  var foot = DL.el('<div class="row" style="margin-top:12px;justify-content:space-between"></div>');
+  var gate = DL.el('<button class="btn sm g"></button>');
+  gate.textContent = "🛡 " + T("Filtro de calidad", "Quality filter");
+  gate.onclick = function () { s.close(); DL.fishGateSheet(); };
+  var ok = DL.el('<button class="btn p"></button>');
+  ok.textContent = T("Guardar", "Save");
+  ok.onclick = function () {
+    var q = function (id) { return body.querySelector("#" + id); };
+    F.setCfg({ rsi: +q("fRsi").value, look: +q("fLook").value, cross: +q("fCross").value, minWeek: +q("fWeek").value, alert: q("fAlert").checked });
+    s.close(); DL.toast(T("Escáner ajustado", "Scanner updated")); DL.render();
+  };
+  foot.appendChild(gate); foot.appendChild(ok);
+  var s = DL.sheet(T("Ajustes del escáner", "Scanner settings"), body, foot);
+};
+
+/* filtro de calidad: qué queda fuera, por qué, y cómo cambiarlo */
+DL.fishGateSheet = function () {
+  var F = DL.FISH;
+  var body = DL.el("<div></div>");
+  function paint() {
+    var syms = F.allSyms(), out = [], warn = [], mine = [];
+    syms.forEach(function (s) {
+      var g = F.gate(s);
+      if (g.user) mine.push([s, g]);
+      else if (g.lvl === "out") out.push([s, g]);
+      else if (g.lvl === "warn") warn.push([s, g]);
+    });
+    function row(x, btn, act) {
+      var g = x[1];
+      return '<div class="gaterow"><b class="n">' + DL.esc(x[0]) + '</b><span class="gwhy">' + DL.esc(g.why || T("Sin motivo anotado", "No reason noted")) +
+        (g.user ? ' <span class="eyebrow">· ' + DL.esc(g.lvl === "out" ? T("vetada por ti", "vetoed by you") : T("restaurada por ti", "restored by you")) + "</span>"
+                : g.verified ? ' <span class="eyebrow" style="color:var(--pos)">· ' + DL.esc(T("verificado", "verified")) + "</span>"
+                : ' <span class="eyebrow" style="color:var(--amber)">· ' + DL.esc(T("por confirmar", "to confirm")) + "</span>") +
+        '</span><button type="button" class="btn sm g" data-act="' + act + '" data-sym="' + DL.esc(x[0]) + '">' + DL.esc(btn) + "</button></div>";
+    }
+    var date = new Date(F.REVIEWED + "T12:00:00").toLocaleDateString(DL.loc(), { day: "numeric", month: "long", year: "numeric" });
+    body.innerHTML =
+      '<p style="font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:10px">' +
+      DL.esc(T("Tres preguntas por empresa: ¿genera caja libre?, ¿la deuda está bajo control?, ¿tiene una investigación o litigio que pese sobre la acción? Yahoo no entrega esos datos gratis, así que esto es una lista curada, revisada el " + date + ". Lo que cambies aquí viaja con tu cuenta.",
+        "Three questions per company: does it generate free cash flow? is debt under control? is there an investigation or lawsuit weighing on the stock? Yahoo doesn't give that data for free, so this is a curated list, reviewed on " + date + ". What you change here travels with your account.")) + "</p>" +
+      '<div class="eyebrow" style="margin:12px 0 2px">' + DL.esc(T("Fuera del estanque · ", "Out of the pond · ") + out.length) + "</div>" +
+      (out.map(function (x) { return row(x, T("Restaurar", "Restore"), "ok"); }).join("") || '<p class="mute" style="font-size:12px;padding:6px 0">—</p>') +
+      '<div class="eyebrow" style="margin:14px 0 2px">' + DL.esc(T("Dentro, con aviso ⚠ · ", "In, with a caution ⚠ · ") + warn.length) + "</div>" +
+      (warn.map(function (x) { return row(x, T("Vetar", "Veto"), "out"); }).join("") || '<p class="mute" style="font-size:12px;padding:6px 0">—</p>') +
+      (mine.length ? '<div class="eyebrow" style="margin:14px 0 2px">' + DL.esc(T("Tus cambios · ", "Your changes · ") + mine.length) + "</div>" +
+        mine.map(function (x) { return row(x, T("Deshacer", "Undo"), "undo"); }).join("") : "") +
+      '<div class="eyebrow" style="margin:16px 0 6px">' + DL.esc(T("Vetar otra", "Veto another")) + "</div>" +
+      '<div class="grid" style="grid-template-columns:90px 1fr auto;gap:8px;align-items:end">' +
+      '<div class="fld"><label for="gSym">Ticker</label><input type="text" id="gSym" autocapitalize="characters" autocomplete="off" placeholder="CAT"></div>' +
+      '<div class="fld"><label for="gWhy">' + DL.esc(T("Motivo", "Reason")) + '</label><input type="text" id="gWhy" placeholder="' + DL.esc(T("p. ej. demanda nueva, deuda", "e.g. new lawsuit, debt")) + '"></div>' +
+      '<button type="button" class="btn sm" id="gAdd">' + DL.esc(T("Vetar", "Veto")) + "</button></div>" +
+      '<div class="note" style="margin-top:14px"><b>' + DL.esc(T("Revisión mensual. ", "Monthly review. ")) + "</b>" +
+      DL.esc(T("Al cerrar el reporte del mes, pasa la lista por una revisión de caja, deuda y frente legal y actualiza los vetos.",
+        "When you close the month's report, run the list through a cash, debt and legal review and update the vetoes.")) +
+      ' <button type="button" class="lnk" id="gPrompt">' + DL.esc(T("Copiar el prompt de revisión", "Copy the review prompt")) + "</button></div>";
+
+    DL.$$("[data-act]", body).forEach(function (b) {
+      b.onclick = function () {
+        var sym = b.dataset.sym, act = b.dataset.act;
+        if (act === "undo") F.setGate(sym, null);
+        else if (act === "ok") F.setGate(sym, "ok", T("Restaurada tras revisar", "Restored after review"));
+        else F.setGate(sym, "out", F.gate(sym).why);
+        paint(); DL.renderSoon();
+      };
+    });
+    body.querySelector("#gAdd").onclick = function () {
+      var sym = body.querySelector("#gSym").value.trim().toUpperCase();
+      if (!sym) return;
+      if (F.allSyms().indexOf(sym) < 0) { DL.toast(sym + T(" no está en el estanque", " isn't in the pond")); return; }
+      F.setGate(sym, "out", body.querySelector("#gWhy").value.trim());
+      paint(); DL.renderSoon();
+    };
+    body.querySelector("#gPrompt").onclick = function () { DL.copy(F.reviewPrompt(), T("Prompt copiado", "Prompt copied")); };
+  }
+  paint();
+  DL.sheet(T("Filtro de calidad", "Quality filter"), body);
+};
+
+/* ============================================================
+   ARCHIVO Y REPORTES MENSUALES DE EVENTOS
+   ============================================================ */
+DL.archiveSheet = function () {
+  var E = DL.EVENTS;
+  var body = DL.el("<div></div>");
+  var s;
+  function paint() {
+    var c = E.archCounts(), ms = E.months();
+    function act(rule, label, n) {
+      return '<button type="button" class="mv" data-rule="' + rule + '"' + (n ? "" : " disabled") + ' style="' + (n ? "" : "opacity:.45") + '">' +
+        "<span>" + DL.esc(label) + '</span><span class="n">' + n + "</span></button>";
+    }
+    body.innerHTML =
+      '<p style="font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:12px">' +
+      DL.esc(T("Archivar no borra: cada evento se suma al reporte de su mes (conteos, decisiones y qué hizo el precio después) y sale de la lista viva. Al cambiar el mes, lo que tenga más de 7 días se archiva solo.",
+        "Archiving doesn't delete: each event is added to its month's report (counts, decisions and what price did next) and leaves the live list. When the month changes, anything older than 7 days is archived automatically.")) + "</p>" +
+      '<div class="eyebrow" style="margin-bottom:6px">' + DL.esc(T("Lista viva · ", "Live list · ") + c.live + T(" eventos", " events")) + "</div>" +
+      act("read7", T("Archivar leídos de más de 7 días", "Archive read events older than 7 days"), c.read7) +
+      act("resolved", T("Archivar resueltos e ignorados", "Archive resolved and ignored"), c.resolved) +
+      act("prev", T("Archivar todo lo de meses anteriores", "Archive everything from previous months"), c.prev) +
+      act("all", T("Archivar todo y empezar limpio", "Archive everything and start clean"), c.all) +
+      '<button type="button" class="btn sm g" id="arCsv" style="margin-top:4px"' + (c.live ? "" : " disabled") + ">⬇ " +
+      DL.esc(T("Exportar la lista viva (.csv)", "Export the live list (.csv)")) + "</button>" +
+      '<div class="eyebrow" style="margin:18px 0 6px">' + DL.esc(T("Reportes mensuales", "Monthly reports")) + "</div>" +
+      (ms.length ? ms.map(function (x) {
+        var d = x.m.dec || {};
+        return '<button type="button" class="mv" data-ym="' + x.ym + '"><span><b>' + DL.esc(x.name.charAt(0).toUpperCase() + x.name.slice(1)) + "</b>" +
+          '<br><span class="eyebrow">' + x.m.n + DL.esc(T(" eventos", " events")) + " · " + (d.ACT || 0) + " ACT · " + (d.WATCH || 0) + " WATCH" +
+          (x.m.closed ? "" : DL.esc(T(" · abierto", " · open"))) + "</span></span>" +
+          '<span class="eyebrow" style="color:var(--purple2)">' + DL.esc(T("VER", "VIEW")) + " →</span></button>";
+      }).join("") : '<p class="mute" style="font-size:12px;line-height:1.5">' +
+        DL.esc(T("Todavía no hay reportes. El primero se crea cuando archives algo o cuando cambie el mes.",
+          "No reports yet. The first one is created when you archive something or when the month changes.")) + "</p>");
+
+    DL.$$("[data-rule]", body).forEach(function (b) {
+      b.onclick = function () {
+        var n = E.archiveBy(b.dataset.rule);
+        DL.toast(n + T(" eventos archivados", " events archived"));
+        paint(); DL.renderSoon();
+      };
+    });
+    DL.$$("[data-ym]", body).forEach(function (b) { b.onclick = function () { s.close(); DL.reportSheet(b.dataset.ym); }; });
+    var csv = body.querySelector("#arCsv");
+    if (csv) csv.onclick = function () {
+      DL.download("eventos-vivos-" + new Date().toISOString().slice(0, 10) + ".csv", E.liveCSV(), "text/csv");
+    };
+  }
+  paint();
+  s = DL.sheet(T("Archivo de eventos", "Event archive"), body);
+};
+
+DL.reportSheet = function (ym) {
+  var E = DL.EVENTS, m = E.month(ym);
+  if (!m) return;
+  var name = E.monthName(ym);
+  var day = function (ts) { return new Date(ts).toLocaleDateString(DL.loc(), { day: "numeric", month: "short" }); };
+  var d = m.dec || {};
+  var body = DL.el('<div class="rep"></div>');
+  var html =
+    '<div class="eyebrow" style="margin-bottom:10px">' + DL.esc(day(m.first) + " – " + day(m.last)) + (m.closed ? "" : " · " + DL.esc(T("mes abierto", "month still open"))) + "</div>" +
+    '<div class="grid g3" style="margin-bottom:14px">' +
+    DL.ro(T("Eventos", "Events"), String(m.n), "", "") +
+    DL.ro(T("Críticos", "Critical"), String(m.sev.CRITICAL || 0), (m.sev.CRITICAL ? "neg" : ""), "") +
+    DL.ro(T("Con decisión", "Decided"), String(m.n - (d.NONE || 0)), "", "") + "</div>";
+
+  html += '<div class="eyebrow" style="margin-bottom:2px">' + DL.esc(T("Por tipo · qué hizo el precio después", "By type · what price did next")) + "</div>" +
+    '<div class="reprow rhd"><span></span><span>' + DL.esc(T("n", "n")) + "</span><span>" + DL.esc(T("medio", "avg")) + "</span><span>≥+2%</span></div>" +
+    E.topN(m.type, 99).map(function (x) {
+      var q = (m.out || {})[x[0]], avg = q && q.n ? q.sum / q.n : null;
+      return '<div class="reprow"><span>' + DL.esc(E.typeLabel(x[0])) + '</span><span class="n">' + x[1] + "</span>" +
+        '<span class="n ' + DL.tone(avg) + '">' + (avg == null ? "—" : DL.pct(avg, 1)) + "</span>" +
+        '<span class="n">' + (q && q.n ? Math.round(q.hit / q.n * 100) + "%" : "—") + "</span></div>";
+    }).join("") +
+    '<p style="font-size:11px;color:var(--faint);line-height:1.45;margin:6px 0 14px">' +
+    DL.esc(T("Cambio desde el precio del evento hasta que se archivó. «≥+2%» = cuántos subieron al menos 2%: tu vara para la meta de 2–5% semanal.",
+      "Change from the event price until it was archived. “≥+2%” = how many rose at least 2%: your yardstick for the 2–5% weekly goal.")) + "</p>";
+
+  html += '<div class="grid g2" style="margin-bottom:14px"><div><div class="eyebrow" style="margin-bottom:4px">' + DL.esc(T("Más activos", "Most active")) + "</div>" +
+    E.topN(m.sym, 6).map(function (x) { return '<div class="reprow two"><span class="n">' + DL.esc(x[0]) + '</span><span class="n">' + x[1] + "</span></div>"; }).join("") + "</div>" +
+    '<div><div class="eyebrow" style="margin-bottom:4px">' + DL.esc(T("Decisiones", "Decisions")) + "</div>" +
+    [["ACT", "ACT"], ["WATCH", "WATCH"], ["IGNORE", "IGNORE"], ["NONE", T("sin decidir", "undecided")]].map(function (k) {
+      return '<div class="reprow two"><span>' + DL.esc(k[1]) + '</span><span class="n">' + (d[k[0]] || 0) + "</span></div>";
+    }).join("") + "</div></div>";
+
+  if (m.notes && m.notes.length) {
+    html += '<div class="eyebrow" style="margin-bottom:4px">' + DL.esc(T("Con decisión o notas", "With a decision or notes")) + "</div>" +
+      m.notes.slice().sort(function (a, b) { return b.t - a.t; }).map(function (x) {
+        return '<div style="padding:7px 0;border-bottom:1px solid var(--soft);font-size:12px;line-height:1.45">' +
+          '<span class="eyebrow">' + DL.esc(day(x.t)) + '</span> <b class="n">' + DL.esc(x.s) + "</b> " + DL.esc(E.L(x.h)) +
+          (x.d ? " · <b>" + DL.esc(x.d) + "</b>" : "") +
+          (x.o != null ? ' · <span class="n ' + DL.tone(x.o) + '">' + DL.pct(x.o, 1) + "</span>" : "") +
+          (x.n ? '<br><span style="color:var(--muted)">“' + DL.esc(x.n) + "”</span>" : "") + "</div>";
+      }).join("");
+  }
+  body.innerHTML = html;
+
+  var foot = DL.el('<div class="row" style="margin-top:14px;justify-content:space-between"></div>');
+  var back = DL.el('<button class="btn sm g"></button>');
+  back.textContent = "← " + T("Archivo", "Archive");
+  back.onclick = function () { s.close(); DL.archiveSheet(); };
+  var right = DL.el('<span class="row" style="gap:6px"></span>');
+  var cp = DL.el('<button class="btn sm"></button>');
+  cp.textContent = T("Copiar", "Copy");
+  cp.onclick = function () { DL.copy(E.reportMD(ym), T("Reporte copiado", "Report copied")); };
+  var dl = DL.el('<button class="btn sm p"></button>');
+  dl.textContent = "⬇ .md";
+  dl.onclick = function () { DL.download("reporte-eventos-" + ym + ".md", E.reportMD(ym), "text/markdown"); };
+  right.appendChild(cp); right.appendChild(dl);
+  foot.appendChild(back); foot.appendChild(right);
+  var s = DL.sheet(T("Reporte · ", "Report · ") + name, body, foot);
 };
 
 
@@ -6194,7 +7121,7 @@ DL.render = function () {
   };
   document.getElementById("btnRefresh").onclick = function () {
     if (!DL.S.profile.setup || DL.data.loading) return;
-    if (DL.route === "radar") DL.loadRadar(true);
+    if (DL.route === "radar") { DL.loadRadar(true); DL.FISH.scan(true); }
     DL.sync(true, function () { DL.toast(T("Precios actualizados", "Prices updated")); });
   };
 

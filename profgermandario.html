@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ProfGermandario — Executive English 1 a 1 · Think in English. Not about English.</title>
+<meta name="description" content="Coaching ejecutivo de inglés 1 a 1 para profesionales hispanohablantes. Transformación de 12 semanas con progreso medido clase a clase, ruta MCERL A1–C2 y laboratorio de entrenamiento. Empieza con el Sistema Automático por USD 27.">
+<meta name="keywords" content="coaching ejecutivo de inglés, inglés para profesionales, inglés para empresarios, inglés 1 a 1, fluidez en inglés, MCERL, CEFR, ProfGermandario">
+<meta name="author" content="Germandario Palekor">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://palekor.github.io/lecciones/profgermandario.html">
+<link rel="icon" href="profgermandario-logo-clean.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ProfGermandario">
+<meta property="og:locale" content="es_CO">
+<meta property="og:url" content="https://palekor.github.io/lecciones/profgermandario.html">
+<meta property="og:title" content="ProfGermandario — Executive English 1 a 1">
+<meta property="og:description" content="Think in English. Not about English. Coaching 1 a 1 para profesionales, con progreso que ves y mides clase a clase.">
+<meta property="og:image" content="https://palekor.github.io/lecciones/assets/img/profg.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ProfGermandario — Executive English 1 a 1">
+<meta name="twitter:description" content="Think in English. Not about English. Coaching 1 a 1 con progreso medido clase a clase.">
+<meta name="twitter:image" content="https://palekor.github.io/lecciones/assets/img/profg.png">
+
+<meta name="theme-color" content="#140E1A">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "ProfGermandario",
+  "url": "https://palekor.github.io/lecciones/profgermandario.html",
+  "description": "Coaching ejecutivo de inglés 1 a 1 para profesionales hispanohablantes: diagnóstico, Transformación de 12 semanas, ruta MCERL y laboratorio de entrenamiento.",
+  "founder": {"@type": "Person", "name": "Germandario Palekor"},
+  "sameAs": [
+    "https://www.tiktok.com/@profgermandario",
+    "https://www.facebook.com/profgermandario",
+    "https://www.linkedin.com/in/profgermandario",
+    "https://twitter.com/profgermandario",
+    "https://www.youtube.com/@profgermandario"
+  ],
+  "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "url": "https://wa.me/573197894038"},
+  "makesOffer": [
+    {"@type": "Offer", "name": "Sistema Automático", "price": "27", "priceCurrency": "USD"},
+    {"@type": "Offer", "name": "Transformation 12 semanas · 3 h/semana (contado, precio fundador)", "price": "1397", "priceCurrency": "USD"},
+    {"@type": "Offer", "name": "Transformation Intensive 12 semanas · 6 h/semana (contado, precio fundador)", "price": "2547", "priceCurrency": "USD"}
+  ]
+}
+</script>
+
+<script>
+/* Tema del sitio: el que elegiste aquí o en el embudo; si no, el de la app Fluency OS; si no, oscuro (igual que la app). */
+(function(){
+  var t = null;
+  try { t = localStorage.getItem('pg_site_theme') || localStorage.getItem('pg_embudo_theme'); } catch(e){}
+  if(!t){ try { var st = JSON.parse(localStorage.getItem('qkesl_state_v1') || 'null'); if(st && st.theme) t = st.theme; } catch(e){} }
+  document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
+
+<style>
+/* =========================================================
+   PROFGERMANDARIO — tokens compartidos con Fluency OS (journal.html)
+   y con embudo.html. Oscuro por defecto; claro con data-theme="light".
+   ========================================================= */
+:root{
+  --bg:#140E1A; --surface:#1C1524; --surface-2:#261D30;
+  --line:rgba(243,237,226,.10); --line-strong:rgba(243,237,226,.22);
+  --text:#F3EDE2; --muted:#A89DB2; --faint:#6E6478;
+  --gold:#CFA85A; --gold-soft:rgba(207,168,90,.14); --on-gold:#1B1307;
+  --sage:#93B89C; --violet:#8A76C2;
+  --glow:rgba(207,168,90,.14);
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r-lg:22px; --r-md:14px; --r-sm:10px;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F6F2EA; --surface:#FFFDF9; --surface-2:#EFE8DC;
+  --line:rgba(29,22,36,.10); --line-strong:rgba(29,22,36,.24);
+  --text:#1D1624; --muted:#655B6E; --faint:#9A90A2;
+  --gold:#94732C; --gold-soft:rgba(148,115,44,.12); --on-gold:#FFFDF9;
+  --sage:#4E7C59; --violet:#5E4A9A;
+  --glow:rgba(148,115,44,.11);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:64px;transition:background-color .25s,color .25s}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+.wrap-narrow{max-width:860px;margin:auto;padding:0 24px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.reveal{opacity:1}
+
+/* Superficies: --card cambia según la banda para que las tarjetas siempre contrasten */
+section{padding:clamp(72px,9vw,108px) 0;background:var(--bg);--card:var(--surface);scroll-margin-top:72px}
+section.alt{background:var(--surface);--card:var(--bg)}
+section.focus{background:radial-gradient(60% 70% at 85% 0%,var(--glow),transparent 70%),radial-gradient(50% 60% at 0% 100%,color-mix(in srgb,var(--violet) 10%,transparent),transparent 70%),var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* Tipografía */
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.015em;text-wrap:balance}
+h1{font-weight:400;font-size:clamp(2.7rem,6.2vw,5.1rem);line-height:1.03}
+h2{font-weight:400;font-size:clamp(2.1rem,4.4vw,3.4rem);line-height:1.06}
+h3{font-weight:500;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.2;letter-spacing:-.005em}
+h1 em,h2 em{font-style:italic;font-weight:300;color:var(--gold)}
+p{margin:0;color:var(--muted)}
+.eyebrow{margin:0 0 14px;font-size:.95rem;font-weight:600;color:var(--gold)}
+.motto{font-family:var(--display);font-style:italic;color:var(--gold);font-size:1.3rem;margin:0 0 24px}
+
+/* Botones (mismos que la app) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:12px 26px;border-radius:999px;font-weight:700;font-size:1rem;line-height:1.25;text-align:center;border:1px solid transparent;transition:transform .15s ease,filter .15s,border-color .15s,color .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--gold);color:var(--on-gold)}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-line{border-color:var(--line-strong);color:var(--text);font-weight:600}
+.btn-line:hover{border-color:var(--gold);color:var(--gold)}
+.btn-block{width:100%}
+.text-link{color:var(--gold);font-weight:600;border-bottom:1px solid color-mix(in srgb,var(--gold) 40%,transparent)}
+.text-link:hover{border-bottom-color:var(--gold)}
+
+.scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--gold);z-index:80}
+
+/* ---------- TOPBAR ---------- */
+.topbar{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar .wrap{min-height:70px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:32px;height:32px;border-radius:50%;object-fit:cover;background:var(--surface-2)}
+.brand b{font-family:var(--display);font-weight:500;font-size:1.12rem;letter-spacing:.01em;white-space:nowrap}
+.brand span{color:var(--muted);font-size:.8rem;white-space:nowrap}
+.nav{display:none;align-items:center;gap:2px;margin-left:auto}
+.nav a{padding:9px 12px;border-radius:999px;color:var(--muted);font-size:.9rem;font-weight:600}
+.nav a:hover,.nav a.active{color:var(--text)}
+.nav .btn{min-height:42px;padding:8px 18px;font-size:.9rem;margin-left:8px}
+.nav a.btn-primary,.nav a.btn-primary:hover{color:var(--on-gold)}
+.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--muted);flex:0 0 auto}
+.icon-btn:hover{background:var(--surface-2);color:var(--text)}
+.icon-btn svg{width:20px;height:20px}
+#themeBtn{margin-left:auto}
+@media(min-width:980px){ .nav{display:flex} #themeBtn{margin-left:6px} }
+
+/* ---------- NAV INFERIOR (móvil) ---------- */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:70;display:flex;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.bottomnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;color:var(--faint);font-size:.68rem;font-weight:600}
+.bottomnav a.active{color:var(--gold)}
+.bottomnav svg{width:20px;height:20px}
+@media(min-width:980px){ .bottomnav{display:none} body{padding-bottom:0} }
+
+.float-wa{position:fixed;right:16px;bottom:76px;z-index:65;display:flex;align-items:center;gap:9px;padding:12px 18px;border-radius:999px;background:var(--surface-2);color:var(--text);border:1px solid var(--line-strong);font-weight:600;font-size:.92rem;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.float-wa i{color:#25D366;font-size:1.15rem}
+.float-wa:hover{border-color:var(--gold)}
+@media(min-width:980px){ .float-wa{bottom:24px} }
+@media(max-width:520px){ .float-wa span{display:none} .float-wa{padding:13px} }
+
+/* ---------- HERO ---------- */
+.hero{padding:clamp(56px,8vw,96px) 0 clamp(64px,8vw,100px);background:radial-gradient(70% 80% at 88% 0%,var(--glow),transparent 70%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.hero-grid>*{min-width:0}
+@media(min-width:980px){ .hero-grid{grid-template-columns:1.1fr .9fr;gap:64px} }
+.hero-lead{max-width:36em;margin-top:26px;font-size:clamp(1.05rem,1.6vw,1.2rem);line-height:1.6}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.hero-facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border-top:1px solid var(--line)}
+.hero-facts div{padding:18px 18px 0 0}
+.hero-facts div+div{padding-left:22px;border-left:1px solid var(--line)}
+.hero-facts strong{display:block;font-family:var(--display);font-weight:400;font-size:1.9rem;line-height:1.1;color:var(--gold)}
+.hero-facts span{font-size:.85rem;color:var(--muted)}
+
+.loop-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px}
+.loop-svg{width:100%;height:auto;display:block}
+.loop-svg .ring{fill:none;stroke:var(--line-strong);stroke-width:1}
+.loop-svg .ring-dash{fill:none;stroke:var(--gold);stroke-width:1.4;stroke-dasharray:3 9;stroke-linecap:round;opacity:.8}
+.loop-svg .node{fill:var(--bg);stroke:var(--gold);stroke-width:1.2}
+.loop-svg .lbl{font-family:var(--body);font-weight:700;font-size:12px;fill:var(--text)}
+.loop-svg .sub{font-family:var(--body);font-size:9.5px;fill:var(--muted)}
+.loop-svg .center{font-family:var(--display);font-style:italic;font-size:16px;fill:var(--text)}
+.loop-svg .center.m{fill:var(--muted)}
+.loop-caption{text-align:center;margin-top:10px;font-size:.88rem;color:var(--muted)}
+
+/* ---------- section head ---------- */
+.section-head{display:flex;flex-direction:column;gap:16px;margin-bottom:44px;max-width:680px}
+.section-head.center{margin-inline:auto;text-align:center;align-items:center}
+.section-head.wide{max-width:100%;display:grid;grid-template-columns:1fr;gap:16px;align-items:end}
+@media(min-width:900px){ .section-head.wide{grid-template-columns:1fr 1fr;gap:64px} }
+.section-head p{max-width:34em;font-size:1.05rem}
+
+/* ---------- BRECHA + PARA QUIÉN ---------- */
+.problem-grid{display:grid;grid-template-columns:1fr;gap:40px;align-items:start}
+@media(min-width:980px){ .problem-grid{grid-template-columns:.95fr 1.05fr;gap:64px} }
+.problem-copy>p{font-size:1.05rem;margin-top:18px}
+.problem-thesis{margin-top:28px;padding-left:20px;border-left:1px solid var(--gold);font-family:var(--display);font-style:italic;font-weight:400;font-size:1.25rem;line-height:1.45;color:var(--text)}
+.problem-list{display:grid;gap:12px}
+.problem-item{padding:20px 22px;border-radius:var(--r-md);background:var(--card);border:1px solid var(--line)}
+.problem-item h3{font-family:var(--body);font-weight:700;font-size:1.02rem;margin:0 0 4px;letter-spacing:0}
+.problem-item p{font-size:.95rem}
+.audience-row{display:grid;grid-template-columns:1fr;gap:16px;margin-top:64px}
+@media(min-width:900px){ .audience-row{grid-template-columns:repeat(3,1fr)} }
+.audience{padding:26px;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.audience.lead{border-color:color-mix(in srgb,var(--gold) 55%,transparent)}
+.audience .who{font-weight:600;color:var(--gold);font-size:.95rem;margin-bottom:10px}
+.audience h3{margin-bottom:10px}
+.audience p{font-size:.95rem}
+.audience .text-link{margin-top:auto;padding-top:18px;align-self:flex-start;border-bottom:0}
+
+/* ---------- DIAGNÓSTICO ---------- */
+.diag-wrap{max-width:680px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.diag-top{padding:26px 28px 0}
+.diag-step-count{font-family:var(--display);font-style:italic;color:var(--gold);font-size:1.02rem}
+.diag-progress{height:4px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:14px}
+.diag-progress-bar{height:100%;background:var(--gold);width:0;border-radius:99px;transition:width .3s ease}
+.diag-body{padding:24px 28px 28px}
+.diag-q{display:none}
+.diag-q.active{display:block}
+.qtext{font-family:var(--display);font-size:clamp(1.3rem,2.4vw,1.6rem);line-height:1.25;color:var(--text)!important;margin-bottom:20px!important}
+.opt{display:block;width:100%;text-align:left;padding:15px 18px;margin-bottom:10px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);color:var(--text);font-size:.98rem;font-weight:500;transition:border-color .15s,background-color .15s}
+:root[data-theme="light"] .opt{background:var(--surface)}
+.opt:hover{border-color:var(--gold)}
+.opt.selected{border-color:var(--gold);background:var(--gold-soft)}
+.diag-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px}
+.diag-hint{font-size:.85rem;color:var(--faint)}
+.diag-result{display:none;padding:30px 28px 32px}
+.diag-result.active{display:block}
+.result-level{font-family:var(--display);font-style:italic;color:var(--gold);font-size:1.1rem}
+.diag-result h3{font-size:clamp(1.8rem,3.4vw,2.4rem);font-weight:400;margin-top:6px}
+.diag-result .disclaimer{margin-top:8px;font-size:.92rem}
+.result-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0}
+@media(min-width:640px){ .result-grid{grid-template-columns:1fr 1fr} }
+.result-item{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px}
+:root[data-theme="light"] .result-item{background:var(--surface-2);border-color:transparent}
+.result-item .label{font-size:.8rem;color:var(--muted);margin-bottom:4px}
+.result-item .value{font-size:.98rem;color:var(--text);font-weight:600}
+.result-offer{margin-top:4px;padding:22px;border-radius:var(--r-md);background:var(--gold-soft);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent)}
+.result-offer b{display:block;font-family:var(--display);font-weight:500;font-size:1.3rem;line-height:1.25;color:var(--text)}
+.result-offer .ro-sub{display:block;margin-top:6px;font-size:.93rem;color:var(--muted)}
+.result-offer .diag-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.result-more{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:.92rem}
+.result-more button{color:var(--muted);font-weight:600}
+.result-more button:hover{color:var(--text)}
+
+/* ---------- MÉTODO ---------- */
+.method-grid{display:grid;grid-template-columns:1fr;border-top:1px solid var(--line-strong)}
+@media(min-width:900px){ .method-grid{grid-template-columns:repeat(3,1fr)} }
+.method-step{padding:32px 32px 8px 0}
+@media(min-width:900px){ .method-step+.method-step{padding-left:32px;border-left:1px solid var(--line)} }
+@media(max-width:899px){ .method-step+.method-step{border-top:1px solid var(--line)} }
+.method-num{font-family:var(--display);font-style:italic;color:var(--gold);font-size:1.15rem}
+.method-step h3{margin:10px 0 10px;font-size:1.7rem;font-weight:400}
+.method-step p{font-size:.98rem}
+.method-note{margin-top:28px;font-size:.98rem}
+.method-band{margin-top:56px;display:grid;grid-template-columns:1fr;gap:24px;padding:34px;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--line)}
+@media(min-width:900px){ .method-band{grid-template-columns:1.15fr .85fr;align-items:center} }
+.method-band h3{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:400;margin:0 0 10px}
+.method-stats{display:grid;grid-template-columns:repeat(3,1fr)}
+.method-stat{text-align:center;padding:6px 8px}
+.method-stat+.method-stat{border-left:1px solid var(--line)}
+.method-stat b{display:block;font-family:var(--display);font-weight:300;font-size:2.6rem;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.method-stat span{font-size:.82rem;color:var(--muted)}
+
+/* ---------- MAPA MCERL (focus) ---------- */
+.mcerl-shell{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-lg);padding:clamp(24px,4.5vw,48px)}
+.mcerl-copy p{max-width:36em;font-size:1.05rem;margin-top:16px}
+.mcerl-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.mcerl-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:36px 0 16px}
+@media(min-width:640px){ .mcerl-levels{grid-template-columns:repeat(6,1fr)} }
+.lvl-btn{border:1px solid var(--line);border-radius:var(--r-md);padding:12px 6px;text-align:center;color:var(--muted);background:var(--bg);transition:border-color .15s,background-color .15s}
+:root[data-theme="light"] .lvl-btn{background:var(--surface-2);border-color:transparent}
+.lvl-btn .code{display:block;font-family:var(--display);font-size:1.25rem;color:var(--text)}
+.lvl-btn .tag{font-size:.78rem}
+.lvl-btn:hover{border-color:var(--gold)}
+.lvl-btn.active{border-color:var(--gold);background:var(--gold-soft)}
+.lvl-btn.active .code{color:var(--gold)}
+.ladder-panel{border:1px solid var(--line);border-radius:var(--r-md);padding:24px;background:var(--bg)}
+:root[data-theme="light"] .ladder-panel{background:var(--surface-2);border-color:transparent}
+.ladder-idea-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.idea-chip{padding:8px 15px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);font-size:.88rem;font-weight:600}
+.idea-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.ladder-sentence{font-family:var(--display);font-size:clamp(1.3rem,2.4vw,1.7rem);font-style:italic;color:var(--text)!important;min-height:2.6em;line-height:1.35}
+.ladder-meta{font-size:.9rem;margin-top:10px}
+
+/* ---------- SESIÓN DE HOY (misión + preparación) ---------- */
+.session-grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+@media(min-width:980px){ .session-grid{grid-template-columns:1.15fr .85fr} }
+.time-picker{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.time-chip{padding:9px 16px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);font-size:.9rem;font-weight:600}
+.time-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.mission-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px}
+.mission-stage{display:flex;gap:6px;margin-bottom:24px}
+.mission-stage .st{flex:1;text-align:center;padding:9px 4px;border-radius:var(--r-sm);background:var(--surface-2);font-size:.82rem;color:var(--muted);font-weight:600}
+.mission-stage .st.done{color:var(--sage);background:color-mix(in srgb,var(--sage) 14%,transparent)}
+.mission-stage .st.current{color:var(--on-gold);background:var(--gold)}
+.mission-body{margin-bottom:24px}
+.mission-body .eyebrow{margin-bottom:8px}
+.mission-body .task{font-family:var(--display);font-size:clamp(1.25rem,2.2vw,1.55rem);line-height:1.4;color:var(--text);font-style:italic;font-weight:300}
+.mission-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mstat{padding:14px 8px;text-align:center}
+.mstat+.mstat{border-left:1px solid var(--line)}
+.mstat .v{font-family:var(--display);font-size:1.7rem;font-weight:400;color:var(--gold);font-variant-numeric:tabular-nums}
+.mstat .l{font-size:.8rem;color:var(--muted)}
+.mission-actions{display:flex;gap:10px;flex-wrap:wrap}
+.mission-actions .btn[disabled]{opacity:.55;cursor:default}
+.mission-note{font-size:.88rem;color:var(--faint);margin-top:16px}
+.prep h3{font-size:1.5rem;font-weight:400;margin-bottom:8px}
+.prep>p{font-size:.95rem;margin-bottom:18px}
+.med-list{display:grid;gap:12px}
+.med-card{display:grid;grid-template-columns:116px 1fr;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:10px;transition:border-color .15s}
+.med-card:hover{border-color:var(--gold)}
+.med-thumb{position:relative;aspect-ratio:16/10;border-radius:var(--r-sm);background-size:cover;background-position:center;background-color:var(--surface-2);filter:grayscale(1) contrast(1.05);transition:filter .2s}
+.med-card:hover .med-thumb{filter:none}
+.med-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--on-gold)}
+.med-play svg{width:12px;height:12px;margin-left:2px}
+.med-body h4{margin:0 0 3px;font-family:var(--display);font-weight:500;font-size:1.08rem;color:var(--text)}
+.med-body p{font-size:.86rem;line-height:1.45}
+.med-meta{font-size:.78rem;color:var(--faint);margin-top:4px}
+
+/* ---------- LABORATORIO ---------- */
+.tool-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:24px;-webkit-overflow-scrolling:touch}
+.tool-tab{flex:0 0 auto;padding:9px 16px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);font-size:.88rem;font-weight:600}
+.tool-tab.active{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+.tool-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){ .tool-grid{grid-template-columns:repeat(2,1fr)} }
+@media(min-width:1080px){ .tool-grid{grid-template-columns:repeat(3,1fr)} }
+.tool-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s}
+.tool-card:hover{border-color:var(--gold)}
+.tool-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tool-cat{font-size:.82rem;font-weight:600;color:var(--gold)}
+.tool-idx{font-size:.8rem;color:var(--faint);font-variant-numeric:tabular-nums}
+.tool-card h3{font-size:1.3rem}
+.tool-card .why{font-size:.92rem}
+.tool-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+.tool-meta .m{font-size:.82rem;color:var(--muted)}
+.tool-meta .m b{color:var(--text);font-weight:600}
+.tool-go{font-size:.88rem;color:var(--gold);font-weight:600}
+.tools-more{display:flex;justify-content:center;margin-top:28px}
+
+/* ---------- CASOS ---------- */
+.story-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:900px){ .story-grid{grid-template-columns:repeat(3,1fr)} }
+.story-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px}
+.story-card.lead{border-color:color-mix(in srgb,var(--gold) 55%,transparent)}
+.story-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
+.story-person{display:flex;align-items:center;gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 50%,transparent)}
+.story-person b{display:block;font-size:.98rem}
+.story-person small{display:block;color:var(--muted);font-size:.85rem}
+.story-tag{font-size:.8rem;font-weight:600;border-radius:999px;padding:4px 11px;color:var(--gold);background:var(--gold-soft)}
+.story-card h3{font-size:1.45rem;font-weight:400;margin:0 0 12px}
+.story-card p{font-size:.95rem;margin-bottom:16px}
+.story-result{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:12px}
+.result-number{font-family:var(--display);font-size:2.3rem;line-height:1;color:var(--gold);font-weight:300}
+.story-result span{font-size:.9rem;color:var(--muted);line-height:1.4}
+.evidence-note{margin:26px auto 0;text-align:center;font-size:.88rem;color:var(--faint);max-width:52em}
+
+/* ---------- INVERSIÓN (igual que embudo.html) ---------- */
+.switch{display:inline-flex;gap:4px;border:1px solid var(--line-strong);border-radius:999px;padding:4px;margin-bottom:28px}
+.switch button{font-weight:600;font-size:.92rem;padding:10px 18px;border-radius:999px;color:var(--muted)}
+.switch button[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
+.plans{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:900px){ .plans{grid-template-columns:1fr 1fr;gap:24px} }
+.plan{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(26px,4vw,42px);display:flex;flex-direction:column}
+.plan.signature{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.plan-flag{align-self:flex-start;font-size:.8rem;font-weight:600;padding:4px 12px;border-radius:999px;background:var(--gold-soft);color:var(--gold);margin-bottom:16px}
+.plan-name{font-family:var(--display);font-size:1.9rem}
+.plan-meta{margin-top:6px;color:var(--muted);font-size:.95rem}
+.plan-price{margin-top:26px;font-family:var(--display);font-weight:300;font-size:clamp(3.2rem,6vw,4.1rem);line-height:1;letter-spacing:-.03em}
+.signature .plan-price{color:var(--gold)}
+.plan-price small{font-family:var(--body);font-size:1rem;font-weight:500;color:var(--muted);margin-left:6px;letter-spacing:0}
+.plan-total{margin-top:10px;font-size:.93rem;color:var(--muted)}
+.plan-later{margin-top:4px;font-size:.86rem;color:var(--faint)}
+.dash{list-style:none;margin:26px 0 30px;padding:22px 0 0;border-top:1px solid var(--line);display:grid;gap:12px;flex:1}
+.dash li{padding-left:22px;position:relative;font-size:.98rem}
+.dash li::before{content:"";position:absolute;left:0;top:.78em;width:10px;height:1px;background:var(--gold)}
+.founder{margin-top:22px;font-size:.93rem;max-width:72ch}
+.founder b{color:var(--text)}
+.extras{margin-top:64px;border-top:1px solid var(--line-strong)}
+.extra{display:grid;grid-template-columns:1fr;gap:6px;padding:22px 0;border-bottom:1px solid var(--line)}
+@media(min-width:820px){ .extra{grid-template-columns:1.1fr 1.6fr .8fr;gap:32px;align-items:baseline} }
+.extra h3{font-size:1.3rem}
+.extra p{font-size:.95rem}
+.extra .amount{font-family:var(--display);font-size:1.45rem}
+@media(min-width:820px){ .extra .amount{text-align:right} }
+.extra .amount small{display:block;font-family:var(--body);font-size:.8rem;color:var(--muted)}
+.inv-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+
+/* ---------- SISTEMA AUTOMÁTICO (focus) ---------- */
+.offer-grid{display:grid;grid-template-columns:1fr;gap:44px;align-items:center}
+.offer-grid>*{min-width:0}
+@media(min-width:980px){ .offer-grid{grid-template-columns:1.05fr .95fr;gap:72px} }
+.manifesto-quote{font-family:var(--display);font-weight:300;font-style:italic;font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:1.35;color:var(--text);padding-left:20px;border-left:1px solid var(--gold);margin:0 0 36px}
+.manifesto-quote cite{display:block;margin-top:10px;font-family:var(--body);font-style:normal;font-size:.85rem;color:var(--muted)}
+.offer-copy>p{font-size:1.05rem;margin-top:16px;max-width:34em}
+.offer-steps{list-style:none;padding:0;margin:30px 0 0;counter-reset:paso}
+.offer-steps li{counter-increment:paso;display:grid;grid-template-columns:44px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--line)}
+.offer-steps li:last-child{border-bottom:1px solid var(--line)}
+.offer-steps li:before{content:counter(paso);font-family:var(--display);font-style:italic;font-size:1.4rem;line-height:1.1;color:var(--gold)}
+.offer-steps b{display:block;color:var(--text);font-weight:600}
+.offer-steps .os-sub{display:block;margin-top:2px;color:var(--muted);font-size:.93rem}
+.invite{background:var(--surface);border-radius:var(--r-lg);padding:10px;border:1px solid var(--line);box-shadow:0 40px 90px -40px rgba(0,0,0,.55)}
+.invite-inner{position:relative;border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:16px;padding:clamp(28px,5vw,44px) clamp(22px,4vw,38px)}
+.invite-inner:before{content:"";position:absolute;inset:5px;border:1px solid color-mix(in srgb,var(--gold) 25%,transparent);border-radius:12px;pointer-events:none}
+.invite-kicker{text-align:center;font-family:var(--display);font-style:italic;font-size:1.2rem;color:var(--gold)}
+.invite-price{display:flex;justify-content:center;align-items:flex-start;gap:8px;margin-top:6px;color:var(--text)}
+.invite-price .num{font-family:var(--display);font-weight:300;font-size:clamp(4.6rem,13vw,6.6rem);line-height:.95;letter-spacing:-.04em}
+.invite-price .cur{margin-top:1.1em;font-size:.9rem;font-weight:600;color:var(--muted)}
+.invite-credit{text-align:center;font-size:.88rem;margin-top:8px}
+.invite-rule{display:flex;align-items:center;gap:12px;margin:22px auto 4px;max-width:200px}
+.invite-rule:before,.invite-rule:after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--gold) 45%,transparent)}
+.invite-rule span{width:6px;height:6px;transform:rotate(45deg);background:var(--gold)}
+.invite-list{list-style:none;padding:0;margin:12px 0 24px}
+.invite-list li{position:relative;padding:13px 0 13px 22px;border-bottom:1px solid var(--line)}
+.invite-list li:before{content:"";position:absolute;left:2px;top:21px;width:5px;height:5px;transform:rotate(45deg);background:var(--gold)}
+.invite-list b{display:block;font-weight:600;font-size:1rem;color:var(--text)}
+.invite-list .il-sub{display:block;margin-top:2px;font-size:.88rem;color:var(--muted)}
+.invite-note{margin-top:16px;text-align:center;font-size:.9rem;color:var(--muted)}
+
+/* ---------- LIBRO ---------- */
+.book-grid{display:grid;grid-template-columns:1fr;gap:40px;align-items:center}
+@media(min-width:900px){ .book-grid{grid-template-columns:.7fr 1.3fr;gap:72px} }
+.book-stage{display:grid;place-items:center}
+.book-cover{position:relative;width:min(230px,62vw);aspect-ratio:5/8;display:flex;flex-direction:column;padding:30px 24px 26px 30px;color:#F3EDE2;border-radius:2px 7px 7px 2px;transform:rotate(-2deg);background:radial-gradient(90% 60% at 100% 0%,rgba(207,168,90,.22),transparent 60%),radial-gradient(90% 70% at 0% 100%,rgba(138,118,194,.26),transparent 62%),#1C1524;box-shadow:0 34px 60px -20px rgba(0,0,0,.5)}
+.book-cover:before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,0) 60%,rgba(0,0,0,.25));border-radius:2px 0 0 2px}
+.book-cover:after{content:"";position:absolute;inset:12px 10px 12px 20px;border:1px solid rgba(207,168,90,.35);pointer-events:none}
+.bc-kicker{font-family:var(--display);font-style:italic;font-size:.85rem;color:#CFA85A}
+.bc-title{margin-top:auto;font-family:var(--display);font-weight:400;font-size:2.4rem;line-height:.95;letter-spacing:-.03em}
+.bc-title i{display:block;font-weight:300;color:#CFA85A}
+.bc-sub{margin-top:12px;font-size:.74rem;line-height:1.4;color:rgba(243,237,226,.7)}
+.bc-author{margin-top:auto;padding-top:12px;border-top:1px solid rgba(207,168,90,.35);font-size:.72rem;color:rgba(243,237,226,.82)}
+.book-copy>p{max-width:34em;font-size:1.03rem;margin-top:16px}
+.book-copy strong{color:var(--text)}
+.book-facts{display:grid;grid-template-columns:repeat(3,1fr);margin:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.book-facts div{padding:14px 12px 14px 0}
+.book-facts div+div{padding-left:16px;border-left:1px solid var(--line)}
+.book-facts b{display:block;font-family:var(--display);font-weight:400;font-size:1.2rem;color:var(--text)}
+.book-facts .bf-sub{display:block;font-size:.8rem;color:var(--muted)}
+.book-actions{display:flex;gap:12px;flex-wrap:wrap}
+.book-note{margin-top:16px;font-size:.88rem;color:var(--faint)}
+
+/* ---------- CIERRE ---------- */
+.final{text-align:center;background:radial-gradient(60% 90% at 50% 0%,var(--glow),transparent 70%),var(--surface)}
+.final p{font-size:1.05rem;max-width:40em;margin:18px auto 30px}
+.final-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.final-offer{display:inline-block;margin-top:22px;color:var(--muted);font-size:.93rem}
+.final-offer:hover{color:var(--text)}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--bg);color:var(--muted);padding:44px 0 34px;border-top:1px solid var(--line)}
+.footer-grid{display:flex;flex-direction:column;gap:22px}
+@media(min-width:720px){ .footer-grid{flex-direction:row;justify-content:space-between;align-items:center} }
+.footer-brand{font-family:var(--display);font-size:1.25rem;color:var(--text)}
+.footer-small{font-size:.85rem;margin-top:4px}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:.88rem}
+.footer-links a:hover{color:var(--text)}
+.socials{display:flex;flex-wrap:wrap;gap:8px}
+.socials a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--muted);border:1px solid var(--line);transition:color .15s,border-color .15s}
+.socials a:hover{color:var(--gold);border-color:var(--gold)}
+
+@media(max-width:600px){
+  body{font-size:16.5px}
+  .wrap,.wrap-narrow{padding-inline:16px}
+  .hero-actions .btn{width:100%}
+  .hero-facts div{padding:14px 8px 0 0}
+  .hero-facts div+div{padding-left:12px}
+  .hero-facts strong{font-size:1.2rem;white-space:nowrap}
+  .hero-facts span{font-size:.78rem}
+  .brand span{display:none}
+  .mission-card,.plan,.story-card,.audience{padding:22px}
+  .diag-top{padding:22px 20px 0}.diag-body{padding:20px 20px 24px}.diag-result{padding:24px 20px 26px}
+  .med-card{grid-template-columns:96px 1fr}
+  .result-offer .diag-actions .btn{width:100%}
+  .method-band{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<a class="sr-only" href="#main">Saltar al contenido principal</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<a class="float-wa" id="floatWa" href="#" target="_blank" rel="noopener">
+  <i class="fab fa-whatsapp" aria-hidden="true"></i><span>Escríbenos</span><span class="sr-only">por WhatsApp</span>
+</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="ProfGermandario, inicio">
+      <img src="profgermandario-logo-clean.png" alt="" onerror="this.style.display='none'">
+      <b>ProfGermandario</b><span>Executive English</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#ruta">Método</a>
+      <a href="#mapa">Mapa MCERL</a>
+      <a href="#laboratorio">Laboratorio</a>
+      <a href="#inversion">Inversión</a>
+      <a href="#libro">Libro</a>
+      <a href="#diagnostico" class="btn btn-primary">Diagnóstico</a>
+    </nav>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Cambiar a modo claro u oscuro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="motto">Think in English. Not about English.</p>
+        <h1>El inglés que ya sabes, <em>bajo presión y a tu favor.</em></h1>
+        <p class="hero-lead">Coaching ejecutivo 1 a 1 para profesionales y empresarios de habla hispana. Diagnóstico preciso, entrenamiento cognitivo y un progreso que ves y mides en cada clase, para que hables en inglés con la autoridad que ya tienes en tu idioma.</p>
+        <div class="hero-actions">
+          <a href="#diagnostico" class="btn btn-primary">Descubre tu punto de partida</a>
+          <a href="#inversion" class="btn btn-line">Ver la Transformación de 12 semanas</a>
+        </div>
+        <div class="hero-facts">
+          <div><strong>1 a 1</strong><span>Siempre privado</span></div>
+          <div><strong>12 semanas</strong><span>Mínimo 3 h por semana</span></div>
+          <div><strong>A1–C2</strong><span>Ruta MCERL completa</span></div>
+        </div>
+      </div>
+
+      <figure class="loop-card" id="como-funciona" style="margin:0">
+        <svg class="loop-svg" viewBox="0 0 340 340" role="img" aria-label="El ciclo de cada sesión: estado, misión, entrenamiento, uso y evidencia">
+          <circle class="ring" cx="170" cy="170" r="120"/>
+          <circle class="ring-dash" cx="170" cy="170" r="120"/>
+          <g><circle class="node" cx="170" cy="50" r="31"/><text class="lbl" x="170" y="48" text-anchor="middle">Estado</text><text class="sub" x="170" y="61" text-anchor="middle">calma</text></g>
+          <g><circle class="node" cx="284" cy="118" r="31"/><text class="lbl" x="284" y="116" text-anchor="middle">Misión</text><text class="sub" x="284" y="129" text-anchor="middle">un objetivo</text></g>
+          <g><circle class="node" cx="242" cy="252" r="31"/><text class="lbl" x="242" y="250" text-anchor="middle">Entrena</text><text class="sub" x="242" y="263" text-anchor="middle">repite</text></g>
+          <g><circle class="node" cx="98" cy="252" r="31"/><text class="lbl" x="98" y="250" text-anchor="middle">Usa</text><text class="sub" x="98" y="263" text-anchor="middle">habla y graba</text></g>
+          <g><circle class="node" cx="56" cy="118" r="31"/><text class="lbl" x="56" y="116" text-anchor="middle">Evidencia</text><text class="sub" x="56" y="129" text-anchor="middle">progreso</text></g>
+          <text class="center" x="170" y="168" text-anchor="middle">Primero calma.</text>
+          <text class="center m" x="170" y="190" text-anchor="middle">Después responde.</text>
+        </svg>
+        <figcaption class="loop-caption">Cada sesión recorre el mismo ciclo. No eliges entre 15 herramientas: avanzas.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= BRECHA + PARA QUIÉN ================= -->
+  <section class="alt" id="para-quien">
+    <div class="wrap">
+      <div class="problem-grid" id="brecha">
+        <div class="problem-copy">
+          <p class="eyebrow">El problema real</p>
+          <h2>No te falta estudiar más. <em>Te falta dirección.</em></h2>
+          <p>Sabes más inglés del que puedes usar. Esa distancia entre lo que reconoces y lo que puedes producir bajo presión es la brecha de fluidez.</p>
+          <div class="problem-thesis">La transformación ocurre cuando el aprendizaje deja de ser contenido acumulado y se convierte en respuesta entrenada.</div>
+        </div>
+        <div class="problem-list">
+          <article class="problem-item"><h3>Objetivo difuso</h3><p>“Aprender inglés” es demasiado amplio. Liderar una reunión, negociar o graduarte exigen rutas diferentes.</p></article>
+          <article class="problem-item"><h3>Práctica desconectada</h3><p>Ejercicios aislados no garantizan que puedas responder cuando la situación real aparece.</p></article>
+          <article class="problem-item"><h3>Bloqueo bajo presión</h3><p>El conocimiento existe, pero el estrés y la traducción mental impiden recuperarlo a tiempo.</p></article>
+          <article class="problem-item"><h3>Progreso sin evidencia</h3><p>Sin indicadores claros, la percepción reemplaza a los datos y no sabes qué corregir.</p></article>
+        </div>
+      </div>
+
+      <div class="audience-row">
+        <article class="audience lead">
+          <p class="who">Profesionales y empresarios</p>
+          <h3>Comunica decisiones, no inseguridad.</h3>
+          <p>Lenguaje funcional para reuniones, clientes y negociaciones, con regulación del estrés para los momentos exigentes. Siempre 1 a 1.</p>
+          <a class="text-link" href="#inversion">Ver la Transformación de 12 semanas</a>
+        </article>
+        <article class="audience">
+          <p class="who">Estudiantes y familias</p>
+          <h3>Supera el requisito sin perder de vista tu futuro.</h3>
+          <p>Un plan alineado con el plazo y la exigencia académica, concentrado en las brechas que frenan el avance.</p>
+          <a class="text-link" href="#resultados">Ver casos</a>
+        </article>
+        <article class="audience">
+          <p class="who">Profesores e instituciones</p>
+          <h3>Convierte la práctica en algo medible.</h3>
+          <p>Herramientas de libre uso en el navegador, sin instalaciones. Las clases conmigo son siempre 1 a 1.</p>
+          <a class="text-link" href="#laboratorio">Explorar el laboratorio</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DIAGNÓSTICO ================= -->
+  <section id="diagnostico">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow">Empieza aquí</p>
+        <h2>Descubre tu punto de partida.</h2>
+        <p>Cinco preguntas, dos minutos. Al final tienes tu perfil de fluidez y tu siguiente paso. Es orientativo, no un examen oficial.</p>
+      </div>
+
+      <div class="diag-wrap">
+        <div class="diag-top">
+          <span class="diag-step-count" id="diagStepLabel">Pregunta 1 de 5</span>
+          <div class="diag-progress"><div class="diag-progress-bar" id="diagProgressBar"></div></div>
+        </div>
+        <div class="diag-body" id="diagBody">
+          <div class="diag-q active" data-q="0">
+            <p class="qtext">¿Qué tan cómodo te sientes respondiendo en inglés sin pensarlo primero en español?</p>
+            <button class="opt" data-score="1">Traduzco todo mentalmente, es lento.</button>
+            <button class="opt" data-score="2">A veces respondo directo, a veces traduzco.</button>
+            <button class="opt" data-score="3">Casi siempre respondo directo en inglés.</button>
+            <button class="opt" data-score="4">Pienso en inglés sin esfuerzo.</button>
+          </div>
+          <div class="diag-q" data-q="1">
+            <p class="qtext">Cuando alguien te habla en inglés más rápido de lo normal, ¿qué pasa?</p>
+            <button class="opt" data-score="1">Pierdo el hilo con frecuencia.</button>
+            <button class="opt" data-score="2">Entiendo ideas generales, se me escapan detalles.</button>
+            <button class="opt" data-score="3">Sigo casi todo, con algún vacío ocasional.</button>
+            <button class="opt" data-score="4">Entiendo con naturalidad, incluido el matiz.</button>
+          </div>
+          <div class="diag-q" data-q="2">
+            <p class="qtext">¿Cuál es tu objetivo principal con el inglés ahora mismo?</p>
+            <button class="opt" data-goal="profesional">Comunicarme con seguridad en el trabajo.</button>
+            <button class="opt" data-goal="hablar">Hablar y responder con más soltura.</button>
+            <button class="opt" data-goal="vocabulario">Dejar de olvidar palabras que ya aprendí.</button>
+            <button class="opt" data-goal="nivel">Saber en qué nivel estoy realmente.</button>
+          </div>
+          <div class="diag-q" data-q="3">
+            <p class="qtext">¿Cuánto tiempo puedes dedicar a entrenar la mayoría de los días?</p>
+            <button class="opt" data-time="5">5 minutos.</button>
+            <button class="opt" data-time="15">15 minutos.</button>
+            <button class="opt" data-time="25">25 minutos.</button>
+            <button class="opt" data-time="45">45 minutos o más.</button>
+          </div>
+          <div class="diag-q" data-q="4">
+            <p class="qtext">¿Qué te bloquea más al hablar?</p>
+            <button class="opt" data-score="1" data-block="los nervios">Los nervios, más que el idioma en sí.</button>
+            <button class="opt" data-score="2" data-block="no encuentro la palabra a tiempo">No encuentro la palabra a tiempo.</button>
+            <button class="opt" data-score="3" data-block="construyo la oración muy despacio">Construyo la oración muy despacio.</button>
+            <button class="opt" data-score="4" data-block="quiero pulir precisión y matiz">Casi nada, quiero pulir precisión y matiz.</button>
+          </div>
+          <div class="diag-nav">
+            <button class="btn btn-line" id="diagBack" style="min-height:44px;padding:8px 18px;font-size:.9rem;visibility:hidden;">Atrás</button>
+            <span class="diag-hint">Elige una opción para continuar.</span>
+          </div>
+        </div>
+
+        <div class="diag-result" id="diagResult" aria-live="polite">
+          <span class="result-level" id="resultLevelChip">Nivel estimado B1</span>
+          <h3 id="resultTitle">Independencia</h3>
+          <p class="disclaimer">Es tu punto de partida, no una calificación. El diagnóstico completo, con grabación inicial, llega con el Sistema Automático.</p>
+          <div class="result-grid">
+            <div class="result-item"><div class="label">Nivel estimado</div><div class="value" id="resLevel">B1 — Independencia</div></div>
+            <div class="result-item"><div class="label">Foco prioritario</div><div class="value" id="resGoal">Hablar con más soltura</div></div>
+            <div class="result-item"><div class="label">Tiempo diario recomendado</div><div class="value" id="resTime">15 minutos</div></div>
+            <div class="result-item"><div class="label">Herramientas sugeridas</div><div class="value" id="resTools">WordBlitz, Complete Sentences</div></div>
+          </div>
+          <div class="result-offer">
+            <b id="recTitle">Tu siguiente paso</b>
+            <span class="ro-sub" id="recSub"></span>
+            <div class="diag-actions">
+              <a class="btn btn-primary" id="recPrimary" href="#" target="_blank" rel="noopener">Continuar</a>
+              <a class="btn btn-line" id="recSecondary" href="#">Ver opciones</a>
+            </div>
+          </div>
+          <div class="result-more">
+            <button type="button" id="startMissionBtn">Probar una misión gratis</button>
+            <button type="button" id="retakeDiag">Repetir el diagnóstico</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MÉTODO 12 SEMANAS ================= -->
+  <section class="alt" id="ruta">
+    <div class="wrap">
+      <div class="section-head wide">
+        <div>
+          <p class="eyebrow">La Transformación</p>
+          <h2>Doce semanas, tres fases.</h2>
+        </div>
+        <p>No es una promesa de fluidez instantánea. Es un periodo estructurado, 1 a 1, con tu trabajo real como material y evidencia medible en cada fase.</p>
+      </div>
+      <div class="method-grid">
+        <article class="method-step"><span class="method-num">Semanas 1 a 4</span><h3>Exposición</h3><p>Grabamos tu punto de partida y elegimos las situaciones laborales que vamos a dominar. Escuchas y analizas material real de tu industria.</p></article>
+        <article class="method-step"><span class="method-num">Semanas 5 a 8</span><h3>Integración</h3><p>Construyes tu propio banco de expresiones y lo activas en conversación. Dejas de traducir porque practicas pensar directamente en inglés.</p></article>
+        <article class="method-step"><span class="method-num">Semanas 9 a 12</span><h3>Desempeño</h3><p>Simulamos tus reuniones, presentaciones y negociaciones reales. Cierras con una simulación grabada que se compara con tu grabación inicial.</p></article>
+      </div>
+      <p class="method-note">Cada semana se compara con tu grabación inicial, y el registro de cada sesión queda en la app.</p>
+      <div class="method-band">
+        <div>
+          <p class="eyebrow">El sistema ProfGermandario</p>
+          <h3>Tecnología que acompaña. Un profesor que interpreta.</h3>
+          <p>Los laboratorios permiten repetir. El acompañamiento 1 a 1 decide qué repetir, por qué hacerlo y cómo conectar esa práctica con el resultado que necesitas.</p>
+        </div>
+        <div class="method-stats">
+          <div class="method-stat"><b>15</b><span>herramientas</span></div>
+          <div class="method-stat"><b>6</b><span>niveles MCERL</span></div>
+          <div class="method-stat"><b>3</b><span>meditaciones</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAPA MCERL (focus) ================= -->
+  <section class="focus" id="mapa">
+    <div class="wrap">
+      <div class="mcerl-shell">
+        <div class="mcerl-copy">
+          <p class="eyebrow">Tu mapa, no una prueba</p>
+          <h2>Avanzar exige saber <em>qué sigue.</em></h2>
+          <p>Elige una idea y escucha cómo suena en cada nivel. No necesitas dominarlo todo hoy: solo ver dónde estás y cuál es tu siguiente paso.</p>
+        </div>
+        <div class="mcerl-levels" id="mcerlLevels">
+          <button class="lvl-btn active" data-level="0"><span class="code">A1</span><span class="tag">Inicio</span></button>
+          <button class="lvl-btn" data-level="1"><span class="code">A2</span><span class="tag">Base</span></button>
+          <button class="lvl-btn" data-level="2"><span class="code">B1</span><span class="tag">Habla</span></button>
+          <button class="lvl-btn" data-level="3"><span class="code">B2</span><span class="tag">Fluye</span></button>
+          <button class="lvl-btn" data-level="4"><span class="code">C1</span><span class="tag">Matiza</span></button>
+          <button class="lvl-btn" data-level="5"><span class="code">C2</span><span class="tag">Domina</span></button>
+        </div>
+        <div class="ladder-panel">
+          <div class="ladder-idea-select">
+            <button class="idea-chip active" data-idea="0">Hablar de tu trabajo</button>
+            <button class="idea-chip" data-idea="1">Dar tu opinión</button>
+            <button class="idea-chip" data-idea="2">Explicar un problema</button>
+          </div>
+          <p class="ladder-sentence" id="ladderSentence">"I work in an office."</p>
+          <p class="ladder-meta" id="ladderMeta">A1 — Inicio funcional: mensajes básicos, presente simple, vocabulario directo.</p>
+        </div>
+        <div class="mcerl-actions">
+          <a class="btn btn-primary" href="https://palekor.github.io/lecciones/MCERL.html" target="_blank" rel="noopener">Abrir The Paths of MCERL</a>
+          <a class="btn btn-line" href="#laboratorio">Explorar el laboratorio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SESIÓN DE HOY (misión + preparación mental) ================= -->
+  <section class="alt" id="mision">
+    <div class="wrap">
+      <div class="section-head wide" id="estado">
+        <div>
+          <p class="eyebrow">Tu sesión de hoy</p>
+          <h2>Primero calma. <em>Después responde.</em></h2>
+        </div>
+        <p>El estado mental afecta la atención, la memoria y la velocidad de respuesta. Dinos cuánto tiempo tienes y el sistema arma la secuencia: reset, entrenamiento, uso y reflexión.</p>
+      </div>
+
+      <div class="session-grid">
+        <div>
+          <div class="time-picker" id="timePicker">
+            <button class="time-chip" data-min="5">5 min</button>
+            <button class="time-chip active" data-min="15">15 min</button>
+            <button class="time-chip" data-min="25">25 min</button>
+            <button class="time-chip" data-min="45">45 min</button>
+            <button class="time-chip" data-min="60">60 min</button>
+          </div>
+          <div class="mission-card">
+            <div class="mission-stage" id="missionStage">
+              <div class="st current" data-stage="reset">Reset</div>
+              <div class="st" data-stage="train">Entrena</div>
+              <div class="st" data-stage="use">Usa</div>
+              <div class="st" data-stage="reflect">Reflexiona</div>
+            </div>
+            <div class="mission-body">
+              <p class="eyebrow" id="missionStageLabel">Etapa 1 · Reset (2 min)</p>
+              <p class="task" id="missionTask">Respira y suelta la tensión antes de empezar. No necesitas estar “listo”, solo presente.</p>
+            </div>
+            <div class="mission-stats">
+              <div class="mstat"><div class="v" id="statXP">0</div><div class="l">XP hoy</div></div>
+              <div class="mstat"><div class="v" id="statStreak">0</div><div class="l">Racha en días</div></div>
+              <div class="mstat"><div class="v" id="statLevel">B1</div><div class="l">Nivel MCERL</div></div>
+            </div>
+            <div class="mission-actions">
+              <button class="btn btn-primary" id="missionAdvance">Completar esta etapa</button>
+              <button class="btn btn-line" id="missionReset">Reiniciar misión</button>
+            </div>
+            <p class="mission-note">Si hoy solo tienes 5 minutos, elige “5 min”: el sistema ajusta la misión, no la cancela.</p>
+          </div>
+        </div>
+
+        <aside class="prep" aria-label="Meditaciones de preparación">
+          <h3>Preparación mental</h3>
+          <p>Antes de entrenar, regula el enfoque. Elige una según lo que vas a hacer.</p>
+          <div class="med-list">
+            <a class="med-card" href="https://youtu.be/lJ3ja0dMyD0?si=3pZLQQ3-Ax7ldyEe" target="_blank" rel="noopener">
+              <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/lJ3ja0dMyD0/mqdefault.jpg')"><span class="med-play"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1l9 5-9 5z"/></svg></span></div>
+              <div class="med-body"><h4>Fluidez y confianza</h4><p>Relaja el cuerpo y prepara la mente para practicar sin bloqueo.</p><div class="med-meta">2 min · antes de hablar</div></div>
+            </a>
+            <a class="med-card" href="https://youtu.be/2RSIZ8oLMrE?si=pLgKHKimF1rr3j04" target="_blank" rel="noopener">
+              <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/2RSIZ8oLMrE/mqdefault.jpg')"><span class="med-play"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1l9 5-9 5z"/></svg></span></div>
+              <div class="med-body"><h4>Hablar con naturalidad</h4><p>Visualiza conversaciones reales y reduce la fricción al responder.</p><div class="med-meta">5 min · antes de entrenar</div></div>
+            </a>
+            <a class="med-card" href="https://youtu.be/8XFZktYWm88?si=y4d6MgeIzTPOrJvN" target="_blank" rel="noopener">
+              <div class="med-thumb" style="background-image:url('https://i.ytimg.com/vi/8XFZktYWm88/mqdefault.jpg')"><span class="med-play"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1l9 5-9 5z"/></svg></span></div>
+              <div class="med-body"><h4>Retención y memoria</h4><p>Conecta palabra, imagen, emoción y significado.</p><div class="med-meta">8 min · antes de vocabulario</div></div>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LABORATORIO ================= -->
+  <section id="laboratorio">
+    <div class="wrap">
+      <div class="section-head wide">
+        <div>
+          <p class="eyebrow">La maquinaria, debajo del camino</p>
+          <h2>15 herramientas. Una misión a la vez.</h2>
+        </div>
+        <p>Cada herramienta entrena algo específico. No necesitas explorarlas todas: la misión de hoy te trae la que corresponde.</p>
+      </div>
+      <div class="tool-tabs" id="toolTabs">
+        <button class="tool-tab active" data-cat="todas">Todas</button>
+        <button class="tool-tab" data-cat="Habla">Habla</button>
+        <button class="tool-tab" data-cat="Vocabulario">Vocabulario</button>
+        <button class="tool-tab" data-cat="Gramática">Gramática</button>
+        <button class="tool-tab" data-cat="Memoria">Memoria</button>
+        <button class="tool-tab" data-cat="Escucha">Escucha</button>
+        <button class="tool-tab" data-cat="Agilidad">Agilidad mental</button>
+        <button class="tool-tab" data-cat="Hábitos">Hábitos</button>
+      </div>
+      <div class="tool-grid" id="toolGrid"></div>
+      <div class="tools-more"><button class="btn btn-line" id="toolsMore" type="button">Ver las 15 herramientas</button></div>
+    </div>
+  </section>
+
+  <!-- ================= CASOS ================= -->
+  <section class="alt" id="resultados">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Casos reales</p>
+        <h2>El resultado cambia cuando cambia la estrategia.</h2>
+      </div>
+      <div class="story-grid">
+        <div class="story-card lead" id="caso-carlos">
+          <div class="story-top"><div class="story-person"><span class="avatar">C</span><span><b>Carlos</b><small>Empresario</small></span></div><span class="story-tag">Liderazgo</span></div>
+          <h3>De la tensión en reuniones a comunicar con liderazgo.</h3>
+          <p>Le costaba comunicarse con clientes internacionales. Trabajamos el inglés funcional junto con la regulación emocional bajo presión.</p>
+          <div class="story-result"><span>Resultado: más seguridad y control en reuniones exigentes.</span></div>
+        </div>
+        <div class="story-card">
+          <div class="story-top"><div class="story-person"><span class="avatar">D</span><span><b>Daniel</b><small>Estudiante universitario</small></span></div><span class="story-tag">Graduación</span></div>
+          <h3>De un plazo crítico a graduarse a tiempo.</h3>
+          <p>A tres meses de perder su oportunidad de graduarse, necesitaba aprobar A1, A2 y B1. Diseñamos un plan intensivo centrado en sus brechas y práctica deliberada.</p>
+          <div class="story-result"><strong class="result-number">3</strong><span>niveles aprobados (A1, A2 y B1) dentro de tres meses.</span></div>
+        </div>
+        <div class="story-card">
+          <div class="story-top"><div class="story-person"><span class="avatar">M</span><span><b>Mateo</b><small>Estudiante, 8 años</small></span></div><span class="story-tag">Confianza</span></div>
+          <h3>Del rechazo al inglés a ser uno de los mejores de su clase.</h3>
+          <p>Rechazaba el inglés por completo. En dos meses, con un enfoque dinámico y adaptado, pasó a destacarse en su clase.</p>
+          <div class="story-result"><strong class="result-number">4.9</strong><span>de calificación final y una relación más positiva con el inglés.</span></div>
+        </div>
+      </div>
+      <p class="evidence-note">Los casos describen procesos individuales. El resultado depende del punto de partida, el plazo, la asistencia, la práctica y la disposición para corregir.</p>
+    </div>
+  </section>
+
+  <!-- ================= INVERSIÓN (precios v3, iguales a embudo.html) ================= -->
+  <section id="inversion">
+    <div class="wrap">
+      <div class="section-head wide">
+        <div>
+          <p class="eyebrow">La inversión</p>
+          <h2>Transformación de 12 semanas.</h2>
+        </div>
+        <p>Dos intensidades, el mismo método 1 a 1. Paga en 3 cuotas mensuales o de contado con un descuento.</p>
+      </div>
+
+      <div class="switch" role="group" aria-label="Forma de pago">
+        <button type="button" data-mode="cuotas" aria-pressed="true">3 cuotas mensuales</button>
+        <button type="button" data-mode="contado" aria-pressed="false">Pago de contado</button>
+      </div>
+
+      <div class="plans">
+        <article class="plan signature">
+          <span class="plan-flag">Recomendado</span>
+          <div class="plan-name">Transformation</div>
+          <div class="plan-meta">12 semanas · 3 horas por semana · 36 horas 1 a 1</div>
+          <div class="plan-price" data-cuotas="USD 497" data-contado="USD 1,397"><span class="amt">USD 497</span><small class="per">/mes × 3</small></div>
+          <div class="plan-total" data-cuotas="Total USD 1,491" data-contado="Un solo pago · ahorras USD 94">Total USD 1,491</div>
+          <div class="plan-later">Precio fundador. Luego pasa a USD 597/mes.</div>
+          <ul class="dash">
+            <li>36 horas de coaching ejecutivo 1 a 1</li>
+            <li>Chat directo conmigo durante las 12 semanas</li>
+            <li>App con mediciones, chatbot y meditaciones</li>
+            <li>Grabación inicial, informe de mitad de programa y simulación final</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="embudo.html#aplicar">Aplicar a Transformation</a>
+        </article>
+        <article class="plan">
+          <div class="plan-name">Transformation Intensive</div>
+          <div class="plan-meta">12 semanas · 6 horas por semana · 72 horas 1 a 1</div>
+          <div class="plan-price" data-cuotas="USD 897" data-contado="USD 2,547"><span class="amt">USD 897</span><small class="per">/mes × 3</small></div>
+          <div class="plan-total" data-cuotas="Total USD 2,691" data-contado="Un solo pago · ahorras USD 144">Total USD 2,691</div>
+          <div class="plan-later">Precio fundador. Luego pasa a USD 1,097/mes.</div>
+          <ul class="dash">
+            <li>72 horas de coaching ejecutivo 1 a 1</li>
+            <li>El doble de práctica para una fecha cercana</li>
+            <li>Todo lo incluido en Transformation</li>
+            <li>Prioridad de agenda</li>
+          </ul>
+          <a class="btn btn-line btn-block" href="embudo.html#aplicar">Aplicar a Intensive</a>
+        </article>
+      </div>
+
+      <p class="founder"><b>Sobre el precio fundador.</b> Como todo el coaching es 1 a 1, los cupos dependen de mis horas disponibles. El precio fundador se mantiene para los primeros estudiantes de esta etapa y se respeta durante todo tu ciclo.</p>
+
+      <div class="extras">
+        <div class="extra"><h3>Sistema Automático</h3><p>Tu punto de entrada: diagnóstico, mapa, hoja de ruta, app, chatbot y seguimiento. Se descuenta de la Transformación si te inscribes en 14 días.</p><div class="amount">USD 27<small>pago único</small></div></div>
+        <div class="extra"><h3>Membresía App</h3><p>Práctica diaria con la app, el chatbot y las mediciones, sin sesiones en vivo.</p><div class="amount">USD 19<small>al mes · o USD 190 al año</small></div></div>
+        <div class="extra"><h3>Año de Transformación</h3><p>Cuatro ciclos de 12 semanas seguidos, pagados por adelantado con 10% de descuento.</p><div class="amount">USD 6,397<small>3 h/semana · Intensive USD 11,797</small></div></div>
+        <div class="extra"><h3>Programas de especialidad</h3><p>Entrevistas, presentaciones, comunicación de negocios, hábitos y enfoque. De 4 a 8 semanas, 2 horas por semana, para quien tiene una fecha límite.</p><div class="amount">USD 447–847<small>según duración</small></div></div>
+        <div class="extra"><h3>Sesión 1 a 1</h3><p>Una sesión de 60 minutos para una necesidad puntual.</p><div class="amount">USD 65<small>por sesión</small></div></div>
+      </div>
+
+      <div class="inv-actions">
+        <a class="btn btn-primary" href="embudo.html#aplicar">Aplicar a la Transformación</a>
+        <a class="btn btn-line" href="embudo.html#diagnostico">Hacer el diagnóstico de 8 preguntas</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SISTEMA AUTOMÁTICO (focus) =================
+       Nombre, precio y enlace se controlan desde el bloque OFFER, al inicio del script.
+       Lo incluido se edita aquí, en .invite-list. -->
+  <section class="focus" id="paquete" data-offer>
+    <div class="wrap offer-grid">
+      <div class="offer-copy">
+        <blockquote class="manifesto-quote">El idioma no es información. El idioma es reacción, ritmo, memoria, confianza, emoción e identidad.<cite>ProfGermandario · Metodología CBLT + PNL</cite></blockquote>
+        <p class="eyebrow">Tu puerta de entrada</p>
+        <h2>Empieza hoy. <em>Sin presión.</em></h2>
+        <p>El <span data-offer-name>Sistema Automático</span> es la forma más simple de empezar: recibes tu acceso, preparas la mente y avanzas con una hoja de ruta trazada para ti. Cuando estés listo para el trabajo 1 a 1, lo que pagaste se descuenta.</p>
+        <ol class="offer-steps">
+          <li><div><b>Pides tu acceso</b><span class="os-sub">Un mensaje y lo recibes.</span></div></li>
+          <li><div><b>Escuchas la preparación</b><span class="os-sub">Una meditación guiada: es lo primero que llega.</span></div></li>
+          <li><div><b>Avanzas con tu hoja de ruta</b><span class="os-sub">En la app, con seguimiento y mediciones de lo que ya puedes hacer.</span></div></li>
+        </ol>
+      </div>
+
+      <aside class="invite" aria-label="Sistema Automático: precio y contenido">
+        <div class="invite-inner">
+          <p class="invite-kicker" data-offer-name>Sistema Automático</p>
+          <p class="invite-price"><span class="num" data-offer-price>27</span><span class="cur" data-offer-currency>USD</span></p>
+          <p class="invite-credit">Pago único. Se descuenta de la Transformación si te inscribes en 14 días.</p>
+          <div class="invite-rule" aria-hidden="true"><span></span></div>
+          <ul class="invite-list">
+            <li><b>Diagnóstico, mapa y hoja de ruta</b><span class="il-sub">Sabes dónde estás, qué te frena y qué sigue.</span></li>
+            <li><b>Meditación de preparación</b><span class="il-sub">Calma y enfoque antes de aprender.</span></li>
+            <li><b>App, chatbot y mediciones</b><span class="il-sub">Practicas a tu ritmo y ves tu progreso.</span></li>
+            <li><b>Chat directo conmigo para arrancar</b><span class="il-sub">Resolvemos tus dudas del inicio.</span></li>
+          </ul>
+          <a class="btn btn-primary btn-block" data-offer-cta href="#" target="_blank" rel="noopener">Quiero el Sistema</a>
+          <p class="invite-note">¿Listo para el trabajo 1 a 1? <a class="text-link" href="#inversion">Transformación desde USD 497/mes</a></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= LIBRO · MITOTE ZERO =================
+       Para usar la portada real: reemplaza el <div class="book-cover">…</div>
+       por <img class="book-cover-img" src="assets/img/TU-PORTADA.jpg" alt="Portada de Mitote Zero">. -->
+  <section class="alt" id="libro">
+    <div class="wrap book-grid">
+      <div class="book-stage">
+        <div class="book-cover" role="img" aria-label="Libro Mitote Zero, de Germandario Palekor">
+          <span class="bc-kicker">El método de las 6 capas</span>
+          <span class="bc-title">Mitote<i>Zero</i></span>
+          <span class="bc-sub">Desactiva el ruido mental y recupera tu paz.</span>
+          <span class="bc-author">Germandario Palekor</span>
+        </div>
+      </div>
+      <div class="book-copy">
+        <p class="eyebrow">El libro</p>
+        <h2>Antes de hablar mejor, <em>baja el ruido.</em></h2>
+        <p><strong>Mitote Zero</strong> es el libro de Germandario Palekor sobre el ruido mental: un método de seis capas para soltar las creencias limitantes y el estrés que nunca elegiste. Es la idea que sostiene este sistema, primero calma, llevada al resto de tu vida.</p>
+        <div class="book-facts">
+          <div><b>6 capas</b><span class="bf-sub">del ruido a la claridad</span></div>
+          <div><b>eBook</b><span class="bf-sub">en Amazon</span></div>
+          <div><b>En español</b><span class="bf-sub">lectura práctica</span></div>
+        </div>
+        <div class="book-actions">
+          <a class="btn btn-primary" href="https://www.amazon.com/dp/B0HKGGH74B" target="_blank" rel="noopener">Ver en Amazon</a>
+          <a class="btn btn-line" href="https://www.amazon.com/author/germandario" target="_blank" rel="noopener">Más del autor</a>
+        </div>
+        <p class="book-note">¿Te interesa el entrenamiento de 7 días con el libro y la app TIME ORDER? <a class="text-link" id="bookWa" href="#" target="_blank" rel="noopener">Pregunta por WhatsApp</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CIERRE ================= -->
+  <section class="final">
+    <div class="wrap-narrow">
+      <p class="eyebrow">Tu siguiente paso</p>
+      <h2>Empieza con claridad. <em>No con presión.</em></h2>
+      <p>Si buscas el trabajo 1 a 1, aplica a la Transformación de 12 semanas. Si prefieres empezar por tu cuenta, el Sistema Automático te da tu hoja de ruta hoy.</p>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="embudo.html#aplicar">Aplicar a la Transformación</a>
+        <a class="btn btn-line" data-offer-cta href="#" target="_blank" rel="noopener">Empezar con el Sistema · USD 27</a>
+      </div>
+      <a class="final-offer" id="finalWa" href="#" target="_blank" rel="noopener">¿Tienes dudas? Escríbenos por WhatsApp</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="footer-brand">ProfGermandario</div>
+      <div class="footer-small">© 2026 · Coaching ejecutivo de inglés 1 a 1 · Think in English. Not about English.</div>
+      <nav class="footer-links" aria-label="Enlaces del sitio">
+        <a href="#diagnostico">Diagnóstico</a>
+        <a href="#inversion">Transformación</a>
+        <a href="#paquete">Sistema Automático</a>
+        <a href="embudo.html">Página de inscripción</a>
+        <a href="https://www.amazon.com/dp/B0HKGGH74B" target="_blank" rel="noopener">Mitote Zero en Amazon</a>
+      </nav>
+    </div>
+    <div class="socials" aria-label="Redes y contacto ProfGermandario">
+      <a href="https://wa.me/573197894038" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="mailto:profgermandario@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+  </div>
+</footer>
+
+<nav class="bottomnav" aria-label="Navegación principal">
+  <a href="#inicio" class="active" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Inicio</a>
+  <a href="#mision" data-nav="mision"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Misión</a>
+  <a href="#mapa" data-nav="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2V6z"/><path d="M9 4v14M15 6v14"/></svg>Mapa</a>
+  <a href="#laboratorio" data-nav="tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Tools</a>
+  <a href="#inversion" data-nav="inversion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V14M10 20V9M16 20v-6M22 20V4"/></svg>Programa</a>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+  /* ============================================================
+     SISTEMA AUTOMÁTICO — un solo lugar para cambiarlo todo.
+     - activo:false       oculta la oferta en toda la página.
+     - checkoutUrl:'...'  cuando exista el enlace de pago, pégalo aquí
+                          y todos los botones dejan de ir a WhatsApp.
+     ============================================================ */
+  var OFFER = {
+    activo: true,
+    nombre: 'Sistema Automático',
+    precio: '27',
+    moneda: 'USD',
+    checkoutUrl: '',
+    whatsapp: '573197894038',
+    mensaje: 'Hola Prof. Germandario. Quiero el Sistema Automático de USD 27.'
+  };
+  function wa(msg){ return 'https://wa.me/' + OFFER.whatsapp + '?text=' + encodeURIComponent(msg); }
+  function offerLink(extra, tag){
+    if (OFFER.checkoutUrl) return OFFER.checkoutUrl;
+    return wa(OFFER.mensaje + (extra ? ' ' + extra : '') + ' [' + (tag || 'web-sistema') + ']');
+  }
+  function each(sel, fn){ Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
+  if (!OFFER.activo){
+    each('[data-offer]', function(el){ el.hidden = true; el.style.display = 'none'; });
+  } else {
+    each('[data-offer-name]', function(el){ el.textContent = OFFER.nombre; });
+    each('[data-offer-price]', function(el){ el.textContent = OFFER.precio; });
+    each('[data-offer-currency]', function(el){ el.textContent = OFFER.moneda; });
+    each('[data-offer-cta]', function(el){ el.href = offerLink(); });
+  }
+
+  /* ---- WhatsApp con origen, para que el setter sepa de dónde viene cada contacto ---- */
+  document.getElementById('floatWa').href = wa('Hola, vengo de la web (inicio). Aún no hice el diagnóstico. Mi objetivo con el inglés es: [web-flotante]');
+  document.getElementById('finalWa').href = wa('Hola Prof. Germandario. Tengo una pregunta antes de empezar: [web-cierre]');
+  document.getElementById('bookWa').href = wa('Hola Prof. Germandario. Quiero información del entrenamiento de 7 días de Mitote Zero. [web-libro]');
+
+  /* ---- Modo claro / oscuro (mismo botón y tokens que la app) ---- */
+  function syncThemeColor(){ document.querySelector('meta[name="theme-color"]').content = document.documentElement.dataset.theme === 'light' ? '#F6F2EA' : '#140E1A'; }
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = t;
+    syncThemeColor();
+    try { localStorage.setItem('pg_site_theme', t); localStorage.setItem('pg_embudo_theme', t); } catch(e){}
+  });
+  syncThemeColor();
+
+  /* ---- Precios: cuotas / contado ---- */
+  each('.switch button', function(btn){
+    btn.addEventListener('click', function(){
+      var mode = btn.dataset.mode;
+      each('.switch button', function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+      each('.plan-price', function(p){
+        p.querySelector('.amt').textContent = p.dataset[mode];
+        p.querySelector('.per').textContent = mode === 'cuotas' ? '/mes × 3' : 'de contado';
+      });
+      each('.plan-total', function(t){ t.textContent = t.dataset[mode]; });
+    });
+  });
+
+  /* ---- scroll progress ---- */
+  var progress = document.getElementById('scrollProgress');
+  function updateProgress(){
+    var root = document.documentElement;
+    var range = root.scrollHeight - root.clientHeight;
+    progress.style.width = (range > 0 ? (root.scrollTop/range)*100 : 0) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  /* ---- 15 herramientas ---- */
+  var TOOLS = [
+    {i:1, name:"Verbos Esenciales", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/01.html", level:"A1–A2", time:"10 min", why:"Significado, pasado, participio y pronunciación de los verbos que más usarás."},
+    {i:2, name:"WordBlitz", cat:"Agilidad", url:"https://palekor.github.io/lecciones/02.html", level:"A2–B1", time:"5 min", why:"Velocidad de traducción y recuperación de vocabulario bajo presión."},
+    {i:3, name:"Complete Sentences", cat:"Gramática", url:"https://palekor.github.io/lecciones/02b.html", level:"A2–B1", time:"8 min", why:"Construye oraciones completas y conecta ideas con conectores."},
+    {i:4, name:"Tiempos y Conectores", cat:"Gramática", url:"https://palekor.github.io/lecciones/03.html", level:"B1", time:"10 min", why:"Diferencia tiempos verbales y combina ideas en frases más completas."},
+    {i:5, name:"Memoria Visual", cat:"Memoria", url:"https://palekor.github.io/lecciones/04.html", level:"A1–C1", time:"6 min", why:"Secuencias progresivas para memoria de trabajo y control de impulsos."},
+    {i:6, name:"Phrasal Verbs", cat:"Gramática", url:"https://palekor.github.io/lecciones/05.html", level:"B1–B2", time:"10 min", why:"Significados y reglas de uso para sonar más natural."},
+    {i:7, name:"The Word Vault", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/06.html", level:"A2–B2", time:"8 min", why:"Vocabulario de alta frecuencia con audio, IPA y memoria de parejas."},
+    {i:8, name:"Simple vs Progressive", cat:"Gramática", url:"https://palekor.github.io/lecciones/07.html", level:"A1–A2", time:"7 min", why:"Contrasta rutina y acción en progreso con señales temporales."},
+    {i:9, name:"Modelador de Hábitos", cat:"Hábitos", url:"https://palekor.github.io/lecciones/08.html", level:"Todos", time:"5 min", why:"Organiza enfoque, tareas y reflexiones para sostener tu práctica."},
+    {i:10, name:"Fast Memory Recover", cat:"Memoria", url:"https://palekor.github.io/lecciones/09.html", level:"B1–B2", time:"8 min", why:"Escucha profunda para recuperar información con rapidez."},
+    {i:11, name:"Gold Words", cat:"Vocabulario", url:"https://palekor.github.io/lecciones/10.html", level:"B1–C1", time:"10 min", why:"100 palabras clave: definición, recuerdo, emparejamiento y automatización."},
+    {i:12, name:"Paragraph Builder", cat:"Habla", url:"https://palekor.github.io/lecciones/Paragraph.html", level:"B1–B2", time:"12 min", why:"Pasa de la oración al párrafo analizando la función de cada parte."},
+    {i:13, name:"Gold Words · Audio", cat:"Escucha", url:"https://palekor.github.io/lecciones/gold.html", level:"A2–C1", time:"8 min", why:"Escucha palabras y frases hasta que sean recuperables al instante."},
+    {i:14, name:"Mental Math Trainer", cat:"Agilidad", url:"https://palekor.github.io/lecciones/speedmath.html", level:"Todos", time:"5 min", why:"Velocidad mental y precisión bajo presión — transferible al habla."},
+    {i:15, name:"WH Questions Lab", cat:"Habla", url:"https://palekor.github.io/lecciones/wh.html", level:"A2–B1", time:"8 min", why:"Orden, auxiliares y respuestas cortas para preguntar con naturalidad."}
+  ];
+
+  var toolGrid = document.getElementById('toolGrid');
+  var toolsMore = document.getElementById('toolsMore');
+  var currentCat = 'todas', showAll = false;
+  function renderTools(){
+    toolGrid.innerHTML = '';
+    var list = TOOLS.filter(function(t){ return currentCat === 'todas' || t.cat === currentCat; });
+    var limited = currentCat === 'todas' && !showAll;
+    (limited ? list.slice(0, 6) : list).forEach(function(t){
+      var a = document.createElement('a');
+      a.className = 'tool-card'; a.href = t.url; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML =
+        '<div class="tool-top"><span class="tool-cat">'+t.cat+'</span><span class="tool-idx">'+t.i+' de 15</span></div>'+
+        '<h3>'+t.name+'</h3>'+
+        '<p class="why">'+t.why+'</p>'+
+        '<div class="tool-meta"><span class="m">Nivel <b>'+t.level+'</b></span><span class="m">Tiempo <b>'+t.time+'</b></span></div>'+
+        '<span class="tool-go">Abrir herramienta</span>';
+      toolGrid.appendChild(a);
+    });
+    toolsMore.parentNode.style.display = currentCat === 'todas' ? 'flex' : 'none';
+    toolsMore.textContent = showAll ? 'Ver menos' : 'Ver las 15 herramientas';
+  }
+  renderTools();
+  toolsMore.addEventListener('click', function(){ showAll = !showAll; renderTools(); if(!showAll) document.getElementById('laboratorio').scrollIntoView({behavior:'smooth'}); });
+  each('.tool-tab', function(btn){
+    btn.addEventListener('click', function(){
+      each('.tool-tab', function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentCat = btn.dataset.cat;
+      renderTools();
+    });
+  });
+
+  /* ---- Escalera MCERL ---- */
+  var LADDER = [
+    [
+      {s:'"I work in an office."', m:'A1 — Inicio funcional: mensajes básicos, presente simple, vocabulario directo.'},
+      {s:'"I work in an office and I usually start at eight."', m:'A2 — Base operativa: describe rutinas con más detalle.'},
+      {s:'"I\'ve been working in marketing for three years, and I really enjoy it."', m:'B1 — Independencia: conecta tiempo, experiencia y opinión.'},
+      {s:'"I work in marketing, mostly focused on campaigns that target international clients."', m:'B2 — Fluidez funcional: precisión y contexto profesional.'},
+      {s:'"I lead a small marketing team, though I still get hands-on with strategy when it matters."', m:'C1 — Precisión avanzada: matiz, estructura compleja, tono natural.'},
+      {s:'"I run marketing for the region — though \'run\' undersells how much of it is still firefighting."', m:'C2 — Dominio flexible: ironía, registro y naturalidad total.'}
+    ],
+    [
+      {s:'"I like it."', m:'A1 — Mensaje básico y directo.'},
+      {s:'"I think it\'s good, but it\'s expensive."', m:'A2 — Opinión simple con una razón.'},
+      {s:'"In my opinion, it\'s worth it, even though it\'s a bit expensive."', m:'B1 — Conecta opinión y contraste.'},
+      {s:'"I\'d say it\'s worth the price, mainly because of the quality."', m:'B2 — Matiza con seguridad y justificación clara.'},
+      {s:'"I\'m inclined to think it\'s worth it, though I can see why some people would disagree."', m:'C1 — Reconoce perspectivas opuestas con precisión.'},
+      {s:'"I\'d argue it\'s worth every peso — though I\'ll admit that\'s partly bias talking."', m:'C2 — Tono, autoconciencia y fluidez natural.'}
+    ],
+    [
+      {s:'"The system doesn\'t work."', m:'A1 — Mensaje básico y funcional.'},
+      {s:'"The system doesn\'t work because the internet is slow."', m:'A2 — Causa simple y directa.'},
+      {s:'"The system isn\'t working properly, and I think it\'s because of the connection."', m:'B1 — Explica con hipótesis propia.'},
+      {s:'"There seems to be a connectivity issue that\'s preventing the system from syncing correctly."', m:'B2 — Vocabulario técnico y estructura más formal.'},
+      {s:'"It looks like an intermittent connectivity issue — possibly on the server side rather than ours."', m:'C1 — Diagnóstico matizado y profesional.'},
+      {s:'"My best guess is it\'s a server-side hiccup, not our config — but I\'d want to rule that out before we escalate."', m:'C2 — Precisión técnica con tono natural y seguro.'}
+    ]
+  ];
+
+  var currentIdea = 0, currentLevel = 0;
+  function renderLadder(){
+    var entry = LADDER[currentIdea][currentLevel];
+    document.getElementById('ladderSentence').textContent = entry.s;
+    document.getElementById('ladderMeta').textContent = entry.m;
+  }
+  each('.idea-chip', function(chip){
+    chip.addEventListener('click', function(){
+      each('.idea-chip', function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentIdea = parseInt(chip.dataset.idea, 10);
+      renderLadder();
+    });
+  });
+  each('.lvl-btn', function(btn){
+    btn.addEventListener('click', function(){
+      each('.lvl-btn', function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentLevel = parseInt(btn.dataset.level, 10);
+      renderLadder();
+    });
+  });
+  renderLadder();
+
+  /* ---- Diagnóstico ----
+     Cada respuesta se guarda por pregunta (volver atrás ya no suma dos veces).
+     El nivel sale solo de las preguntas de habilidad (1, 2 y 5); objetivo y tiempo no cuentan. */
+  var qs = Array.prototype.slice.call(document.querySelectorAll('.diag-q'));
+  var qIndex = 0;
+  var picks = {};
+  var progressBar = document.getElementById('diagProgressBar');
+  var stepLabel = document.getElementById('diagStepLabel');
+  var backBtn = document.getElementById('diagBack');
+  function showQuestion(idx){
+    qs.forEach(function(q,i){ q.classList.toggle('active', i===idx); });
+    stepLabel.textContent = 'Pregunta ' + (idx+1) + ' de ' + qs.length;
+    progressBar.style.width = (idx/qs.length*100) + '%';
+    backBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
+  }
+  showQuestion(0);
+  qs.forEach(function(q, idx){
+    q.querySelectorAll('.opt').forEach(function(opt){
+      opt.addEventListener('click', function(){
+        q.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        picks[idx] = opt;
+        setTimeout(function(){
+          if (idx < qs.length - 1){ qIndex = idx + 1; showQuestion(qIndex); }
+          else { finishDiagnostic(); }
+        }, 200);
+      });
+    });
+  });
+  backBtn.addEventListener('click', function(){ if (qIndex > 0){ qIndex -= 1; showQuestion(qIndex); } });
+
+  var LEVELS = ['A1 — Inicio funcional','A2 — Base operativa','B1 — Independencia','B2 — Fluidez funcional','C1 — Precisión avanzada'];
+  var LEVEL_CODES = ['A1','A2','B1','B2','C1'];
+  var GOAL_LABELS = {hablar:'Hablar con más soltura', vocabulario:'Recuperar vocabulario más rápido', nivel:'Confirmar tu nivel real', profesional:'Comunicación profesional segura'};
+  var GOAL_TOOLS = {
+    hablar:'WordBlitz, WH Questions Lab, Complete Sentences',
+    vocabulario:'Gold Words, The Word Vault, Fast Memory Recover',
+    nivel:'Verbos Esenciales, Memoria Visual',
+    profesional:'Paragraph Builder, Tiempos y Conectores'
+  };
+  function finishDiagnostic(){
+    var skill = [0,1,4].reduce(function(s,i){ return s + (picks[i] ? parseInt(picks[i].dataset.score,10) : 1); }, 0); /* 3 a 12 */
+    var levelIdx = skill <= 4 ? 0 : skill <= 6 ? 1 : skill <= 8 ? 2 : skill <= 10 ? 3 : 4;
+    var goal = (picks[2] && picks[2].dataset.goal) || 'hablar';
+    var time = picks[3] ? parseInt(picks[3].dataset.time,10) : 15;
+    var block = (picks[4] && picks[4].dataset.block) || '';
+    var code = LEVEL_CODES[levelIdx];
+
+    document.getElementById('diagBody').style.display = 'none';
+    progressBar.style.width = '100%';
+    var result = document.getElementById('diagResult');
+    result.classList.add('active');
+    document.getElementById('resultLevelChip').textContent = 'Nivel estimado ' + code;
+    document.getElementById('resultTitle').textContent = LEVELS[levelIdx].split(' — ')[1];
+    document.getElementById('resLevel').textContent = LEVELS[levelIdx];
+    document.getElementById('resGoal').textContent = GOAL_LABELS[goal];
+    document.getElementById('resTime').textContent = time + ' minutos';
+    document.getElementById('resTools').textContent = GOAL_TOOLS[goal];
+    try{
+      localStorage.setItem('pg_level', code);
+      localStorage.setItem('pg_goal', goal);
+      localStorage.setItem('pg_time', String(time));
+    }catch(e){}
+    document.getElementById('statLevel').textContent = code;
+
+    /* Siguiente paso: el profesional (o quien tiene 25+ min al día) va a la Transformación; el resto, al Sistema. */
+    var pro = goal === 'profesional' || time >= 25;
+    var primary = document.getElementById('recPrimary');
+    var secondary = document.getElementById('recSecondary');
+    if (pro){
+      document.getElementById('recTitle').textContent = 'Te recomiendo: Transformación de 12 semanas';
+      document.getElementById('recSub').textContent = 'Tu objetivo pide trabajo 1 a 1 con situaciones reales de tu trabajo. Habla con el equipo y recibe una propuesta según tu meta y tu agenda.';
+      primary.textContent = 'Hablar con el equipo';
+      primary.href = wa('Hola Prof. Germandario. Hice el diagnóstico en la web. Nivel estimado: ' + code + '. Meta: ' + GOAL_LABELS[goal].toLowerCase() + '. Tiempo diario: ' + time + ' min. Me bloquea: ' + block + '. Me interesa: Transformación 12 semanas 1 a 1. [web-resultado]');
+      primary.target = '_blank';
+      secondary.textContent = 'Empezar con el Sistema · USD 27';
+      secondary.href = offerLink('Mi diagnóstico: ' + code + ', foco: ' + GOAL_LABELS[goal].toLowerCase() + '.', 'web-resultado');
+      secondary.target = '_blank';
+    } else {
+      document.getElementById('recTitle').textContent = 'Te recomiendo: ' + OFFER.nombre + ' · ' + OFFER.moneda + ' ' + OFFER.precio;
+      document.getElementById('recSub').textContent = 'Empiezas con tu hoja de ruta, la app y el seguimiento. Si luego pasas a la Transformación en 14 días, lo que pagaste se descuenta.';
+      primary.textContent = 'Quiero el Sistema';
+      primary.href = offerLink('Mi diagnóstico: ' + code + ', foco: ' + GOAL_LABELS[goal].toLowerCase() + '.', 'web-resultado');
+      primary.target = '_blank';
+      secondary.textContent = 'Ver la Transformación';
+      secondary.href = '#inversion';
+      secondary.removeAttribute('target');
+    }
+  }
+  document.getElementById('retakeDiag').addEventListener('click', function(){
+    picks = {}; qIndex = 0;
+    qs.forEach(function(q){ q.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected'); }); });
+    document.getElementById('diagBody').style.display = 'block';
+    document.getElementById('diagResult').classList.remove('active');
+    showQuestion(0);
+  });
+  document.getElementById('startMissionBtn').addEventListener('click', function(){
+    document.getElementById('mision').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* ---- mission engine ---- */
+  var STAGES = ['reset','train','use','reflect'];
+  var STAGE_LABELS = {reset:'Etapa 1 · Reset (2 min)', train:'Etapa 2 · Entrena', use:'Etapa 3 · Usa (habla / graba)', reflect:'Etapa 4 · Reflexiona'};
+  var TASKS_BY_TIME = {
+    5:  {train:'Ronda rápida de WordBlitz: recupera 15 palabras antes de que caigan.', use:'Di en voz alta una frase con 3 de esas palabras.', reflect:'¿Qué palabra te costó más? Anótala mentalmente para mañana.'},
+    15: {train:'Completa 8 oraciones en Complete Sentences enlazando ideas con conectores.', use:'Graba 30 segundos hablando de tu día usando 2 conectores nuevos.', reflect:'¿Qué conector usaste con más naturalidad?'},
+    25: {train:'Tiempos y Conectores + WH Questions Lab: dos rondas cortas.', use:'Graba 60 segundos respondiendo: "What did you do yesterday?"', reflect:'Escucha tu grabación una vez. ¿Qué palabra reemplazarías?'},
+    45: {train:'Sesión combinada: Gold Words + Paragraph Builder.', use:'Graba 90 segundos explicando una opinión con al menos un contraste ("but", "even though").', reflect:'Escribe una frase que quieras poder decir sin pensar la próxima vez.'},
+    60: {train:'Entrenamiento profundo: Fast Memory Recover + Paragraph Builder + Phrasal Verbs.', use:'Graba 2 minutos explicando un problema real y cómo lo resolviste.', reflect:'Compara esta grabación con la de hace dos semanas, si la tienes.'}
+  };
+  var currentStageIdx = 0;
+  var currentTime = 15;
+  var xp = 0, streak = 0;
+
+  try{
+    xp = parseInt(localStorage.getItem('pg_xp_today') || '0', 10);
+    streak = parseInt(localStorage.getItem('pg_streak') || '0', 10);
+    var savedLevel = localStorage.getItem('pg_level');
+    if (savedLevel) document.getElementById('statLevel').textContent = savedLevel;
+  }catch(e){}
+  document.getElementById('statXP').textContent = xp;
+  document.getElementById('statStreak').textContent = streak;
+
+  function xpForTime(min){ return {5:15, 15:30, 25:45, 45:65, 60:80}[min] || 30; }
+
+  function renderMissionStage(){
+    var stage = STAGES[currentStageIdx];
+    document.querySelectorAll('#missionStage .st').forEach(function(el, i){
+      el.classList.remove('done','current');
+      if (i < currentStageIdx) el.classList.add('done');
+      if (i === currentStageIdx) el.classList.add('current');
+    });
+    document.getElementById('missionStageLabel').textContent = STAGE_LABELS[stage];
+    var t = TASKS_BY_TIME[currentTime] || TASKS_BY_TIME[15];
+    var taskText = stage === 'reset'
+      ? 'Respira y suelta la tensión antes de empezar. No necesitas estar "listo", solo presente.'
+      : t[stage];
+    document.getElementById('missionTask').textContent = taskText;
+    var advanceBtn = document.getElementById('missionAdvance');
+    advanceBtn.textContent = currentStageIdx === STAGES.length - 1 ? 'Completar misión (+' + xpForTime(currentTime) + ' XP)' : 'Completar esta etapa';
+  }
+
+  document.getElementById('missionAdvance').addEventListener('click', function(){
+    if (currentStageIdx < STAGES.length - 1){
+      currentStageIdx += 1;
+      renderMissionStage();
+    } else {
+      xp += xpForTime(currentTime);
+      streak += 1;
+      document.getElementById('statXP').textContent = xp;
+      document.getElementById('statStreak').textContent = streak;
+      try{
+        localStorage.setItem('pg_xp_today', String(xp));
+        localStorage.setItem('pg_streak', String(streak));
+      }catch(e){}
+      document.getElementById('missionStageLabel').textContent = 'Misión completa';
+      document.getElementById('missionTask').textContent = 'Bien hecho. Vuelve mañana para continuar tu racha — perder un día no reinicia tu camino, solo lo pausa.';
+      document.getElementById('missionAdvance').textContent = 'Misión completada';
+      document.getElementById('missionAdvance').disabled = true;
+    }
+  });
+
+  document.getElementById('missionReset').addEventListener('click', function(){
+    currentStageIdx = 0;
+    document.getElementById('missionAdvance').disabled = false;
+    renderMissionStage();
+  });
+
+  document.querySelectorAll('.time-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.time-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentTime = parseInt(chip.dataset.min, 10);
+      currentStageIdx = 0;
+      document.getElementById('missionAdvance').disabled = false;
+      renderMissionStage();
+    });
+  });
+  renderMissionStage();
+
+  /* ---- nav inferior activa ---- */
+  var navLinks = document.querySelectorAll('.bottomnav a');
+  var sectionMap = {inicio:'home', mapa:'mapa', mision:'mision', laboratorio:'tools', inversion:'inversion'}; /* en orden de aparición */
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 140;
+    var current = 'home';
+    Object.keys(sectionMap).forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= pos) current = sectionMap[id];
+    });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.dataset.nav === current); });
+  }, {passive:true});
+
+  /* ---- menú superior activo ---- */
+  var trackedSections = ['ruta','mapa','laboratorio','inversion','libro']
+    .map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var topNavLinks = document.querySelectorAll('.nav a[href^="#"]');
+  if ('IntersectionObserver' in window){
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          topNavLinks.forEach(function(l){ l.classList.remove('active'); });
+          var match = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
+          if (match) match.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-45% 0px -45% 0px'});
+    trackedSections.forEach(function(s){ navObserver.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

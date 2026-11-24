@@ -1,745 +1,1631 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Fast Memory Recover · ProfGermandario</title>
-  <meta name="description" content="Mobile-ready memory recovery app for deep listening, sequencing, recall, and English vocabulary retrieval." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0910" />
+<title>Fast Memory Recover · The Vault Edition · ProfGermandario</title>
+<meta name="description" content="Premium memory and deep-listening trainer: 350+ English words, six rotating recall challenges, spaced comeback training and prestige ranks." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+<style>
+:root{
+  --ink:#0a0910; --ink-2:#131020; --ink-3:#1b1729;
+  --panel:rgba(255,255,255,.035); --panel-2:rgba(255,255,255,.06);
+  --border:rgba(232,169,76,.18); --border-soft:rgba(255,255,255,.08);
+  --gold:#e0a44c; --gold-bright:#f4c669; --gold-deep:#a8731f;
+  --violet:#9179dd; --violet-deep:#463a72; --coral:#e8735c; --ok:#7fbf8f;
+  --text:#f3efe6; --muted:#b9b2c7; --dim:#726c86;
+  --r:22px; --pill:999px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--text); font-family:'DM Sans',system-ui,sans-serif; font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden; -webkit-text-size-adjust:100%;
+  background:
+    radial-gradient(1100px 650px at 85% -10%,rgba(145,121,221,.17),transparent 60%),
+    radial-gradient(900px 600px at -10% 10%,rgba(224,164,76,.11),transparent 55%),
+    radial-gradient(800px 500px at 50% 110%,rgba(232,115,92,.08),transparent 60%),
+    var(--ink);
+}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(244,198,105,.16) 1px,transparent 1.4px);background-size:34px 34px;
+  mask-image:linear-gradient(to bottom,#000,transparent 70%);-webkit-mask-image:linear-gradient(to bottom,#000,transparent 70%)}
+::selection{background:var(--gold);color:#1a1420}
+a{color:inherit;text-decoration:none}
+button,select,input{font:inherit;color:inherit}
+button,a,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;border-radius:6px}
+.cinzel{font-family:Cinzel,serif}.corm{font-family:'Cormorant Garamond',serif}.mono{font-family:'DM Mono',ui-monospace,monospace}
+.gold-text{background:linear-gradient(100deg,#b98232 0%,#f4c669 28%,#fff1cf 46%,#e0a44c 64%,#a8731f 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wrap{width:min(1240px,100%);margin-inline:auto;padding-inline:clamp(12px,3vw,28px)}
+.kicker{font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-bright)}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+/* top bar */
+.topbar{position:sticky;top:0;z-index:40;background:rgba(10,9,16,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:11px}
+.brand{display:flex;align-items:center;gap:10px;font-family:Cinzel,serif;font-weight:700;letter-spacing:.04em;font-size:.98rem}
+.brand-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);background:radial-gradient(circle at 30% 25%,rgba(244,198,105,.35),rgba(10,9,16,.9));color:var(--gold-bright);font-size:.9rem}
+.brand b{color:var(--gold-bright);font-weight:700}
+.top-actions{display:flex;gap:8px;align-items:center}
+.nav-pill{white-space:nowrap;border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:var(--pill);padding:8px 13px;font-size:.8rem;font-weight:600;color:var(--muted);transition:.2s}
+.nav-pill:hover{color:var(--text);border-color:var(--gold)}
 
-  <style>
-    :root{
-      --lienzo:#FCF8F3; --nube:#F2ECE2; --paper:#F6F1FF;
-      --tinta:#1A1730; --tinta-soft:#3A3552; --bruma:#76718A;
-      --coral:#FF5A3C; --coral-deep:#E8482C;
-      --menta:#15B79E; --menta-deep:#0E8C79;
-      --ambar:#FFB627; --ambar-deep:#D4930F;
-      --vino:#7B2CBF; --gold:#C9A227;
-      --dark:#111020; --dark-2:#0B1220; --line:rgba(26,23,48,.12);
-      --line-soft:rgba(26,23,48,.07); --white-line:rgba(255,255,255,.14);
-      --shadow:0 18px 48px rgba(3,7,18,.24); --shadow-soft:0 14px 35px rgba(26,23,48,.11);
-      --radius:28px; --pill:999px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0; min-height:100vh; color:var(--tinta);
-      font-family:Figtree,system-ui,sans-serif; -webkit-font-smoothing:antialiased;
-      background:
-        radial-gradient(70% 55% at 7% -5%,rgba(255,90,60,.20),transparent 58%),
-        radial-gradient(55% 60% at 105% 8%,rgba(21,183,158,.17),transparent 60%),
-        linear-gradient(135deg,#141020 0%,#0D1724 100%);
-      -webkit-text-size-adjust:100%;
-    }
-    body:before{
-      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background:
-        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-      background-size:42px 42px; mask-image:linear-gradient(to bottom,black,transparent 76%);
-    }
-    a{color:inherit;text-decoration:none}
-    button,select{font:inherit}
-    button,a,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-    button{cursor:pointer}
-    .wrap{width:min(1180px,100%); margin-inline:auto; padding-inline:clamp(14px,3vw,28px)}
-    .display{font-family:Fraunces,Georgia,serif}.mono{font-family:'DM Mono',ui-monospace,monospace}
-    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* hero */
+.hero{padding:clamp(26px,5vw,52px) 0 18px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:22px;align-items:stretch}
+h1{font-family:Cinzel,serif;font-weight:600;font-size:clamp(2.1rem,6.2vw,4.4rem);line-height:.98;letter-spacing:.01em;margin:14px 0 12px}
+.lede{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.15rem,2.3vw,1.45rem);color:var(--muted);max-width:640px;margin:0;line-height:1.4}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px;max-width:680px}
+.hstat{border:1px solid var(--border-soft);border-radius:18px;background:var(--panel);padding:12px 13px}
+.hstat b{display:block;font-family:Cinzel,serif;font-size:1.35rem;line-height:1.05;color:var(--text)}
+.hstat span{display:block;margin-top:5px;font-family:'DM Mono';font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.prestige{position:relative;overflow:hidden;border-radius:26px;border:1px solid var(--border);padding:22px;
+  background:linear-gradient(160deg,rgba(244,198,105,.10),rgba(145,121,221,.08) 55%,rgba(10,9,16,.4));box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.prestige:after{content:"";position:absolute;inset:-40% -20% auto auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(244,198,105,.22),transparent 65%);pointer-events:none}
+.rank-row{display:flex;align-items:center;gap:14px;margin-top:12px}
+.rank-emblem{width:66px;height:66px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.9rem;border:1px solid var(--gold);background:radial-gradient(circle at 35% 30%,rgba(244,198,105,.28),rgba(10,9,16,.85));box-shadow:0 0 0 6px rgba(224,164,76,.07),0 14px 36px rgba(224,164,76,.18)}
+.rank-name{font-family:Cinzel,serif;font-size:1.22rem;font-weight:600;line-height:1.1}
+.rank-next{font-size:.8rem;color:var(--dim);margin-top:4px}
+.rail{height:6px;border-radius:var(--pill);background:rgba(255,255,255,.07);overflow:hidden;margin-top:14px}
+.rail>span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright),#fff1cf);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.ritual{display:flex;justify-content:space-between;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-soft);font-size:.82rem;color:var(--muted)}
+.ritual b{color:var(--text)}
 
-    .topbar{position:sticky;top:0;z-index:40;background:rgba(17,16,32,.70);backdrop-filter:blur(18px);border-bottom:1px solid var(--white-line)}
-    .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
-    .brand{display:flex;align-items:center;gap:10px;color:white;font-weight:900;letter-spacing:-.02em}
-    .brand-mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--coral),var(--ambar));display:grid;place-items:center;box-shadow:0 12px 28px rgba(255,90,60,.26)}
-    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .nav-pill{border:1px solid var(--white-line);background:rgba(255,255,255,.07);color:rgba(255,255,255,.88);border-radius:var(--pill);padding:9px 12px;font-weight:800;font-size:.82rem}
-    .nav-pill:hover{background:rgba(255,255,255,.13);color:white}
+/* layout */
+.app{padding:12px 0 40px}
+.layout{display:grid;grid-template-columns:minmax(250px,280px) minmax(0,1fr) minmax(280px,330px);grid-template-areas:"session stage vault";gap:16px;align-items:start}
+.col-session{grid-area:session}.col-stage{grid-area:stage}.col-vault{grid-area:vault}
+.panel{border:1px solid var(--border-soft);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 20px 60px rgba(0,0,0,.32);overflow:hidden}
+.panel+.panel{margin-top:14px}
+.pad{padding:18px}
+.p-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.p-title h2{font-family:Cinzel,serif;font-size:1.02rem;font-weight:600;letter-spacing:.06em;margin:0}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:5px 10px;border:1px solid var(--border);color:var(--gold-bright);font-family:'DM Mono';font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.chip.violet{border-color:rgba(145,121,221,.35);color:#c9bcf3}.chip.coral{border-color:rgba(232,115,92,.4);color:#f3a493}.chip.ok{border-color:rgba(127,191,143,.4);color:#a9dcb6}
 
-    .hero{padding:clamp(24px,5vw,54px) 0 18px;color:white}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:18px;align-items:stretch}
-    .eyebrow{font-family:'DM Mono';font-size:.68rem;text-transform:uppercase;letter-spacing:.24em;color:#ffd8cf;font-weight:500}
-    h1{font-family:Fraunces,Georgia,serif;font-size:clamp(2.55rem,8vw,5.6rem);line-height:.86;letter-spacing:-.055em;margin:12px 0 14px;color:white}
-    h1 em{font-style:normal;color:var(--coral);font-weight:500}
-    .hero-copy{max-width:720px;color:rgba(255,255,255,.74);font-size:clamp(.98rem,2vw,1.14rem);line-height:1.68;margin:0}
-    .hero-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;max-width:620px}
-    .mini-stat{border:1px solid var(--white-line);border-radius:22px;background:rgba(255,255,255,.075);padding:13px 12px}
-    .mini-stat b{display:block;font-family:Fraunces,Georgia,serif;font-size:1.55rem;line-height:1;color:white}
-    .mini-stat span{display:block;margin-top:5px;font-family:'DM Mono';font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.58)}
-    .protocol-card{position:relative;overflow:hidden;border-radius:32px;border:1px solid var(--white-line);background:rgba(255,255,255,.08);box-shadow:var(--shadow);padding:22px;min-height:100%}
-    .protocol-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 0%,rgba(255,182,39,.18),transparent 34%),radial-gradient(circle at 100% 100%,rgba(21,183,158,.18),transparent 42%);pointer-events:none}
-    .protocol-card>*{position:relative}
-    .wave{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:48px;margin:8px 0 16px}
-    .wave i{width:4px;border-radius:8px;background:linear-gradient(to top,var(--menta),var(--coral),var(--ambar));animation:vox 1.3s ease-in-out infinite;opacity:.9}
-    @keyframes vox{0%,100%{transform:scaleY(.23)}50%{transform:scaleY(1)}}
-    .protocol-steps{display:grid;gap:9px;margin-top:14px}
-    .step{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:10px;color:rgba(255,255,255,.84)}
-    .step strong{display:block;color:white}.step small{display:block;color:rgba(255,255,255,.56);font-size:.75rem;line-height:1.3}
-    .step-num{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-family:'DM Mono';font-size:.72rem;font-weight:800;background:rgba(255,90,60,.18);color:#ffd8cf}
+/* session */
+.level-box{display:flex;align-items:center;gap:13px;margin-bottom:14px}
+.level-mark{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-family:Cinzel,serif;font-size:1.6rem;font-weight:700;color:#1a1420;background:linear-gradient(135deg,#fff1cf,var(--gold-bright) 35%,var(--gold) 70%,var(--gold-deep));box-shadow:0 12px 30px rgba(224,164,76,.25)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{border:1px solid var(--border-soft);border-radius:15px;padding:10px 11px;background:rgba(0,0,0,.18)}
+.metric span{display:block;font-family:'DM Mono';font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.metric b{display:block;margin-top:3px;font-size:1.12rem;font-weight:700}
+.metric.combo b{color:var(--gold-bright)}
+.combo-bar{display:flex;gap:4px;margin-top:7px}.combo-bar i{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.08);transition:.25s}.combo-bar i.on{background:linear-gradient(90deg,var(--gold),var(--gold-bright));box-shadow:0 0 10px rgba(244,198,105,.5)}
+.prog-label{display:flex;justify-content:space-between;margin:16px 0 7px;font-family:'DM Mono';font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.mode-list{display:grid;gap:8px;margin-top:10px}
+.mode-btn{width:100%;text-align:left;border:1px solid var(--border-soft);background:rgba(0,0,0,.18);border-radius:16px;padding:11px 12px;transition:.2s}
+.mode-btn:hover:not(:disabled){border-color:var(--border)}
+.mode-btn.active{border-color:var(--gold);background:linear-gradient(135deg,rgba(224,164,76,.12),rgba(224,164,76,.03));box-shadow:0 0 0 3px rgba(224,164,76,.08)}
+.mode-btn:disabled{opacity:.5;cursor:not-allowed}
+.mode-btn strong{display:flex;justify-content:space-between;gap:8px;font-size:.9rem;font-weight:700}
+.mode-btn span.d{display:block;margin-top:3px;color:var(--dim);font-size:.76rem;line-height:1.35}
 
-    .app{padding:16px 0 34px}
-    .training-grid{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr) minmax(280px,350px);gap:16px;align-items:start}
-    .panel{background:rgba(252,248,243,.98);border:1px solid rgba(255,255,255,.52);border-radius:var(--radius);box-shadow:var(--shadow-soft);overflow:hidden}
-    .panel-pad{padding:18px}
-    .panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .panel-title h2{font-family:Fraunces,Georgia,serif;font-size:1.38rem;line-height:1;margin:0;letter-spacing:-.025em}
-    .chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--pill);padding:7px 10px;background:var(--nube);color:var(--tinta-soft);font-family:'DM Mono';font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
-    .chip.hot{background:rgba(255,90,60,.10);color:var(--coral)}.chip.green{background:rgba(21,183,158,.10);color:var(--menta-deep)}.chip.gold{background:rgba(255,182,39,.16);color:var(--ambar-deep)}
-    .level-box{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-bottom:15px}
-    .level-mark{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--coral),var(--ambar));display:grid;place-items:center;color:white;font-family:Fraunces,Georgia,serif;font-size:1.75rem;font-weight:900;box-shadow:0 14px 30px rgba(255,90,60,.24)}
-    .muted{color:var(--bruma)}
-    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 14px}
-    .metric{background:white;border:1px solid var(--line-soft);border-radius:18px;padding:12px;min-width:0}
-    .metric span{display:block;font-family:'DM Mono';font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma);font-weight:700}.metric b{display:block;margin-top:4px;font-size:1.15rem;color:var(--tinta)}
-    .progress-wrap{margin:14px 0}.progress-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;font-family:'DM Mono';font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma)}
-    .bar{height:11px;background:var(--nube);border-radius:var(--pill);overflow:hidden}.bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--menta),var(--ambar),var(--coral));border-radius:inherit;transition:width .35s ease}
-    .mode-list{display:grid;gap:8px;margin-top:10px}.mode-btn{width:100%;text-align:left;border:1.5px solid var(--line-soft);background:white;border-radius:18px;padding:11px 12px;transition:.18s ease}.mode-btn:hover{transform:translateY(-1px);border-color:rgba(255,90,60,.34)}.mode-btn.active{border-color:var(--coral);background:rgba(255,90,60,.07);box-shadow:0 0 0 4px rgba(255,90,60,.08)}
-    .mode-btn strong{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.92rem}.mode-btn span{display:block;margin-top:4px;color:var(--bruma);font-size:.78rem;line-height:1.35}
+/* stage */
+.phase-track{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px;border-bottom:1px solid var(--border-soft);background:rgba(0,0,0,.2)}
+.phase{text-align:center;padding:8px 4px;border-radius:12px;font-family:'DM Mono';font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid transparent;transition:.3s}
+.phase.active{color:#1a1420;background:linear-gradient(135deg,var(--gold-bright),var(--gold));font-weight:500}
+.phase.done{color:var(--gold-bright);border-color:var(--border)}
+.stage{position:relative;margin:16px;min-height:270px;border-radius:22px;border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 18px;
+  background:radial-gradient(70% 60% at 50% 0%,rgba(224,164,76,.13),transparent 70%),radial-gradient(60% 50% at 50% 110%,rgba(145,121,221,.16),transparent 70%),linear-gradient(180deg,#15111f,#0d0b14)}
+.stage:before,.stage:after{content:"◆";position:absolute;font-size:.55rem;color:var(--gold);opacity:.55}
+.stage:before{top:12px;left:14px}.stage:after{bottom:12px;right:14px}
+.stage.flash-ok{box-shadow:inset 0 0 0 1px var(--ok),inset 0 0 60px rgba(127,191,143,.18)}
+.stage.flash-err{box-shadow:inset 0 0 0 1px var(--coral),inset 0 0 60px rgba(232,115,92,.18)}
+.stage.flash-gold{box-shadow:inset 0 0 0 1px var(--gold-bright),inset 0 0 80px rgba(244,198,105,.28)}
+.stage-top{position:absolute;top:12px;left:0;right:0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:0 30px}
+.stage-label{font-family:'DM Mono';font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+.stage-core{position:relative;z-index:1;width:100%}
+.stage-sub{position:relative;z-index:1;margin-top:12px;color:var(--muted);font-size:.9rem;min-height:1.4em}
+.word-big{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2.8rem,9vw,5.4rem);line-height:.95;letter-spacing:-.01em;color:var(--text);word-break:break-word}
+.word-big.golden{background:linear-gradient(100deg,#a8731f 0%,#f4c669 30%,#fff6dc 50%,#f4c669 70%,#a8731f 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 1.6s linear infinite}
+@keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+.dot-wait{font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--dim);letter-spacing:.3em}
+.blind-wave{display:flex;align-items:center;justify-content:center;gap:5px;height:80px}
+.blind-wave i{width:5px;border-radius:6px;background:linear-gradient(to top,var(--violet),var(--gold-bright));animation:vox 1s ease-in-out infinite}
+@keyframes vox{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+.ring-wrap{position:relative;width:150px;height:150px;margin:0 auto}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-wrap circle{fill:none;stroke-width:5}
+.ring-bg{stroke:rgba(255,255,255,.07)}.ring-fg{stroke:url(#ringGrad);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.ring-num{position:absolute;inset:0;display:grid;place-items:center;font-family:Cinzel,serif;font-size:3.2rem;font-weight:600}
+.deal{max-width:460px;margin:0 auto;animation:deal .6s cubic-bezier(.2,.9,.25,1.1) both}
+@keyframes deal{from{opacity:0;transform:translateY(18px) rotateX(18deg) scale(.96)}to{opacity:1;transform:none}}
+.deal-icon{width:64px;height:64px;margin:12px auto 10px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;border:1px solid var(--gold);color:var(--gold-bright);background:radial-gradient(circle at 35% 30%,rgba(244,198,105,.22),transparent 70%)}
+.deal-name{font-family:Cinzel,serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:600;line-height:1.1}
+.deal-brief{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.18rem;color:var(--muted);margin-top:8px;line-height:1.35}
+.mix{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+.qnum{font-family:Cinzel,serif;font-size:clamp(3.4rem,10vw,5.4rem);font-weight:600;line-height:1}
+.qof{font-family:'DM Mono';font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.cue{display:inline-flex;align-items:center;gap:14px}
+.cue .e{font-size:3rem}.cue .w{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3.2rem);font-weight:600}
+.cue-arrow{display:block;margin-top:8px;font-family:'DM Mono';font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-bright)}
+.reveal{animation:pop .35s ease both}
+.reveal .e{font-size:3.2rem;line-height:1;display:block}
+.reveal .w{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2.2rem,7vw,3.8rem);line-height:1;display:block;margin-top:6px}
+.reveal .es{display:block;margin-top:6px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--gold-bright)}
+.slots{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+.slots i{width:20px;height:28px;border-bottom:2px solid var(--gold);font-style:normal;font-family:Cinzel,serif;font-size:1.1rem;color:var(--gold-bright);display:grid;place-items:end center;padding-bottom:2px}
+.slots i.gap{border:0;width:10px}
+.acc-big{font-family:Cinzel,serif;font-size:clamp(3.4rem,10vw,5.6rem);font-weight:600;line-height:1}
+.verdict{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--muted);margin-top:6px}
 
-    .stage-panel{min-height:100%;display:flex;flex-direction:column}
-    .phase-track{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:14px;background:rgba(242,236,226,.48);border-bottom:1px solid var(--line-soft)}
-    .phase{border-radius:14px;padding:9px 6px;text-align:center;background:white;border:1px solid var(--line-soft);font-family:'DM Mono';font-size:.56rem;letter-spacing:.10em;text-transform:uppercase;color:var(--bruma);font-weight:800}.phase.active{background:var(--tinta);color:white;border-color:var(--tinta)}.phase.done{background:rgba(21,183,158,.11);color:var(--menta-deep);border-color:rgba(21,183,158,.22)}
-    .memory-stage{margin:18px;min-height:230px;border-radius:26px;border:1.5px solid var(--line-soft);background:radial-gradient(circle at 20% 0%,rgba(255,90,60,.10),transparent 34%),linear-gradient(180deg,#fff,var(--lienzo));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;position:relative;overflow:hidden}
-    .memory-stage:after{content:"";position:absolute;inset:auto -10% -34% -10%;height:44%;background:radial-gradient(50% 70% at 50% 50%,rgba(123,44,191,.12),transparent 70%);pointer-events:none}
-    .stage-label{font-family:'DM Mono';font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bruma);font-weight:700;margin-bottom:10px;position:relative;z-index:1}
-    .stage-word{font-family:Fraunces,Georgia,serif;font-size:clamp(2.4rem,8vw,5rem);line-height:.9;font-weight:900;color:var(--coral);letter-spacing:-.04em;position:relative;z-index:1;word-break:break-word}
-    .stage-word.hidden-word{color:#DDD8F8;letter-spacing:.12em;font-size:clamp(2rem,7vw,4rem)}
-    .stage-sub{margin-top:12px;color:var(--tinta-soft);font-weight:700;position:relative;z-index:1}.stage-sub small{font-family:'DM Mono';font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--bruma);font-weight:700}
-    .countdown{font-family:Fraunces,Georgia,serif;font-size:clamp(4rem,13vw,7rem);font-weight:900;color:var(--menta);line-height:.9}
-    .control-strip{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:9px;padding:0 18px 18px}.btn{border:0;border-radius:var(--pill);min-height:48px;padding:12px 16px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;white-space:nowrap}.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn-coral{background:var(--coral);color:white;box-shadow:0 12px 28px rgba(255,90,60,.25)}.btn-dark{background:var(--tinta);color:white}.btn-mint{background:var(--menta);color:white;box-shadow:0 12px 28px rgba(21,183,158,.22)}.btn-amber{background:var(--ambar);color:#633b00}.btn-ghost{background:var(--nube);color:var(--tinta-soft);border:1.5px solid var(--line-soft);box-shadow:none}.btn-ghost:hover{border-color:rgba(255,90,60,.42);color:var(--coral)}.btn-small{min-height:40px;padding:9px 13px;font-size:.84rem}
+.controls{display:flex;gap:9px;padding:0 16px 16px}.controls .btn{flex:1 1 0}.controls #startBtn{flex:1.4 1 0}.controls .btn.is-hidden{display:none}
+.btn{border:0;border-radius:var(--pill);min-height:48px;padding:12px 18px;font-weight:700;font-size:.92rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .2s,background .2s,opacity .2s;white-space:nowrap}
+.btn:hover:not(:disabled){transform:translateY(-2px)}.btn:active:not(:disabled){transform:scale(.98)}
+.btn:disabled{opacity:.38;cursor:not-allowed}
+.btn-gold{color:#1a1420;background:linear-gradient(135deg,#fff1cf,var(--gold-bright) 30%,var(--gold) 70%,var(--gold-deep));box-shadow:0 14px 34px rgba(224,164,76,.26)}
+.btn-line{background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text)}
+.btn-line:hover:not(:disabled){border-color:var(--gold)}
+.btn-violet{background:linear-gradient(135deg,#a995ee,var(--violet) 50%,var(--violet-deep));color:white;box-shadow:0 12px 30px rgba(145,121,221,.25)}
+.btn-sm{min-height:40px;padding:8px 14px;font-size:.82rem}
 
-    .quiz-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.quiz-title{font-family:'DM Mono';font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bruma);font-weight:800}.counter{color:var(--coral);font-weight:900}
-    .instruction{border:1px solid var(--line-soft);background:white;border-radius:18px;padding:13px 14px;color:var(--tinta-soft);line-height:1.45;margin-bottom:14px;font-size:.94rem}.instruction strong{color:var(--coral)}
-    .option-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.emoji-btn{min-height:104px;border-radius:22px;background:white;border:2px solid var(--line-soft);display:grid;place-items:center;align-content:center;gap:7px;font-size:2.35rem;transition:.16s ease}.emoji-btn:hover{transform:translateY(-3px);border-color:rgba(255,90,60,.38);box-shadow:0 12px 24px rgba(255,90,60,.12)}.emoji-btn:active{transform:scale(.96)}.emoji-btn[disabled]{cursor:default;transform:none}.emoji-btn .key{font-family:'DM Mono';font-size:.62rem;color:var(--bruma);letter-spacing:.13em}.emoji-btn.correct{border-color:var(--menta);background:rgba(21,183,158,.10);box-shadow:0 0 0 4px rgba(21,183,158,.14)}.emoji-btn.wrong{border-color:var(--coral);background:rgba(255,90,60,.09);box-shadow:0 0 0 4px rgba(255,90,60,.12)}
-    .feedback{min-height:48px;margin-top:12px}.fb{border-radius:16px;padding:12px 13px;font-weight:800;line-height:1.35}.fb.ok{background:rgba(21,183,158,.11);color:var(--menta-deep)}.fb.err{background:rgba(255,90,60,.10);color:var(--coral)}.fb.neutral{background:rgba(26,23,48,.06);color:var(--tinta-soft)}
-    .action-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}.action-row .spacer{margin-left:auto}
-    .review{display:none;margin-top:14px;border-top:1px solid var(--line-soft);padding-top:14px}.review.open{display:block}.review-grid{display:grid;gap:8px}.review-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:white;border:1px solid var(--line-soft);border-radius:15px;padding:9px 10px}.review-item .num{font-family:'DM Mono';font-size:.62rem;color:var(--bruma)}.review-item strong{font-size:.9rem}.review-item small{color:var(--bruma)}
+.console{padding:0 16px 18px}
+.c-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.c-title{font-family:'DM Mono';font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.counter{font-family:'DM Mono';font-size:.75rem;color:var(--gold-bright)}
+.instruction{border:1px solid var(--border-soft);border-left:2px solid var(--gold);background:rgba(0,0,0,.2);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:.95rem;margin-bottom:12px;line-height:1.45}
+.instruction b{color:var(--text)}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.opts.six{grid-template-columns:repeat(3,1fr)}
+.opts.gallery{grid-template-columns:repeat(4,1fr);gap:8px}
+.opt{position:relative;min-height:98px;border-radius:18px;border:1px solid var(--border-soft);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));display:grid;place-items:center;align-content:center;gap:4px;font-size:2.4rem;transition:transform .18s,border-color .2s,box-shadow .2s,opacity .25s;animation:pop .32s ease both}
+.opts.gallery .opt{min-height:76px;font-size:2rem;border-radius:15px}
+.opt:hover:not(:disabled){transform:translateY(-3px);border-color:var(--gold);box-shadow:0 14px 30px rgba(224,164,76,.14)}
+.opt:disabled{cursor:default}
+.opt .k{font-family:'DM Mono';font-size:.56rem;letter-spacing:.14em;color:var(--dim)}
+.opt .lab{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--text);line-height:1}
+.opt.correct{border-color:var(--ok);background:rgba(127,191,143,.12);box-shadow:0 0 0 3px rgba(127,191,143,.14)}
+.opt.wrong{border-color:var(--coral);background:rgba(232,115,92,.12);box-shadow:0 0 0 3px rgba(232,115,92,.12)}
+.opt.missed{border-color:var(--gold);border-style:dashed;background:rgba(224,164,76,.08)}
+.opt.faded{opacity:.18}
+.opt.hint{animation:hintPulse 1s ease-in-out 3}
+@keyframes hintPulse{0%,100%{box-shadow:0 0 0 0 rgba(244,198,105,0)}50%{box-shadow:0 0 0 6px rgba(244,198,105,.45);border-color:var(--gold-bright)}}
+.spell{display:flex;gap:8px}
+.spell input{flex:1;min-width:0;min-height:52px;border-radius:16px;border:1px solid var(--border);background:rgba(0,0,0,.3);padding:12px 16px;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;outline:none;color:var(--text)}
+.spell input:focus{border-color:var(--gold-bright);box-shadow:0 0 0 3px rgba(244,198,105,.12)}
+.feedback{min-height:46px;margin-top:12px}
+.fb{border-radius:14px;padding:11px 13px;font-weight:600;line-height:1.4;font-size:.92rem;animation:pop .3s ease both}
+.fb.ok{background:rgba(127,191,143,.12);color:#b8e6c4;border:1px solid rgba(127,191,143,.25)}
+.fb.err{background:rgba(232,115,92,.11);color:#f6b3a5;border:1px solid rgba(232,115,92,.25)}
+.fb.gold{background:rgba(224,164,76,.12);color:var(--gold-bright);border:1px solid var(--border)}
+.fb.neutral{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border-soft)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions .push{margin-left:auto}
+.result{border-radius:20px;border:1px solid var(--border);padding:18px;background:linear-gradient(180deg,rgba(224,164,76,.12),rgba(224,164,76,.02));animation:pop .35s ease both}
+.result h3{font-family:Cinzel,serif;font-weight:600;font-size:1.3rem;margin:0 0 4px;text-align:center}
+.result p{text-align:center;color:var(--muted);margin:0;font-size:.9rem}
+.r-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.r-stats div{border:1px solid var(--border-soft);border-radius:14px;padding:9px 6px;text-align:center;background:rgba(0,0,0,.2)}
+.r-stats b{display:block;font-size:1.05rem}.r-stats span{font-family:'DM Mono';font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.r-btns{display:grid;grid-template-columns:1.3fr 1fr;gap:8px}
+.review{margin-top:14px;display:grid;gap:7px}
+.rv{display:grid;grid-template-columns:28px 40px 1fr auto;gap:10px;align-items:center;border:1px solid var(--border-soft);border-radius:14px;padding:8px 10px;background:rgba(0,0,0,.18)}
+.rv .n{font-family:'DM Mono';font-size:.62rem;color:var(--dim)}.rv .e{font-size:1.6rem;text-align:center}
+.rv strong{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600}.rv small{display:block;color:var(--dim);font-size:.75rem}
+.rv .st-ok{color:#a9dcb6}.rv .st-err{color:#f3a493}.rv .st-gold{color:var(--gold-bright)}
+.say{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--gold-bright);display:grid;place-items:center}
+.say:hover{border-color:var(--gold)}
 
-    .settings{margin-top:16px}.settings details{background:rgba(252,248,243,.98);border:1px solid rgba(255,255,255,.52);border-radius:22px;box-shadow:var(--shadow-soft);overflow:hidden}.settings summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'DM Mono';font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bruma);font-weight:800}.settings summary::-webkit-details-marker{display:none}.settings-body{padding:0 16px 16px}.field{display:grid;gap:7px;margin-top:12px}.field label{font-family:'DM Mono';font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bruma);font-weight:800}.field select,.field input{width:100%;border:1.5px solid var(--line);border-radius:14px;background:white;color:var(--tinta);padding:11px 12px;outline:none}.field select:focus,.field input:focus{border-color:var(--coral)}
+/* vault side */
+.salon{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--border-soft);background:rgba(0,0,0,.16);border-radius:14px;padding:8px 10px;transition:.2s}
+.salon+.salon{margin-top:6px}
+.salon .i{font-size:1.25rem;text-align:center}
+.salon .nm{display:block;font-size:.86rem;font-weight:600;line-height:1.15}
+.salon .mt{display:block;font-family:'DM Mono';font-size:.56rem;letter-spacing:.08em;color:var(--dim);margin-top:4px}
+.salon .mini{display:block;height:3px;border-radius:3px;background:rgba(255,255,255,.07);margin-top:5px;overflow:hidden}.salon .mini span{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright))}
+.switch{width:34px;height:20px;border-radius:20px;background:rgba(255,255,255,.1);position:relative;transition:.2s;flex:none}
+.switch:after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--dim);transition:.2s}
+.on>.switch,.switch.on{background:rgba(224,164,76,.35)}.on>.switch:after,.switch.on:after{left:17px;background:var(--gold-bright)}
+.salon:not(.on){opacity:.55}
+.queue{display:flex;flex-wrap:wrap;gap:6px}
+.qchip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(232,115,92,.3);background:rgba(232,115,92,.07);border-radius:var(--pill);padding:5px 10px 5px 7px;font-size:.8rem}
+.qchip .e{font-size:1rem}
+.empty{color:var(--dim);font-size:.85rem;font-style:italic}
+.bars{display:flex;align-items:flex-end;gap:5px;height:70px;padding-top:6px}
+.bars div{flex:1;border-radius:5px 5px 2px 2px;background:linear-gradient(to top,var(--gold-deep),var(--gold-bright));min-height:4px;position:relative}
+.bars div.low{background:linear-gradient(to top,#7a3a2e,var(--coral))}
+.bars-legend{display:flex;justify-content:space-between;font-family:'DM Mono';font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.field{display:grid;gap:6px;margin-top:12px}
+.field label{display:flex;justify-content:space-between;font-family:'DM Mono';font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.field select{width:100%;border:1px solid var(--border-soft);border-radius:12px;background:#14111d;padding:10px 12px;outline:none}
+.field select:focus{border-color:var(--gold)}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--border-soft);background:rgba(0,0,0,.16);text-align:left;font-size:.86rem}
+.toggle small{display:block;color:var(--dim);font-size:.72rem}
+details.settings summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:16px 18px;font-family:Cinzel,serif;font-weight:600;letter-spacing:.06em;font-size:1.02rem}
+details.settings summary::-webkit-details-marker{display:none}
+details.settings[open] summary .chev{transform:rotate(180deg)}
+.chev{transition:.2s;color:var(--gold)}
+.danger{color:#f3a493;border-color:rgba(232,115,92,.35)!important}
 
-    .tips{margin-top:16px;display:grid;gap:10px}.tip-card{border-radius:20px;background:rgba(255,255,255,.08);border:1px solid var(--white-line);color:rgba(255,255,255,.74);padding:14px;line-height:1.5}.tip-card strong{color:white}.tip-card .tag{display:inline-flex;margin-bottom:7px;color:#ffd8cf;font-family:'DM Mono';font-size:.58rem;letter-spacing:.14em;text-transform:uppercase}
+/* dialogs */
+dialog{border:1px solid var(--border);border-radius:26px;padding:0;background:#110e19;color:var(--text);box-shadow:0 40px 120px rgba(0,0,0,.7);max-width:min(560px,calc(100% - 24px));width:100%}
+dialog::backdrop{background:rgba(5,4,9,.72);backdrop-filter:blur(6px)}
+.dlg{padding:24px}
+.dlg h2{font-family:Cinzel,serif;font-weight:600;font-size:1.6rem;margin:0 0 4px}
+.ch-list{display:grid;gap:8px;margin:16px 0}
+.ch-item{display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:start;border:1px solid var(--border-soft);border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.02)}
+.ch-item .ic{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;color:var(--gold-bright)}
+.ch-item b{font-family:Cinzel,serif;font-weight:600;font-size:.92rem}.ch-item span{display:block;color:var(--muted);font-size:.84rem;line-height:1.4}
+#vaultDialog{max-width:min(920px,calc(100% - 20px))}
+.v-filters{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.v-filter{border:1px solid var(--border-soft);background:transparent;border-radius:var(--pill);padding:6px 11px;font-size:.78rem;color:var(--muted)}
+.v-filter.active{border-color:var(--gold);color:var(--gold-bright);background:rgba(224,164,76,.08)}
+.v-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.75rem;color:var(--dim)}
+.v-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.v-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;max-height:58vh;overflow:auto;padding:2px 4px 4px 2px}
+.v-tile{border:1px solid var(--border-soft);border-radius:14px;padding:10px 6px;background:rgba(255,255,255,.02);text-align:center;transition:.2s}
+.v-tile:hover{border-color:var(--gold)}
+.v-tile .e{font-size:1.7rem;display:block}.v-tile .w{display:block;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.02rem;line-height:1.1;margin-top:4px}.v-tile .es{display:block;font-size:.7rem;color:var(--dim);margin-top:2px}
+.v-tile.new{opacity:.42}.v-tile.learning{border-color:rgba(145,121,221,.45)}.v-tile.comeback{border-color:rgba(232,115,92,.55);background:rgba(232,115,92,.06)}.v-tile.mastered{border-color:var(--gold);background:linear-gradient(180deg,rgba(224,164,76,.14),rgba(224,164,76,.03))}
 
-    .result-card{border-radius:22px;background:linear-gradient(180deg,rgba(255,182,39,.16),rgba(255,182,39,.05));border:1.5px solid rgba(201,162,39,.36);padding:18px;text-align:center}.result-card h3{font-family:Fraunces,Georgia,serif;font-size:1.65rem;margin:0 0 9px}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0}.result-stats div{background:rgba(255,255,255,.62);border:1px solid var(--line-soft);border-radius:16px;padding:10px}.result-stats b{display:block;font-size:1.08rem}.result-stats span{font-family:'DM Mono';font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--bruma)}
+/* effects */
+.float{position:fixed;z-index:95;pointer-events:none;font-family:Cinzel,serif;font-weight:700;font-size:1.25rem;color:var(--gold-bright);text-shadow:0 4px 16px rgba(0,0,0,.6);animation:floatUp 1s ease-out forwards}
+.float.neg{color:var(--coral)}
+@keyframes floatUp{from{opacity:1;transform:translate(-50%,0) scale(1)}to{opacity:0;transform:translate(-50%,-70px) scale(1.15)}}
+.spark{position:fixed;z-index:94;width:6px;height:6px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fff6dc,var(--gold-bright) 45%,transparent 70%);animation:spark .9s ease-out forwards}
+@keyframes spark{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.3)}}
+.toast{position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:99;border:1px solid var(--gold);border-radius:20px;padding:14px 20px;background:linear-gradient(135deg,#231a10,#130f1b);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 40px rgba(224,164,76,.2);text-align:center;animation:toast 4.2s ease forwards;max-width:calc(100% - 28px)}
+.toast b{display:block;font-family:Cinzel,serif;font-size:1.15rem}.toast span{font-size:.85rem;color:var(--muted)}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,-14px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px)}}
+@keyframes pop{from{opacity:.4;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.pop{animation:pop .3s ease both}
 
-    footer{background:linear-gradient(180deg,#1A1730 0%,#0F1020 100%);margin-top:34px;color:rgba(255,255,255,.76)}
-    .footer-inner{width:min(980px,100%);margin:auto;padding:42px 20px calc(42px + env(safe-area-inset-bottom));text-align:center}.footer-brand{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:clamp(1.7rem,5vw,2.5rem);color:white}.footer-brand span{color:var(--coral)}.footer-small{font-family:'DM Mono';font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bruma);margin-top:5px}.divider{height:1px;background:rgba(255,255,255,.08);margin:24px 0}.socials{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.social-link{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(8px);font-size:18px;transition:.18s ease}.social-link:hover{transform:scale(1.12);background:rgba(255,255,255,.15)}
-    .wa-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;background:#25D366;color:white;border-radius:var(--pill);padding:13px 17px;display:flex;align-items:center;gap:9px;font-weight:900;box-shadow:0 16px 42px rgba(37,211,102,.34);animation:wa 2.4s ease infinite}.wa-float:hover{transform:translateY(-2px)}@keyframes wa{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.38)}55%{box-shadow:0 0 0 13px rgba(37,211,102,0)}}
+footer{margin-top:30px;border-top:1px solid var(--border);background:linear-gradient(180deg,#0f0c17,#08070c)}
+.f-inner{width:min(980px,100%);margin:auto;padding:40px 20px calc(40px + env(safe-area-inset-bottom));text-align:center}
+.f-brand{font-family:Cinzel,serif;font-weight:600;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:.04em}
+.f-small{font-family:'DM Mono';font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:22px 0}
+.socials{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.social{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--border-soft);background:rgba(255,255,255,.03);font-size:18px;transition:.2s}
+.social:hover{transform:scale(1.1);border-color:var(--gold)}
+.wa-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;background:#25D366;color:white;border-radius:var(--pill);padding:12px 16px;display:flex;align-items:center;gap:9px;font-weight:700;box-shadow:0 16px 42px rgba(37,211,102,.3)}
 
-    .spark{position:fixed;z-index:90;pointer-events:none;animation:spark .9s ease forwards;font-size:1.4rem}@keyframes spark{from{opacity:1;transform:translateY(0) scale(1) rotate(0)}to{opacity:0;transform:translateY(-90px) scale(.4) rotate(260deg)}}.pop{animation:pop .28s ease both}@keyframes pop{from{transform:scale(.95);opacity:.55}to{transform:scale(1);opacity:1}}
-    @media(max-width:1080px){.training-grid{grid-template-columns:minmax(220px,290px) minmax(0,1fr)}.right-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}.tips{margin-top:0}.hero-grid{grid-template-columns:1fr}}
-    @media(max-width:760px){.topbar .wrap{align-items:flex-start}.top-actions .nav-pill:not(.keep-mobile){display:none}.hero{padding-top:26px}.hero-mini{grid-template-columns:1fr 1fr 1fr}.training-grid{grid-template-columns:1fr}.right-col{display:block}.protocol-card{display:none}.memory-stage{min-height:198px;margin:12px}.phase-track{padding:10px;gap:5px}.phase{font-size:.49rem;padding:8px 3px}.control-strip{grid-template-columns:1fr;gap:8px;padding:0 12px 12px}.panel-pad{padding:14px}.option-grid{gap:8px}.emoji-btn{min-height:92px;font-size:2rem}.action-row .spacer{margin-left:0}.action-row .btn{flex:1 1 calc(50% - 8px)}.wa-float{width:54px;height:54px;justify-content:center;padding:0}.wa-float span{display:none}.footer-inner{padding-bottom:calc(80px + env(safe-area-inset-bottom))}}
-    @media(max-width:520px){.wrap{padding-inline:12px}.hero-copy{font-size:.96rem}.hero-mini{grid-template-columns:1fr}.mini-stat{padding:10px 12px}.metric-grid{grid-template-columns:1fr 1fr}.result-stats{grid-template-columns:1fr}.stage-word{font-size:clamp(2.1rem,12vw,3.5rem)}.stage-word.hidden-word{letter-spacing:.06em}.quiz-head{align-items:flex-start;flex-direction:column}.nav-pill.keep-mobile{font-size:.78rem;padding:8px 10px}.social-link{width:42px;height:42px}}
-    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-  </style>
+@media(max-width:1100px){
+  .layout{grid-template-columns:minmax(240px,280px) minmax(0,1fr);grid-template-areas:"session stage" "vault vault"}
+  .col-vault{display:grid;grid-template-columns:1fr 1fr;gap:14px}.col-vault .panel+.panel{margin-top:0}
+  .hero-grid{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .layout{grid-template-columns:1fr;grid-template-areas:"stage" "session" "vault"}
+  .col-vault{display:block}.col-vault .panel+.panel{margin-top:14px}
+  .top-actions .nav-pill.hide-m{display:none}
+  .hero{padding-top:22px}.hero-stats{grid-template-columns:repeat(2,1fr)}
+  .prestige{padding:18px}
+  .stage{margin:12px;min-height:230px}
+  .phase-track{padding:9px;gap:4px}.phase{font-size:.47rem;letter-spacing:.06em;padding:7px 2px}
+  .controls{flex-wrap:wrap;padding:0 12px 12px}.controls #startBtn{flex:1 1 100%}
+  .nav-pill{font-size:.74rem;padding:7px 10px}.brand{font-size:.86rem}.brand-mark{width:30px;height:30px}
+  .console{padding:0 12px 14px}.pad{padding:15px}
+  .opt{min-height:88px;font-size:2.1rem}
+  .opts.six .opt{min-height:80px;font-size:1.9rem}
+  .opts.gallery{grid-template-columns:repeat(4,1fr);gap:6px}.opts.gallery .opt{min-height:66px;font-size:1.7rem}
+  .r-stats{grid-template-columns:repeat(2,1fr)}.r-btns{grid-template-columns:1fr}
+  .wa-float{width:54px;height:54px;padding:0;justify-content:center}.wa-float span{display:none}
+  .f-inner{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+}
+@media(max-width:420px){.opts.six{grid-template-columns:repeat(2,1fr)}.opts.gallery{grid-template-columns:repeat(3,1fr)}.hstat b{font-size:1.15rem}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-  <a class="wa-float" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20informaci%C3%B3n%20sobre%20Fast%20Memory%20Recover." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ProfGermandario"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+<a class="wa-float" href="https://wa.me/573197894038?text=Hola%20Prof.%20Germandario%2C%20quiero%20informaci%C3%B3n%20sobre%20Fast%20Memory%20Recover." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ProfGermandario"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
 
-  <nav class="topbar" aria-label="Main navigation">
-    <div class="wrap">
-      <a class="brand" href="profgermandario.html" aria-label="Back to ProfGermandario index">
-        <span class="brand-mark">🧠</span><span>Prof<span style="color:var(--coral)">Germandario</span></span>
-      </a>
-      <div class="top-actions">
-        <a class="nav-pill" href="profgermandario.html">Inicio</a>
-        <button class="nav-pill keep-mobile" type="button" id="helpBtnTop">How to play</button>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1cf"/><stop offset=".5" stop-color="#f4c669"/><stop offset="1" stop-color="#a8731f"/></linearGradient></defs></svg>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="wrap">
+    <a class="brand" href="profgermandario.html" aria-label="Back to ProfGermandario"><span class="brand-mark">◆</span><span>Prof<b>Germandario</b></span></a>
+    <div class="top-actions">
+      <a class="nav-pill hide-m" href="profgermandario.html">Inicio</a>
+      <button class="nav-pill" type="button" id="vaultBtnTop">The Vault</button>
+      <button class="nav-pill" type="button" id="helpBtnTop">How to play</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <section>
+      <p class="kicker">The Vault Edition · Memory · Deep Listening</p>
+      <h1>Fast Memory <span class="gold-text">Recover</span></h1>
+      <p class="lede">Every round is dealt fresh: new words, new order, a new challenge — and the words you miss come back, at the right moment, until they are yours.</p>
+      <div class="hero-stats">
+        <div class="hstat"><b id="hsWords">0</b><span>Words in vault</span></div>
+        <div class="hstat"><b id="hsMastered">0</b><span>Mastered</span></div>
+        <div class="hstat"><b id="hsDays">0</b><span>Day streak</span></div>
+        <div class="hstat"><b id="hsBest">0</b><span>Best session</span></div>
       </div>
-    </div>
-  </nav>
+    </section>
+    <aside class="prestige" aria-label="Your prestige rank">
+      <p class="kicker">Prestige rank</p>
+      <div class="rank-row">
+        <div class="rank-emblem" id="rankIcon">🥉</div>
+        <div><div class="rank-name" id="rankName">Bronze Initiate</div><div class="rank-next" id="rankNext">400 XP to Silver Listener</div></div>
+      </div>
+      <div class="rail"><span id="rankRail"></span></div>
+      <div class="ritual"><span>Lifetime <b id="xpText">0</b> XP</span><span>Today <b id="todayText">0 rounds</b></span></div>
+    </aside>
+  </div>
+</header>
 
-  <header class="hero">
-    <div class="wrap hero-grid">
-      <section>
-        <p class="eyebrow">Memory · Deep Listening · English Retrieval</p>
-        <h1>Fast Memory<br><em>Recover.</em></h1>
-        <p class="hero-copy">A focused memory-recovery trainer: hear an English sequence, hold it under pressure, then recover each item by matching the correct emoji in the exact order.</p>
-        <div class="hero-mini" aria-label="Training stats">
-          <div class="mini-stat"><b id="heroBest">0</b><span>Best Score</span></div>
-          <div class="mini-stat"><b>4</b><span>Training Phases</span></div>
-          <div class="mini-stat"><b>1–4</b><span>Keyboard</span></div>
+<main class="app">
+  <div class="wrap layout">
+    <!-- SESSION -->
+    <aside class="col-session">
+      <section class="panel"><div class="pad">
+        <div class="p-title"><h2>Session</h2><span class="chip" id="chChip">—</span></div>
+        <div class="level-box">
+          <div class="level-mark" id="levelMark">1</div>
+          <div><div class="cinzel" style="font-size:1.25rem;font-weight:600;line-height:1">Level <span id="levelText">1</span></div>
+          <div class="mono" style="font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:5px"><span id="wordCountText">4</span> words this round</div></div>
         </div>
-      </section>
-      <aside class="protocol-card" aria-label="Memory protocol">
-        <p class="eyebrow">The protocol</p>
-        <div class="wave" id="waveBars" aria-hidden="true"></div>
-        <div class="protocol-steps">
-          <div class="step"><span class="step-num">01</span><span><strong>Encode</strong><small>Listen carefully and attach sound to meaning.</small></span></div>
-          <div class="step"><span class="step-num">02</span><span><strong>Hold</strong><small>Short retention gap forces working memory.</small></span></div>
-          <div class="step"><span class="step-num">03</span><span><strong>Recover</strong><small>Recall the correct item without seeing the word.</small></span></div>
-          <div class="step"><span class="step-num">04</span><span><strong>Review</strong><small>Use mistakes as feedback, not failure.</small></span></div>
+        <div class="metrics">
+          <div class="metric"><span>Score</span><b id="scoreText">0</b></div>
+          <div class="metric combo"><span>Combo</span><b id="comboText">×1</b><div class="combo-bar" id="comboBar"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="metric"><span>Streak</span><b id="streakText">0</b></div>
+          <div class="metric"><span>Best streak</span><b id="bestStreakText">0</b></div>
         </div>
-      </aside>
-    </div>
-  </header>
+        <div class="prog-label"><span>Round progress</span><span id="progressText">0%</span></div>
+        <div class="rail" style="margin-top:0"><span id="progressBar"></span></div>
+        <div class="p-title" style="margin:20px 0 4px"><h2>Mode</h2></div>
+        <div class="mode-list" id="modeList"></div>
+      </div></section>
+    </aside>
 
-  <main class="app" id="app">
-    <div class="wrap training-grid">
-      <aside class="panel left-col">
-        <div class="panel-pad">
-          <div class="panel-title">
-            <h2>Session</h2>
-            <span class="chip hot">Live</span>
-          </div>
-          <div class="level-box">
-            <div class="level-mark" id="levelMark">1</div>
-            <div>
-              <div class="display" style="font-size:1.5rem;font-weight:900;line-height:1">Level <span id="levelText">1</span></div>
-              <div class="mono muted" style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">Listen · Hold · Recover</div>
-            </div>
-          </div>
-
-          <div class="metric-grid">
-            <div class="metric"><span>Score</span><b id="scoreText">0</b></div>
-            <div class="metric"><span>Streak</span><b id="streakText">0</b></div>
-            <div class="metric"><span>Words</span><b id="wordCountText">4</b></div>
-            <div class="metric"><span>Best</span><b id="bestText">0</b></div>
-          </div>
-
-          <div class="progress-wrap">
-            <div class="progress-label"><span>Round Progress</span><span id="progressText">0%</span></div>
-            <div class="bar"><span id="progressBar"></span></div>
-          </div>
-
-          <div class="panel-title" style="margin-top:18px;margin-bottom:8px">
-            <h2 style="font-size:1.2rem">Mode</h2>
-            <span class="chip green" id="modeChip">Warm-up</span>
-          </div>
-          <div class="mode-list" id="modeList" aria-label="Training modes"></div>
-        </div>
-      </aside>
-
-      <section class="panel stage-panel" aria-label="Fast Memory Recover game">
-        <div class="phase-track" aria-label="Training phases">
-          <div class="phase active" data-phase="prepare">Prepare</div>
+    <!-- STAGE -->
+    <section class="col-stage">
+      <div class="panel" aria-label="Fast Memory Recover game">
+        <div class="phase-track">
+          <div class="phase" data-phase="prepare">Deal</div>
           <div class="phase" data-phase="listen">Listen</div>
           <div class="phase" data-phase="hold">Hold</div>
           <div class="phase" data-phase="recover">Recover</div>
+          <div class="phase" data-phase="review">Review</div>
         </div>
-
-        <div class="memory-stage" id="memoryStage">
-          <div class="stage-label" id="stageLabel">Ready</div>
-          <div class="stage-word" id="stageWord">—</div>
-          <div class="stage-sub" id="stageSub">Press Start Listening to begin.</div>
+        <div class="stage" id="stage" aria-live="polite">
+          <div class="stage-top" id="stageTop"></div>
+          <div class="stage-core" id="stageCore"></div>
+          <div class="stage-sub" id="stageSub"></div>
         </div>
-
-        <div class="control-strip">
-          <button class="btn btn-coral" id="startBtn">🎧 Start Listening</button>
-          <button class="btn btn-amber" id="replayBtn" disabled>↻ Replay −10</button>
-          <button class="btn btn-ghost" id="resetBtn">New Session</button>
+        <div class="controls">
+          <button class="btn btn-gold" id="startBtn" type="button">◆ Start listening</button>
+          <button class="btn btn-line" id="replayBtn" type="button" disabled>↻ Replay −10</button>
+          <button class="btn btn-line" id="newBtn" type="button">New session</button>
         </div>
-
-        <div class="panel-pad" style="padding-top:0">
-          <div class="quiz-head">
-            <span class="quiz-title">Recall Console</span>
-            <span class="counter" id="counterText">0 / 0</span>
-          </div>
-          <div class="instruction" id="instruction"><strong>Prepare:</strong> choose a mode, then start. Use headphones if possible.</div>
-          <div class="option-grid" id="optionGrid" role="list" aria-label="Emoji options"></div>
+        <div class="console">
+          <div class="c-head"><span class="c-title">Recall console</span><span class="counter" id="counterText">—</span></div>
+          <div class="instruction" id="instruction">Choose a mode and press <b>Start listening</b>. Headphones recommended.</div>
+          <div id="answerArea"></div>
           <div class="feedback" id="feedback"></div>
-          <div class="action-row">
-            <button class="btn btn-small btn-ghost" id="tipBtn" disabled>💡 Tip −5</button>
-            <button class="btn btn-small btn-ghost" id="skipBtn" disabled>Skip →</button>
-            <button class="btn btn-small btn-dark spacer" id="nextBtn" style="display:none">Next Level →</button>
+          <div class="actions" id="actions">
+            <button class="btn btn-line btn-sm" id="tipBtn" type="button" disabled>✧ Hint −5</button>
+            <button class="btn btn-line btn-sm" id="skipBtn" type="button" disabled>Reveal →</button>
           </div>
-          <div class="review" id="reviewBlock">
-            <div class="quiz-head"><span class="quiz-title">Memory Trace</span><button class="btn btn-small btn-ghost" id="toggleReviewBtn">Hide</button></div>
-            <div class="review-grid" id="reviewGrid"></div>
-          </div>
+          <div id="resultArea"></div>
         </div>
-      </section>
-
-      <aside class="right-col">
-        <section class="settings">
-          <details open>
-            <summary><span>⚙️ Audio & Control</span><span>▾</span></summary>
-            <div class="settings-body">
-              <div class="field">
-                <label for="voiceSelect">Speech Voice</label>
-                <select id="voiceSelect"><option>Loading voices…</option></select>
-              </div>
-              <div class="field">
-                <label for="rateRange">Speech Speed <span id="rateLabel">0.88×</span></label>
-                <input id="rateRange" type="range" min="0.7" max="1.15" step="0.01" value="0.88" />
-              </div>
-              <div class="field">
-                <label for="gapRange">Word Gap <span id="gapLabel">650ms</span></label>
-                <input id="gapRange" type="range" min="300" max="1100" step="50" value="650" />
-              </div>
-              <p class="muted" style="font-size:.82rem;line-height:1.5;margin:12px 0 0">Mobile note: audio starts only after tapping Start because browsers block autoplay. Keyboard shortcuts: 1–4.</p>
-            </div>
-          </details>
-        </section>
-
-        <div class="tips">
-          <div class="tip-card"><span class="tag">Strategy</span><strong>Chunk the sequence.</strong> Group words into pairs: sun-tree / cat-book. Your brain recalls clusters faster than isolated items.</div>
-          <div class="tip-card"><span class="tag">Recovery</span><strong>Do not panic after a blank.</strong> Recreate the sound, then the image. Recovery improves when you stay in the sequence instead of guessing randomly.</div>
-          <div class="tip-card"><span class="tag">Scoring</span><strong>Clean recall wins.</strong> Tips and replays are allowed, but they reduce score. Use them to train, not to fake performance.</div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">Prof<span>Germandario</span></div>
-      <div class="footer-small">Fast Memory Recover · Memory & Deep Listening</div>
-      <div class="divider"></div>
-      <p class="footer-small" style="margin-bottom:18px">Connect</p>
-      <div class="socials" aria-label="ProfGermandario social media and contact links">
-        <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
-        <a href="mailto:info@profgermandario.com" class="social-link" aria-label="Email"><i class="fas fa-envelope" style="color:#FFB627"></i></a>
-        <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok" style="color:white"></i></a>
-        <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook"><i class="fab fa-facebook" style="color:#1877F2"></i></a>
-        <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin" style="color:#0A66C2"></i></a>
-        <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X Twitter"><i class="fab fa-x-twitter" style="color:#E7E9EA"></i></a>
-        <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Reddit"><i class="fab fa-reddit" style="color:#FF4500"></i></a>
-        <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube"><i class="fab fa-youtube" style="color:#FF0000"></i></a>
       </div>
-      <div class="divider"></div>
-      <p class="footer-small">© 2026 ProfGermandario · Built for students who train recall, not excuses.</p>
-    </div>
-  </footer>
+    </section>
 
-  <dialog id="helpDialog" style="border:0;border-radius:28px;padding:0;max-width:min(520px,calc(100% - 28px));background:var(--lienzo);box-shadow:0 40px 90px rgba(0,0,0,.55)">
-    <div style="padding:24px">
-      <h2 class="display" style="font-size:2rem;margin:0 0 10px;line-height:1">How to Play</h2>
-      <ol style="padding-left:20px;color:var(--tinta-soft);line-height:1.6;margin:0 0 18px">
-        <li>Tap <strong style="color:var(--coral)">Start Listening</strong>.</li>
-        <li>Listen to the English words in exact order.</li>
-        <li>Hold the sequence during the countdown.</li>
-        <li>Choose the emoji for word #1, then #2, then #3.</li>
-        <li>Use <strong>Tip</strong> if stuck, or <strong>Replay</strong> to rehear the full sequence. Both cost points.</li>
-        <li>Finish the level and review your memory trace.</li>
-      </ol>
-      <button class="btn btn-coral" id="closeHelpBtn" style="width:100%">Start Training</button>
-    </div>
-  </dialog>
-
-  <script>
-    const SOCIAL_WHATSAPP = '573197894038';
-    const MODES = {
-      warm: {label:'Warm-up', icon:'🌱', base:4, step:1, hold:4, display:1050, bonus:5, desc:'Balanced. Best for daily practice.'},
-      deep: {label:'Deep Recovery', icon:'🧘', base:5, step:1, hold:6, display:1250, bonus:8, desc:'Slower listening, stronger retention.'},
-      pressure: {label:'Pressure Recall', icon:'⚡', base:6, step:2, hold:3, display:760, bonus:12, desc:'Hard mode for fast recall.'}
-    };
-    const WORD_BANK = [
-      {word:'sun',emoji:'☀️',cat:'nature'},{word:'tree',emoji:'🌳',cat:'nature'},{word:'cat',emoji:'🐱',cat:'animal'},{word:'book',emoji:'📚',cat:'object'},
-      {word:'heart',emoji:'❤️',cat:'symbol'},{word:'star',emoji:'⭐',cat:'sky'},{word:'music',emoji:'🎵',cat:'sound'},{word:'flower',emoji:'🌸',cat:'nature'},
-      {word:'moon',emoji:'🌙',cat:'sky'},{word:'rocket',emoji:'🚀',cat:'object'},{word:'pizza',emoji:'🍕',cat:'food'},{word:'rainbow',emoji:'🌈',cat:'nature'},
-      {word:'camera',emoji:'📷',cat:'object'},{word:'butterfly',emoji:'🦋',cat:'animal'},{word:'mountain',emoji:'⛰️',cat:'nature'},{word:'diamond',emoji:'💎',cat:'object'},
-      {word:'castle',emoji:'🏰',cat:'place'},{word:'globe',emoji:'🌍',cat:'place'},{word:'trophy',emoji:'🏆',cat:'object'},{word:'lightning',emoji:'⚡',cat:'nature'},
-      {word:'fire',emoji:'🔥',cat:'nature'},{word:'crown',emoji:'👑',cat:'object'},{word:'ocean',emoji:'🌊',cat:'nature'},{word:'volcano',emoji:'🌋',cat:'nature'},
-      {word:'telescope',emoji:'🔭',cat:'object'},{word:'compass',emoji:'🧭',cat:'object'},{word:'crystal',emoji:'🔮',cat:'object'},{word:'tornado',emoji:'🌪️',cat:'nature'},
-      {word:'anchor',emoji:'⚓',cat:'object'},{word:'hourglass',emoji:'⏳',cat:'object'},{word:'apple',emoji:'🍎',cat:'food'},{word:'bike',emoji:'🚲',cat:'transport'},
-      {word:'coffee',emoji:'☕',cat:'food'},{word:'dog',emoji:'🐶',cat:'animal'},{word:'elephant',emoji:'🐘',cat:'animal'},{word:'football',emoji:'⚽',cat:'sport'},
-      {word:'guitar',emoji:'🎸',cat:'music'},{word:'house',emoji:'🏠',cat:'place'},{word:'ice cream',emoji:'🍦',cat:'food'},{word:'key',emoji:'🔑',cat:'object'},
-      {word:'lion',emoji:'🦁',cat:'animal'},{word:'microphone',emoji:'🎤',cat:'music'},{word:'owl',emoji:'🦉',cat:'animal'},{word:'penguin',emoji:'🐧',cat:'animal'},
-      {word:'robot',emoji:'🤖',cat:'object'},{word:'snowflake',emoji:'❄️',cat:'nature'},{word:'turtle',emoji:'🐢',cat:'animal'},{word:'umbrella',emoji:'☂️',cat:'object'},
-      {word:'whale',emoji:'🐋',cat:'animal'},{word:'plane',emoji:'✈️',cat:'transport'},{word:'bridge',emoji:'🌉',cat:'place'},{word:'train',emoji:'🚆',cat:'transport'},
-      {word:'ship',emoji:'🚢',cat:'transport'},{word:'map',emoji:'🗺️',cat:'object'},{word:'bell',emoji:'🔔',cat:'object'},{word:'magnet',emoji:'🧲',cat:'object'},
-      {word:'battery',emoji:'🔋',cat:'object'},{word:'hammer',emoji:'🔨',cat:'object'},{word:'shield',emoji:'🛡️',cat:'object'},{word:'ladder',emoji:'🪜',cat:'object'},
-      {word:'bread',emoji:'🍞',cat:'food'},{word:'carrot',emoji:'🥕',cat:'food'},{word:'cookie',emoji:'🍪',cat:'food'},{word:'grapes',emoji:'🍇',cat:'food'},
-      {word:'dragon',emoji:'🐉',cat:'animal'},{word:'eagle',emoji:'🦅',cat:'animal'},{word:'frog',emoji:'🐸',cat:'animal'},{word:'spider',emoji:'🕷️',cat:'animal'},
-      {word:'clock',emoji:'🕒',cat:'object'},{word:'door',emoji:'🚪',cat:'object'},{word:'chair',emoji:'🪑',cat:'object'},{word:'bed',emoji:'🛏️',cat:'object'}
-    ];
-
-    const $ = id => document.getElementById(id);
-    const els = {
-      waveBars:$('waveBars'), modeList:$('modeList'), modeChip:$('modeChip'), levelMark:$('levelMark'), levelText:$('levelText'), scoreText:$('scoreText'), streakText:$('streakText'), wordCountText:$('wordCountText'), bestText:$('bestText'), heroBest:$('heroBest'), progressBar:$('progressBar'), progressText:$('progressText'), stageLabel:$('stageLabel'), stageWord:$('stageWord'), stageSub:$('stageSub'), memoryStage:$('memoryStage'), startBtn:$('startBtn'), replayBtn:$('replayBtn'), resetBtn:$('resetBtn'), counterText:$('counterText'), instruction:$('instruction'), optionGrid:$('optionGrid'), feedback:$('feedback'), tipBtn:$('tipBtn'), skipBtn:$('skipBtn'), nextBtn:$('nextBtn'), reviewBlock:$('reviewBlock'), reviewGrid:$('reviewGrid'), toggleReviewBtn:$('toggleReviewBtn'), voiceSelect:$('voiceSelect'), rateRange:$('rateRange'), rateLabel:$('rateLabel'), gapRange:$('gapRange'), gapLabel:$('gapLabel'), helpDialog:$('helpDialog'), helpBtnTop:$('helpBtnTop'), closeHelpBtn:$('closeHelpBtn')
-    };
-
-    let state = {
-      mode:'warm', phase:'prepare', level:1, score:0, streak:0,
-      best:Number(localStorage.getItem('fmr_best_score') || 0), pool:[], words:[], index:0,
-      correct:0, mistakes:0, tips:0, replays:0, review:[], levelStart:0,
-      voices:[], selectedVoice:null, audioReady:'speechSynthesis' in window, busy:false
-    };
-
-    function shuffle(arr){
-      const a=[...arr];
-      for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-      return a;
-    }
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-    function currentMode(){return MODES[state.mode];}
-    function wordsForLevel(){return Math.min(16, currentMode().base + Math.max(0,state.level-1)*currentMode().step);}
-    function refillPool(){state.pool = shuffle(WORD_BANK);}
-    function getRoundWords(n){if(state.pool.length<n) refillPool(); return state.pool.splice(0,n);}
-
-    function drawWave(){
-      els.waveBars.innerHTML='';
-      for(let i=0;i<24;i++){
-        const bar=document.createElement('i');
-        bar.style.height=(11+Math.abs(Math.sin(i*.62))*30)+'px';
-        bar.style.animationDelay=(i*.07)+'s';
-        bar.style.animationDuration=(1.05+(i%5)*.12)+'s';
-        els.waveBars.appendChild(bar);
-      }
-    }
-
-    function setPhase(phase){
-      state.phase=phase;
-      document.querySelectorAll('.phase').forEach(node=>{
-        const p=node.dataset.phase;
-        node.classList.toggle('active',p===phase);
-        const order=['prepare','listen','hold','recover'];
-        node.classList.toggle('done',order.indexOf(p)<order.indexOf(phase));
-      });
-    }
-
-    function updateStats(){
-      els.levelMark.textContent = state.level;
-      els.levelText.textContent = state.level;
-      els.scoreText.textContent = state.score;
-      els.streakText.textContent = state.streak;
-      els.wordCountText.textContent = wordsForLevel();
-      els.bestText.textContent = state.best;
-      els.heroBest.textContent = state.best;
-      els.modeChip.textContent = currentMode().label;
-      const pct = state.words.length ? Math.round((state.index/state.words.length)*100) : 0;
-      els.progressBar.style.width = pct + '%';
-      els.progressText.textContent = pct + '%';
-      els.counterText.textContent = state.words.length ? `${Math.min(state.index+1,state.words.length)} / ${state.words.length}` : '0 / 0';
-    }
-
-    function setStage(word,label='Ready',sub=''){
-      els.stageWord.classList.remove('hidden-word');
-      els.stageWord.textContent=word;
-      els.stageLabel.textContent=label;
-      els.stageSub.innerHTML=sub;
-    }
-    function setHiddenStage(){
-      els.stageLabel.textContent='Recover';
-      els.stageWord.textContent='◆ ◆ ◆';
-      els.stageWord.classList.add('hidden-word');
-      els.stageSub.innerHTML='<small>Recall the word from memory, then pick its emoji.</small>';
-    }
-    function setFeedback(html,type='neutral'){
-      els.feedback.innerHTML = html ? `<div class="fb ${type} pop">${html}</div>` : '';
-    }
-    function lockModes(locked){document.querySelectorAll('.mode-btn').forEach(btn=>btn.disabled=locked);}
-    function setControls({start=false,replay=false,tip=false,skip=false,next=false}={}){
-      els.startBtn.disabled=!start;
-      els.replayBtn.disabled=!replay;
-      els.tipBtn.disabled=!tip;
-      els.skipBtn.disabled=!skip;
-      els.nextBtn.style.display=next?'inline-flex':'none';
-    }
-
-    function renderModes(){
-      els.modeList.innerHTML='';
-      Object.entries(MODES).forEach(([key,mode])=>{
-        const btn=document.createElement('button');
-        btn.type='button';
-        btn.className='mode-btn'+(state.mode===key?' active':'');
-        btn.innerHTML=`<strong><span>${mode.icon} ${mode.label}</span><span class="chip">${mode.base}+ words</span></strong><span>${mode.desc}</span>`;
-        btn.addEventListener('click',()=>{
-          if(state.busy) return;
-          state.mode=key;
-          renderModes();
-          resetRoundOnly();
-        });
-        els.modeList.appendChild(btn);
-      });
-    }
-
-    function renderOptions(){
-      els.optionGrid.innerHTML='';
-      const current = state.words[state.index];
-      if(!current) return;
-      const wrongs = shuffle(WORD_BANK.filter(item => item.emoji !== current.emoji && !state.review.some(r => r.selected===item.emoji)).map(item => item.emoji)).slice(0,3);
-      const options = shuffle([current.emoji, ...wrongs]);
-      options.forEach((emoji,i)=>{
-        const btn=document.createElement('button');
-        btn.type='button';
-        btn.className='emoji-btn pop';
-        btn.style.animationDelay=(i*.04)+'s';
-        btn.dataset.emoji=emoji;
-        btn.setAttribute('role','listitem');
-        btn.setAttribute('aria-label',`Option ${i+1}: ${emoji}`);
-        btn.innerHTML=`<span>${emoji}</span><span class="key">[${i+1}]</span>`;
-        btn.addEventListener('click',()=>checkAnswer(emoji,btn));
-        els.optionGrid.appendChild(btn);
-      });
-    }
-
-    function speak(text){
-      if(!state.audioReady) return Promise.resolve();
-      return new Promise(resolve=>{
-        try{
-          window.speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.rate = Number(els.rateRange.value || .88);
-          utterance.pitch = 1.03;
-          utterance.lang = 'en-US';
-          const idx = Number(els.voiceSelect.value);
-          if(state.voices[idx]) utterance.voice = state.voices[idx];
-          let done=false;
-          const finish=()=>{if(done)return;done=true;resolve();};
-          utterance.onend=finish; utterance.onerror=finish;
-          window.speechSynthesis.speak(utterance);
-          setTimeout(finish, Math.max(1600, text.length*95));
-        }catch(err){resolve();}
-      });
-    }
-
-    function loadVoices(){
-      if(!state.audioReady) return;
-      const voices = window.speechSynthesis.getVoices() || [];
-      state.voices = voices;
-      els.voiceSelect.innerHTML='';
-      if(!voices.length){
-        els.voiceSelect.innerHTML='<option value="">Default browser voice</option>';
-        return;
-      }
-      const sorted = voices.map((voice,index)=>({voice,index,score:voice.lang.startsWith('en-US')?0:voice.lang.startsWith('en')?1:2})).sort((a,b)=>a.score-b.score || a.voice.name.localeCompare(b.voice.name));
-      sorted.forEach(({voice,index})=>{
-        const option=document.createElement('option');
-        option.value=index;
-        option.textContent=`${voice.name} – ${voice.lang}`;
-        els.voiceSelect.appendChild(option);
-      });
-    }
-
-    async function playSequence({penalty=false}={}){
-      if(!state.words.length || state.busy) return;
-      const resumeIndex = penalty ? state.index : 0;
-      if(penalty){
-        state.replays++;
-        state.score=Math.max(0,state.score-10);
-        updateStats();
-      }
-      state.busy=true;
-      lockModes(true);
-      setControls({});
-      setPhase('listen');
-      els.optionGrid.innerHTML='';
-      setFeedback('', 'neutral');
-      els.instruction.innerHTML = '<strong>Listen:</strong> hear each word and keep the order. Do not rush.';
-      await speak(`Level ${state.level}. Listen carefully to ${state.words.length} words.`);
-      await delay(250);
-      for(let i=0;i<state.words.length;i++){
-        state.index=i;
-        updateStats();
-        const item=state.words[i];
-        setStage(item.word,`Word ${i+1} of ${state.words.length}`,`<small>Category: ${item.cat}</small>`);
-        els.memoryStage.classList.remove('pop'); void els.memoryStage.offsetWidth; els.memoryStage.classList.add('pop');
-        await speak(item.word);
-        await delay(currentMode().display);
-        setStage('—','Encoding','Hold the sound and image.');
-        await delay(Number(els.gapRange.value || 650));
-      }
-      await holdCountdown();
-      state.index=resumeIndex;
-      state.busy=false;
-      showQuestion();
-    }
-
-    async function holdCountdown(){
-      setPhase('hold');
-      const seconds = currentMode().hold + Math.min(5, Math.floor(state.level/2));
-      for(let s=seconds;s>0;s--){
-        els.stageWord.classList.remove('hidden-word');
-        els.stageLabel.textContent='Hold';
-        els.stageWord.innerHTML=`<span class="countdown">${s}</span>`;
-        els.stageSub.innerHTML='<small>Replay the sequence silently in your mind.</small>';
-        els.instruction.innerHTML = `<strong>Hold:</strong> ${s}s retention gap. Recover the order before options appear.`;
-        await delay(1000);
-      }
-      await speak('Recover the sequence now.');
-    }
-
-    function startRound(){
-      if(state.busy) return;
-      state.words = getRoundWords(wordsForLevel());
-      state.index = 0; state.correct=0; state.mistakes=0; state.tips=0; state.replays=0; state.review=[]; state.levelStart=Date.now();
-      els.reviewBlock.classList.remove('open');
-      els.reviewGrid.innerHTML=''; els.reviewGrid.hidden=false;
-      playSequence();
-    }
-
-    function showQuestion(){
-      const current = state.words[state.index];
-      if(!current){finishLevel();return;}
-      setPhase('recover');
-      setHiddenStage();
-      els.instruction.innerHTML = `<strong>Word ${state.index+1}:</strong> Which emoji matches the word you heard in this position?`;
-      setFeedback('', 'neutral');
-      renderOptions();
-      updateStats();
-      setControls({replay:true,tip:true,skip:true});
-    }
-
-    async function checkAnswer(selected,button){
-      if(state.busy) return;
-      state.busy=true;
-      document.querySelectorAll('.emoji-btn').forEach(btn=>btn.disabled=true);
-      const item = state.words[state.index];
-      const ok = selected === item.emoji;
-      const tipUsed = button.dataset.tip === 'true';
-      const base = 10 + state.level*2 + currentMode().bonus;
-      let points = 0;
-      if(ok){
-        points = base + Math.min(12,state.streak*2) - (tipUsed ? 5 : 0);
-        state.score += Math.max(1,points);
-        state.correct++; state.streak++;
-        button.classList.add('correct');
-        setFeedback(`✅ Correct: ${item.emoji} <strong>${item.word}</strong> · +${Math.max(1,points)} pts`,'ok');
-        spawnSparks(button,5);
-      }else{
-        state.mistakes++; state.streak=0;
-        button.classList.add('wrong');
-        document.querySelectorAll('.emoji-btn').forEach(btn=>{if(btn.dataset.emoji===item.emoji)btn.classList.add('correct')});
-        setFeedback(`❌ Not this one. Correct answer: ${item.emoji} <strong>${item.word}</strong>`,'err');
-      }
-      state.review.push({index:state.index+1, word:item.word, emoji:item.emoji, selected, ok, tip:tipUsed, skipped:false});
-      setStage(item.word, ok?'Recovered':'Correction',`${item.emoji} · <small>${item.cat}</small>`);
-      updateStats();
-      await delay(850);
-      state.index++;
-      state.busy=false;
-      state.index < state.words.length ? showQuestion() : finishLevel();
-    }
-
-    function useTip(){
-      const item=state.words[state.index];
-      if(!item) return;
-      state.tips++; state.score=Math.max(0,state.score-5); state.streak=0;
-      setStage(item.word,'Tip Used',`${item.emoji} · <small>−5 pts</small>`);
-      document.querySelectorAll('.emoji-btn').forEach(btn=>btn.dataset.tip='true');
-      els.tipBtn.disabled=true;
-      updateStats();
-    }
-
-    async function skipQuestion(){
-      if(state.busy) return;
-      state.busy=true;
-      const item=state.words[state.index];
-      state.streak=0;
-      state.review.push({index:state.index+1, word:item.word, emoji:item.emoji, selected:'—', ok:false, tip:false, skipped:true});
-      document.querySelectorAll('.emoji-btn').forEach(btn=>{btn.disabled=true;if(btn.dataset.emoji===item.emoji)btn.classList.add('correct')});
-      setStage(item.word,'Skipped',`${item.emoji} · <small>${item.cat}</small>`);
-      setFeedback(`↩ Skipped. Correct answer: ${item.emoji} <strong>${item.word}</strong>`,'neutral');
-      updateStats();
-      await delay(750);
-      state.index++;
-      state.busy=false;
-      state.index < state.words.length ? showQuestion() : finishLevel();
-    }
-
-    function finishLevel(){
-      setPhase('prepare');
-      const elapsed=Math.max(1,Math.round((Date.now()-state.levelStart)/1000));
-      const accuracy=Math.round((state.correct/state.words.length)*100);
-      let bonus=0;
-      if(accuracy===100 && state.tips===0 && state.replays===0){bonus=50 + state.level*10;}
-      else if(accuracy>=90){bonus=20;}
-      if(bonus){state.score += bonus;}
-      state.best=Math.max(state.best,state.score);
-      localStorage.setItem('fmr_best_score',String(state.best));
-      els.progressBar.style.width='100%'; els.progressText.textContent='100%';
-      els.optionGrid.innerHTML='';
-      els.instruction.innerHTML = `<strong>Level complete:</strong> review the trace, then move to the next level.`;
-      els.feedback.innerHTML = `
-        <div class="result-card pop">
-          <h3>Level ${state.level} Complete 🏆</h3>
-          <p class="muted" style="margin:0">${accuracy >= 85 ? 'Strong recovery.' : 'Recovery needs slower encoding.'} ${bonus ? `Bonus +${bonus}.` : ''}</p>
-          <div class="result-stats">
-            <div><b>${accuracy}%</b><span>Accuracy</span></div>
-            <div><b>${elapsed}s</b><span>Time</span></div>
-            <div><b>${state.replays}</b><span>Replays</span></div>
+    <!-- VAULT -->
+    <aside class="col-vault">
+      <section class="panel"><div class="pad">
+        <div class="p-title"><h2>Salons in play</h2><button class="chip" type="button" id="vaultBtn" style="background:none;cursor:pointer">Open vault</button></div>
+        <div id="salonList"></div>
+      </div></section>
+      <div>
+        <section class="panel"><div class="pad">
+          <div class="p-title"><h2>Comeback queue</h2><span class="chip coral" id="queueCount">0</span></div>
+          <div class="queue" id="queueList"></div>
+          <p class="mono" style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:12px 0 0">Missed words return 1–2 rounds later, in a new position.</p>
+        </div></section>
+        <section class="panel"><div class="pad">
+          <div class="p-title"><h2>Recent rounds</h2><span class="chip violet" id="roundsCount">0</span></div>
+          <div class="bars" id="historyBars"></div>
+          <div class="bars-legend"><span>older</span><span>accuracy</span><span>latest</span></div>
+        </div></section>
+        <details class="panel settings" id="settingsBox">
+          <summary><span>Audio &amp; control</span><span class="chev">▾</span></summary>
+          <div class="pad" style="padding-top:0">
+            <div class="field"><label for="voiceSelect"><span>Main voice</span></label><select id="voiceSelect"><option value="">Auto (best English)</option></select></div>
+            <button class="toggle" type="button" id="tgShuffle"><span>Voice shuffle<small>Different accents and voices each word</small></span><span class="switch"></span></button>
+            <button class="toggle" type="button" id="tgBlind"><span>Blind listening · ×1.5<small>Audio only — the words are not shown</small></span><span class="switch"></span></button>
+            <button class="toggle" type="button" id="tgFx"><span>Sound effects<small>Chimes for hits, combos and golden words</small></span><span class="switch"></span></button>
+            <div class="field"><label for="rateRange"><span>Speech speed</span><span id="rateLabel">0.90×</span></label><input id="rateRange" type="range" min="0.65" max="1.2" step="0.01" /></div>
+            <div class="field"><label for="gapRange"><span>Word gap</span><span id="gapLabel">600ms</span></label><input id="gapRange" type="range" min="250" max="1200" step="50" /></div>
+            <div class="field"><label for="vocabSelect"><span>Vocabulary range</span></label><select id="vocabSelect"><option value="all">Full vault (essential + expanded)</option><option value="core">Essentials only</option></select></div>
+            <div class="field"><label for="lockSelect"><span>Challenge</span></label><select id="lockSelect"></select></div>
+            <button class="toggle danger" type="button" id="wipeBtn"><span>Erase vault progress<small>XP, rank, history and word memory</small></span><span>⟲</span></button>
+            <p style="color:var(--dim);font-size:.78rem;line-height:1.5;margin:12px 0 0">Keys: 1–9 choose · Enter starts / confirms. Audio starts after a tap because browsers block autoplay.</p>
           </div>
-          <button class="btn btn-coral" id="nextLevelInside" style="width:100%">Level ${state.level+1} →</button>
-        </div>`;
-      renderReview();
-      els.reviewBlock.classList.add('open');
-      setStage('—','Review','Check your memory trace before continuing.');
-      updateStats();
-      setControls({start:false,replay:false,tip:false,skip:false,next:true});
-      lockModes(false);
-      $('nextLevelInside').addEventListener('click',nextLevel);
-      if(accuracy===100) spawnSparks(els.feedback,10);
+        </details>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="f-inner">
+    <div class="f-brand">Prof<span class="gold-text">Germandario</span></div>
+    <div class="f-small">Fast Memory Recover · The Vault Edition</div>
+    <div class="divider"></div>
+    <div class="socials" aria-label="ProfGermandario social media and contact links">
+      <a href="https://wa.me/573197894038" target="_blank" rel="noopener noreferrer" class="social" aria-label="WhatsApp"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
+      <a href="mailto:info@profgermandario.com" class="social" aria-label="Email"><i class="fas fa-envelope" style="color:#f4c669"></i></a>
+      <a href="https://www.tiktok.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="Facebook"><i class="fab fa-facebook" style="color:#1877F2"></i></a>
+      <a href="https://www.linkedin.com/in/profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="LinkedIn"><i class="fab fa-linkedin" style="color:#0A66C2"></i></a>
+      <a href="https://twitter.com/profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="X Twitter"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://www.reddit.com/user/profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="Reddit"><i class="fab fa-reddit" style="color:#FF4500"></i></a>
+      <a href="https://www.youtube.com/@profgermandario" target="_blank" rel="noopener noreferrer" class="social" aria-label="YouTube"><i class="fab fa-youtube" style="color:#FF0000"></i></a>
+    </div>
+    <div class="divider"></div>
+    <p class="f-small">© 2026 ProfGermandario · Built for students who train recall, not excuses.</p>
+  </div>
+</footer>
+
+<dialog id="helpDialog">
+  <div class="dlg">
+    <p class="kicker">How to play</p>
+    <h2>Six ways to recover</h2>
+    <p style="color:var(--muted);margin:6px 0 0;line-height:1.5">Listen once. Hold the sequence in silence. Then recover it — but the challenge changes every round, so your brain can never run on autopilot.</p>
+    <div class="ch-list" id="chList"></div>
+    <p style="color:var(--muted);font-size:.86rem;line-height:1.5;margin:0 0 16px"><b style="color:var(--gold-bright)">✦ Golden word</b> — sometimes one word shines. Recover it for ×3 points. <b style="color:var(--gold-bright)">Combos</b> grow your multiplier up to ×3. Answers under 3 seconds earn a speed bonus.</p>
+    <button class="btn btn-gold" type="button" id="closeHelpBtn" style="width:100%">Enter the vault</button>
+  </div>
+</dialog>
+
+<dialog id="vaultDialog">
+  <div class="dlg">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div><p class="kicker">Your collection</p><h2>The Vault</h2><p style="color:var(--muted);margin:2px 0 0;font-size:.9rem" id="vaultSummary"></p></div>
+      <button class="btn btn-line btn-sm" type="button" id="closeVaultBtn">Close</button>
+    </div>
+    <div class="v-filters" id="vaultFilters"></div>
+    <div class="v-legend" style="margin-bottom:12px"><span><i style="background:var(--dim)"></i>Not met yet</span><span><i style="background:var(--violet)"></i>Learning</span><span><i style="background:var(--coral)"></i>Comeback</span><span><i style="background:var(--gold)"></i>Mastered</span><span>Tap a word to hear it</span></div>
+    <div class="v-grid" id="vaultGrid"></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+'use strict';
+
+/* ═════════════════════════ CONTENT ═════════════════════════ */
+const COLLECTIONS=[
+  {id:'hotel',name:'The Grand Hotel',icon:'🛎️'},
+  {id:'business',name:'Business Class',icon:'💼'},
+  {id:'travel',name:'Grand Tour',icon:'✈️'},
+  {id:'chef',name:"Chef's Table",icon:'🍷'},
+  {id:'wild',name:'Wild Kingdom',icon:'🦁'},
+  {id:'sky',name:'Sky & Elements',icon:'🌙'},
+  {id:'atelier',name:'The Atelier',icon:'🎻'},
+  {id:'arena',name:'The Arena',icon:'🎾'},
+  {id:'body',name:'Body & Emotions',icon:'🧠'},
+  {id:'workshop',name:'The Workshop',icon:'⚙️'}
+];
+/* word | emoji | español | 1 essential · 2 expanded */
+const RAW={
+hotel:`key|🔑|llave|1
+service bell|🛎️|timbre de recepción|2
+bed|🛏️|cama|1
+sofa|🛋️|sofá|1
+door|🚪|puerta|1
+window|🪟|ventana|1
+mirror|🪞|espejo|2
+chair|🪑|silla|1
+bathtub|🛁|bañera|2
+shower|🚿|ducha|1
+candle|🕯️|vela|1
+light bulb|💡|bombillo|2
+suitcase|🧳|maleta|1
+champagne|🍾|champaña|2
+crown|👑|corona|1
+diamond|💎|diamante|1
+ring|💍|anillo|1
+gift|🎁|regalo|1
+balloon|🎈|globo|1
+umbrella|☂️|paraguas|1
+top hat|🎩|sombrero de copa|2
+soap|🧼|jabón|1
+sponge|🧽|esponja|2
+broom|🧹|escoba|2
+basket|🧺|canasta|2
+teddy bear|🧸|oso de peluche|2
+alarm clock|⏰|despertador|2
+box|📦|caja|1
+bell|🔔|campana|1
+television|📺|televisor|1
+radio|📻|radio|1
+lotion|🧴|crema|2
+toilet|🚽|inodoro|2
+mailbox|📫|buzón|2`,
+business:`briefcase|💼|maletín|2
+laptop|💻|portátil|1
+phone|📱|celular|1
+money|💵|dinero|1
+coin|🪙|moneda|1
+credit card|💳|tarjeta de crédito|1
+bank|🏦|banco|1
+chart|📈|gráfica|2
+calendar|📅|calendario|1
+pen|🖊️|bolígrafo|1
+pencil|✏️|lápiz|1
+envelope|✉️|sobre|2
+clipboard|📋|portapapeles|2
+magnifying glass|🔍|lupa|2
+lock|🔒|candado|1
+trophy|🏆|trofeo|1
+medal|🏅|medalla|1
+target|🎯|diana|2
+rocket|🚀|cohete|1
+battery|🔋|batería|1
+scissors|✂️|tijeras|1
+paperclip|📎|clip|2
+newspaper|📰|periódico|1
+receipt|🧾|recibo|2
+handshake|🤝|apretón de manos|2
+megaphone|📣|megáfono|2
+keyboard|⌨️|teclado|1
+printer|🖨️|impresora|2
+folder|📁|carpeta|1
+pushpin|📌|chinche|2
+abacus|🧮|ábaco|2
+tie|👔|corbata|1
+telephone|☎️|teléfono fijo|2
+trash can|🗑️|papelera|2`,
+travel:`plane|✈️|avión|1
+train|🚆|tren|1
+ship|🚢|barco|1
+car|🚗|carro|1
+taxi|🚕|taxi|1
+bus|🚌|bus|1
+bike|🚲|bicicleta|1
+motorcycle|🏍️|moto|1
+helicopter|🚁|helicóptero|2
+sailboat|⛵|velero|2
+map|🗺️|mapa|1
+compass|🧭|brújula|2
+world|🌍|mundo|1
+castle|🏰|castillo|1
+bridge|🌉|puente|1
+tent|⛺|carpa|2
+island|🏝️|isla|1
+desert|🏜️|desierto|1
+beach|🏖️|playa|1
+mountain|⛰️|montaña|1
+volcano|🌋|volcán|1
+city|🏙️|ciudad|1
+stadium|🏟️|estadio|2
+tower|🗼|torre|2
+fountain|⛲|fuente|2
+house|🏠|casa|1
+factory|🏭|fábrica|2
+hospital|🏥|hospital|1
+school|🏫|escuela|1
+ticket|🎟️|boleto|2
+anchor|⚓|ancla|2
+traffic light|🚦|semáforo|2
+gas station|⛽|gasolinera|2
+statue|🗽|estatua|2
+ferris wheel|🎡|rueda de la fortuna|2
+roller coaster|🎢|montaña rusa|2`,
+chef:`apple|🍎|manzana|1
+bread|🍞|pan|1
+cheese|🧀|queso|1
+egg|🥚|huevo|1
+honey|🍯|miel|2
+lemon|🍋|limón|1
+cherry|🍒|cereza|2
+strawberry|🍓|fresa|1
+grapes|🍇|uvas|1
+banana|🍌|banano|1
+avocado|🥑|aguacate|1
+carrot|🥕|zanahoria|1
+corn|🌽|maíz|1
+mushroom|🍄|hongo|2
+chili pepper|🌶️|ají|2
+garlic|🧄|ajo|2
+onion|🧅|cebolla|1
+potato|🥔|papa|1
+tomato|🍅|tomate|1
+coconut|🥥|coco|2
+pineapple|🍍|piña|1
+watermelon|🍉|sandía|1
+peach|🍑|durazno|2
+pear|🍐|pera|1
+kiwi|🥝|kiwi|2
+broccoli|🥦|brócoli|1
+cucumber|🥒|pepino|2
+peanuts|🥜|maní|2
+olive|🫒|aceituna|2
+pizza|🍕|pizza|1
+burger|🍔|hamburguesa|1
+hot dog|🌭|perro caliente|1
+fries|🍟|papas fritas|1
+salad|🥗|ensalada|1
+soup|🍲|sopa|1
+rice|🍚|arroz|1
+sushi|🍣|sushi|1
+taco|🌮|taco|1
+sandwich|🥪|sándwich|1
+noodles|🍜|fideos|2
+shrimp|🍤|camarón|2
+lobster|🦞|langosta|2
+steak|🥩|filete|2
+oyster|🦪|ostra|2
+croissant|🥐|croissant|2
+pancakes|🥞|panqueques|2
+cake|🍰|pastel|1
+cupcake|🧁|ponqué|2
+cookie|🍪|galleta|1
+donut|🍩|dona|1
+chocolate|🍫|chocolate|1
+lollipop|🍭|chupeta|2
+popcorn|🍿|crispetas|1
+ice cream|🍦|helado|1
+coffee|☕|café|1
+tea|🍵|té|1
+milk|🥛|leche|1
+wine|🍷|vino|1
+salt|🧂|sal|2
+butter|🧈|mantequilla|2`,
+wild:`lion|🦁|león|1
+tiger|🐯|tigre|1
+elephant|🐘|elefante|1
+giraffe|🦒|jirafa|1
+zebra|🦓|cebra|1
+monkey|🐒|mono|1
+gorilla|🦍|gorila|2
+horse|🐴|caballo|1
+cow|🐮|vaca|1
+pig|🐷|cerdo|1
+sheep|🐑|oveja|1
+goat|🐐|cabra|2
+rabbit|🐰|conejo|1
+mouse|🐭|ratón|1
+fox|🦊|zorro|1
+wolf|🐺|lobo|1
+bear|🐻|oso|1
+panda|🐼|panda|1
+koala|🐨|koala|2
+kangaroo|🦘|canguro|2
+camel|🐫|camello|2
+deer|🦌|venado|2
+owl|🦉|búho|1
+eagle|🦅|águila|1
+parrot|🦜|loro|1
+peacock|🦚|pavo real|2
+swan|🦢|cisne|2
+flamingo|🦩|flamenco|2
+duck|🦆|pato|1
+chicken|🐔|gallina|1
+rooster|🐓|gallo|2
+penguin|🐧|pingüino|1
+whale|🐋|ballena|1
+dolphin|🐬|delfín|1
+shark|🦈|tiburón|1
+octopus|🐙|pulpo|2
+crab|🦀|cangrejo|2
+fish|🐟|pez|1
+turtle|🐢|tortuga|1
+snake|🐍|serpiente|1
+crocodile|🐊|cocodrilo|2
+frog|🐸|rana|1
+butterfly|🦋|mariposa|1
+bee|🐝|abeja|1
+ant|🐜|hormiga|1
+spider|🕷️|araña|1
+snail|🐌|caracol|2
+ladybug|🐞|mariquita|2
+scorpion|🦂|escorpión|2
+dog|🐶|perro|1
+cat|🐱|gato|1
+bat|🦇|murciélago|2
+hedgehog|🦔|erizo|2
+sloth|🦥|perezoso|2
+unicorn|🦄|unicornio|2
+dragon|🐉|dragón|2`,
+sky:`sun|☀️|sol|1
+moon|🌙|luna|1
+star|⭐|estrella|1
+cloud|☁️|nube|1
+rain|🌧️|lluvia|1
+snowflake|❄️|copo de nieve|2
+lightning|⚡|rayo|1
+rainbow|🌈|arcoíris|1
+tornado|🌪️|tornado|2
+fire|🔥|fuego|1
+wave|🌊|ola|1
+leaf|🍃|hoja|1
+autumn leaf|🍁|hoja de otoño|2
+tree|🌳|árbol|1
+palm tree|🌴|palmera|1
+cactus|🌵|cactus|1
+flower|🌸|flor|1
+rose|🌹|rosa|1
+sunflower|🌻|girasol|2
+tulip|🌷|tulipán|2
+sprout|🌱|brote|2
+comet|☄️|cometa|2
+planet|🪐|planeta|1
+galaxy|🌌|galaxia|2
+shooting star|🌠|estrella fugaz|2
+rock|🪨|roca|2
+wood|🪵|madera|2
+feather|🪶|pluma|2
+shell|🐚|concha|2
+ice|🧊|hielo|1
+drop|💧|gota|2
+snowman|⛄|muñeco de nieve|2
+wind|🌬️|viento|2
+fog|🌫️|niebla|2
+sunrise|🌅|amanecer|2
+thermometer|🌡️|termómetro|2`,
+atelier:`guitar|🎸|guitarra|1
+piano|🎹|piano|1
+violin|🎻|violín|1
+trumpet|🎺|trompeta|2
+drum|🥁|tambor|1
+saxophone|🎷|saxofón|2
+microphone|🎤|micrófono|1
+headphones|🎧|audífonos|1
+music note|🎵|nota musical|1
+palette|🎨|paleta de pintor|2
+paintbrush|🖌️|pincel|2
+camera|📷|cámara|1
+clapperboard|🎬|claqueta|2
+theater|🎭|teatro|2
+books|📚|libros|1
+crystal ball|🔮|bola de cristal|2
+dice|🎲|dados|1
+puzzle|🧩|rompecabezas|2
+chess|♟️|ajedrez|2
+kite|🪁|cometa (juguete)|2
+telescope|🔭|telescopio|2
+microscope|🔬|microscopio|2
+magnet|🧲|imán|2
+hourglass|⏳|reloj de arena|2
+watch|⌚|reloj de pulsera|1
+glasses|👓|gafas|1
+sunglasses|🕶️|gafas de sol|1
+dress|👗|vestido|1
+shoe|👞|zapato|1
+high heels|👠|tacones|2
+scarf|🧣|bufanda|2
+gloves|🧤|guantes|1
+handbag|👜|bolso|1
+lipstick|💄|labial|2
+yarn|🧶|ovillo de lana|2
+thread|🧵|hilo|2
+backpack|🎒|mochila|1
+cap|🧢|gorra|1
+video game|🎮|videojuego|1`,
+arena:`soccer ball|⚽|balón de fútbol|1
+basketball|🏀|baloncesto|1
+baseball|⚾|béisbol|1
+tennis|🎾|tenis|1
+volleyball|🏐|voleibol|1
+football|🏈|fútbol americano|2
+bowling|🎳|bolos|2
+golf|⛳|golf|2
+boxing glove|🥊|guante de boxeo|2
+skateboard|🛹|patineta|2
+surfing|🏄|surf|2
+swimming|🏊|natación|2
+cycling|🚴|ciclismo|2
+running|🏃|correr|1
+weightlifting|🏋️|levantamiento de pesas|2
+bow and arrow|🏹|arco y flecha|2
+fishing|🎣|pesca|2
+ice skate|⛸️|patín de hielo|2
+sled|🛷|trineo|2
+ping pong|🏓|ping-pong|2
+hockey|🏒|hockey|2
+racing car|🏎️|carro de carreras|2
+checkered flag|🏁|bandera a cuadros|2
+horse racing|🏇|carrera de caballos|2`,
+body:`eye|👁️|ojo|1
+ear|👂|oreja|1
+nose|👃|nariz|1
+mouth|👄|boca|1
+hand|✋|mano|1
+foot|🦶|pie|1
+leg|🦵|pierna|1
+brain|🧠|cerebro|1
+heart|❤️|corazón|1
+bone|🦴|hueso|2
+tooth|🦷|diente|1
+muscle|💪|músculo|2
+tongue|👅|lengua|2
+lungs|🫁|pulmones|2
+baby|👶|bebé|1
+footprints|👣|huellas|2
+thumbs up|👍|pulgar arriba|2
+fist|✊|puño|2
+applause|👏|aplausos|2
+smile|😊|sonrisa|1
+laugh|😂|carcajada|2
+sleep|😴|sueño|1
+anger|😡|ira|2
+fear|😱|miedo|2
+cold|🥶|frío|1
+hot|🥵|calor|1
+thinking|🤔|pensar|2`,
+workshop:`hammer|🔨|martillo|1
+wrench|🔧|llave inglesa|2
+screwdriver|🪛|destornillador|2
+saw|🪚|serrucho|2
+ladder|🪜|escalera|1
+toolbox|🧰|caja de herramientas|2
+axe|🪓|hacha|2
+pickaxe|⛏️|pico|2
+shield|🛡️|escudo|2
+swords|⚔️|espadas|2
+bucket|🪣|balde|2
+chain|⛓️|cadena|2
+gear|⚙️|engranaje|2
+bolt|🔩|tornillo|2
+bricks|🧱|ladrillos|2
+flashlight|🔦|linterna|2
+plug|🔌|enchufe|2
+scale|⚖️|balanza|2
+robot|🤖|robot|1
+satellite|🛰️|satélite|2
+test tube|🧪|tubo de ensayo|2
+DNA|🧬|ADN|2
+floppy disk|💾|disquete|2
+disc|💿|disco|2
+computer mouse|🖱️|ratón de computador|2
+joystick|🕹️|palanca de mando|2`
+};
+const WORDS=[];
+(function parse(){
+  const seenE=new Set(),seenW=new Set();
+  Object.entries(RAW).forEach(([c,txt])=>txt.split('\n').forEach(line=>{
+    const [w,e,es,d]=line.split('|').map(s=>(s||'').trim());
+    if(!w||!e||seenE.has(e)||seenW.has(w.toLowerCase()))return;
+    seenE.add(e);seenW.add(w.toLowerCase());
+    WORDS.push({w,e,es,d:Number(d)===2?2:1,c});
+  }));
+})();
+const COL=Object.fromEntries(COLLECTIONS.map(c=>[c.id,c]));
+
+const CHALLENGES={
+  sequence:{name:'Grand Sequence',icon:'❖',brief:'Recover every word in the exact order you heard it.',cue:'Recover the sequence, from the first word.'},
+  mirror:{name:'Mirror Recall',icon:'⇆',brief:'Recover the sequence backwards — from the last word to the first.',cue:'Mirror recall. Start from the last word.'},
+  strike:{name:'Position Strike',icon:'⌖',brief:'Positions are called at random. Which word lived in each one?',cue:'Position strike. Positions will be called at random.'},
+  chain:{name:'The Chain',icon:'⛓',brief:'You get one word. Recover the word that came right after it.',cue:'Follow the chain.'},
+  gallery:{name:'The Gallery',icon:'▦',brief:'Find every word you heard among elegant decoys. Order is free.',cue:'Find them in the gallery.'},
+  signature:{name:'Signature Spelling',icon:'✒',brief:'Write each word you heard, in order. Your ear becomes your pen.',cue:'Now write them, in order.'}
+};
+const MODES={
+  warm:{label:'Warm-up',icon:'🌱',base:4,step:1,cap:12,hold:4,display:1050,bonus:5,desc:'Balanced daily practice. Four challenges in rotation.',pool:['sequence','strike','chain','gallery']},
+  deep:{label:'Deep Recovery',icon:'🧘',base:5,step:1,cap:13,hold:6,display:1250,bonus:8,desc:'Longer holds, mirror recall, stronger retention.',pool:['sequence','mirror','strike','chain','gallery']},
+  pressure:{label:'Pressure Recall',icon:'⚡',base:6,step:1,cap:14,hold:3,display:760,bonus:12,desc:'Fast display, spelling, sealed challenges.',pool:['sequence','mirror','strike','chain','gallery','signature'],sealed:true}
+};
+const RANKS=[
+  {n:'Bronze Initiate',x:0,i:'🥉'},{n:'Silver Listener',x:400,i:'🥈'},{n:'Gold Retriever',x:1200,i:'🥇'},
+  {n:'Platinum Mind',x:3000,i:'💠'},{n:'Obsidian Memory',x:7000,i:'🔱'},{n:'Diamond Recall',x:15000,i:'💎'},{n:'Grand Master of Recall',x:30000,i:'👑'}
+];
+const INTERVAL=[1,2,3,5,8,13];
+const ORD=['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth','thirteenth','fourteenth','fifteenth','sixteenth'];
+const INTROS=[
+  (n,l)=>`Level ${l}. ${n} words. Listen.`,
+  n=>`Focus. ${n} words are coming.`,
+  n=>`Here we go. ${n} words, one time only.`,
+  n=>`Breathe in. ${n} words. Ready.`,
+  n=>`Stay with the sound. ${n} words.`,
+  n=>`Quiet mind. ${n} words.`,
+  (n,l)=>`Round for level ${l}. Encode ${n} words.`
+];
+const VERDICTS=[[100,'Flawless recall.'],[85,'Elite recovery.'],[70,'Solid. The vault is opening.'],[50,'Half the vault. Slow the encoding.'],[0,'Breathe, picture each word, and go again.']];
+const NOVELTY=/(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Deranged|Hysterical)/i;
+
+/* ═════════════════════════ UTIL ═════════════════════════ */
+const $=id=>document.getElementById(id);
+const rand=n=>Math.floor(Math.random()*n);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const sample=a=>a[rand(a.length)];
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dayStr=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+function lev(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n];}
+
+/* ═════════════════════════ STORE ═════════════════════════ */
+const KEY='fmr_vault_v1';
+const DEFAULTS={mode:'warm',voice:'',rate:.9,gap:600,blind:false,shuffleVoice:true,fx:true,cols:COLLECTIONS.map(c=>c.id),vocab:'all',lock:'rotate'};
+function freshStore(){
+  let legacy=0;try{legacy=Number(localStorage.getItem('fmr_best_score'))||0}catch(e){}
+  return {round:0,xp:0,best:legacy,days:0,lastDay:'',history:[],recent:[],words:{},today:{day:'',rounds:0,words:0},settings:{...DEFAULTS}};
+}
+function loadStore(){
+  let s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+  const base=freshStore();
+  if(!s||typeof s!=='object')return base;
+  return {...base,...s,today:{...base.today,...(s.today||{})},settings:{...DEFAULTS,...(s.settings||{})},words:s.words&&typeof s.words==='object'?s.words:{}};
+}
+let store=loadStore();
+let st=store.settings;
+function sanitize(){
+  st.cols=(Array.isArray(st.cols)?st.cols:[]).filter(id=>COL[id]);
+  if(!st.cols.length)st.cols=COLLECTIONS.map(c=>c.id);
+  if(!MODES[st.mode])st.mode='warm';
+  if(st.lock!=='rotate'&&!CHALLENGES[st.lock])st.lock='rotate';
+  st.rate=Math.min(1.2,Math.max(.65,Number(st.rate)||.9));
+  st.gap=Math.min(1200,Math.max(250,Number(st.gap)||600));
+}
+sanitize();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+const ZERO=Object.freeze({s:0,k:0,m:0,b:0,due:0,last:0});
+const peek=w=>store.words[w]||ZERO;
+const mem=w=>store.words[w]||(store.words[w]={s:0,k:0,m:0,b:0,due:0,last:0});
+function statusOf(w){const m=peek(w);if(!m.s)return 'new';if(m.b>=3)return 'mastered';if(m.m>0&&m.b<=1)return 'comeback';return 'learning';}
+function rankIndex(xp){let i=0;RANKS.forEach((r,k)=>{if(xp>=r.x)i=k});return i;}
+
+/* ═════════════════════════ SESSION ═════════════════════════ */
+const S={level:1,score:0,streak:0,bestStreak:0,busy:false,phase:'prepare',round:null,lastCh:null,token:0,played:0};
+const mode=()=>MODES[st.mode];
+const wordsForLevel=()=>Math.min(mode().cap,mode().base+(S.level-1)*mode().step);
+const comboMult=s=>s>=10?3:s>=6?2:s>=3?1.5:1;
+const activePool=()=>WORDS.filter(x=>st.cols.includes(x.c)&&(st.vocab==='all'||x.d===1));
+
+function spreadByCollection(list){
+  const groups={};shuffle(list).forEach(x=>(groups[x.c]=groups[x.c]||[]).push(x));
+  const keys=shuffle(Object.keys(groups));const out=[];let added=true;
+  while(added){added=false;keys.forEach(k=>{const x=groups[k].shift();if(x){out.push(x);added=true;}});}
+  return out;
+}
+function interleave(a){
+  for(let i=1;i<a.length;i++){
+    if(a[i].c!==a[i-1].c)continue;
+    for(let j=i+1;j<a.length;j++){if(a[j].c!==a[i-1].c){[a[i],a[j]]=[a[j],a[i]];break;}}
+  }
+  return a;
+}
+function buildRoundWords(n){
+  const R=store.round+1;
+  let pool=activePool();if(pool.length<n+8)pool=WORDS;
+  const recent=new Set((store.recent||[]).flat());
+  const taken=new Set(),out=[];
+  const take=(x,tag)=>{if(out.length<n&&!taken.has(x.w)){taken.add(x.w);out.push({...x,tag});}};
+  const comeback=pool.filter(x=>{const m=peek(x.w);return m.s>0&&m.m>0&&m.b<=1&&m.due<=R;})
+    .map(x=>({x,k:Math.random()*(1+peek(x.w).m)})).sort((a,b)=>b.k-a.k).map(o=>o.x);
+  const review=shuffle(pool.filter(x=>{const m=peek(x.w);return m.s>0&&!(m.m>0&&m.b<=1)&&m.due<=R&&!recent.has(x.w);}));
+  const fresh=pool.filter(x=>!peek(x.w).s);
+  comeback.slice(0,Math.max(1,Math.round(n*.35))).forEach(x=>take(x,'comeback'));
+  review.slice(0,Math.round(n*.2)).forEach(x=>take(x,'review'));
+  spreadByCollection(fresh).forEach(x=>take(x,'new'));
+  shuffle(pool.filter(x=>!recent.has(x.w))).sort((a,b)=>peek(a.w).s-peek(b.w).s).forEach(x=>take(x,'review'));
+  shuffle(pool).forEach(x=>take(x,'review'));
+  return interleave(shuffle(out));
+}
+function pickChallenge(){
+  if(st.lock!=='rotate')return st.lock;
+  if(S.played===0)return 'sequence';
+  const opts=mode().pool.filter(k=>k!==S.lastCh);
+  return sample(opts.length?opts:mode().pool);
+}
+function promptFor(ch,i,n,words){
+  if(ch==='chain'){const c=words[i-1];return `What came <b>right after</b> ${c.e} <b>${esc(c.w)}</b>?`;}
+  if(ch==='signature')return `Write the <b>${ORD[i]||('#'+(i+1))}</b> word you heard.`;
+  if(ch==='strike')return `Position strike: which word was <b>number ${i+1}</b>?`;
+  if(i===0)return ch==='mirror'?`Which word came <b>first</b>? (last step of the mirror)`:`Which word came <b>first</b>?`;
+  if(i===n-1)return ch==='mirror'?`Start from the end: which was the <b>last</b> word?`:`And the <b>last</b> word?`;
+  return `Which word was <b>${ORD[i]}</b>?`;
+}
+function buildQuestions(ch,words){
+  const n=words.length,idx=[...Array(n).keys()];
+  let order;
+  switch(ch){
+    case 'mirror':order=idx.slice().reverse();break;
+    case 'strike':order=shuffle(idx);break;
+    case 'chain':order=shuffle(idx.slice(1));break;
+    case 'gallery':return [{kind:'gallery'}];
+    default:order=idx;
+  }
+  return order.map(t=>({kind:ch==='signature'?'spell':'pick',t,prompt:promptFor(ch,t,n,words)}));
+}
+
+function prepareRound(message){
+  S.token++;cancelSpeech();
+  const words=buildRoundWords(wordsForLevel());
+  const ch=pickChallenge();const n=words.length;
+  const sealed=!!mode().sealed&&st.lock==='rotate'&&S.played>0&&Math.random()<.45;
+  let golden=-1;if(n>=4&&Math.random()<.38)golden=ch==='chain'?1+rand(n-1):rand(n);
+  S.round={words,ch,sealed,revealed:!sealed,golden,qs:buildQuestions(ch,words),qi:0,results:[],replays:0,tips:0,mistakes:0,start:0,scoreStart:S.score,found:new Set(),tipped:new Set(),gallery:null,done:false,R:0};
+  S.busy=false;S.phase='prepare';setPhase('prepare');
+  const counts={comeback:0,review:0,new:0};words.forEach(x=>counts[x.tag]++);
+  const c=CHALLENGES[ch];
+  setTop(`<span class="stage-label">Round ${store.round+1} · ${n} words</span>`);
+  $('stageCore').innerHTML=`<div class="deal">
+    <div class="kicker">${sealed?'Sealed envelope':'Challenge dealt'}</div>
+    <div class="deal-icon">${sealed?'✉':c.icon}</div>
+    <div class="deal-name">${sealed?'Sealed Challenge':c.name}</div>
+    <div class="deal-brief">${sealed?'The challenge stays sealed until the hold ends. Encode everything — order, sound and image.':c.brief}</div>
+    <div class="mix">${counts.comeback?`<span class="chip coral">◆ ${counts.comeback} comeback</span>`:''}${counts.review?`<span class="chip violet">↺ ${counts.review} review</span>`:''}${counts.new?`<span class="chip">✧ ${counts.new} new</span>`:''}</div>
+  </div>`;
+  $('stageSub').innerHTML='';
+  setInstruction(message||`Press <b>Start listening</b> when you are ready. Words and order are new every round.`);
+  $('answerArea').innerHTML='';$('feedback').innerHTML='';$('resultArea').innerHTML='';
+  $('actions').style.display='';
+  setControls({start:true});lockModes(false);
+  FX.deal();
+  updateAll();
+}
+
+async function startRound(){
+  if(S.busy||!S.round||S.phase!=='prepare')return;
+  unlockAudio();
+  store.round++;S.round.R=store.round;S.round.start=Date.now();save();
+  await playSequence(false);
+}
+
+async function playSequence(isReplay){
+  const r=S.round;if(!r)return;
+  const tok=++S.token;
+  S.busy=true;lockModes(true);setControls({});
+  if(isReplay){r.replays++;S.score=Math.max(0,S.score-10);floatText('−10',$('replayBtn'),true);updateSession();}
+  setPhase('listen');$('answerArea').innerHTML='';setFeedback('');
+  setInstruction(`<b>Listen.</b> ${st.blind?'Audio only — build an image for every sound.':'One pass. Hold the order, the sound and an image.'}`);
+  cancelSpeech();
+  setTop(`<span class="stage-label">${isReplay?'Replay':'Listen'}</span>`);
+  $('stageCore').innerHTML=`<div class="dot-wait">· · ·</div>`;$('stageSub').innerHTML='';
+  await speak(isReplay?'Again. Listen.':sample(INTROS)(r.words.length,S.level));if(tok!==S.token)return;
+  await delay(260);if(tok!==S.token)return;
+  const showText=!st.blind||!hasSpeech();
+  for(let i=0;i<r.words.length;i++){
+    const x=r.words[i],gold=i===r.golden;
+    const tags=[`<span class="stage-label">Word ${i+1} of ${r.words.length}</span>`];
+    if(gold)tags.push('<span class="chip">✦ Golden ×3</span>');
+    if(x.tag==='comeback')tags.push('<span class="chip coral">◆ Comeback</span>');
+    else if(x.tag==='new')tags.push('<span class="chip violet">✧ New</span>');
+    setTop(tags.join(''));
+    $('stageCore').innerHTML=showText?`<div class="word-big pop ${gold?'golden':''}">${esc(x.w)}</div>`:waveHTML();
+    $('stageSub').innerHTML=showText?`<span class="mono" style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)">${esc(COL[x.c].name)}</span>`:'';
+    flashStage(gold?'gold':'');
+    if(gold)FX.gold();else FX.tick();
+    updateProgress(i+1,r.words.length);
+    await speak(x.w,voiceFor());if(tok!==S.token)return;
+    await delay(mode().display*(showText?1:.6));if(tok!==S.token)return;
+    $('stageCore').innerHTML=`<div class="dot-wait">·</div>`;$('stageSub').innerHTML='';
+    await delay(st.gap);if(tok!==S.token)return;
+  }
+  const secs=isReplay?2:mode().hold+Math.min(4,Math.floor(S.level/2));
+  await hold(secs,tok);if(tok!==S.token)return;
+  if(!r.revealed){
+    r.revealed=true;const c=CHALLENGES[r.ch];
+    setTop('<span class="stage-label">The envelope opens</span>');
+    $('stageCore').innerHTML=`<div class="deal"><div class="deal-icon">${c.icon}</div><div class="deal-name">${c.name}</div><div class="deal-brief">${c.brief}</div></div>`;
+    FX.deal();
+    await speak(c.cue);if(tok!==S.token)return;
+    await delay(700);if(tok!==S.token)return;
+  }else if(!isReplay){
+    await speak(CHALLENGES[r.ch].cue);if(tok!==S.token)return;
+  }
+  S.busy=false;
+  showQuestion();
+}
+
+async function hold(total,tok){
+  setPhase('hold');
+  const C=2*Math.PI*64;
+  setTop('<span class="stage-label">Hold</span>');
+  $('stageSub').innerHTML='Replay the sequence silently in your mind.';
+  for(let s=total;s>0;s--){
+    $('stageCore').innerHTML=`<div class="ring-wrap"><svg viewBox="0 0 150 150"><circle class="ring-bg" cx="75" cy="75" r="64"/><circle class="ring-fg" id="ringFg" cx="75" cy="75" r="64" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-s/total)}"/></svg><div class="ring-num">${s}</div></div>`;
+    setInstruction(`<b>Hold.</b> ${s}s of silence. See the words in order before the console opens.`);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{const f=$('ringFg');if(f)f.style.strokeDashoffset=C*(1-(s-1)/total);}));
+    await delay(1000);if(tok!==S.token)return;
+  }
+}
+
+function currentQ(){return S.round&&S.round.qs[S.round.qi];}
+function showQuestion(){
+  const r=S.round;const q=currentQ();
+  if(!q){finishRound();return;}
+  S.phase='recover';setPhase('recover');lockModes(true);
+  q.shown=Date.now();q.tip=!!q.tip;
+  setFeedback('');$('stageSub').innerHTML='';
+  const tags=[`<span class="stage-label">${CHALLENGES[r.ch].name}</span>`];
+  if(q.kind!=='gallery'&&q.t===r.golden)tags.push('<span class="chip">✦ Golden question ×3</span>');
+  setTop(tags.join(''));
+  if(q.kind==='pick')renderPick(q);else if(q.kind==='spell')renderSpell(q);else renderGallery();
+  setControls({replay:true,tip:true,skip:true});
+  updateSession();
+}
+
+function pickOptions(q){
+  const r=S.round,t=r.words[q.t];
+  const total=(S.level>=4||st.mode==='pressure')?6:4;
+  const used=new Set([t.e]);const out=[t];
+  if(r.ch==='chain')used.add(r.words[q.t-1].e);
+  const add=x=>{if(x&&out.length<total&&!used.has(x.e)){used.add(x.e);out.push(x);}};
+  const siblings=shuffle(r.words.filter((_,i)=>i!==q.t&&!(r.ch==='chain'&&i===q.t-1)));
+  siblings.slice(0,total>=6?2:1).forEach(add);
+  const same=shuffle(WORDS.filter(x=>x.c===t.c));
+  const sameWanted=S.level>=3?2:1;let s=0;
+  for(const x of same){if(s>=sameWanted)break;const before=out.length;add(x);if(out.length>before)s++;}
+  shuffle(WORDS).forEach(add);
+  return shuffle(out);
+}
+function renderPick(q){
+  const r=S.round;const n=r.words.length;
+  if(r.ch==='chain'){
+    const c=r.words[q.t-1];
+    $('stageCore').innerHTML=`<div class="pop"><div class="cue"><span class="e">${c.e}</span><span class="w">${esc(c.w)}</span></div><span class="cue-arrow">then came…?</span></div>`;
+  }else{
+    $('stageCore').innerHTML=`<div class="pop"><div class="qnum gold-text">#${q.t+1}</div><div class="qof">of ${n}</div></div>`;
+  }
+  setInstruction(q.prompt);
+  q.opts=pickOptions(q);
+  const six=q.opts.length>4;
+  $('answerArea').innerHTML=`<div class="opts ${six?'six':''}" role="group" aria-label="Options">${q.opts.map((x,k)=>`<button class="opt" type="button" data-k="${k}" style="animation-delay:${k*.04}s" aria-label="Option ${k+1}">${x.e}<span class="k">${k+1}</span></button>`).join('')}</div>`;
+  $('answerArea').querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>answerPick(Number(b.dataset.k))));
+}
+
+function awardPoints(t,ms,{tip=false,partial=false}={}){
+  const r=S.round;
+  const base=10+S.level*2+mode().bonus;
+  let pts=base*comboMult(S.streak);
+  if(t===r.golden)pts*=3;
+  if(st.blind&&hasSpeech())pts*=1.5;
+  if(partial)pts*=.5;
+  pts=Math.round(pts)+(ms<3000&&!tip?4:0)-(tip?5:0);
+  pts=Math.max(1,pts);
+  S.score+=pts;return pts;
+}
+function revealWord(x,kind){
+  $('stageCore').innerHTML=`<div class="reveal"><span class="e">${x.e}</span><span class="w">${esc(x.w)}</span><span class="es">${esc(x.es)}</span></div>`;
+  flashStage(kind);
+}
+function answerPick(k){
+  const r=S.round,q=currentQ();
+  if(S.busy||!q||q.kind!=='pick'||q.done)return;
+  S.busy=true;q.done=true;
+  const btns=[...$('answerArea').querySelectorAll('.opt')];btns.forEach(b=>b.disabled=true);
+  const chosen=q.opts[k],t=r.words[q.t];const ok=chosen.e===t.e;const ms=Date.now()-q.shown;
+  if(ok){
+    S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);
+    const pts=awardPoints(q.t,ms,{tip:q.tip});
+    btns[k].classList.add('correct');
+    const gold=q.t===r.golden;
+    if(gold)FX.gold();else FX.ok(S.streak);
+    sparks(btns[k],gold?18:8);floatText('+'+pts,btns[k]);
+    setFeedback(`${gold?'✦ Golden recall':'✓ Recovered'} — ${t.e} <b>${esc(t.w)}</b> · <i>${esc(t.es)}</i> · +${pts}${ms<3000&&!q.tip?' · speed':''}${comboMult(S.streak)>1?` · combo ×${comboMult(S.streak)}`:''}`,gold?'gold':'ok');
+    revealWord(t,gold?'gold':'ok');
+    r.results.push({i:q.t,ok:true,tip:q.tip,ms});
+  }else{
+    S.streak=0;r.mistakes++;
+    btns[k].classList.add('wrong');
+    btns.forEach((b,i)=>{if(q.opts[i].e===t.e)b.classList.add('correct');});
+    FX.err();
+    const wasSibling=r.words.some((x,i)=>i!==q.t&&x.e===chosen.e);
+    setFeedback(`✗ ${wasSibling?`Order trap — ${chosen.e} <b>${esc(chosen.w)}</b> was in the sequence, but not here.`:`Not this one.`} Correct: ${t.e} <b>${esc(t.w)}</b> · <i>${esc(t.es)}</i>. It will come back.`,'err');
+    revealWord(t,'err');
+    speak(t.w);
+    r.results.push({i:q.t,ok:false,tip:q.tip,ms});
+  }
+  updateSession();
+  setTimeout(()=>{if(S.round!==r)return;S.busy=false;r.qi++;showQuestion();},ok?950:1900);
+}
+
+function renderSpell(q){
+  const r=S.round,t=r.words[q.t];
+  $('stageCore').innerHTML=`<div class="pop"><div class="qnum gold-text">#${q.t+1}</div><div class="slots" id="slots">${[...t.w].map(ch=>ch===' '?'<i class="gap"></i>':'<i></i>').join('')}</div></div>`;
+  $('stageSub').innerHTML=`<span class="mono" style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)">${t.w.replace(/ /g,'').length} letters</span>`;
+  setInstruction(q.prompt);
+  $('answerArea').innerHTML=`<form class="spell" id="spellForm" autocomplete="off"><input id="spellInput" type="text" inputmode="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="type the word…" aria-label="Type the word" /><button class="btn btn-gold" type="submit">Seal ✒</button></form>`;
+  $('spellForm').addEventListener('submit',e=>{e.preventDefault();answerSpell();});
+  setTimeout(()=>{const i=$('spellInput');if(i)i.focus({preventScroll:true});},60);
+}
+function answerSpell(){
+  const r=S.round,q=currentQ();
+  if(S.busy||!q||q.kind!=='spell'||q.done)return;
+  const input=$('spellInput');const val=norm(input?input.value:'');
+  if(!val){input&&input.focus();return;}
+  S.busy=true;q.done=true;
+  const t=r.words[q.t];const target=norm(t.w);const ms=Date.now()-q.shown;
+  const dist=lev(val,target);
+  const ok=dist===0,partial=!ok&&dist===1&&target.length>=5;
+  if(input)input.disabled=true;
+  if(ok||partial){
+    S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);
+    const pts=awardPoints(q.t,ms,{tip:q.tip,partial});
+    const gold=q.t===r.golden;
+    if(gold)FX.gold();else FX.ok(S.streak);
+    sparks($('spellForm'),ok?10:4);floatText('+'+pts,$('spellForm'));
+    setFeedback(ok?`✒ Signed perfectly — ${t.e} <b>${esc(t.w)}</b> · <i>${esc(t.es)}</i> · +${pts}`:`✒ Almost — you wrote “${esc(val)}”. Exact spelling: <b>${esc(t.w)}</b> · +${pts}`,ok?(gold?'gold':'ok'):'gold');
+    revealWord(t,ok?'ok':'gold');
+    r.results.push({i:q.t,ok:true,partial,tip:q.tip,ms});
+  }else{
+    S.streak=0;r.mistakes++;FX.err();
+    setFeedback(`✗ You wrote “${esc(val||'—')}”. The word was ${t.e} <b>${esc(t.w)}</b> · <i>${esc(t.es)}</i>. It will come back.`,'err');
+    revealWord(t,'err');speak(t.w);
+    r.results.push({i:q.t,ok:false,tip:q.tip,ms});
+  }
+  updateSession();
+  setTimeout(()=>{if(S.round!==r)return;S.busy=false;r.qi++;showQuestion();},(ok||partial)?1100:2100);
+}
+
+function galleryLimit(){return Math.max(3,Math.ceil(S.round.words.length/2));}
+function renderGallery(){
+  const r=S.round,n=r.words.length;
+  if(!r.gallery){
+    const used=new Set(r.words.map(x=>x.e));const decoys=[];
+    const want=Math.min(8,Math.max(4,n));
+    const cols=new Set(r.words.map(x=>x.c));
+    shuffle(WORDS.filter(x=>cols.has(x.c))).concat(shuffle(WORDS)).forEach(x=>{if(decoys.length<want&&!used.has(x.e)){used.add(x.e);decoys.push(x);}});
+    r.gallery={tiles:shuffle([...r.words.map((x,i)=>({x,i})),...decoys.map(x=>({x,i:-1}))]),wrong:new Set()};
+  }
+  renderGalleryStage();
+  setInstruction(`Tap every word you heard — <b>${n}</b> are hidden among the decoys. Order is free. Misses allowed: <b>${galleryLimit()-r.mistakes}</b>.`);
+  $('answerArea').innerHTML=`<div class="opts gallery" role="group" aria-label="Gallery">${r.gallery.tiles.map((o,k)=>{
+    const cls=o.i>=0&&r.found.has(o.i)?'correct':r.gallery.wrong.has(k)?'wrong':'';
+    return `<button class="opt ${cls}" type="button" data-k="${k}" ${cls?'disabled':''} style="animation-delay:${k*.025}s" aria-label="Tile ${k+1}">${o.x.e}${k<9?`<span class="k">${k+1}</span>`:''}</button>`;}).join('')}</div>`;
+  $('answerArea').querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>answerGallery(Number(b.dataset.k),b)));
+}
+function renderGalleryStage(){
+  const r=S.round;
+  $('stageCore').innerHTML=`<div><div class="qnum gold-text">${r.found.size}<span style="font-size:.45em;color:var(--dim)"> / ${r.words.length}</span></div><div class="qof">recovered</div></div>`;
+  $('stageSub').innerHTML='';
+}
+function answerGallery(k,btn){
+  const r=S.round,q=currentQ();
+  if(S.busy||!q||q.kind!=='gallery'||q.done)return;
+  const o=r.gallery.tiles[k];
+  if((o.i>=0&&r.found.has(o.i))||r.gallery.wrong.has(k))return;
+  const ms=Date.now()-q.shown;q.shown=Date.now();
+  if(o.i>=0){
+    r.found.add(o.i);S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);
+    const tip=r.tipped.has(o.i);
+    const pts=awardPoints(o.i,ms,{tip});
+    btn.classList.add('correct');btn.disabled=true;
+    const gold=o.i===r.golden;
+    gold?FX.gold():FX.ok(S.streak);sparks(btn,gold?16:7);floatText('+'+pts,btn);
+    setFeedback(`${gold?'✦ Golden':'✓'} ${o.x.e} <b>${esc(o.x.w)}</b> · <i>${esc(o.x.es)}</i> · +${pts}`,gold?'gold':'ok');
+    r.results.push({i:o.i,ok:true,tip,ms});
+    renderGalleryStage();flashStage(gold?'gold':'ok');
+    if(r.found.size===r.words.length){q.done=true;S.busy=true;setControls({});setTimeout(()=>{if(S.round!==r)return;S.busy=false;r.qi++;showQuestion();},1000);}
+  }else{
+    r.gallery.wrong.add(k);r.mistakes++;S.streak=0;S.score=Math.max(0,S.score-3);
+    btn.classList.add('wrong');btn.disabled=true;FX.err();floatText('−3',btn,true);flashStage('err');
+    const left=galleryLimit()-r.mistakes;
+    setFeedback(`✗ ${o.x.e} <b>${esc(o.x.w)}</b> was a decoy. ${left>0?`Misses left: ${left}.`:'No misses left.'}`,'err');
+    setInstruction(`Tap every word you heard — <b>${r.words.length}</b> are hidden among the decoys. Misses allowed: <b>${Math.max(0,left)}</b>.`);
+    if(left<=0)revealGallery();
+  }
+  updateSession();
+}
+function revealGallery(){
+  const r=S.round,q=currentQ();if(!q||q.done)return;
+  q.done=true;S.busy=true;setControls({});
+  const btns=[...$('answerArea').querySelectorAll('.opt')];
+  r.gallery.tiles.forEach((o,k)=>{
+    btns[k].disabled=true;
+    if(o.i>=0&&!r.found.has(o.i)){btns[k].classList.add('missed');r.results.push({i:o.i,ok:false,tip:r.tipped.has(o.i),ms:0});}
+    else if(o.i<0&&!r.gallery.wrong.has(k))btns[k].classList.add('faded');
+  });
+  const missed=r.words.filter((_,i)=>!r.found.has(i));
+  setFeedback(`The dashed tiles were in the sequence: ${missed.map(x=>`${x.e} <b>${esc(x.w)}</b>`).join(' · ')}. They will come back.`,'neutral');
+  setTimeout(()=>{if(S.round!==r)return;S.busy=false;r.qi++;showQuestion();},2600);
+}
+
+function useTip(){
+  const r=S.round,q=currentQ();
+  if(S.busy||!q||q.done||S.phase!=='recover')return;
+  r.tips++;S.score=Math.max(0,S.score-5);S.streak=0;floatText('−5',$('tipBtn'),true);
+  if(q.kind==='gallery'){
+    const remaining=r.gallery.tiles.map((o,k)=>({o,k})).filter(({o})=>o.i>=0&&!r.found.has(o.i));
+    if(!remaining.length)return;
+    const pick=sample(remaining);r.tipped.add(pick.o.i);
+    const b=$('answerArea').querySelectorAll('.opt')[pick.k];b.classList.remove('hint');void b.offsetWidth;b.classList.add('hint');
+    setFeedback('✧ One hidden word is glowing. Hints break the combo.','gold');
+  }else{
+    q.tip=true;$('tipBtn').disabled=true;
+    const t=r.words[q.t];
+    if(q.kind==='pick'){
+      const btns=[...$('answerArea').querySelectorAll('.opt')];
+      const wrong=btns.filter((_,i)=>q.opts[i].e!==t.e);
+      shuffle(wrong).slice(0,Math.floor(wrong.length/2)+ (wrong.length>3?1:0)).forEach(b=>{b.classList.add('faded');b.disabled=true;});
+      setFeedback(`✧ It starts with “<b>${esc(t.w.slice(0,2))}…</b>” · ${COL[t.c].icon} ${esc(COL[t.c].name)}`,'gold');
+    }else{
+      const slots=$('slots');if(slots){const first=slots.querySelector('i:not(.gap)');if(first)first.textContent=t.w[0].toUpperCase();}
+      setFeedback(`✧ ${t.e} · starts with “<b>${esc(t.w[0].toUpperCase())}</b>”`,'gold');
     }
+  }
+  updateSession();
+}
+function skipQ(){
+  const r=S.round,q=currentQ();
+  if(S.busy||!q||q.done||S.phase!=='recover')return;
+  if(q.kind==='gallery'){revealGallery();return;}
+  S.busy=true;q.done=true;S.streak=0;
+  const t=r.words[q.t];
+  if(q.kind==='pick'){const btns=[...$('answerArea').querySelectorAll('.opt')];btns.forEach((b,i)=>{b.disabled=true;if(q.opts[i].e===t.e)b.classList.add('missed');});}
+  else{const i=$('spellInput');if(i)i.disabled=true;}
+  r.results.push({i:q.t,ok:false,tip:q.tip,ms:0,skipped:true});
+  setFeedback(`↩ Revealed: ${t.e} <b>${esc(t.w)}</b> · <i>${esc(t.es)}</i>. Say it out loud once — it will come back.`,'neutral');
+  revealWord(t,'');speak(t.w);updateSession();
+  setTimeout(()=>{if(S.round!==r)return;S.busy=false;r.qi++;showQuestion();},1700);
+}
 
-    function renderReview(){
-      els.reviewGrid.hidden=false;
-      els.toggleReviewBtn.textContent='Hide';
-      els.reviewGrid.innerHTML='';
-      state.review.forEach(item=>{
-        const row=document.createElement('div');
-        row.className='review-item';
-        row.innerHTML=`<span class="num">${String(item.index).padStart(2,'0')}</span><span><strong>${item.word}</strong><br><small>${item.skipped?'Skipped':item.ok?'Recovered':'Missed'}${item.tip?' · tip used':''}</small></span><span style="font-size:1.5rem">${item.emoji}</span>`;
-        els.reviewGrid.appendChild(row);
-      });
+function finishRound(){
+  const r=S.round;if(!r||r.done)return;
+  r.done=true;S.busy=false;S.phase='review';setPhase('review');
+  const tested=r.results.length,correct=r.results.filter(x=>x.ok).length;
+  const acc=tested?Math.round(correct/tested*100):0;
+  const clean=acc===100&&r.tips===0&&r.replays===0&&r.mistakes===0;
+  const bonus=clean?40+S.level*10:acc>=90?20:0;
+  S.score+=bonus;
+  const earned=Math.max(0,S.score-r.scoreStart);
+  const byIdx={};r.results.forEach(x=>{if(!byIdx[x.i]||!x.ok)byIdx[x.i]=x;});
+  const outcome=r.words.map((x,i)=>{
+    const m=mem(x.w);m.s++;m.last=r.R;const res=byIdx[i];
+    if(!res)return {x,res:null,label:'Cue word',cls:''};
+    if(res.ok&&!res.tip&&!res.partial){
+      m.k++;m.b=Math.min(5,m.b+1);m.due=r.R+INTERVAL[m.b];
+      return {x,res,label:x.tag==='comeback'?'Comeback conquered ◆':m.b>=3?'Mastered ✦':'Recovered',cls:x.tag==='comeback'||m.b>=3?'st-gold':'st-ok'};
     }
+    if(res.ok){m.k++;m.due=r.R+1;return {x,res,label:res.partial?'Almost — spelling':'Recovered with hint',cls:'st-gold'};}
+    m.m++;m.b=0;m.due=r.R+1+rand(2);
+    return {x,res,label:res.skipped?'Revealed — returns soon':'Missed — returns soon',cls:'st-err'};
+  });
+  store.recent=[...(store.recent||[]).slice(-1),r.words.map(x=>x.w)];
+  const prevRank=rankIndex(store.xp);store.xp+=earned;const newRank=rankIndex(store.xp);
+  store.best=Math.max(store.best||0,S.score);
+  const today=dayStr();
+  if(store.lastDay!==today){const y=new Date();y.setDate(y.getDate()-1);store.days=store.lastDay===dayStr(y)?(store.days||0)+1:1;store.lastDay=today;}
+  if(store.today.day!==today)store.today={day:today,rounds:0,words:0};
+  store.today.rounds++;store.today.words+=r.words.length;
+  store.history=[...(store.history||[]),{ch:r.ch,acc,n:r.words.length,l:S.level,m:st.mode,e:earned,t:Date.now()}].slice(-30);
+  save();
+  S.lastCh=r.ch;S.played++;
+  const pass=acc>=70;
+  const verdict=VERDICTS.find(v=>acc>=v[0])[1];
+  const secs=Math.max(1,Math.round((Date.now()-r.start)/1000));
+  setTop(`<span class="stage-label">${CHALLENGES[r.ch].name} · Review</span>`);
+  $('stageCore').innerHTML=`<div class="pop"><div class="acc-big gold-text">${acc}%</div><div class="verdict">${verdict}</div></div>`;
+  $('stageSub').innerHTML=bonus?`<span class="chip">${clean?'Flawless':'Precision'} bonus +${bonus}</span>`:'';
+  setInstruction(pass?`<b>Level ${S.level} cleared.</b> Missed words are already scheduled to come back.`:`<b>Below 70%.</b> Rebuild the level with a fresh mix — your missed words will be inside it.`);
+  $('answerArea').innerHTML='';setFeedback('');setControls({});$('actions').style.display='none';
+  $('resultArea').innerHTML=`<div class="result">
+    <h3>${pass?'Round sealed':'Round recorded'}</h3><p>+${earned} XP · ${RANKS[newRank].i} ${RANKS[newRank].n}</p>
+    <div class="r-stats"><div><b>${correct}/${tested}</b><span>Recovered</span></div><div><b>${secs}s</b><span>Time</span></div><div><b>${S.bestStreak}</b><span>Best streak</span></div><div><b>${r.replays+r.tips}</b><span>Aids used</span></div></div>
+    <div class="r-btns">${pass?`<button class="btn btn-gold" type="button" id="goNext">Level ${S.level+1} →</button><button class="btn btn-line" type="button" id="goSame">Same level · new words</button>`:`<button class="btn btn-gold" type="button" id="goSame">Rebuild level ${S.level} ↺</button><button class="btn btn-line" type="button" id="goNext">Push to level ${S.level+1}</button>`}</div>
+    <div class="review">${outcome.map((o,i)=>`<div class="rv"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="e">${o.x.e}</span><span><strong>${esc(o.x.w)}</strong><small><i>${esc(o.x.es)}</i> · <span class="${o.cls}">${o.label}</span></small></span><button class="say" type="button" data-say="${esc(o.x.w)}" aria-label="Hear ${esc(o.x.w)}">🔊</button></div>`).join('')}</div>
+  </div>`;
+  $('goNext').addEventListener('click',nextLevel);$('goSame').addEventListener('click',()=>prepareRound(`Level ${S.level} again — completely new mix and order.`));
+  $('resultArea').querySelectorAll('[data-say]').forEach(b=>b.addEventListener('click',()=>{unlockAudio();speak(b.dataset.say);}));
+  lockModes(false);
+  FX.done();if(acc===100)sparks($('stage'),26);
+  if(newRank>prevRank)toast(`${RANKS[newRank].i} ${RANKS[newRank].n}`,'New prestige rank unlocked');
+  updateAll();
+  setTimeout(()=>{$('resultArea').scrollIntoView({behavior:'smooth',block:'nearest'});},350);
+}
+function nextLevel(){S.level++;prepareRound(`Level <b>${S.level}</b>: <b>${wordsForLevel()}</b> words. New challenge dealt.`);}
+function newSession(){S.level=1;S.score=0;S.streak=0;S.bestStreak=0;S.played=0;S.lastCh=null;prepareRound('New session. Fresh words, fresh order.');}
 
-    function nextLevel(){
-      state.level++;
-      state.words=[]; state.index=0;
-      resetRoundOnly(`Ready for Level <strong>${state.level}</strong>. This level has <strong>${wordsForLevel()}</strong> words.`);
-    }
+/* ═════════════════════════ AUDIO ═════════════════════════ */
+let VOICES=[],EN=[];
+const hasSpeech=()=>'speechSynthesis' in window;
+function cancelSpeech(){try{hasSpeech()&&speechSynthesis.cancel()}catch(e){}}
+function loadVoices(){
+  if(!hasSpeech())return;
+  VOICES=speechSynthesis.getVoices()||[];
+  EN=VOICES.filter(v=>/^en([-_]|$)/i.test(v.lang)&&!NOVELTY.test(v.name));
+  const sel=$('voiceSelect');
+  const sorted=[...VOICES].sort((a,b)=>{const s=v=>/^en[-_]US/i.test(v.lang)?0:/^en/i.test(v.lang)?1:2;return s(a)-s(b)||a.name.localeCompare(b.name);});
+  sel.innerHTML='<option value="">Auto (best English)</option>'+sorted.filter(v=>/^en/i.test(v.lang)).map(v=>`<option value="${esc(v.name)}">${esc(v.name)} — ${esc(v.lang)}</option>`).join('');
+  sel.value=VOICES.some(v=>v.name===st.voice)?st.voice:'';
+}
+function baseVoice(){return VOICES.find(v=>v.name===st.voice)||EN.find(v=>/en[-_]US/i.test(v.lang)&&/google|natural|samantha|aria|jenny/i.test(v.name))||EN.find(v=>/en[-_]US/i.test(v.lang))||EN[0]||null;}
+let lastShuffle=null;
+function voiceFor(){
+  if(st.shuffleVoice&&EN.length>1){let v;do{v=sample(EN)}while(EN.length>2&&v===lastShuffle);lastShuffle=v;return {voice:v,rate:st.rate*(.94+Math.random()*.12),pitch:.92+Math.random()*.2};}
+  return {voice:baseVoice(),rate:st.rate*(.96+Math.random()*.08),pitch:.97+Math.random()*.08};
+}
+function speak(text,opt={}){
+  if(!hasSpeech())return delay(Math.max(500,String(text).length*55));
+  return new Promise(res=>{
+    try{
+      const u=new SpeechSynthesisUtterance(text);
+      const v=opt.voice||baseVoice();
+      if(v){u.voice=v;u.lang=v.lang;}else u.lang='en-US';
+      u.rate=opt.rate||st.rate;u.pitch=opt.pitch||1;
+      let done=false;const fin=()=>{if(!done){done=true;res();}};
+      u.onend=fin;u.onerror=fin;
+      speechSynthesis.speak(u);
+      setTimeout(fin,1400+String(text).length*120/(u.rate||1));
+    }catch(e){res();}
+  });
+}
+let actx=null;
+function unlockAudio(){
+  try{if(!actx){const C=window.AudioContext||window.webkitAudioContext;if(C)actx=new C();}if(actx&&actx.state==='suspended')actx.resume();}catch(e){}
+}
+function tone(f,dur,{type='sine',vol=.06,when=0}={}){
+  if(!st.fx||!actx)return;
+  try{
+    const t0=actx.currentTime+when;const o=actx.createOscillator(),g=actx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t0);
+    g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+.012);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+    o.connect(g).connect(actx.destination);o.start(t0);o.stop(t0+dur+.05);
+  }catch(e){}
+}
+const FX={
+  ok(streak=1){const lift=Math.min(5,Math.floor(streak/2))*60;tone(880+lift,.28);tone(1318.5+lift,.42,{vol:.045,when:.07});},
+  err(){tone(196,.38,{type:'triangle',vol:.06});tone(174.6,.45,{type:'triangle',vol:.04,when:.09});},
+  gold(){[1046.5,1318.5,1568,2093].forEach((f,i)=>tone(f,.55,{vol:.04,when:i*.07}));},
+  tick(){tone(660,.07,{vol:.02});},
+  deal(){tone(392,.14,{type:'triangle',vol:.035});tone(587.3,.2,{type:'triangle',vol:.03,when:.06});},
+  done(){[523.3,659.3,784,1046.5].forEach((f,i)=>tone(f,1.1,{vol:.035,when:i*.06}));}
+};
 
-    function resetRoundOnly(message='Press <strong>Start Listening</strong> when you are ready.'){
-      state.phase='prepare'; state.busy=false; state.words=[]; state.index=0; state.correct=0; state.mistakes=0; state.tips=0; state.replays=0; state.review=[];
-      setPhase('prepare'); setStage('—','Ready','Press Start Listening to begin.');
-      els.optionGrid.innerHTML=''; els.feedback.innerHTML=''; els.reviewGrid.hidden=false; els.reviewBlock.classList.remove('open');
-      els.instruction.innerHTML = `<strong>Prepare:</strong> ${message}`;
-      els.progressBar.style.width='0%'; els.progressText.textContent='0%'; els.counterText.textContent='0 / 0';
-      setControls({start:true}); updateStats(); lockModes(false);
-    }
+/* ═════════════════════════ RENDER ═════════════════════════ */
+function setTop(html){$('stageTop').innerHTML=html;}
+function setInstruction(html){$('instruction').innerHTML=html;}
+function setFeedback(html,type='neutral'){$('feedback').innerHTML=html?`<div class="fb ${type}">${html}</div>`:'';}
+function waveHTML(){return `<div class="blind-wave">${Array.from({length:22},(_,i)=>`<i style="height:${16+Math.abs(Math.sin(i*.7))*56}px;animation-delay:${i*.05}s"></i>`).join('')}</div>`;}
+function flashStage(kind){const s=$('stage');s.classList.remove('flash-ok','flash-err','flash-gold');if(kind){void s.offsetWidth;s.classList.add('flash-'+kind);setTimeout(()=>s.classList.remove('flash-'+kind),900);}}
+function setPhase(p){
+  const order=['prepare','listen','hold','recover','review'];
+  document.querySelectorAll('.phase').forEach(n=>{const i=order.indexOf(n.dataset.phase),c=order.indexOf(p);n.classList.toggle('active',i===c);n.classList.toggle('done',i<c);});
+}
+function setControls({start=false,replay=false,tip=false,skip=false}={}){
+  $('startBtn').disabled=!start;$('startBtn').classList.toggle('is-hidden',!start);$('replayBtn').disabled=!replay;$('tipBtn').disabled=!tip;$('skipBtn').disabled=!skip;
+  const q=currentQ();$('skipBtn').textContent=q&&q.kind==='gallery'?'Reveal all →':'Reveal →';
+}
+function lockModes(locked){document.querySelectorAll('.mode-btn').forEach(b=>b.disabled=locked);}
+function updateProgress(done,total){const p=total?Math.round(done/total*100):0;$('progressBar').style.width=p+'%';$('progressText').textContent=p+'%';}
+function updateSession(){
+  const r=S.round;
+  $('levelMark').textContent=S.level;$('levelText').textContent=S.level;$('wordCountText').textContent=r?r.words.length:wordsForLevel();
+  $('scoreText').textContent=S.score;$('streakText').textContent=S.streak;$('bestStreakText').textContent=S.bestStreak;
+  const m=comboMult(S.streak);$('comboText').textContent='×'+m;
+  const lit=S.streak>=10?5:S.streak>=6?4:S.streak>=3?3:Math.min(2,S.streak);
+  [...$('comboBar').children].forEach((b,i)=>b.classList.toggle('on',i<lit));
+  $('chChip').textContent=r?(r.revealed||S.phase==='review'?CHALLENGES[r.ch].name:'Sealed'):'—';
+  if(r&&(S.phase==='recover'||S.phase==='review')){
+    const total=r.ch==='gallery'?r.words.length:r.qs.length;
+    const done=r.ch==='gallery'?(S.phase==='review'?total:r.found.size):r.qi+(currentQ()&&currentQ().done?1:0);
+    updateProgress(Math.min(done,total),total);
+    $('counterText').textContent=r.ch==='gallery'?`${r.found.size} / ${r.words.length} found`:`${Math.min(r.qi+1,r.qs.length)} / ${r.qs.length}`;
+  }else if(S.phase==='prepare'){updateProgress(0,1);$('counterText').textContent='—';}
+}
+function updateHero(){
+  const mastered=WORDS.filter(x=>statusOf(x.w)==='mastered').length;
+  $('hsWords').textContent=WORDS.length;$('hsMastered').textContent=mastered;$('hsDays').textContent=store.days||0;$('hsBest').textContent=store.best||0;
+  const i=rankIndex(store.xp),R=RANKS[i],N=RANKS[i+1];
+  $('rankIcon').textContent=R.i;$('rankName').textContent=R.n;
+  $('rankNext').textContent=N?`${(N.x-store.xp).toLocaleString()} XP to ${N.n}`:'The summit. Keep the crown polished.';
+  $('rankRail').style.width=(N?Math.round((store.xp-R.x)/(N.x-R.x)*100):100)+'%';
+  $('xpText').textContent=store.xp.toLocaleString();
+  const t=store.today.day===dayStr()?store.today:{rounds:0,words:0};
+  $('todayText').textContent=`${t.rounds} round${t.rounds===1?'':'s'} · ${t.words} words`;
+}
+function renderModes(){
+  $('modeList').innerHTML=Object.entries(MODES).map(([k,m])=>`<button class="mode-btn ${st.mode===k?'active':''}" type="button" data-mode="${k}"><strong><span>${m.icon} ${m.label}</span><span class="chip">${m.base}+ words</span></strong><span class="d">${m.desc}</span></button>`).join('');
+  $('modeList').querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=>{
+    if(S.busy||S.phase==='recover'||S.phase==='listen'||S.phase==='hold')return;
+    st.mode=b.dataset.mode;save();renderModes();prepareRound(`${MODES[st.mode].icon} <b>${MODES[st.mode].label}</b> selected. New round dealt.`);
+  }));
+}
+function renderSalons(){
+  $('salonList').innerHTML=COLLECTIONS.map(c=>{
+    const list=WORDS.filter(x=>x.c===c.id&&(st.vocab==='all'||x.d===1));
+    const mastered=list.filter(x=>statusOf(x.w)==='mastered').length,seen=list.filter(x=>peek(x.w).s).length;
+    const on=st.cols.includes(c.id);
+    return `<button class="salon ${on?'on':''}" type="button" data-col="${c.id}" aria-pressed="${on}"><span class="i">${c.icon}</span><span><span class="nm">${esc(c.name)}</span><span class="mt">${mastered} mastered · ${seen}/${list.length} met</span><span class="mini"><span style="width:${list.length?Math.round(mastered/list.length*100):0}%"></span></span></span><span class="switch"></span></button>`;
+  }).join('');
+  $('salonList').querySelectorAll('.salon').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.col;
+    if(st.cols.includes(id)){if(st.cols.length===1){toast('One salon stays open','The vault needs at least one collection in play.');return;}st.cols=st.cols.filter(x=>x!==id);}
+    else st.cols=[...st.cols,id];
+    save();renderSalons();if(S.phase==='prepare'&&!S.busy)prepareRound('Salons updated — a new round has been dealt.');
+  }));
+}
+function renderQueue(){
+  const R=store.round;
+  const q=WORDS.filter(x=>statusOf(x.w)==='comeback').sort((a,b)=>peek(a.w).due-peek(b.w).due);
+  $('queueCount').textContent=q.length;
+  $('queueList').innerHTML=q.length?q.slice(0,14).map(x=>`<span class="qchip" title="${esc(x.es)}"><span class="e">${x.e}</span>${esc(x.w)}${peek(x.w).due<=R+1?' <span style="color:var(--coral);font-size:.7rem">• next</span>':''}</span>`).join('')+(q.length>14?`<span class="qchip">+${q.length-14}</span>`:''):'<span class="empty">Nothing pending. Every missed word will appear here and return to you.</span>';
+}
+function renderHistory(){
+  const h=(store.history||[]).slice(-14);
+  $('roundsCount').textContent=store.round;
+  $('historyBars').innerHTML=h.length?h.map(x=>`<div class="${x.acc<70?'low':''}" style="height:${Math.max(6,x.acc)}%" title="${CHALLENGES[x.ch]?CHALLENGES[x.ch].name:''} · ${x.acc}% · ${x.n} words"></div>`).join(''):'<span class="empty" style="align-self:center">Your first rounds will draw here.</span>';
+}
+function renderChallengeHelp(){
+  $('chList').innerHTML=Object.values(CHALLENGES).map(c=>`<div class="ch-item"><span class="ic">${c.icon}</span><span><b>${c.name}</b><span>${c.brief}</span></span></div>`).join('');
+  $('lockSelect').innerHTML='<option value="rotate">Rotate every round (recommended)</option>'+Object.entries(CHALLENGES).map(([k,c])=>`<option value="${k}">Only: ${c.name}</option>`).join('');
+  $('lockSelect').value=st.lock;
+}
+let vaultFilter='all';
+function renderVault(){
+  const counts={new:0,learning:0,comeback:0,mastered:0};WORDS.forEach(x=>counts[statusOf(x.w)]++);
+  $('vaultSummary').textContent=`${WORDS.length} words · ${counts.mastered} mastered · ${counts.learning} learning · ${counts.comeback} comeback · ${counts.new} not met yet`;
+  $('vaultFilters').innerHTML=[{id:'all',name:'All',icon:'◆'},...COLLECTIONS].map(c=>`<button class="v-filter ${vaultFilter===c.id?'active':''}" type="button" data-f="${c.id}">${c.icon} ${esc(c.name)}</button>`).join('');
+  $('vaultFilters').querySelectorAll('.v-filter').forEach(b=>b.addEventListener('click',()=>{vaultFilter=b.dataset.f;renderVault();}));
+  const list=WORDS.filter(x=>vaultFilter==='all'||x.c===vaultFilter);
+  const rankS={mastered:0,comeback:1,learning:2,new:3};
+  $('vaultGrid').innerHTML=list.slice().sort((a,b)=>rankS[statusOf(a.w)]-rankS[statusOf(b.w)]).map(x=>`<button class="v-tile ${statusOf(x.w)}" type="button" data-say="${esc(x.w)}"><span class="e">${x.e}</span><span class="w">${esc(x.w)}</span><span class="es">${esc(x.es)}</span></button>`).join('');
+  $('vaultGrid').querySelectorAll('[data-say]').forEach(b=>b.addEventListener('click',()=>{unlockAudio();speak(b.dataset.say,{voice:baseVoice()});}));
+}
+function updateAll(){updateSession();updateHero();renderSalons();renderQueue();renderHistory();}
 
-    function resetSession(){
-      window.speechSynthesis?.cancel?.();
-      state.level=1; state.score=0; state.streak=0; refillPool(); renderModes(); resetRoundOnly('New session ready. Choose your mode or begin.');
-    }
+function floatText(txt,el,neg){if(!el)return;const r=el.getBoundingClientRect();const s=document.createElement('span');s.className='float'+(neg?' neg':'');s.textContent=txt;s.style.left=(r.left+r.width/2)+'px';s.style.top=(r.top+4)+'px';document.body.appendChild(s);s.addEventListener('animationend',()=>s.remove());}
+function sparks(el,n=8){
+  if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  for(let i=0;i<n;i++){const s=document.createElement('span');s.className='spark';const a=Math.random()*Math.PI*2,d=40+Math.random()*90;
+    s.style.left=cx+'px';s.style.top=cy+'px';s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d-20+'px');s.style.animationDelay=(i*.012)+'s';
+    document.body.appendChild(s);s.addEventListener('animationend',()=>s.remove());}
+}
+function toast(title,sub){const t=document.createElement('div');t.className='toast';t.innerHTML=`<b>${esc(title)}</b><span>${esc(sub)}</span>`;document.body.appendChild(t);setTimeout(()=>t.remove(),4300);}
 
-    function spawnSparks(target,n=6){
-      const rect=target.getBoundingClientRect();
-      const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
-      const symbols=['✨','⭐','🌟','💫','🪙','🔥'];
-      for(let i=0;i<n;i++){
-        setTimeout(()=>{
-          const s=document.createElement('span');
-          s.className='spark'; s.textContent=symbols[i%symbols.length];
-          s.style.left=(cx + Math.random()*110 - 55)+'px'; s.style.top=(cy + Math.random()*30 - 15)+'px';
-          document.body.appendChild(s); s.addEventListener('animationend',()=>s.remove());
-        },i*45);
-      }
-    }
+/* ═════════════════════════ SETTINGS & EVENTS ═════════════════════════ */
+function syncToggles(){
+  [['tgShuffle','shuffleVoice'],['tgBlind','blind'],['tgFx','fx']].forEach(([id,k])=>{const b=$(id);b.classList.toggle('on',!!st[k]);b.querySelector('.switch').classList.toggle('on',!!st[k]);b.setAttribute('aria-pressed',!!st[k]);});
+}
+function bindSettings(){
+  $('rateRange').value=st.rate;$('rateLabel').textContent=Number(st.rate).toFixed(2)+'×';
+  $('gapRange').value=st.gap;$('gapLabel').textContent=st.gap+'ms';
+  $('vocabSelect').value=st.vocab;
+  $('rateRange').addEventListener('input',e=>{st.rate=Number(e.target.value);$('rateLabel').textContent=st.rate.toFixed(2)+'×';save();});
+  $('gapRange').addEventListener('input',e=>{st.gap=Number(e.target.value);$('gapLabel').textContent=st.gap+'ms';save();});
+  $('voiceSelect').addEventListener('change',e=>{st.voice=e.target.value;save();unlockAudio();speak('Welcome to the vault.',{voice:baseVoice()});});
+  $('vocabSelect').addEventListener('change',e=>{st.vocab=e.target.value;save();renderSalons();if(S.phase==='prepare'&&!S.busy)prepareRound('Vocabulary range updated — new round dealt.');});
+  $('lockSelect').addEventListener('change',e=>{st.lock=e.target.value;save();if(S.phase==='prepare'&&!S.busy)prepareRound(st.lock==='rotate'?'Challenges will rotate every round.':`Locked on <b>${CHALLENGES[st.lock].name}</b>.`);});
+  [['tgShuffle','shuffleVoice'],['tgBlind','blind'],['tgFx','fx']].forEach(([id,k])=>$(id).addEventListener('click',()=>{st[k]=!st[k];save();syncToggles();if(k==='fx'&&st.fx){unlockAudio();FX.ok();}}));
+  let wipeArmed=0;
+  $('wipeBtn').addEventListener('click',()=>{
+    const b=$('wipeBtn');
+    if(Date.now()-wipeArmed>3500){wipeArmed=Date.now();b.querySelector('span').firstChild.textContent='Tap again to erase everything ';setTimeout(()=>{b.querySelector('span').firstChild.textContent='Erase vault progress';},3500);return;}
+    const keep={...st};store=freshStore();store.best=0;store.settings=keep;st=store.settings;save();
+    b.querySelector('span').firstChild.textContent='Erase vault progress';wipeArmed=0;
+    newSession();toast('Vault reset','A clean start. Every word is new again.');
+  });
+  syncToggles();
+}
+$('startBtn').addEventListener('click',startRound);
+$('replayBtn').addEventListener('click',()=>{if(S.phase==='recover'&&!S.busy){unlockAudio();playSequence(true);}});
+$('newBtn').addEventListener('click',()=>{unlockAudio();newSession();});
+$('tipBtn').addEventListener('click',useTip);
+$('skipBtn').addEventListener('click',skipQ);
+$('helpBtnTop').addEventListener('click',()=>$('helpDialog').showModal());
+$('closeHelpBtn').addEventListener('click',()=>{$('helpDialog').close();unlockAudio();});
+$('vaultBtn').addEventListener('click',()=>{renderVault();$('vaultDialog').showModal();});
+$('vaultBtnTop').addEventListener('click',()=>{renderVault();$('vaultDialog').showModal();});
+$('closeVaultBtn').addEventListener('click',()=>$('vaultDialog').close());
+['helpDialog','vaultDialog'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target===$(id))$(id).close();}));
+document.addEventListener('keydown',e=>{
+  if($('helpDialog').open||$('vaultDialog').open)return;
+  const tag=(e.target&&e.target.tagName)||'';
+  if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
+  if(/^[1-9]$/.test(e.key)){const b=$('answerArea').querySelectorAll('.opt')[Number(e.key)-1];if(b&&!b.disabled){e.preventDefault();b.click();}return;}
+  if(e.key==='Enter'){
+    if(tag==='BUTTON')return;
+    if(S.phase==='prepare'&&!$('startBtn').disabled){e.preventDefault();startRound();}
+    else if(S.phase==='review'&&$('goNext')){e.preventDefault();(document.querySelector('.r-btns .btn-gold')||$('goNext')).click();}
+  }
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&(S.phase==='listen'||S.phase==='hold')){cancelSpeech();}});
 
-    document.addEventListener('keydown',event=>{
-      if(els.helpDialog.open) return;
-      const keys=['1','2','3','4'];
-      const idx=keys.indexOf(event.key);
-      if(idx>-1){
-        const btn=[...document.querySelectorAll('.emoji-btn')][idx];
-        if(btn && !btn.disabled) btn.click();
-      }
-    });
-
-    els.startBtn.addEventListener('click',startRound);
-    els.replayBtn.addEventListener('click',()=>playSequence({penalty:true}));
-    els.resetBtn.addEventListener('click',resetSession);
-    els.tipBtn.addEventListener('click',useTip);
-    els.skipBtn.addEventListener('click',skipQuestion);
-    els.nextBtn.addEventListener('click',nextLevel);
-    els.toggleReviewBtn.addEventListener('click',()=>{
-      els.reviewGrid.hidden = !els.reviewGrid.hidden;
-      els.toggleReviewBtn.textContent = els.reviewGrid.hidden ? 'Show' : 'Hide';
-    });
-    els.rateRange.addEventListener('input',()=>els.rateLabel.textContent=Number(els.rateRange.value).toFixed(2)+'×');
-    els.gapRange.addEventListener('input',()=>els.gapLabel.textContent=els.gapRange.value+'ms');
-    els.helpBtnTop.addEventListener('click',()=>els.helpDialog.showModal());
-    els.closeHelpBtn.addEventListener('click',()=>els.helpDialog.close());
-    els.helpDialog.addEventListener('click',event=>{if(event.target===els.helpDialog)els.helpDialog.close();});
-
-    if(state.audioReady){
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged=loadVoices;
-    }
-    drawWave(); refillPool(); renderModes(); resetRoundOnly('Choose a mode, then start. Use headphones for better encoding.');
-  </script>
+/* ═════════════════════════ BOOT ═════════════════════════ */
+if(hasSpeech()){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+else{st.blind=false;}
+bindSettings();renderModes();renderChallengeHelp();
+prepareRound('Choose a mode, then press <b>Start listening</b>. Headphones recommended.');
+window.__FMR={WORDS,buildRoundWords,buildQuestions,S,store:()=>store};
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Del Curioso al Trader · Reto de 30 días</title>
+<meta name="description" content="Reto de 30 días de ProfGermandario: cinco minutos al día para entender el mercado, su jerga y sus horarios.">
+<meta name="theme-color" content="#0A0B0F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+/* Aplica el tema antes de pintar para evitar parpadeo */
+(function(){try{var s=JSON.parse(localStorage.getItem('reto_trading_v1')||'{}');var t=s.tema||'auto';
+if(t==='auto'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}
+document.documentElement.setAttribute('data-theme',t)}catch(e){}})();
+</script>
+<style>
+/* ============================================================
+   DEL CURIOSO AL TRADER — Sistema visual
+   Oscuro: obsidiana + oro champagne · Claro: marfil + oro viejo
+   ============================================================ */
+:root{
+  --r: 18px; --r-sm: 12px; --r-xs: 8px;
+  --ff-d: "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --ff-b: "Figtree", "DM Sans", system-ui, -apple-system, sans-serif;
+  --ff-m: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --tab-h: 68px;
+}
+html[data-theme="dark"]{
+  --bg:#0A0B0F; --bg2:#0E1016; --surface:#13161E; --surface2:#1A1E28; --surface3:#222736;
+  --line:rgba(214,179,106,.16); --line2:rgba(255,255,255,.07);
+  --text:#F2EDE3; --muted:#A8A296; --faint:#6F6A61;
+  --gold:#D6B36A; --gold2:#F0D9A0; --gold-deep:#A9823A; --on-gold:#17120A;
+  --gold-soft:rgba(214,179,106,.12); --gold-glow:rgba(214,179,106,.28);
+  --emerald:#46B98E; --emerald-soft:rgba(70,185,142,.14);
+  --garnet:#D2777A; --garnet-soft:rgba(210,119,122,.13);
+  --amber:#E3A852; --amber-soft:rgba(227,168,82,.14);
+  --shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.03) inset;
+  --halo:radial-gradient(1200px 600px at 50% -200px, rgba(214,179,106,.13), transparent 60%);
+  color-scheme: dark;
+}
+html[data-theme="light"]{
+  --bg:#F5F0E6; --bg2:#EEE7D9; --surface:#FFFDF8; --surface2:#F8F3EA; --surface3:#EFE7D8;
+  --line:rgba(150,112,44,.22); --line2:rgba(28,24,19,.08);
+  --text:#1C1813; --muted:#665E53; --faint:#978E80;
+  --gold:#A27628; --gold2:#C9A45A; --gold-deep:#7E5A18; --on-gold:#FFFBF2;
+  --gold-soft:rgba(162,118,40,.10); --gold-glow:rgba(162,118,40,.22);
+  --emerald:#1E8660; --emerald-soft:rgba(30,134,96,.10);
+  --garnet:#AD4448; --garnet-soft:rgba(173,68,72,.09);
+  --amber:#AE6E14; --amber-soft:rgba(174,110,20,.11);
+  --shadow:0 10px 28px rgba(92,70,30,.10), 0 1px 0 rgba(255,255,255,.8) inset;
+  --halo:radial-gradient(1200px 600px at 50% -220px, rgba(201,164,90,.22), transparent 60%);
+  color-scheme: light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--ff-b); background:var(--bg); background-image:var(--halo); background-attachment:fixed;
+  color:var(--text); font-size:16px; line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased;
+  transition:background-color .3s var(--ease), color .3s var(--ease);
+}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.mono{font-family:var(--ff-m);font-feature-settings:"tnum"}
+.serif{font-family:var(--ff-d)}
+.muted{color:var(--muted)} .faint{color:var(--faint)}
+.gold{color:var(--gold)}
+.ico{width:20px;height:20px;display:inline-block;vertical-align:middle;flex:none}
+.ico svg{width:100%;height:100%;display:block}
+
+/* ---------- Cabecera ---------- */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--line2)}
+.top-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px}
+.brand{display:flex;align-items:center;gap:10px}
+.mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--gold2),var(--gold) 50%,var(--gold-deep));color:var(--on-gold);
+  font-family:var(--ff-d);font-weight:600;font-size:18px;box-shadow:0 4px 14px var(--gold-glow)}
+.brand-t{font-family:var(--ff-d);font-size:17px;font-weight:500;letter-spacing:.01em;line-height:1.1}
+.brand-s{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.top-act{display:flex;gap:6px}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--muted);
+  border:1px solid var(--line2);background:var(--surface);transition:all .2s var(--ease)}
+.icon-btn:hover{color:var(--gold);border-color:var(--line)}
+.icon-btn .ico{width:19px;height:19px}
+
+.clock{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 0 10px}
+.mk{border:1px solid var(--line2);background:var(--surface);border-radius:12px;padding:7px 9px;min-width:0}
+.mk-h{display:flex;align-items:baseline;justify-content:space-between;gap:4px;white-space:nowrap}
+.mk-n{font-size:12px;color:var(--muted);font-weight:600}
+.mk-t{font-family:var(--ff-m);font-size:13.5px;font-weight:500}
+.mk-s{display:flex;align-items:center;gap:5px;font-size:11.5px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--faint)}
+.st-open .dot{background:var(--emerald);box-shadow:0 0 0 3px var(--emerald-soft);animation:pulse 2s infinite}
+.st-open .mk-st{color:var(--emerald)}
+.st-ext .dot{background:var(--amber)} .st-ext .mk-st{color:var(--amber)}
+.st-closed .mk-st{color:var(--faint)}
+.st-holiday .dot{background:var(--garnet)} .st-holiday .mk-st{color:var(--garnet)}
+.mk-c{font-size:10.5px;color:var(--faint);font-family:var(--ff-m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px var(--emerald-soft)}50%{box-shadow:0 0 0 6px transparent}}
+
+/* ---------- Vistas ---------- */
+main{padding:18px 0 calc(var(--tab-h) + 40px)}
+.view{animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-family:var(--ff-d);font-weight:500;margin:0;letter-spacing:-.005em}
+.h1{font-size:30px;line-height:1.12}
+.h2{font-size:22px;line-height:1.2}
+.h3{font-size:18px;line-height:1.25}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.sec{margin-top:22px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.sec-h .link{font-size:13px;color:var(--gold);font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--line2);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.card.lux{border-color:var(--line);background:
+  linear-gradient(180deg,var(--gold-soft),transparent 55%), var(--surface);position:relative;overflow:hidden}
+.card.lux::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.05) 50%,transparent 70%)}
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+.stack>*+*{margin-top:10px}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 20px;border-radius:14px;
+  font-weight:600;font-size:15.5px;letter-spacing:.01em;transition:transform .15s var(--ease),box-shadow .2s var(--ease),background .2s}
+.btn:active{transform:scale(.98)}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold) 48%,var(--gold-deep));color:var(--on-gold);box-shadow:0 8px 22px var(--gold-glow)}
+.btn-gold:hover{box-shadow:0 10px 28px var(--gold-glow)}
+.btn-ghost{border:1px solid var(--line);color:var(--text);background:var(--surface)}
+.btn-quiet{color:var(--muted);min-height:44px}
+.btn-danger{border:1px solid var(--garnet);color:var(--garnet)}
+.btn-block{width:100%}
+.btn-sm{min-height:38px;padding:0 14px;font-size:13.5px;border-radius:11px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;
+  background:var(--surface2);color:var(--muted);border:1px solid var(--line2);white-space:nowrap}
+.chip.gold{background:var(--gold-soft);color:var(--gold);border-color:var(--line)}
+.chip.ok{background:var(--emerald-soft);color:var(--emerald);border-color:transparent}
+.chip.warn{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+
+/* ---------- Hoy ---------- */
+.greet{margin-bottom:16px}
+.greet .h1 em{font-style:italic;color:var(--gold)}
+.lvl{display:flex;align-items:center;gap:14px}
+.lvl-badge{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex:none;
+  background:var(--gold-soft);border:1px solid var(--line);color:var(--gold)}
+.lvl-badge .ico{width:26px;height:26px}
+.lvl-name{font-family:var(--ff-d);font-size:20px}
+.bar{height:6px;border-radius:9px;background:var(--surface3);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold2));transition:width .8s var(--ease)}
+.journey{display:flex;justify-content:space-between;gap:4px;margin-top:12px;font-size:9.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--faint)}
+.journey .on{color:var(--gold);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:12px;text-align:left}
+.stat-v{font-family:var(--ff-m);font-size:22px;font-weight:500;display:flex;align-items:center;gap:6px}
+.stat-v .ico{width:18px;height:18px;color:var(--gold)}
+.stat-l{font-size:11.5px;color:var(--muted);margin-top:2px}
+.today .day-n{font-family:var(--ff-m);font-size:12px;color:var(--gold);letter-spacing:.08em}
+.today .h2{margin:6px 0 6px}
+.today .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.today .acts{display:grid;grid-template-columns:1fr;gap:8px}
+.hint{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--gold-soft);border:1px solid var(--line);font-size:14px}
+.hint .ico{color:var(--gold);margin-top:2px}
+.list{display:flex;flex-direction:column;gap:8px}
+.li{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line2);border-radius:14px;text-align:left;width:100%}
+.li:hover{border-color:var(--line)}
+.li-n{font-family:var(--ff-m);font-size:12px;color:var(--muted);width:34px;flex:none}
+.li-t{flex:1;min-width:0}
+.li-t b{display:block;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-t span{font-size:12.5px;color:var(--muted)}
+.li .ico{color:var(--faint)}
+
+.mirror{display:grid;gap:12px}
+.mi-h{display:flex;justify-content:space-between;font-size:13.5px}
+.mi-h b{font-weight:600}
+.mi-v{font-family:var(--ff-m);color:var(--gold)}
+.mi-d{font-size:12px;color:var(--faint);margin-top:3px}
+
+/* ---------- Calendario ---------- */
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-h .h2{text-align:center}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-w{font-size:11px;text-align:center;color:var(--faint);letter-spacing:.08em;padding-bottom:4px;font-weight:600}
+.cell{aspect-ratio:1/1.12;border-radius:12px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;font-size:13px;position:relative;min-height:44px;color:var(--faint)}
+.cell.in{color:var(--text);background:var(--surface);border-color:var(--line2)}
+.cell.plan{cursor:pointer}
+.cell .cd{font-family:var(--ff-m);font-size:13px}
+.cell .cn{font-size:9.5px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.cell.is-today{border:1.5px solid var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.cell.s-today{animation:glow 2.4s infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 3px var(--gold-soft)}50%{box-shadow:0 0 0 6px var(--gold-soft)}}
+.cell.s-done,.cell.s-ontime{background:linear-gradient(160deg,var(--gold2),var(--gold) 55%,var(--gold-deep));color:var(--on-gold);border-color:transparent}
+.cell.s-done .cn,.cell.s-ontime .cn{color:var(--on-gold);opacity:.8}
+.cell.s-recovered{background:var(--gold-soft);border-color:var(--gold)}
+.cell.s-pending::after{content:"";position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
+.cell .flags{position:absolute;bottom:4px;display:flex;gap:2px}
+.cell .flags i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.7}
+.cell .spark{position:absolute;top:4px;left:5px;width:10px;height:10px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:4px;display:inline-block;border:1px solid var(--line2)}
+.lg-done{background:linear-gradient(160deg,var(--gold2),var(--gold))}
+.lg-rec{background:var(--gold-soft);border-color:var(--gold)!important}
+.lg-today{border:1.5px solid var(--gold)!important}
+.lg-pend{background:var(--amber)}
+.lg-plan{background:var(--surface)}
+
+/* ---------- Hoja inferior ---------- */
+.scrim{position:fixed;inset:0;background:rgba(5,5,8,.55);backdrop-filter:blur(2px);z-index:60;opacity:0;pointer-events:none;transition:opacity .25s var(--ease)}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-height:88vh;overflow:auto;transform:translateY(105%);transition:transform .32s var(--ease);
+  background:var(--bg2);border-top:1px solid var(--line);border-radius:24px 24px 0 0;padding:10px 0 calc(24px + env(safe-area-inset-bottom))}
+.sheet{visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.grab{width:42px;height:5px;border-radius:9px;background:var(--surface3);margin:4px auto 14px}
+.sheet-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.field{display:block;margin-top:14px}
+.field>span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.02em}
+.inp,.ta,.sel{width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line2);background:var(--surface);padding:12px 14px;font-size:15.5px;transition:border-color .2s}
+.inp:focus,.ta:focus,.sel:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.ta{min-height:84px;resize:vertical}
+.check{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:10px}
+.check input{width:20px;height:20px;accent-color:var(--gold)}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:13px;padding:4px;gap:4px}
+.seg button{flex:1;min-height:38px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--surface3);color:var(--text);box-shadow:0 1px 0 var(--line) inset}
+.steps{display:grid;gap:6px}
+.stp{display:flex;align-items:center;gap:10px;font-size:14px;padding:9px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line2)}
+.stp .ck{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--faint);display:grid;place-items:center;flex:none}
+.stp.ok .ck{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.stp .ck .ico{width:13px;height:13px}
+.stp small{margin-left:auto;font-family:var(--ff-m);font-size:11px;color:var(--faint)}
+.qa{padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line2)}
+.qa+.qa{margin-top:8px}
+.qa-t{font-size:14.5px}
+.qa-m{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;color:var(--faint)}
+.qa-a{margin-top:8px;font-size:13.5px;color:var(--muted);border-left:2px solid var(--gold);padding-left:10px}
+.empty{padding:18px;text-align:center;color:var(--faint);font-size:14px;border:1px dashed var(--line2);border-radius:14px}
+
+/* ---------- Sesión ---------- */
+.full{position:fixed;inset:0;z-index:70;background:var(--bg);background-image:var(--halo);overflow:auto;display:flex;flex-direction:column}
+.full-h{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);padding:12px 0}
+.prog{display:flex;gap:4px;margin-top:10px}
+.prog i{flex:1;height:4px;border-radius:4px;background:var(--surface3);transition:background .3s}
+.prog i.on{background:var(--gold)}
+.full-b{flex:1;padding:18px 0 40px}
+.stage{animation:fade .35s var(--ease)}
+.big-q{font-family:var(--ff-d);font-size:26px;line-height:1.2;margin:8px 0 18px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;border-radius:15px;border:1px solid var(--line2);background:var(--surface);
+  font-size:15.5px;margin-top:9px;transition:all .2s var(--ease);min-height:56px}
+.opt:hover{border-color:var(--line)}
+.opt .l{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--surface3);font-family:var(--ff-m);font-size:12.5px;flex:none;color:var(--muted)}
+.opt.right{border-color:var(--emerald);background:var(--emerald-soft)}
+.opt.right .l{background:var(--emerald);color:#fff}
+.opt.wrong{border-color:var(--garnet);background:var(--garnet-soft)}
+.opt.wrong .l{background:var(--garnet);color:#fff}
+.opt[disabled]{pointer-events:none}
+.fb{margin-top:14px;padding:14px 16px;border-radius:14px;font-size:14.5px;animation:fade .3s var(--ease)}
+.fb.ok{background:var(--emerald-soft);border:1px solid color-mix(in srgb,var(--emerald) 35%,transparent)}
+.fb.no{background:var(--garnet-soft);border:1px solid color-mix(in srgb,var(--garnet) 35%,transparent)}
+.fb b{display:block;margin-bottom:2px}
+.lesson p{font-size:17px;line-height:1.65;margin:0 0 14px}
+.lesson .h1{margin:6px 0 16px}
+.box{border-radius:15px;padding:14px 16px;margin-top:10px;border:1px solid var(--line2);background:var(--surface)}
+.box .eyebrow{display:block;margin-bottom:4px}
+.box.gold{border-color:var(--line);background:var(--gold-soft)}
+.term{text-align:center;padding:28px 18px}
+.term-w{font-family:var(--ff-d);font-size:38px;line-height:1.1;color:var(--gold)}
+.term-tr{font-size:15px;color:var(--muted);margin-top:6px}
+.term-acts{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.mood{display:grid;gap:9px}
+.done-ring{width:112px;height:112px;margin:20px auto 10px;display:block}
+.done-ring circle{fill:none;stroke-width:3}
+.done-ring .bg{stroke:var(--surface3)}
+.done-ring .fg{stroke:var(--gold);stroke-dasharray:302;stroke-dashoffset:302;animation:ring 1s var(--ease) forwards;stroke-linecap:round}
+.done-ring path{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:ring 0.6s .7s var(--ease) forwards}
+@keyframes ring{to{stroke-dashoffset:0}}
+.center{text-align:center}
+.foot-acts{display:grid;gap:8px;margin-top:22px}
+
+/* ---------- Álbum ---------- */
+.album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cardw{aspect-ratio:3/4;border-radius:14px;border:1px solid var(--line2);background:var(--surface);padding:10px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;position:relative;overflow:hidden}
+.cardw .n{font-family:var(--ff-m);font-size:10.5px;color:var(--faint)}
+.cardw .w{font-family:var(--ff-d);font-size:15px;line-height:1.15;word-break:break-word}
+.cardw .t{font-size:11px;color:var(--muted)}
+.cardw.got{border-color:var(--line);background:linear-gradient(165deg,var(--gold-soft),transparent 70%),var(--surface)}
+.cardw.got .w{color:var(--gold)}
+.cardw.no .w{color:var(--faint);font-size:22px;text-align:center}
+.cardw.no{border-style:dashed}
+.flip{animation:flip .7s var(--ease)}
+@keyframes flip{0%{transform:rotateY(90deg)}100%{transform:none}}
+
+/* ---------- Rastro ---------- */
+.tl-day{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:18px 0 8px}
+.tl{position:relative;padding-left:22px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line)}
+.tl-i{position:relative;padding:6px 0 8px;font-size:14px}
+.tl-i::before{content:"";position:absolute;left:-19px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--surface3);border:1.5px solid var(--gold)}
+.tl-i.k-completado::before{background:var(--gold)}
+.tl-i time{font-family:var(--ff-m);font-size:11.5px;color:var(--faint);margin-right:8px}
+
+/* ---------- Tabbar ---------- */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--bg2) 88%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line2);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar .wrap{display:grid;grid-template-columns:repeat(4,1fr);height:var(--tab-h)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:600;color:var(--faint);transition:color .2s;position:relative}
+.tab .ico{width:22px;height:22px}
+.tab.on{color:var(--gold)}
+.tab.on::before{content:"";position:absolute;top:0;width:28px;height:2px;border-radius:2px;background:var(--gold)}
+.badge{position:absolute;top:10px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:var(--amber);color:#1a1205;font-size:10px;display:grid;place-items:center;font-family:var(--ff-m)}
+
+/* ---------- Toast / pie ---------- */
+.toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + 18px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;z-index:90;
+  background:var(--surface3);color:var(--text);border:1px solid var(--line);padding:12px 18px;border-radius:14px;font-size:14px;box-shadow:var(--shadow);
+  transition:all .3s var(--ease);pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.legal{margin-top:36px;padding-top:16px;border-top:1px solid var(--line2);font-size:11.5px;color:var(--faint);text-align:center;line-height:1.6}
+
+/* ---------- Onboarding ---------- */
+.ob{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.ob .mark{width:56px;height:56px;font-size:28px;border-radius:16px;margin-bottom:22px}
+.ob .h1{font-size:36px}
+.ob-dots{display:flex;gap:6px;margin-bottom:24px}
+.ob-dots i{width:22px;height:4px;border-radius:4px;background:var(--surface3)}
+.ob-dots i.on{background:var(--gold)}
+.pledge{font-family:var(--ff-d);font-size:22px;line-height:1.35;font-style:italic;padding:20px;border-left:2px solid var(--gold);background:var(--gold-soft);border-radius:0 14px 14px 0}
+.sig{font-family:var(--ff-d);font-style:italic;font-size:24px;text-align:center;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent}
+
+/* ---------- Desafío ---------- */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mt{min-height:58px;border-radius:13px;border:1px solid var(--line2);background:var(--surface);padding:8px 10px;font-size:13.5px;line-height:1.25;transition:all .2s}
+.mt.sel{border-color:var(--gold);background:var(--gold-soft)}
+.mt.gone{opacity:0;transform:scale(.9);pointer-events:none}
+.mt.bad{border-color:var(--garnet);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (min-width:640px){.today .acts{grid-template-columns:1fr 1fr}.album{grid-template-columns:repeat(4,1fr)}}
+
+</style>
+</head>
+<body>
+
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">G</div>
+          <div>
+            <div class="brand-t">Del Curioso al Trader</div>
+            <div class="brand-s">Reto 30 días · T1</div>
+          </div>
+        </div>
+        <div class="top-act">
+          <button class="icon-btn" id="btnTheme" aria-label="Cambiar tema"></button>
+          <button class="icon-btn" id="btnSettings" aria-label="Ajustes"></button>
+        </div>
+      </div>
+      <div class="clock" id="clock" aria-label="Reloj de mercados"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="v-hoy" class="view"></section>
+    <section id="v-cal" class="view hidden"></section>
+    <section id="v-album" class="view hidden"></section>
+    <section id="v-rastro" class="view hidden"></section>
+    <p class="legal">Contenido educativo. No es asesoría financiera. Operar implica riesgo de pérdida.<br>© ProfGermandario · Programa «Del Curioso al Trader Inteligente»</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Navegación">
+    <div class="wrap">
+      <button class="tab on" data-tab="hoy"><span class="ico" data-i="home"></span>Hoy</button>
+      <button class="tab" data-tab="cal"><span class="ico" data-i="cal"></span>Calendario</button>
+      <button class="tab" data-tab="album"><span class="ico" data-i="cards"></span>Álbum</button>
+      <button class="tab" data-tab="rastro"><span class="ico" data-i="trail"></span>Rastro<span class="badge hidden" id="qBadge"></span></button>
+    </div>
+  </nav>
+</div>
+
+<div id="onboard" class="hidden"></div>
+<div id="session" class="full hidden" role="dialog" aria-modal="true"></div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="wrap"><div class="grab"></div><div id="sheetBody"></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   CURRICULUM — Temporada 1 «Entiende el juego» · Días 1–15
+   Fuente: «Del Curioso al Trader Inteligente» (ProfGermandario)
+   Edita textos aquí sin tocar la lógica de la app.
+   ============================================================ */
+const CURRICULUM_A = [
+{
+  dia: 1, semana: 1,
+  titulo: "¿Qué es un mercado?",
+  idea: "Un mercado es el lugar, físico o digital, donde se encuentran quienes quieren comprar y quienes quieren vender. Lo usas todos los días: el supermercado, una app de domicilios, una plataforma de segunda mano. La Bolsa de valores es un mercado más, con una diferencia: lo que se intercambia no son tomates ni zapatos, sino partes de empresas. Entender esto le quita el misterio: la Bolsa no es un casino, es un punto de encuentro con reglas.",
+  analogia: "La Bolsa es como una gran plaza de mercado abierta en horario fijo, donde en vez de frutas se negocian pedacitos de empresas.",
+  ejemplo: "Cuando alguien compra una acción de Apple, otra persona se la está vendiendo en ese mismo instante. Siempre hay dos lados.",
+  jerga: { term: "Market", tr: "Mercado", def: "Espacio donde compradores y vendedores intercambian algo a un precio.", frase: "The market opens at nine thirty.", fraseEs: "El mercado abre a las nueve y media." },
+  quiz: [
+    { q: "¿Qué define a un mercado?", o: ["Que haya un edificio grande", "Que se encuentren compradores y vendedores", "Que los precios nunca cambien"], c: 1, e: "Un mercado existe cuando hay dos lados dispuestos a intercambiar, sea en persona o en una pantalla." },
+    { q: "La palabra «market» significa…", o: ["Mercado", "Mercancía", "Marca"], c: 0, e: "Market = mercado. La escucharás todos los días en el mundo del trading." },
+    { q: "Si compras una acción, ¿quién está del otro lado?", o: ["Nadie, la crea el sistema", "El gobierno", "Otra persona o institución que la vende"], c: 2, e: "Cada compra tiene una venta del otro lado. El precio es el punto donde ambos se ponen de acuerdo." }
+  ],
+  reto: "Escribe en tus notas 3 mercados que usas cada semana y una similitud de cada uno con la Bolsa.",
+  fuente: "Módulo 1 · Ejercicio 1"
+},
+{
+  dia: 2, semana: 1,
+  titulo: "La Bolsa de valores",
+  idea: "La Bolsa conecta dos necesidades. Las empresas necesitan capital para crecer; las personas buscan hacer crecer su dinero. La empresa ofrece partes de sí misma y los inversores las compran. Después, esas partes se siguen comprando y vendiendo entre personas todos los días hábiles. Las bolsas más conocidas son la de Nueva York (NYSE) y el Nasdaq, ambas en Estados Unidos.",
+  analogia: "Es como un club donde la empresa vende membresías para financiarse, y luego los socios pueden revender su membresía a otros.",
+  ejemplo: "Una empresa que sale a Bolsa por primera vez hace una «oferta pública inicial». Desde ese día sus acciones cotizan y cualquiera puede comprarlas a través de un broker.",
+  jerga: { term: "Stock exchange", tr: "Bolsa de valores", def: "Mercado organizado y regulado donde se compran y venden acciones.", frase: "Apple trades on the Nasdaq stock exchange.", fraseEs: "Apple cotiza en la bolsa Nasdaq." },
+  quiz: [
+    { q: "¿Para qué le sirve la Bolsa a una empresa?", o: ["Para conseguir capital y crecer", "Para no pagar impuestos", "Para fijar sus propios precios"], c: 0, e: "Vender partes de la empresa le da dinero para invertir en su crecimiento." },
+    { q: "«Stock exchange» se traduce como…", o: ["Cambio de divisas", "Bolsa de valores", "Inventario"], c: 1, e: "Stock exchange = bolsa de valores. Exchange también se usa sola: «the exchange»." },
+    { q: "¿Cuáles son dos bolsas de Estados Unidos?", o: ["BVC y Nikkei", "LSE y DAX", "NYSE y Nasdaq"], c: 2, e: "NYSE y Nasdaq. La BVC es Colombia, la LSE es Londres; Nikkei y DAX son índices." }
+  ],
+  reto: "Busca en qué bolsa cotiza una empresa cuyo producto usas (NYSE o Nasdaq) y anótalo.",
+  fuente: "Módulo 1"
+},
+{
+  dia: 3, semana: 1,
+  titulo: "La acción: un pedazo de empresa",
+  idea: "Una acción es una fracción de la propiedad de una empresa. Si tienes una acción de una compañía con mil millones de acciones, eres dueño de una parte diminuta, pero real. Su precio sube o baja según cuánto valoren los demás esa empresa. Ser accionista no significa que la empresa te deba dinero: participas de lo bueno y de lo malo del negocio.",
+  analogia: "Una empresa es una pizza enorme cortada en millones de porciones. Cada acción es una porción.",
+  ejemplo: "Si compras 10 acciones a $50, inviertes $500. Si el precio pasa a $55, tu posición vale $550; si baja a $45, vale $450.",
+  jerga: { term: "Share", tr: "Acción", def: "Unidad de propiedad de una empresa. También se dice «stock».", frase: "I bought ten shares of Microsoft.", fraseEs: "Compré diez acciones de Microsoft." },
+  quiz: [
+    { q: "Una acción representa…", o: ["Un préstamo que le haces a la empresa", "Una parte de la propiedad de la empresa", "Un cupón de descuento"], c: 1, e: "Una acción es propiedad, no un préstamo. Por eso su valor puede subir o bajar." },
+    { q: "Compras 10 acciones a $50 y el precio baja a $45. ¿Cuánto vale tu posición?", o: ["$450", "$500", "$550"], c: 0, e: "10 × $45 = $450. La pérdida existe en el papel mientras no vendas." },
+    { q: "«Share» y «stock» en trading significan…", o: ["Compartir y almacén", "Bono y dividendo", "Acción"], c: 2, e: "Ambas palabras se usan para «acción». «Shares» suele contar unidades: 10 shares." }
+  ],
+  reto: "Elige una empresa que conozcas y mira su precio por acción hoy. Calcula cuánto costarían 10 acciones.",
+  fuente: "Módulo 1"
+},
+{
+  dia: 4, semana: 1,
+  titulo: "El símbolo: el nombre corto",
+  idea: "Cada empresa en Bolsa tiene un código de pocas letras llamado ticker. Así la buscas en cualquier plataforma. Apple es AAPL, Microsoft es MSFT, Tesla es TSLA. Aprender a buscar por ticker evita errores: hay empresas con nombres parecidos y símbolos muy distintos. Cuando veas un ticker, piensa en la empresa que hay detrás, no solo en las letras.",
+  analogia: "El ticker es como la placa de un carro: corta, única y sirve para identificarlo rápido.",
+  ejemplo: "Si escribes «Apple» en un buscador financiero, verás AAPL. Ese es el símbolo que usarás en el simulador y en cualquier broker.",
+  jerga: { term: "Ticker", tr: "Símbolo bursátil", def: "Código de letras que identifica una acción en la Bolsa.", frase: "What's the ticker for Tesla? It's TSLA.", fraseEs: "¿Cuál es el símbolo de Tesla? Es TSLA." },
+  quiz: [
+    { q: "¿Qué es un ticker?", o: ["El precio de cierre", "El código que identifica una acción", "Una comisión del broker"], c: 1, e: "El ticker es el identificador corto de la acción en el mercado." },
+    { q: "¿Cuál es el ticker de Microsoft?", o: ["MSFT", "MICRO", "MS"], c: 0, e: "MSFT. Ojo: MS es el ticker de otra empresa (Morgan Stanley)." },
+    { q: "¿Por qué conviene buscar por ticker y no solo por nombre?", o: ["Porque es más barato", "Porque el nombre cambia cada día", "Porque evita confundir empresas con nombres parecidos"], c: 2, e: "Dos empresas pueden sonar igual; el ticker es único." }
+  ],
+  reto: "Encuentra el ticker de 3 empresas que usas (por ejemplo, la de tu teléfono, una red social y una tienda).",
+  fuente: "Complemento"
+},
+{
+  dia: 5, semana: 1,
+  titulo: "Oferta y demanda",
+  idea: "El precio se mueve por una regla simple. Si más gente quiere comprar que vender, el precio sube. Si más gente quiere vender que comprar, el precio baja. En la pantalla esto se ve con dos números: el bid, lo máximo que un comprador ofrece ahora, y el ask, lo mínimo que un vendedor acepta. Cuando ambos se cruzan, hay operación.",
+  analogia: "Es una subasta permanente: unos levantan la mano con su mejor oferta y otros esperan su mejor precio.",
+  ejemplo: "Si ves bid $99,90 y ask $100,00, quien compra «ya» paga $100,00 y quien vende «ya» recibe $99,90.",
+  jerga: { term: "Bid / Ask", tr: "Oferta de compra / precio de venta", def: "Bid: mejor precio que pagan los compradores. Ask: mejor precio que aceptan los vendedores.", frase: "The bid is 99.90 and the ask is 100.", fraseEs: "La oferta de compra es 99,90 y el precio de venta es 100." },
+  quiz: [
+    { q: "Si hay muchos más compradores que vendedores, el precio tiende a…", o: ["Bajar", "Subir", "Quedarse igual"], c: 1, e: "Más demanda que oferta empuja el precio hacia arriba." },
+    { q: "El «ask» es…", o: ["Lo mínimo que acepta un vendedor", "Lo máximo que paga un comprador", "El precio de ayer"], c: 0, e: "Ask = lo que pide el vendedor. Bid = lo que ofrece el comprador." },
+    { q: "Bid $99,90 · Ask $100,00. Si compras al instante, ¿cuánto pagas?", o: ["$99,90", "$99,95", "$100,00"], c: 2, e: "Comprar al instante significa aceptar el ask: $100,00." }
+  ],
+  reto: "Abre el simulador o una app financiera y anota el bid y el ask de una acción.",
+  fuente: "Módulo 3"
+},
+{
+  dia: 6, semana: 1,
+  titulo: "El peaje invisible",
+  idea: "La diferencia entre el bid y el ask se llama spread. Es un costo que pagas al entrar y salir aunque no lo veas como comisión. En acciones grandes y muy negociadas el spread suele ser de centavos. En acciones pequeñas o poco negociadas puede ser grande. Un spread amplio significa que necesitas que el precio se mueva más a tu favor solo para quedar tablas.",
+  analogia: "Como la casa de cambio: te compra dólares a un precio y te los vende a otro. Esa diferencia es su ganancia.",
+  ejemplo: "Bid $10,00 y ask $10,20: el spread es $0,20, que es un 2 % del precio. Si compras y vendes al instante, pierdes ese 2 %.",
+  jerga: { term: "Spread", tr: "Diferencial", def: "Diferencia entre el precio de venta (ask) y el de compra (bid).", frase: "Small stocks often have a wide spread.", fraseEs: "Las acciones pequeñas suelen tener un diferencial amplio." },
+  quiz: [
+    { q: "El spread es…", o: ["La ganancia diaria de una acción", "La diferencia entre ask y bid", "La comisión fija del broker"], c: 1, e: "Spread = ask − bid. Es un costo implícito de cada operación." },
+    { q: "¿Dónde suele ser más pequeño el spread?", o: ["En acciones grandes y muy negociadas", "En acciones poco conocidas", "Es igual en todas"], c: 0, e: "Más participantes = más competencia de precios = spread más estrecho." },
+    { q: "Bid $10,00 · Ask $10,20. ¿Qué porcentaje del precio es el spread?", o: ["0,2 %", "20 %", "Aproximadamente 2 %"], c: 2, e: "$0,20 sobre $10 es un 2 %. Parece poco, pero se paga en cada entrada y salida." }
+  ],
+  reto: "Compara el spread de una acción grande (como AAPL) con el de una acción pequeña. Anota la diferencia.",
+  fuente: "Complemento"
+},
+{
+  dia: 7, semana: 1,
+  titulo: "Toros y osos",
+  idea: "En el mercado se habla de dos animales. El toro ataca hacia arriba: un «bull market» es un período en que los precios suben de forma sostenida. El oso golpea hacia abajo: un «bear market» suele definirse como una caída de 20 % o más desde un máximo reciente. Ninguno dura para siempre. Reconocer en qué fase estás te ayuda a no sorprenderte.",
+  analogia: "Como las estaciones: hay temporadas de crecimiento y temporadas de frío. Ambas son parte del ciclo.",
+  ejemplo: "Si un índice cae de 5.000 a 3.900 puntos, bajó 22 %: la prensa hablará de mercado bajista.",
+  jerga: { term: "Bull / Bear market", tr: "Mercado alcista / bajista", def: "Bull: precios subiendo de forma sostenida. Bear: caída de 20 % o más desde un máximo.", frase: "We are in a bull market right now.", fraseEs: "Ahora mismo estamos en un mercado alcista." },
+  quiz: [
+    { q: "Un «bear market» describe…", o: ["Una subida fuerte", "Un mercado cerrado", "Una caída de 20 % o más desde un máximo"], c: 2, e: "El oso golpea hacia abajo: mercado bajista." },
+    { q: "Un índice pasa de 5.000 a 3.900. ¿Cuánto cayó?", o: ["22 %", "11 %", "39 %"], c: 0, e: "(5.000 − 3.900) / 5.000 = 1.100 / 5.000 = 22 %." },
+    { q: "¿Qué es cierto sobre los ciclos alcistas y bajistas?", o: ["Un bull market dura para siempre", "Ninguna fase dura para siempre", "Los osos solo aparecen en crisis bancarias"], c: 1, e: "Los mercados alternan fases. La disciplina sirve en ambas." }
+  ],
+  reto: "Busca un titular de esta semana que hable de «bull» o «bear». Anota de qué mercado habla.",
+  fuente: "Complemento · Cierre semana 1",
+  desafio: true,
+  sorpresa: "El 17 de mayo de 1792, 24 corredores firmaron bajo un árbol de sicómoro en Wall Street el Acuerdo de Buttonwood. De ahí nació la Bolsa de Nueva York."
+},
+{
+  dia: 8, semana: 2,
+  titulo: "Qué mueve el precio",
+  idea: "Tres fuerzas cambian el equilibrio entre compradores y vendedores. Los fundamentales: resultados de la empresa, nuevos productos, cambios de dirección. Lo económico: tasas de interés, inflación, empleo, crisis geopolíticas. Lo psicológico: miedo, euforia, noticias reales o falsas. A corto plazo el precio se mueve sobre todo por emociones; a largo plazo, sobre todo por fundamentos.",
+  analogia: "Un barco en el mar: la corriente (fundamentos) marca el rumbo de fondo, pero las olas (emociones) lo sacuden cada día.",
+  ejemplo: "Una empresa presenta ganancias mejores de lo esperado y su acción sube 6 % ese día. Semanas después, el precio depende de si el negocio sigue creciendo.",
+  jerga: { term: "Earnings", tr: "Resultados / ganancias", def: "Informe trimestral con los ingresos y beneficios de una empresa.", frase: "The stock jumped after strong earnings.", fraseEs: "La acción saltó después de unos buenos resultados." },
+  quiz: [
+    { q: "A corto plazo, ¿qué mueve más el precio según el programa?", o: ["Las emociones", "Los fundamentales", "El horario"], c: 0, e: "A corto plazo dominan las emociones; a largo plazo, los fundamentos." },
+    { q: "¿Cuál es un factor económico?", o: ["Un nuevo CEO", "La tasa de interés", "El FOMO"], c: 1, e: "Tasas, inflación y empleo son factores económicos. Un CEO es fundamental; el FOMO es psicológico." },
+    { q: "«Earnings» se refiere a…", o: ["El precio de cierre", "Los dividendos pagados", "Los resultados de la empresa"], c: 2, e: "Earnings = informe de resultados. Mueve mucho el precio en la fecha en que sale." }
+  ],
+  reto: "Busca una noticia positiva y una negativa de una empresa. ¿Cómo reaccionó el precio? ¿Duró?",
+  fuente: "Módulo 3 · Ejercicio 3"
+},
+{
+  dia: 9, semana: 2,
+  titulo: "El miedo a quedarse afuera",
+  idea: "El FOMO es la sensación de que todos están ganando y tú te lo estás perdiendo. Empuja a comprar sin plan, justo cuando el precio ya subió mucho. Lo acompaña el comportamiento de rebaño: hacer lo que hace la mayoría porque sí. El antídoto es simple de decir y difícil de cumplir: no entrar a nada sin un plan escrito antes.",
+  analogia: "Es como correr a la fila más larga del centro comercial sin saber qué venden, solo porque hay mucha gente.",
+  ejemplo: "Una acción sube 40 % en una semana y las redes se llenan de capturas de ganancias. Quien entra por FOMO suele comprar cerca del pico.",
+  jerga: { term: "FOMO", tr: "Miedo a quedarse afuera", def: "Fear Of Missing Out: impulso de entrar por miedo a perder una oportunidad.", frase: "Don't buy just because of FOMO.", fraseEs: "No compres solo por miedo a quedarte afuera." },
+  quiz: [
+    { q: "¿Cuál es el antídoto contra el FOMO según el programa?", o: ["Comprar más rápido", "No entrar sin un plan escrito antes", "Seguir a quien más gana en redes"], c: 1, e: "Un plan escrito antes de entrar le quita poder a la emoción del momento." },
+    { q: "¿Qué suele pasar cuando se compra por FOMO?", o: ["Se compra cerca del pico", "Se compra en el punto más bajo", "No pasa nada"], c: 0, e: "El FOMO aparece cuando el precio ya subió mucho." },
+    { q: "«Fear Of Missing Out» significa…", o: ["Miedo a perder dinero", "Miedo al mercado bajista", "Miedo a quedarse afuera"], c: 2, e: "Missing out = perderse algo. Es miedo a no estar." }
+  ],
+  reto: "Piensa en una compra impulsiva que hiciste (no tiene que ser de Bolsa). Escribe en tus notas qué sentiste.",
+  fuente: "Módulo 3 · Módulo 10"
+},
+{
+  dia: 10, semana: 2,
+  titulo: "El reloj de Nueva York",
+  idea: "La Bolsa de Nueva York abre a las 9:30 a. m. y cierra a las 4:00 p. m., hora de Nueva York, de lunes a viernes. Desde Colombia eso cambia con el horario de verano de Estados Unidos: de noviembre a marzo la apertura es a las 9:30 a. m. en Bogotá; de marzo a noviembre, a las 8:30 a. m. Saber la hora exacta es la base de cualquier rutina de trading.",
+  analogia: "Como una tienda con horario fijo: puedes mirar la vitrina a cualquier hora, pero solo compras cuando abre.",
+  ejemplo: "En julio, cuando en Nueva York son las 9:30 a. m., en Bogotá son las 8:30 a. m. En diciembre ambas ciudades marcan la misma hora.",
+  jerga: { term: "Opening bell", tr: "Campana de apertura", def: "Inicio oficial de la sesión regular del mercado.", frase: "Volume spikes right after the opening bell.", fraseEs: "El volumen se dispara justo después de la campana de apertura." },
+  quiz: [
+    { q: "¿A qué hora abre la Bolsa de Nueva York (hora de NY)?", o: ["8:00 a. m.", "9:30 a. m.", "10:00 a. m."], c: 1, e: "Sesión regular: 9:30 a. m. a 4:00 p. m., hora de Nueva York." },
+    { q: "En julio, ¿a qué hora abre Nueva York en Bogotá?", o: ["8:30 a. m.", "9:30 a. m.", "10:30 a. m."], c: 0, e: "En verano Nueva York va una hora adelante de Bogotá." },
+    { q: "¿A qué hora cierra la sesión regular (hora de NY)?", o: ["3:00 p. m.", "5:00 p. m.", "4:00 p. m."], c: 2, e: "Cierre: 4:00 p. m. Lo que pasa antes o después es pre o post-market." }
+  ],
+  reto: "Mira el reloj de mercados de arriba y anota qué hora es en tu ciudad cuando abre Nueva York.",
+  fuente: "Complemento · Extra Clase 3"
+},
+{
+  dia: 11, semana: 2,
+  titulo: "Antes y después de la campana",
+  idea: "Fuera del horario regular existen dos sesiones extendidas. El pre-market ocurre antes de la apertura y el after-hours después del cierre; el horario exacto depende del broker. En esas horas hay menos participantes, el spread suele ser más amplio y los precios pueden saltar con noticias, como los resultados que muchas empresas publican antes de abrir o después de cerrar.",
+  analogia: "Es como la tienda que deja entrar a pocos clientes antes de abrir: se puede comprar, pero hay menos opciones y precios menos estables.",
+  ejemplo: "Una empresa publica resultados a las 4:05 p. m. Su acción se mueve 8 % en after-hours, con pocas operaciones y un spread amplio.",
+  jerga: { term: "Pre-market", tr: "Pre-apertura", def: "Sesión de negociación antes de la apertura regular, con menos liquidez.", frase: "The stock is up three percent in pre-market.", fraseEs: "La acción sube tres por ciento en la pre-apertura." },
+  quiz: [
+    { q: "¿Qué suele pasar con el spread en pre-market?", o: ["Es más amplio", "Desaparece", "Es igual que en horario regular"], c: 0, e: "Menos participantes significa menos competencia de precios y spreads más amplios." },
+    { q: "«After-hours» es…", o: ["El cierre del viernes", "Un día festivo", "La sesión después del cierre regular"], c: 2, e: "After-hours = después de horas: tras las 4:00 p. m. de Nueva York." },
+    { q: "¿Por qué hay movimientos fuertes fuera de horario?", o: ["Porque el mercado lo prohíbe", "Por noticias como resultados, con pocos participantes", "Porque los precios se reinician"], c: 1, e: "Muchas empresas publican resultados fuera de horario; con poca liquidez, el precio salta más." }
+  ],
+  reto: "Busca una acción que hoy se mueva en pre-market o after-hours y anota cuánto cambió.",
+  fuente: "Complemento"
+},
+{
+  dia: 12, semana: 2,
+  titulo: "Las tres sesiones del mundo",
+  idea: "Los mercados del mundo se pasan el turno. Tokio abre primero (9:00 a. m. a 3:30 p. m. hora local, con pausa al mediodía), luego Londres (8:00 a. m. a 4:30 p. m. hora local) y después Nueva York. Cada sesión tiene su ritmo. Lo que pasa en Asia y Europa en la madrugada de América puede influir en cómo abre Nueva York.",
+  analogia: "Una carrera de relevos alrededor del planeta: cuando un corredor termina, el siguiente toma el testigo.",
+  ejemplo: "Si Europa cae con fuerza en la mañana por una noticia, es común que Nueva York abra con tono negativo.",
+  jerga: { term: "Session", tr: "Sesión", def: "Período en que un mercado está abierto para negociar.", frase: "The London session overlaps with New York.", fraseEs: "La sesión de Londres se cruza con la de Nueva York." },
+  quiz: [
+    { q: "¿Cuál de estas sesiones abre primero en un día hábil?", o: ["Nueva York", "Londres", "Tokio"], c: 2, e: "Tokio abre primero; después Londres y por último Nueva York." },
+    { q: "¿Por qué importa lo que pasa en Europa antes de que abra Nueva York?", o: ["Puede influir en el tono de la apertura", "No importa nada", "Porque Nueva York copia los precios exactos"], c: 0, e: "Las noticias y movimientos de otras sesiones se trasladan a la siguiente." },
+    { q: "«Session» en trading significa…", o: ["Reunión de accionistas", "Período en que un mercado está abierto", "Clase de trading"], c: 1, e: "Session = período de negociación de un mercado." }
+  ],
+  reto: "Abre ahora el reloj de mercados. ¿Cuál está abierto y cuál cerrado? Anótalo con la hora.",
+  fuente: "Complemento"
+},
+{
+  dia: 13, semana: 2,
+  titulo: "Días sin mercado",
+  idea: "La Bolsa no abre fines de semana ni festivos de Estados Unidos: Año Nuevo, Viernes Santo, Día de Acción de Gracias, Navidad y otros. Algunos días cierra temprano, como el viernes después de Acción de Gracias. Los festivos de Colombia no cierran Nueva York. Revisar el calendario de festivos evita planear una operación para un día en que no habrá mercado.",
+  analogia: "Como el banco: aunque tú tengas el día libre, si el banco cierra, no hay trámite.",
+  ejemplo: "El jueves de Acción de Gracias la Bolsa de Nueva York está cerrada y al día siguiente cierra a la 1:00 p. m., hora de Nueva York.",
+  jerga: { term: "Market holiday", tr: "Festivo bursátil", def: "Día en que la Bolsa permanece cerrada.", frase: "Markets are closed for the holiday.", fraseEs: "Los mercados están cerrados por el festivo." },
+  quiz: [
+    { q: "¿Un festivo colombiano cierra la Bolsa de Nueva York?", o: ["Sí, siempre", "No, la cierran los festivos de EE. UU.", "Solo si cae lunes"], c: 1, e: "Nueva York sigue el calendario de festivos de Estados Unidos." },
+    { q: "¿Qué es un cierre temprano?", o: ["Un día en que el mercado cierra antes de la hora normal", "Cuando un trader se va temprano", "La pre-apertura"], c: 0, e: "Algunos días, como el viernes tras Acción de Gracias, la sesión termina a la 1:00 p. m." },
+    { q: "¿Qué día está cerrada la Bolsa de Nueva York?", o: ["Un martes normal de marzo", "El viernes después de Acción de Gracias", "Viernes Santo"], c: 2, e: "Viernes Santo es festivo bursátil. El viernes tras Acción de Gracias abre, pero cierra temprano." }
+  ],
+  reto: "Busca el calendario de festivos de la NYSE de este año y anota el próximo día sin mercado.",
+  fuente: "Complemento"
+},
+{
+  dia: 14, semana: 2,
+  titulo: "Las horas que más se mueven",
+  idea: "No todas las horas son iguales. La primera y la última hora de la sesión suelen concentrar más volumen y movimientos más bruscos: se reacciona a las noticias de la noche y se cierran posiciones antes de terminar el día. Las horas del medio suelen ser más tranquilas. Esa intensidad se llama volatilidad, y conocerla ayuda a escoger cuándo observar y cuándo esperar.",
+  analogia: "Como el tráfico: hay horas pico de entrada y salida, y en el medio las calles se calman.",
+  ejemplo: "Una acción puede moverse 2 % en los primeros 20 minutos y luego pasar el mediodía casi sin cambios.",
+  jerga: { term: "Volatility", tr: "Volatilidad", def: "Qué tanto y qué tan rápido cambia un precio.", frase: "Volatility is high after the open.", fraseEs: "La volatilidad es alta después de la apertura." },
+  quiz: [
+    { q: "¿Cuándo suele haber más volumen en la sesión?", o: ["Al mediodía", "En la primera y la última hora", "Es igual todo el día"], c: 1, e: "Apertura y cierre concentran la mayor actividad." },
+    { q: "Volatilidad significa…", o: ["Qué tanto y qué tan rápido cambia el precio", "Cuánto paga de dividendo", "El horario del mercado"], c: 0, e: "Alta volatilidad = movimientos grandes y rápidos, en ambas direcciones." },
+    { q: "¿Por qué la apertura suele ser movida?", o: ["Porque el mercado regala acciones", "Por error de los brokers", "Se reacciona a noticias de la noche"], c: 2, e: "Todo lo que pasó desde el cierre anterior se refleja en los primeros minutos." }
+  ],
+  reto: "Mira el gráfico de 5 minutos de una acción y compara el movimiento de la primera hora con el del mediodía.",
+  fuente: "Complemento · Cierre semana 2",
+  desafio: true,
+  sorpresa: "En 1602 la Compañía Holandesa de las Indias Orientales emitió acciones en Ámsterdam. Es considerada la primera empresa en vender acciones al público."
+},
+{
+  dia: 15, semana: 3,
+  titulo: "El gráfico de precio",
+  idea: "Un gráfico es la historia del precio contada en dibujo. El eje horizontal es el tiempo y el vertical es el precio. Con una mirada ves si algo subió, bajó o se quedó quieto. No necesitas adivinar el futuro para usarlo: sirve para entender dónde está el precio hoy comparado con antes. Empieza siempre por el gráfico diario.",
+  analogia: "Es como el historial de peso en una app de salud: ves la tendencia sin leer cada número.",
+  ejemplo: "En el gráfico diario de un año de AAPL, cada punto es un día. Puedes ver de un vistazo sus meses de subida y de caída.",
+  jerga: { term: "Chart", tr: "Gráfico", def: "Representación visual del precio a lo largo del tiempo.", frase: "Let's look at the daily chart.", fraseEs: "Miremos el gráfico diario." },
+  quiz: [
+    { q: "En un gráfico de precio, el eje horizontal representa…", o: ["El precio", "El volumen", "El tiempo"], c: 2, e: "Horizontal = tiempo; vertical = precio." },
+    { q: "¿Con qué gráfico conviene empezar según el programa?", o: ["El diario", "El de 1 minuto", "El mensual de 50 años"], c: 0, e: "Un solo marco de tiempo, el diario, para no confundirse." },
+    { q: "¿Para qué sirve un gráfico?", o: ["Para adivinar el precio de mañana", "Para entender dónde está el precio comparado con antes", "Para saber el ticker"], c: 1, e: "El gráfico describe; no garantiza lo que viene." }
+  ],
+  reto: "Abre el gráfico diario de una empresa y escribe en una frase lo que hizo el precio en los últimos 3 meses.",
+  fuente: "Módulo 2"
+}
+];
+
+/* CURRICULUM — Temporada 1 · Días 16–30 */
+const CURRICULUM_B = [
+{
+  dia: 16, semana: 3,
+  titulo: "La vela japonesa",
+  idea: "Cada vela resume un período con cuatro precios: apertura, máximo, mínimo y cierre. El cuerpo va de la apertura al cierre; las mechas marcan el máximo y el mínimo. Si cierra por encima de donde abrió, la vela es verde; si cierra por debajo, es roja. Una vela larga indica un movimiento fuerte; una vela pequeña, indecisión.",
+  analogia: "Cada vela es una mini película del día: dónde empezó, hasta dónde llegó, cuánto cayó y cómo terminó.",
+  ejemplo: "Abre en $100, sube a $106, baja a $98 y cierra en $104: vela verde con cuerpo de $100 a $104, mecha arriba hasta $106 y abajo hasta $98.",
+  jerga: { term: "Candlestick", tr: "Vela japonesa", def: "Figura que muestra apertura, máximo, mínimo y cierre de un período.", frase: "That candlestick closed near its high.", fraseEs: "Esa vela cerró cerca de su máximo." },
+  quiz: [
+    { q: "Una vela es verde cuando…", o: ["El cierre es mayor que la apertura", "El volumen es alto", "El precio llegó a un máximo histórico"], c: 0, e: "Verde = cerró por encima de donde abrió." },
+    { q: "¿Qué muestran las mechas de una vela?", o: ["La apertura y el cierre", "El máximo y el mínimo del período", "El spread"], c: 1, e: "Las mechas son los extremos que tocó el precio." },
+    { q: "Abre $100, máximo $106, mínimo $98, cierra $104. ¿Cuál es el cuerpo?", o: ["De $98 a $106", "De $100 a $106", "De $100 a $104"], c: 2, e: "El cuerpo va de la apertura al cierre: $100 a $104." }
+  ],
+  reto: "En un gráfico diario, encuentra la vela verde más grande del último mes y anota su fecha.",
+  fuente: "Módulo 2 · Módulo 6"
+},
+{
+  dia: 17, semana: 3,
+  titulo: "Marcos temporales",
+  idea: "El mismo activo cuenta historias distintas según el marco de tiempo. En el gráfico diario cada vela es un día; en el de 1 hora, una hora; en el de 5 minutos, cinco minutos. Algo que en 5 minutos parece una caída fuerte puede ser un detalle mínimo en el diario. Por eso el programa recomienda empezar con un solo marco, el diario, y no saltar entre muchos.",
+  analogia: "Es como mirar un mapa: con el zoom alejado ves el país; con el zoom cerca, una sola calle.",
+  ejemplo: "Una acción cae 1 % en 15 minutos (marco de 5m), pero en el diario sigue en una subida que lleva tres meses.",
+  jerga: { term: "Timeframe", tr: "Marco temporal", def: "Período que representa cada vela del gráfico: 1D, 1H, 5m…", frase: "Switch to the daily timeframe.", fraseEs: "Cambia al marco temporal diario." },
+  quiz: [
+    { q: "En un gráfico de 1H, cada vela representa…", o: ["Un día", "Una hora", "Un minuto"], c: 1, e: "1H = una hora por vela." },
+    { q: "¿Por qué empezar con un solo marco?", o: ["Para no confundirse con señales contradictorias", "Porque los otros están prohibidos", "Porque el diario siempre sube"], c: 0, e: "Saltar entre marcos al inicio genera ruido y decisiones impulsivas." },
+    { q: "Una caída fuerte en 5m puede ser…", o: ["Siempre una crisis", "Imposible de ver en otro marco", "Un detalle pequeño en el diario"], c: 2, e: "El zoom cambia la percepción. El contexto lo da el marco mayor." }
+  ],
+  reto: "Mira la misma acción en 1D y en 5m. Escribe en tus notas qué te dice cada uno.",
+  fuente: "Módulo 2 + complemento"
+},
+{
+  dia: 18, semana: 3,
+  titulo: "La tendencia",
+  idea: "La tendencia es la dirección dominante del precio. Alcista: máximos y mínimos cada vez más altos. Bajista: máximos y mínimos cada vez más bajos. La regla de oro del programa: mira el gráfico diario y hazle tres preguntas. ¿Los máximos son cada vez más altos? ¿Los mínimos también? ¿O el precio rebota entre dos niveles parecidos?",
+  analogia: "Subir una escalera: cada escalón (mínimo) queda más arriba que el anterior, aunque a veces bajes uno para tomar impulso.",
+  ejemplo: "Mínimos en $90, $95 y $101, y máximos en $100, $108 y $115: tendencia alcista.",
+  jerga: { term: "Uptrend / Downtrend", tr: "Tendencia alcista / bajista", def: "Uptrend: máximos y mínimos más altos. Downtrend: máximos y mínimos más bajos.", frase: "The stock is in a clear uptrend.", fraseEs: "La acción está en una clara tendencia alcista." },
+  quiz: [
+    { q: "Máximos y mínimos cada vez más bajos indican…", o: ["Tendencia alcista", "Tendencia lateral", "Tendencia bajista"], c: 2, e: "Downtrend = máximos y mínimos descendentes." },
+    { q: "Mínimos $90, $95, $101 · Máximos $100, $108, $115. ¿Qué tendencia es?", o: ["Alcista", "Bajista", "Lateral"], c: 0, e: "Ambos suben: tendencia alcista." },
+    { q: "¿Cuántas preguntas tiene la regla de oro del programa?", o: ["Una", "Tres", "Diez"], c: 1, e: "Tres: ¿máximos más altos?, ¿mínimos más altos?, ¿rebota entre dos niveles?" }
+  ],
+  reto: "Aplica las 3 preguntas de la regla de oro al gráfico diario de una acción popular. Escribe tu conclusión.",
+  fuente: "Módulo 2 · Ejercicio 2"
+},
+{
+  dia: 19, semana: 3,
+  titulo: "Cuando no hay dirección",
+  idea: "No siempre hay tendencia. Muchas veces el precio rebota entre un piso y un techo sin decidirse: es una tendencia lateral o rango. En ese estado, las subidas y bajadas no llevan lejos. Reconocer un rango evita la trampa de creer que cada subida es el comienzo de algo grande. La salida del rango, hacia arriba o abajo, suele ser lo que observa un trader.",
+  analogia: "Una pelota de ping-pong entre dos raquetas: va y viene, pero no avanza.",
+  ejemplo: "Durante dos meses una acción sube hasta $52 y baja hasta $47 una y otra vez. Ese es su rango.",
+  jerga: { term: "Range / Sideways", tr: "Rango / lateral", def: "Fase en que el precio se mueve entre dos niveles sin una dirección clara.", frase: "The price has been moving sideways for weeks.", fraseEs: "El precio lleva semanas moviéndose de lado." },
+  quiz: [
+    { q: "Una tendencia lateral se caracteriza por…", o: ["Subidas sin pausa", "El precio rebotando entre dos niveles", "Caídas de más del 20 %"], c: 1, e: "Lateral = rebote entre un piso y un techo." },
+    { q: "¿Qué trampa evita reconocer un rango?", o: ["Creer que cada subida es el inicio de algo grande", "Pagar comisiones", "Olvidar el ticker"], c: 0, e: "En un rango, muchas subidas se devuelven al techo." },
+    { q: "«Sideways» se traduce como…", o: ["Hacia arriba", "Hacia abajo", "De lado"], c: 2, e: "Sideways = de lado, lateral." }
+  ],
+  reto: "Busca una acción que lleve semanas en rango. Anota su piso y su techo aproximados.",
+  fuente: "Módulo 2"
+},
+{
+  dia: 20, semana: 3,
+  titulo: "El volumen",
+  idea: "El volumen es la cantidad de acciones que cambiaron de manos en un período. Es la medida de participación. Una subida con volumen alto indica que mucha gente respalda el movimiento. Una subida con volumen bajo es más débil y puede devolverse. En la mayoría de gráficos aparece como barras debajo del precio.",
+  analogia: "Un aplauso: si aplaude una persona, puede ser casualidad; si aplaude todo el estadio, algo importante pasó.",
+  ejemplo: "Una acción sube 4 % con el triple de su volumen promedio. Otra sube 4 % con la mitad. La primera tiene más respaldo.",
+  jerga: { term: "Volume", tr: "Volumen", def: "Número de acciones negociadas en un período.", frase: "The breakout came with heavy volume.", fraseEs: "La ruptura llegó con mucho volumen." },
+  quiz: [
+    { q: "El volumen mide…", o: ["El precio máximo del día", "La cantidad de acciones negociadas", "La ganancia de la empresa"], c: 1, e: "Volumen = cuántas acciones cambiaron de manos." },
+    { q: "Una subida con volumen bajo suele ser…", o: ["Más débil y puede devolverse", "Más fuerte", "Imposible"], c: 0, e: "Sin participación, el movimiento tiene menos respaldo." },
+    { q: "¿Dónde suele aparecer el volumen en un gráfico?", o: ["En el título", "Sobre las velas", "Como barras debajo del precio"], c: 2, e: "Las barras de volumen van en la parte inferior del gráfico." }
+  ],
+  reto: "En el gráfico diario de tu empresa, ¿la última subida vino con más o con menos volumen que el promedio?",
+  fuente: "Módulo 2 · Módulo 6"
+},
+{
+  dia: 21, semana: 3,
+  titulo: "La media móvil",
+  idea: "La media móvil simple (SMA) promedia el precio de cierre de los últimos días y lo dibuja como una línea suave. La SMA 50 muestra el promedio de 50 días; la SMA 200, de 200. Sirve para ver la dirección de fondo sin el ruido diario. Un precio por encima de su SMA 200 suele leerse como fortaleza de largo plazo, pero no es una orden de compra.",
+  analogia: "Es como tu promedio de notas: una mala nota no lo hunde, pero muchas seguidas sí lo mueven.",
+  ejemplo: "Si los últimos 5 cierres fueron $10, $11, $12, $11 y $11, la SMA 5 es $11.",
+  jerga: { term: "Moving average (SMA)", tr: "Media móvil simple", def: "Promedio de los cierres de los últimos N días, dibujado como una línea.", frase: "The price is above its 200-day moving average.", fraseEs: "El precio está por encima de su media móvil de 200 días." },
+  quiz: [
+    { q: "Cierres: $10, $11, $12, $11, $11. ¿Cuál es la SMA 5?", o: ["$11", "$12", "$10,50"], c: 0, e: "(10 + 11 + 12 + 11 + 11) / 5 = 55 / 5 = $11." },
+    { q: "¿Para qué sirve la media móvil?", o: ["Para saber el ticker", "Para ver la dirección de fondo sin el ruido diario", "Para calcular comisiones"], c: 1, e: "Suaviza el precio y muestra la tendencia de fondo." },
+    { q: "Precio por encima de la SMA 200 significa…", o: ["Hay que comprar ya", "La empresa quebró", "Suele leerse como fortaleza, no es una orden"], c: 2, e: "Es una lectura de contexto, nunca una instrucción." }
+  ],
+  reto: "Agrega la SMA 50 al gráfico diario de tu empresa. ¿El precio está arriba o abajo?",
+  fuente: "Módulo 2 · Cierre semana 3",
+  desafio: true,
+  sorpresa: "En 1867 Edward Calahan presentó el ticker de cinta: una máquina que imprimía precios en una tira de papel. De ahí viene la palabra «ticker»."
+},
+{
+  dia: 22, semana: 4,
+  titulo: "Tu simulador sin riesgo",
+  idea: "Para comprar acciones se usa un broker, la empresa que te da acceso al mercado. Antes de usar dinero real, el programa insiste en practicar con dinero virtual y precios reales: una cuenta demo. Es un simulador de vuelo para traders. La regla de oro: trátala como si fuera dinero serio, o la práctica no sirve. En este reto, tu simulador es Money Machine.",
+  analogia: "Ningún piloto despega un avión real sin horas en el simulador.",
+  ejemplo: "Con $10.000 virtuales compras 10 acciones de una empresa que conoces y escribes por qué. Una semana después revisas qué pasó.",
+  jerga: { term: "Paper trading", tr: "Operar en simulación", def: "Practicar compras y ventas con dinero virtual y precios reales.", frase: "I practice with paper trading before using real money.", fraseEs: "Practico con simulación antes de usar dinero real." },
+  quiz: [
+    { q: "¿Qué es un broker?", o: ["La empresa que te da acceso al mercado", "Un tipo de acción", "Un índice bursátil"], c: 0, e: "El broker ejecuta tus órdenes en el mercado." },
+    { q: "La regla de oro de la cuenta demo es…", o: ["Arriesgar todo para ver qué pasa", "Tratarla como dinero serio", "Usarla solo un día"], c: 1, e: "Si la tratas como juego, aprendes hábitos de juego." },
+    { q: "«Paper trading» significa…", o: ["Comprar acciones en papel", "Invertir en empresas de papel", "Practicar con dinero virtual"], c: 2, e: "Paper trading = simulación con precios reales." }
+  ],
+  reto: "Abre Money Machine y registra una compra simulada de 10 acciones. Escribe en tus notas por qué la elegiste.",
+  fuente: "Módulo 4 · Ejercicio 4",
+  enlace: { texto: "Abrir Money Machine", url: "https://palekor.github.io/lecciones/demoney.html" }
+},
+{
+  dia: 23, semana: 4,
+  titulo: "Largo y corto",
+  idea: "Estar «long» es comprar esperando que el precio suba. Estar «short» es vender acciones prestadas esperando que baje, para recomprarlas más baratas. En long, lo máximo que puedes perder es lo que invertiste. En short, la pérdida teórica no tiene techo, porque el precio puede subir sin límite. Por eso el short no es para principiantes.",
+  analogia: "Long es comprar una entrada esperando que suba su reventa. Short es vender una entrada prestada esperando recomprarla más barata antes de devolverla.",
+  ejemplo: "Compras a $50 (long) y sube a $55: ganas $5 por acción. Si hubieras hecho short a $50 y sube a $55, pierdes $5 por acción.",
+  jerga: { term: "Long / Short", tr: "Posición larga / corta", def: "Long: comprar esperando subida. Short: vender prestado esperando caída.", frase: "I'm long Apple, not short.", fraseEs: "Estoy comprado en Apple, no vendido en corto." },
+  quiz: [
+    { q: "Estar «long» significa…", o: ["Mantener mucho tiempo sin mirar", "Haber comprado esperando que suba", "Vender esperando que baje"], c: 1, e: "Long = comprado." },
+    { q: "¿Por qué el short es más riesgoso para un principiante?", o: ["Porque la pérdida teórica no tiene techo", "Porque es ilegal", "Porque no se puede cerrar nunca"], c: 0, e: "El precio puede subir sin límite; la pérdida también." },
+    { q: "Short a $50 y el precio sube a $55. ¿Resultado por acción?", o: ["Ganas $5", "Quedas igual", "Pierdes $5"], c: 2, e: "En short ganas si baja y pierdes si sube." }
+  ],
+  reto: "Escribe con tus palabras la diferencia entre long y short, como si se la explicaras a un amigo.",
+  fuente: "Complemento"
+},
+{
+  dia: 24, semana: 4,
+  titulo: "Tipos de orden",
+  idea: "Una orden es la instrucción que le das al broker. La orden de mercado compra o vende ya, al mejor precio disponible: es rápida pero no controla el precio exacto. La orden límite solo se ejecuta a tu precio o mejor: controla el precio, pero puede no ejecutarse nunca. Elegir bien la orden es parte de cuidar el capital.",
+  analogia: "Orden de mercado: «tráeme el café que haya». Orden límite: «solo si cuesta $5.000 o menos».",
+  ejemplo: "Ask en $100. Una orden de mercado compra cerca de $100. Una orden límite a $98 solo compra si el precio baja a $98.",
+  jerga: { term: "Market / Limit order", tr: "Orden de mercado / límite", def: "Market: se ejecuta ya al precio disponible. Limit: solo a tu precio o mejor.", frase: "Place a limit order at ninety-eight dollars.", fraseEs: "Pon una orden límite en noventa y ocho dólares." },
+  quiz: [
+    { q: "¿Qué orden se ejecuta de inmediato al precio disponible?", o: ["Orden límite", "Orden de mercado", "Ninguna"], c: 1, e: "La orden de mercado prioriza la rapidez." },
+    { q: "Pones una orden límite de compra a $98 y el precio nunca baja de $99. ¿Qué pasa?", o: ["No se ejecuta", "Compra a $99", "Compra a $100"], c: 0, e: "La orden límite solo se ejecuta a tu precio o mejor." },
+    { q: "La ventaja de la orden límite es…", o: ["Que siempre se ejecuta", "Que no tiene comisión", "Que controla el precio"], c: 2, e: "Controla el precio, a cambio de no garantizar la ejecución." }
+  ],
+  reto: "En el simulador, coloca una orden límite de compra un poco por debajo del precio actual y observa si se ejecuta.",
+  fuente: "Complemento"
+},
+{
+  dia: 25, semana: 4,
+  titulo: "Stop loss: aceptar el error",
+  idea: "El stop loss es el punto donde aceptas que te equivocaste. Se define antes de entrar, no después. Es una orden que vende si el precio cae a cierto nivel, para que una pérdida pequeña no se vuelva grande. Ojo: si el precio salta de golpe, por ejemplo tras una noticia, la venta puede ejecutarse peor que tu nivel. El programa es claro: stop loss en todas las operaciones.",
+  analogia: "Es el cinturón de seguridad: no evita el choque, pero reduce el daño.",
+  ejemplo: "Compras a $50 y pones stop en $47. Si el precio cae a $47, la orden vende y pierdes unos $3 por acción en vez de esperar a ver hasta dónde baja.",
+  jerga: { term: "Stop loss", tr: "Límite de pérdida", def: "Orden que cierra la posición si el precio llega a un nivel de pérdida definido.", frase: "Always set a stop loss before you enter.", fraseEs: "Pon siempre un stop loss antes de entrar." },
+  quiz: [
+    { q: "¿Cuándo se define el stop loss?", o: ["Antes de entrar", "Cuando ya se perdió mucho", "Nunca"], c: 0, e: "Se decide con la cabeza fría, antes de la operación." },
+    { q: "Compras a $50 con stop en $47. ¿Pérdida aproximada por acción si se activa?", o: ["$47", "$3", "$50"], c: 1, e: "$50 − $47 = $3 por acción, aproximadamente." },
+    { q: "¿Qué puede pasar si el precio salta de golpe?", o: ["El stop se cancela solo", "Siempre vende exacto en tu nivel", "Puede vender peor que tu nivel"], c: 2, e: "En un salto, la orden se ejecuta al siguiente precio disponible." }
+  ],
+  reto: "A tu compra simulada ponle un stop loss. Escribe por qué elegiste ese nivel.",
+  fuente: "Módulo 8"
+},
+{
+  dia: 26, semana: 4,
+  titulo: "Take profit y riesgo/beneficio",
+  idea: "El take profit es el punto donde dices «esto es suficiente». Con el stop y el objetivo se calcula el riesgo/beneficio (R:R): cuánto arriesgas contra cuánto buscas. 1:1 es neutral, 1:2 bueno, 1:3 excelente. El programa recomienda buscar mínimo 1:2. No garantiza ganar: solo hace que, cuando aciertas, la ganancia compense las veces que fallas.",
+  analogia: "Antes de un viaje decides cuánto estás dispuesto a gastar y qué esperas vivir. Si el gasto supera la experiencia, no vale el viaje.",
+  ejemplo: "Entrada $50, stop $48 (arriesgas $2), objetivo $54 (buscas $4). R:R = 1:2.",
+  jerga: { term: "Risk/Reward (R:R)", tr: "Riesgo/beneficio", def: "Relación entre lo que arriesgas hasta el stop y lo que buscas hasta el objetivo.", frase: "This trade has a risk/reward of one to two.", fraseEs: "Esta operación tiene un riesgo/beneficio de uno a dos." },
+  quiz: [
+    { q: "Entrada $50, stop $48, objetivo $54. ¿Cuál es el R:R?", o: ["1:2", "1:1", "1:4"], c: 0, e: "Arriesgas $2 para buscar $4: 1:2." },
+    { q: "¿Qué R:R mínimo recomienda el programa?", o: ["1:0,5", "1:2", "1:10"], c: 1, e: "Mínimo 1:2." },
+    { q: "Un buen R:R…", o: ["Garantiza ganar siempre", "Elimina el stop loss", "Hace que las ganancias compensen las pérdidas"], c: 2, e: "No garantiza nada; equilibra resultados en el tiempo." }
+  ],
+  reto: "Define el objetivo de tu operación simulada y calcula su R:R. Si es menor a 1:2, ajústalo.",
+  fuente: "Módulo 8 · Ejercicio 8"
+},
+{
+  dia: 27, semana: 4,
+  titulo: "No pongas todo en una",
+  idea: "La regla central de la gestión del riesgo: nunca arriesgues más del 1–2 % de tu cuenta en una operación. Arriesgar no es lo que inviertes, es lo que pierdes si se activa el stop. Con una cuenta de $10.000, el 1 % son $100. Así puedes equivocarte muchas veces seguidas y seguir en el juego. Los traders que duran se enfocan primero en no perder.",
+  analogia: "Un buen jugador de fútbol no apuesta el partido en un solo tiro: juega muchas jugadas pequeñas.",
+  ejemplo: "Cuenta $10.000, riesgo 1 % = $100. Si tu stop está a $2 de la entrada, puedes comprar 50 acciones: 50 × $2 = $100.",
+  jerga: { term: "Position size", tr: "Tamaño de posición", def: "Cuántas acciones compras según el riesgo que aceptas y la distancia al stop.", frase: "Your position size depends on your stop.", fraseEs: "Tu tamaño de posición depende de tu stop." },
+  quiz: [
+    { q: "¿Cuánto es el 1 % de riesgo en una cuenta de $10.000?", o: ["$1.000", "$10", "$100"], c: 2, e: "1 % de $10.000 = $100." },
+    { q: "Riesgo $100 y stop a $2 de la entrada. ¿Cuántas acciones?", o: ["50", "20", "200"], c: 0, e: "$100 / $2 = 50 acciones." },
+    { q: "«Arriesgar» en esta regla significa…", o: ["Todo lo que inviertes", "Lo que pierdes si se activa el stop", "La comisión del broker"], c: 1, e: "El riesgo es la distancia al stop por la cantidad de acciones." }
+  ],
+  reto: "Con $10.000 virtuales y riesgo de 1 %, calcula cuántas acciones podrías comprar en tu operación simulada.",
+  fuente: "Módulo 8"
+},
+{
+  dia: 28, semana: 4,
+  titulo: "El diario de decisiones",
+  idea: "Sin diario repites errores; con diario aprendes. Por cada operación se anota: fecha, activo, entrada, stop, objetivo, resultado, emoción al entrar, emoción al salir y lección. La parte emocional es la que más enseña. Este reto ya es un diario: tus notas y preguntas de cada día son el primer hábito de un trader que se observa a sí mismo.",
+  analogia: "Como la bitácora de un capitán: no cambia el clima, pero le enseña a navegar mejor el siguiente viaje.",
+  ejemplo: "«12/03 · AAPL · Entrada $50 · Stop $48 · Objetivo $54 · Entré con ansiedad porque venía subiendo. Lección: esperar mi plan.»",
+  jerga: { term: "Trading journal", tr: "Diario de trading", def: "Registro escrito de cada operación, su razón, su resultado y la emoción.", frase: "Review your trading journal every week.", fraseEs: "Revisa tu diario de trading cada semana." },
+  quiz: [
+    { q: "¿Para qué sirve un diario de trading?", o: ["Para no repetir errores", "Para presumir ganancias", "Para pagar menos impuestos"], c: 0, e: "Registrar te deja ver patrones que de memoria se pierden." },
+    { q: "¿Qué elemento del diario suele enseñar más?", o: ["El ticker", "La emoción al entrar y salir", "La fecha"], c: 1, e: "Las emociones explican muchas decisiones malas." },
+    { q: "¿Qué parte de este reto ya funciona como diario?", o: ["El reloj de mercados", "El álbum de jerga", "Tus notas y preguntas de cada día"], c: 2, e: "Escribir cada día es el mismo músculo que usa un trader." }
+  ],
+  reto: "Escribe la entrada de diario de tu operación simulada con la plantilla: entrada, stop, objetivo, emoción y lección.",
+  fuente: "Módulo 9 · Anexo A · Cierre semana 4",
+  desafio: true,
+  sorpresa: "El 19 de octubre de 1987, el «Lunes Negro», el Dow Jones cayó 22,6 % en un solo día. Después se crearon los «circuit breakers», pausas automáticas ante caídas extremas."
+},
+{
+  dia: 29, semana: 5,
+  titulo: "Tu lista de seguimiento",
+  idea: "Antes de pensar en comprar, un trader observa. La lista de seguimiento reúne las pocas empresas que entiendes y vigilas. Para elegirlas, el programa propone tres capas: fundamentos (¿gana dinero y crece?), gráfico (¿qué tendencia tiene?, ¿el volumen acompaña?) y sentido común (¿puedes explicar en tres frases por qué gana dinero?). Si no puedes explicarla, es demasiado compleja para empezar.",
+  analogia: "Como un scout de fútbol: no ficha a cualquiera, primero observa a pocos jugadores durante semanas.",
+  ejemplo: "Una lista con 3 empresas que usas: para cada una, una frase de su negocio, su tendencia en el diario y si está arriba o abajo de su SMA 50.",
+  jerga: { term: "Watchlist", tr: "Lista de seguimiento", def: "Lista corta de activos que observas antes de decidir cualquier operación.", frase: "Add it to your watchlist and wait.", fraseEs: "Agrégala a tu lista de seguimiento y espera." },
+  quiz: [
+    { q: "¿Cuáles son las 3 capas para elegir con sentido?", o: ["Precio, ticker y horario", "Fundamentos, gráfico y sentido común", "Volumen, spread y FOMO"], c: 1, e: "Fundamentos, gráfico y sentido común." },
+    { q: "Si no puedes explicar en 3 frases por qué una empresa gana dinero…", o: ["Es demasiado compleja para empezar", "Es una gran oportunidad", "Debes comprar más"], c: 0, e: "Lo que no entiendes, no lo puedes gestionar." },
+    { q: "Una lista de seguimiento sirve para…", o: ["Comprar todo lo que contiene", "Seguir a otros traders", "Observar antes de decidir"], c: 2, e: "Observar con paciencia es parte del método." }
+  ],
+  reto: "Arma tu lista de seguimiento con 3 empresas. Escribe el «elevator pitch» de 3 frases de cada una.",
+  fuente: "Módulo 5 · Ejercicio 5"
+},
+{
+  dia: 30, semana: 5,
+  titulo: "El espejo",
+  idea: "Llegaste al día 30. Lo que demuestra que quieres pasar de espectador a trader activo no es cuánto sabes, sino que te presentaste: atención, enfoque, seguir un plan y persistencia. Hoy revisas tu Espejo del trader y tu compromiso del día 1. El siguiente paso es la Temporada 2, «Aprende a decidir», y practicar en el simulador sin riesgo.",
+  analogia: "El atleta no se mide por el día de la carrera, sino por los entrenamientos a los que no faltó.",
+  ejemplo: "Si apareciste 24 de 30 días y volviste después de cada pausa, ya entrenaste el músculo que más falta en el trading: la constancia.",
+  jerga: { term: "Discipline", tr: "Disciplina", def: "Hacer lo que tu plan dice, aunque la emoción diga otra cosa.", frase: "Discipline beats motivation.", fraseEs: "La disciplina le gana a la motivación." },
+  quiz: [
+    { q: "Según el reto, ¿qué demuestra que quieres pasar a trader activo?", o: ["Tener más dinero", "Haberte presentado con constancia", "Adivinar el mercado"], c: 1, e: "La persistencia es la prueba de fondo." },
+    { q: "¿Cuál es el siguiente paso recomendado?", o: ["Practicar en simulador y seguir a la Temporada 2", "Operar todo tu dinero real", "Dejar de aprender"], c: 0, e: "Primero práctica sin riesgo y más método." },
+    { q: "«Discipline» significa…", o: ["Castigo", "Suerte", "Hacer lo que tu plan dice"], c: 2, e: "Disciplina = seguir el plan aunque la emoción empuje a otra cosa." }
+  ],
+  reto: "Abre tu Espejo del trader, léelo con calma y escribe una nota: «Lo que aprendí de mí en 30 días es…».",
+  fuente: "Extra Clase 5 · Mensaje final",
+  graduacion: true
+}
+];
+const CURRICULUM = CURRICULUM_A.concat(CURRICULUM_B);
+
+</script>
+<script>
+'use strict';
+/* ============================================================
+   DEL CURIOSO AL TRADER — Núcleo: utilidades, datos, mercados
+   ============================================================ */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
+const pad = n => String(n).padStart(2, '0');
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+/* ---------- Fechas (siempre en hora local, formato YYYY-MM-DD) ---------- */
+const D = {
+  iso(d = new Date()) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); },
+  parse(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); },
+  add(s, n) { const d = D.parse(s); d.setDate(d.getDate() + n); return D.iso(d); },
+  diff(a, b) { return Math.round((D.parse(b) - D.parse(a)) / 864e5); },
+  today() { return D.iso(); },
+  nice(s, o = { weekday: 'short', day: 'numeric', month: 'short' }) { return D.parse(s).toLocaleDateString('es-CO', o); },
+  long(s) { return D.nice(s, { weekday: 'long', day: 'numeric', month: 'long' }); },
+  time(ts) { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); },
+  minutes(hhmm) { const [h, m] = String(hhmm || '00:00').split(':').map(Number); return h * 60 + m; },
+  hhmm(min) { min = ((min % 1440) + 1440) % 1440; return pad(Math.floor(min / 60)) + ':' + pad(min % 60); }
+};
+
+/* ---------- Almacenamiento local (local-first) ---------- */
+const KEY = 'reto_trading_v1';
+const DEFAULT = () => ({
+  v: 1, tema: 'auto', perfil: null, plan: [], progreso: {}, notas: [], preguntas: [], rastro: [],
+  racha: { actual: 0, mejor: 0, escudos: 0, activos: [], protegidos: [], ultimoActivo: null, revisadoHasta: null, regresos: 0, bienvenidaDe: null, pendienteRegreso: false },
+  coleccion: [], insignias: [], sesiones: [], desafios: {}, avisos: { on: false, ultimo: null }, decision: null
+});
+let S = DEFAULT();
+const Store = {
+  load() {
+    try { const raw = localStorage.getItem(KEY); S = raw ? Store.migrate(JSON.parse(raw)) : DEFAULT(); }
+    catch (e) { S = DEFAULT(); }
+  },
+  migrate(o) {
+    const s = Object.assign(DEFAULT(), o || {});
+    s.racha = Object.assign(DEFAULT().racha, (o && o.racha) || {});
+    s.avisos = Object.assign(DEFAULT().avisos, (o && o.avisos) || {});
+    ['plan', 'notas', 'preguntas', 'rastro', 'coleccion', 'insignias', 'sesiones'].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
+    if (!s.progreso || typeof s.progreso !== 'object') s.progreso = {};
+    s.v = 1;
+    return s;
+  },
+  save() {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); }
+    catch (e) { toast('No se pudo guardar en este navegador. Exporta tus datos desde Ajustes.'); }
+  }
+};
+/* El rastro es de solo añadir: nunca se edita ni se borra automáticamente */
+function log(tipo, dia, detalle) { S.rastro.push({ ts: Date.now(), tipo, dia: dia ?? null, detalle: detalle || '' }); }
+
+/* ---------- Plan ---------- */
+const LESSON = n => CURRICULUM.find(x => x.dia === n);
+const CAP = { 1: 'Atención', 2: 'Enfoque', 3: 'Seguir un plan', 4: 'Persistencia', 5: 'Las cuatro' };
+const ETAPA = { 1: 'El curioso', 2: 'El aprendiz', 3: 'El observador', 4: 'El practicante', 5: 'Trader en formación' };
+const buildPlan = start => CURRICULUM.map((c, i) => ({ dia: c.dia, fecha: D.add(start, i) }));
+const planOf = n => S.plan.find(p => p.dia === n);
+const prog = n => S.progreso[n] || (S.progreso[n] = { pasos: {} });
+const isDone = n => !!(S.progreso[n] && S.progreso[n].completadoEn);
+const completados = () => CURRICULUM.filter(c => isDone(c.dia)).length;
+const planOrdenado = () => [...S.plan].sort((a, b) => a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : a.dia - b.dia);
+
+const ESTADOS = {
+  ontime: { t: 'Completado a tiempo', c: 'ok' }, done: { t: 'Completado', c: 'ok' }, recovered: { t: 'Recuperado', c: 'gold' },
+  today: { t: 'Hoy', c: 'gold' }, pending: { t: 'Pendiente', c: 'warn' }, planned: { t: 'Planeado', c: '' }
+};
+function estado(n) {
+  const p = planOf(n), t = D.today(), pr = S.progreso[n];
+  if (pr && pr.completadoEn) return pr.fechaCompletado === p.fecha ? 'ontime' : pr.fechaCompletado < p.fecha ? 'done' : 'recovered';
+  if (p.fecha === t) return 'today';
+  if (p.fecha < t) return 'pending';
+  return 'planned';
+}
+function lessonForToday() {
+  const t = D.today();
+  if (completados() === CURRICULUM.length) return { dia: 30, tipo: 'fin' };
+  const hoy = S.plan.filter(x => x.fecha === t).sort((a, b) => a.dia - b.dia);
+  const hoyPend = hoy.find(x => !isDone(x.dia));
+  if (hoyPend) return { dia: hoyPend.dia, tipo: 'hoy' };
+  const next = planOrdenado().find(x => !isDone(x.dia));
+  if (hoy.length) return { dia: hoy[0].dia, tipo: 'hecho', next: next && next.dia };
+  if (next) return { dia: next.dia, tipo: next.fecha < t ? 'recuperar' : 'adelantar' };
+  return { dia: 30, tipo: 'fin' };
+}
+function reprogramar(dia, nueva, cascada) {
+  const p = planOf(dia); const delta = D.diff(p.fecha, nueva);
+  if (!delta) return false;
+  p.fecha = nueva;
+  if (cascada) S.plan.filter(x => x.dia > dia && !isDone(x.dia)).forEach(x => { x.fecha = D.add(x.fecha, delta); });
+  log('reprogramado', dia, 'Movido al ' + D.nice(nueva) + (cascada ? ', con los días siguientes' : ''));
+  return true;
+}
+
+/* ---------- Racha, escudos y regresos ---------- */
+function addInsignia(id, nombre) {
+  if (S.insignias.some(i => i.id === id)) return false;
+  S.insignias.push({ id, nombre, ts: Date.now() }); log('insignia', null, 'Insignia: ' + nombre); return true;
+}
+function procesarHuecos() {
+  const r = S.racha, y = D.add(D.today(), -1);
+  if (!r.ultimoActivo) return;
+  const from = r.revisadoHasta && r.revisadoHasta > r.ultimoActivo ? r.revisadoHasta : r.ultimoActivo;
+  let d = D.add(from, 1);
+  while (d <= y && r.actual > 0) {
+    if (!r.activos.includes(d)) {
+      if (r.escudos > 0) { r.escudos--; r.protegidos.push(d); log('escudo', null, 'Un escudo protegió tu racha el ' + D.nice(d)); }
+      else { r.actual = 0; log('racha', null, 'La racha volvió a cero. Volver también cuenta.'); }
+    }
+    d = D.add(d, 1);
+  }
+  if (!r.revisadoHasta || y > r.revisadoHasta) r.revisadoHasta = y;
+}
+function detectarRegreso() {
+  const r = S.racha;
+  if (!r.ultimoActivo) return false;
+  if (D.diff(r.ultimoActivo, D.today()) >= 3 && r.bienvenidaDe !== r.ultimoActivo) {
+    r.bienvenidaDe = r.ultimoActivo; r.pendienteRegreso = true; log('regreso', null, 'Volviste después de una pausa'); return true;
+  }
+  return false;
+}
+function registrarAparicion() {
+  const r = S.racha, t = D.today();
+  procesarHuecos();
+  if (r.activos.includes(t)) return { nuevo: false };
+  r.activos.push(t); r.actual += 1; r.mejor = Math.max(r.mejor, r.actual); r.ultimoActivo = t;
+  let escudo = false, regreso = false;
+  if (r.activos.length % 7 === 0 && r.escudos < 2) { r.escudos++; escudo = true; log('escudo', null, 'Ganaste un escudo de racha'); }
+  if (r.pendienteRegreso) { r.pendienteRegreso = false; r.regresos++; regreso = true; addInsignia('volvi', 'Volví'); }
+  return { nuevo: true, escudo, regreso };
+}
+
+/* ---------- Niveles del viaje ---------- */
+const NIVELES = [{ n: 'Curioso', min: 0 }, { n: 'Aprendiz', min: 7 }, { n: 'Observador', min: 14 }, { n: 'Practicante', min: 21 }, { n: 'Trader en formación', min: 28 }];
+function nivel(c = completados()) { let i = 0; NIVELES.forEach((x, j) => { if (c >= x.min) i = j; }); return Object.assign({ i, next: NIVELES[i + 1] || null }, NIVELES[i]); }
+
+/* ---------- Espejo del trader: evidencia, nunca juicio ---------- */
+function espejo() {
+  const done = CURRICULUM.filter(c => isDone(c.dia));
+  let ok = 0, tot = 0;
+  Object.values(S.progreso).forEach(p => { if (p && p.quiz) { ok += p.quiz.ok; tot += p.quiz.total; } });
+  const ses = S.sesiones.filter(s => s.cuenta);
+  let enPlan = 0;
+  const hora = S.perfil ? D.minutes(S.perfil.hora) : 0;
+  done.forEach(c => {
+    const p = S.progreso[c.dia], pl = planOf(c.dia);
+    if (pl && p.fechaCompletado === pl.fecha && p.minCompletado != null && Math.abs(p.minCompletado - hora) <= 60) enPlan++;
+  });
+  const inicio = S.perfil ? S.perfil.fechaInicio : D.today(), t = D.today(), fin = D.add(inicio, 29);
+  const tope = t < fin ? t : fin;
+  const trans = t < inicio ? 0 : D.diff(inicio, tope) + 1;
+  const aparecidos = S.racha.activos.filter(d => d >= inicio && d <= tope).length;
+  const pct = (a, b) => b ? Math.round(a / b * 100) : null;
+  return {
+    atencion: { v: pct(ok, tot), d: tot ? `${ok} de ${tot} respuestas correctas al primer intento` : 'Aún sin preguntas respondidas' },
+    enfoque: { v: pct(ses.filter(s => s.logro).length, ses.length), d: ses.length ? `${ses.filter(s => s.logro).length} de ${ses.length} sesiones terminadas de una sola vez` : 'Aún sin sesiones' },
+    plan: { v: pct(enPlan, done.length), d: done.length ? `${enPlan} de ${done.length} días hechos en su fecha y cerca de tu hora` : 'Aún sin días completados' },
+    persistencia: { v: pct(aparecidos, trans), d: trans ? `Apareciste ${aparecidos} de ${trans} días · ${S.racha.regresos} regreso${S.racha.regresos === 1 ? '' : 's'} tras una pausa` : 'Tu reto aún no empieza' }
+  };
+}
+
+/* ---------- Mercados: Nueva York, Londres, Tokio ----------
+   Festivos NYSE 2026–2027. Verifica cada año en nyse.com/markets/hours-calendars */
+const NYSE_FESTIVOS = {
+  '2026-01-01': 1, '2026-01-19': 1, '2026-02-16': 1, '2026-04-03': 1, '2026-05-25': 1, '2026-06-19': 1, '2026-07-03': 1, '2026-09-07': 1, '2026-11-26': 1, '2026-12-25': 1,
+  '2027-01-01': 1, '2027-01-18': 1, '2027-02-15': 1, '2027-03-26': 1, '2027-05-31': 1, '2027-06-18': 1, '2027-07-05': 1, '2027-09-06': 1, '2027-11-25': 1, '2027-12-24': 1
+};
+const NYSE_TEMPRANO = { '2026-11-27': 780, '2026-12-24': 780, '2027-11-26': 780 }; /* cierre 1:00 p. m. */
+const MARKETS = [
+  { id: 'ny', n: 'Nueva York', tz: 'America/New_York', ses: [[570, 960]], pre: [240, 570], post: [960, 1200], hol: NYSE_FESTIVOS, early: NYSE_TEMPRANO },
+  { id: 'ldn', n: 'Londres', tz: 'Europe/London', ses: [[480, 990]] },
+  { id: 'tky', n: 'Tokio', tz: 'Asia/Tokyo', ses: [[540, 690], [750, 930]] }
+];
+const _fmt = {};
+function zoneNow(tz, at = new Date()) {
+  const f = _fmt[tz] || (_fmt[tz] = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }));
+  const o = {}; f.formatToParts(at).forEach(p => { o[p.type] = p.value; });
+  const y = +o.year, m = +o.month, d = +o.day, h = (+o.hour) % 24, mi = +o.minute;
+  return { date: `${y}-${pad(m)}-${pad(d)}`, min: h * 60 + mi, wd: new Date(Date.UTC(y, m - 1, d)).getUTCDay() };
+}
+function mStatus(m) {
+  const z = zoneNow(m.tz), { date, wd, min } = z;
+  const habil = (dt, w) => w > 0 && w < 6 && !(m.hol && m.hol[dt]);
+  const sesiones = dt => (m.early && m.early[dt]) ? [[m.ses[0][0], m.early[dt]]] : m.ses;
+  let st = 'closed', label = 'Cerrado', until = null, what = '';
+  if (!habil(date, wd)) { if (wd > 0 && wd < 6) { st = 'holiday'; label = 'Festivo'; } }
+  else {
+    const ss = sesiones(date), dentro = ss.find(x => min >= x[0] && min < x[1]);
+    if (dentro) { st = 'open'; label = 'Abierto'; until = dentro[1] - min; what = 'cierra en'; }
+    else if (m.pre && min >= m.pre[0] && min < ss[0][0]) { st = 'ext'; label = 'Pre-market'; }
+    else if (m.post && min >= ss[ss.length - 1][1] && min < m.post[1]) { st = 'ext'; label = 'After-hours'; }
+    else if (ss.length > 1 && min >= ss[0][1] && min < ss[1][0]) { st = 'ext'; label = 'Pausa'; }
+  }
+  if (st !== 'open') {
+    for (let k = 0; k < 9; k++) {
+      const dt = D.add(date, k), w = (wd + k) % 7;
+      if (!habil(dt, w)) continue;
+      const nx = sesiones(dt).find(x => k > 0 || x[0] > min);
+      if (nx) { until = k === 0 ? nx[0] - min : (1440 - min) + (k - 1) * 1440 + nx[0]; what = 'abre en'; break; }
+    }
+  }
+  return { st, label, time: D.hhmm(min), until, what };
+}
+function fmtDur(min) {
+  if (min == null) return '';
+  if (min < 60) return min + ' min';
+  if (min < 1440) return Math.floor(min / 60) + ' h ' + pad(min % 60) + ' min';
+  return Math.floor(min / 1440) + ' d ' + Math.floor((min % 1440) / 60) + ' h';
+}
+function fmtCorto(min) {
+  if (min < 60) return min + 'm';
+  if (min < 1440) return Math.floor(min / 60) + 'h ' + pad(min % 60) + 'm';
+  return Math.floor(min / 1440) + 'd ' + Math.floor((min % 1440) / 60) + 'h';
+}
+/* Hora local a la que abre Nueva York hoy (9:30 a. m. NY) */
+function aperturaNYLocal() {
+  const now = new Date(), ny = zoneNow('America/New_York', now).min, local = now.getHours() * 60 + now.getMinutes();
+  let off = local - ny; if (off > 720) off -= 1440; if (off < -720) off += 1440;
+  return D.hhmm(570 + off);
+}
+
+/* ---------- Voz para la jerga ---------- */
+const Voice = {
+  speak(text, rate = 0.95) {
+    try {
+      if (!('speechSynthesis' in window)) { toast('Tu navegador no tiene voz disponible'); return; }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = rate;
+      const v = speechSynthesis.getVoices().find(v => /^en[-_]US/i.test(v.lang)); if (v) u.voice = v;
+      speechSynthesis.speak(u);
+    } catch (e) { }
+  }
+};
+
+/* ---------- Dudas que se aclaran más adelante ---------- */
+const STOP = new Set('porque cuando donde sobre tiene puede entre desde hasta cuanto cuanta quiero saber hacer significa precio accion acciones mercado mercados trading trader bolsa empresa empresas tengo seria deberia pasaria entiendo realmente cosas'.split(' '));
+function dudaRelacionada(dia) {
+  const c = LESSON(dia); if (!c) return null;
+  const texto = norm([c.titulo, c.idea, c.jerga.term, c.jerga.tr, c.jerga.def].join(' '));
+  return S.preguntas.find(q => q.estado === 'abierta' && q.dia < dia &&
+    norm(q.texto).split(/[^a-z0-9]+/).some(w => w.length >= 5 && !STOP.has(w) && texto.includes(w))) || null;
+}
+
+/* ---------- Descargas ---------- */
+function download(name, content, type) {
+  const blob = content instanceof Blob ? content : new Blob([content], { type: type + ';charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+const icsEsc = s => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+const icsFold = l => { const out = []; let s = l; while (s.length > 60) { out.push(s.slice(0, 60)); s = ' ' + s.slice(60); } out.push(s); return out.join('\r\n'); };
+function descargarICS() {
+  const [h, m] = S.perfil.hora.split(':');
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const url = location.href.split('#')[0];
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//ProfGermandario//Reto Trading//ES', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  planOrdenado().forEach(p => {
+    if (isDone(p.dia)) return;
+    const c = LESSON(p.dia), d = p.fecha.replace(/-/g, '');
+    L.push('BEGIN:VEVENT', 'UID:reto-t1-' + p.dia + '-' + d + '@profgermandario', 'DTSTAMP:' + stamp, 'DTSTART:' + d + 'T' + h + m + '00', 'DURATION:PT10M',
+      'SUMMARY:' + icsEsc('Reto Trading · Día ' + p.dia + ': ' + c.titulo), 'DESCRIPTION:' + icsEsc('5 minutos. Lo que cuenta es aparecer. ' + url), 'URL:' + url,
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEsc('Tu reto de hoy'), 'TRIGGER:-PT5M', 'END:VALARM', 'END:VEVENT');
+  });
+  if (L.length === 5) { toast('No tienes días pendientes por agendar'); return; }
+  L.push('END:VCALENDAR');
+  download('reto-trading-recordatorios.ics', L.map(icsFold).join('\r\n'), 'text/calendar');
+}
+function exportarTexto() {
+  const out = ['DEL CURIOSO AL TRADER — Notas y preguntas', 'Nombre: ' + (S.perfil ? S.perfil.nombre : ''), 'Exportado: ' + new Date().toLocaleString('es-CO'), ''];
+  CURRICULUM.forEach(c => {
+    const ns = S.notas.filter(n => n.dia === c.dia), qs = S.preguntas.filter(q => q.dia === c.dia);
+    if (!ns.length && !qs.length) return;
+    out.push(`— Día ${c.dia}: ${c.titulo}`);
+    ns.forEach(n => out.push(`  Nota (${new Date(n.creadaEn).toLocaleString('es-CO')}): ${n.texto}`));
+    qs.forEach(q => { out.push(`  Pregunta [${q.estado}]: ${q.texto}`); if (q.respuesta) out.push(`    Respuesta: ${q.respuesta}`); });
+    out.push('');
+  });
+  download('reto-trading-notas.txt', out.join('\n'), 'text/plain');
+}
+
+/* ============================================================
+   Interfaz: vistas, sesión diaria, hojas, onboarding
+   ============================================================ */
+const I = {
+  home: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  cal: '<rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="14" r=".6" fill="currentColor"/><circle cx="12" cy="14" r=".6" fill="currentColor"/><circle cx="16" cy="14" r=".6" fill="currentColor"/>',
+  cards: '<rect x="3" y="6" width="12" height="15" rx="2.5"/><path d="M8 3h10.5A2.5 2.5 0 0 1 21 5.5V17"/>',
+  trail: '<circle cx="6" cy="5" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M8 5h6a4 4 0 0 1 0 8H10a4 4 0 0 0 0 8h0"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  flame: '<path d="M12 22c4 0 7-2.8 7-6.8 0-3.7-2.6-6.2-4.3-8.2-.5 2-1.6 3.3-3 3.8.4-3.3-1-6.3-3.7-8.8.2 3.6-1.3 5.7-3 7.8C3.9 11.2 5 13 5 15.2 5 19.2 8 22 12 22z"/>',
+  shield: '<path d="M12 3 4.5 6v5.5c0 4.8 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.7 7.5-9.5V6z"/>',
+  star: '<path d="m12 3 2.7 5.6 6.1.8-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1L3.2 9.4l6.1-.8z"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  play: '<path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  left: '<path d="m15 5-7 7 7 7"/>', right: '<path d="m9 5 7 7-7 7"/>',
+  note: '<path d="M5 3.5h10l4 4V20a.5.5 0 0 1-.5.5h-13A.5.5 0 0 1 5 20z"/><path d="M15 3.5V8h4M8.5 12h7M8.5 15.5h5"/>',
+  q: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8M12 17.2v.1"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+  trophy: '<path d="M7 4h10v4a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 13v4M8.5 21h7M9.5 17h5v4h-5z"/>',
+  sparkle: '<path d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/>',
+  bell: '<path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/>',
+  dl: '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/>',
+  ul: '<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 19.5h14"/>',
+  link: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  back: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
+  bolt: '<path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/>'
+};
+const ico = (k, cls = '') => `<span class="ico ${cls}" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[k] || ''}</svg></span>`;
+function paintIcons(root = document) { $$('[data-i]', root).forEach(el => { el.outerHTML = ico(el.dataset.i); }); }
+
+/* ---------- Avisos y hojas ---------- */
+let _toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(_toastT); _toastT = setTimeout(() => t.classList.remove('on'), 2800); }
+let _onSheetClose = null;
+let OPEN_DAY = null;
+function openSheet(html, onClose) {
+  OPEN_DAY = null;
+  $('#sheetBody').innerHTML = html; $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
+  $('#sheet').scrollTop = 0; _onSheetClose = onClose || null;
+}
+function closeSheet() {
+  OPEN_DAY = null;
+  $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on');
+  try { speechSynthesis.cancel(); } catch (e) { }
+  if (_onSheetClose) { const f = _onSheetClose; _onSheetClose = null; f(); }
+}
+function confirmSheet(titulo, texto, okTxt, act) {
+  openSheet(`<div class="sheet-h"><div><h2 class="h2">${esc(titulo)}</h2><p class="muted">${esc(texto)}</p></div></div>
+  <div class="foot-acts"><button class="btn btn-danger btn-block" data-act="${act}">${esc(okTxt)}</button><button class="btn btn-ghost btn-block" data-act="sheet-close">Cancelar</button></div>`);
+}
+
+/* ---------- Tema ---------- */
+function temaEfectivo() { return S.tema === 'auto' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : S.tema; }
+function applyTheme() {
+  const t = temaEfectivo(); document.documentElement.setAttribute('data-theme', t);
+  const m = $('meta[name="theme-color"]'); if (m) m.content = t === 'dark' ? '#0A0B0F' : '#F5F0E6';
+  $('#btnTheme').innerHTML = ico(t === 'dark' ? 'sun' : 'moon');
+  $('#btnTheme').setAttribute('aria-label', t === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+}
+
+/* ---------- Reloj de mercados ---------- */
+function renderClock() {
+  $('#clock').innerHTML = MARKETS.map(m => {
+    const s = mStatus(m);
+    return `<div class="mk st-${s.st}" title="${esc(m.n)}"><div class="mk-h"><span class="mk-n">${{ ny: 'NY', ldn: 'Londres', tky: 'Tokio' }[m.id]}</span><span class="mk-t">${s.time}</span></div>
+    <div class="mk-s"><span class="dot"></span><span class="mk-st">${s.label}</span></div>
+    <div class="mk-c">${s.until != null ? (s.what === 'abre en' ? 'abre ' : 'cierra ') + fmtCorto(s.until) : ''}</div></div>`;
+  }).join('');
+}
+
+/* ---------- Navegación ---------- */
+let TAB = 'hoy', CALM = null, RTAB = 'linea', QF = 'abierta';
+function setTab(t) {
+  TAB = t; $$('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  ['hoy', 'cal', 'album', 'rastro'].forEach(v => $('#v-' + v).classList.toggle('hidden', v !== t));
+  render(); window.scrollTo(0, 0);
+}
+function render() {
+  const v = { hoy: vHoy, cal: vCal, album: vAlbum, rastro: vRastro }[TAB];
+  $('#v-' + TAB).innerHTML = v();
+  const n = S.preguntas.filter(q => q.estado === 'abierta').length, b = $('#qBadge');
+  b.textContent = n; b.classList.toggle('hidden', !n);
+}
+
+/* ---------- HOY ---------- */
+function mirrorHTML(compact) {
+  const e = espejo();
+  const rows = [['Atención', e.atencion], ['Enfoque', e.enfoque], ['Seguir un plan', e.plan], ['Persistencia', e.persistencia]];
+  return `<div class="mirror">${rows.map(([n, x]) => `<div><div class="mi-h"><b>${n}</b><span class="mi-v">${x.v == null ? '—' : x.v + ' %'}</span></div>
+  <div class="bar"><i style="width:${x.v || 0}%"></i></div>${compact ? '' : `<div class="mi-d">${esc(x.d)}</div>`}</div>`).join('')}</div>`;
+}
+function vHoy() {
+  const p = S.perfil, lv = nivel(), c = completados(), r = S.racha, t = D.today();
+  const h = new Date().getHours(), sal = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+  const L = lessonForToday(), les = LESSON(L.dia);
+  const pct = Math.round(c / 30 * 100);
+  const nextTxt = lv.next ? `${lv.next.min - c} día${lv.next.min - c === 1 ? '' : 's'} para ${lv.next.n}` : 'Nivel máximo de la temporada';
+  let today = '';
+  const capChip = `<span class="chip">${CAP[les.semana]}</span>`;
+  if (L.tipo === 'hoy' || L.tipo === 'recuperar' || L.tipo === 'adelantar') {
+    const eb = L.tipo === 'hoy' ? 'Hoy' : L.tipo === 'recuperar' ? 'Para recuperar' : (t < p.fechaInicio ? 'Tu reto empieza el ' + D.nice(p.fechaInicio) : 'Siguiente');
+    today = `<div class="card lux today"><div class="day-n">${esc(eb.toUpperCase())} · DÍA ${les.dia}</div><h2 class="h2">${esc(les.titulo)}</h2>
+      <p class="muted" style="margin:0">${esc(les.analogia)}</p>
+      <div class="meta"><span class="chip gold">${ico('clock')}5 min</span>${capChip}<span class="chip">1 palabra nueva</span></div>
+      <div class="acts"><button class="btn btn-gold" data-act="start" data-d="${les.dia}" data-m="normal">${ico('play')}Empezar</button>
+      <button class="btn btn-ghost" data-act="start" data-d="${les.dia}" data-m="dificil">${ico('bolt')}Día difícil · 60 s</button></div></div>`;
+  } else if (L.tipo === 'hecho') {
+    const nx = L.next ? LESSON(L.next) : null;
+    today = `<div class="card lux today"><div class="day-n">HOY · DÍA ${les.dia}</div><h2 class="h2">Día ganado</h2>
+      <p class="muted" style="margin:0">Apareciste y cumpliste. Eso es lo que hace un trader.${nx ? ` Te espera el Día ${nx.dia}: ${esc(nx.titulo)}.` : ''}</p>
+      <div class="acts" style="margin-top:16px"><button class="btn btn-ghost" data-act="start" data-d="${les.dia}" data-m="normal">${ico('back')}Repasar</button>
+      ${nx ? `<button class="btn btn-quiet" data-act="start" data-d="${nx.dia}" data-m="normal">Adelantar el Día ${nx.dia}</button>` : ''}</div></div>`;
+  } else {
+    today = `<div class="card lux today"><div class="day-n">TEMPORADA 1 COMPLETA</div><h2 class="h2">Te graduaste</h2>
+      <p class="muted" style="margin:0">Completaste los 30 días. Revisa tu Espejo y descarga tu certificado.</p>
+      <div class="acts" style="margin-top:16px"><button class="btn btn-gold" data-act="grad">${ico('trophy')}Ver mi graduación</button></div></div>`;
+  }
+  const duda = dudaRelacionada(L.dia);
+  const pend = planOrdenado().filter(x => x.fecha < t && !isDone(x.dia) && x.dia !== L.dia).slice(0, 3);
+  const desafio = [7, 14, 21, 28].find(d => isDone(d) && !S.desafios[LESSON(d).semana]);
+  return `
+  <div class="greet"><div class="eyebrow">${esc(D.long(t))}</div><h1 class="h1">${sal}, <em>${esc(p.nombre)}</em></h1></div>
+  <div class="card"><div class="lvl"><div class="lvl-badge">${ico('compass')}</div><div style="flex:1;min-width:0">
+    <div class="row between"><div class="lvl-name">${lv.n}</div><span class="mono muted" style="font-size:13px">${c}/30</span></div>
+    <div class="bar"><i style="width:${pct}%"></i></div><div class="muted" style="font-size:12.5px;margin-top:6px">${nextTxt}</div></div></div>
+    <div class="journey">${NIVELES.map((x, i) => `<span class="${i <= lv.i ? 'on' : ''}">${x.n.split(' ')[0]}</span>`).join('')}</div></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-v">${ico('flame')}${r.actual}</div><div class="stat-l">Racha actual</div></div>
+    <div class="stat"><div class="stat-v">${ico('shield')}${r.escudos}</div><div class="stat-l">Escudos</div></div>
+    <div class="stat"><div class="stat-v">${ico('star')}${r.mejor}</div><div class="stat-l">Mejor racha</div></div>
+  </div>
+  <div class="sec">${today}</div>
+  ${duda ? `<div class="sec hint">${ico('sparkle')}<div>Hoy se aclara tu duda del Día ${duda.dia}: <b>«${esc(duda.texto)}»</b></div></div>` : ''}
+  ${desafio ? `<div class="sec"><button class="li" data-act="desafio" data-w="${LESSON(desafio).semana}">${ico('trophy')}<div class="li-t"><b>Desafío de la semana ${LESSON(desafio).semana}</b><span>2 minutos · une términos con su traducción</span></div>${ico('right')}</button></div>` : ''}
+  ${pend.length ? `<div class="sec"><div class="sec-h"><h3 class="h3">Para recuperar</h3><span class="muted" style="font-size:12.5px">Sin culpa: un paso a la vez</span></div><div class="list">
+    ${pend.map(x => { const l = LESSON(x.dia); return `<button class="li" data-act="open-day" data-d="${x.dia}"><span class="li-n">D${x.dia}</span><div class="li-t"><b>${esc(l.titulo)}</b><span>Planeado el ${D.nice(x.fecha)}</span></div>${ico('right')}</button>`; }).join('')}</div></div>` : ''}
+  <div class="sec"><div class="sec-h"><h3 class="h3">Tu espejo</h3><button class="link" data-act="goto-espejo">Ver detalle</button></div><div class="card">${mirrorHTML(true)}</div></div>`;
+}
+
+/* ---------- CALENDARIO ---------- */
+function vCal() {
+  const t = D.today();
+  if (!CALM) { const po = planOrdenado(), ref = (t >= po[0].fecha && t <= po[po.length - 1].fecha) ? t : po[0].fecha; const d = D.parse(ref); CALM = { y: d.getFullYear(), m: d.getMonth() }; }
+  const { y, m } = CALM, first = new Date(y, m, 1), startW = (first.getDay() + 6) % 7, nd = new Date(y, m + 1, 0).getDate();
+  let cells = ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(w => `<div class="cal-w">${w}</div>`).join('');
+  for (let i = 0; i < startW; i++) cells += '<div></div>';
+  for (let d = 1; d <= nd; d++) {
+    const iso = `${y}-${pad(m + 1)}-${pad(d)}`, ps = S.plan.filter(p => p.fecha === iso).sort((a, b) => a.dia - b.dia);
+    const st = ps.length ? estado(ps[0].dia) : '';
+    const hasN = ps.some(p => S.notas.some(n => n.dia === p.dia)), hasQ = ps.some(p => S.preguntas.some(q => q.dia === p.dia && q.estado === 'abierta'));
+    cells += `<${ps.length ? 'button' : 'div'} class="cell ${ps.length ? 'in plan s-' + st : ''} ${iso === t ? 'is-today' : ''}" ${ps.length ? `data-act="open-day" data-d="${ps[0].dia}" aria-label="Día ${ps.map(p => p.dia).join(', ')}, ${ESTADOS[st].t}"` : ''}>
+      ${st === 'ontime' ? `<svg class="spark" viewBox="0 0 24 24" fill="currentColor"><path d="${I.sparkle.match(/d="([^"]+)"/)[1]}"/></svg>` : ''}
+      <span class="cd">${d}</span>${ps.length ? `<span class="cn">D${ps.map(p => p.dia).join('·')}</span>` : ''}
+      ${hasN || hasQ ? `<span class="flags">${hasN ? '<i></i>' : ''}${hasQ ? '<i style="color:var(--amber)"></i>' : ''}</span>` : ''}</${ps.length ? 'button' : 'div'}>`;
+  }
+  const t0 = first.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' }), title = t0.charAt(0).toUpperCase() + t0.slice(1);
+  const rows = planOrdenado().map(p => {
+    const l = LESSON(p.dia), st = estado(p.dia), nN = S.notas.filter(n => n.dia === p.dia).length, nQ = S.preguntas.filter(q => q.dia === p.dia && q.estado === 'abierta').length;
+    return `<button class="li" data-act="open-day" data-d="${p.dia}"><span class="li-n">D${p.dia}</span><div class="li-t"><b>${esc(l.titulo)}</b><span>${D.nice(p.fecha)}${nN ? ' · ' + nN + ' nota' + (nN > 1 ? 's' : '') : ''}${nQ ? ' · ' + nQ + ' duda' + (nQ > 1 ? 's' : '') : ''}</span></div><span class="chip ${ESTADOS[st].c}">${ESTADOS[st].t}</span></button>`;
+  }).join('');
+  return `<div class="cal-h"><button class="icon-btn" data-act="cal-prev" aria-label="Mes anterior">${ico('left')}</button><h2 class="h2">${esc(title)}</h2><button class="icon-btn" data-act="cal-next" aria-label="Mes siguiente">${ico('right')}</button></div>
+  <div class="card" style="padding:12px"><div class="cal">${cells}</div>
+  <div class="legend"><span><i class="lg-done"></i>Completado</span><span><i class="lg-rec"></i>Recuperado</span><span><i class="lg-today"></i>Hoy</span><span><i class="lg-pend" style="border-radius:50%;width:8px;height:8px"></i>Pendiente</span><span><i class="lg-plan"></i>Planeado</span></div></div>
+  <p class="muted" style="font-size:13px;margin:12px 2px 0">Ningún día está bloqueado. Toca cualquier día para estudiarlo, moverlo, anotar o dejar una duda.</p>
+  <div class="sec"><div class="sec-h"><h3 class="h3">El plan del mes</h3><span class="mono muted" style="font-size:12.5px">${completados()}/30</span></div><div class="list">${rows}</div></div>`;
+}
+
+/* ---------- Hoja de un día ---------- */
+const STEP_LABEL = { checkin: 'Check-in', idea: 'Idea del día', jerga: 'Palabra de la jerga', quiz: 'Micro-quiz', reto: 'Reto del mundo real', cierre: 'Cierre' };
+function qaHTML(q, showDay) {
+  const l = LESSON(q.dia);
+  return `<div class="qa" id="qa-${q.id}"><div class="qa-t">${esc(q.texto)}</div>
+  ${q.respuesta ? `<div class="qa-a">${esc(q.respuesta)}</div>` : ''}
+  <div class="qa-m"><span>${showDay ? `<button class="gold" data-act="open-day" data-d="${q.dia}" style="font-weight:600">Día ${q.dia}</button> · ` : ''}${q.estado === 'abierta' ? 'Abierta' : 'Resuelta'} · ${new Date(q.creadaEn).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}</span>
+  ${q.estado === 'abierta' ? `<button class="btn btn-sm btn-ghost" data-act="q-resolve" data-id="${q.id}">Resolver</button>` : `<button class="btn btn-sm btn-quiet" data-act="q-reopen" data-id="${q.id}">Reabrir</button>`}</div></div>`;
+}
+function openDay(n) {
+  const l = LESSON(n), pl = planOf(n), st = estado(n), pr = S.progreso[n] || { pasos: {} }, done = isDone(n);
+  const notas = S.notas.filter(x => x.dia === n), qs = S.preguntas.filter(x => x.dia === n), duda = dudaRelacionada(n);
+  const steps = ['checkin', 'idea', 'jerga', 'quiz', 'reto', 'cierre'].map(k => {
+    const ts = pr.pasos && pr.pasos[k];
+    return `<div class="stp ${ts ? 'ok' : ''}"><span class="ck">${ts ? ico('check') : ''}</span>${STEP_LABEL[k]}${k === 'quiz' && pr.quiz ? ` <span class="muted">· ${pr.quiz.ok}/${pr.quiz.total}</span>` : ''}<small>${ts ? new Date(ts).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) + ' ' + D.time(ts) : ''}</small></div>`;
+  }).join('');
+  openSheet(`
+  <div class="sheet-h"><div><div class="eyebrow">Día ${n} · Semana ${Math.min(l.semana, 4)}${l.semana === 5 ? ' · Cierre' : ''} · ${CAP[l.semana]}</div><h2 class="h2" style="margin-top:6px">${esc(l.titulo)}</h2>
+  <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap"><span class="chip">${ico('cal')}${esc(D.nice(pl.fecha))}</span><span class="chip ${ESTADOS[st].c}">${ESTADOS[st].t}</span>${done ? `<span class="chip">${esc(pr.modo === 'dificil' ? 'Modo día difícil' : 'Sesión completa')}</span>` : ''}</div></div>
+  <button class="icon-btn" data-act="sheet-close" aria-label="Cerrar">${ico('x')}</button></div>
+  ${duda ? `<div class="hint" style="margin-bottom:12px">${ico('sparkle')}<div>Este día puede aclarar tu duda del Día ${duda.dia}: <b>«${esc(duda.texto)}»</b></div></div>` : ''}
+  <div class="foot-acts" style="margin-top:0">${done
+      ? `<button class="btn btn-ghost btn-block" data-act="start" data-d="${n}" data-m="normal">${ico('back')}Repasar este día</button>`
+      : `<button class="btn btn-gold btn-block" data-act="start" data-d="${n}" data-m="normal">${ico('play')}Empezar · 5 min</button><button class="btn btn-ghost btn-block" data-act="start" data-d="${n}" data-m="dificil">${ico('bolt')}Día difícil · 60 s</button>`}</div>
+  <div class="sec"><div class="sec-h"><h3 class="h3">Pasos</h3></div><div class="steps">${steps}</div></div>
+  ${!done ? `<div class="sec"><div class="sec-h"><h3 class="h3">Reprogramar</h3></div>
+    <div class="row"><input type="date" class="inp" id="rsDate" value="${pl.fecha}" style="flex:1"><button class="btn btn-ghost" data-act="resched" data-d="${n}">Guardar</button></div>
+    <label class="check"><input type="checkbox" id="rsCascade" checked>Mover también los días siguientes que no he hecho</label></div>` : ''}
+  <div class="sec"><div class="sec-h"><h3 class="h3">Notas</h3><span class="muted" style="font-size:12.5px">${notas.length}</span></div>
+    ${notas.map(x => `<div class="qa"><div class="qa-t">${esc(x.texto)}</div><div class="qa-m"><span>${new Date(x.creadaEn).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span></div></div>`).join('')}
+    <textarea class="ta" id="noteTxt" placeholder="Lo que entendí, lo que me sorprendió…" style="margin-top:8px"></textarea>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" data-act="note-add" data-d="${n}">${ico('note')}Guardar nota</button></div>
+  <div class="sec"><div class="sec-h"><h3 class="h3">Preguntas</h3><span class="muted" style="font-size:12.5px">${qs.filter(q => q.estado === 'abierta').length} abiertas</span></div>
+    ${qs.map(q => qaHTML(q, false)).join('')}
+    <input class="inp" id="qTxt" placeholder="¿Qué duda te dejó este día?" style="margin-top:8px">
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" data-act="q-add" data-d="${n}">${ico('q')}Guardar pregunta</button></div>
+  <div class="sec faint" style="font-size:12px">Fuente: ${esc(l.fuente)}</div>`, () => render());
+  OPEN_DAY = n;
+}
+function addNote(dia, texto) {
+  texto = (texto || '').trim(); if (!texto) return false;
+  S.notas.push({ id: uid(), dia, texto, creadaEn: Date.now(), editadaEn: null }); log('nota', dia, 'Nota: ' + texto.slice(0, 80)); return true;
+}
+function addQuestion(dia, texto) {
+  texto = (texto || '').trim(); if (!texto) return false;
+  S.preguntas.push({ id: uid(), dia, texto, estado: 'abierta', respuesta: '', creadaEn: Date.now(), resueltaEn: null }); log('pregunta', dia, 'Pregunta: ' + texto.slice(0, 80)); return true;
+}
+
+/* ---------- ÁLBUM ---------- */
+function vAlbum() {
+  const got = S.coleccion.length;
+  return `<div class="eyebrow">Colección</div><h1 class="h1" style="margin:6px 0 4px">Álbum de jerga</h1>
+  <p class="muted" style="margin:0 0 16px">${got} de 30 cartas. Cada día ganas la palabra que usan los traders de verdad.</p>
+  <div class="bar" style="margin-bottom:16px"><i style="width:${Math.round(got / 30 * 100)}%"></i></div>
+  <div class="album">${CURRICULUM.map(c => {
+    const has = S.coleccion.includes(c.dia);
+    return has ? `<button class="cardw got" data-act="album-card" data-d="${c.dia}"><span class="n">${pad(c.dia)}</span><span class="w">${esc(c.jerga.term)}</span><span class="t">${esc(c.jerga.tr)}</span></button>`
+      : `<button class="cardw no" data-act="album-card" data-d="${c.dia}"><span class="n">${pad(c.dia)}</span><span class="w">?</span><span class="t">Día ${c.dia}</span></button>`;
+  }).join('')}</div>`;
+}
+function openCard(n) {
+  const c = LESSON(n);
+  if (!S.coleccion.includes(n)) { toast(`Esta carta se gana en el Día ${n}`); return; }
+  const j = c.jerga;
+  openSheet(`<div class="sheet-h"><div class="eyebrow">Carta ${pad(n)} · Día ${n}</div><button class="icon-btn" data-act="sheet-close" aria-label="Cerrar">${ico('x')}</button></div>
+  <div class="card lux term flip"><div class="term-w">${esc(j.term)}</div><div class="term-tr">${esc(j.tr)}</div>
+  <div class="term-acts"><button class="btn btn-sm btn-ghost" data-act="say" data-text="${esc(j.term)}" data-rate="0.9">${ico('play')}Escuchar</button><button class="btn btn-sm btn-quiet" data-act="say" data-text="${esc(j.term)}" data-rate="0.6">Lento</button></div></div>
+  <p style="margin:16px 2px 0">${esc(j.def)}</p>
+  <div class="box"><span class="eyebrow">En una frase</span><div class="row between"><div><b>${esc(j.frase)}</b><div class="muted" style="font-size:14px">${esc(j.fraseEs)}</div></div><button class="icon-btn" data-act="say" data-text="${esc(j.frase)}" data-rate="0.9" aria-label="Escuchar frase">${ico('play')}</button></div></div>
+  <button class="btn btn-ghost btn-block" style="margin-top:14px" data-act="open-day" data-d="${n}">Ir al Día ${n}: ${esc(c.titulo)}</button>`);
+}
+
+/* ---------- RASTRO ---------- */
+const TL_TXT = { inicio: 'Inicio', sesion: 'Sesión', paso: 'Paso', completado: 'Día ganado', nota: 'Nota', pregunta: 'Pregunta', resuelta: 'Resuelta', reabierta: 'Reabierta', escudo: 'Escudo', racha: 'Racha', regreso: 'Regreso', reprogramado: 'Reprogramado', insignia: 'Insignia', desafio: 'Desafío', nivel: 'Nivel', decision: 'Decisión', importado: 'Datos' };
+function vRastro() {
+  const seg = [['linea', 'Línea'], ['preguntas', 'Preguntas'], ['notas', 'Notas'], ['espejo', 'Espejo']].map(([k, n]) => `<button class="${RTAB === k ? 'on' : ''}" data-act="rtab" data-t="${k}">${n}</button>`).join('');
+  let body = '';
+  if (RTAB === 'linea') {
+    const items = S.rastro.slice().reverse();
+    if (!items.length) body = '<div class="empty">Tu rastro aparecerá aquí desde el primer paso.</div>';
+    let last = '';
+    items.slice(0, 400).forEach(x => {
+      const d = D.iso(new Date(x.ts));
+      if (d !== last) { body += `${last ? '</div>' : ''}<div class="tl-day">${esc(D.long(d))}</div><div class="tl">`; last = d; }
+      body += `<div class="tl-i k-${x.tipo}"><time>${D.time(x.ts)}</time><b>${esc(TL_TXT[x.tipo] || x.tipo)}</b>${x.dia ? ` · <button class="gold" data-act="open-day" data-d="${x.dia}">Día ${x.dia}</button>` : ''}<div class="muted" style="font-size:13.5px">${esc(x.detalle)}</div></div>`;
+    });
+    if (last) body += '</div>';
+  } else if (RTAB === 'preguntas') {
+    const a = S.preguntas.filter(q => q.estado === 'abierta').length, r = S.preguntas.length - a;
+    const list = S.preguntas.filter(q => q.estado === QF).slice().reverse();
+    body = `<div class="seg" style="margin-bottom:12px"><button class="${QF === 'abierta' ? 'on' : ''}" data-act="qf" data-f="abierta">Abiertas · ${a}</button><button class="${QF === 'resuelta' ? 'on' : ''}" data-act="qf" data-f="resuelta">Resueltas · ${r}</button></div>
+    ${list.length ? list.map(q => qaHTML(q, true)).join('') : `<div class="empty">${QF === 'abierta' ? 'No tienes dudas abiertas. Cada día puedes dejar una al cerrar.' : 'Aún no has resuelto preguntas.'}</div>`}`;
+  } else if (RTAB === 'notas') {
+    const list = S.notas.slice().reverse();
+    body = list.length ? list.map(n => `<div class="qa"><div class="qa-t">${esc(n.texto)}</div><div class="qa-m"><span><button class="gold" data-act="open-day" data-d="${n.dia}" style="font-weight:600">Día ${n.dia}</button> · ${new Date(n.creadaEn).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span></div></div>`).join('')
+      : '<div class="empty">Tus notas de cada día se guardan aquí.</div>';
+    body += `<button class="btn btn-ghost btn-block" style="margin-top:14px" data-act="exp-txt">${ico('dl')}Exportar notas y preguntas</button>`;
+  } else {
+    const p = S.perfil;
+    body = `<div class="card">${mirrorHTML(false)}</div>
+    <p class="muted" style="font-size:13px;margin:12px 2px">El espejo no te juzga: te muestra con datos si estás desarrollando lo que el trading exige.</p>
+    <div class="sec"><div class="eyebrow" style="margin-bottom:8px">Tu compromiso del día 1</div><div class="pledge">«${esc(p.compromiso)}»</div>
+    <div class="muted" style="font-size:13px;margin-top:8px">Firmado por ${esc(p.firma)} · ${new Date(p.firmadoEn).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })}</div></div>
+    ${S.insignias.length ? `<div class="sec"><div class="eyebrow" style="margin-bottom:8px">Insignias</div><div class="row" style="flex-wrap:wrap;gap:6px">${S.insignias.map(i => `<span class="chip gold">${ico('star')}${esc(i.nombre)}</span>`).join('')}</div></div>` : ''}`;
+  }
+  return `<div class="eyebrow">Seguimiento</div><h1 class="h1" style="margin:6px 0 14px">Tu rastro</h1><div class="seg" style="margin-bottom:14px">${seg}</div>${body}`;
+}
+
+/* ---------- SESIÓN DIARIA ---------- */
+const OKS = ['Exacto.', 'Bien leído.', 'Correcto.', 'Así es.'], NOS = ['Casi.', 'No exactamente.', 'Buen intento.'];
+const Ses = { dia: 0, modo: 'normal', steps: [], i: 0, sesIdx: -1, answered: false, result: null, quizOk: 0, quizN: 0, repaso: false };
+function markStep(dia, k) { const p = prog(dia); if (!p.pasos[k]) { p.pasos[k] = Date.now(); log('paso', dia, STEP_LABEL[k]); } }
+function startSession(dia, modo) {
+  if (_onSheetClose) _onSheetClose = null;
+  closeSheet();
+  Object.assign(Ses, { dia, modo, i: 0, answered: false, result: null, quizOk: 0, quizN: 0, repaso: isDone(dia) });
+  Ses.steps = modo === 'dificil' ? ['idea', 'quiz0', 'cierre'] : ['checkin', 'idea', 'jerga', 'quiz0', 'quiz1', 'quiz2', 'reto', 'cierre'];
+  if (modo === 'dificil') markStep(dia, 'checkin');
+  if (!Ses.repaso) { S.sesiones.push({ dia, inicio: Date.now(), cuenta: true, logro: false, modo }); Ses.sesIdx = S.sesiones.length - 1; } else Ses.sesIdx = -1;
+  log('sesion', dia, (Ses.repaso ? 'Repaso' : 'Sesión iniciada') + (modo === 'dificil' ? ' · modo día difícil' : ''));
+  Store.save();
+  $('#session').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  renderSes();
+}
+function closeSession() {
+  try { speechSynthesis.cancel(); } catch (e) { }
+  $('#session').classList.add('hidden'); document.body.style.overflow = '';
+  if (!isDone(Ses.dia)) toast('Tu avance quedó guardado. Vuelve cuando quieras.');
+  Store.save(); render();
+}
+function renderSes() {
+  const l = LESSON(Ses.dia), k = Ses.steps[Ses.i];
+  const bars = Ses.steps.map((_, j) => `<i class="${j <= Ses.i ? 'on' : ''}"></i>`).join('');
+  let b = '';
+  if (k === 'checkin') {
+    b = `<div class="eyebrow">Día ${l.dia} · Check-in</div><h2 class="big-q">¿Cómo llegas hoy?</h2>
+    <div class="mood">${[['energia', 'Con energía'], ['normal', 'Normal'], ['cansado', 'Cansado, pero aquí estoy']].map(([v, t], i) => `<button class="opt" data-act="mood" data-v="${v}"><span class="l">${i + 1}</span>${t}</button>`).join('')}</div>
+    <p class="muted" style="margin-top:18px;font-size:14px">Aparecer ya es la mitad del trabajo.</p>`;
+  } else if (k === 'idea') {
+    const duda = dudaRelacionada(Ses.dia);
+    b = `<div class="lesson"><div class="eyebrow">Día ${l.dia} · La idea del día</div><h1 class="h1">${esc(l.titulo)}</h1>
+    ${duda ? `<div class="hint" style="margin-bottom:14px">${ico('sparkle')}<div>Hoy se aclara tu duda del Día ${duda.dia}: <b>«${esc(duda.texto)}»</b></div></div>` : ''}
+    <p>${esc(l.idea)}</p><div class="box gold"><span class="eyebrow">Analogía</span>${esc(l.analogia)}</div><div class="box"><span class="eyebrow">Ejemplo</span>${esc(l.ejemplo)}</div>
+    <div class="faint" style="font-size:12px;margin-top:12px">Fuente: ${esc(l.fuente)}</div></div>
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="ses-next" data-mark="idea">Entendido</button></div>`;
+  } else if (k === 'jerga') {
+    const j = l.jerga, had = S.coleccion.includes(l.dia);
+    b = `<div class="eyebrow">Día ${l.dia} · Palabra de la jerga</div>
+    <div class="card lux term" style="margin-top:12px"><div class="term-w">${esc(j.term)}</div><div class="term-tr">${esc(j.tr)}</div>
+    <div class="term-acts"><button class="btn btn-sm btn-ghost" data-act="say" data-text="${esc(j.term)}" data-rate="0.9">${ico('play')}Escuchar</button><button class="btn btn-sm btn-quiet" data-act="say" data-text="${esc(j.term)}" data-rate="0.6">Lento</button></div></div>
+    <p style="margin:16px 2px 0;font-size:16.5px">${esc(j.def)}</p>
+    <div class="box"><span class="eyebrow">Así se usa</span><div class="row between"><div><b>${esc(j.frase)}</b><div class="muted" style="font-size:14px">${esc(j.fraseEs)}</div></div><button class="icon-btn" data-act="say" data-text="${esc(j.frase)}" data-rate="0.9" aria-label="Escuchar frase">${ico('play')}</button></div></div>
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="collect">${had ? 'Ya está en tu álbum · seguir' : 'Guardar en mi álbum y seguir'}</button></div>`;
+  } else if (k.startsWith('quiz')) {
+    const qi = +k.slice(4), q = l.quiz[qi], n = Ses.steps.filter(s => s.startsWith('quiz')).length;
+    Ses.answered = false;
+    b = `<div class="eyebrow">Micro-quiz · Pregunta ${qi + 1} de ${n}</div><h2 class="big-q">${esc(q.q)}</h2>
+    ${q.o.map((o, j) => `<button class="opt" data-act="opt" data-k="${j}"><span class="l">${'ABC'[j]}</span>${esc(o)}</button>`).join('')}
+    <div id="fb"></div><div class="foot-acts"><button class="btn btn-gold btn-block hidden" id="sesNext" data-act="ses-next">Continuar</button></div>`;
+  } else if (k === 'reto') {
+    b = `<div class="eyebrow">Reto del mundo real · 1 minuto</div><h2 class="big-q">Llévalo a la vida real</h2>
+    <div class="card lux"><p style="margin:0;font-size:17px;line-height:1.6">${esc(l.reto)}</p></div>
+    ${l.enlace ? `<a class="btn btn-ghost btn-block" style="margin-top:12px;text-decoration:none" href="${esc(l.enlace.url)}" target="_blank" rel="noopener">${ico('link')}${esc(l.enlace.texto)}</a>` : ''}
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="reto-done">${ico('check')}Ya lo hice</button><button class="btn btn-quiet btn-block" data-act="ses-next">Lo haré después</button></div>`;
+  } else if (k === 'cierre') {
+    const done = isDone(Ses.dia), r = Ses.result, rc = S.racha;
+    const extras = [];
+    if (r && r.ap && r.ap.escudo) extras.push(`${ico('shield')} Ganaste un escudo: protege tu racha si un día no puedes.`);
+    if (r && r.ap && r.ap.regreso) extras.push(`${ico('back')} Insignia «Volví». Regresar después de una pausa es lo que hace la diferencia.`);
+    if (r && r.subio) extras.push(`${ico('compass')} Subiste a <b>${esc(r.subio)}</b>.`);
+    b = `<div class="center"><svg class="done-ring" viewBox="0 0 112 112"><circle class="bg" cx="56" cy="56" r="48"/><circle class="fg" cx="56" cy="56" r="48" transform="rotate(-90 56 56)"/><path d="M38 57l12 12 25-26"/></svg>
+    <div class="eyebrow">${Ses.repaso ? 'Repaso completo' : 'Día ' + l.dia + ' ganado'}</div>
+    <h2 class="h1" style="margin:8px 0 6px">${Ses.repaso ? 'Lo repasaste' : 'Apareciste'}</h2>
+    <p class="muted" style="margin:0">${done ? `Racha de <b class="gold">${rc.actual} día${rc.actual === 1 ? '' : 's'}</b> · ${completados()} de 30 días ganados` : ''}</p></div>
+    ${extras.map(x => `<div class="hint" style="margin-top:10px">${x}</div>`).join('')}
+    ${l.sorpresa ? `<div class="box gold" style="margin-top:14px"><span class="eyebrow">${ico('sparkle')} Sorpresa de la semana</span>${esc(l.sorpresa)}</div>` : ''}
+    <label class="field"><span>Una nota para tu diario (opcional)</span><textarea class="ta" id="sesNote" placeholder="Hoy entendí que…"></textarea></label>
+    <label class="field"><span>¿Te quedó una duda? (opcional)</span><input class="inp" id="sesQ" placeholder="Escríbela y la seguimos en el calendario"></label>
+    <div class="foot-acts">${l.desafio && done ? `<button class="btn btn-gold btn-block" data-act="finish" data-then="desafio">${ico('trophy')}Guardar y jugar el desafío semanal</button><button class="btn btn-ghost btn-block" data-act="finish">Guardar y terminar</button>`
+        : l.graduacion && done ? `<button class="btn btn-gold btn-block" data-act="finish" data-then="grad">${ico('trophy')}Guardar y ver mi graduación</button>`
+          : `<button class="btn btn-gold btn-block" data-act="finish">Guardar y terminar</button>`}</div>`;
+  }
+  $('#session').innerHTML = `<div class="full-h"><div class="wrap"><div class="row between"><div style="min-width:0"><div class="eyebrow">Día ${l.dia}${Ses.modo === 'dificil' ? ' · Día difícil' : ''}</div><div class="serif" style="font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(l.titulo)}</div></div>
+  <button class="icon-btn" data-act="ses-close" aria-label="Cerrar sesión">${ico('x')}</button></div><div class="prog">${bars}</div></div></div>
+  <div class="full-b"><div class="wrap stage">${b}</div></div>`;
+  $('#session').scrollTop = 0;
+}
+function sesNext() { Ses.i = Math.min(Ses.i + 1, Ses.steps.length - 1); renderSes(); }
+function answer(k) {
+  if (Ses.answered) return; Ses.answered = true;
+  const step = Ses.steps[Ses.i], q = LESSON(Ses.dia).quiz[+step.slice(4)], ok = k === q.c;
+  Ses.quizN++; if (ok) Ses.quizOk++;
+  $$('#session .opt').forEach(b => { b.disabled = true; const j = +b.dataset.k; if (j === q.c) b.classList.add('right'); else if (j === k) b.classList.add('wrong'); });
+  $('#fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'no'}"><b>${ok ? pick(OKS) : pick(NOS)}</b>${esc(q.e)}</div>`;
+  const nxt = Ses.steps[Ses.i + 1];
+  if (!nxt || !nxt.startsWith('quiz')) finishQuiz();
+  $('#sesNext').classList.remove('hidden');
+  $('#sesNext').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function finishQuiz() {
+  const dia = Ses.dia, p = prog(dia);
+  markStep(dia, 'quiz');
+  if (!p.quiz) p.quiz = { ok: Ses.quizOk, total: Ses.quizN };
+  if (!isDone(dia)) completarMinimo();
+  Store.save();
+}
+function completarMinimo() {
+  const dia = Ses.dia, p = prog(dia), now = new Date(), antes = nivel().i;
+  p.completadoEn = now.toISOString(); p.fechaCompletado = D.iso(now); p.minCompletado = now.getHours() * 60 + now.getMinutes(); p.modo = Ses.modo;
+  const ap = registrarAparicion();
+  log('completado', dia, 'Día ganado: ' + LESSON(dia).titulo);
+  if (Ses.sesIdx >= 0 && S.sesiones[Ses.sesIdx]) S.sesiones[Ses.sesIdx].logro = true;
+  if (completados() === 1) addInsignia('primer-dia', 'Primer paso');
+  const despues = nivel();
+  if (despues.i > antes) log('nivel', null, 'Subiste a ' + despues.n);
+  Ses.result = { ap, subio: despues.i > antes ? despues.n : null };
+}
+function finishSession(then) {
+  const dia = Ses.dia;
+  const nota = $('#sesNote') ? $('#sesNote').value : '', q = $('#sesQ') ? $('#sesQ').value : '';
+  addNote(dia, nota); addQuestion(dia, q);
+  markStep(dia, 'cierre');
+  Store.save();
+  $('#session').classList.add('hidden'); document.body.style.overflow = '';
+  render();
+  if (then === 'desafio') openDesafio(LESSON(dia).semana);
+  else if (then === 'grad') openGrad();
+  else toast(isDone(dia) ? 'Guardado. Nos vemos mañana.' : 'Guardado.');
+}
+
+/* ---------- Desafío semanal ---------- */
+const DZ = { w: 0, left: [], right: [], sel: null, found: 0, total: 0, t0: 0, timer: null, errors: 0 };
+function openDesafio(w) {
+  const pool = shuffle(CURRICULUM.filter(c => c.semana === w)).slice(0, 6);
+  Object.assign(DZ, { w, sel: null, found: 0, total: pool.length, t0: 0, errors: 0 });
+  DZ.left = shuffle(pool.map(c => ({ k: c.dia, t: c.jerga.term }))); DZ.right = shuffle(pool.map(c => ({ k: c.dia, t: c.jerga.tr })));
+  clearInterval(DZ.timer);
+  let grid = '';
+  for (let i = 0; i < DZ.total; i++) grid += `<button class="mt" data-act="mt" data-s="a" data-k="${DZ.left[i].k}">${esc(DZ.left[i].t)}</button><button class="mt" data-act="mt" data-s="b" data-k="${DZ.right[i].k}">${esc(DZ.right[i].t)}</button>`;
+  const prev = S.desafios[w];
+  openSheet(`<div class="sheet-h"><div><div class="eyebrow">Desafío · Semana ${w}</div><h2 class="h2" style="margin-top:6px">Une cada término con su traducción</h2>
+  <p class="muted" style="margin:6px 0 0;font-size:14px">${prev ? 'Tu mejor tiempo: ' + prev.mejor + ' s' : 'Toca un término y luego su pareja.'}</p></div>
+  <div class="mono gold" style="font-size:22px;white-space:nowrap;flex:none" id="dzT">0,0 s</div></div><div class="match" id="dzG">${grid}</div><div id="dzR"></div>`, () => clearInterval(DZ.timer));
+}
+function tapMatch(el) {
+  if (!DZ.t0) { DZ.t0 = Date.now(); DZ.timer = setInterval(() => { const t = $('#dzT'); if (t) t.textContent = ((Date.now() - DZ.t0) / 1000).toFixed(1).replace('.', ',') + ' s'; }, 100); }
+  if (!DZ.sel) { DZ.sel = el; el.classList.add('sel'); return; }
+  if (DZ.sel === el) { el.classList.remove('sel'); DZ.sel = null; return; }
+  if (DZ.sel.dataset.s === el.dataset.s) { DZ.sel.classList.remove('sel'); DZ.sel = el; el.classList.add('sel'); return; }
+  const a = DZ.sel; DZ.sel = null; a.classList.remove('sel');
+  if (a.dataset.k === el.dataset.k) {
+    a.classList.add('gone'); el.classList.add('gone'); DZ.found++;
+    if (DZ.found === DZ.total) {
+      clearInterval(DZ.timer);
+      const secs = Math.round((Date.now() - DZ.t0) / 100) / 10, prev = S.desafios[DZ.w];
+      const mejor = prev ? Math.min(prev.mejor, secs) : secs;
+      S.desafios[DZ.w] = { mejor, ultimo: secs, errores: DZ.errors, fecha: D.today() };
+      log('desafio', null, `Desafío semana ${DZ.w}: ${String(secs).replace('.', ',')} s, ${DZ.errors} error${DZ.errors === 1 ? '' : 'es'}`);
+      addInsignia('desafio-' + DZ.w, 'Desafío semana ' + DZ.w);
+      Store.save();
+      $('#dzG').classList.add('hidden');
+      $('#dzR').innerHTML = `<div class="center" style="padding:10px 0"><div class="term-w">${String(secs).replace('.', ',')} s</div><p class="muted">${DZ.errors} error${DZ.errors === 1 ? '' : 'es'} · ${secs <= mejor ? 'Tu mejor tiempo' : 'Mejor tiempo: ' + String(mejor).replace('.', ',') + ' s'}</p></div>
+      <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="desafio" data-w="${DZ.w}">Jugar otra vez</button><button class="btn btn-ghost btn-block" data-act="sheet-close">Cerrar</button></div>`;
+    }
+  } else {
+    DZ.errors++; a.classList.add('bad'); el.classList.add('bad');
+    setTimeout(() => { a.classList.remove('bad'); el.classList.remove('bad'); }, 400);
+  }
+}
+
+/* ---------- Graduación y certificado ---------- */
+function openGrad() {
+  addInsignia('graduado', 'Graduado · Temporada 1'); Store.save();
+  const p = S.perfil, dec = S.decision;
+  openSheet(`<div class="center"><div class="lvl-badge" style="margin:4px auto 12px;width:64px;height:64px">${ico('trophy')}</div>
+  <div class="eyebrow">Temporada 1 · Entiende el juego</div><h2 class="h1" style="margin:8px 0 8px">Te graduaste, ${esc(p.nombre)}</h2>
+  <p class="muted">${completados()} de 30 días ganados · ${S.coleccion.length} palabras · ${S.preguntas.filter(q => q.estado === 'resuelta').length} preguntas resueltas</p></div>
+  <div class="card" style="margin-top:14px">${mirrorHTML(false)}</div>
+  <div class="sec"><div class="eyebrow" style="margin-bottom:8px">Tu compromiso del día 1</div><div class="pledge">«${esc(p.compromiso)}»</div></div>
+  <div class="sec card lux center"><h3 class="h2">¿Quieres pasar de espectador a trader activo?</h3>
+  ${dec ? `<p class="muted" style="margin:10px 0 0">Respondiste: <b>${dec.respuesta === 'si' ? 'Sí, quiero' : 'Todavía no'}</b>.</p>` : `<div class="foot-acts"><button class="btn btn-gold btn-block" data-act="grad-ans" data-v="si">Sí, quiero</button><button class="btn btn-ghost btn-block" data-act="grad-ans" data-v="no">Todavía no</button></div>`}</div>
+  <div id="gradNext">${dec ? gradNextHTML(dec.respuesta) : ''}</div>
+  <div class="foot-acts"><button class="btn btn-ghost btn-block" data-act="cert">${ico('dl')}Descargar certificado</button><button class="btn btn-quiet btn-block" data-act="sheet-close">Cerrar</button></div>`);
+}
+function gradNextHTML(v) {
+  return v === 'si'
+    ? `<div class="sec"><div class="hint">${ico('sparkle')}<div>Tu siguiente paso: practicar sin riesgo en el simulador y prepararte para la <b>Temporada 2 · Aprende a decidir</b>.</div></div>
+      <a class="btn btn-gold btn-block" style="margin-top:10px;text-decoration:none" href="https://palekor.github.io/lecciones/demoney.html" target="_blank" rel="noopener">${ico('link')}Abrir Money Machine</a></div>`
+    : `<div class="sec"><div class="hint">${ico('sparkle')}<div>Está bien. Lo que construiste en 30 días se queda contigo. Puedes repasar cualquier día cuando quieras.</div></div></div>`;
+}
+async function certificado() {
+  try { await document.fonts.ready; } catch (e) { }
+  const W = 1600, H = 1130, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+  const bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#0B0C10'); bg.addColorStop(1, '#17130B'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const halo = g.createRadialGradient(W / 2, 0, 50, W / 2, 0, 900); halo.addColorStop(0, 'rgba(214,179,106,.22)'); halo.addColorStop(1, 'rgba(214,179,106,0)'); g.fillStyle = halo; g.fillRect(0, 0, W, H);
+  const gold = g.createLinearGradient(0, 0, W, 0); gold.addColorStop(0, '#A9823A'); gold.addColorStop(.5, '#F0D9A0'); gold.addColorStop(1, '#A9823A');
+  g.strokeStyle = gold; g.lineWidth = 4; g.strokeRect(56, 56, W - 112, H - 112); g.lineWidth = 1.2; g.strokeRect(76, 76, W - 152, H - 152);
+  g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+  const sp = (t, px) => { if ('letterSpacing' in g) g.letterSpacing = px + 'px'; return t; };
+  g.fillStyle = '#D6B36A'; g.font = '600 22px Figtree, sans-serif'; g.fillText(sp('PROFGERMANDARIO · DEL CURIOSO AL TRADER', 6), W / 2, 190); sp('', 0);
+  g.fillStyle = '#F2EDE3'; g.font = '500 66px Fraunces, Georgia, serif'; g.fillText('Certificado de constancia', W / 2, 300);
+  g.fillStyle = '#A8A296'; g.font = 'italic 400 30px Fraunces, Georgia, serif'; g.fillText('Se otorga a', W / 2, 380);
+  g.fillStyle = gold; g.font = 'italic 500 96px Fraunces, Georgia, serif'; g.fillText(S.perfil.nombre, W / 2, 500);
+  g.strokeStyle = 'rgba(214,179,106,.45)'; g.lineWidth = 1; g.beginPath(); g.moveTo(W / 2 - 320, 540); g.lineTo(W / 2 + 320, 540); g.stroke();
+  g.fillStyle = '#E8E2D6'; g.font = '400 30px Figtree, sans-serif'; g.fillText('por completar el Reto de 30 días · Temporada 1: «Entiende el juego»', W / 2, 610);
+  const fin = planOrdenado().slice(-1)[0].fecha;
+  g.fillStyle = '#A8A296'; g.font = '400 24px Figtree, sans-serif';
+  g.fillText(`Del ${D.nice(S.perfil.fechaInicio, { day: 'numeric', month: 'long', year: 'numeric' })} al ${D.nice(fin, { day: 'numeric', month: 'long', year: 'numeric' })}`, W / 2, 655);
+  const stats = [[completados() + '/30', 'días ganados'], [S.coleccion.length + '/30', 'palabras de jerga'], [String(S.racha.mejor), 'mejor racha'], [String(S.preguntas.filter(q => q.estado === 'resuelta').length), 'preguntas resueltas']];
+  stats.forEach((s, i) => { const x = W / 2 + (i - 1.5) * 300; g.fillStyle = '#F0D9A0'; g.font = '500 54px "JetBrains Mono", monospace'; g.fillText(s[0], x, 790); g.fillStyle = '#A8A296'; g.font = '400 22px Figtree, sans-serif'; g.fillText(s[1], x, 830); });
+  g.fillStyle = '#E8E2D6'; g.font = 'italic 400 30px Fraunces, Georgia, serif'; g.fillText('«La disciplina le gana a la motivación.»', W / 2, 940);
+  g.fillStyle = '#6F6A61'; g.font = '400 18px Figtree, sans-serif'; g.fillText('Contenido educativo. No es asesoría financiera. Operar implica riesgo de pérdida.', W / 2, 1010);
+  cv.toBlob(b => { if (b) download('certificado-reto-trading.png', b); else toast('No se pudo generar el certificado'); }, 'image/png');
+}
+
+/* ---------- Ajustes ---------- */
+function openSettings() {
+  const p = S.perfil, notif = 'Notification' in window;
+  openSheet(`<div class="sheet-h"><div><div class="eyebrow">Ajustes</div><h2 class="h2" style="margin-top:6px">Tu reto</h2></div><button class="icon-btn" data-act="sheet-close" aria-label="Cerrar">${ico('x')}</button></div>
+  <label class="field"><span>Nombre</span><input class="inp" id="stName" value="${esc(p.nombre)}"></label>
+  <label class="field"><span>Hora diaria de estudio</span><input class="inp" type="time" id="stHour" value="${esc(p.hora)}"></label>
+  <div class="muted" style="font-size:12.5px;margin-top:6px">Hoy Nueva York abre a las ${aperturaNYLocal()} en tu hora.</div>
+  <button class="btn btn-ghost btn-block" style="margin-top:10px" data-act="save-profile">Guardar</button>
+  <div class="sec"><div class="field"><span>Tema</span></div><div class="seg">${[['auto', 'Automático'], ['dark', 'Oscuro'], ['light', 'Claro']].map(([k, n]) => `<button class="${S.tema === k ? 'on' : ''}" data-act="set-theme" data-t="${k}">${n}</button>`).join('')}</div></div>
+  <div class="sec"><div class="field"><span>Recordatorios</span></div>
+    <button class="btn btn-ghost btn-block" data-act="ics">${ico('cal')}Agregar los 30 días a mi calendario (.ics)</button>
+    <div class="muted" style="font-size:12.5px;margin-top:6px">Crea un evento de 10 minutos por día a tu hora, con aviso. Funciona en Google Calendar, Apple y Outlook.</div>
+    ${notif ? `<label class="check"><input type="checkbox" id="stNotif" ${S.avisos.on ? 'checked' : ''} data-act="notif">Aviso del navegador a mi hora (solo con la app abierta)</label>` : ''}</div>
+  <div class="sec"><div class="field"><span>Tus datos</span></div><div class="stack">
+    <button class="btn btn-ghost btn-block" data-act="exp-txt">${ico('note')}Exportar notas y preguntas (.txt)</button>
+    <button class="btn btn-ghost btn-block" data-act="exp-json">${ico('dl')}Exportar todo (.json)</button>
+    <label class="btn btn-ghost btn-block" for="impFile">${ico('ul')}Importar desde otro dispositivo</label><input type="file" id="impFile" accept="application/json,.json" class="sr">
+    ${isDone(30) ? `<button class="btn btn-ghost btn-block" data-act="cert">${ico('trophy')}Descargar certificado</button>` : ''}
+    <button class="btn btn-danger btn-block" data-act="reset">Reiniciar el reto</button></div>
+    <div class="muted" style="font-size:12.5px;margin-top:8px">Todo se guarda en este navegador. Exporta tu archivo para pasarlo a otro teléfono o computador.</div></div>
+  <div class="sec faint center" style="font-size:12px">Del Curioso al Trader · Temporada 1 · v1.0</div>`);
+  const f = $('#impFile'); if (f) f.addEventListener('change', importar);
+}
+function importar(e) {
+  const file = e.target.files && e.target.files[0]; if (!file) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!o || !o.perfil || !Array.isArray(o.plan)) throw new Error('formato');
+      S = Store.migrate(o); log('importado', null, 'Datos importados desde archivo'); Store.save();
+      closeSheet(); CALM = null; applyTheme(); boot(); toast('Datos importados');
+    } catch (err) { toast('Ese archivo no parece un respaldo del reto'); }
+  };
+  rd.readAsText(file);
+}
+
+/* ---------- Onboarding ---------- */
+let OB = { step: 0, nombre: '', inicio: D.today(), hora: '08:00' };
+function renderOnboard() {
+  const dots = [0, 1, 2].map(i => `<i class="${i <= OB.step ? 'on' : ''}"></i>`).join('');
+  let b = '';
+  if (OB.step === 0) {
+    b = `<div class="mark">G</div><div class="eyebrow">ProfGermandario presenta</div><h1 class="h1" style="margin:10px 0 14px">Del curioso al trader, en 30 días</h1>
+    <p class="muted" style="font-size:17px;margin:0 0 22px">Cinco minutos al día. Aquí no gana quien más estudia: gana quien vuelve.</p>
+    <div class="list">${[['sparkle', 'Un concepto por día', 'Claro, corto y con ejemplos reales'], ['cards', 'La jerga del trading', 'Una palabra en inglés cada día, con audio'], ['clock', 'Los horarios del mercado', 'Nueva York, Londres y Tokio en tu hora'], ['trail', 'Tu rastro', 'Notas, dudas y avances, todo guardado']].map(([i, t, s]) => `<div class="li">${ico(i, 'gold')}<div class="li-t"><b>${t}</b><span>${s}</span></div></div>`).join('')}</div>
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="ob-next">Empezar</button></div>`;
+  } else if (OB.step === 1) {
+    b = `<div class="eyebrow">Paso 2 de 3</div><h1 class="h1" style="margin:10px 0 8px">Tu plan</h1><p class="muted" style="margin:0">Elige cuándo empiezas y a qué hora vas a aparecer cada día.</p>
+    <label class="field"><span>¿Cómo te llamamos?</span><input class="inp" id="obName" value="${esc(OB.nombre)}" placeholder="Tu nombre" autocomplete="given-name"></label>
+    <label class="field"><span>Fecha de inicio</span><input class="inp" type="date" id="obStart" value="${OB.inicio}"></label>
+    <label class="field"><span>Hora diaria de estudio</span><input class="inp" type="time" id="obHour" value="${OB.hora}"></label>
+    <div class="hint" style="margin-top:12px">${ico('clock')}<div>Hoy la Bolsa de Nueva York abre a las <b>${aperturaNYLocal()}</b> en tu hora. Estudiar antes de la apertura es una buena rutina.</div></div>
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="ob-next">Continuar</button><button class="btn btn-quiet btn-block" data-act="ob-back">Atrás</button></div>`;
+  } else {
+    const txt = `Yo, ${OB.nombre}, me comprometo a aparecer 5 minutos al día durante 30 días. No para ser perfecto, sino para ser constante.`;
+    b = `<div class="eyebrow">Paso 3 de 3</div><h1 class="h1" style="margin:10px 0 16px">Tu compromiso</h1>
+    <div class="pledge">«${esc(txt)}»</div>
+    <p class="muted" style="font-size:14px;margin:14px 0 0">El día 30 verás este compromiso junto a tu Espejo del trader: la evidencia de lo que hiciste.</p>
+    <label class="field"><span>Firma con tu nombre</span><input class="inp sig" id="obSig" placeholder="${esc(OB.nombre)}"></label>
+    <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="ob-sign" id="obSignBtn" disabled>Firmo mi compromiso</button><button class="btn btn-quiet btn-block" data-act="ob-back">Atrás</button></div>`;
+  }
+  $('#onboard').innerHTML = `<div class="wrap ob"><div class="ob-dots">${dots}</div><div class="stage">${b}</div></div>`;
+  const sig = $('#obSig'); if (sig) sig.addEventListener('input', () => { $('#obSignBtn').disabled = sig.value.trim().length < 2; });
+}
+function obNext() {
+  if (OB.step === 1) {
+    const n = $('#obName').value.trim(), st = $('#obStart').value, h = $('#obHour').value;
+    if (!n) { toast('Escribe tu nombre'); $('#obName').focus(); return; }
+    if (!st) { toast('Elige una fecha de inicio'); return; }
+    Object.assign(OB, { nombre: n, inicio: st, hora: h || '08:00' });
+  }
+  OB.step++; renderOnboard();
+}
+function obSign() {
+  const firma = $('#obSig').value.trim(); if (firma.length < 2) return;
+  const compromiso = `Yo, ${OB.nombre}, me comprometo a aparecer 5 minutos al día durante 30 días. No para ser perfecto, sino para ser constante.`;
+  S.perfil = { nombre: OB.nombre, fechaInicio: OB.inicio, hora: OB.hora, zona: Intl.DateTimeFormat().resolvedOptions().timeZone || '', compromiso, firma, firmadoEn: new Date().toISOString() };
+  S.plan = buildPlan(OB.inicio);
+  log('inicio', null, 'Firmaste tu compromiso. El reto empieza el ' + D.nice(OB.inicio));
+  Store.save();
+  $('#onboard').classList.add('hidden');
+  boot();
+  toast('Bienvenido al reto, ' + OB.nombre);
+}
+
+/* ---------- Acciones (delegación de eventos) ---------- */
+const ACT = {
+  'tab': el => setTab(el.dataset.tab),
+  'open-day': el => openDay(+el.dataset.d),
+  'start': el => startSession(+el.dataset.d, el.dataset.m),
+  'sheet-close': () => closeSheet(),
+  'cal-prev': () => { CALM.m--; if (CALM.m < 0) { CALM.m = 11; CALM.y--; } render(); },
+  'cal-next': () => { CALM.m++; if (CALM.m > 11) { CALM.m = 0; CALM.y++; } render(); },
+  'album-card': el => openCard(+el.dataset.d),
+  'rtab': el => { RTAB = el.dataset.t; render(); },
+  'qf': el => { QF = el.dataset.f; render(); },
+  'goto-espejo': () => { RTAB = 'espejo'; setTab('rastro'); },
+  'say': el => Voice.speak(el.dataset.text, +el.dataset.rate || 0.9),
+  'note-add': el => { const n = +el.dataset.d; if (addNote(n, $('#noteTxt').value)) { Store.save(); openDay(n); toast('Nota guardada'); } else toast('Escribe algo primero'); },
+  'q-add': el => { const n = +el.dataset.d; if (addQuestion(n, $('#qTxt').value)) { Store.save(); openDay(n); toast('Pregunta guardada'); } else toast('Escribe tu pregunta'); },
+  'q-resolve': el => {
+    const box = $('#qa-' + el.dataset.id); if (!box || box.querySelector('.ta')) return;
+    box.insertAdjacentHTML('beforeend', `<textarea class="ta" placeholder="¿Qué respuesta encontraste?" style="margin-top:10px;min-height:64px"></textarea><button class="btn btn-sm btn-gold" style="margin-top:8px" data-act="q-save" data-id="${el.dataset.id}">Marcar como resuelta</button>`);
+    box.querySelector('.ta').focus();
+  },
+  'q-save': el => {
+    const q = S.preguntas.find(x => x.id === el.dataset.id); if (!q) return;
+    const box = $('#qa-' + q.id); q.respuesta = (box.querySelector('.ta').value || '').trim(); q.estado = 'resuelta'; q.resueltaEn = Date.now();
+    log('resuelta', q.dia, 'Resolviste: ' + q.texto.slice(0, 80)); Store.save(); toast('Pregunta resuelta');
+    if (OPEN_DAY != null) openDay(OPEN_DAY); else render();
+  },
+  'q-reopen': el => {
+    const q = S.preguntas.find(x => x.id === el.dataset.id); if (!q) return;
+    q.estado = 'abierta'; log('reabierta', q.dia, 'Reabriste: ' + q.texto.slice(0, 80)); Store.save();
+    if (OPEN_DAY != null) openDay(OPEN_DAY); else render();
+  },
+  'resched': el => {
+    const n = +el.dataset.d, v = $('#rsDate').value; if (!v) return;
+    if (reprogramar(n, v, $('#rsCascade').checked)) { Store.save(); CALM = null; openDay(n); toast('Plan actualizado'); } else toast('Es la misma fecha');
+  },
+  'theme-toggle': () => { S.tema = temaEfectivo() === 'dark' ? 'light' : 'dark'; Store.save(); applyTheme(); },
+  'set-theme': el => { S.tema = el.dataset.t; Store.save(); applyTheme(); openSettings(); },
+  'settings': () => openSettings(),
+  'save-profile': () => {
+    const n = $('#stName').value.trim(), h = $('#stHour').value; if (!n) return toast('Escribe tu nombre');
+    S.perfil.nombre = n; if (h) S.perfil.hora = h; Store.save(); render(); toast('Guardado');
+  },
+  'ics': () => descargarICS(),
+  'notif': async el => {
+    if (el.checked) {
+      try { const p = await Notification.requestPermission(); S.avisos.on = p === 'granted'; if (p !== 'granted') { el.checked = false; toast('Permiso no concedido. La app funciona igual.'); } }
+      catch (e) { el.checked = false; S.avisos.on = false; }
+    } else S.avisos.on = false;
+    Store.save();
+  },
+  'exp-txt': () => exportarTexto(),
+  'exp-json': () => download('reto-trading-respaldo-' + D.today() + '.json', JSON.stringify(S, null, 2), 'application/json'),
+  'reset': () => confirmSheet('¿Reiniciar el reto?', 'Se borrarán tu plan, notas, preguntas y rastro de este navegador. Exporta antes si quieres guardarlos.', 'Sí, reiniciar', 'reset-ok'),
+  'reset-ok': () => { try { localStorage.removeItem(KEY); } catch (e) { } location.reload(); },
+  'mood': el => { const p = prog(Ses.dia); p.animo = el.dataset.v; markStep(Ses.dia, 'checkin'); Store.save(); sesNext(); },
+  'ses-next': el => { if (el.dataset.mark) { markStep(Ses.dia, el.dataset.mark); Store.save(); } sesNext(); },
+  'ses-close': () => closeSession(),
+  'opt': el => answer(+el.dataset.k),
+  'collect': () => {
+    if (!S.coleccion.includes(Ses.dia)) { S.coleccion.push(Ses.dia); log('paso', Ses.dia, 'Carta ganada: ' + LESSON(Ses.dia).jerga.term); }
+    markStep(Ses.dia, 'jerga'); Store.save(); sesNext();
+  },
+  'reto-done': () => { markStep(Ses.dia, 'reto'); Store.save(); sesNext(); },
+  'finish': el => finishSession(el.dataset.then),
+  'desafio': el => openDesafio(+el.dataset.w),
+  'mt': el => tapMatch(el),
+  'grad': () => openGrad(),
+  'grad-ans': el => {
+    S.decision = { respuesta: el.dataset.v, ts: Date.now() };
+    log('decision', 30, el.dataset.v === 'si' ? 'Elegiste pasar de espectador a trader activo' : 'Elegiste tomarte un tiempo'); Store.save();
+    el.closest('.foot-acts').outerHTML = `<p class="muted" style="margin:10px 0 0">Respondiste: <b>${el.dataset.v === 'si' ? 'Sí, quiero' : 'Todavía no'}</b>.</p>`;
+    $('#gradNext').innerHTML = gradNextHTML(el.dataset.v);
+  },
+  'cert': () => certificado(),
+  'ob-next': () => obNext(),
+  'ob-back': () => { OB.step = Math.max(0, OB.step - 1); renderOnboard(); },
+  'ob-sign': () => obSign()
+};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  if (el.dataset.act === 'notif') { ACT.notif(el); return; }
+  const f = ACT[el.dataset.act]; if (f) { e.preventDefault(); f(el, e); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if ($('#sheet').classList.contains('on')) closeSheet(); else if (!$('#session').classList.contains('hidden')) closeSession();
+});
+$('#scrim').addEventListener('click', closeSheet);
+
+/* ---------- Arranque ---------- */
+let _day = D.today(), _tick = null;
+function welcomeBack() {
+  const r = S.racha;
+  openSheet(`<div class="center"><div class="lvl-badge" style="margin:4px auto 12px;width:64px;height:64px">${ico('back')}</div>
+  <div class="eyebrow">Bienvenido de vuelta</div><h2 class="h1" style="margin:8px 0 8px">Volviste, ${esc(S.perfil.nombre)}</h2>
+  <p class="muted">Eso es exactamente lo que hace un trader: después de una pausa, regresa al plan. Hoy, con un solo día, ganas la insignia «Volví».</p>
+  ${r.protegidos.length ? `<p class="muted" style="font-size:14px">${ico('shield')} Tus escudos protegieron ${r.protegidos.length} día${r.protegidos.length === 1 ? '' : 's'} de tu racha.</p>` : ''}</div>
+  <div class="foot-acts"><button class="btn btn-gold btn-block" data-act="sheet-close">Seguir con mi reto</button></div>`);
+}
+function avisar() {
+  if (!S.avisos.on || !('Notification' in window) || Notification.permission !== 'granted' || !S.perfil) return;
+  const now = new Date(), hh = pad(now.getHours()) + ':' + pad(now.getMinutes()), t = D.today();
+  if (hh !== S.perfil.hora || S.avisos.ultimo === t) return;
+  const L = lessonForToday(); if (L.tipo !== 'hoy') return;
+  try { new Notification('Tu reto de hoy · 5 minutos', { body: `Día ${L.dia}: ${LESSON(L.dia).titulo}` }); S.avisos.ultimo = t; Store.save(); } catch (e) { }
+}
+function boot() {
+  applyTheme();
+  if (!S.perfil || !S.plan.length) { $('#app').classList.add('hidden'); $('#onboard').classList.remove('hidden'); OB.step = 0; renderOnboard(); return; }
+  $('#app').classList.remove('hidden');
+  procesarHuecos();
+  const back = detectarRegreso();
+  Store.save();
+  paintIcons(); renderClock(); render();
+  $('#btnSettings').innerHTML = ico('gear');
+  clearInterval(_tick);
+  _tick = setInterval(() => {
+    renderClock(); avisar();
+    if (D.today() !== _day) { _day = D.today(); procesarHuecos(); detectarRegreso() && welcomeBack(); Store.save(); render(); }
+  }, 15000);
+  if (back) welcomeBack();
+}
+$('#btnTheme').addEventListener('click', () => ACT['theme-toggle']());
+$$('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+$('#btnSettings').addEventListener('click', () => openSettings());
+try { matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (S.tema === 'auto') applyTheme(); }); } catch (e) { }
+if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); } catch (e) { } }
+Store.load();
+boot();
+
+</script>
+</body>
+</html>

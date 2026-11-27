@@ -729,6 +729,106 @@ body.in-lesson .toast{bottom:calc(168px + var(--safe-b))}
 .step-name b .es-tr{display:inline;font-weight:500}
 .step-name b .es-tr::before{content:" · "}
 .mg-go .notr .es-tr::before,.link .notr .es-tr::before{content:" · ";opacity:.7}
+
+/* ============================================================
+   COMMITMENT · LEARNING LOG · YOUR TEAM (14.0)
+   One signed promise, 28 days, one short log a day about how
+   you are learning, and a concierge team that reads your work.
+   ============================================================ */
+.cm-card{position:relative;overflow:hidden;border-color:color-mix(in srgb,var(--gold) 42%,transparent);background:radial-gradient(120% 80% at 100% 0%,var(--gold-soft),transparent 55%),var(--surface)}
+.cm-card h2.display{font-size:clamp(24px,6.2vw,30px)}
+.cm-quote{font-family:var(--display);font-style:italic;font-size:clamp(17px,4.4vw,20px);line-height:1.45;padding:16px 18px;border-left:2px solid var(--gold);background:var(--gold-soft);border-radius:0 14px 14px 0}
+.cm-quote .es-tr{display:block;font-family:var(--body);font-style:normal;font-size:.74em;opacity:.8;margin-top:6px}
+.cm-sig{display:flex;justify-content:flex-end;align-items:baseline;gap:10px;margin-top:10px;font-size:13px;color:var(--muted)}
+.cm-sig b{font-family:var(--display);font-style:italic;font-weight:400;font-size:22px;color:var(--gold);letter-spacing:.01em}
+.cm-chain{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;margin-top:16px}
+.cm-chain i{display:block;height:10px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line)}
+.cm-chain i.on{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px var(--gold-soft)}
+.cm-chain i.part{background:color-mix(in srgb,var(--gold) 38%,var(--surface-2))}
+.cm-chain i.miss{background:transparent;border:1px dashed color-mix(in srgb,var(--coral) 70%,transparent)}
+.cm-chain i.today{border:1.5px solid var(--gold);background:var(--surface)}
+.cm-chain i.today.on{background:var(--gold)}
+.cm-status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13.5px;color:var(--muted)}
+.cm-status b{color:var(--text)}
+.cm-done{display:flex;align-items:center;gap:10px;margin-top:14px;padding:12px 14px;border-radius:var(--r-md);background:var(--sage-soft);color:var(--sage);font-weight:600;font-size:15px}
+.cm-brief{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;margin-top:14px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line)}
+.cm-brief:hover{border-color:var(--line-strong)}
+.cm-brief .grow{flex:1;min-width:0}
+.cm-brief .t{display:block;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.cm-brief .s{display:block;font-size:15px;margin-top:2px;line-height:1.45}
+.cm-seal{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:17px;font-weight:500;color:var(--ag,var(--gold));background:color-mix(in srgb,var(--ag,var(--gold)) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--ag,var(--gold)) 55%,transparent);box-shadow:inset 0 0 0 3px var(--surface)}
+.cm-seal img{width:24px;height:24px;object-fit:contain;border-radius:50%}
+.cm-seal.lg{width:52px;height:52px;font-size:22px}
+.cm-intro{list-style:none;display:grid;gap:14px}
+.cm-intro li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.cm-intro .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold);font-weight:700;font-size:14px}
+.cm-intro b{display:block}
+.cm-intro span.s{display:block;color:var(--muted);font-size:14.5px}
+.cm-steps{display:flex;gap:6px;margin-bottom:16px}
+.cm-steps i{height:4px;flex:1;border-radius:2px;background:var(--surface-2)}
+.cm-steps i.on{background:var(--gold)}
+input.cm-sign{font-family:var(--display);font-style:italic;font-size:24px;color:var(--gold);text-align:center;letter-spacing:.02em}
+.cm-check{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px 14px;border-radius:var(--r-md);border:1px solid var(--line-strong)}
+.cm-check[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft)}
+.cm-check .box{width:22px;height:22px;flex:none;border-radius:6px;border:1.5px solid var(--line-strong);display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--on-gold)}
+.cm-check[aria-pressed="true"] .box{background:var(--gold);border-color:var(--gold)}
+.cm-check .s{display:block;font-size:13.5px;color:var(--muted)}
+.cm-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cm-grid .cal-day{height:50px;flex-direction:column;gap:0}
+.cm-grid .cm-dn{position:relative;z-index:2;font-size:10.5px;font-weight:700;color:var(--faint);line-height:1}
+.cm-grid .cal-day.full .cm-dn{color:var(--on-gold);opacity:.75}
+.cm-grid .cal-day.today .cm-dn{color:var(--gold)}
+.cm-classdot{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);z-index:3;width:5px;height:5px;border-radius:50%;background:var(--sk-listen)}
+.cm-wdots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-bottom:6px}
+.cm-wdots span{text-align:center;font-size:11.5px;font-weight:700;color:var(--faint)}
+.cm-week-label{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin:12px 0 6px}
+.cm-week-label:first-child{margin-top:0}
+.cm-hist{display:flex;gap:14px;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}
+.cm-hist b{font-family:var(--display);font-weight:500;font-size:22px;min-width:64px}
+.cm-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cm-compare>div{background:var(--surface-2);border-radius:var(--r-md);padding:14px;min-width:0}
+.cm-compare .k{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--muted)}
+.cm-compare p{font-family:var(--display);font-size:15.5px;line-height:1.5;margin-top:6px;overflow-wrap:anywhere}
+.cm-compare .w{font-size:12.5px;color:var(--faint);margin-top:8px}
+/* learning log (bitácora) */
+.bt-back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-weight:600;font-size:15px;padding:10px 0;text-decoration:none}
+.bt-back:hover{color:var(--gold)}
+.bt-prompt{font-family:var(--display);font-size:clamp(23px,5.8vw,29px);line-height:1.25;letter-spacing:-.01em}
+.bt-prompt .es-tr{display:block;font-family:var(--body);font-size:.6em;line-height:1.4;color:var(--muted);margin-top:8px;letter-spacing:0}
+.bt-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.bt-starter{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line-strong);font-size:14.5px;font-weight:600;color:var(--text);background:var(--surface)}
+.bt-starter:hover{border-color:var(--gold);color:var(--gold)}
+.bt-meter{display:flex;align-items:center;gap:12px;margin-top:10px}
+.bt-meter .bar{flex:1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bt-meter .bar i{display:block;height:100%;width:0;background:var(--sk-write);border-radius:3px;transition:width .25s ease}
+.bt-meter.ok .bar i{background:var(--gold)}
+.bt-meter .n{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.bt-meter.ok .n{color:var(--gold)}
+.bt-shown{display:none;margin-top:10px;font-size:14.5px;font-weight:600;color:var(--sage)}
+.bt-meter.ok + .bt-shown{display:block}
+.bt-coach{margin-top:14px}
+.bt-coach:empty{display:none}
+.bt-tip{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.45}
+.bt-tip:last-child{border-bottom:0}
+.bt-tip .ic{width:22px;height:22px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:1px}
+.bt-tip.good .ic{background:var(--sage-soft);color:var(--sage)}
+.bt-tip.next .ic{background:var(--gold-soft);color:var(--gold)}
+.bt-stats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+/* your team (agents) */
+.ag-grid{display:grid;gap:12px}
+@media (min-width:700px){.ag-grid{grid-template-columns:1fr 1fr}}
+.ag-card{--ag:var(--gold);position:relative;display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:var(--r-lg);background:linear-gradient(160deg,color-mix(in srgb,var(--ag) 9%,transparent),transparent 55%),var(--surface);border:1px solid color-mix(in srgb,var(--ag) 30%,var(--line))}
+.ag-head{display:flex;gap:12px;align-items:center}
+.ag-name{display:block;font-family:var(--display);font-size:19px;font-weight:500;line-height:1.15}
+.ag-role{display:block;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--ag);margin-top:2px}
+.ag-note{font-family:var(--display);font-style:italic;font-size:16.5px;line-height:1.5}
+.ag-note .es-tr{display:block;font-family:var(--body);font-style:normal;font-size:.84em;color:var(--muted);margin-top:4px}
+.ag-detail{font-size:14px;color:var(--muted);line-height:1.5}
+.ag-act{align-self:flex-start;min-height:42px;font-size:14px}
+.ag-card.lead{border-color:var(--ag);box-shadow:0 0 0 1px color-mix(in srgb,var(--ag) 40%,transparent),0 12px 34px rgba(0,0,0,.18)}
+.ag-lead-tag{position:absolute;top:14px;right:14px;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ag);text-transform:uppercase}
+.cm-status .es-tr{display:inline;margin:0;font-size:.92em}
+.cm-status .es-tr::before{content:" · "}
 </style>
 </head>
 <body>
@@ -1570,7 +1670,7 @@ function download(name, text, mime){
    ============================================================ */
 const STORE_KEY = "qkesl_state_v1";
 const DATA_VERSION = 4;
-const APP_VERSION = "12.1";
+const APP_VERSION = "14.0";
 
 function defaultState(){
   return {
@@ -1592,7 +1692,9 @@ function defaultState(){
     /* 11.3 — direct messages from ProfGermandario */
     teacherMessages:{},
     /* 12.0 — language of the instructions, study plan (cronograma), guidance */
-    lang:"bi", plan:null, planLog:{}, planBadges:[], guideSeen:{}
+    lang:"bi", plan:null, planLog:{}, planBadges:[], guideSeen:{},
+    /* 14.0 — commitment (28-day cycle), learning log, past cycles */
+    pledge:null, bitacora:{}, pledgeHistory:[]
   };
 }
 function migrate(raw){
@@ -1615,6 +1717,10 @@ function migrate(raw){
   if(s.plan && (typeof s.plan!=="object" || !Array.isArray(s.plan.days) || !Array.isArray(s.plan.habits))) s.plan = null;
   if(!Array.isArray(s.planBadges)) s.planBadges = [];
   if(!s.guideSeen || typeof s.guideSeen!=="object" || Array.isArray(s.guideSeen)) s.guideSeen = {};
+  if(!s.bitacora || typeof s.bitacora!=="object" || Array.isArray(s.bitacora)) s.bitacora = {};
+  Object.keys(s.bitacora).forEach(k=>{ const e = s.bitacora[k]; if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !e || typeof e.text!=="string") delete s.bitacora[k]; else e.words = wc(e.text); });
+  if(s.pledge && (typeof s.pledge!=="object" || !/^\d{4}-\d{2}-\d{2}$/.test(s.pledge.start||"") || !s.pledge.text)) s.pledge = null;
+  if(!Array.isArray(s.pledgeHistory)) s.pledgeHistory = [];
   Object.keys(s.days).forEach(k=>{ if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !s.days[k] || typeof s.days[k]!=="object") delete s.days[k]; });
   /* class notes from the first 11.0 build become day notes */
   Object.values(s.classRecords).forEach(r=>{ if((r.notes||"").trim()){ const d = s.days[r.date] || (s.days[r.date] = {}); d.note = d.note ? d.note+"\n"+r.notes : r.notes; } delete r.notes; });
@@ -3177,6 +3283,7 @@ VIEWS.home = function(){
       <p>${today?"You have class today. Your text is ready.":nx>=0||state.draft?"Here is where you are, and here is today's mission.":"Look at what you've built."}</p></section>
     ${previewStrip}
     ${teacherStrip()}
+    ${pledgeHomeCard()}
     ${planHomeCard()}
     ${today?classBlock:""}
     <section class="panel mission-hero mt">${hero}
@@ -3297,7 +3404,7 @@ VIEWS.toolbox = function(){
   const report = `<button class="panel feature ${mem?"":"locked"}" data-act="${mem?"report":"locked"}" data-what="Report Studio"><span class="f-ico">${mem?ICON_REPORT:ICON_LOCK}</span><span class="grow"><span class="f-t">Report Studio</span><span class="s">${mem?"Send your progress and writings, by lesson or complete."+(last?" Last sent "+esc(fmtDate(last.date))+".":""):"Members send their progress and writings to ProfGermandario, in order."}</span></span><span class="chev">›</span></button>`;
   const teacher = s.teacher && !s.preview ? `<button class="panel feature soft" data-act="console"><span class="f-ico">✦</span><span class="grow"><span class="f-t">Teacher console</span><span class="s">Create access codes, send them, and see which ones are live.</span></span><span class="chev">›</span></button>` : "";
   view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">Toolbox</h1>
-    <p>${mem?"Everything besides today's mission lives here.":"Explore freely. Members unlock everything marked with a lock."}</p></section>` + head + report + teacher + systemGroup(mem) +
+    <p>${mem?"Everything besides today's mission lives here.":"Explore freely. Members unlock everything marked with a lock."}</p></section>` + head + pledgeToolboxEntry() + report + teacher + systemGroup(mem) +
     TOOLBOX.map(g=>`<section class="tool-group"><h3>${esc(g.group)}</h3><p>${esc(g.desc)}</p><div class="list">${g.items.map(t=>{
       const inner = `<span class="glyph">${esc(t.g)}</span><span class="grow"><span class="t">${esc(t.t)}</span><br><span class="s">${esc(t.s)}</span></span>`;
       if(t.pro && !mem) return `<button data-act="locked" data-what="${esc(t.t)}">${inner}${lockGlyph}</button>`;
@@ -5643,7 +5750,7 @@ function taskInfo(t, k){
   if(t.kind==="free") return {en:"Free speaking practice", es:"Práctica de habla libre", hen:"Pick a topic: write, speak, reflect.", hes:"Elige un tema: escribe, habla, reflexiona.", min:12, auto:true, go:()=>freeSheet()};
   if(t.kind==="quiz") return {en:"Do a quick check", es:"Haz un repaso rápido", hen:"Five questions from your missions.", hes:"Cinco preguntas de tus misiones.", min:3, auto:true, go:()=>{ quiz = null; quizSheet(); }};
   const H = habitById(t.h) || HABITS[0];
-  const go = H.go==="shadow" ? ()=>shadowSheet() : H.go==="quiz" ? ()=>{ quiz = null; quizSheet(); } : H.go==="meditate" ? ()=>meditateSheet() : H.go==="note" ? ()=>noteSheet(k||dayKey()) : null;
+  const go = H.go==="shadow" ? ()=>shadowSheet() : H.go==="quiz" ? ()=>{ quiz = null; quizSheet(); } : H.go==="meditate" ? ()=>meditateSheet() : H.go==="note" ? ()=>noteSheet(k||dayKey()) : H.go==="log" ? ()=>{ location.hash = "bitacora"; } : null;
   return {en:H.en, es:H.es, hen:H.hen, hes:H.hes, min:H.min, auto:!!(H.ev||H.auto), go, habit:true};
 }
 function autoDone(t, k){
@@ -5892,6 +5999,7 @@ VIEWS.plan = function(){
       <div><b>${Object.values(state.planLog).filter(r=>r.victory).length}</b><span>${T("victories","victorias")}</span></div>
       <div><b>${Object.values(state.planLog).reduce((a,r)=>a+(r.n||0),0)}</b><span>${T("micro-goals done","micro-metas cumplidas")}</span></div>
     </div>
+    ${planPledgeStrip()}
     ${weekStrip()}
     ${habitsBlock()}
     ${cronoList()}
@@ -6058,6 +6166,676 @@ Object.assign(ACT, {
   obHabit: el => { const h = el.dataset.h, P = ob.plan; if(P.habits.includes(h)) P.habits = P.habits.filter(x=>x!==h); else if(P.habits.length<4) P.habits.push(h); else { toastT("Four habits is the maximum. Remove one first.","Cuatro hábitos es el máximo. Quita uno primero."); return; } const y = window.scrollY; VIEWS.onboarding(); window.scrollTo(0,y); }
 });
 Object.assign(INP, { obTime: el => { if(ob.plan) ob.plan.time = el.value; } });
+
+
+/* ============================================================
+   COMMITMENT · LEARNING LOG · YOUR TEAM (14.0)
+   Brought from the 30-day trading challenge: "to show up".
+   - The student signs one commitment for a 28-day Fluency Cycle:
+     a start date, a daily hour and a word target.
+   - Every day they write a short learning log (bitácora) about
+     HOW they are learning. Reaching the word target = they showed
+     up. The calendar never blocks a day; it keeps the trace.
+   - Day 28 opens the Mirror: the commitment next to the evidence.
+   - "Your team": the ProfGermandario concierge agents read the
+     student's real data and say one useful thing each. No server:
+     every note is computed here; the deep review hands a ready
+     prompt to Speak Ya, and the human escape is ProfGermandario.
+   ============================================================ */
+const CM_DAYS = CONFIG.cycleDays || 28;
+const CM_WORDS = [30,45,70,100,130];
+const CM_WORDS_BY_LEVEL = {A1:30, A2:45, B1:70, B2:100, C1:130};
+const LOG_PROMPTS = [
+  /* week 1 · showing up */
+  {en:"Why are you learning English? Write the real reason, not the polite one.", es:"¿Por qué estás aprendiendo inglés? Escribe la razón real, no la bonita.", st:["I am learning English because…","The real reason is…","In one year, I want to…"]},
+  {en:"Describe your English today: what you can do, and what you can't do yet.", es:"Describe tu inglés hoy: lo que ya puedes hacer y lo que todavía no.", st:["Today I can…","I can't … yet.","The hardest part is…"]},
+  {en:"When do you feel blocked in English? Describe that moment.", es:"¿Cuándo te bloqueas en inglés? Describe ese momento.", st:["I feel blocked when…","My mind goes blank because…","Next time I will…"]},
+  {en:"What did you do today to learn? Small things count.", es:"¿Qué hiciste hoy para aprender? Las cosas pequeñas cuentan.", st:["Today I…","I also…","It took me … minutes."]},
+  {en:"Describe your study routine: when, where, and for how long.", es:"Describe tu rutina de estudio: cuándo, dónde y cuánto tiempo.", st:["I usually study at…","My favorite place to study is…","I need … to focus."]},
+  {en:"Which new word or phrase did you meet this week? Use it in two sentences.", es:"¿Qué palabra o frase nueva conociste esta semana? Úsala en dos frases.", st:["This week I learned…","For example,…","I can use it when…"]},
+  {en:"Week 1 review: did you show up? What helped you come back?", es:"Repaso de la semana 1: ¿te presentaste? ¿Qué te ayudó a volver?", st:["This week I showed up … days.","What helped me was…","Next week I want to…"]},
+  /* week 2 · noticing */
+  {en:"What mistake did you make today? Write it, then write the correct version.", es:"¿Qué error cometiste hoy? Escríbelo y luego escribe la versión correcta.", st:["Today I wrote…","The correct form is…","I will remember it because…"]},
+  {en:"Listen to English for five minutes. What did you understand?", es:"Escucha inglés cinco minutos. ¿Qué entendiste?", st:["I listened to…","I understood…","I didn't understand…"]},
+  {en:"Do you translate in your head? Describe how you think when you speak.", es:"¿Traduces en tu cabeza? Describe cómo piensas cuando hablas.", st:["When I speak, I…","Sometimes I translate…","I want to think…"]},
+  {en:"Write a short dialogue you could have tomorrow: at work, in a store, on a call.", es:"Escribe un diálogo corto que podrías tener mañana: en el trabajo, en una tienda, en una llamada.", st:["A: …","B: …","Then I would say…"]},
+  {en:"Which chunk (group of words) is becoming automatic for you?", es:"¿Qué chunk (grupo de palabras) se está volviendo automático para ti?", st:["The chunk “…” is becoming easy.","I use it to…","Another chunk I want is…"]},
+  {en:"What surprised you about English this week?", es:"¿Qué te sorprendió del inglés esta semana?", st:["I was surprised that…","In Spanish we…, but in English…","Now I understand…"]},
+  {en:"Week 2 review: read your first log. What changed since then?", es:"Repaso de la semana 2: lee tu primera bitácora. ¿Qué cambió desde entonces?", st:["On day one, I wrote…","Now I…","I'm proud that…"]},
+  /* week 3 · connecting */
+  {en:"Where did you use English outside the app this week?", es:"¿Dónde usaste inglés fuera de la app esta semana?", st:["I used English when…","It felt…","Next time I want to…"]},
+  {en:"Explain to a friend how you study English, step by step.", es:"Explícale a un amigo cómo estudias inglés, paso a paso.", st:["First,…","Then,…","Finally,…"]},
+  {en:"Give your opinion: what is the best way to learn a language? Why?", es:"Da tu opinión: ¿cuál es la mejor manera de aprender un idioma? ¿Por qué?", st:["In my opinion,…","because…","For example,…"]},
+  {en:"Describe a person who inspires you to keep learning.", es:"Describe a una persona que te inspira a seguir aprendiendo.", st:["… inspires me because…","She always… / He always…","I want to be like…"]},
+  {en:"What is your biggest distraction, and how will you protect your study time?", es:"¿Cuál es tu mayor distracción y cómo vas a proteger tu tiempo de estudio?", st:["My biggest distraction is…","To protect my time, I…","If I fail, I will…"]},
+  {en:"Write about a conversation in English you want to have one day.", es:"Escribe sobre una conversación en inglés que quieres tener algún día.", st:["One day, I want to talk with…","I will say…","I will feel…"]},
+  {en:"Week 3 review: what do you do better now than three weeks ago?", es:"Repaso de la semana 3: ¿qué haces mejor ahora que hace tres semanas?", st:["Three weeks ago, I…","Now I can…","The next step is…"]},
+  /* week 4 · evidence */
+  {en:"Read one of your old logs. What would you correct now?", es:"Lee una de tus bitácoras antiguas. ¿Qué corregirías ahora?", st:["In my old log I wrote…","Now I would write…","This shows that…"]},
+  {en:"What does fluency mean to you now? Has it changed?", es:"¿Qué significa la fluidez para ti ahora? ¿Ha cambiado?", st:["For me, fluency means…","Before, I thought…","Now I think…"]},
+  {en:"Write about a small victory you had this month.", es:"Escribe sobre una pequeña victoria que tuviste este mes.", st:["My small victory was…","It happened when…","It showed me that…"]},
+  {en:"What advice would you give to someone who starts English today?", es:"¿Qué consejo le darías a alguien que empieza inglés hoy?", st:["My advice is…","Don't…","Always…"]},
+  {en:"Which habit from this month will you keep for good?", es:"¿Qué hábito de este mes vas a conservar para siempre?", st:["I will keep…","because…","Every day I will…"]},
+  {en:"Write a thank-you note to yourself for showing up.", es:"Escríbete una nota de agradecimiento por haberte presentado.", st:["Dear me,…","Thank you for…","I'm proud of…"]},
+  {en:"Day 28: read your commitment again. Did you keep it? What is your next one?", es:"Día 28: lee de nuevo tu compromiso. ¿Lo cumpliste? ¿Cuál es el siguiente?", st:["I promised to…","I kept it by…","My next commitment is…"]}
+];
+
+/* ---------- state helpers ---------- */
+const kDiff = (a,b) => Math.round((parseKey(b) - parseKey(a)) / 86400000);
+const cmOn = () => !!(state.pledge && state.pledge.start);
+function cmTarget(){ return (state.pledge && state.pledge.words) || CM_WORDS_BY_LEVEL[studentLevel()] || 45; }
+function cmDayNum(k){ if(!cmOn()) return 0; return kDiff(state.pledge.start, k||dayKey()) + 1; }   /* 1..28 inside the cycle */
+const cmEnd = () => cmOn() ? addDays(state.pledge.start, CM_DAYS-1) : null;
+function cmPhase(){ if(!cmOn()) return "none"; const d = cmDayNum(); return d<1 ? "soon" : d>CM_DAYS ? "done" : "live"; }
+const logEntry = k => (state.bitacora||{})[k||dayKey()] || null;
+const logWords = k => { const e = logEntry(k); return e ? (e.words||0) : 0; };
+const shownUp = k => logWords(k) >= cmTarget();
+function promptFor(k){
+  const n = cmOn() ? cmDayNum(k) : (kDiff(state.createdAt ? dayKey(state.createdAt) : dayKey(), k||dayKey()) + 1);
+  return LOG_PROMPTS[((Math.max(1,n)-1) % LOG_PROMPTS.length + LOG_PROMPTS.length) % LOG_PROMPTS.length];
+}
+function cycleKeys(){ if(!cmOn()) return []; return [...Array(CM_DAYS)].map((_,i)=>addDays(state.pledge.start, i)); }
+function cmStats(){
+  const t = dayKey(), keys = cycleKeys(), past = keys.filter(k=>k<=t);
+  const shown = past.filter(shownUp).length;
+  const words = keys.reduce((a,k)=>a+logWords(k),0);
+  let run = 0, k = shownUp(t) ? t : addDays(t,-1);
+  while(keys.includes(k) && shownUp(k)){ run++; k = addDays(k,-1); }
+  const yMissed = (()=>{ const y = addDays(t,-1); return keys.includes(y) && !shownUp(y); })();
+  return {elapsed:Math.min(CM_DAYS, Math.max(0, past.length)), shown, words, run, yMissed, today:shownUp(t)};
+}
+function cmPledgeText(name, w){
+  const n = name || state.name || "—";
+  return {
+    en:`I, ${n}, commit to showing up every day for ${CM_DAYS} days: I open my Fluency OS, I do what I can, and I write my ${w}-word learning log about how I'm learning. Not to be perfect — to be consistent.`,
+    es:`Yo, ${n}, me comprometo a presentarme cada día durante ${CM_DAYS} días: abro mi Fluency OS, hago lo que pueda y escribo mi bitácora de ${w} palabras sobre cómo estoy aprendiendo. No para ser perfecto, sino para ser constante.`
+  };
+}
+function cmSyncPlan(){
+  /* tick the "log" habit without toasts or celebrations */
+  if(!planOn() || !shownUp(dayKey())) return;
+  const r = planRec(dayKey()); r.ev = r.ev || [];
+  if(!r.ev.includes("bitacora")){ r.ev.push("bitacora"); planAfterChange(true); }
+}
+function saveLog(k, text, quiet){
+  if(!state.bitacora || typeof state.bitacora!=="object") state.bitacora = {};
+  const prev = state.bitacora[k] || {}, words = wc(text);
+  if(!text.trim()){ delete state.bitacora[k]; save(); return {words:0, crossed:false}; }
+  const e = Object.assign(prev, {text, words, at:nowISO()});
+  if(!e.first) e.first = e.at;
+  const crossed = words >= cmTarget() && !e.shownAt;
+  if(crossed) e.shownAt = e.at;
+  state.bitacora[k] = e;
+  if(words >= cmTarget()){ touch(); if(!quiet) cmSyncPlan(); }
+  save();
+  return {words, crossed};
+}
+
+/* ---------- writing coach: reads the text, no server ---------- */
+const CONNECTORS = ["because","but","so","then","also","however","when","after","before","first","finally","although","if","while","for example","that's why","until","since","instead"];
+const ES_LEAK = ["que","pero","porque","entonces","también","tambien","muy","cuando","donde","estoy","tengo","hoy","ayer","inglés","ingles","aprender","hablar","quiero","puedo","mucho","para","una","los","las","del","está","esta","hacer","bueno","pues"];
+const STOPW = new Set("the and that this with have from they were what your about would there their which when then them been because some could into just like more also very really much many things thing".split(" "));
+function coachRead(text){
+  const raw = String(text||""), low = " "+raw.toLowerCase().replace(/[“”"]/g,"")+" ";
+  const words = (raw.match(/[A-Za-zÀ-ÿ'’-]+/g)||[]);
+  const sents = raw.split(/[.!?]+/).map(s=>s.trim()).filter(s=>wc(s)>0);
+  const avg = sents.length ? Math.round(words.length/sents.length) : 0;
+  const conns = CONNECTORS.filter(c=>new RegExp("(^|[^a-z])"+c.replace("'","['’]")+"([^a-z]|$)").test(low));
+  const leak = [...new Set(words.map(w=>w.toLowerCase()).filter(w=>ES_LEAK.includes(w)))];
+  const lowerI = /(^|\s)i(\s|['’])/.test(raw);
+  const startI = sents.filter(s=>/^i\b/i.test(s)).length;
+  const freq = {}; words.forEach(w=>{ const l = w.toLowerCase(); if(l.length>3 && !STOPW.has(l)) freq[l]=(freq[l]||0)+1; });
+  const rep = Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+  const uniq = new Set(words.map(w=>w.toLowerCase())).size;
+  const past = /\b(\w+ed|was|were|did|went|had|saw|made|said|took|felt|thought|learned|learnt)\b/i.test(raw);
+  const good = [], next = [];
+  const target = cmTarget();
+  if(words.length >= target) good.push(["You reached your "+target+" words. That is showing up.","Llegaste a tus "+target+" palabras. Eso es presentarse."]);
+  else if(words.length) next.push(["You need "+(target-words.length)+" more words. Add one detail: when, where or why.","Te faltan "+(target-words.length)+" palabras. Agrega un detalle: cuándo, dónde o por qué."]);
+  if(conns.length>=3) good.push(["You connect ideas with "+conns.slice(0,4).join(", ")+". That is how fluent writing sounds.","Conectas ideas con "+conns.slice(0,4).join(", ")+". Así suena la escritura fluida."]);
+  else if(words.length>=12) next.push(["Join two ideas with a connector: because, so, but, then.","Une dos ideas con un conector: because, so, but, then."]);
+  if(sents.length>=3 && avg>=7 && avg<=18) good.push(["Your sentences have a good length ("+avg+" words on average).","Tus frases tienen buena longitud ("+avg+" palabras en promedio)."]);
+  else if(avg>22) next.push(["Some sentences are very long. Cut one in two with a period.","Algunas frases son muy largas. Corta una en dos con un punto."]);
+  else if(sents.length>=2 && avg<5) next.push(["Your sentences are very short. Grow one: add “because…” or “when…”.","Tus frases son muy cortas. Haz crecer una: agrega “because…” o “when…”."]);
+  if(leak.length) next.push(["Spanish words appeared ("+leak.slice(0,3).join(", ")+"). Try the English word, or write it in Speak Ya to find it.","Aparecieron palabras en español ("+leak.slice(0,3).join(", ")+"). Busca la palabra en inglés, o pregúntala en Speak Ya."]);
+  if(lowerI) next.push(["“I” is always a capital letter in English, even in the middle of a sentence.","“I” siempre va en mayúscula en inglés, incluso en la mitad de la frase."]);
+  if(sents.length>=4 && startI/sents.length>0.7) next.push(["Almost every sentence starts with “I”. Start one with “Today…”, “Sometimes…” or “When…”.","Casi todas las frases empiezan con “I”. Empieza una con “Today…”, “Sometimes…” o “When…”."]);
+  if(rep && rep[1]>=3) next.push(["You repeated “"+rep[0]+"” "+rep[1]+" times. Find one other way to say it.","Repetiste “"+rep[0]+"” "+rep[1]+" veces. Busca otra forma de decirlo."]);
+  if(past) good.push(["You used the past to tell what happened. Keep the same tense until the end.","Usaste el pasado para contar lo que pasó. Mantén el mismo tiempo hasta el final."]);
+  if(words.length>=20 && uniq/words.length>0.7) good.push(["Rich vocabulary: "+uniq+" different words.","Vocabulario rico: "+uniq+" palabras distintas."]);
+  if(!good.length && words.length) good.push(["You wrote in English today. The first step is the hardest one.","Hoy escribiste en inglés. El primer paso es el más difícil."]);
+  return {words:words.length, sents:sents.length, avg, conns, uniq, good:good.slice(0,3), next:next.slice(0,3)};
+}
+function speakYaBrief(text, p){
+  const lv = studentLevel();
+  return [
+    "Actúa como la Coach de Escritura de ProfGermandario. Mi nivel de inglés es "+lv+".",
+    "Esta es mi bitácora de hoy sobre mi proceso de aprendizaje. La consigna fue: “"+p.en+"”.",
+    "",
+    "1) Corrige mis errores. Explica cada uno en español, en una línea.",
+    "2) Reescribe mi texto en inglés natural, a mi nivel, sin cambiar mis ideas.",
+    "3) Dame 3 chunks (grupos de palabras) que habría podido usar.",
+    "4) Termina con una pregunta corta en inglés para que yo responda en voz alta.",
+    "",
+    "Mi texto:",
+    text
+  ].join("\n");
+}
+
+/* ---------- your team: concierge agents ---------- */
+function agentNotes(){
+  const t = dayKey(), ph = cmPhase(), s = cmOn() ? cmStats() : null, target = cmTarget();
+  const entries = Object.keys(state.bitacora||{}).sort().map(k=>Object.assign({k}, state.bitacora[k]));
+  const todayW = logWords(t), hour = new Date().getHours();
+  const out = [];
+  /* 1 · The Keeper — the commitment */
+  let keep;
+  if(ph==="none") keep = {pri:9, note:["You haven't signed yet. Signing is deciding once, so you don't have to decide every day.","Todavía no has firmado. Firmar es decidir una vez, para no tener que decidir cada día."], detail:["28 days, one short log a day. The calendar keeps the trace.","28 días, una bitácora corta al día. El calendario guarda la huella."], act:{en:"Sign my commitment", es:"Firmar mi compromiso", a:"cmSign"}};
+  else if(ph==="soon") keep = {pri:3, note:["Your cycle starts on "+fmtDay(state.pledge.start,true)+". You can write a warm-up log today.","Tu ciclo empieza el "+fmtLongDay(state.pledge.start)+". Hoy puedes escribir una bitácora de calentamiento."], act:{en:"Write a warm-up log", es:"Escribir de calentamiento", a:"cmWrite"}};
+  else if(ph==="done") keep = {pri:9, note:["Your 28 days are complete. Your Mirror is ready: the promise next to the evidence.","Tus 28 días terminaron. Tu Espejo está listo: la promesa junto a la evidencia."], act:{en:"Open my Mirror", es:"Abrir mi Espejo", a:"cmOpen"}};
+  else if(s.today) keep = {pri:1, note:["Today you showed up. "+(s.run>1?s.run+" days in a row.":"The chain has started."),"Hoy te presentaste. "+(s.run>1?s.run+" días seguidos.":"La cadena empezó.")], detail:[s.shown+" of "+s.elapsed+" days kept so far.", s.shown+" de "+s.elapsed+" días cumplidos hasta hoy."], act:{en:"See my calendar", es:"Ver mi calendario", a:"cmOpen"}};
+  else if(s.yMissed) keep = {pri:8, note:["Yesterday you didn't show up. Golden rule: never miss twice. Today "+target+" words are enough.","Ayer no te presentaste. Regla de oro: nunca fallar dos veces. Hoy bastan "+target+" palabras."], act:{en:"Write today's log", es:"Escribir la bitácora de hoy", a:"cmWrite"}};
+  else keep = {pri:6, note:["Day "+cmDayNum()+" of "+CM_DAYS+". Your log is waiting: "+target+" words, about five minutes.","Día "+cmDayNum()+" de "+CM_DAYS+". Tu bitácora te espera: "+target+" palabras, unos cinco minutos."], act:{en:"Write today's log", es:"Escribir la bitácora de hoy", a:"cmWrite"}};
+  out.push(Object.assign({id:"keeper", glyph:"G", c:"var(--gold)", name:["The Keeper","El Guardián"], role:["Your commitment","Tu compromiso"]}, keep));
+  /* 2 · The Architect — the exact next step */
+  let arch;
+  if(planOn()){
+    const st = dayStatus(t), ti = specTitle(todaySpec());
+    arch = st && st.victory ? {pri:1, note:["Victory of the day. Everything else today is a bonus.","Victoria del día. Todo lo demás hoy es un extra."], act:{en:"See my plan", es:"Ver mi plan", a:"cmGoPlan"}}
+      : {pri:5, note:["Your exact next step: "+ti[0]+" — "+(st?st.done+" of "+st.total+" micro-goals done.":""), "Tu siguiente paso exacto: "+ti[1]+" — "+(st?st.done+" de "+st.total+" micro-metas cumplidas.":"")], act:{en:"Go to my next step", es:"Ir a mi siguiente paso", a:"cmGoPlan"}};
+  } else {
+    const nx = nextMission();
+    arch = nx>=0 ? {pri:4, note:["Your exact next step is Mission "+(nx+1)+": "+LESSONS[nx].t+". A study plan turns it into small daily goals.","Tu siguiente paso exacto es la Misión "+(nx+1)+": "+((ES_MISSIONS[nx]||{}).t||LESSONS[nx].t)+". Un plan de estudio la convierte en metas diarias pequeñas."], act:{en:"Start Mission "+(nx+1), es:"Empezar la Misión "+(nx+1), a:"startNext"}}
+      : {pri:1, note:["You finished the missions of your program. Keep the log: it is your evidence.","Terminaste las misiones de tu programa. Sigue con la bitácora: es tu evidencia."], act:{en:"See my evolution", es:"Ver mi evolución", a:"goEvolution"}};
+  }
+  out.push(Object.assign({id:"architect", glyph:"A", c:"var(--sk-review)", name:["The Architect","La Arquitecta"], role:["Your route","Tu ruta"]}, arch));
+  /* 3 · The Writing Coach — reads today's log */
+  let coach;
+  if(todayW){
+    const r = coachRead(logEntry(t).text), first = r.next[0] || r.good[0];
+    coach = {pri:todayW<target?6:2, note:first ? first : ["Good work today.","Buen trabajo hoy."], detail:[r.words+" words · "+r.sents+" sentences · "+r.conns.length+" connectors", r.words+" palabras · "+r.sents+" frases · "+r.conns.length+" conectores"], act:{en:"Open my review", es:"Abrir mi revisión", a:"cmWrite"}};
+  } else coach = {pri:3, note:["Write first, correct later. I read your log the moment you finish it.","Primero escribe, después corrige. Leo tu bitácora en cuanto la termines."], detail:["Today's prompt: “"+promptFor(t).en+"”","La consigna de hoy: “"+promptFor(t).es+"”"], act:{en:"Write today's log", es:"Escribir la bitácora de hoy", a:"cmWrite"}};
+  out.push(Object.assign({id:"coach", glyph:"E", c:"var(--sk-write)", name:["The Writing Coach","La Coach de Escritura"], role:["Your words","Tus palabras"]}, coach));
+  /* 4 · The Growth Engine — compares you with you */
+  let grow;
+  if(entries.length>=2){
+    const a = entries[0], z = entries.slice(-3), avgZ = Math.round(z.reduce((x,e)=>x+(e.words||0),0)/z.length);
+    const d = a.words ? Math.round((avgZ-a.words)/a.words*100) : 0;
+    const total = entries.reduce((x,e)=>x+(e.words||0),0);
+    grow = {pri:d>0?3:2, note:d>0 ? ["You now write "+d+"% more than in your first log ("+a.words+" → "+avgZ+" words).","Ahora escribes "+d+"% más que en tu primera bitácora ("+a.words+" → "+avgZ+" palabras)."]
+      : ["Your logs keep a steady length. Next level: one more connector per log.","Tus bitácoras mantienen una longitud estable. Siguiente nivel: un conector más por bitácora."],
+      detail:[entries.length+" logs · "+total+" words written in English", entries.length+" bitácoras · "+total+" palabras escritas en inglés"], act:{en:"See my evolution", es:"Ver mi evolución", a:"goEvolution"}};
+  } else grow = {pri:1, note:["After two logs I can show you your own growth, with numbers.","Después de dos bitácoras te muestro tu propio crecimiento, con números."], act:{en:"See my evolution", es:"Ver mi evolución", a:"goEvolution"}};
+  out.push(Object.assign({id:"growth", glyph:"M", c:"var(--sk-listen)", name:["The Growth Engine","El Motor de Crecimiento"], role:["Your evidence","Tu evidencia"]}, grow));
+  /* 5 · The Mind Mentor */
+  const recentStuck = (state.stuckSignals||[]).filter(x=>x && x.date && daysBetween(x.date, new Date())<=3).length;
+  const mind = hour>=22 ? {pri:4, note:["It's late. Three calm breaths, then write only your "+target+" words. Short is fine tonight.","Es tarde. Tres respiraciones tranquilas y escribe solo tus "+target+" palabras. Corto está bien esta noche."]}
+    : recentStuck ? {pri:5, note:["You felt stuck recently. A calm mind finds words faster: meditate first, then come back.","Te sentiste bloqueado hace poco. Una mente tranquila encuentra las palabras más rápido: medita primero y vuelve."]}
+    : {pri:1, note:["Before you practice, one minute of breathing. Attention is the first skill.","Antes de practicar, un minuto de respiración. La atención es la primera habilidad."]};
+  out.push(Object.assign({id:"mind", glyph:"◐", c:"var(--sk-mind)", name:["The Mind Mentor","La Mentora de Mente"], role:["Your focus","Tu enfoque"], act:{en:"Open the Meditation Center", es:"Abrir el Centro de Meditación", a:"cmMeditate"}}, mind));
+  /* 6 · ProfGermandario — the human */
+  out.push({id:"teacher", glyph:"PG", img:true, c:"var(--sk-speak)", name:["ProfGermandario","ProfGermandario"], role:["Your teacher","Tu profesor"], pri:s && s.yMissed && !s.today ? 3 : 1,
+    note: todayW ? ["Send me today's log. I read the real thing, not a summary.","Envíame la bitácora de hoy. Leo lo real, no un resumen."] : ["Stuck for more than a day? Write to me. That's what I'm here for.","¿Bloqueado más de un día? Escríbeme. Para eso estoy."],
+    act: todayW ? {en:"Send today's log", es:"Enviar la bitácora de hoy", a:"cmSendToday"} : {en:"Message ProfGermandario", es:"Escribir a ProfGermandario", a:"cmTeacher"}});
+  return out;
+}
+function leadAgent(){ return agentNotes().slice().sort((a,b)=>b.pri-a.pri)[0]; }
+function agentSeal(a, lg){
+  return `<span class="cm-seal${lg?" lg":""}" style="--ag:${a.c}" aria-hidden="true">${a.img?`<img src="https://palekor.github.io/lecciones/profgermandario-logo-clean.png" alt="" onerror="this.replaceWith(document.createTextNode('PG'))">`:esc(a.glyph)}</span>`;
+}
+function agentCard(a, lead){
+  return `<article class="ag-card${lead?" lead":""}" style="--ag:${a.c}">
+    ${lead?`<span class="ag-lead-tag notr">${esc(tb("Today","Hoy"))}</span>`:""}
+    <div class="ag-head">${agentSeal(a,true)}<div><span class="ag-name">${a.name[0]===a.name[1]?`<span class="notr">${esc(a.name[0])}</span>`:T(esc(a.name[0]),esc(a.name[1]))}</span><span class="ag-role">${T(esc(a.role[0]),esc(a.role[1]))}</span></div></div>
+    <p class="ag-note">${T(esc(a.note[0]),esc(a.note[1]))}</p>
+    ${a.detail?`<p class="ag-detail">${T(esc(a.detail[0]),esc(a.detail[1]))}</p>`:""}
+    ${a.act?`<button class="btn-line ag-act" data-act="${a.act.a}">${T(esc(a.act.en),esc(a.act.es))}</button>`:""}
+  </article>`;
+}
+function teamSection(){
+  const all = agentNotes(), lead = all.slice().sort((a,b)=>b.pri-a.pri)[0];
+  return `<section class="mt-l" id="cmTeam"><div class="phase-head"><h3>${T("Your team","Tu equipo")}</h3><span class="notr">${esc(tb("6 guides","6 guías"))}</span></div>
+    <p class="muted small mt-s">${T("Each one reads your real work and tells you one useful thing. The deep review goes to Speak Ya; the human is ProfGermandario.","Cada uno lee tu trabajo real y te dice una cosa útil. La revisión profunda va a Speak Ya; el humano es ProfGermandario.")}</p>
+    <div class="ag-grid mt">${[lead].concat(all.filter(a=>a!==lead)).map(a=>agentCard(a, a===lead)).join("")}</div></section>`;
+}
+
+/* ---------- Home card ---------- */
+function chainHTML(){
+  if(!cmOn()) return "";
+  const t = dayKey();
+  return `<div class="cm-chain" aria-hidden="true">${cycleKeys().map(k=>{
+    const w = logWords(k), on = shownUp(k);
+    const cls = (on?"on":w?"part":k<t?"miss":"")+(k===t?" today":"");
+    return `<i class="${cls}"></i>`;
+  }).join("")}</div>`;
+}
+function pledgeHomeCard(){
+  cmSyncPlan();
+  const ph = cmPhase(), a = leadAgent();
+  const brief = a ? `<button class="cm-brief" data-act="cmTeamOpen">${agentSeal(a)}<span class="grow"><span class="t notr">${esc(tb(a.name[0],a.name[1]))}</span><span class="s">${T(esc(a.note[0]),esc(a.note[1]))}</span></span><span class="chev">›</span></button>` : "";
+  if(ph==="none") return `<section class="panel cm-card mt">
+      <p class="kicker">${T("To show up","Presentarse")}</p>
+      <h2 class="display">${T("Sign your 28-day commitment","Firma tu compromiso de 28 días")}</h2>
+      <p class="muted mt-s">${T("A few minutes a day and one short log about how you are learning. Here the winner isn't who knows more — it's who comes back.","Unos minutos al día y una bitácora corta sobre cómo estás aprendiendo. Aquí no gana quien más sabe: gana quien vuelve.")}</p>
+      <button class="btn block mt" data-act="cmSign">${T("Sign my commitment","Firmar mi compromiso")}</button>
+      ${brief}</section>`;
+  if(ph==="done") return `<section class="panel cm-card mt">
+      <p class="kicker">${T("Cycle "+state.pledge.cycle+" complete","Ciclo "+state.pledge.cycle+" completo")}</p>
+      <h2 class="display">${T("Your Mirror is ready.","Tu Espejo está listo.")}</h2>
+      ${chainHTML()}
+      <p class="muted mt-s">${T("Your promise, next to what you actually did.","Tu promesa, junto a lo que de verdad hiciste.")}</p>
+      <button class="btn block mt" data-act="cmOpen">${T("Open my Mirror","Abrir mi Espejo")}</button></section>`;
+  const s = cmStats(), d = cmDayNum(), target = cmTarget(), p = promptFor(dayKey());
+  return `<section class="panel cm-card mt">
+    <div class="pt-head"><p class="kicker">${ph==="soon" ? T("Starts "+fmtDay(state.pledge.start),"Empieza el "+fmtLongDay(state.pledge.start)) : T("My commitment · day "+d+" of "+CM_DAYS,"Mi compromiso · día "+d+" de "+CM_DAYS)}</p><span class="pt-count notr">${s.shown}/${CM_DAYS}</span></div>
+    ${chainHTML()}
+    <div class="cm-status"><span>${T("<b>"+s.shown+"</b> days shown up","<b>"+s.shown+"</b> días presentes")}</span><span>${T("<b>"+s.words+"</b> words in your log","<b>"+s.words+"</b> palabras en tu bitácora")}</span></div>
+    ${s.today ? `<div class="cm-done">✓ ${T("Today you showed up. See you tomorrow at "+fmtTime(state.pledge.hour)+".","Hoy te presentaste. Nos vemos mañana a las "+fmtTime(state.pledge.hour)+".")}</div>`
+      : `<p class="mt" style="font-family:var(--display);font-size:19px;line-height:1.35">“${esc(p.en)}”</p><p class="muted small mt-s">${T(target+" words · about 5 minutes","Meta: "+target+" palabras · unos 5 minutos")}</p>
+         <button class="btn block mt" data-act="cmWrite">${T("Write today's log","Escribir la bitácora de hoy")}</button>`}
+    ${brief}
+    <a class="link mt-s" href="#pledge" style="display:inline-block">${T("My commitment and my team","Mi compromiso y mi equipo")} ›</a>
+  </section>`;
+}
+
+/* ---------- the commitment page ---------- */
+function cycleCalendar(){
+  const t = dayKey(), keys = cycleKeys(), first = parseKey(keys[0]), off = (first.getDay()+6)%7;
+  const letters = lang()==="es" ? ["L","M","M","J","V","S","D"] : ["M","T","W","T","F","S","S"];
+  const cells = [];
+  for(let e=0;e<off;e++) cells.push('<div class="cal-day cal-blank" aria-hidden="true"></div>');
+  keys.forEach((k,i)=>{
+    const w = logWords(k), on = shownUp(k), target = cmTarget();
+    let cls = "cal-day"+(k>t?" future":"")+(k===t?" today":"")+(on?" full":w?" partial":k<t?" missed":"");
+    const fill = on ? 100 : w ? Math.round(18 + Math.min(1, w/target)*70) : 0;
+    let cls2 = false; try{ cls2 = isMember() && occurrencesBetween(k,k).some(o=>!o.rec.cancelled); }catch(e){}
+    cells.push(`<button type="button" class="${cls}" data-act="cmDay" data-k="${k}" aria-label="${esc(tt("Day "+(i+1)+" · "+fmtDay(k,true),"Día "+(i+1)+" · "+fmtLongDay(k)))}">${fill?`<span class="cal-fill" style="height:${fill}%"></span>`:""}<span class="cm-dn">${i+1}</span><span class="cal-num">${parseKey(k).getDate()}</span>${on?'<span class="cal-mark">★</span>':""}${cls2?'<span class="cm-classdot"></span>':""}</button>`);
+  });
+  return `<section class="mt-l"><div class="phase-head"><h3>${T("My 28 days","Mis 28 días")}</h3><span class="notr">${esc(fmtShortDay(keys[0])+" – "+fmtShortDay(keys[keys.length-1]))}</span></div>
+    <div class="cal-card mt-s">
+      <div class="cal-grid notr" aria-hidden="true">${letters.map(x=>`<div class="cal-dow">${x}</div>`).join("")}</div>
+      <div class="cal-grid cm-grid">${cells.join("")}</div>
+      <div class="cal-legend notr"><span><b class="lg-star">★</b>${esc(tb("Showed up","Presente"))}</span><span><i class="lg lg-fill"></i>${esc(tb("Started","Empezada"))}</span><span><i class="lg" style="border:1.5px dashed var(--coral)"></i>${esc(tb("Missed","Faltó"))}</span><span><i class="lg" style="background:var(--sk-listen);border-radius:50%;width:7px;height:7px"></i>${esc(tb("Class","Clase"))}</span></div>
+      <p class="cal-tip">${T("The calendar never closes a day. It keeps your trace.","El calendario nunca cierra un día. Guarda tu huella.")}</p>
+    </div></section>`;
+}
+function pledgeQuote(){
+  const P = state.pledge;
+  return `<blockquote class="cm-quote">${T(esc(P.text.en),esc(P.text.es))}</blockquote>
+    <div class="cm-sig"><span>${esc(tt("Signed","Firmado"))} · ${esc(fmtShortDay(dayKey(P.signedAt)))}</span><b class="notr">${esc(P.sig)}</b></div>`;
+}
+function mirrorSection(){
+  const keys = cycleKeys(), es = keys.filter(k=>logEntry(k)), t = dayKey();
+  const s = cmStats(), first = es[0] ? logEntry(es[0]) : null, last = es.length>1 ? logEntry(es[es.length-1]) : null;
+  const wk = w => { const ks = keys.slice(w*7, w*7+7).filter(k=>logEntry(k)); return ks.length ? Math.round(ks.reduce((a,k)=>a+logWords(k),0)/ks.length) : 0; };
+  const missions = state.completedMissions.filter(i=>{ const c = (state.missionProgress[i]||{}).completedAt; return c && dayKey(c)>=keys[0] && dayKey(c)<=keys[keys.length-1]; }).length;
+  const wins = keys.filter(k=>(state.planLog[k]||{}).victory).length;
+  const cut = x => esc(String(x||"").slice(0,260))+(String(x||"").length>260?"…":"");
+  return `<section class="panel cm-card mt">
+      <p class="kicker">${T("The Mirror · cycle "+state.pledge.cycle,"El Espejo · ciclo "+state.pledge.cycle)}</p>
+      <h2 class="display">${T("You showed up "+s.shown+" of "+CM_DAYS+" days.","Te presentaste "+s.shown+" de "+CM_DAYS+" días.")}</h2>
+      ${chainHTML()}
+      <div class="evidence mt">
+        <div><b>${s.words}</b><span>${T("words in English","palabras en inglés")}</span></div>
+        <div><b>${wk(0)} → ${wk(3)||wk(2)||wk(1)}</b><span>${T("avg words · week 1 → last","promedio · semana 1 → última")}</span></div>
+        <div><b>${missions}</b><span>${T("missions this cycle","misiones en este ciclo")}</span></div>
+        <div><b>${wins}</b><span>${T("victories of the day","victorias del día")}</span></div>
+      </div>
+      ${first&&last?`<div class="cm-compare mt"><div><span class="k">${esc(tb("Day "+(keys.indexOf(es[0])+1),"Día "+(keys.indexOf(es[0])+1)))}</span><p>${cut(first.text)}</p><span class="w">${first.words} ${esc(tb("words","palabras"))}</span></div><div><span class="k">${esc(tb("Day "+(keys.indexOf(es[es.length-1])+1),"Día "+(keys.indexOf(es[es.length-1])+1)))}</span><p>${cut(last.text)}</p><span class="w">${last.words} ${esc(tb("words","palabras"))}</span></div></div>`:""}
+      <p class="kicker mt">${T("Your promise","Tu promesa")}</p>${pledgeQuote()}
+      <div class="stack mt"><button class="btn block" data-act="cmRenew">${T("Sign cycle "+(state.pledge.cycle+1),"Firmar el ciclo "+(state.pledge.cycle+1))}</button>
+        <div class="row-gap"><button class="btn-line" data-act="cmCert">${T("Download my certificate","Descargar mi certificado")}</button><button class="btn-line" data-act="cmSendMirror">${T("Send my Mirror to ProfGermandario","Enviar mi Espejo a ProfGermandario")}</button></div></div>
+    </section>`;
+}
+VIEWS.pledge = function(){
+  setBody("");
+  const ph = cmPhase();
+  if(ph==="none"){
+    view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${T("My commitment","Mi compromiso")}</h1>
+        <p>${T("Fluency is not a talent. It's showing up.","La fluidez no es un talento. Es presentarse.")}</p></section>
+      <section class="panel cm-card">
+        <p class="kicker">${T("How it works","Cómo funciona")}</p>
+        <ol class="cm-intro mt">
+          <li><span class="n">1</span><span><b>${T("You sign once","Firmas una vez")}</b><span class="s">${T("A start date, a daily hour and a word target. Deciding once saves you from deciding every day.","Una fecha de inicio, una hora diaria y una meta de palabras. Decidir una vez te ahorra decidir cada día.")}</span></span></li>
+          <li><span class="n">2</span><span><b>${T("You write a short log every day","Escribes una bitácora corta cada día")}</b><span class="s">${T("One question about how you are learning. Reach your words and the day gets its star.","Una pregunta sobre cómo estás aprendiendo. Llegas a tus palabras y el día gana su estrella.")}</span></span></li>
+          <li><span class="n">3</span><span><b>${T("Your team reads it","Tu equipo la lee")}</b><span class="s">${T("A writing coach, an architect for your route, a growth engine, a mind mentor — and ProfGermandario.","Una coach de escritura, una arquitecta de tu ruta, un motor de crecimiento, una mentora de mente — y ProfGermandario.")}</span></span></li>
+          <li><span class="n">4</span><span><b>${T("Day 28: the Mirror","Día 28: el Espejo")}</b><span class="s">${T("Your promise next to your evidence. Then you sign the next cycle.","Tu promesa junto a tu evidencia. Luego firmas el siguiente ciclo.")}</span></span></li>
+        </ol>
+        <button class="btn block mt" data-act="cmSign">${T("Sign my commitment","Firmar mi compromiso")}</button>
+      </section>
+      ${teamSection()}`;
+    return;
+  }
+  if(ph==="done"){
+    view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${T("My commitment","Mi compromiso")}</h1><p>${T("Look at what you did.","Mira lo que hiciste.")}</p></section>
+      ${mirrorSection()}${cycleCalendar()}${teamSection()}${historyBlock()}`;
+    return;
+  }
+  const s = cmStats(), d = cmDayNum(), t = dayKey(), p = promptFor(t), target = cmTarget();
+  view.innerHTML = `<section class="greet"><h1 class="display" style="font-size:clamp(30px,7vw,40px)">${T("My commitment","Mi compromiso")}</h1>
+      <p>${ph==="soon" ? T("Your cycle starts "+fmtDay(state.pledge.start,true)+".","Tu ciclo empieza el "+fmtLongDay(state.pledge.start)+".") : T("Day "+d+" of "+CM_DAYS+". Come back, that's all.","Día "+d+" de "+CM_DAYS+". Volver, eso es todo.")}</p></section>
+    <section class="panel cm-card">
+      <div class="pt-head"><p class="kicker">${T("Cycle "+state.pledge.cycle,"Ciclo "+state.pledge.cycle)}</p><span class="pt-count notr">${s.shown}/${CM_DAYS}</span></div>
+      ${pledgeQuote()}
+      ${chainHTML()}
+      <div class="plan-stats mt">
+        <div><b>🔥 ${s.run}</b><span>${T("days in a row","días seguidos")}</span></div>
+        <div><b>${s.shown}/${Math.max(1,s.elapsed)}</b><span>${T("days kept","días cumplidos")}</span></div>
+        <div><b>${s.words}</b><span>${T("words written","palabras escritas")}</span></div>
+      </div>
+    </section>
+    <section class="panel mt">
+      <p class="kicker">${T("Today's log","Bitácora de hoy")} · <span class="notr">${esc(fmtLongDay(t))}</span></p>
+      <p class="bt-prompt">${T(esc(p.en),esc(p.es))}</p>
+      ${s.today ? `<div class="cm-done">✓ ${T("Done — "+logWords(t)+" words. You can keep adding.","Lista — "+logWords(t)+" palabras. Puedes seguir agregando.")}</div>` : `<p class="muted small mt-s">${T(target+" words to show up"+(logWords(t)?" · you have "+logWords(t):""), target+" palabras para presentarte"+(logWords(t)?" · llevas "+logWords(t):""))}</p>`}
+      <button class="btn block mt" data-act="cmWrite">${T(logWords(t)?"Continue my log":"Write today's log", logWords(t)?"Continuar mi bitácora":"Escribir la bitácora de hoy")}</button>
+    </section>
+    ${cycleCalendar()}
+    ${teamSection()}
+    <section class="mt-l"><h3>${T("My rhythm","Mi ritmo")}</h3>
+      <p class="muted mt-s">${T("Every day at "+fmtTime(state.pledge.hour)+" · "+target+" words · ends "+fmtDay(cmEnd()),"Cada día a las "+fmtTime(state.pledge.hour)+" · "+target+" palabras · termina el "+fmtLongDay(cmEnd()))}</p>
+      <div class="row-gap mt"><button class="btn-line" data-act="cmIcs">${T("Add the 28 days to my phone calendar","Agregar los 28 días al calendario del teléfono")}</button><button class="btn-line" data-act="cmSendWeek">${T("Send my week to ProfGermandario","Enviar mi semana a ProfGermandario")}</button><button class="btn-line" data-act="cmExport">${T("Download my log (.txt)","Descargar mi bitácora (.txt)")}</button><button class="btn-line" data-act="cmEdit">${T("Adjust my commitment","Ajustar mi compromiso")}</button></div>
+    </section>
+    ${historyBlock()}`;
+};
+function historyBlock(){
+  const H = state.pledgeHistory||[]; if(!H.length) return "";
+  return `<section class="mt-l"><h3>${T("Past cycles","Ciclos anteriores")}</h3><div class="mt-s">${H.slice().reverse().map(h=>`<div class="cm-hist"><b>${h.shown}/${CM_DAYS}</b><span class="grow"><span class="t notr">${esc(tb("Cycle "+h.cycle,"Ciclo "+h.cycle))}</span><br><span class="muted small notr">${esc(fmtShortDay(h.start)+" – "+fmtShortDay(h.end)+" · "+h.words+" "+tb("words","palabras"))}</span></span></div>`).join("")}</div></section>`;
+}
+
+/* ---------- the learning log page ---------- */
+VIEWS.bitacora = function(){
+  setBody("");
+  const t = dayKey(), p = promptFor(t), e = logEntry(t), target = cmTarget(), w = logWords(t);
+  const d = cmPhase()==="live" ? cmDayNum() : 0;
+  cmSyncPlan();
+  view.innerHTML = `<a class="bt-back" href="#pledge">‹ ${T("My commitment","Mi compromiso")}</a>
+    <section class="greet" style="padding-top:4px"><p class="kicker">${T("Learning log","Bitácora")}${d?" · "+T("day "+d+" of "+CM_DAYS,"día "+d+" de "+CM_DAYS):""} · <span class="notr">${esc(fmtLongDay(t))}</span></p>
+      <h1 class="bt-prompt">${T(esc(p.en),esc(p.es))}</h1></section>
+    <div class="bt-tools"><button class="btn-line" data-act="cmListen" style="min-height:40px">▶ ${T("Listen","Escuchar")}</button>${p.st.map(x=>`<button class="bt-starter notr" data-act="btStarter" data-s="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+    <label class="sr" for="btText">${esc(tt("Your learning log","Tu bitácora"))}</label>
+    <textarea class="write mt" id="btText" data-in="btText" placeholder="${esc(tt("Write in English. Imperfect is perfect. If you get stuck, tap a starter.","Escribe en inglés. Imperfecto es perfecto. Si te bloqueas, toca un inicio de frase."))}">${esc(e?e.text:"")}</textarea>
+    <div class="bt-meter${w>=target?" ok":""}" id="btMeter"><span class="bar"><i style="width:${Math.min(100,Math.round(w/target*100))}%"></i></span><span class="n" id="btCount">${w} / ${target}</span></div>
+    <p class="bt-shown">✓ ${T("You showed up today. Everything else is a bonus.","Hoy te presentaste. Todo lo demás es un extra.")}</p>
+    <div class="stack mt"><button class="btn block" data-act="btDone">${T("Save my log","Guardar mi bitácora")}</button>
+      <div class="row-gap"><button class="btn-line" data-act="btCoach">${T("Review from my Writing Coach","Revisión de mi Coach de Escritura")}</button><button class="btn-line" data-act="btSpeakYa">${T("Deep correction with Speak Ya","Corrección profunda con Speak Ya")}</button><button class="btn-line" data-act="cmSendToday">${T("Send to ProfGermandario","Enviar a ProfGermandario")}</button></div></div>
+    <section class="panel bt-coach" id="btCoach"></section>
+    <p class="small muted mt center">${T("Saved automatically on this device as you write.","Se guarda sola en este dispositivo mientras escribes.")}</p>`;
+};
+function paintCoach(){
+  const box = $("#btCoach"); if(!box) return;
+  const ta = $("#btText"), txt = ta ? ta.value : ((logEntry()||{}).text||"");
+  if(!wc(txt)){ box.innerHTML = `<div class="ag-head">${agentSeal({c:"var(--sk-write)", glyph:"E"})}<p class="small muted">${T("Write a few sentences first. Then I read them.","Escribe unas frases primero. Luego las leo.")}</p></div>`; return; }
+  const r = coachRead(txt);
+  box.innerHTML = `<div class="ag-head">${agentSeal({c:"var(--sk-write)", glyph:"E"}, true)}<div><span class="ag-name">${T("The Writing Coach","La Coach de Escritura")}</span><span class="ag-role" style="color:var(--sk-write)">${T("Read in this browser — nothing leaves your phone","Leído en este navegador — nada sale de tu teléfono")}</span></div></div>
+    <div class="bt-stats mt notr"><span class="pill">${r.words} ${esc(tb("words","palabras"))}</span><span class="pill">${r.sents} ${esc(tb("sentences","frases"))}</span><span class="pill">${r.conns.length} ${esc(tb("connectors","conectores"))}</span><span class="pill">${r.uniq} ${esc(tb("different words","palabras distintas"))}</span></div>
+    ${r.good.map(x=>`<div class="bt-tip good"><span class="ic">✓</span><span>${T(esc(x[0]),esc(x[1]))}</span></div>`).join("")}
+    ${r.next.map(x=>`<div class="bt-tip next"><span class="ic">→</span><span>${T(esc(x[0]),esc(x[1]))}</span></div>`).join("")}
+    <p class="small muted mt-s">${T("For line-by-line corrections, use “Deep correction with Speak Ya”: your text and instructions are copied for you.","Para correcciones línea por línea, usa “Corrección profunda con Speak Ya”: tu texto y las instrucciones se copian solos.")}</p>`;
+}
+
+/* ---------- signing the commitment (3 steps, like the trading challenge) ---------- */
+let CMS = null;
+function cmSignSheet(edit){
+  const P = state.pledge;
+  CMS = {step: edit ? 1 : 0, edit:!!edit, name: state.name||"", start: edit && P ? P.start : dayKey(), hour: (P&&P.hour) || (state.plan&&state.plan.time) || "07:30", words: (P&&P.words) || CM_WORDS_BY_LEVEL[studentLevel()] || 45, habit: true, sig:""};
+  paintSign();
+}
+function paintSign(){
+  const o = CMS, dots = `<div class="cm-steps" aria-hidden="true">${[0,1,2].map(i=>`<i class="${i<=o.step?"on":""}"></i>`).join("")}</div>`;
+  let b = "";
+  if(o.step===0){
+    b = `${sheetHead(tt("To show up","Presentarse"), tt("Step 1 of 3","Paso 1 de 3"))}${dots}
+      <h2 class="display" style="font-size:clamp(26px,7vw,32px)">${T("28 days. One log a day.","28 días. Una bitácora al día.")}</h2>
+      <p class="muted mt-s">${T("Here the winner isn't who studies the most. It's who comes back.","Aquí no gana quien más estudia. Gana quien vuelve.")}</p>
+      <ol class="cm-intro mt">
+        <li><span class="n">✎</span><span><b>${T("A question a day","Una pregunta al día")}</b><span class="s">${T("About how you are learning, not about grammar.","Sobre cómo estás aprendiendo, no sobre gramática.")}</span></span></li>
+        <li><span class="n">★</span><span><b>${T("A star when you show up","Una estrella cuando te presentas")}</b><span class="s">${T("Reach your words and the day is kept.","Llegas a tus palabras y el día queda cumplido.")}</span></span></li>
+        <li><span class="n">◎</span><span><b>${T("A team that reads you","Un equipo que te lee")}</b><span class="s">${T("Coach, architect, growth engine, mentor and ProfGermandario.","Coach, arquitecta, motor de crecimiento, mentora y ProfGermandario.")}</span></span></li>
+      </ol>
+      <button class="btn block mt" data-act="cmNext">${T("Start","Empezar")}</button>`;
+  } else if(o.step===1){
+    b = `${sheetHead(tt("Your plan","Tu plan"), tt("Step 2 of 3","Paso 2 de 3"))}${dots}
+      <div class="stack">
+        <div><label class="lbl" for="cmName">${T("What should we call you?","¿Cómo te llamamos?")}</label><input class="field mt-s" id="cmName" data-in="cmName" value="${esc(o.name)}" autocomplete="given-name" placeholder="${esc(tt("Your name","Tu nombre"))}"></div>
+        <div class="field-grid">
+          <div><label class="lbl" for="cmStart">${T("Start date","Fecha de inicio")}</label><input class="field mt-s" type="date" id="cmStart" data-in="cmStart" value="${esc(o.start)}"></div>
+          <div><label class="lbl" for="cmHour">${T("Daily hour","Hora diaria")}</label><input class="field mt-s" type="time" id="cmHour" data-in="cmHour" value="${esc(o.hour)}"></div>
+        </div>
+        <div><span class="lbl">${T("Words in your daily log","Palabras de tu bitácora diaria")}</span>
+          <div class="seg mt-s notr" style="grid-template-columns:repeat(5,1fr)" role="group">${CM_WORDS.map(w=>`<button data-act="cmWords" data-v="${w}" aria-pressed="${o.words===w}">${w}</button>`).join("")}</div>
+          <p class="small muted mt-s">${T("Suggested for "+studentLevel()+": "+(CM_WORDS_BY_LEVEL[studentLevel()]||45)+". Small enough to do on a bad day.","Sugerido para "+studentLevel()+": "+(CM_WORDS_BY_LEVEL[studentLevel()]||45)+". Lo bastante pequeño para cumplirlo en un mal día.")}</p></div>
+        ${planOn()?`<button class="cm-check" data-act="cmHabit" aria-pressed="${o.habit}"><span class="box">${o.habit?"✓":""}</span><span><b>${T("Add “Write my log” to my plan's habits","Agregar “Escribir mi bitácora” a los hábitos de mi plan")}</b><span class="s">${T("It checks itself when you reach your words.","Se marca sola cuando llegas a tus palabras.")}</span></span></button>`:""}
+      </div>
+      <button class="btn block mt" data-act="cmNext">${T(o.edit?"Save changes":"Continue", o.edit?"Guardar cambios":"Continuar")}</button>
+      ${o.edit?"":`<button class="btn-line block mt-s" style="width:100%" data-act="cmBack">${T("Back","Atrás")}</button>`}`;
+  } else {
+    const txt = cmPledgeText(o.name, o.words);
+    b = `${sheetHead(tt("Your commitment","Tu compromiso"), tt("Step 3 of 3","Paso 3 de 3"))}${dots}
+      <blockquote class="cm-quote">${T(esc(txt.en),esc(txt.es))}</blockquote>
+      <p class="muted small mt-s">${T("On day 28 you will see this promise next to your Mirror: the evidence of what you did.","El día 28 verás esta promesa junto a tu Espejo: la evidencia de lo que hiciste.")}</p>
+      <div class="mt"><label class="lbl" for="cmSig">${T("Sign with your name","Firma con tu nombre")}</label><input class="field cm-sign mt-s" id="cmSig" data-in="cmSig" value="${esc(o.sig)}" placeholder="${esc(o.name)}" autocomplete="off"></div>
+      <button class="btn block mt" data-act="cmSignNow" id="cmSignBtn" ${o.sig.trim().length<2?"disabled":""}>${T("I sign my commitment","Firmo mi compromiso")}</button>
+      <button class="btn-line block mt-s" style="width:100%" data-act="cmBack">${T("Back","Atrás")}</button>`;
+  }
+  openSheet(b);
+}
+function cmApply(){
+  const o = CMS, prev = state.pledge;
+  if(o.name && !state.name) state.name = o.name;
+  if(o.edit && prev){
+    Object.assign(prev, {start:o.start, hour:o.hour, words:o.words, text:cmPledgeText(o.name||prev.name, o.words)});
+  } else {
+    if(prev && o.renew) cmArchive();
+    state.pledge = {v:1, cycle:(state.pledgeHistory||[]).length + 1, name:o.name, sig:o.sig.trim(), start:o.start, hour:o.hour, words:o.words, text:cmPledgeText(o.name, o.words), signedAt:nowISO()};
+  }
+  if(planOn() && o.habit && !state.plan.habits.includes("log")){
+    if(state.plan.habits.length>=4) state.plan.habits.pop();
+    state.plan.habits.push("log");
+    const r = planRec(dayKey()); delete r.spec; delete r.tasks;
+    planAfterChange(true);
+  }
+  save();
+}
+function cmArchive(){
+  const P = state.pledge; if(!P) return;
+  const keys = cycleKeys(), s = cmStats();
+  state.pledgeHistory = (state.pledgeHistory||[]).concat({cycle:P.cycle, start:P.start, end:keys[keys.length-1], shown:keys.filter(shownUp).length, words:s.words, sig:P.sig, words_target:P.words, closedAt:nowISO()});
+}
+
+/* ---------- celebrations, files, messages ---------- */
+function cmCelebrate(){
+  const old = $("#celebrate"); if(old) old.remove();
+  const s = cmOn() ? cmStats() : null, d = cmPhase()==="live" ? cmDayNum() : 0;
+  const el = document.createElement("div"); el.className = "celebrate"; el.id = "celebrate"; el.setAttribute("role","dialog"); el.setAttribute("aria-modal","true");
+  const bits = [...Array(24)].map((_,i)=>`<i style="--x:${(i*41)%100}%;--d:${(i%6)*0.13}s;--c:${["var(--gold)","var(--sk-write)","var(--gold)","var(--sk-listen)"][i%4]};--r:${(i*47)%360}deg"></i>`).join("");
+  el.innerHTML = `<div class="confetti" aria-hidden="true">${bits}</div><div class="cel-card">
+    <div class="cel-trophy" aria-hidden="true">★</div>
+    <p class="kicker">${d?T("Day "+d+" of "+CM_DAYS,"Día "+d+" de "+CM_DAYS):T("Learning log","Bitácora")}</p>
+    <h2 class="display">${T("You showed up.","Te presentaste.")}</h2>
+    <p class="muted mt-s">${s?T((s.run>1?s.run+" days in a row · ":"")+s.shown+" of "+CM_DAYS+" kept", (s.run>1?s.run+" días seguidos · ":"")+s.shown+" de "+CM_DAYS+" cumplidos"):T("Sign your commitment to turn this into a 28-day chain.","Firma tu compromiso para convertir esto en una cadena de 28 días.")}</p>
+    ${planOn() && (state.planLog[dayKey()]||{}).victory ? `<div class="cel-badge"><span>🏆</span>${T("And your plan's victory of the day","Y también la victoria del día de tu plan")}</div>` : ""}
+    <button class="btn block mt" data-act="cmCelClose">${T("Keep going","Seguir adelante")}</button></div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add("show"));
+  setTimeout(()=>{ const b = el.querySelector(".btn"); if(b) b.focus({preventScroll:true}); }, 200);
+}
+function cmIcs(){
+  if(!cmOn()) return;
+  const t = dayKey(), es = lang()!=="en", P = state.pledge, url = location.href.split("#")[0]+"#bitacora";
+  const stamp = new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ProfGermandario//Fluency OS Commitment//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:"+(es?"Mi compromiso de inglés":"My English commitment")];
+  cycleKeys().forEach((k,i)=>{
+    if(k<t) return;
+    const p = LOG_PROMPTS[i % LOG_PROMPTS.length], d = parseKey(k), h = String(P.hour||"07:30").split(":").map(Number);
+    d.setHours(h[0]||7, h[1]||0, 0, 0);
+    const e = new Date(d.getTime()+20*60000), f = x => dayKey(x).replace(/-/g,"")+"T"+pad2(x.getHours())+pad2(x.getMinutes())+"00";
+    const sum = (es?"Mi compromiso · día ":"My commitment · day ")+(i+1)+"/"+CM_DAYS;
+    L.push("BEGIN:VEVENT","UID:pledge-"+P.cycle+"-"+k+"@fluency-os","DTSTAMP:"+stamp,"DTSTART:"+f(d),"DTEND:"+f(e),"SUMMARY:"+icsText(sum),
+      "DESCRIPTION:"+icsText((es?"Bitácora de hoy (":"Today's log (")+P.words+(es?" palabras): ":" words): ")+p.en+(es?"\n"+p.es:"")+"\n\n"+url),
+      "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsText(sum),"TRIGGER:-PT5M","END:VALARM","END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  download(es?"mi-compromiso-28-dias.ics":"my-28-day-commitment.ics", L.join("\r\n")+"\r\n", "text/calendar");
+  toastT("Calendar file downloaded. Open it to add your 28 days.","Archivo de calendario descargado. Ábrelo para agregar tus 28 días.");
+}
+function cmExportTxt(){
+  const keys = Object.keys(state.bitacora||{}).sort(); if(!keys.length){ toastT("Your log is empty for now.","Tu bitácora está vacía por ahora."); return; }
+  const out = ["BITÁCORA · "+(state.name||"Estudiante")+" · Fluency OS · ProfGermandario", ""];
+  if(cmOn()) out.push("Compromiso (ciclo "+state.pledge.cycle+"): "+state.pledge.text.es, "Firma: "+state.pledge.sig, "");
+  keys.forEach(k=>{ const e = state.bitacora[k], n = cmOn() ? cmDayNum(k) : 0; out.push("— "+fmtLongDay(k)+(n>=1&&n<=CM_DAYS?" · día "+n:"")+" · "+e.words+" palabras", promptFor(k).en, "", e.text, ""); });
+  download("bitacora-"+(state.name||"estudiante").replace(/\s+/g,"-").toLowerCase()+".txt", out.join("\n"), "text/plain");
+}
+function cmTodayMsg(){
+  const t = dayKey(), e = logEntry(t), p = promptFor(t), n = cmPhase()==="live" ? cmDayNum() : 0;
+  const body = (e?e.text:"").slice(0,1400);
+  return ["Hola Profe, soy "+(state.name||"tu estudiante")+". Mi bitácora de hoy"+(n?" (día "+n+" de "+CM_DAYS+")":"")+":", "", "Consigna: "+p.en, "", body+(e && e.text.length>1400?"…":""), "", "("+(e?e.words:0)+" palabras · meta "+cmTarget()+")"].join("\n");
+}
+function cmWeekMsg(){
+  const t = dayKey(), days = [...Array(7)].map((_,i)=>addDays(t,i-6)), s = cmOn() ? cmStats() : null;
+  const lines = ["Hola Profe, soy "+(state.name||"tu estudiante")+". Mi semana de compromiso:", ""];
+  days.forEach(k=>{ lines.push((shownUp(k)?"★ ":logWords(k)?"◐ ":"· ")+fmtLongDay(k)+": "+logWords(k)+" palabras"); });
+  if(s) lines.push("", "Ciclo "+state.pledge.cycle+" · día "+Math.min(CM_DAYS,cmDayNum())+" · "+s.shown+" días presentes · racha "+s.run);
+  return lines.join("\n");
+}
+function cmMirrorMsg(){
+  const s = cmStats(), P = state.pledge;
+  return ["Hola Profe, soy "+(state.name||"tu estudiante")+". Terminé mi ciclo "+P.cycle+" de "+CM_DAYS+" días.", "", "★ Me presenté "+s.shown+" de "+CM_DAYS+" días", "✎ Escribí "+s.words+" palabras en inglés", "", "Mi compromiso fue: "+P.text.es].join("\n");
+}
+function cmCertificate(){
+  const s = cmStats(), P = state.pledge, keys = cycleKeys();
+  const e = x => esc(x);
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado · ${e(P.sig)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#140E1A;color:#F3EDE2;font-family:Figtree,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px;box-sizing:border-box}
+.c{max-width:760px;width:100%;border:1px solid #CFA85A;border-radius:24px;padding:48px 40px;text-align:center;background:radial-gradient(120% 80% at 100% 0%,rgba(207,168,90,.14),transparent 55%),#1C1524}
+img{width:64px;height:64px;object-fit:contain}.k{color:#CFA85A;font-weight:600;letter-spacing:.12em;font-size:13px;text-transform:uppercase;margin-top:18px}
+h1{font-family:Fraunces,serif;font-weight:400;font-size:44px;margin:12px 0 6px}h2{font-family:Fraunces,serif;font-style:italic;font-weight:400;font-size:30px;color:#CFA85A;margin:0}
+p{color:#A89DB2;font-size:16px;line-height:1.6}.q{font-family:Fraunces,serif;font-style:italic;color:#F3EDE2;font-size:18px;border-left:2px solid #CFA85A;padding:12px 16px;text-align:left;background:rgba(207,168,90,.10);border-radius:0 12px 12px 0}
+.s{display:flex;justify-content:center;gap:34px;margin:26px 0}.s b{display:block;font-family:Fraunces,serif;font-size:34px;font-weight:500;color:#F3EDE2}.s span{font-size:13px;color:#A89DB2}
+@media print{body{background:#fff}.c{background:#fff;color:#1D1624}h1,.s b,.q{color:#1D1624}}</style></head><body><div class="c">
+<img src="https://palekor.github.io/lecciones/profgermandario-logo-clean.png" alt="ProfGermandario"><div class="k">Fluency OS · ProfGermandario</div>
+<h1>Certificado de constancia</h1><h2>${e(P.sig)}</h2>
+<p>Ciclo ${P.cycle} · ${e(fmtLongDay(keys[0]))} – ${e(fmtLongDay(keys[keys.length-1]))}</p>
+<div class="s"><div><b>${s.shown}/${CM_DAYS}</b><span>días presente</span></div><div><b>${s.words}</b><span>palabras en inglés</span></div></div>
+<div class="q">«${e(P.text.es)}»</div>
+<p style="margin-top:26px">No por ser perfecto, sino por ser constante.</p></div></body></html>`;
+  download("certificado-ciclo-"+P.cycle+"-"+(P.sig||"estudiante").replace(/\s+/g,"-").toLowerCase()+".html", html, "text/html");
+  toastT("Certificate downloaded. Open it and print it as PDF.","Certificado descargado. Ábrelo e imprímelo como PDF.");
+}
+function cmRepaint(){
+  if(document.body.classList.contains("in-lesson")) return;
+  if(["pledge","home","plan"].includes(curRoute)){ const y = window.scrollY; VIEWS[curRoute](); window.scrollTo(0,y); }
+}
+function cmDaySheet(k){
+  const t = dayKey(), e = logEntry(k), p = promptFor(k), n = cmDayNum(k);
+  if(k===t){ go("bitacora"); return; }
+  openSheet(`${sheetHead((n>=1&&n<=CM_DAYS?tt("Day "+n+" · ","Día "+n+" · "):"")+fmtLongDay(k), e ? (shownUp(k)?"★ ":"")+e.words+" "+tt("words","palabras") : (k>t?tt("Planned","Planeado"):tt("No log this day","Sin bitácora este día")))}
+    <p class="bt-prompt" style="font-size:20px">${T(esc(p.en),esc(p.es))}</p>
+    ${e ? `<div class="well mt" style="font-family:var(--display);font-size:16.5px;line-height:1.55;white-space:pre-wrap">${esc(e.text)}</div>`
+        : k<t ? `<p class="muted mt">${T("This day stayed empty. It's part of the trace too — what matters is coming back today.","Este día quedó vacío. También es parte de la huella: lo importante es volver hoy.")}</p>`
+        : `<p class="muted mt">${T("This prompt will be waiting for you that day at "+fmtTime(state.pledge.hour)+".","Esta consigna te esperará ese día a las "+fmtTime(state.pledge.hour)+".")}</p>`}
+    <button class="btn block mt" data-act="closeSheet">${T("Close","Cerrar")}</button>`);
+}
+
+
+/* commitment strip on My plan · entry in the Toolbox */
+function planPledgeStrip(){
+  const ph = cmPhase();
+  if(ph==="none") return `<button class="panel plan-cta mt" data-act="cmSign"><span class="f-ico" aria-hidden="true">★</span><span class="grow"><span class="f-t">${T("Sign your 28-day commitment","Firma tu compromiso de 28 días")}</span><span class="s">${T("Your plan says what to do. The commitment makes you come back.","Tu plan dice qué hacer. El compromiso hace que vuelvas.")}</span></span></button>`;
+  const s = cmStats();
+  return `<button class="panel cm-card mt" style="width:100%;text-align:left;display:block" data-act="cmOpen">
+    <div class="pt-head"><p class="kicker">${ph==="done"?T("Cycle complete · open your Mirror","Ciclo completo · abre tu Espejo"):T("My commitment · day "+Math.max(1,cmDayNum())+" of "+CM_DAYS,"Mi compromiso · día "+Math.max(1,cmDayNum())+" de "+CM_DAYS)}</p><span class="pt-count notr">${s.shown}/${CM_DAYS}</span></div>
+    ${chainHTML()}
+    <p class="small muted mt-s">${s.today?T("✓ Today's log is done.","✓ La bitácora de hoy está lista."):T("Today's log: "+cmTarget()+" words.","Bitácora de hoy: "+cmTarget()+" palabras.")}</p></button>`;
+}
+function pledgeToolboxEntry(){
+  const ph = cmPhase();
+  return `<button class="panel feature" data-act="cmOpen"><span class="f-ico" aria-hidden="true">★</span><span class="grow"><span class="f-t">${T("My commitment & my team","Mi compromiso y mi equipo")}</span><span class="s">${ph==="none"?T("28 days, one learning log a day, six guides that read your work.","28 días, una bitácora al día, seis guías que leen tu trabajo."):T("Day "+Math.min(CM_DAYS,Math.max(1,cmDayNum()))+" · "+cmStats().shown+" days shown up · your learning log","Día "+Math.min(CM_DAYS,Math.max(1,cmDayNum()))+" · "+cmStats().shown+" días presentes · tu bitácora")}</span></span><span class="chev">›</span></button>`;
+}
+/* the "write my log" habit joins the plan's habit catalog */
+HABITS.push({id:"log", en:"Write your learning log", es:"Escribe tu bitácora", hen:"A few sentences about how you are learning.", hes:"Unas frases sobre cómo estás aprendiendo.", min:5, ev:"bitacora", go:"log", ico:"✍", sk:"write"});
+
+/* ---------- actions ---------- */
+Object.assign(ACT, {
+  cmSign: () => { if(cmPhase()==="done"){ go("pledge"); return; } cmSignSheet(false); },
+  cmEdit: () => cmSignSheet(true),
+  cmRenew: () => { const last = state.pledge; cmSignSheet(false); CMS.renew = true; CMS.words = CM_WORDS[Math.min(CM_WORDS.length-1, CM_WORDS.indexOf(last.words)+1)] || last.words; CMS.start = dayKey(); CMS.hour = last.hour; paintSign(); },
+  cmNext: () => {
+    if(CMS.step===1){
+      const n = ($("#cmName")||{}).value, st = ($("#cmStart")||{}).value, h = ($("#cmHour")||{}).value;
+      if(n!=null) CMS.name = n.trim();
+      if(st) CMS.start = st; if(h) CMS.hour = h;
+      if(!CMS.name){ toastT("Write your name.","Escribe tu nombre."); const f = $("#cmName"); if(f) f.focus(); return; }
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(CMS.start)){ toastT("Choose a start date.","Elige una fecha de inicio."); return; }
+      if(CMS.edit){ cmApply(); closeSheet(); toastT("Commitment updated.","Compromiso actualizado."); cmRepaint(); return; }
+    }
+    CMS.step++; paintSign();
+  },
+  cmBack: () => { CMS.step = Math.max(0, CMS.step-1); paintSign(); },
+  cmWords: el => { CMS.words = +el.dataset.v; const n = $("#cmName"), s = $("#cmStart"), h = $("#cmHour"); if(n) CMS.name = n.value; if(s) CMS.start = s.value; if(h) CMS.hour = h.value; paintSign(); },
+  cmHabit: () => { CMS.habit = !CMS.habit; const n = $("#cmName"), s = $("#cmStart"), h = $("#cmHour"); if(n) CMS.name = n.value; if(s) CMS.start = s.value; if(h) CMS.hour = h.value; paintSign(); },
+  cmSignNow: () => {
+    const sig = ($("#cmSig")||{}).value || ""; if(sig.trim().length<2) return;
+    CMS.sig = sig;
+    cmApply();
+    closeSheet();
+    toastT("Welcome to your cycle, "+(CMS.name||state.name)+". Day one starts with a few sentences.","Bienvenido a tu ciclo, "+(CMS.name||state.name)+". El día uno empieza con unas frases.");
+    go("pledge");
+  },
+  cmOpen: () => { closeSheet(); go("pledge"); },
+  cmTeamOpen: () => { if(curRoute!=="pledge"){ go("pledge"); setTimeout(()=>{ const s = $("#cmTeam"); if(s) s.scrollIntoView({behavior:"smooth", block:"start"}); }, 120); } else { const s = $("#cmTeam"); if(s) s.scrollIntoView({behavior:"smooth", block:"start"}); } },
+  cmWrite: () => { closeSheet(); go("bitacora"); },
+  cmGoPlan: () => { closeSheet(); go("plan"); },
+  cmMeditate: () => meditateSheet(),
+  cmTeacher: () => openExternal(waLink("Hola Profe, soy "+(state.name||"tu estudiante")+". Estoy en mi compromiso de "+CM_DAYS+" días y necesito ayuda con:")),
+  cmSendToday: () => { const ta = $("#btText"); if(ta) saveLog(dayKey(), ta.value); if(!logWords(dayKey())){ toastT("Write your log first.","Escribe tu bitácora primero."); return; } openExternal(waLink(cmTodayMsg())); },
+  cmSendWeek: () => openExternal(waLink(cmWeekMsg())),
+  cmSendMirror: () => openExternal(waLink(cmMirrorMsg())),
+  cmIcs: () => cmIcs(),
+  cmExport: () => cmExportTxt(),
+  cmCert: () => cmCertificate(),
+  cmDay: el => cmDaySheet(el.dataset.k),
+  cmListen: el => say(promptFor(dayKey()).en, el),
+  cmCelClose: () => { const c = $("#celebrate"); if(c){ c.classList.remove("show"); setTimeout(()=>c.remove(), 250); } go("pledge"); },
+  btStarter: el => {
+    const ta = $("#btText"); if(!ta) return;
+    const s = el.dataset.s.replace(/…$/,"").trim()+" ";
+    const a = ta.selectionStart ?? ta.value.length, v = ta.value, pre = v.slice(0,a), sep = pre && !/\s$/.test(pre) ? " " : "";
+    ta.value = pre + sep + s + v.slice(a); ta.focus(); const pos = (pre+sep+s).length; ta.setSelectionRange(pos,pos);
+    INP.btText(ta);
+  },
+  btDone: () => {
+    const ta = $("#btText"); if(!ta) return;
+    const r = saveLog(dayKey(), ta.value), e = logEntry();
+    if(!r.words){ toastT("Write a few words first.","Escribe unas palabras primero."); return; }
+    if(e && e.shownAt && !e.cel){ e.cel = nowISO(); save(); cmCelebrate(); return; }
+    toastT(shownUp(dayKey()) ? "Saved. Today is kept." : "Saved. "+(cmTarget()-r.words)+" words to show up.", shownUp(dayKey()) ? "Guardada. Hoy quedó cumplido." : "Guardada. Faltan "+(cmTarget()-r.words)+" palabras para presentarte.");
+    paintCoach();
+  },
+  btCoach: () => { const ta = $("#btText"); if(ta) saveLog(dayKey(), ta.value); paintCoach(); const b = $("#btCoach"); if(b) b.scrollIntoView({behavior:"smooth", block:"nearest"}); },
+  btSpeakYa: () => {
+    const ta = $("#btText"), txt = ta ? ta.value.trim() : "";
+    if(wc(txt)<5){ toastT("Write at least a few sentences first.","Escribe al menos unas frases primero."); return; }
+    saveLog(dayKey(), ta.value);
+    copyText(speakYaBrief(txt, promptFor(dayKey()))).then(()=>{
+      toastT("Copied. Paste it in Speak Ya.","Copiado. Pégalo en Speak Ya.");
+      setTimeout(()=>openExternal(CONFIG.speakYa), 450);
+    });
+  }
+});
+Object.assign(INP, {
+  btText: el => {
+    const r = saveLog(dayKey(), el.value, true), target = cmTarget(), m = $("#btMeter"), c = $("#btCount");
+    if(c) c.textContent = r.words+" / "+target;
+    if(m){ m.classList.toggle("ok", r.words>=target); const i = m.querySelector(".bar i"); if(i) i.style.width = Math.min(100,Math.round(r.words/target*100))+"%"; }
+  },
+  cmName: el => { if(CMS) CMS.name = el.value; },
+  cmStart: el => { if(CMS) CMS.start = el.value; },
+  cmHour: el => { if(CMS) CMS.hour = el.value; },
+  cmSig: el => { if(CMS) CMS.sig = el.value; const b = $("#cmSignBtn"); if(b) b.disabled = el.value.trim().length<2; }
+});
+
 
 /* ---------- theme ---------- */
 function applyTheme(){
